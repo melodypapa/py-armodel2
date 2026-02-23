@@ -12,9 +12,6 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.data_format_element_scope import (
     DataFormatElementScope,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
-from abc import ABC, abstractmethod
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.data_format_element_scope import DataFormatElementScopeBuilder
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.variation_restriction_with_severity import (

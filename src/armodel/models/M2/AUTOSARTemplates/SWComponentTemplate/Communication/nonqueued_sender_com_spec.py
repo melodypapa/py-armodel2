@@ -13,8 +13,6 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.sender_com_spec import (
     SenderComSpec,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.sender_com_spec import SenderComSpecBuilder
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Filter.data_filter import (

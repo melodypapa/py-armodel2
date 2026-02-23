@@ -12,8 +12,6 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_channel_mapping import (
     BusMirrorChannelMapping,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_channel_mapping import BusMirrorChannelMappingBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (

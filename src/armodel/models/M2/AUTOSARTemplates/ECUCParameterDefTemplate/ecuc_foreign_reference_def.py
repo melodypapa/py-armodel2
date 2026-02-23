@@ -12,8 +12,6 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_external_reference_def import (
     EcucAbstractExternalReferenceDef,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_external_reference_def import EcucAbstractExternalReferenceDefBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (

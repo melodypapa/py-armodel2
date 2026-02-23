@@ -13,8 +13,6 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping import (
     DataMapping,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping import DataMappingBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
@@ -44,15 +42,15 @@ class SenderReceiverToSignalMapping(DataMapping):
         return False
 
     data_element_ref: Optional[ARRef]
-    sender_to_signal_ref: Optional[ARRef]
-    signal_to_ref: Optional[ARRef]
+    sender_to_signal_text_table_mapping: Optional[TextTableMapping]
+    signal_to_receiver_text_table_mapping: Optional[TextTableMapping]
     system_signal_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SenderReceiverToSignalMapping."""
         super().__init__()
         self.data_element_ref: Optional[ARRef] = None
-        self.sender_to_signal_ref: Optional[ARRef] = None
-        self.signal_to_ref: Optional[ARRef] = None
+        self.sender_to_signal_text_table_mapping: Optional[TextTableMapping] = None
+        self.signal_to_receiver_text_table_mapping: Optional[TextTableMapping] = None
         self.system_signal_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -93,12 +91,12 @@ class SenderReceiverToSignalMapping(DataMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sender_to_signal_ref
-        if self.sender_to_signal_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.sender_to_signal_ref, "TextTableMapping")
+        # Serialize sender_to_signal_text_table_mapping
+        if self.sender_to_signal_text_table_mapping is not None:
+            serialized = SerializationHelper.serialize_item(self.sender_to_signal_text_table_mapping, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SENDER-TO-SIGNAL-REF")
+                wrapped = ET.Element("SENDER-TO-SIGNAL-TEXT-TABLE-MAPPING")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -107,12 +105,12 @@ class SenderReceiverToSignalMapping(DataMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize signal_to_ref
-        if self.signal_to_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.signal_to_ref, "TextTableMapping")
+        # Serialize signal_to_receiver_text_table_mapping
+        if self.signal_to_receiver_text_table_mapping is not None:
+            serialized = SerializationHelper.serialize_item(self.signal_to_receiver_text_table_mapping, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SIGNAL-TO-REF")
+                wrapped = ET.Element("SIGNAL-TO-RECEIVER-TEXT-TABLE-MAPPING")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -156,17 +154,17 @@ class SenderReceiverToSignalMapping(DataMapping):
             data_element_ref_value = ARRef.deserialize(child)
             obj.data_element_ref = data_element_ref_value
 
-        # Parse sender_to_signal_ref
-        child = SerializationHelper.find_child_element(element, "SENDER-TO-SIGNAL-REF")
+        # Parse sender_to_signal_text_table_mapping
+        child = SerializationHelper.find_child_element(element, "SENDER-TO-SIGNAL-TEXT-TABLE-MAPPING")
         if child is not None:
-            sender_to_signal_ref_value = ARRef.deserialize(child)
-            obj.sender_to_signal_ref = sender_to_signal_ref_value
+            sender_to_signal_text_table_mapping_value = SerializationHelper.deserialize_by_tag(child, "TextTableMapping")
+            obj.sender_to_signal_text_table_mapping = sender_to_signal_text_table_mapping_value
 
-        # Parse signal_to_ref
-        child = SerializationHelper.find_child_element(element, "SIGNAL-TO-REF")
+        # Parse signal_to_receiver_text_table_mapping
+        child = SerializationHelper.find_child_element(element, "SIGNAL-TO-RECEIVER-TEXT-TABLE-MAPPING")
         if child is not None:
-            signal_to_ref_value = ARRef.deserialize(child)
-            obj.signal_to_ref = signal_to_ref_value
+            signal_to_receiver_text_table_mapping_value = SerializationHelper.deserialize_by_tag(child, "TextTableMapping")
+            obj.signal_to_receiver_text_table_mapping = signal_to_receiver_text_table_mapping_value
 
         # Parse system_signal_ref
         child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
@@ -201,8 +199,8 @@ class SenderReceiverToSignalMappingBuilder(DataMappingBuilder):
         self._obj.data_element = value
         return self
 
-    def with_sender_to_signal(self, value: Optional[TextTableMapping]) -> "SenderReceiverToSignalMappingBuilder":
-        """Set sender_to_signal attribute.
+    def with_sender_to_signal_text_table_mapping(self, value: Optional[TextTableMapping]) -> "SenderReceiverToSignalMappingBuilder":
+        """Set sender_to_signal_text_table_mapping attribute.
 
         Args:
             value: Value to set
@@ -212,11 +210,11 @@ class SenderReceiverToSignalMappingBuilder(DataMappingBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sender_to_signal = value
+        self._obj.sender_to_signal_text_table_mapping = value
         return self
 
-    def with_signal_to(self, value: Optional[TextTableMapping]) -> "SenderReceiverToSignalMappingBuilder":
-        """Set signal_to attribute.
+    def with_signal_to_receiver_text_table_mapping(self, value: Optional[TextTableMapping]) -> "SenderReceiverToSignalMappingBuilder":
+        """Set signal_to_receiver_text_table_mapping attribute.
 
         Args:
             value: Value to set
@@ -226,7 +224,7 @@ class SenderReceiverToSignalMappingBuilder(DataMappingBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.signal_to = value
+        self._obj.signal_to_receiver_text_table_mapping = value
         return self
 
     def with_system_signal(self, value: Optional[SystemSignal]) -> "SenderReceiverToSignalMappingBuilder":

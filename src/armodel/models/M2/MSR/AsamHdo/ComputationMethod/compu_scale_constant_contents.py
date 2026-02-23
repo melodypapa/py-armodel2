@@ -12,8 +12,6 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_contents import (
     CompuScaleContents,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_contents import CompuScaleContentsBuilder
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import (

@@ -266,13 +266,6 @@ def generate_class_code(
             # Fallback to ARObject import
             code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
 
-    # Add ARObject import for all classes that use it in the deserialize method
-    # The generated deserialize method uses SerializationHelper.find_child_element and SerializationHelper.find_all_child_elements
-    if class_name != "ARObject":
-        code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
-        # Add SerializationHelper import for all classes that use it in serialize/deserialize methods
-        code += "from armodel.serialization import SerializationHelper\n"
-
     # Add Builder imports at the top (after all other imports to avoid E402 errors)
     # Deduplicate imports to avoid F811 redefinition errors
     if builder_imports:
@@ -512,10 +505,16 @@ def generate_class_code(
 
     # Add ARObject import for all classes that use it in the deserialize method
     # The generated deserialize method uses SerializationHelper.find_child_element and SerializationHelper.find_all_child_elements
+    # Only add if not already added earlier (after parent class import)
     if class_name != "ARObject":
-        code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
+        ar_object_import = "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
+        if ar_object_import not in code:
+            code += ar_object_import
         # Add SerializationHelper import for all classes that use it in serialize/deserialize methods
-        code += "from armodel.serialization import SerializationHelper\n"
+        # Only add if not already added earlier
+        serialization_helper_import = "from armodel.serialization import SerializationHelper\n"
+        if serialization_helper_import not in code:
+            code += serialization_helper_import
 
     # Add Builder imports at the top (after all other imports to avoid E402 errors)
     # Deduplicate imports to avoid F811 redefinition errors
@@ -2305,7 +2304,9 @@ def generate_builder_code(
                 )
 
     # Import ABC if this is an abstract class
-    abc_import = "from abc import ABC, abstractmethod\n" if is_abstract else ""
+    # Note: abc_import is NOT added to builder_imports here because it's already added
+    # at line 504 for the class itself, and will be deduplicated at line 521-564
+    abc_import = ""  # Always empty - added separately in generate_class_code
 
     # Import BuilderBase
     builder_base_import = "from armodel.models.M2.builder_base import BuilderBase\n"
