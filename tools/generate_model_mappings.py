@@ -167,8 +167,9 @@ def generate_yaml_mappings(
     
     # Generate mappings
     print("Generating XML tag mappings...")
-    xml_tag_mappings = generate_xml_tag_mappings(mapping_json)
-    print(f"  Generated {len(xml_tag_mappings)} XML tag mappings")
+    generated_mappings = generate_xml_tag_mappings(mapping_json)
+    print(f"  Analyzed {len(generated_mappings)} potential XML tag mappings")
+    print("  Filtering to exceptional cases only...")
     
     print("Generating import path mappings...")
     import_paths = generate_import_paths(mapping_json)
@@ -178,14 +179,37 @@ def generate_yaml_mappings(
     polymorphic_types = generate_polymorphic_mappings(package_files)
     print(f"  Generated {len(polymorphic_types)} polymorphic type mappings")
     
-    # Manual XML tag mappings for manually maintained classes with custom tags
-    # These classes are in skip_classes.yaml but have non-standard XML tags
-    manual_xml_tag_mappings = {
+    # Define exceptional cases that don't follow the normal pattern
+    # Normal pattern: XML tag -> class name via NameConverter.tag_to_class_name()
+    # These exceptional cases must be explicitly mapped in the YAML
+    exceptional_xml_tag_mappings = {
+        # AR prefix - keep uppercase (not converted to Ar)
+        "AR-ELEMENT": "ARElement",
+        "AR-PACKAGE": "ARPackage",
+        "AR-OBJECT": "ARObject",
+        "AR-LIST": "ARList",
+        # AR-VARIABLE and AR-PARAMETER - keep AR uppercase
+        "AR-VARIABLE-IN-IMPLEMENTATION-DATA-INSTANCE-REF": "ArVariableInImplementationDataInstanceRef",
+        "AR-PARAMETER-IN-IMPLEMENTATION-DATA-INSTANCE-REF": "ArParameterInImplementationDataInstanceRef",
+        # Words starting with "AR" but not the AR prefix - use lowercase "Ar"
+        "ARGUMENT-DATA-PROTOTYPE": "ArgumentDataPrototype",
+        "ARBITRARY-EVENT-TRIGGERING": "ArbitraryEventTriggering",
+        "ARRAY-VALUE-SPECIFICATION": "ArrayValueSpecification",
+        # AUTOSAR - keep fully uppercase
+        "AUTOSAR": "AUTOSAR",
+        # V2X prefix - special casing (V2x instead of V2X)
+        "V2X-FAC-USER-NEEDS": "V2xFacUserNeeds",
+        "V2X-M-USER-NEEDS": "V2xMUserNeeds",
+        "V2X-DATA-MANAGER-NEEDS": "V2xDataManagerNeeds",
+        # Special abbreviation
         "VT": "CompuConstTextContent",
+        # Conditional variant
+        "BSW-MODULE-ENTRY-REF-CONDITIONAL": "BswModuleClientServerEntry",
     }
     
-    # Merge manual mappings with generated ones
-    xml_tag_mappings.update(manual_xml_tag_mappings)
+    # Only keep exceptional cases in xml_tag_mappings
+    # All other mappings will be handled by NameConverter.tag_to_class_name() fallback
+    xml_tag_mappings = exceptional_xml_tag_mappings
     
     # Build YAML structure
     yaml_data = {
@@ -210,9 +234,9 @@ def generate_yaml_mappings(
     with open(output_yaml_path, "w") as f:
         yaml.dump(yaml_data, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
     
-    print(f"Done! Generated YAML file with {len(xml_tag_mappings)} class mappings")
+    print(f"Done! Generated YAML file with {len(xml_tag_mappings)} exceptional XML tag mappings")
     print(f"  Polymorphic types: {len(polymorphic_types)}")
-    print(f"  Total classes: {len(xml_tag_mappings)}")
+    print(f"  Total classes: {len(import_paths)} (normal pattern handled by NameConverter)")
 
 
 def main() -> None:
