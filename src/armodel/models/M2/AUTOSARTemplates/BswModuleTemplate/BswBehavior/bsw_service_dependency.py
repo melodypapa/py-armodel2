@@ -25,6 +25,8 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.role_based
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class BswServiceDependency(ServiceDependency):

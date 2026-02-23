@@ -29,6 +29,8 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_verbatim import (
     MultiLanguageVerbatim,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class MlFormula(Paginateable):

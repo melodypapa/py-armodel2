@@ -26,6 +26,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_s
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class LifeCycleInfo(ARObject):

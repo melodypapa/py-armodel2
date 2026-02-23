@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Filter.data_filter impor
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_to_i_pdu_mapping import (
     ISignalToIPduMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class TransmissionModeCondition(ARObject):

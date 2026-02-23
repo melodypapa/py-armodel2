@@ -29,6 +29,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.tls_c
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.transport_protocol_configuration import (
     TransportProtocolConfiguration,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ApplicationEndpoint(Identifiable):

@@ -30,6 +30,8 @@ from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import
 from armodel.models.M2.MSR.Documentation.BlockElements.caption import (
     Caption,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class Table(Paginateable):

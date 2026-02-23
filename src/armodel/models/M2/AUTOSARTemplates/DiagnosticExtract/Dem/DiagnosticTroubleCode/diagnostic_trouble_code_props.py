@@ -36,6 +36,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticExtended
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticFreezeFrame.diagnostic_freeze_frame import (
     DiagnosticFreezeFrame,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DiagnosticTroubleCodeProps(DiagnosticCommonElement):

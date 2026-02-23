@@ -55,6 +55,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_proto
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system_mapping import (
     SystemMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class System(ARElement):

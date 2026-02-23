@@ -25,6 +25,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class VariableInAtomicSWCTypeInstanceRef(ARObject):

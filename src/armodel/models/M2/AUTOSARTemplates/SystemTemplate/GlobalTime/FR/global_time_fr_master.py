@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_ma
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime import (
     GlobalTimeCrcSupportEnum,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class GlobalTimeFrMaster(GlobalTimeMaster):

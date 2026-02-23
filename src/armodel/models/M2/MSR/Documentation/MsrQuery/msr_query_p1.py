@@ -22,6 +22,8 @@ from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_props import (
 from armodel.models.M2.MSR.Documentation.Chapters.topic_content import (
     TopicContent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class MsrQueryP1(Paginateable):

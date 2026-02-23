@@ -25,6 +25,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.bui
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_environment import (
     BuildActionEnvironment,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class BuildActionManifest(ARElement):

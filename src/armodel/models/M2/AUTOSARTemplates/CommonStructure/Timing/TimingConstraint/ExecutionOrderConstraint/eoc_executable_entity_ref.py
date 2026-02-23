@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):

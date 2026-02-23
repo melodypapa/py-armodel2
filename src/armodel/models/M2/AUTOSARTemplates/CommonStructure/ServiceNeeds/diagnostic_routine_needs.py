@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     DiagnosticRoutineTypeEnum,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):

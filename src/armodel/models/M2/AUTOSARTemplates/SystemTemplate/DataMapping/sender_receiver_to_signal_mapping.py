@@ -27,6 +27,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_t
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SenderReceiverToSignalMapping(DataMapping):

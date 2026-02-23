@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     UnlimitedInteger,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class EcucIntegerParamDef(EcucParameterDef):

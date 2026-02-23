@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_common_att
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
+from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class EcucAbstractReferenceDef(EcucCommonAttributes, ABC):

@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_ecu import (
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Dlt.dlt_log_channel import (
     DltLogChannel,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DltConfig(ARObject):

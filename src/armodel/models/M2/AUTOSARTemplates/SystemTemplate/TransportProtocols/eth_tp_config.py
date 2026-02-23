@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_con
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.eth_tp_connection import (
     EthTpConnection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class EthTpConfig(TpConfig):

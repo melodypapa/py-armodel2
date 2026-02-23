@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     VerbatimString,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class TextValueSpecification(ValueSpecification):

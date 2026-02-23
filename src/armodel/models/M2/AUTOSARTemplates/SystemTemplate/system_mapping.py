@@ -88,6 +88,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.system_si
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.system_signal_to_communication_resource_mapping import (
     SystemSignalToCommunicationResourceMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SystemMapping(Identifiable):

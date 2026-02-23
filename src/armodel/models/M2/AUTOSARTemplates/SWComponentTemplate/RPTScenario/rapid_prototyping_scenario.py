@@ -27,6 +27,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.rpt_prof
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
     System,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class RapidPrototypingScenario(ARElement):

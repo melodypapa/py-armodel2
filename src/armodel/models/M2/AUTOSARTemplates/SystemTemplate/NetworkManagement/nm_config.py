@@ -25,6 +25,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_clus
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_ecu import (
     NmEcu,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class NmConfig(FibexElement):

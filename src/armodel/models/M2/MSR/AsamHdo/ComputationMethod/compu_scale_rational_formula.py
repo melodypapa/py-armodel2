@@ -19,6 +19,8 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_contents import
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_rational_coeffs import (
     CompuRationalCoeffs,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class CompuScaleRationalFormula(CompuScaleContents):

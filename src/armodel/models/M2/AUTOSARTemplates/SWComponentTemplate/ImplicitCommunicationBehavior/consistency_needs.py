@@ -24,6 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicatio
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicationBehavior.runnable_entity_group import (
     RunnableEntityGroup,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ConsistencyNeeds(Identifiable):

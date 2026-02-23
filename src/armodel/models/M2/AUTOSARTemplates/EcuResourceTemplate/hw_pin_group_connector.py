@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_connector imp
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group import (
     HwPinGroup,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class HwPinGroupConnector(Describable):

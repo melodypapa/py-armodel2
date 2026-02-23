@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.application_par
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.ecu_partition import (
     EcuPartition,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ApplicationPartitionToEcuPartitionMapping(Identifiable):

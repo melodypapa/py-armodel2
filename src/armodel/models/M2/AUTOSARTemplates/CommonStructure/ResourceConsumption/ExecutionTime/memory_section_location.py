@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.MemorySectionUsage.memory_section import (
     MemorySection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class MemorySectionLocation(ARObject):

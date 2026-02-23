@@ -27,6 +27,8 @@ from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_argument import (
 from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.privacy_level import (
     PrivacyLevel,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DltMessage(Identifiable):

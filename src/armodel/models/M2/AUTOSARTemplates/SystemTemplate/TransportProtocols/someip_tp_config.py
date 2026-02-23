@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.someip
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.someip_tp_connection import (
     SomeipTpConnection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SomeipTpConfig(TpConfig):

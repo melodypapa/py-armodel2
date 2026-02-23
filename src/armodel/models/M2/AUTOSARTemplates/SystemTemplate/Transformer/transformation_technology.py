@@ -30,6 +30,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.buffer_proper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformation_description import (
     TransformationDescription,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class TransformationTechnology(Identifiable):

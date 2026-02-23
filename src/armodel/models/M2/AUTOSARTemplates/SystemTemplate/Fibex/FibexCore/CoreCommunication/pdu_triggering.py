@@ -34,6 +34,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.sec_o
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.trigger_i_pdu_send_condition import (
     TriggerIPduSendCondition,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class PduTriggering(Identifiable):

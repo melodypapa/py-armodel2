@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diag_event_
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):

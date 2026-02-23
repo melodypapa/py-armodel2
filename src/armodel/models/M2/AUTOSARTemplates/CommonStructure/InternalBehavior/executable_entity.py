@@ -40,6 +40,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executa
 from armodel.models.M2.MSR.DataDictionary.AuxillaryObjects.sw_addr_method import (
     SwAddrMethod,
 )
+from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ExecutableEntity(Identifiable, ABC):

@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.sub_el
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.ar_parameter_in_implementation_data_instance_ref import (
     ArParameterInImplementationDataInstanceRef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ImplementationDataTypeSubElementRef(SubElementRef):

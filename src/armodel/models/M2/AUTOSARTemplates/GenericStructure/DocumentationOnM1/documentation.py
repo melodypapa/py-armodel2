@@ -24,6 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.DocumentationOnM1.docum
 from armodel.models.M2.MSR.Documentation.Chapters.predefined_chapter import (
     PredefinedChapter,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class Documentation(ARElement):

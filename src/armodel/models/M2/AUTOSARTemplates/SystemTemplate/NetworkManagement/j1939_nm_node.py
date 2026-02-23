@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement import 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_node_name import (
     J1939NodeName,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class J1939NmNode(NmNode):

@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.sub_el
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_table_mapping import (
     TextTableMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SubElementMapping(ARObject):

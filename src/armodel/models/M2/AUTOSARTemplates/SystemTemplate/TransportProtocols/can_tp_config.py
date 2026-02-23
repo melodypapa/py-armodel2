@@ -31,6 +31,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.can_tp
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.can_tp_node import (
     CanTpNode,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class CanTpConfig(TpConfig):

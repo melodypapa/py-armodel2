@@ -27,6 +27,8 @@ from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.colspe
 from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.tbody import (
     Tbody,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class Tgroup(ARObject):

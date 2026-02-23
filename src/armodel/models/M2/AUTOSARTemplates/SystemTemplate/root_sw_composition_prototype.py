@@ -26,6 +26,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composit
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_map import (
     FlatMap,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class RootSwCompositionPrototype(Identifiable):

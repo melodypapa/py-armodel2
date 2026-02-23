@@ -36,6 +36,8 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_rate_limita
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_traffic_limitation import (
     IdsmTrafficLimitation,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class IdsmInstance(IdsCommonElement):

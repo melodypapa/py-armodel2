@@ -25,6 +25,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class RModeInAtomicSwcInstanceRef(ARObject):

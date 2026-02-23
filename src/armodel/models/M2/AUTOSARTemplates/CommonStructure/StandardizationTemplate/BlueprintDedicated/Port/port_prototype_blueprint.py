@@ -28,6 +28,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_i
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
     RPortComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class PortPrototypeBlueprint(ARElement):

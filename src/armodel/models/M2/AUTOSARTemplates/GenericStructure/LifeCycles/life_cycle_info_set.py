@@ -30,6 +30,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_s
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_state_definition_group import (
     LifeCycleStateDefinitionGroup,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class LifeCycleInfoSet(ARElement):

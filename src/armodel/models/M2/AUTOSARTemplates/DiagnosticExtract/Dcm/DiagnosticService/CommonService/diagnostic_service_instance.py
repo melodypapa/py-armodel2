@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_access_
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
     DiagnosticServiceClass,
 )
+from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):

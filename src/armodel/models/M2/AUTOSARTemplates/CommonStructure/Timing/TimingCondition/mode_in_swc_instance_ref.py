@@ -25,6 +25,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
     SwComponentType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ModeInSwcInstanceRef(ARObject):

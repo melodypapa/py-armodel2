@@ -26,6 +26,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions.port_defined_argument_value import (
     PortDefinedArgumentValue,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):

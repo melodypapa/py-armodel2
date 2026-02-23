@@ -16,6 +16,9 @@ from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate import (
     EcucConfigurationClassEnum,
 )
+from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class EcucAbstractConfigurationClass(ARObject, ABC):

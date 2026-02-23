@@ -34,6 +34,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.SwcBswMapping.swc_bsw_sy
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.swc_internal_behavior import (
     SwcInternalBehavior,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SwcBswMapping(ARElement):

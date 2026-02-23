@@ -26,6 +26,8 @@ from armodel.models.M2.MSR.CalibrationData.CalibrationValue.sw_axis_cont import 
 from armodel.models.M2.MSR.CalibrationData.CalibrationValue.sw_value_cont import (
     SwValueCont,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ApplicationValueSpecification(ValueSpecification):

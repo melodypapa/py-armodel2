@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.do_ip_
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.do_ip_tp_connection import (
     DoIpTpConnection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DoIpTpConfig(TpConfig):

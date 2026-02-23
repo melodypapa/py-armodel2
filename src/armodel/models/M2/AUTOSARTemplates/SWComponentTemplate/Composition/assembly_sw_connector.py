@@ -26,6 +26,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.Instance
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.InstanceRefs.r_port_in_composition_instance_ref import (
     RPortInCompositionInstanceRef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class AssemblySwConnector(SwConnector):

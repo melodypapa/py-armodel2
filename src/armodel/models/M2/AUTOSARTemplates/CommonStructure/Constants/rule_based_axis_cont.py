@@ -25,6 +25,8 @@ from armodel.models.M2.MSR.AsamHdo.Units.unit import (
 from armodel.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
     ValueList,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class RuleBasedAxisCont(ARObject):

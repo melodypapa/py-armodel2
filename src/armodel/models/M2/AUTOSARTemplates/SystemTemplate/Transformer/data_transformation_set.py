@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_transfor
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformation_technology import (
     TransformationTechnology,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DataTransformationSet(ARElement):

@@ -25,6 +25,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.port_element_to_communica
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.swc_to_application_partition_mapping import (
     SwcToApplicationPartitionMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class CpSoftwareClusterMappingSet(ARElement):

@@ -26,6 +26,8 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_parameter_value import (
     EcucParameterValue,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class EcucContainerValue(Identifiable):

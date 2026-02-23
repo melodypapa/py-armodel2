@@ -25,6 +25,8 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_s
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_threshold_filter import (
     SecurityEventThresholdFilter,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SecurityEventFilterChain(IdsCommonElement):

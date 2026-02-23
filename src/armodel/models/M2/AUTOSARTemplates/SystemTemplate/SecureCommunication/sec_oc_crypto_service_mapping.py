@@ -26,6 +26,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypt
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_queue import (
     CryptoServiceQueue,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SecOcCryptoServiceMapping(CryptoServiceMapping):

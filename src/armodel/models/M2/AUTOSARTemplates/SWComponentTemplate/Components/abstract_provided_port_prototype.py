@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
     PPortComSpec,
 )
+from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class AbstractProvidedPortPrototype(PortPrototype, ABC):

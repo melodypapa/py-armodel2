@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.abstract_securit
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SecurityEventOneEveryNFilter(AbstractSecurityEventFilter):

@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer import (
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
 )
+from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class TransformationISignalProps(ARObject, ABC):

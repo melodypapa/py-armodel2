@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.application_par
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_component_prototype import (
     SwComponentPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SwcToApplicationPartitionMapping(Identifiable):

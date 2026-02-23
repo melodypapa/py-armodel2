@@ -28,6 +28,8 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
     Sdg,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class AdminData(ARObject):

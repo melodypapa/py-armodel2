@@ -27,6 +27,8 @@ from armodel.models.M2.MSR.DataDictionary.RecordLayout import (
 from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_type_props import (
     SwCalprmAxisTypeProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SwCalprmAxis(ARObject):

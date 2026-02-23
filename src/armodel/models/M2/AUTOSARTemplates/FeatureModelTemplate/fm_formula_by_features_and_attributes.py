@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_attribute_def im
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
     FMFeature,
 )
+from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class FMFormulaByFeaturesAndAttributes(ARObject, ABC):

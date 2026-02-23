@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_model im
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_selection import (
     FMFeatureSelection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class FMFeatureSelectionSet(ARElement):

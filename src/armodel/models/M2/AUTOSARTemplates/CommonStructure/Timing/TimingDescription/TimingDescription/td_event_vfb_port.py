@@ -28,6 +28,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.BlueprintDedicated.Port.port_prototype_blueprint import (
     PortPrototypeBlueprint,
 )
+from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class TDEventVfbPort(TDEventVfb, ABC):

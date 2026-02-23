@@ -41,6 +41,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.PncMapping.pnc_mapping_id
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.vlan_membership import (
     VlanMembership,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class CouplingPort(Identifiable):

@@ -36,6 +36,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypt
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.tls_psk_identity import (
     TlsPskIdentity,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class TlsCryptoCipherSuite(Identifiable):

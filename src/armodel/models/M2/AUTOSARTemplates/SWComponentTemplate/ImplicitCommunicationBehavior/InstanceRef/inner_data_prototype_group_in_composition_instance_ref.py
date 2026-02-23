@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composit
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicationBehavior.data_prototype_group import (
     DataPrototypeGroup,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class InnerDataPrototypeGroupInCompositionInstanceRef(ARObject):

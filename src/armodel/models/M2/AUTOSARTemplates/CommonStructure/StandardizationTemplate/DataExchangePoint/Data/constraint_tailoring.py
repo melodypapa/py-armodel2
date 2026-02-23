@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable_text import (
     TraceableText,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ConstraintTailoring(RestrictionWithSeverity):

@@ -18,6 +18,8 @@ from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_topic1 import (
 from armodel.models.M2.MSR.Documentation.Chapters.topic1 import (
     Topic1,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class TopicOrMsrQuery(ARObject):

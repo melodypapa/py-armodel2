@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_p
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_transformation import (
     DataTransformation,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ClientServerOperationMapping(ARObject):

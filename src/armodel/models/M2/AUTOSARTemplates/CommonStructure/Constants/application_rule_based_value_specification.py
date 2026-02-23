@@ -26,6 +26,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.rule_based_axi
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.rule_based_value_cont import (
     RuleBasedValueCont,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):

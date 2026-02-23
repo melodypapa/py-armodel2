@@ -33,6 +33,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_err
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_transition import (
     ModeTransition,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ModeDeclarationGroup(ARElement):

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
     HwDescriptionEntity,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):

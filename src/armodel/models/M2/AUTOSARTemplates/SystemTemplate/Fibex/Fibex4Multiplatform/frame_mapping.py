@@ -19,6 +19,8 @@ from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block impor
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
     FrameTriggering,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class FrameMapping(ARObject):

@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composit
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
     PortGroup,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class InnerPortGroupInCompositionInstanceRef(ARObject):

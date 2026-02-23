@@ -24,6 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.Instance
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DelegationSwConnector(SwConnector):

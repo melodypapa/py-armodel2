@@ -26,6 +26,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_spn import (
     DiagnosticJ1939Spn,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):

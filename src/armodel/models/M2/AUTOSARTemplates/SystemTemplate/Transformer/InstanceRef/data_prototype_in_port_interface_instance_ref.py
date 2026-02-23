@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
     PortInterface,
 )
+from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):

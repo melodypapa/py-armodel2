@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_component_prototype import (
     SwComponentPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DiagnosticJ1939SwMapping(DiagnosticSwMapping):

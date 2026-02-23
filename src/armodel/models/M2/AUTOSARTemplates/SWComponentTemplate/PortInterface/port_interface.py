@@ -28,6 +28,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
+from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class PortInterface(ARElement, ABC):

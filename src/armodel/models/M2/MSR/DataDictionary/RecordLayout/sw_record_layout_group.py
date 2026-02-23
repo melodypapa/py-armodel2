@@ -29,6 +29,8 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 from armodel.models.M2.MSR.DataDictionary.Axis.sw_generic_axis_param_type import (
     SwGenericAxisParamType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SwRecordLayoutGroup(ARObject):

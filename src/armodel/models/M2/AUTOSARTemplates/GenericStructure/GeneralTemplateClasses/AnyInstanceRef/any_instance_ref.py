@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_c
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
     AtpFeature,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class AnyInstanceRef(ARObject):
