@@ -407,8 +407,8 @@ class BswInterruptEntityBuilder:
         self._obj.data_send_points = list(items) if items else []
         return self
 
-    def with_implemented_entries(self, value: Optional[BswModuleEntry]) -> "BswInterruptEntityBuilder":
-        """Set implemented_entries attribute.
+    def with_implemented_entry(self, value: Optional[BswModuleEntry]) -> "BswInterruptEntityBuilder":
+        """Set implemented_entry attribute.
 
         Args:
             value: Value to set
@@ -418,7 +418,7 @@ class BswInterruptEntityBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.implemented_entries = value
+        self._obj.implemented_entry = value
         return self
 
     def with_issued_triggers(self, items: list[Trigger]) -> "BswInterruptEntityBuilder":
