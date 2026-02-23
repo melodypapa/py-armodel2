@@ -239,6 +239,17 @@ def generate_class_code(
         if has_language_abbr:
             decorator_import += "from armodel.serialization.decorators import language_abbr\n"
         
+        # Check if this class has ref_conditional decorators
+        has_ref_conditional = False
+        if attribute_types:
+            for attr_name, attr_info in attribute_types.items():
+                decorator_name = attr_info.get("decorator_name")
+                if decorator_name == "ref_conditional":
+                    has_ref_conditional = True
+                    break
+        if has_ref_conditional:
+            decorator_import += "from armodel.serialization.decorators import ref_conditional\n"
+        
         code = f'''"""{docstring}"""
 
 {future_import}{basic_import}{base_import}{decorator_import}
@@ -568,7 +579,7 @@ class {class_name}(ABC):
             decorator_name = attr_info.get("decorator_name")
             
             # For xml_attribute, l_prefix, language_abbr, and xml_element_name, use private field
-            if kind == "xml_attribute" or kind == "l_prefix" or kind == "language_abbr" or decorator_name == "xml_element_name":
+            if kind == "xml_attribute" or kind == "l_prefix" or kind == "language_abbr" or decorator_name == "xml_element_name" or decorator_name == "ref_conditional":
                 private_name = f"_{python_name}"
                 attr_code = f"        self.{private_name}: {python_type} = {initial_value}\n"
                 code += attr_code
@@ -636,6 +647,25 @@ class {class_name}(ABC):
     @{python_name}.setter
     def {python_name}(self, value: {python_type}) -> None:
         """Set {python_name} with custom XML element name."""
+        self.{private_name} = value
+
+'''
+            elif decorator_name == "ref_conditional":
+                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
+                private_name = f"_{python_name}"
+                params = attr_info.get("decorator_params", "")
+                # Determine Python type for this attribute
+                python_type = get_python_type(attr_type, multiplicity, package_data, is_ref, kind)
+                # Generate property with ref_conditional decorator
+                code += f'''    @property
+    @ref_conditional("{params}")
+    def {python_name}(self) -> {python_type}:
+        """Get {python_name} with ref_conditional wrapper."""
+        return self.{private_name}
+
+    @{python_name}.setter
+    def {python_name}(self, value: {python_type}) -> None:
+        """Set {python_name} with ref_conditional wrapper."""
         self.{private_name} = value
 
 '''
@@ -866,11 +896,17 @@ def _generate_deserialize_method(
             elif multiplicity == "*":
                 # List type
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
-                # If so, it's a container element and we need to iterate its children
+                # If so, it's a container element and we need to create a wrapper
                 if xml_tag.endswith("S"):
-                    # Check if xml_element_name decorator is present
+                    # Check if ref_conditional decorator is present
                     decorator_name = attr_info.get("decorator_name")
-                    if decorator_name == "xml_element_name":
+                    if decorator_name == "ref_conditional":
+                        # Use ref_conditional pattern: container stays as-is, each item wrapped in -REF-CONDITIONAL
+                        container_tag = attr_info.get("decorator_params", xml_tag)
+                        singular = container_tag[:-1]  # Remove trailing S
+                        conditional_tag = f"{singular}-REF-CONDITIONAL"
+                        ref_tag = f"{singular}-REF"
+                    elif decorator_name == "xml_element_name":
                         # Parse decorator params: can be single value or multi-level path separated by '/'
                         # Examples: "PROVIDED-ENTRYS" or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
                         decorator_params = attr_info.get("decorator_params", xml_tag)
@@ -919,9 +955,20 @@ def _generate_deserialize_method(
                     # For primitive/enum lists, extract text directly
                     # For non-reference class lists, deserialize each child element dynamically based on its tag
                     if is_ref:
+                        # Check if ref_conditional decorator is present
+                        if decorator_name == "ref_conditional":
+                            # Unwrap -REF-CONDITIONAL to extract the inner -REF
+                            code += f'''                # Unwrap -REF-CONDITIONAL to extract the inner -REF
+                child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                if child_element_tag == "{conditional_tag}":
+                    ref_child = SerializationHelper.find_child_element(child, "{ref_tag}")
+                    if ref_child is not None:
+                        child_value = ARRef.deserialize(ref_child)
+                else:
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+'''
                         # Use the child_tag from decorator if specified to match specific child tag
-                        # Otherwise, check for any -REF or -TREF suffix
-                        if child_tag:
+                        elif child_tag:
                             code += f'''                # Check if child matches expected reference tag "{child_tag}"
                 child_element_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_element_tag == "{child_tag}":
@@ -2416,9 +2463,15 @@ def _generate_serialize_method(
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to create a wrapper
                 if xml_tag.endswith("S"):
-                    # Check if xml_element_name decorator is present
+                    # Check if ref_conditional decorator is present
                     decorator_name = attr_info.get("decorator_name")
-                    if decorator_name == "xml_element_name":
+                    if decorator_name == "ref_conditional":
+                        # Use ref_conditional pattern: container stays as-is, each item wrapped in -REF-CONDITIONAL
+                        container_tag = attr_info.get("decorator_params", xml_tag)
+                        singular = container_tag[:-1]  # Remove trailing S
+                        conditional_tag = f"{singular}-REF-CONDITIONAL"
+                        ref_tag = f"{singular}-REF"
+                    elif decorator_name == "xml_element_name":
                         # Parse decorator params: can be single value or multi-level path separated by '/'
                         # Examples: "PROVIDED-ENTRYS" or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
                         decorator_params = attr_info.get("decorator_params", xml_tag)
@@ -2459,8 +2512,24 @@ def _generate_serialize_method(
                     # For primitive/enum lists, wrap each item in a child element with singular tag name
                     # For complex object lists, append the serialized item directly (it already has correct tag)
                     if is_ref:
+                        # Check if ref_conditional decorator is present
+                        decorator_name = attr_info.get("decorator_name")
+                        if decorator_name == "ref_conditional":
+                            # Wrap each reference in -REF-CONDITIONAL containing the actual -REF
+                            code += f'''                    # Wrap in {conditional_tag}
+                    conditional = ET.Element("{conditional_tag}")
+                    ref_elem = ET.Element("{ref_tag}")
+                    if hasattr(serialized, 'attrib'):
+                        ref_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        ref_elem.text = serialized.text
+                    for child in serialized:
+                        ref_elem.append(child)
+                    conditional.append(ref_elem)
+                    wrapper.append(conditional)
+'''
                         # Use the child_tag from decorator if specified, otherwise generate from xml_tag
-                        if child_tag:
+                        elif child_tag:
                             # Multi-level nesting: create nested wrappers for intermediate levels
                             if inner_tags:
                                 # Start with the innermost child element
@@ -2984,9 +3053,22 @@ def _generate_deserialize_method_for_atp_variant(
             elif multiplicity == "*":
                 # List type
                 if xml_tag.endswith("S"):
-                    # Check if xml_element_name decorator is present
+                    # Check if ref_conditional decorator is present
                     decorator_name = attr_info.get("decorator_name")
-                    if decorator_name == "xml_element_name":
+                    # Initialize tag variables
+                    container_tag = xml_tag
+                    child_tag = None
+                    inner_tags = []
+                    conditional_tag = None
+                    ref_tag = None
+                    
+                    if decorator_name == "ref_conditional":
+                        # Use ref_conditional pattern: container stays as-is, each item wrapped in -REF-CONDITIONAL
+                        container_tag = attr_info.get("decorator_params", xml_tag)
+                        singular = container_tag[:-1]  # Remove trailing S
+                        conditional_tag = f"{singular}-REF-CONDITIONAL"
+                        ref_tag = f"{singular}-REF"
+                    elif decorator_name == "xml_element_name":
                         # Parse decorator params: can be single value or multi-level path separated by '/'
                         # Examples: "PROVIDED-ENTRYS" or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
                         decorator_params = attr_info.get("decorator_params", xml_tag)
@@ -3002,9 +3084,6 @@ def _generate_deserialize_method_for_atp_variant(
                             child_tag = None
                             inner_tags = []
                     else:
-                        container_tag = xml_tag
-                        child_tag = None
-                        inner_tags = []
                         if is_ref:
                             singular = xml_tag[:-1]
                             container_tag = f"{singular}-REFS"
@@ -3021,14 +3100,42 @@ def _generate_deserialize_method_for_atp_variant(
         if container is not None:
             container = SerializationHelper.find_child_element(container, "{inner_tag}")'''
                     
-                    code += '''
+                    # Generate the child parsing code based on decorator type
+                    if decorator_name == "ref_conditional":
+                        # Generate ref_conditional specific code
+                        ref_conditional_code = f'''
+        if container is not None:
+            for child in container:
+                if is_ref:
+                    # Unwrap -REF-CONDITIONAL to extract the inner -REF
+                    child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                    if child_element_tag == "{conditional_tag}":
+                        ref_child = SerializationHelper.find_child_element(child, "{ref_tag}")
+                        if ref_child is not None:
+                            child_value = ARRef.deserialize(ref_child)
+                    else:
+                        child_value = SerializationHelper.deserialize_by_tag(child, None)
+                elif is_primitive_type("{attr_type}", package_data):
+                    child_value = child.text
+                elif is_enum_type("{attr_type}", package_data):
+                    child_value = {attr_type}.deserialize(child)
+                else:
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.{python_name}.append(child_value)
+
+'''
+                        code += ref_conditional_code
+                    else:
+                        # Generate standard reference parsing code
+                        ref_code = f'''
         if container is not None:
             for child in container:
                 if is_ref:
                     # Use the child_tag from decorator if specified to match specific child tag
                     if child_tag:
                         child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "''' + f'{child_tag}' + '''":
+                        if child_element_tag == "{child_tag}":
                             child_value = ARRef.deserialize(child)
                         else:
                             child_value = SerializationHelper.deserialize_by_tag(child, None)
@@ -3038,16 +3145,17 @@ def _generate_deserialize_method_for_atp_variant(
                             child_value = ARRef.deserialize(child)
                         else:
                             child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("''' + f'{attr_type}' + '''", package_data):
+                elif is_primitive_type("{attr_type}", package_data):
                     child_value = child.text
-                elif is_enum_type("''' + f'{attr_type}' + '''", package_data):
-                    child_value = ''' + f'{attr_type}' + '''.deserialize(child)
+                elif is_enum_type("{attr_type}", package_data):
+                    child_value = {attr_type}.deserialize(child)
                 else:
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.''' + f'{python_name}' + '''.append(child_value)
+                    obj.{python_name}.append(child_value)
 
 '''
+                        code += ref_code
                 else:
                     if kind == "l_prefix":
                         suffix = attr_name[1:]

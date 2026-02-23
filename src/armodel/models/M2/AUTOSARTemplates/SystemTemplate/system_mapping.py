@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
@@ -14,7 +14,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping.app_os_task_proxy_to_ecu_task_proxy_mapping import (
     AppOsTaskProxyToEcuTaskProxyMapping,
 )
@@ -24,8 +23,17 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.application_par
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.com_management_mapping import (
     ComManagementMapping,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
-    CpSoftwareCluster,
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster_resource_to_application_partition_mapping import (
+    CpSoftwareClusterResourceToApplicationPartitionMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster_to_application_partition_mapping import (
+    CpSoftwareClusterToApplicationPartitionMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster_to_ecu_instance_mapping import (
+    CpSoftwareClusterToEcuInstanceMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster_to_resource_mapping import (
+    CpSoftwareClusterToResourceMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_mapping import (
     CryptoServiceMapping,
@@ -42,6 +50,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.ECUResourceMapping.ecu_ma
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.ecu_resource_estimation import (
     EcuResourceEstimation,
 )
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.j1939_controller_application_to_j1939_nm_node_mapping import (
+    J1939ControllerApplicationToJ1939NmNodeMapping,
+)
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.mapping_constraint import (
     MappingConstraint,
 )
@@ -50,6 +61,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.PncMapping.pnc_mapping im
 )
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.port_element_to_communication_resource_mapping import (
     PortElementToCommunicationResourceMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping.rte_event_in_system_separation import (
+    RteEventInSystemSeparation,
 )
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping.rte_event_in_system_to_os_task_proxy_mapping import (
     RteEventInSystemToOsTaskProxyMapping,
@@ -86,55 +100,57 @@ class SystemMapping(Identifiable):
         """
         return False
 
-    applications: list[ApplicationPartitionToEcuPartitionMapping]
-    app_os_tasks: list[AppOsTaskProxyToEcuTaskProxyMapping]
-    coms: list[ComManagementMapping]
-    crypto_service_refs: list[ARRef]
-    data_mapping_refs: list[ARRef]
-    dds_i_signal_tos: list[DdsCpISignalToDdsTopicMapping]
-    ecu_resource_refs: list[ARRef]
-    j1939_controllers: list[Any]
-    mapping_refs: list[ARRef]
-    pnc_mapping_refs: list[ARRef]
-    port_element_tos: list[PortElementToCommunicationResourceMapping]
-    resources: list[EcuResourceEstimation]
-    resource_tos: list[CpSoftwareCluster]
-    rte_event_in_systems: list[Any]
-    rte_event_to_oses: list[RteEventInSystemToOsTaskProxyMapping]
-    signal_paths: list[SignalPathConstraint]
-    software_clusters: list[Any]
-    sw_clusters: list[Any]
-    swc_tos: list[SwcToApplicationPartitionMapping]
-    sw_impl_mapping_refs: list[ARRef]
-    sw_mapping_refs: list[ARRef]
-    system_signal_group_to_refs: list[ARRef]
-    system_signal_tos: list[SystemSignalToCommunicationResourceMapping]
+    application_partition_to_ecu_partition_mappings: list[ApplicationPartitionToEcuPartitionMapping]
+    app_os_task_proxy_to_ecu_task_proxy_mappings: list[AppOsTaskProxyToEcuTaskProxyMapping]
+    com_management_mappings: list[ComManagementMapping]
+    crypto_service_mappings: list[CryptoServiceMapping]
+    data_mappings: list[DataMapping]
+    dds_i_signal_to_topic_mappings: list[DdsCpISignalToDdsTopicMapping]
+    ecu_resources_mapping: list[ECUMapping]
+    j1939_controller_application_to_j1939_nm_node_mappings: list[J1939ControllerApplicationToJ1939NmNodeMapping]
+    mapping_constraints: list[MappingConstraint]
+    pnc_mappings: list[PncMapping]
+    port_element_to_com_resource_mappings: list[PortElementToCommunicationResourceMapping]
+    resource_estimations: list[EcuResourceEstimation]
+    resource_to_application_partition_mappings: list[CpSoftwareClusterResourceToApplicationPartitionMapping]
+    rte_event_separations: list[RteEventInSystemSeparation]
+    rte_event_to_os_task_proxy_mappings: list[RteEventInSystemToOsTaskProxyMapping]
+    signal_path_constraints: list[SignalPathConstraint]
+    software_cluster_to_application_partition_mappings: list[CpSoftwareClusterToApplicationPartitionMapping]
+    sw_cluster_to_resource_mappings: list[CpSoftwareClusterToResourceMapping]
+    sw_cluster_mappings: list[CpSoftwareClusterToEcuInstanceMapping]
+    swc_to_application_partition_mappings: list[SwcToApplicationPartitionMapping]
+    sw_impl_mappings: list[SwcToImplMapping]
+    sw_mappings: list[SwcToEcuMapping]
+    system_signal_group_to_com_resource_mappings: list[SystemSignalGroupToCommunicationResourceMapping]
+    system_signal_to_com_resource_mappings: list[SystemSignalToCommunicationResourceMapping]
     def __init__(self) -> None:
         """Initialize SystemMapping."""
         super().__init__()
-        self.applications: list[ApplicationPartitionToEcuPartitionMapping] = []
-        self.app_os_tasks: list[AppOsTaskProxyToEcuTaskProxyMapping] = []
-        self.coms: list[ComManagementMapping] = []
-        self.crypto_service_refs: list[ARRef] = []
-        self.data_mapping_refs: list[ARRef] = []
-        self.dds_i_signal_tos: list[DdsCpISignalToDdsTopicMapping] = []
-        self.ecu_resource_refs: list[ARRef] = []
-        self.j1939_controllers: list[Any] = []
-        self.mapping_refs: list[ARRef] = []
-        self.pnc_mapping_refs: list[ARRef] = []
-        self.port_element_tos: list[PortElementToCommunicationResourceMapping] = []
-        self.resources: list[EcuResourceEstimation] = []
-        self.resource_tos: list[CpSoftwareCluster] = []
-        self.rte_event_in_systems: list[Any] = []
-        self.rte_event_to_oses: list[RteEventInSystemToOsTaskProxyMapping] = []
-        self.signal_paths: list[SignalPathConstraint] = []
-        self.software_clusters: list[Any] = []
-        self.sw_clusters: list[Any] = []
-        self.swc_tos: list[SwcToApplicationPartitionMapping] = []
-        self.sw_impl_mapping_refs: list[ARRef] = []
-        self.sw_mapping_refs: list[ARRef] = []
-        self.system_signal_group_to_refs: list[ARRef] = []
-        self.system_signal_tos: list[SystemSignalToCommunicationResourceMapping] = []
+        self.application_partition_to_ecu_partition_mappings: list[ApplicationPartitionToEcuPartitionMapping] = []
+        self.app_os_task_proxy_to_ecu_task_proxy_mappings: list[AppOsTaskProxyToEcuTaskProxyMapping] = []
+        self.com_management_mappings: list[ComManagementMapping] = []
+        self.crypto_service_mappings: list[CryptoServiceMapping] = []
+        self.data_mappings: list[DataMapping] = []
+        self.dds_i_signal_to_topic_mappings: list[DdsCpISignalToDdsTopicMapping] = []
+        self.ecu_resources_mapping: list[ECUMapping] = []
+        self.j1939_controller_application_to_j1939_nm_node_mappings: list[J1939ControllerApplicationToJ1939NmNodeMapping] = []
+        self.mapping_constraints: list[MappingConstraint] = []
+        self.pnc_mappings: list[PncMapping] = []
+        self.port_element_to_com_resource_mappings: list[PortElementToCommunicationResourceMapping] = []
+        self.resource_estimations: list[EcuResourceEstimation] = []
+        self.resource_to_application_partition_mappings: list[CpSoftwareClusterResourceToApplicationPartitionMapping] = []
+        self.rte_event_separations: list[RteEventInSystemSeparation] = []
+        self.rte_event_to_os_task_proxy_mappings: list[RteEventInSystemToOsTaskProxyMapping] = []
+        self.signal_path_constraints: list[SignalPathConstraint] = []
+        self.software_cluster_to_application_partition_mappings: list[CpSoftwareClusterToApplicationPartitionMapping] = []
+        self.sw_cluster_to_resource_mappings: list[CpSoftwareClusterToResourceMapping] = []
+        self.sw_cluster_mappings: list[CpSoftwareClusterToEcuInstanceMapping] = []
+        self.swc_to_application_partition_mappings: list[SwcToApplicationPartitionMapping] = []
+        self.sw_impl_mappings: list[SwcToImplMapping] = []
+        self.sw_mappings: list[SwcToEcuMapping] = []
+        self.system_signal_group_to_com_resource_mappings: list[SystemSignalGroupToCommunicationResourceMapping] = []
+        self.system_signal_to_com_resource_mappings: list[SystemSignalToCommunicationResourceMapping] = []
 
     def serialize(self) -> ET.Element:
         """Serialize SystemMapping to XML element.
@@ -160,286 +176,244 @@ class SystemMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize applications (list to container "APPLICATIONS")
-        if self.applications:
-            wrapper = ET.Element("APPLICATIONS")
-            for item in self.applications:
+        # Serialize application_partition_to_ecu_partition_mappings (list to container "APPLICATION-PARTITION-TO-ECU-PARTITION-MAPPINGS")
+        if self.application_partition_to_ecu_partition_mappings:
+            wrapper = ET.Element("APPLICATION-PARTITION-TO-ECU-PARTITION-MAPPINGS")
+            for item in self.application_partition_to_ecu_partition_mappings:
                 serialized = SerializationHelper.serialize_item(item, "ApplicationPartitionToEcuPartitionMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize app_os_tasks (list to container "APP-OS-TASKS")
-        if self.app_os_tasks:
-            wrapper = ET.Element("APP-OS-TASKS")
-            for item in self.app_os_tasks:
+        # Serialize app_os_task_proxy_to_ecu_task_proxy_mappings (list to container "APP-OS-TASK-PROXY-TO-ECU-TASK-PROXY-MAPPINGS")
+        if self.app_os_task_proxy_to_ecu_task_proxy_mappings:
+            wrapper = ET.Element("APP-OS-TASK-PROXY-TO-ECU-TASK-PROXY-MAPPINGS")
+            for item in self.app_os_task_proxy_to_ecu_task_proxy_mappings:
                 serialized = SerializationHelper.serialize_item(item, "AppOsTaskProxyToEcuTaskProxyMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize coms (list to container "COMS")
-        if self.coms:
-            wrapper = ET.Element("COMS")
-            for item in self.coms:
+        # Serialize com_management_mappings (list to container "COM-MANAGEMENT-MAPPINGS")
+        if self.com_management_mappings:
+            wrapper = ET.Element("COM-MANAGEMENT-MAPPINGS")
+            for item in self.com_management_mappings:
                 serialized = SerializationHelper.serialize_item(item, "ComManagementMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize crypto_service_refs (list to container "CRYPTO-SERVICE-REFS")
-        if self.crypto_service_refs:
-            wrapper = ET.Element("CRYPTO-SERVICE-REFS")
-            for item in self.crypto_service_refs:
+        # Serialize crypto_service_mappings (list to container "CRYPTO-SERVICE-MAPPINGS")
+        if self.crypto_service_mappings:
+            wrapper = ET.Element("CRYPTO-SERVICE-MAPPINGS")
+            for item in self.crypto_service_mappings:
                 serialized = SerializationHelper.serialize_item(item, "CryptoServiceMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("CRYPTO-SERVICE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_mapping_refs (list to container "DATA-MAPPING-REFS")
-        if self.data_mapping_refs:
-            wrapper = ET.Element("DATA-MAPPING-REFS")
-            for item in self.data_mapping_refs:
+        # Serialize data_mappings (list to container "DATA-MAPPINGS")
+        if self.data_mappings:
+            wrapper = ET.Element("DATA-MAPPINGS")
+            for item in self.data_mappings:
                 serialized = SerializationHelper.serialize_item(item, "DataMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("DATA-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize dds_i_signal_tos (list to container "DDS-I-SIGNAL-TOS")
-        if self.dds_i_signal_tos:
-            wrapper = ET.Element("DDS-I-SIGNAL-TOS")
-            for item in self.dds_i_signal_tos:
+        # Serialize dds_i_signal_to_topic_mappings (list to container "DDS-I-SIGNAL-TO-TOPIC-MAPPINGS")
+        if self.dds_i_signal_to_topic_mappings:
+            wrapper = ET.Element("DDS-I-SIGNAL-TO-TOPIC-MAPPINGS")
+            for item in self.dds_i_signal_to_topic_mappings:
                 serialized = SerializationHelper.serialize_item(item, "DdsCpISignalToDdsTopicMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize ecu_resource_refs (list to container "ECU-RESOURCE-REFS")
-        if self.ecu_resource_refs:
-            wrapper = ET.Element("ECU-RESOURCE-REFS")
-            for item in self.ecu_resource_refs:
-                serialized = SerializationHelper.serialize_item(item, "ECUMapping")
-                if serialized is not None:
-                    child_elem = ET.Element("ECU-RESOURCE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
+        # Serialize ecu_resources_mapping (list)
+        for item in self.ecu_resources_mapping:
+            serialized = SerializationHelper.serialize_item(item, "ECUMapping")
+            if serialized is not None:
+                # For non-container lists, wrap with correct tag
+                wrapped = ET.Element("ECU-RESOURCES-MAPPING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
-        # Serialize j1939_controllers (list to container "J1939-CONTROLLERS")
-        if self.j1939_controllers:
-            wrapper = ET.Element("J1939-CONTROLLERS")
-            for item in self.j1939_controllers:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize j1939_controller_application_to_j1939_nm_node_mappings (list to container "J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPINGS")
+        if self.j1939_controller_application_to_j1939_nm_node_mappings:
+            wrapper = ET.Element("J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPINGS")
+            for item in self.j1939_controller_application_to_j1939_nm_node_mappings:
+                serialized = SerializationHelper.serialize_item(item, "J1939ControllerApplicationToJ1939NmNodeMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mapping_refs (list to container "MAPPING-REFS")
-        if self.mapping_refs:
-            wrapper = ET.Element("MAPPING-REFS")
-            for item in self.mapping_refs:
+        # Serialize mapping_constraints (list to container "MAPPING-CONSTRAINTS")
+        if self.mapping_constraints:
+            wrapper = ET.Element("MAPPING-CONSTRAINTS")
+            for item in self.mapping_constraints:
                 serialized = SerializationHelper.serialize_item(item, "MappingConstraint")
                 if serialized is not None:
-                    child_elem = ET.Element("MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize pnc_mapping_refs (list to container "PNC-MAPPING-REFS")
-        if self.pnc_mapping_refs:
-            wrapper = ET.Element("PNC-MAPPING-REFS")
-            for item in self.pnc_mapping_refs:
+        # Serialize pnc_mappings (list to container "PNC-MAPPINGS")
+        if self.pnc_mappings:
+            wrapper = ET.Element("PNC-MAPPINGS")
+            for item in self.pnc_mappings:
                 serialized = SerializationHelper.serialize_item(item, "PncMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("PNC-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize port_element_tos (list to container "PORT-ELEMENT-TOS")
-        if self.port_element_tos:
-            wrapper = ET.Element("PORT-ELEMENT-TOS")
-            for item in self.port_element_tos:
+        # Serialize port_element_to_com_resource_mappings (list to container "PORT-ELEMENT-TO-COM-RESOURCE-MAPPINGS")
+        if self.port_element_to_com_resource_mappings:
+            wrapper = ET.Element("PORT-ELEMENT-TO-COM-RESOURCE-MAPPINGS")
+            for item in self.port_element_to_com_resource_mappings:
                 serialized = SerializationHelper.serialize_item(item, "PortElementToCommunicationResourceMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize resources (list to container "RESOURCES")
-        if self.resources:
-            wrapper = ET.Element("RESOURCES")
-            for item in self.resources:
+        # Serialize resource_estimations (list to container "RESOURCE-ESTIMATIONS")
+        if self.resource_estimations:
+            wrapper = ET.Element("RESOURCE-ESTIMATIONS")
+            for item in self.resource_estimations:
                 serialized = SerializationHelper.serialize_item(item, "EcuResourceEstimation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize resource_tos (list to container "RESOURCE-TOS")
-        if self.resource_tos:
-            wrapper = ET.Element("RESOURCE-TOS")
-            for item in self.resource_tos:
-                serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
+        # Serialize resource_to_application_partition_mappings (list to container "RESOURCE-TO-APPLICATION-PARTITION-MAPPINGS")
+        if self.resource_to_application_partition_mappings:
+            wrapper = ET.Element("RESOURCE-TO-APPLICATION-PARTITION-MAPPINGS")
+            for item in self.resource_to_application_partition_mappings:
+                serialized = SerializationHelper.serialize_item(item, "CpSoftwareClusterResourceToApplicationPartitionMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize rte_event_in_systems (list to container "RTE-EVENT-IN-SYSTEMS")
-        if self.rte_event_in_systems:
-            wrapper = ET.Element("RTE-EVENT-IN-SYSTEMS")
-            for item in self.rte_event_in_systems:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize rte_event_separations (list to container "RTE-EVENT-SEPARATIONS")
+        if self.rte_event_separations:
+            wrapper = ET.Element("RTE-EVENT-SEPARATIONS")
+            for item in self.rte_event_separations:
+                serialized = SerializationHelper.serialize_item(item, "RteEventInSystemSeparation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize rte_event_to_oses (list to container "RTE-EVENT-TO-OSES")
-        if self.rte_event_to_oses:
-            wrapper = ET.Element("RTE-EVENT-TO-OSES")
-            for item in self.rte_event_to_oses:
+        # Serialize rte_event_to_os_task_proxy_mappings (list to container "RTE-EVENT-TO-OS-TASK-PROXY-MAPPINGS")
+        if self.rte_event_to_os_task_proxy_mappings:
+            wrapper = ET.Element("RTE-EVENT-TO-OS-TASK-PROXY-MAPPINGS")
+            for item in self.rte_event_to_os_task_proxy_mappings:
                 serialized = SerializationHelper.serialize_item(item, "RteEventInSystemToOsTaskProxyMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize signal_paths (list to container "SIGNAL-PATHS")
-        if self.signal_paths:
-            wrapper = ET.Element("SIGNAL-PATHS")
-            for item in self.signal_paths:
+        # Serialize signal_path_constraints (list to container "SIGNAL-PATH-CONSTRAINTS")
+        if self.signal_path_constraints:
+            wrapper = ET.Element("SIGNAL-PATH-CONSTRAINTS")
+            for item in self.signal_path_constraints:
                 serialized = SerializationHelper.serialize_item(item, "SignalPathConstraint")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize software_clusters (list to container "SOFTWARE-CLUSTERS")
-        if self.software_clusters:
-            wrapper = ET.Element("SOFTWARE-CLUSTERS")
-            for item in self.software_clusters:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize software_cluster_to_application_partition_mappings (list to container "SOFTWARE-CLUSTER-TO-APPLICATION-PARTITION-MAPPINGS")
+        if self.software_cluster_to_application_partition_mappings:
+            wrapper = ET.Element("SOFTWARE-CLUSTER-TO-APPLICATION-PARTITION-MAPPINGS")
+            for item in self.software_cluster_to_application_partition_mappings:
+                serialized = SerializationHelper.serialize_item(item, "CpSoftwareClusterToApplicationPartitionMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sw_clusters (list to container "SW-CLUSTERS")
-        if self.sw_clusters:
-            wrapper = ET.Element("SW-CLUSTERS")
-            for item in self.sw_clusters:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize sw_cluster_to_resource_mappings (list to container "SW-CLUSTER-TO-RESOURCE-MAPPINGS")
+        if self.sw_cluster_to_resource_mappings:
+            wrapper = ET.Element("SW-CLUSTER-TO-RESOURCE-MAPPINGS")
+            for item in self.sw_cluster_to_resource_mappings:
+                serialized = SerializationHelper.serialize_item(item, "CpSoftwareClusterToResourceMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize swc_tos (list to container "SWC-TOS")
-        if self.swc_tos:
-            wrapper = ET.Element("SWC-TOS")
-            for item in self.swc_tos:
+        # Serialize sw_cluster_mappings (list to container "SW-CLUSTER-MAPPINGS")
+        if self.sw_cluster_mappings:
+            wrapper = ET.Element("SW-CLUSTER-MAPPINGS")
+            for item in self.sw_cluster_mappings:
+                serialized = SerializationHelper.serialize_item(item, "CpSoftwareClusterToEcuInstanceMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize swc_to_application_partition_mappings (list to container "SWC-TO-APPLICATION-PARTITION-MAPPINGS")
+        if self.swc_to_application_partition_mappings:
+            wrapper = ET.Element("SWC-TO-APPLICATION-PARTITION-MAPPINGS")
+            for item in self.swc_to_application_partition_mappings:
                 serialized = SerializationHelper.serialize_item(item, "SwcToApplicationPartitionMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sw_impl_mapping_refs (list to container "SW-IMPL-MAPPING-REFS")
-        if self.sw_impl_mapping_refs:
-            wrapper = ET.Element("SW-IMPL-MAPPING-REFS")
-            for item in self.sw_impl_mapping_refs:
+        # Serialize sw_impl_mappings (list to container "SW-IMPL-MAPPINGS")
+        if self.sw_impl_mappings:
+            wrapper = ET.Element("SW-IMPL-MAPPINGS")
+            for item in self.sw_impl_mappings:
                 serialized = SerializationHelper.serialize_item(item, "SwcToImplMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("SW-IMPL-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sw_mapping_refs (list to container "SW-MAPPING-REFS")
-        if self.sw_mapping_refs:
-            wrapper = ET.Element("SW-MAPPING-REFS")
-            for item in self.sw_mapping_refs:
+        # Serialize sw_mappings (list to container "SW-MAPPINGS")
+        if self.sw_mappings:
+            wrapper = ET.Element("SW-MAPPINGS")
+            for item in self.sw_mappings:
                 serialized = SerializationHelper.serialize_item(item, "SwcToEcuMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("SW-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize system_signal_group_to_refs (list to container "SYSTEM-SIGNAL-GROUP-TO-REFS")
-        if self.system_signal_group_to_refs:
-            wrapper = ET.Element("SYSTEM-SIGNAL-GROUP-TO-REFS")
-            for item in self.system_signal_group_to_refs:
+        # Serialize system_signal_group_to_com_resource_mappings (list to container "SYSTEM-SIGNAL-GROUP-TO-COM-RESOURCE-MAPPINGS")
+        if self.system_signal_group_to_com_resource_mappings:
+            wrapper = ET.Element("SYSTEM-SIGNAL-GROUP-TO-COM-RESOURCE-MAPPINGS")
+            for item in self.system_signal_group_to_com_resource_mappings:
                 serialized = SerializationHelper.serialize_item(item, "SystemSignalGroupToCommunicationResourceMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("SYSTEM-SIGNAL-GROUP-TO-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize system_signal_tos (list to container "SYSTEM-SIGNAL-TOS")
-        if self.system_signal_tos:
-            wrapper = ET.Element("SYSTEM-SIGNAL-TOS")
-            for item in self.system_signal_tos:
+        # Serialize system_signal_to_com_resource_mappings (list to container "SYSTEM-SIGNAL-TO-COM-RESOURCE-MAPPINGS")
+        if self.system_signal_to_com_resource_mappings:
+            wrapper = ET.Element("SYSTEM-SIGNAL-TO-COM-RESOURCE-MAPPINGS")
+            for item in self.system_signal_to_com_resource_mappings:
                 serialized = SerializationHelper.serialize_item(item, "SystemSignalToCommunicationResourceMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -461,283 +435,241 @@ class SystemMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SystemMapping, cls).deserialize(element)
 
-        # Parse applications (list from container "APPLICATIONS")
-        obj.applications = []
-        container = SerializationHelper.find_child_element(element, "APPLICATIONS")
+        # Parse application_partition_to_ecu_partition_mappings (list from container "APPLICATION-PARTITION-TO-ECU-PARTITION-MAPPINGS")
+        obj.application_partition_to_ecu_partition_mappings = []
+        container = SerializationHelper.find_child_element(element, "APPLICATION-PARTITION-TO-ECU-PARTITION-MAPPINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.applications.append(child_value)
+                    obj.application_partition_to_ecu_partition_mappings.append(child_value)
 
-        # Parse app_os_tasks (list from container "APP-OS-TASKS")
-        obj.app_os_tasks = []
-        container = SerializationHelper.find_child_element(element, "APP-OS-TASKS")
+        # Parse app_os_task_proxy_to_ecu_task_proxy_mappings (list from container "APP-OS-TASK-PROXY-TO-ECU-TASK-PROXY-MAPPINGS")
+        obj.app_os_task_proxy_to_ecu_task_proxy_mappings = []
+        container = SerializationHelper.find_child_element(element, "APP-OS-TASK-PROXY-TO-ECU-TASK-PROXY-MAPPINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.app_os_tasks.append(child_value)
+                    obj.app_os_task_proxy_to_ecu_task_proxy_mappings.append(child_value)
 
-        # Parse coms (list from container "COMS")
-        obj.coms = []
-        container = SerializationHelper.find_child_element(element, "COMS")
+        # Parse com_management_mappings (list from container "COM-MANAGEMENT-MAPPINGS")
+        obj.com_management_mappings = []
+        container = SerializationHelper.find_child_element(element, "COM-MANAGEMENT-MAPPINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.coms.append(child_value)
+                    obj.com_management_mappings.append(child_value)
 
-        # Parse crypto_service_refs (list from container "CRYPTO-SERVICE-REFS")
-        obj.crypto_service_refs = []
-        container = SerializationHelper.find_child_element(element, "CRYPTO-SERVICE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.crypto_service_refs.append(child_value)
-
-        # Parse data_mapping_refs (list from container "DATA-MAPPING-REFS")
-        obj.data_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-MAPPING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_mapping_refs.append(child_value)
-
-        # Parse dds_i_signal_tos (list from container "DDS-I-SIGNAL-TOS")
-        obj.dds_i_signal_tos = []
-        container = SerializationHelper.find_child_element(element, "DDS-I-SIGNAL-TOS")
+        # Parse crypto_service_mappings (list from container "CRYPTO-SERVICE-MAPPINGS")
+        obj.crypto_service_mappings = []
+        container = SerializationHelper.find_child_element(element, "CRYPTO-SERVICE-MAPPINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.dds_i_signal_tos.append(child_value)
+                    obj.crypto_service_mappings.append(child_value)
 
-        # Parse ecu_resource_refs (list from container "ECU-RESOURCE-REFS")
-        obj.ecu_resource_refs = []
-        container = SerializationHelper.find_child_element(element, "ECU-RESOURCE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ecu_resource_refs.append(child_value)
-
-        # Parse j1939_controllers (list from container "J1939-CONTROLLERS")
-        obj.j1939_controllers = []
-        container = SerializationHelper.find_child_element(element, "J1939-CONTROLLERS")
+        # Parse data_mappings (list from container "DATA-MAPPINGS")
+        obj.data_mappings = []
+        container = SerializationHelper.find_child_element(element, "DATA-MAPPINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.j1939_controllers.append(child_value)
+                    obj.data_mappings.append(child_value)
 
-        # Parse mapping_refs (list from container "MAPPING-REFS")
-        obj.mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "MAPPING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mapping_refs.append(child_value)
-
-        # Parse pnc_mapping_refs (list from container "PNC-MAPPING-REFS")
-        obj.pnc_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "PNC-MAPPING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pnc_mapping_refs.append(child_value)
-
-        # Parse port_element_tos (list from container "PORT-ELEMENT-TOS")
-        obj.port_element_tos = []
-        container = SerializationHelper.find_child_element(element, "PORT-ELEMENT-TOS")
+        # Parse dds_i_signal_to_topic_mappings (list from container "DDS-I-SIGNAL-TO-TOPIC-MAPPINGS")
+        obj.dds_i_signal_to_topic_mappings = []
+        container = SerializationHelper.find_child_element(element, "DDS-I-SIGNAL-TO-TOPIC-MAPPINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.port_element_tos.append(child_value)
+                    obj.dds_i_signal_to_topic_mappings.append(child_value)
 
-        # Parse resources (list from container "RESOURCES")
-        obj.resources = []
-        container = SerializationHelper.find_child_element(element, "RESOURCES")
+        # Parse ecu_resources_mapping (list)
+        obj.ecu_resources_mapping = []
+        for child in SerializationHelper.find_all_child_elements(element, "ECU-RESOURCES-MAPPING"):
+            ecu_resources_mapping_value = SerializationHelper.deserialize_by_tag(child, "ECUMapping")
+            obj.ecu_resources_mapping.append(ecu_resources_mapping_value)
+
+        # Parse j1939_controller_application_to_j1939_nm_node_mappings (list from container "J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPINGS")
+        obj.j1939_controller_application_to_j1939_nm_node_mappings = []
+        container = SerializationHelper.find_child_element(element, "J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.resources.append(child_value)
+                    obj.j1939_controller_application_to_j1939_nm_node_mappings.append(child_value)
 
-        # Parse resource_tos (list from container "RESOURCE-TOS")
-        obj.resource_tos = []
-        container = SerializationHelper.find_child_element(element, "RESOURCE-TOS")
+        # Parse mapping_constraints (list from container "MAPPING-CONSTRAINTS")
+        obj.mapping_constraints = []
+        container = SerializationHelper.find_child_element(element, "MAPPING-CONSTRAINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.resource_tos.append(child_value)
+                    obj.mapping_constraints.append(child_value)
 
-        # Parse rte_event_in_systems (list from container "RTE-EVENT-IN-SYSTEMS")
-        obj.rte_event_in_systems = []
-        container = SerializationHelper.find_child_element(element, "RTE-EVENT-IN-SYSTEMS")
+        # Parse pnc_mappings (list from container "PNC-MAPPINGS")
+        obj.pnc_mappings = []
+        container = SerializationHelper.find_child_element(element, "PNC-MAPPINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.rte_event_in_systems.append(child_value)
+                    obj.pnc_mappings.append(child_value)
 
-        # Parse rte_event_to_oses (list from container "RTE-EVENT-TO-OSES")
-        obj.rte_event_to_oses = []
-        container = SerializationHelper.find_child_element(element, "RTE-EVENT-TO-OSES")
+        # Parse port_element_to_com_resource_mappings (list from container "PORT-ELEMENT-TO-COM-RESOURCE-MAPPINGS")
+        obj.port_element_to_com_resource_mappings = []
+        container = SerializationHelper.find_child_element(element, "PORT-ELEMENT-TO-COM-RESOURCE-MAPPINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.rte_event_to_oses.append(child_value)
+                    obj.port_element_to_com_resource_mappings.append(child_value)
 
-        # Parse signal_paths (list from container "SIGNAL-PATHS")
-        obj.signal_paths = []
-        container = SerializationHelper.find_child_element(element, "SIGNAL-PATHS")
+        # Parse resource_estimations (list from container "RESOURCE-ESTIMATIONS")
+        obj.resource_estimations = []
+        container = SerializationHelper.find_child_element(element, "RESOURCE-ESTIMATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.signal_paths.append(child_value)
+                    obj.resource_estimations.append(child_value)
 
-        # Parse software_clusters (list from container "SOFTWARE-CLUSTERS")
-        obj.software_clusters = []
-        container = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTERS")
+        # Parse resource_to_application_partition_mappings (list from container "RESOURCE-TO-APPLICATION-PARTITION-MAPPINGS")
+        obj.resource_to_application_partition_mappings = []
+        container = SerializationHelper.find_child_element(element, "RESOURCE-TO-APPLICATION-PARTITION-MAPPINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.software_clusters.append(child_value)
+                    obj.resource_to_application_partition_mappings.append(child_value)
 
-        # Parse sw_clusters (list from container "SW-CLUSTERS")
-        obj.sw_clusters = []
-        container = SerializationHelper.find_child_element(element, "SW-CLUSTERS")
+        # Parse rte_event_separations (list from container "RTE-EVENT-SEPARATIONS")
+        obj.rte_event_separations = []
+        container = SerializationHelper.find_child_element(element, "RTE-EVENT-SEPARATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.sw_clusters.append(child_value)
+                    obj.rte_event_separations.append(child_value)
 
-        # Parse swc_tos (list from container "SWC-TOS")
-        obj.swc_tos = []
-        container = SerializationHelper.find_child_element(element, "SWC-TOS")
+        # Parse rte_event_to_os_task_proxy_mappings (list from container "RTE-EVENT-TO-OS-TASK-PROXY-MAPPINGS")
+        obj.rte_event_to_os_task_proxy_mappings = []
+        container = SerializationHelper.find_child_element(element, "RTE-EVENT-TO-OS-TASK-PROXY-MAPPINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.swc_tos.append(child_value)
+                    obj.rte_event_to_os_task_proxy_mappings.append(child_value)
 
-        # Parse sw_impl_mapping_refs (list from container "SW-IMPL-MAPPING-REFS")
-        obj.sw_impl_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-IMPL-MAPPING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_impl_mapping_refs.append(child_value)
-
-        # Parse sw_mapping_refs (list from container "SW-MAPPING-REFS")
-        obj.sw_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-MAPPING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_mapping_refs.append(child_value)
-
-        # Parse system_signal_group_to_refs (list from container "SYSTEM-SIGNAL-GROUP-TO-REFS")
-        obj.system_signal_group_to_refs = []
-        container = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-GROUP-TO-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.system_signal_group_to_refs.append(child_value)
-
-        # Parse system_signal_tos (list from container "SYSTEM-SIGNAL-TOS")
-        obj.system_signal_tos = []
-        container = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-TOS")
+        # Parse signal_path_constraints (list from container "SIGNAL-PATH-CONSTRAINTS")
+        obj.signal_path_constraints = []
+        container = SerializationHelper.find_child_element(element, "SIGNAL-PATH-CONSTRAINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.system_signal_tos.append(child_value)
+                    obj.signal_path_constraints.append(child_value)
+
+        # Parse software_cluster_to_application_partition_mappings (list from container "SOFTWARE-CLUSTER-TO-APPLICATION-PARTITION-MAPPINGS")
+        obj.software_cluster_to_application_partition_mappings = []
+        container = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTER-TO-APPLICATION-PARTITION-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.software_cluster_to_application_partition_mappings.append(child_value)
+
+        # Parse sw_cluster_to_resource_mappings (list from container "SW-CLUSTER-TO-RESOURCE-MAPPINGS")
+        obj.sw_cluster_to_resource_mappings = []
+        container = SerializationHelper.find_child_element(element, "SW-CLUSTER-TO-RESOURCE-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_cluster_to_resource_mappings.append(child_value)
+
+        # Parse sw_cluster_mappings (list from container "SW-CLUSTER-MAPPINGS")
+        obj.sw_cluster_mappings = []
+        container = SerializationHelper.find_child_element(element, "SW-CLUSTER-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_cluster_mappings.append(child_value)
+
+        # Parse swc_to_application_partition_mappings (list from container "SWC-TO-APPLICATION-PARTITION-MAPPINGS")
+        obj.swc_to_application_partition_mappings = []
+        container = SerializationHelper.find_child_element(element, "SWC-TO-APPLICATION-PARTITION-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.swc_to_application_partition_mappings.append(child_value)
+
+        # Parse sw_impl_mappings (list from container "SW-IMPL-MAPPINGS")
+        obj.sw_impl_mappings = []
+        container = SerializationHelper.find_child_element(element, "SW-IMPL-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_impl_mappings.append(child_value)
+
+        # Parse sw_mappings (list from container "SW-MAPPINGS")
+        obj.sw_mappings = []
+        container = SerializationHelper.find_child_element(element, "SW-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_mappings.append(child_value)
+
+        # Parse system_signal_group_to_com_resource_mappings (list from container "SYSTEM-SIGNAL-GROUP-TO-COM-RESOURCE-MAPPINGS")
+        obj.system_signal_group_to_com_resource_mappings = []
+        container = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-GROUP-TO-COM-RESOURCE-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.system_signal_group_to_com_resource_mappings.append(child_value)
+
+        # Parse system_signal_to_com_resource_mappings (list from container "SYSTEM-SIGNAL-TO-COM-RESOURCE-MAPPINGS")
+        obj.system_signal_to_com_resource_mappings = []
+        container = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-TO-COM-RESOURCE-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.system_signal_to_com_resource_mappings.append(child_value)
 
         return obj
 
@@ -874,8 +806,8 @@ class SystemMappingBuilder:
         self._obj.uuid = value
         return self
 
-    def with_applications(self, items: list[ApplicationPartitionToEcuPartitionMapping]) -> "SystemMappingBuilder":
-        """Set applications list attribute.
+    def with_application_partition_to_ecu_partition_mappings(self, items: list[ApplicationPartitionToEcuPartitionMapping]) -> "SystemMappingBuilder":
+        """Set application_partition_to_ecu_partition_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -883,11 +815,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.applications = list(items) if items else []
+        self._obj.application_partition_to_ecu_partition_mappings = list(items) if items else []
         return self
 
-    def with_app_os_tasks(self, items: list[AppOsTaskProxyToEcuTaskProxyMapping]) -> "SystemMappingBuilder":
-        """Set app_os_tasks list attribute.
+    def with_app_os_task_proxy_to_ecu_task_proxy_mappings(self, items: list[AppOsTaskProxyToEcuTaskProxyMapping]) -> "SystemMappingBuilder":
+        """Set app_os_task_proxy_to_ecu_task_proxy_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -895,11 +827,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.app_os_tasks = list(items) if items else []
+        self._obj.app_os_task_proxy_to_ecu_task_proxy_mappings = list(items) if items else []
         return self
 
-    def with_coms(self, items: list[ComManagementMapping]) -> "SystemMappingBuilder":
-        """Set coms list attribute.
+    def with_com_management_mappings(self, items: list[ComManagementMapping]) -> "SystemMappingBuilder":
+        """Set com_management_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -907,11 +839,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.coms = list(items) if items else []
+        self._obj.com_management_mappings = list(items) if items else []
         return self
 
-    def with_crypto_services(self, items: list[CryptoServiceMapping]) -> "SystemMappingBuilder":
-        """Set crypto_services list attribute.
+    def with_crypto_service_mappings(self, items: list[CryptoServiceMapping]) -> "SystemMappingBuilder":
+        """Set crypto_service_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -919,7 +851,7 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.crypto_services = list(items) if items else []
+        self._obj.crypto_service_mappings = list(items) if items else []
         return self
 
     def with_data_mappings(self, items: list[DataMapping]) -> "SystemMappingBuilder":
@@ -934,8 +866,8 @@ class SystemMappingBuilder:
         self._obj.data_mappings = list(items) if items else []
         return self
 
-    def with_dds_i_signal_tos(self, items: list[DdsCpISignalToDdsTopicMapping]) -> "SystemMappingBuilder":
-        """Set dds_i_signal_tos list attribute.
+    def with_dds_i_signal_to_topic_mappings(self, items: list[DdsCpISignalToDdsTopicMapping]) -> "SystemMappingBuilder":
+        """Set dds_i_signal_to_topic_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -943,11 +875,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.dds_i_signal_tos = list(items) if items else []
+        self._obj.dds_i_signal_to_topic_mappings = list(items) if items else []
         return self
 
-    def with_ecu_resources(self, items: list[ECUMapping]) -> "SystemMappingBuilder":
-        """Set ecu_resources list attribute.
+    def with_ecu_resources_mapping(self, items: list[ECUMapping]) -> "SystemMappingBuilder":
+        """Set ecu_resources_mapping list attribute.
 
         Args:
             items: List of items to set
@@ -955,11 +887,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.ecu_resources = list(items) if items else []
+        self._obj.ecu_resources_mapping = list(items) if items else []
         return self
 
-    def with_j1939_controllers(self, items: list[any (J1939Controller)]) -> "SystemMappingBuilder":
-        """Set j1939_controllers list attribute.
+    def with_j1939_controller_application_to_j1939_nm_node_mappings(self, items: list[J1939ControllerApplicationToJ1939NmNodeMapping]) -> "SystemMappingBuilder":
+        """Set j1939_controller_application_to_j1939_nm_node_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -967,11 +899,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.j1939_controllers = list(items) if items else []
+        self._obj.j1939_controller_application_to_j1939_nm_node_mappings = list(items) if items else []
         return self
 
-    def with_mappings(self, items: list[MappingConstraint]) -> "SystemMappingBuilder":
-        """Set mappings list attribute.
+    def with_mapping_constraints(self, items: list[MappingConstraint]) -> "SystemMappingBuilder":
+        """Set mapping_constraints list attribute.
 
         Args:
             items: List of items to set
@@ -979,7 +911,7 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.mappings = list(items) if items else []
+        self._obj.mapping_constraints = list(items) if items else []
         return self
 
     def with_pnc_mappings(self, items: list[PncMapping]) -> "SystemMappingBuilder":
@@ -994,8 +926,8 @@ class SystemMappingBuilder:
         self._obj.pnc_mappings = list(items) if items else []
         return self
 
-    def with_port_element_tos(self, items: list[PortElementToCommunicationResourceMapping]) -> "SystemMappingBuilder":
-        """Set port_element_tos list attribute.
+    def with_port_element_to_com_resource_mappings(self, items: list[PortElementToCommunicationResourceMapping]) -> "SystemMappingBuilder":
+        """Set port_element_to_com_resource_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -1003,11 +935,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.port_element_tos = list(items) if items else []
+        self._obj.port_element_to_com_resource_mappings = list(items) if items else []
         return self
 
-    def with_resources(self, items: list[EcuResourceEstimation]) -> "SystemMappingBuilder":
-        """Set resources list attribute.
+    def with_resource_estimations(self, items: list[EcuResourceEstimation]) -> "SystemMappingBuilder":
+        """Set resource_estimations list attribute.
 
         Args:
             items: List of items to set
@@ -1015,11 +947,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.resources = list(items) if items else []
+        self._obj.resource_estimations = list(items) if items else []
         return self
 
-    def with_resource_tos(self, items: list[CpSoftwareCluster]) -> "SystemMappingBuilder":
-        """Set resource_tos list attribute.
+    def with_resource_to_application_partition_mappings(self, items: list[CpSoftwareClusterResourceToApplicationPartitionMapping]) -> "SystemMappingBuilder":
+        """Set resource_to_application_partition_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -1027,11 +959,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.resource_tos = list(items) if items else []
+        self._obj.resource_to_application_partition_mappings = list(items) if items else []
         return self
 
-    def with_rte_event_in_systems(self, items: list[any (RteEventInSystem)]) -> "SystemMappingBuilder":
-        """Set rte_event_in_systems list attribute.
+    def with_rte_event_separations(self, items: list[RteEventInSystemSeparation]) -> "SystemMappingBuilder":
+        """Set rte_event_separations list attribute.
 
         Args:
             items: List of items to set
@@ -1039,11 +971,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_in_systems = list(items) if items else []
+        self._obj.rte_event_separations = list(items) if items else []
         return self
 
-    def with_rte_event_to_oses(self, items: list[RteEventInSystemToOsTaskProxyMapping]) -> "SystemMappingBuilder":
-        """Set rte_event_to_oses list attribute.
+    def with_rte_event_to_os_task_proxy_mappings(self, items: list[RteEventInSystemToOsTaskProxyMapping]) -> "SystemMappingBuilder":
+        """Set rte_event_to_os_task_proxy_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -1051,11 +983,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_to_oses = list(items) if items else []
+        self._obj.rte_event_to_os_task_proxy_mappings = list(items) if items else []
         return self
 
-    def with_signal_paths(self, items: list[SignalPathConstraint]) -> "SystemMappingBuilder":
-        """Set signal_paths list attribute.
+    def with_signal_path_constraints(self, items: list[SignalPathConstraint]) -> "SystemMappingBuilder":
+        """Set signal_path_constraints list attribute.
 
         Args:
             items: List of items to set
@@ -1063,11 +995,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.signal_paths = list(items) if items else []
+        self._obj.signal_path_constraints = list(items) if items else []
         return self
 
-    def with_software_clusters(self, items: list[any (CpSoftwareClusterTo)]) -> "SystemMappingBuilder":
-        """Set software_clusters list attribute.
+    def with_software_cluster_to_application_partition_mappings(self, items: list[CpSoftwareClusterToApplicationPartitionMapping]) -> "SystemMappingBuilder":
+        """Set software_cluster_to_application_partition_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -1075,11 +1007,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.software_clusters = list(items) if items else []
+        self._obj.software_cluster_to_application_partition_mappings = list(items) if items else []
         return self
 
-    def with_sw_clusters(self, items: list[any (CpSoftwareClusterTo)]) -> "SystemMappingBuilder":
-        """Set sw_clusters list attribute.
+    def with_sw_cluster_to_resource_mappings(self, items: list[CpSoftwareClusterToResourceMapping]) -> "SystemMappingBuilder":
+        """Set sw_cluster_to_resource_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -1087,11 +1019,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.sw_clusters = list(items) if items else []
+        self._obj.sw_cluster_to_resource_mappings = list(items) if items else []
         return self
 
-    def with_swc_tos(self, items: list[SwcToApplicationPartitionMapping]) -> "SystemMappingBuilder":
-        """Set swc_tos list attribute.
+    def with_sw_cluster_mappings(self, items: list[CpSoftwareClusterToEcuInstanceMapping]) -> "SystemMappingBuilder":
+        """Set sw_cluster_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -1099,7 +1031,19 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.swc_tos = list(items) if items else []
+        self._obj.sw_cluster_mappings = list(items) if items else []
+        return self
+
+    def with_swc_to_application_partition_mappings(self, items: list[SwcToApplicationPartitionMapping]) -> "SystemMappingBuilder":
+        """Set swc_to_application_partition_mappings list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.swc_to_application_partition_mappings = list(items) if items else []
         return self
 
     def with_sw_impl_mappings(self, items: list[SwcToImplMapping]) -> "SystemMappingBuilder":
@@ -1126,8 +1070,8 @@ class SystemMappingBuilder:
         self._obj.sw_mappings = list(items) if items else []
         return self
 
-    def with_system_signal_group_tos(self, items: list[SystemSignalGroupToCommunicationResourceMapping]) -> "SystemMappingBuilder":
-        """Set system_signal_group_tos list attribute.
+    def with_system_signal_group_to_com_resource_mappings(self, items: list[SystemSignalGroupToCommunicationResourceMapping]) -> "SystemMappingBuilder":
+        """Set system_signal_group_to_com_resource_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -1135,11 +1079,11 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.system_signal_group_tos = list(items) if items else []
+        self._obj.system_signal_group_to_com_resource_mappings = list(items) if items else []
         return self
 
-    def with_system_signal_tos(self, items: list[SystemSignalToCommunicationResourceMapping]) -> "SystemMappingBuilder":
-        """Set system_signal_tos list attribute.
+    def with_system_signal_to_com_resource_mappings(self, items: list[SystemSignalToCommunicationResourceMapping]) -> "SystemMappingBuilder":
+        """Set system_signal_to_com_resource_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -1147,7 +1091,7 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.system_signal_tos = list(items) if items else []
+        self._obj.system_signal_to_com_resource_mappings = list(items) if items else []
         return self
 
 
@@ -1193,8 +1137,8 @@ class SystemMappingBuilder:
         self._obj.annotations = []
         return self
 
-    def add_application(self, item: ApplicationPartitionToEcuPartitionMapping) -> "SystemMappingBuilder":
-        """Add a single item to applications list.
+    def add_application_partition_to_ecu_partition_mapping(self, item: ApplicationPartitionToEcuPartitionMapping) -> "SystemMappingBuilder":
+        """Add a single item to application_partition_to_ecu_partition_mappings list.
 
         Args:
             item: Item to add
@@ -1202,20 +1146,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.applications.append(item)
+        self._obj.application_partition_to_ecu_partition_mappings.append(item)
         return self
 
-    def clear_applications(self) -> "SystemMappingBuilder":
-        """Clear all items from applications list.
+    def clear_application_partition_to_ecu_partition_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from application_partition_to_ecu_partition_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.applications = []
+        self._obj.application_partition_to_ecu_partition_mappings = []
         return self
 
-    def add_app_os_task(self, item: AppOsTaskProxyToEcuTaskProxyMapping) -> "SystemMappingBuilder":
-        """Add a single item to app_os_tasks list.
+    def add_app_os_task_proxy_to_ecu_task_proxy_mapping(self, item: AppOsTaskProxyToEcuTaskProxyMapping) -> "SystemMappingBuilder":
+        """Add a single item to app_os_task_proxy_to_ecu_task_proxy_mappings list.
 
         Args:
             item: Item to add
@@ -1223,20 +1167,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.app_os_tasks.append(item)
+        self._obj.app_os_task_proxy_to_ecu_task_proxy_mappings.append(item)
         return self
 
-    def clear_app_os_tasks(self) -> "SystemMappingBuilder":
-        """Clear all items from app_os_tasks list.
+    def clear_app_os_task_proxy_to_ecu_task_proxy_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from app_os_task_proxy_to_ecu_task_proxy_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.app_os_tasks = []
+        self._obj.app_os_task_proxy_to_ecu_task_proxy_mappings = []
         return self
 
-    def add_com(self, item: ComManagementMapping) -> "SystemMappingBuilder":
-        """Add a single item to coms list.
+    def add_com_management_mapping(self, item: ComManagementMapping) -> "SystemMappingBuilder":
+        """Add a single item to com_management_mappings list.
 
         Args:
             item: Item to add
@@ -1244,20 +1188,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.coms.append(item)
+        self._obj.com_management_mappings.append(item)
         return self
 
-    def clear_coms(self) -> "SystemMappingBuilder":
-        """Clear all items from coms list.
+    def clear_com_management_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from com_management_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.coms = []
+        self._obj.com_management_mappings = []
         return self
 
-    def add_crypto_service(self, item: CryptoServiceMapping) -> "SystemMappingBuilder":
-        """Add a single item to crypto_services list.
+    def add_crypto_service_mapping(self, item: CryptoServiceMapping) -> "SystemMappingBuilder":
+        """Add a single item to crypto_service_mappings list.
 
         Args:
             item: Item to add
@@ -1265,16 +1209,16 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.crypto_services.append(item)
+        self._obj.crypto_service_mappings.append(item)
         return self
 
-    def clear_crypto_services(self) -> "SystemMappingBuilder":
-        """Clear all items from crypto_services list.
+    def clear_crypto_service_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from crypto_service_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.crypto_services = []
+        self._obj.crypto_service_mappings = []
         return self
 
     def add_data_mapping(self, item: DataMapping) -> "SystemMappingBuilder":
@@ -1298,8 +1242,8 @@ class SystemMappingBuilder:
         self._obj.data_mappings = []
         return self
 
-    def add_dds_i_signal_to(self, item: DdsCpISignalToDdsTopicMapping) -> "SystemMappingBuilder":
-        """Add a single item to dds_i_signal_tos list.
+    def add_dds_i_signal_to_topic_mapping(self, item: DdsCpISignalToDdsTopicMapping) -> "SystemMappingBuilder":
+        """Add a single item to dds_i_signal_to_topic_mappings list.
 
         Args:
             item: Item to add
@@ -1307,20 +1251,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.dds_i_signal_tos.append(item)
+        self._obj.dds_i_signal_to_topic_mappings.append(item)
         return self
 
-    def clear_dds_i_signal_tos(self) -> "SystemMappingBuilder":
-        """Clear all items from dds_i_signal_tos list.
+    def clear_dds_i_signal_to_topic_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from dds_i_signal_to_topic_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.dds_i_signal_tos = []
+        self._obj.dds_i_signal_to_topic_mappings = []
         return self
 
-    def add_ecu_resource(self, item: ECUMapping) -> "SystemMappingBuilder":
-        """Add a single item to ecu_resources list.
+    def add_ecu_resources_mappin(self, item: ECUMapping) -> "SystemMappingBuilder":
+        """Add a single item to ecu_resources_mapping list.
 
         Args:
             item: Item to add
@@ -1328,20 +1272,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.ecu_resources.append(item)
+        self._obj.ecu_resources_mapping.append(item)
         return self
 
-    def clear_ecu_resources(self) -> "SystemMappingBuilder":
-        """Clear all items from ecu_resources list.
+    def clear_ecu_resources_mapping(self) -> "SystemMappingBuilder":
+        """Clear all items from ecu_resources_mapping list.
 
         Returns:
             self for method chaining
         """
-        self._obj.ecu_resources = []
+        self._obj.ecu_resources_mapping = []
         return self
 
-    def add_j1939_controller(self, item: any (J1939Controller)) -> "SystemMappingBuilder":
-        """Add a single item to j1939_controllers list.
+    def add_j1939_controller_application_to_j1939_nm_node_mapping(self, item: J1939ControllerApplicationToJ1939NmNodeMapping) -> "SystemMappingBuilder":
+        """Add a single item to j1939_controller_application_to_j1939_nm_node_mappings list.
 
         Args:
             item: Item to add
@@ -1349,20 +1293,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.j1939_controllers.append(item)
+        self._obj.j1939_controller_application_to_j1939_nm_node_mappings.append(item)
         return self
 
-    def clear_j1939_controllers(self) -> "SystemMappingBuilder":
-        """Clear all items from j1939_controllers list.
+    def clear_j1939_controller_application_to_j1939_nm_node_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from j1939_controller_application_to_j1939_nm_node_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.j1939_controllers = []
+        self._obj.j1939_controller_application_to_j1939_nm_node_mappings = []
         return self
 
-    def add_mapping(self, item: MappingConstraint) -> "SystemMappingBuilder":
-        """Add a single item to mappings list.
+    def add_mapping_constraint(self, item: MappingConstraint) -> "SystemMappingBuilder":
+        """Add a single item to mapping_constraints list.
 
         Args:
             item: Item to add
@@ -1370,16 +1314,16 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.mappings.append(item)
+        self._obj.mapping_constraints.append(item)
         return self
 
-    def clear_mappings(self) -> "SystemMappingBuilder":
-        """Clear all items from mappings list.
+    def clear_mapping_constraints(self) -> "SystemMappingBuilder":
+        """Clear all items from mapping_constraints list.
 
         Returns:
             self for method chaining
         """
-        self._obj.mappings = []
+        self._obj.mapping_constraints = []
         return self
 
     def add_pnc_mapping(self, item: PncMapping) -> "SystemMappingBuilder":
@@ -1403,8 +1347,8 @@ class SystemMappingBuilder:
         self._obj.pnc_mappings = []
         return self
 
-    def add_port_element_to(self, item: PortElementToCommunicationResourceMapping) -> "SystemMappingBuilder":
-        """Add a single item to port_element_tos list.
+    def add_port_element_to_com_resource_mapping(self, item: PortElementToCommunicationResourceMapping) -> "SystemMappingBuilder":
+        """Add a single item to port_element_to_com_resource_mappings list.
 
         Args:
             item: Item to add
@@ -1412,20 +1356,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.port_element_tos.append(item)
+        self._obj.port_element_to_com_resource_mappings.append(item)
         return self
 
-    def clear_port_element_tos(self) -> "SystemMappingBuilder":
-        """Clear all items from port_element_tos list.
+    def clear_port_element_to_com_resource_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from port_element_to_com_resource_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.port_element_tos = []
+        self._obj.port_element_to_com_resource_mappings = []
         return self
 
-    def add_resource(self, item: EcuResourceEstimation) -> "SystemMappingBuilder":
-        """Add a single item to resources list.
+    def add_resource_estimation(self, item: EcuResourceEstimation) -> "SystemMappingBuilder":
+        """Add a single item to resource_estimations list.
 
         Args:
             item: Item to add
@@ -1433,20 +1377,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.resources.append(item)
+        self._obj.resource_estimations.append(item)
         return self
 
-    def clear_resources(self) -> "SystemMappingBuilder":
-        """Clear all items from resources list.
+    def clear_resource_estimations(self) -> "SystemMappingBuilder":
+        """Clear all items from resource_estimations list.
 
         Returns:
             self for method chaining
         """
-        self._obj.resources = []
+        self._obj.resource_estimations = []
         return self
 
-    def add_resource_to(self, item: CpSoftwareCluster) -> "SystemMappingBuilder":
-        """Add a single item to resource_tos list.
+    def add_resource_to_application_partition_mapping(self, item: CpSoftwareClusterResourceToApplicationPartitionMapping) -> "SystemMappingBuilder":
+        """Add a single item to resource_to_application_partition_mappings list.
 
         Args:
             item: Item to add
@@ -1454,20 +1398,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.resource_tos.append(item)
+        self._obj.resource_to_application_partition_mappings.append(item)
         return self
 
-    def clear_resource_tos(self) -> "SystemMappingBuilder":
-        """Clear all items from resource_tos list.
+    def clear_resource_to_application_partition_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from resource_to_application_partition_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.resource_tos = []
+        self._obj.resource_to_application_partition_mappings = []
         return self
 
-    def add_rte_event_in_system(self, item: any (RteEventInSystem)) -> "SystemMappingBuilder":
-        """Add a single item to rte_event_in_systems list.
+    def add_rte_event_separation(self, item: RteEventInSystemSeparation) -> "SystemMappingBuilder":
+        """Add a single item to rte_event_separations list.
 
         Args:
             item: Item to add
@@ -1475,20 +1419,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_in_systems.append(item)
+        self._obj.rte_event_separations.append(item)
         return self
 
-    def clear_rte_event_in_systems(self) -> "SystemMappingBuilder":
-        """Clear all items from rte_event_in_systems list.
+    def clear_rte_event_separations(self) -> "SystemMappingBuilder":
+        """Clear all items from rte_event_separations list.
 
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_in_systems = []
+        self._obj.rte_event_separations = []
         return self
 
-    def add_rte_event_to_ose(self, item: RteEventInSystemToOsTaskProxyMapping) -> "SystemMappingBuilder":
-        """Add a single item to rte_event_to_oses list.
+    def add_rte_event_to_os_task_proxy_mapping(self, item: RteEventInSystemToOsTaskProxyMapping) -> "SystemMappingBuilder":
+        """Add a single item to rte_event_to_os_task_proxy_mappings list.
 
         Args:
             item: Item to add
@@ -1496,20 +1440,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_to_oses.append(item)
+        self._obj.rte_event_to_os_task_proxy_mappings.append(item)
         return self
 
-    def clear_rte_event_to_oses(self) -> "SystemMappingBuilder":
-        """Clear all items from rte_event_to_oses list.
+    def clear_rte_event_to_os_task_proxy_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from rte_event_to_os_task_proxy_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_to_oses = []
+        self._obj.rte_event_to_os_task_proxy_mappings = []
         return self
 
-    def add_signal_path(self, item: SignalPathConstraint) -> "SystemMappingBuilder":
-        """Add a single item to signal_paths list.
+    def add_signal_path_constraint(self, item: SignalPathConstraint) -> "SystemMappingBuilder":
+        """Add a single item to signal_path_constraints list.
 
         Args:
             item: Item to add
@@ -1517,20 +1461,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.signal_paths.append(item)
+        self._obj.signal_path_constraints.append(item)
         return self
 
-    def clear_signal_paths(self) -> "SystemMappingBuilder":
-        """Clear all items from signal_paths list.
+    def clear_signal_path_constraints(self) -> "SystemMappingBuilder":
+        """Clear all items from signal_path_constraints list.
 
         Returns:
             self for method chaining
         """
-        self._obj.signal_paths = []
+        self._obj.signal_path_constraints = []
         return self
 
-    def add_software_cluster(self, item: any (CpSoftwareClusterTo)) -> "SystemMappingBuilder":
-        """Add a single item to software_clusters list.
+    def add_software_cluster_to_application_partition_mapping(self, item: CpSoftwareClusterToApplicationPartitionMapping) -> "SystemMappingBuilder":
+        """Add a single item to software_cluster_to_application_partition_mappings list.
 
         Args:
             item: Item to add
@@ -1538,20 +1482,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.software_clusters.append(item)
+        self._obj.software_cluster_to_application_partition_mappings.append(item)
         return self
 
-    def clear_software_clusters(self) -> "SystemMappingBuilder":
-        """Clear all items from software_clusters list.
+    def clear_software_cluster_to_application_partition_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from software_cluster_to_application_partition_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.software_clusters = []
+        self._obj.software_cluster_to_application_partition_mappings = []
         return self
 
-    def add_sw_cluster(self, item: any (CpSoftwareClusterTo)) -> "SystemMappingBuilder":
-        """Add a single item to sw_clusters list.
+    def add_sw_cluster_to_resource_mapping(self, item: CpSoftwareClusterToResourceMapping) -> "SystemMappingBuilder":
+        """Add a single item to sw_cluster_to_resource_mappings list.
 
         Args:
             item: Item to add
@@ -1559,20 +1503,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.sw_clusters.append(item)
+        self._obj.sw_cluster_to_resource_mappings.append(item)
         return self
 
-    def clear_sw_clusters(self) -> "SystemMappingBuilder":
-        """Clear all items from sw_clusters list.
+    def clear_sw_cluster_to_resource_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from sw_cluster_to_resource_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.sw_clusters = []
+        self._obj.sw_cluster_to_resource_mappings = []
         return self
 
-    def add_swc_to(self, item: SwcToApplicationPartitionMapping) -> "SystemMappingBuilder":
-        """Add a single item to swc_tos list.
+    def add_sw_cluster_mapping(self, item: CpSoftwareClusterToEcuInstanceMapping) -> "SystemMappingBuilder":
+        """Add a single item to sw_cluster_mappings list.
 
         Args:
             item: Item to add
@@ -1580,16 +1524,37 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.swc_tos.append(item)
+        self._obj.sw_cluster_mappings.append(item)
         return self
 
-    def clear_swc_tos(self) -> "SystemMappingBuilder":
-        """Clear all items from swc_tos list.
+    def clear_sw_cluster_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from sw_cluster_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.swc_tos = []
+        self._obj.sw_cluster_mappings = []
+        return self
+
+    def add_swc_to_application_partition_mapping(self, item: SwcToApplicationPartitionMapping) -> "SystemMappingBuilder":
+        """Add a single item to swc_to_application_partition_mappings list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.swc_to_application_partition_mappings.append(item)
+        return self
+
+    def clear_swc_to_application_partition_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from swc_to_application_partition_mappings list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.swc_to_application_partition_mappings = []
         return self
 
     def add_sw_impl_mapping(self, item: SwcToImplMapping) -> "SystemMappingBuilder":
@@ -1634,8 +1599,8 @@ class SystemMappingBuilder:
         self._obj.sw_mappings = []
         return self
 
-    def add_system_signal_group_to(self, item: SystemSignalGroupToCommunicationResourceMapping) -> "SystemMappingBuilder":
-        """Add a single item to system_signal_group_tos list.
+    def add_system_signal_group_to_com_resource_mapping(self, item: SystemSignalGroupToCommunicationResourceMapping) -> "SystemMappingBuilder":
+        """Add a single item to system_signal_group_to_com_resource_mappings list.
 
         Args:
             item: Item to add
@@ -1643,20 +1608,20 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.system_signal_group_tos.append(item)
+        self._obj.system_signal_group_to_com_resource_mappings.append(item)
         return self
 
-    def clear_system_signal_group_tos(self) -> "SystemMappingBuilder":
-        """Clear all items from system_signal_group_tos list.
+    def clear_system_signal_group_to_com_resource_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from system_signal_group_to_com_resource_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.system_signal_group_tos = []
+        self._obj.system_signal_group_to_com_resource_mappings = []
         return self
 
-    def add_system_signal_to(self, item: SystemSignalToCommunicationResourceMapping) -> "SystemMappingBuilder":
-        """Add a single item to system_signal_tos list.
+    def add_system_signal_to_com_resource_mapping(self, item: SystemSignalToCommunicationResourceMapping) -> "SystemMappingBuilder":
+        """Add a single item to system_signal_to_com_resource_mappings list.
 
         Args:
             item: Item to add
@@ -1664,16 +1629,16 @@ class SystemMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.system_signal_tos.append(item)
+        self._obj.system_signal_to_com_resource_mappings.append(item)
         return self
 
-    def clear_system_signal_tos(self) -> "SystemMappingBuilder":
-        """Clear all items from system_signal_tos list.
+    def clear_system_signal_to_com_resource_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from system_signal_to_com_resource_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.system_signal_tos = []
+        self._obj.system_signal_to_com_resource_mappings = []
         return self
 
 

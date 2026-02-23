@@ -140,3 +140,40 @@ def xml_element_name(xml_tag: str) -> Callable[[Any], Any]:
         attr_or_func._xml_tag = xml_tag  # type: ignore[union-attr]
         return attr_or_func
     return decorator
+
+
+def ref_conditional(xml_tag: str) -> Callable[[Any], Any]:
+    """Decorator to mark an attribute as using the -REF-CONDITIONAL pattern.
+
+    The -REF-CONDITIONAL pattern is used in AUTOSAR atpVariation for reference lists
+    where each reference is wrapped in a <TAG>-REF-CONDITIONAL element containing
+    the actual <TAG>-REF element.
+
+    For example, fibexElements with @ref_conditional("FIBEX-ELEMENTS") serializes as:
+    <FIBEX-ELEMENTS>
+      <FIBEX-ELEMENT-REF-CONDITIONAL>
+        <FIBEX-ELEMENT-REF DEST="...">...</FIBEX-ELEMENT-REF>
+      </FIBEX-ELEMENT-REF-CONDITIONAL>
+    </FIBEX-ELEMENTS>
+
+    This is different from the standard reference list pattern which uses:
+    <TAG-REFS>
+      <TAG-REF>...</TAG-REF>
+    </TAG-REFS>
+
+    Usage:
+        class System(ARElement):
+            @ref_conditional("FIBEX-ELEMENTS")
+            fibex_element_refs: list[ARRef] = []
+
+    Args:
+        xml_tag: The container element name (e.g., "FIBEX-ELEMENTS")
+
+    Returns:
+        Decorator that sets _is_ref_conditional and _xml_tag markers on the attribute
+    """
+    def decorator(attr_or_func: Any) -> Any:
+        attr_or_func._is_ref_conditional = True  # type: ignore[union-attr]
+        attr_or_func._xml_tag = xml_tag  # type: ignore[union-attr]
+        return attr_or_func
+    return decorator
