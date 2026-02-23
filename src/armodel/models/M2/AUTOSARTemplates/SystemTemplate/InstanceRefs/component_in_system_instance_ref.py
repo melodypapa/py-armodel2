@@ -14,13 +14,16 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
     RootSwCompositionPrototype,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
-    System,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
+        System,
+    )
+
+
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
-
-
 class ComponentInSystemInstanceRef(ARObject):
     """AUTOSAR ComponentInSystemInstanceRef."""
 

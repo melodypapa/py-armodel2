@@ -50,13 +50,16 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.j1939_shared_address_clus
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
     RootSwCompositionPrototype,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system_mapping import (
-    SystemMapping,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system_mapping import (
+        SystemMapping,
+    )
+
+
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
-
-
 class System(ARElement):
     """AUTOSAR System."""
 
@@ -72,7 +75,7 @@ class System(ARElement):
     client_id_definition_set_refs: list[ARRef]
     container_i_pdu_header_byte_order: Optional[ByteOrderEnum]
     ecu_extract_version: Optional[RevisionLabelString]
-    fibex_element_refs: list[ARRef]
+    _fibex_element_refs: list[ARRef]
     interpolation_routine_mapping_set_refs: list[ARRef]
     j1939_shared_address_clusters: list[J1939SharedAddressCluster]
     mappings: list[SystemMapping]

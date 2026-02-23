@@ -88,10 +88,11 @@
       ],
       "attributes": {
         "dataElement": {
-          "type": "VariableDataPrototype",
+          "type": "VariableDataPrototypeInSystemInstanceRef",
           "multiplicity": "0..1",
-          "kind": "ref",
+          "kind": "iref",
           "is_ref": true,
+          "decorator": "instance_ref:flatten=True",
           "note": "by: VariableDataPrototypeIn"
         },
         "senderToSignalTextTableMapping": {

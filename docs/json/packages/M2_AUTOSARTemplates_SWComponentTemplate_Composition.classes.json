@@ -267,6 +267,7 @@
           "multiplicity": "0..1",
           "kind": "iref",
           "is_ref": true,
+          "decorator": "instance_ref:flatten=True",
           "note": "implemented by: PPortInCompositionInstanceRef"
         },
         "requester": {
@@ -274,6 +275,7 @@
           "multiplicity": "0..1",
           "kind": "iref",
           "is_ref": true,
+          "decorator": "instance_ref:flatten=True",
           "note": "implemented by: RPortInCompositionInstanceRef"
         }
       }
@@ -387,6 +389,7 @@
           "multiplicity": "0..1",
           "kind": "iref",
           "is_ref": true,
+          "decorator": "instance_ref:flatten=False",
           "note": "by: PortInCompositionTypeInstanceRef"
         },
         "outerPort": {

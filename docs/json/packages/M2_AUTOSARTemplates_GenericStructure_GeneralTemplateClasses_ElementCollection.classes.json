@@ -57,6 +57,7 @@
           "multiplicity": "*",
           "kind": "iref",
           "is_ref": true,
+          "decorator": "instance_ref:flatten=True",
           "note": "This instance ref supports the use case that a particular"
         },
         "collectionSemantics": {
@@ -92,6 +93,7 @@
           "multiplicity": "*",
           "kind": "iref",
           "is_ref": true,
+          "decorator": "instance_ref:flatten=True",
           "note": "Only if Category = \"RELATION\". This represents the"
         }
       }

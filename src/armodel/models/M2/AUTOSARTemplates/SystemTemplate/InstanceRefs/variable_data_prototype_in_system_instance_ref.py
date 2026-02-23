@@ -17,6 +17,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
     RootSwCompositionPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_component_prototype import (
+    SwComponentPrototype,
+)
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
     System,
 )
@@ -40,16 +43,18 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
         return False
 
     base_ref: Optional[ARRef]
-    context_ref: Optional[ARRef]
+    context_component_ref: Optional[ARRef]
+    context_composition_ref: Optional[ARRef]
     context_port_ref: ARRef
-    target_data_ref: Optional[ARRef]
+    target_data_prototype_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize VariableDataPrototypeInSystemInstanceRef."""
         super().__init__()
         self.base_ref: Optional[ARRef] = None
-        self.context_ref: Optional[ARRef] = None
+        self.context_component_ref: Optional[ARRef] = None
+        self.context_composition_ref: Optional[ARRef] = None
         self.context_port_ref: ARRef = None
-        self.target_data_ref: Optional[ARRef] = None
+        self.target_data_prototype_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize VariableDataPrototypeInSystemInstanceRef to XML element.
@@ -89,12 +94,26 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_ref
-        if self.context_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.context_ref, "RootSwCompositionPrototype")
+        # Serialize context_component_ref
+        if self.context_component_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.context_component_ref, "SwComponentPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-REF")
+                wrapped = ET.Element("CONTEXT-COMPONENT-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context_composition_ref
+        if self.context_composition_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.context_composition_ref, "RootSwCompositionPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT-COMPOSITION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -117,12 +136,12 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_data_ref
-        if self.target_data_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.target_data_ref, "VariableDataPrototype")
+        # Serialize target_data_prototype_ref
+        if self.target_data_prototype_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.target_data_prototype_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-DATA-REF")
+                wrapped = ET.Element("TARGET-DATA-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -152,11 +171,17 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
             base_ref_value = ARRef.deserialize(child)
             obj.base_ref = base_ref_value
 
-        # Parse context_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-REF")
+        # Parse context_component_ref
+        child = SerializationHelper.find_child_element(element, "CONTEXT-COMPONENT-REF")
         if child is not None:
-            context_ref_value = ARRef.deserialize(child)
-            obj.context_ref = context_ref_value
+            context_component_ref_value = ARRef.deserialize(child)
+            obj.context_component_ref = context_component_ref_value
+
+        # Parse context_composition_ref
+        child = SerializationHelper.find_child_element(element, "CONTEXT-COMPOSITION-REF")
+        if child is not None:
+            context_composition_ref_value = ARRef.deserialize(child)
+            obj.context_composition_ref = context_composition_ref_value
 
         # Parse context_port_ref
         child = SerializationHelper.find_child_element(element, "CONTEXT-PORT-REF")
@@ -164,11 +189,11 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
             context_port_ref_value = ARRef.deserialize(child)
             obj.context_port_ref = context_port_ref_value
 
-        # Parse target_data_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-DATA-REF")
+        # Parse target_data_prototype_ref
+        child = SerializationHelper.find_child_element(element, "TARGET-DATA-PROTOTYPE-REF")
         if child is not None:
-            target_data_ref_value = ARRef.deserialize(child)
-            obj.target_data_ref = target_data_ref_value
+            target_data_prototype_ref_value = ARRef.deserialize(child)
+            obj.target_data_prototype_ref = target_data_prototype_ref_value
 
         return obj
 
@@ -197,8 +222,8 @@ class VariableDataPrototypeInSystemInstanceRefBuilder(BuilderBase):
         self._obj.base = value
         return self
 
-    def with_context(self, value: Optional[RootSwCompositionPrototype]) -> "VariableDataPrototypeInSystemInstanceRefBuilder":
-        """Set context attribute.
+    def with_context_component(self, value: Optional[SwComponentPrototype]) -> "VariableDataPrototypeInSystemInstanceRefBuilder":
+        """Set context_component attribute.
 
         Args:
             value: Value to set
@@ -208,7 +233,21 @@ class VariableDataPrototypeInSystemInstanceRefBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.context = value
+        self._obj.context_component = value
+        return self
+
+    def with_context_composition(self, value: Optional[RootSwCompositionPrototype]) -> "VariableDataPrototypeInSystemInstanceRefBuilder":
+        """Set context_composition attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.context_composition = value
         return self
 
     def with_context_port(self, value: PortPrototype) -> "VariableDataPrototypeInSystemInstanceRefBuilder":
@@ -225,8 +264,8 @@ class VariableDataPrototypeInSystemInstanceRefBuilder(BuilderBase):
         self._obj.context_port = value
         return self
 
-    def with_target_data(self, value: Optional[VariableDataPrototype]) -> "VariableDataPrototypeInSystemInstanceRefBuilder":
-        """Set target_data attribute.
+    def with_target_data_prototype(self, value: Optional[VariableDataPrototype]) -> "VariableDataPrototypeInSystemInstanceRefBuilder":
+        """Set target_data_prototype attribute.
 
         Args:
             value: Value to set
@@ -236,7 +275,7 @@ class VariableDataPrototypeInSystemInstanceRefBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.target_data = value
+        self._obj.target_data_prototype = value
         return self
 
 

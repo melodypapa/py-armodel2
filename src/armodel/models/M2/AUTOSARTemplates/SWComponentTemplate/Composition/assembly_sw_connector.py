@@ -11,6 +11,8 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composit
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import instance_ref
+from armodel.serialization.decorators import ref_conditional
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_connector import (
     SwConnector,
@@ -40,13 +42,35 @@ class AssemblySwConnector(SwConnector):
         """
         return False
 
-    provider_iref: Optional[PPortInCompositionInstanceRef]
-    requester_iref: Optional[RPortInCompositionInstanceRef]
+    _provider_iref: Optional[PPortInCompositionInstanceRef]
+    _requester_iref: Optional[RPortInCompositionInstanceRef]
     def __init__(self) -> None:
         """Initialize AssemblySwConnector."""
         super().__init__()
-        self.provider_iref: Optional[PPortInCompositionInstanceRef] = None
-        self.requester_iref: Optional[RPortInCompositionInstanceRef] = None
+        self._provider_iref: Optional[PPortInCompositionInstanceRef] = None
+        self._requester_iref: Optional[RPortInCompositionInstanceRef] = None
+    @property
+    @instance_ref(flatten=True)
+    def provider_iref(self) -> Optional[PPortInCompositionInstanceRef]:
+        """Get provider_iref instance reference."""
+        return self._provider_iref
+
+    @provider_iref.setter
+    def provider_iref(self, value: Optional[PPortInCompositionInstanceRef]) -> None:
+        """Set provider_iref instance reference."""
+        self._provider_iref = value
+
+    @property
+    @instance_ref(flatten=True)
+    def requester_iref(self) -> Optional[RPortInCompositionInstanceRef]:
+        """Get requester_iref instance reference."""
+        return self._requester_iref
+
+    @requester_iref.setter
+    def requester_iref(self, value: Optional[RPortInCompositionInstanceRef]) -> None:
+        """Set requester_iref instance reference."""
+        self._requester_iref = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize AssemblySwConnector to XML element.

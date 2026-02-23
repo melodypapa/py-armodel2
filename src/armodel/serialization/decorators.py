@@ -201,3 +201,50 @@ def ref_conditional(xml_tag: str) -> Callable[[Any], Any]:
         attr_or_func._xml_tag = xml_tag  # type: ignore[union-attr]
         return attr_or_func
     return decorator
+
+
+def instance_ref(flatten: bool = False) -> Callable[[Any], Any]:
+    """Decorator to mark an attribute as an instance reference (iref).
+
+    Instance references are wrapped in a <TAG>-IREF element.
+    The flatten parameter controls whether children are flattened directly into
+    the wrapper or wrapped in their own element.
+
+    Usage (flattened - AssemblySwConnector):
+        @instance_ref(flatten=True)
+        @property
+        def provider_iref(self) -> PPortInCompositionInstanceRef:
+            return self._provider_iref
+
+    Serializes as:
+        <PROVIDER-IREF>
+          <CONTEXT-COMPONENT-REF>...</CONTEXT-COMPONENT-REF>
+          <TARGET-P-PORT-REF>...</TARGET-P-PORT-REF>
+        </PROVIDER-IREF>
+
+    Usage (non-flattened - DelegationSwConnector):
+        @instance_ref(flatten=False)
+        @property
+        def inner_port_iref(self) -> PortInCompositionTypeInstanceRef:
+            return self._inner_port_iref
+
+    Serializes as:
+        <INNER-PORT-IREF>
+          <R-PORT-IN-COMPOSITION-INSTANCE-REF>
+            <CONTEXT-COMPONENT-REF>...</CONTEXT-COMPONENT-REF>
+            <TARGET-R-PORT-REF>...</TARGET-R-PORT-REF>
+          </R-PORT-IN-COMPOSITION-INSTANCE-REF>
+        </INNER-PORT-IREF>
+
+    Args:
+        flatten: If True, children are flattened directly into wrapper.
+                If False, the element is wrapped. Default: False
+
+    Returns:
+        Decorator that sets _is_instance_ref and _flatten markers on the attribute
+    """
+    def decorator(attr_or_func: Any) -> Any:
+        attr_or_func._is_instance_ref = True  # type: ignore[union-attr]
+        attr_or_func._flatten = flatten  # type: ignore[union-attr]
+        return attr_or_func
+    return decorator
