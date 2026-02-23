@@ -50,13 +50,16 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.j1939_shared_address_clus
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
     RootSwCompositionPrototype,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system_mapping import (
-    SystemMapping,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system_mapping import (
+        SystemMapping,
+    )
+
+
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
-
-
 class System(ARElement):
     """AUTOSAR System."""
 

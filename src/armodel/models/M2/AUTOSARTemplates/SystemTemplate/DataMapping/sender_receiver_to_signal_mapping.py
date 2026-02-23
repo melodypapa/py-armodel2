@@ -9,6 +9,8 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_DataMapping.c
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import instance_ref
+from armodel.serialization.decorators import ref_conditional
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping import (
     DataMapping,
@@ -22,8 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_table_mapping import (
     TextTableMapping,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
-    VariableDataPrototype,
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.InstanceRefs.variable_data_prototype_in_system_instance_ref import (
+    VariableDataPrototypeInSystemInstanceRef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
@@ -41,17 +43,28 @@ class SenderReceiverToSignalMapping(DataMapping):
         """
         return False
 
-    data_element_ref: Optional[ARRef]
+    _data_element_iref: Optional[VariableDataPrototypeInSystemInstanceRef]
     sender_to_signal_text_table_mapping: Optional[TextTableMapping]
     signal_to_receiver_text_table_mapping: Optional[TextTableMapping]
     system_signal_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SenderReceiverToSignalMapping."""
         super().__init__()
-        self.data_element_ref: Optional[ARRef] = None
+        self._data_element_iref: Optional[VariableDataPrototypeInSystemInstanceRef] = None
         self.sender_to_signal_text_table_mapping: Optional[TextTableMapping] = None
         self.signal_to_receiver_text_table_mapping: Optional[TextTableMapping] = None
         self.system_signal_ref: Optional[ARRef] = None
+    @property
+    @instance_ref(flatten=True)
+    def data_element_iref(self) -> Optional[VariableDataPrototypeInSystemInstanceRef]:
+        """Get data_element_iref instance reference."""
+        return self._data_element_iref
+
+    @data_element_iref.setter
+    def data_element_iref(self, value: Optional[VariableDataPrototypeInSystemInstanceRef]) -> None:
+        """Set data_element_iref instance reference."""
+        self._data_element_iref = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize SenderReceiverToSignalMapping to XML element.
@@ -77,19 +90,16 @@ class SenderReceiverToSignalMapping(DataMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_element_ref
-        if self.data_element_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.data_element_ref, "VariableDataPrototype")
+        # Serialize data_element_iref (instance reference with wrapper "DATA-ELEMENT-IREF")
+        if self.data_element_iref is not None:
+            serialized = SerializationHelper.serialize_item(self.data_element_iref, "VariableDataPrototypeInSystemInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("DATA-ELEMENT-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         # Serialize sender_to_signal_text_table_mapping
         if self.sender_to_signal_text_table_mapping is not None:
@@ -148,11 +158,12 @@ class SenderReceiverToSignalMapping(DataMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderReceiverToSignalMapping, cls).deserialize(element)
 
-        # Parse data_element_ref
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
-        if child is not None:
-            data_element_ref_value = ARRef.deserialize(child)
-            obj.data_element_ref = data_element_ref_value
+        # Parse data_element_iref (instance reference from wrapper "DATA-ELEMENT-IREF")
+        wrapper = SerializationHelper.find_child_element(element, "DATA-ELEMENT-IREF")
+        if wrapper is not None:
+            # Deserialize wrapper element directly as the type (flattened structure)
+            data_element_iref_value = SerializationHelper.deserialize_by_tag(wrapper, "VariableDataPrototypeInSystemInstanceRef")
+            obj.data_element_iref = data_element_iref_value
 
         # Parse sender_to_signal_text_table_mapping
         child = SerializationHelper.find_child_element(element, "SENDER-TO-SIGNAL-TEXT-TABLE-MAPPING")
@@ -185,7 +196,7 @@ class SenderReceiverToSignalMappingBuilder(DataMappingBuilder):
         self._obj: SenderReceiverToSignalMapping = SenderReceiverToSignalMapping()
 
 
-    def with_data_element(self, value: Optional[VariableDataPrototype]) -> "SenderReceiverToSignalMappingBuilder":
+    def with_data_element(self, value: Optional[VariableDataPrototypeInSystemInstanceRef]) -> "SenderReceiverToSignalMappingBuilder":
         """Set data_element attribute.
 
         Args:

@@ -31,13 +31,14 @@
       ],
       "attributes": {
         "components": {
-          "type": "any (SwComponent)",
+          "type": "ComponentInSystemInstanceRef",
           "multiplicity": "*",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "iref",
+          "is_ref": true,
+          "decorator": "instance_ref:flatten=True",
           "note": "References to the software component instances that are"
         },
-        "controlledHw": {
+        "controlledHwElement": {
           "type": "HwElement",
           "multiplicity": "0..1",
           "kind": "ref",

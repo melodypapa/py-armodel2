@@ -47,9 +47,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.ECUResourceMapping.ecu_mapping import (
     ECUMapping,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.ecu_resource_estimation import (
-    EcuResourceEstimation,
-)
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.j1939_controller_application_to_j1939_nm_node_mapping import (
     J1939ControllerApplicationToJ1939NmNodeMapping,
 )
@@ -74,9 +71,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SignalPaths.signal_path_c
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.swc_to_application_partition_mapping import (
     SwcToApplicationPartitionMapping,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.swc_to_ecu_mapping import (
-    SwcToEcuMapping,
-)
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.swc_to_impl_mapping import (
     SwcToImplMapping,
 )
@@ -86,10 +80,19 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.system_si
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.system_signal_to_communication_resource_mapping import (
     SystemSignalToCommunicationResourceMapping,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.ecu_resource_estimation import (
+        EcuResourceEstimation,
+    )
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.swc_to_ecu_mapping import (
+        SwcToEcuMapping,
+    )
+
+
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
-
-
 class SystemMapping(Identifiable):
     """AUTOSAR SystemMapping."""
 

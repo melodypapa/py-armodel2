@@ -6,8 +6,10 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SWmapping.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import instance_ref
+from armodel.serialization.decorators import ref_conditional
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -21,10 +23,16 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
     HwElement,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.InstanceRefs.component_in_system_instance_ref import (
+        ComponentInSystemInstanceRef,
+    )
+
+
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
-
-
 class SwcToEcuMapping(Identifiable):
     """AUTOSAR SwcToEcuMapping."""
 
@@ -37,17 +45,28 @@ class SwcToEcuMapping(Identifiable):
         """
         return False
 
-    components: list[Any]
-    controlled_hw_ref: Optional[ARRef]
+    _component_irefs: list[ComponentInSystemInstanceRef]
+    controlled_hw_element_ref: Optional[ARRef]
     ecu_instance_ref: Optional[ARRef]
     processing_unit_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwcToEcuMapping."""
         super().__init__()
-        self.components: list[Any] = []
-        self.controlled_hw_ref: Optional[ARRef] = None
+        self._component_irefs: list[ComponentInSystemInstanceRef] = []
+        self.controlled_hw_element_ref: Optional[ARRef] = None
         self.ecu_instance_ref: Optional[ARRef] = None
         self.processing_unit_ref: Optional[ARRef] = None
+    @property
+    @instance_ref(flatten=True)
+    def component_irefs(self) -> list[ComponentInSystemInstanceRef]:
+        """Get component_irefs instance reference."""
+        return self._component_irefs
+
+    @component_irefs.setter
+    def component_irefs(self, value: list[ComponentInSystemInstanceRef]) -> None:
+        """Set component_irefs instance reference."""
+        self._component_irefs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize SwcToEcuMapping to XML element.
@@ -73,22 +92,23 @@ class SwcToEcuMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize components (list to container "COMPONENTS")
-        if self.components:
-            wrapper = ET.Element("COMPONENTS")
-            for item in self.components:
-                serialized = SerializationHelper.serialize_item(item, "Any")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+        # Serialize component_irefs (list of instance references with wrapper "COMPONENTS-IREF")
+        if self.component_irefs:
+            serialized = SerializationHelper.serialize_item(self.component_irefs, "ComponentInSystemInstanceRef")
+            if serialized is not None:
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("COMPONENTS-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
+                for child in serialized:
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
-        # Serialize controlled_hw_ref
-        if self.controlled_hw_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.controlled_hw_ref, "HwElement")
+        # Serialize controlled_hw_element_ref
+        if self.controlled_hw_element_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.controlled_hw_element_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTROLLED-HW-REF")
+                wrapped = ET.Element("CONTROLLED-HW-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -140,21 +160,18 @@ class SwcToEcuMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcToEcuMapping, cls).deserialize(element)
 
-        # Parse components (list from container "COMPONENTS")
-        obj.components = []
-        container = SerializationHelper.find_child_element(element, "COMPONENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.components.append(child_value)
+        # Parse component_irefs (instance reference from wrapper "COMPONENTS-IREF")
+        wrapper = SerializationHelper.find_child_element(element, "COMPONENTS-IREF")
+        if wrapper is not None:
+            # Deserialize wrapper element directly as the type (flattened structure)
+            component_irefs_value = SerializationHelper.deserialize_by_tag(wrapper, "ComponentInSystemInstanceRef")
+            obj.component_irefs = component_irefs_value
 
-        # Parse controlled_hw_ref
-        child = SerializationHelper.find_child_element(element, "CONTROLLED-HW-REF")
+        # Parse controlled_hw_element_ref
+        child = SerializationHelper.find_child_element(element, "CONTROLLED-HW-ELEMENT-REF")
         if child is not None:
-            controlled_hw_ref_value = ARRef.deserialize(child)
-            obj.controlled_hw_ref = controlled_hw_ref_value
+            controlled_hw_element_ref_value = ARRef.deserialize(child)
+            obj.controlled_hw_element_ref = controlled_hw_element_ref_value
 
         # Parse ecu_instance_ref
         child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
@@ -181,7 +198,7 @@ class SwcToEcuMappingBuilder(IdentifiableBuilder):
         self._obj: SwcToEcuMapping = SwcToEcuMapping()
 
 
-    def with_components(self, items: list[any (SwComponent)]) -> "SwcToEcuMappingBuilder":
+    def with_components(self, items: list[ComponentInSystemInstanceRef]) -> "SwcToEcuMappingBuilder":
         """Set components list attribute.
 
         Args:
@@ -193,8 +210,8 @@ class SwcToEcuMappingBuilder(IdentifiableBuilder):
         self._obj.components = list(items) if items else []
         return self
 
-    def with_controlled_hw(self, value: Optional[HwElement]) -> "SwcToEcuMappingBuilder":
-        """Set controlled_hw attribute.
+    def with_controlled_hw_element(self, value: Optional[HwElement]) -> "SwcToEcuMappingBuilder":
+        """Set controlled_hw_element attribute.
 
         Args:
             value: Value to set
@@ -204,7 +221,7 @@ class SwcToEcuMappingBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.controlled_hw = value
+        self._obj.controlled_hw_element = value
         return self
 
     def with_ecu_instance(self, value: Optional[EcuInstance]) -> "SwcToEcuMappingBuilder":
@@ -236,7 +253,7 @@ class SwcToEcuMappingBuilder(IdentifiableBuilder):
         return self
 
 
-    def add_component(self, item: any (SwComponent)) -> "SwcToEcuMappingBuilder":
+    def add_component(self, item: ComponentInSystemInstanceRef) -> "SwcToEcuMappingBuilder":
         """Add a single item to components list.
 
         Args:

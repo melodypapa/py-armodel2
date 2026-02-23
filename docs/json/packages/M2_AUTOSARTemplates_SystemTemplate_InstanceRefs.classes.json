@@ -161,7 +161,14 @@
           "is_ref": true,
           "note": "Stereotypes: atpDerived"
         },
-        "context": {
+        "contextComponent": {
+          "type": "SwComponentPrototype",
+          "multiplicity": "0..1",
+          "kind": "ref",
+          "is_ref": true,
+          "note": ""
+        },
+        "contextComposition": {
           "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
@@ -175,7 +182,7 @@
           "is_ref": true,
           "note": ""
         },
-        "targetData": {
+        "targetDataPrototype": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
