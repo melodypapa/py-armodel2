@@ -240,7 +240,120 @@ class LanguageSpecific(ARObject):
 
 ---
 
-### 5. `@xml_element_name(xml_tag: str)`
+### 5. `@ref_conditional(xml_tag: str)`
+
+Mark an attribute as using the AUTOSAR **-REF-CONDITIONAL** pattern for reference lists in atpVariation scenarios.
+
+**When to use**:
+- For reference lists that use the atpVariation pattern with -REF-CONDITIONAL wrappers
+- When AUTOSAR schema defines references wrapped in `<TAG>-REF-CONDITIONAL/<TAG>-REF` structure
+- Common in FIBEX-related elements (e.g., System.fibexElements, PhysicalChannel.comm_connector_refs)
+
+**Location**: `decorators.py:140-178`
+
+#### Syntax
+
+```python
+from armodel.serialization.decorators import ref_conditional
+
+class System(ARElement):
+    def __init__(self) -> None:
+        self._fibex_element_refs: list[ARRef] = []
+
+    @property
+    @ref_conditional("FIBEX-ELEMENTS")
+    def fibex_element_refs(self) -> list[ARRef]:
+        """Get fibex_element_refs with ref_conditional wrapper."""
+        return self._fibex_element_refs
+
+    @fibex_element_refs.setter
+    def fibex_element_refs(self, value: list[ARRef]) -> None:
+        """Set fibex_element_refs with ref_conditional wrapper."""
+        self._fibex_element_refs = value
+```
+
+#### JSON Configuration
+
+The `@ref_conditional` decorator is configured via JSON mapping data in the class definition:
+
+```json
+{
+  "name": "System",
+  "attributes": {
+    "fibexElements": {
+      "type": "FibexElement",
+      "multiplicity": "*",
+      "kind": "ref",
+      "is_ref": true,
+      "decorator": "ref_conditional:FIBEX-ELEMENTS"
+    }
+  }
+}
+```
+
+**JSON decorator format**: `"decorator_name:decorator_params"`
+
+- **decorator_name**: The decorator function name (e.g., `ref_conditional`)
+- **decorator_params**: Parameters passed to the decorator (e.g., `FIBEX-ELEMENTS`)
+
+#### Implementation Details
+
+1. **Decorator order**: `@ref_conditional("TAG")` must come **before** `@property`
+2. **Parameter**: Accepts the container element name (e.g., "FIBEX-ELEMENTS")
+3. **Markers**: Sets `_is_ref_conditional = True` and `_xml_tag = xml_tag` on the attribute
+4. **Property pattern**: Requires property getter/setter with private backing field
+5. **Automatic code generation**: The decorator is processed by the code generator to generate correct serialize/deserialize methods
+
+#### XML Structure
+
+The -REF-CONDITIONAL pattern creates a three-level nesting:
+
+```
+<CONTAINER-TAG>
+  <SINGULAR-TAG>-REF-CONDITIONAL>
+    <SINGULAR-TAG>-REF DEST="...">...</SINGULAR-TAG-REF>
+  </SINGULAR-TAG>-REF-CONDITIONAL>
+</CONTAINER-TAG>
+```
+
+Where:
+- **CONTAINER-TAG**: The plural container name (e.g., "FIBEX-ELEMENTS")
+- **SINGULAR-TAG**: The singular form minus trailing "S" (e.g., "FIBEX-ELEMENT")
+- **-REF-CONDITIONAL**: The atpVariation wrapper
+- **-REF**: The actual reference element with DEST attribute
+
+#### Example Output
+
+```xml
+<FIBEX-ELEMENTS>
+  <FIBEX-ELEMENT-REF-CONDITIONAL>
+    <FIBEX-ELEMENT-REF DEST="CAN-CLUSTER">/CanSystem/CLUSTERS/CanNetwork</FIBEX-ELEMENT-REF>
+  </FIBEX-ELEMENT-REF-CONDITIONAL>
+  <FIBEX-ELEMENT-REF-CONDITIONAL>
+    <FIBEX-ELEMENT-REF DEST="I-SIGNAL">/CanSystem/ISIGNALS/CounterIn</FIBEX-ELEMENT-REF>
+  </FIBEX-ELEMENT-REF-CONDITIONAL>
+  <FIBEX-ELEMENT-REF-CONDITIONAL>
+    <FIBEX-ELEMENT-REF DEST="ECU-INSTANCE">/CanSystem/ECUINSTANCES/DebugNode</FIBEX-ELEMENT-REF>
+  </FIBEX-ELEMENT-REF-CONDITIONAL>
+</FIBEX-ELEMENTS>
+```
+
+#### Difference from Standard Reference Lists
+
+| Pattern | Container | Child Wrapper | Reference |
+|---------|-----------|---------------|-----------|
+| Standard (no decorator) | `<TAG>-REFS` | None | `<TAG>-REF` |
+| ref_conditional | `<TAG>S` | `<TAG>-REF-CONDITIONAL` | `<TAG>-REF` |
+
+#### Common Use Cases
+
+- **System.fibexElements**: References to FIBEX topology elements
+- **PhysicalChannel.comm_connector_refs**: CAN communication connectors
+- **EcuInstance.managed_refs**: Managed references in ECU instances
+
+---
+
+### 6. `@xml_element_name(xml_tag: str)`
 
 Specify a custom XML element name for attributes when the auto-generated name differs from the schema, or when multi-level nesting is required.
 
@@ -338,6 +451,174 @@ class ExecutableEntity(ARObject):
 - Legacy schema versions with non-standard naming
 - Compatibility with existing ARXML files that use older naming
 
+## JSON Configuration for Decorators
+
+Decorators can be configured via JSON mapping data in the AUTOSAR class definitions. This allows the code generator to automatically generate the correct decorator usage.
+
+### JSON Decorator Format
+
+```json
+{
+  "name": "ClassName",
+  "attributes": {
+    "attributeName": {
+      "type": "SomeType",
+      "multiplicity": "*",
+      "kind": "ref",
+      "is_ref": true,
+      "decorator": "decorator_name:decorator_params"
+    }
+  }
+}
+```
+
+**Format**: `"decorator_name:decorator_params"`
+
+- **decorator_name**: The decorator function name (e.g., `xml_element_name`, `ref_conditional`, `l_prefix`)
+- **decorator_params**: Parameters passed to the decorator (e.g., `FIBEX-ELEMENTS`, `L-10`)
+
+### Decorator Types in JSON
+
+| Decorator | JSON Example | When to Use |
+|-----------|--------------|-------------|
+| `xml_element_name` | `"decorator": "xml_element_name:PROVIDED-ENTRYS"` | Custom element name |
+| `xml_element_name` | `"decorator": "xml_element_name:TAG1/TAG2/TAG3"` | Multi-level nesting |
+| `ref_conditional` | `"decorator": "ref_conditional:FIBEX-ELEMENTS"` | -REF-CONDITIONAL pattern |
+| `l_prefix` | `"kind": "l_prefix"` | Language-specific content |
+| `language_abbr` | `"kind": "language_abbr"` | Language abbreviation attribute |
+| `xml_attribute` | `"kind": "xml_attribute"` | XML attribute |
+
+### Special Cases
+
+**Attribute-level decorators** (ref_conditional, xml_element_name):
+- Use the `decorator` field with format `"name:params"`
+- The code generator applies the decorator to the generated property
+
+**Kind-based decorators** (xml_attribute, l_prefix, language_abbr):
+- Use the `kind` field instead of `decorator`
+- The code generator automatically applies the appropriate decorator
+
+### Example JSON Configurations
+
+#### ref_conditional for FIBEX-ELEMENTS
+
+```json
+{
+  "name": "System",
+  "attributes": {
+    "fibexElements": {
+      "type": "FibexElement",
+      "multiplicity": "*",
+      "kind": "ref",
+      "is_ref": true,
+      "decorator": "ref_conditional:FIBEX-ELEMENTS",
+      "note": "Reference to ASAM FIBEX elements specifying Topology. Elements used within a System Description shall from the System Element. order to describe a product-line, all Fibex be optional. atpVariation"
+    }
+  }
+}
+```
+
+#### xml_element_name for multi-level nesting
+
+```json
+{
+  "name": "ExecutableEntity",
+  "attributes": {
+    "canEnterRefs": {
+      "type": "ARRef",
+      "multiplicity": "*",
+      "kind": "ref",
+      "is_ref": true,
+      "decorator": "xml_element_name:CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
+    }
+  }
+}
+```
+
+#### xml_element_name for custom container name
+
+```json
+{
+  "name": "BswModuleDescription",
+  "attributes": {
+    "providedClientServerEntries": {
+      "type": "BswModuleClientServerEntry",
+      "multiplicity": "*",
+      "kind": "aggr",
+      "is_ref": false,
+      "decorator": "xml_element_name:PROVIDED-ENTRYS"
+    }
+  }
+}
+```
+
+#### kind-based decorators
+
+```json
+{
+  "name": "AUTOSAR",
+  "attributes": {
+    "schemaVersion": {
+      "type": "String",
+      "multiplicity": "1",
+      "kind": "xml_attribute",
+      "is_ref": false
+    }
+  }
+}
+```
+
+### Code Generator Processing
+
+The code generator processes decorator configurations in multiple stages:
+
+1. **Parse decorator field**: Extract decorator name and parameters
+2. **Generate import statements**: Add decorator imports to generated class
+3. **Generate properties**: Create property with decorator applied
+4. **Generate serialize methods**: Use decorator metadata for correct serialization
+5. **Generate deserialize methods**: Use decorator metadata for correct deserialization
+
+### Generated Code Example
+
+Given this JSON configuration:
+
+```json
+{
+  "decorator": "ref_conditional:FIBEX-ELEMENTS"
+}
+```
+
+The code generator generates:
+
+```python
+from armodel.serialization.decorators import ref_conditional
+
+class System(ARElement):
+    def __init__(self) -> None:
+        self._fibex_element_refs: list[ARRef] = []
+
+    @property
+    @ref_conditional("FIBEX-ELEMENTS")
+    def fibex_element_refs(self) -> list[ARRef]:
+        """Get fibex_element_refs with ref_conditional wrapper."""
+        return self._fibex_element_refs
+
+    @fibex_element_refs.setter
+    def fibex_element_refs(self, value: list[ARRef]) -> None:
+        """Set fibex_element_refs with ref_conditional wrapper."""
+        self._fibex_element_refs = value
+
+    def serialize(self) -> ET.Element:
+        """Serialize System to XML element."""
+        # ... serialize code that uses FIBEX-ELEMENTS container
+        # and wraps each ref in FIBEX-ELEMENT-REF-CONDITIONAL
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "System":
+        """Deserialize XML element to System object."""
+        # ... deserialize code that unwraps FIBEX-ELEMENT-REF-CONDITIONAL
+```
+
 ## Decorator Detection and Processing
 
 ### How ARObject Detects Decorators
@@ -396,6 +677,7 @@ Each decorator sets specific marker attributes that the serialization framework 
 | `@l_prefix(tag)` | `_l_prefix`, `_l_prefix_tag` | `bool`, `str` |
 | `@language_abbr(attr)` | `_language_abbr`, `_xml_attr_name` | `bool`, `str` |
 | `@xml_element_name(tag)` | `_xml_element_name`, `_xml_tag` | `bool`, `str` |
+| `@ref_conditional(tag)` | `_is_ref_conditional`, `_xml_tag` | `bool`, `str` |
 
 ## Usage Guidelines
 
@@ -404,10 +686,12 @@ Each decorator sets specific marker attributes that the serialization framework 
 | Scenario | Decorator | Example |
 |----------|-----------|---------|
 | XML attribute needed | `@xml_attribute` | `<ELEMENT uuid="abc">` |
-| AUTOSAR atpVariation pattern | `@atp_variant()` | SwDataDefProps with VARIANTS/CONDITIONAL wrappers |
+| AUTOSAR atpVariation pattern (class-level) | `@atp_variant()` | SwDataDefProps with VARIANTS/CONDITIONAL wrappers |
+| AUTOSAR atpVariation pattern (reference lists) | `@ref_conditional("TAG")` | System.fibexElements with -REF-CONDITIONAL wrappers |
 | Language-specific content | `@l_prefix("L-N")` | MultiLanguagePlainText with L-10 wrapper |
 | Language abbreviation attribute | `@language_abbr("L")` | LanguageSpecific with L attribute |
 | Non-standard element name | `@xml_element_name("TAG")` | BswModuleDescription with PROVIDED-ENTRYS |
+| Multi-level nesting | `@xml_element_name("TAG1/TAG2/TAG3")` | ExecutableEntity with nested containers |
 
 ### When NOT to Use Decorators
 

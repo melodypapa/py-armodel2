@@ -102,6 +102,7 @@
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
+          "decorator": "ref_conditional:FIBEX-ELEMENTS",
           "note": "Reference to ASAM FIBEX elements specifying Topology. Elements used within a System Description shall from the System Element. order to describe a product-line, all Fibex be optional. atpVariation"
         },
         "interpolationRoutineMappingSets": {
@@ -139,9 +140,9 @@
           "is_ref": false,
           "note": "Absolute offset (with respect to the NM-PDU) of the request release information vector that in bytes as an index starting with 0."
         },
-        "rootSoftwareComposition": {
+        "rootSoftwareCompositions": {
           "type": "RootSwCompositionPrototype",
-          "multiplicity": "0..1",
+          "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Aggregation of the root software composition, containing all software components in the System in a hierarchical element is not required when the System used for a network-only use-case. RootSwCompositionPrototype can vary. atpVariation"
@@ -358,133 +359,140 @@
         }
       ],
       "attributes": {
-        "applications": {
+        "applicationPartitionToEcuPartitionMappings": {
           "type": "ApplicationPartitionToEcuPartitionMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Mapping of ApplicationPartitions to EcuPartitions Stereotypes: atpSplitable; atpVariation Partition Tags: Mapping atp.Splitkey=applicationPartitionToEcuPartition"
         },
-        "appOsTasks": {
+        "appOsTaskProxyToEcuTaskProxyMappings": {
           "type": "AppOsTaskProxyToEcuTaskProxyMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Mapping of an OsTaskProxy that was created in the context of a SwComponent to an OsTaskProxy that was in the context of an Ecu."
         },
-        "coms": {
+        "comManagementMappings": {
           "type": "ComManagementMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Mappings between Mode Management PortGroups and"
         },
-        "cryptoServices": {
+        "cryptoServiceMappings": {
           "type": "CryptoServiceMapping",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "This aggregation represents the collection of crypto mappings in the context of the enclosing System atpVariation"
         },
         "dataMappings": {
           "type": "DataMapping",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "The data mappings defined. atpVariation 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
-        "ddsISignalTos": {
+        "ddsISignalToTopicMappings": {
           "type": "DdsCpISignalToDdsTopicMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of DdsISignalToDdsTopicMappings. Stereotypes: atpSplitable; atpVariation"
         },
-        "ecuResources": {
+        "ecuResourcesMapping": {
           "type": "ECUMapping",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Mapping of hardware related topology elements onto their definitions in the ECU Resource Template. ECU Resource type might be variable. atpVariation"
         },
-        "j1939Controllers": {
-          "type": "any (J1939Controller)",
+        "j1939ControllerApplicationToJ1939NmNodeMappings": {
+          "type": "J1939ControllerApplicationToJ1939NmNodeMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Mapping of a J1939ControllerApplication to a J1939Nm Node."
         },
-        "mappings": {
+        "mappingConstraints": {
           "type": "MappingConstraint",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Constraints that limit the mapping freedom for the of SW components to ECUs. atpVariation"
         },
         "pncMappings": {
           "type": "PncMapping",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Mappings between Virtual Function Clusters and Partial atpVariation"
         },
-        "portElementTos": {
+        "portElementToComResourceMappings": {
           "type": "PortElementToCommunicationResourceMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "maps a communication resource to CP Software Clusters"
         },
-        "resources": {
+        "resourceEstimations": {
           "type": "EcuResourceEstimation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Resource estimations for this set of mappings, zero or per ECU instance. ECUs are variable. atpVariation 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
-        "resourceTos": {
-          "type": "CpSoftwareCluster",
+        "resourceToApplicationPartitionMappings": {
+          "type": "CpSoftwareClusterResourceToApplicationPartitionMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Maps a Software Cluster resource to an Application Partition to restrict the usage. Stereotypes: atpSplitable; atpVariation Mapping Tags:"
         },
-        "rteEventInSystems": {
-          "type": "any (RteEventInSystem)",
+        "rteEventSeparations": {
+          "type": "RteEventInSystemSeparation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Separation constraint that limits the mapping freedom for the mapping of RteEvents to OsTasks in the System"
         },
-        "rteEventToOses": {
+        "rteEventToOsTaskProxyMappings": {
           "type": "RteEventInSystemToOsTaskProxyMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Constraint that enforces a mapping of RteEvent to a particular OsTask in the System context."
         },
-        "signalPaths": {
+        "signalPathConstraints": {
           "type": "SignalPathConstraint",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Constraints that limit the mapping freedom for the of data elements to signals. atpVariation"
         },
-        "softwareClusters": {
-          "type": "any (CpSoftwareClusterTo)",
+        "softwareClusterToApplicationPartitionMappings": {
+          "type": "CpSoftwareClusterToApplicationPartitionMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "maps a service resource to CP Software Clusters Stereotypes: atpSplitable; atpVariation Mapping Tags:"
         },
-        "swClusters": {
-          "type": "any (CpSoftwareClusterTo)",
+        "swClusterToResourceMappings": {
+          "type": "CpSoftwareClusterToResourceMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The mappings of SW cluster to ECUs. Stereotypes: atpSplitable; atpVariation"
         },
-        "swcTos": {
+        "swClusterMappings": {
+          "type": "CpSoftwareClusterToEcuInstanceMapping",
+          "multiplicity": "*",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The mappings of SW cluster to ECUs. Stereotypes: atpSplitable; atpVariation"
+        },
+        "swcToApplicationPartitionMappings": {
           "type": "SwcToApplicationPartitionMapping",
           "multiplicity": "*",
           "kind": "attribute",
@@ -494,25 +502,25 @@
         "swImplMappings": {
           "type": "SwcToImplMapping",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "The mappings of AtomicSoftwareComponent Instances to because SwcToEcuMapping is atpVariation"
         },
         "swMappings": {
           "type": "SwcToEcuMapping",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "The mappings of SW components to ECUs. shall be mapped to other ECUs. atpVariation"
         },
-        "systemSignalGroupTos": {
+        "systemSignalGroupToComResourceMappings": {
           "type": "SystemSignalGroupToCommunicationResourceMapping",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Mapping of a communication resource to a SystemSignal Group. Stereotypes: atpSplitable; atpVariation Mapping Tags:"
         },
-        "systemSignalTos": {
+        "systemSignalToComResourceMappings": {
           "type": "SystemSignalToCommunicationResourceMapping",
           "multiplicity": "*",
           "kind": "attribute",

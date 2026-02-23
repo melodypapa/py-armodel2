@@ -14,6 +14,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate.classes.json"
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import ref_conditional
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -75,7 +76,7 @@ class System(ARElement):
     mappings: list[SystemMapping]
     pnc_vector_length: Optional[PositiveInteger]
     pnc_vector_offset: Optional[PositiveInteger]
-    root_software_composition: Optional[RootSwCompositionPrototype]
+    root_software_compositions: list[RootSwCompositionPrototype]
     sw_cluster_refs: list[ARRef]
     system_documentations: list[Chapter]
     system_version: Optional[RevisionLabelString]
@@ -85,16 +86,27 @@ class System(ARElement):
         self.client_id_definition_set_refs: list[ARRef] = []
         self.container_i_pdu_header_byte_order: Optional[ByteOrderEnum] = None
         self.ecu_extract_version: Optional[RevisionLabelString] = None
-        self.fibex_element_refs: list[ARRef] = []
+        self._fibex_element_refs: list[ARRef] = []
         self.interpolation_routine_mapping_set_refs: list[ARRef] = []
         self.j1939_shared_address_clusters: list[J1939SharedAddressCluster] = []
         self.mappings: list[SystemMapping] = []
         self.pnc_vector_length: Optional[PositiveInteger] = None
         self.pnc_vector_offset: Optional[PositiveInteger] = None
-        self.root_software_composition: Optional[RootSwCompositionPrototype] = None
+        self.root_software_compositions: list[RootSwCompositionPrototype] = []
         self.sw_cluster_refs: list[ARRef] = []
         self.system_documentations: list[Chapter] = []
         self.system_version: Optional[RevisionLabelString] = None
+    @property
+    @ref_conditional("FIBEX-ELEMENTS")
+    def fibex_element_refs(self) -> list[ARRef]:
+        """Get fibex_element_refs with ref_conditional wrapper."""
+        return self._fibex_element_refs
+
+    @fibex_element_refs.setter
+    def fibex_element_refs(self, value: list[ARRef]) -> None:
+        """Set fibex_element_refs with ref_conditional wrapper."""
+        self._fibex_element_refs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize System to XML element.
@@ -165,20 +177,23 @@ class System(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize fibex_element_refs (list to container "FIBEX-ELEMENT-REFS")
+        # Serialize fibex_element_refs (list to container "FIBEX-ELEMENTS")
         if self.fibex_element_refs:
-            wrapper = ET.Element("FIBEX-ELEMENT-REFS")
+            wrapper = ET.Element("FIBEX-ELEMENTS")
             for item in self.fibex_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "FibexElement")
                 if serialized is not None:
-                    child_elem = ET.Element("FIBEX-ELEMENT-REF")
+                    # Wrap in FIBEX-ELEMENT-REF-CONDITIONAL
+                    conditional = ET.Element("FIBEX-ELEMENT-REF-CONDITIONAL")
+                    ref_elem = ET.Element("FIBEX-ELEMENT-REF")
                     if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
+                        ref_elem.attrib.update(serialized.attrib)
                     if serialized.text:
-                        child_elem.text = serialized.text
+                        ref_elem.text = serialized.text
                     for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                        ref_elem.append(child)
+                    conditional.append(ref_elem)
+                    wrapper.append(conditional)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -247,19 +262,15 @@ class System(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize root_software_composition
-        if self.root_software_composition is not None:
-            serialized = SerializationHelper.serialize_item(self.root_software_composition, "RootSwCompositionPrototype")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROOT-SOFTWARE-COMPOSITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+        # Serialize root_software_compositions (list to container "ROOT-SOFTWARE-COMPOSITIONS")
+        if self.root_software_compositions:
+            wrapper = ET.Element("ROOT-SOFTWARE-COMPOSITIONS")
+            for item in self.root_software_compositions:
+                serialized = SerializationHelper.serialize_item(item, "RootSwCompositionPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
 
         # Serialize sw_cluster_refs (list to container "SW-CLUSTER-REFS")
         if self.sw_cluster_refs:
@@ -345,18 +356,18 @@ class System(ARElement):
             ecu_extract_version_value = child.text
             obj.ecu_extract_version = ecu_extract_version_value
 
-        # Parse fibex_element_refs (list from container "FIBEX-ELEMENT-REFS")
+        # Parse fibex_element_refs (list from container "FIBEX-ELEMENTS")
         obj.fibex_element_refs = []
-        container = SerializationHelper.find_child_element(element, "FIBEX-ELEMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "FIBEX-ELEMENTS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
+                # Unwrap -REF-CONDITIONAL to extract the inner -REF
                 child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
+                if child_element_tag == "FIBEX-ELEMENT-REF-CONDITIONAL":
+                    ref_child = SerializationHelper.find_child_element(child, "FIBEX-ELEMENT-REF")
+                    if ref_child is not None:
+                        child_value = ARRef.deserialize(ref_child)
                 else:
-                    # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.fibex_element_refs.append(child_value)
@@ -409,11 +420,15 @@ class System(ARElement):
             pnc_vector_offset_value = child.text
             obj.pnc_vector_offset = pnc_vector_offset_value
 
-        # Parse root_software_composition
-        child = SerializationHelper.find_child_element(element, "ROOT-SOFTWARE-COMPOSITION")
-        if child is not None:
-            root_software_composition_value = SerializationHelper.deserialize_by_tag(child, "RootSwCompositionPrototype")
-            obj.root_software_composition = root_software_composition_value
+        # Parse root_software_compositions (list from container "ROOT-SOFTWARE-COMPOSITIONS")
+        obj.root_software_compositions = []
+        container = SerializationHelper.find_child_element(element, "ROOT-SOFTWARE-COMPOSITIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.root_software_compositions.append(child_value)
 
         # Parse sw_cluster_refs (list from container "SW-CLUSTER-REFS")
         obj.sw_cluster_refs = []
@@ -698,18 +713,16 @@ class SystemBuilder:
         self._obj.pnc_vector_offset = value
         return self
 
-    def with_root_software_composition(self, value: Optional[RootSwCompositionPrototype]) -> "SystemBuilder":
-        """Set root_software_composition attribute.
+    def with_root_software_compositions(self, items: list[RootSwCompositionPrototype]) -> "SystemBuilder":
+        """Set root_software_compositions list attribute.
 
         Args:
-            value: Value to set
+            items: List of items to set
 
         Returns:
             self for method chaining
         """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.root_software_composition = value
+        self._obj.root_software_compositions = list(items) if items else []
         return self
 
     def with_sw_clusters(self, items: list[CpSoftwareCluster]) -> "SystemBuilder":
@@ -896,6 +909,27 @@ class SystemBuilder:
             self for method chaining
         """
         self._obj.mappings = []
+        return self
+
+    def add_root_software_composition(self, item: RootSwCompositionPrototype) -> "SystemBuilder":
+        """Add a single item to root_software_compositions list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.root_software_compositions.append(item)
+        return self
+
+    def clear_root_software_compositions(self) -> "SystemBuilder":
+        """Clear all items from root_software_compositions list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.root_software_compositions = []
         return self
 
     def add_sw_cluster(self, item: CpSoftwareCluster) -> "SystemBuilder":
