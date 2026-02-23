@@ -87,7 +87,9 @@ def get_python_identifier(name: str) -> Tuple[str, Optional[str]]:
         return snake_name, None
 
 
-def get_python_identifier_with_ref(name: str, is_ref: bool = False, multiplicity: str = "1", kind: str = "attribute") -> str:
+def get_python_identifier_with_ref(
+    name: str, is_ref: bool = False, multiplicity: str = "1", kind: str = "attribute"
+) -> str:
     """Convert AUTOSAR identifier to Python identifier, handling reference suffix.
 
     Args:
@@ -117,7 +119,7 @@ def get_python_identifier_with_ref(name: str, is_ref: bool = False, multiplicity
         # Determine the suffix based on kind
         # iref kind uses _iref suffix, other reference kinds use _ref suffix
         suffix = "_iref" if kind == "iref" else "_ref"
-        
+
         if not identifier.endswith(suffix):
             # For list types (multiplicity "*"), singularize then add plural suffix
             if multiplicity in ["*", "0..*"]:

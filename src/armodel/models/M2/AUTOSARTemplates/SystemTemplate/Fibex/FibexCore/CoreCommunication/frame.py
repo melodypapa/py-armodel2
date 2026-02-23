@@ -16,13 +16,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from abc import ABC, abstractmethod
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import FibexElementBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_to_frame_mapping import (
     PduToFrameMapping,
 )
-from abc import ABC, abstractmethod
 
 
 class Frame(FibexElement, ABC):
@@ -128,3 +130,140 @@ class Frame(FibexElement, ABC):
 
 
 
+class FrameBuilder(FibexElementBuilder):
+    """Builder for Frame with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: Frame = Frame()
+
+
+    def with_frame_length(self, value: Optional[Integer]) -> "FrameBuilder":
+        """Set frame_length attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.frame_length = value
+        return self
+
+    def with_pdu_to_frame_mappings(self, items: list[PduToFrameMapping]) -> "FrameBuilder":
+        """Set pdu_to_frame_mappings list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.pdu_to_frame_mappings = list(items) if items else []
+        return self
+
+
+    def add_pdu_to_frame_mapping(self, item: PduToFrameMapping) -> "FrameBuilder":
+        """Add a single item to pdu_to_frame_mappings list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.pdu_to_frame_mappings.append(item)
+        return self
+
+    def clear_pdu_to_frame_mappings(self) -> "FrameBuilder":
+        """Clear all items from pdu_to_frame_mappings list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.pdu_to_frame_mappings = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> Frame:
+        """Build and return the Frame instance (abstract)."""
+        raise NotImplementedError

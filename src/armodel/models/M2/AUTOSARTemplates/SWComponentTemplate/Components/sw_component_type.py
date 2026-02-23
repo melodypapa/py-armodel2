@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from abc import ABC, abstractmethod
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import ARElementBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicationBehavior.consistency_needs import (
     ConsistencyNeeds,
@@ -36,7 +39,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SoftwareComponentDoc
 from armodel.models.M2.MSR.AsamHdo.Units.unit_group import (
     UnitGroup,
 )
-from abc import ABC, abstractmethod
 
 
 class SwComponentType(ARElement, ABC):
@@ -256,3 +258,272 @@ class SwComponentType(ARElement, ABC):
 
 
 
+class SwComponentTypeBuilder(ARElementBuilder):
+    """Builder for SwComponentType with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: SwComponentType = SwComponentType()
+
+
+    def with_consistency_needses(self, items: list[ConsistencyNeeds]) -> "SwComponentTypeBuilder":
+        """Set consistency_needses list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.consistency_needses = list(items) if items else []
+        return self
+
+    def with_ports(self, items: list[PortPrototype]) -> "SwComponentTypeBuilder":
+        """Set ports list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.ports = list(items) if items else []
+        return self
+
+    def with_port_groups(self, items: list[PortGroup]) -> "SwComponentTypeBuilder":
+        """Set port_groups list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.port_groups = list(items) if items else []
+        return self
+
+    def with_swc_mapping_constraints(self, items: list[SwComponentMappingConstraints]) -> "SwComponentTypeBuilder":
+        """Set swc_mapping_constraints list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.swc_mapping_constraints = list(items) if items else []
+        return self
+
+    def with_sw_component_documentation(self, value: Optional[SwComponentDocumentation]) -> "SwComponentTypeBuilder":
+        """Set sw_component_documentation attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_component_documentation = value
+        return self
+
+    def with_unit_groups(self, items: list[UnitGroup]) -> "SwComponentTypeBuilder":
+        """Set unit_groups list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.unit_groups = list(items) if items else []
+        return self
+
+
+    def add_consistency_needse(self, item: ConsistencyNeeds) -> "SwComponentTypeBuilder":
+        """Add a single item to consistency_needses list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.consistency_needses.append(item)
+        return self
+
+    def clear_consistency_needses(self) -> "SwComponentTypeBuilder":
+        """Clear all items from consistency_needses list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.consistency_needses = []
+        return self
+
+    def add_port(self, item: PortPrototype) -> "SwComponentTypeBuilder":
+        """Add a single item to ports list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.ports.append(item)
+        return self
+
+    def clear_ports(self) -> "SwComponentTypeBuilder":
+        """Clear all items from ports list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.ports = []
+        return self
+
+    def add_port_group(self, item: PortGroup) -> "SwComponentTypeBuilder":
+        """Add a single item to port_groups list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.port_groups.append(item)
+        return self
+
+    def clear_port_groups(self) -> "SwComponentTypeBuilder":
+        """Clear all items from port_groups list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.port_groups = []
+        return self
+
+    def add_swc_mapping_constraint(self, item: SwComponentMappingConstraints) -> "SwComponentTypeBuilder":
+        """Add a single item to swc_mapping_constraints list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.swc_mapping_constraints.append(item)
+        return self
+
+    def clear_swc_mapping_constraints(self) -> "SwComponentTypeBuilder":
+        """Clear all items from swc_mapping_constraints list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.swc_mapping_constraints = []
+        return self
+
+    def add_unit_group(self, item: UnitGroup) -> "SwComponentTypeBuilder":
+        """Add a single item to unit_groups list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.unit_groups.append(item)
+        return self
+
+    def clear_unit_groups(self) -> "SwComponentTypeBuilder":
+        """Clear all items from unit_groups list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.unit_groups = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> SwComponentType:
+        """Build and return the SwComponentType instance (abstract)."""
+        raise NotImplementedError

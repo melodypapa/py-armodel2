@@ -14,6 +14,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttribute
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes.sender_receiver_annotation import SenderReceiverAnnotationBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
@@ -100,112 +102,14 @@ class ReceiverAnnotation(SenderReceiverAnnotation):
 
 
 
-class ReceiverAnnotationBuilder:
+class ReceiverAnnotationBuilder(SenderReceiverAnnotationBuilder):
     """Builder for ReceiverAnnotation with fluent API."""
 
     def __init__(self) -> None:
         """Initialize builder with defaults."""
-        pass
+        super().__init__()
         self._obj: ReceiverAnnotation = ReceiverAnnotation()
 
-
-    def with_annotation(self, value: String) -> "ReceiverAnnotationBuilder":
-        """Set annotation attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.annotation = value
-        return self
-
-    def with_annotation_text(self, value: DocumentationBlock) -> "ReceiverAnnotationBuilder":
-        """Set annotation_text attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.annotation_text = value
-        return self
-
-    def with_label(self, value: Optional[MultilanguageLongName]) -> "ReceiverAnnotationBuilder":
-        """Set label attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.label = value
-        return self
-
-    def with_computed(self, value: Optional[Boolean]) -> "ReceiverAnnotationBuilder":
-        """Set computed attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.computed = value
-        return self
-
-    def with_data_element(self, value: Optional[VariableDataPrototype]) -> "ReceiverAnnotationBuilder":
-        """Set data_element attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.data_element = value
-        return self
-
-    def with_limit_kind(self, value: Optional[DataLimitKindEnum]) -> "ReceiverAnnotationBuilder":
-        """Set limit_kind attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.limit_kind = value
-        return self
-
-    def with_processing_kind_enum(self, value: Optional[ProcessingKindEnum]) -> "ReceiverAnnotationBuilder":
-        """Set processing_kind_enum attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.processing_kind_enum = value
-        return self
 
     def with_signal_age(self, value: Optional[MultidimensionalTime]) -> "ReceiverAnnotationBuilder":
         """Set signal_age attribute.
@@ -222,110 +126,6 @@ class ReceiverAnnotationBuilder:
         return self
 
 
-
-    @staticmethod
-    def _coerce_to_int(value: Any) -> int:
-        """Coerce value to int.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Integer value
-
-        Raises:
-            ValueError: If value cannot be coerced to int
-        """
-        if isinstance(value, int):
-            return value
-        if isinstance(value, str) and value.isdigit():
-            return int(value)
-        if isinstance(value, float):
-            return int(value)
-        if isinstance(value, bool):
-            return int(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
-
-    @staticmethod
-    def _coerce_to_float(value: Any) -> float:
-        """Coerce value to float.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Float value
-
-        Raises:
-            ValueError: If value cannot be coerced to float
-        """
-        if isinstance(value, float):
-            return value
-        if isinstance(value, int):
-            return float(value)
-        if isinstance(value, str):
-            try:
-                return float(value)
-            except ValueError:
-                pass
-        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
-
-    @staticmethod
-    def _coerce_to_bool(value: Any) -> bool:
-        """Coerce value to bool.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Boolean value
-
-        Raises:
-            ValueError: If value cannot be coerced to bool
-        """
-        if isinstance(value, bool):
-            return value
-        if isinstance(value, int):
-            return bool(value)
-        if isinstance(value, str):
-            if value.lower() in ("true", "1", "yes"):
-                return True
-            if value.lower() in ("false", "0", "no"):
-                return False
-        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
-
-    @staticmethod
-    def _coerce_to_str(value: Any) -> str:
-        """Coerce value to str.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            String value
-        """
-        return str(value)
-
-
-    @staticmethod
-    def _coerce_to_list(value: Any, item_type: str) -> list:
-        """Coerce value to list.
-
-        Args:
-            value: Value to coerce
-            item_type: Expected item type (for error messages)
-
-        Returns:
-            List value
-
-        Raises:
-            ValueError: If value cannot be coerced to list
-        """
-        if isinstance(value, list):
-            return value
-        if isinstance(value, tuple):
-            return list(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
 
 
     def _validate_instance(self) -> None:

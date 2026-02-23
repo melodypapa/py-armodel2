@@ -11,6 +11,8 @@ import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from abc import ABC, abstractmethod
+from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
@@ -21,7 +23,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
     PortInterface,
 )
-from abc import ABC, abstractmethod
 
 
 class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
@@ -184,3 +185,168 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
 
 
 
+class DataPrototypeInPortInterfaceInstanceRefBuilder(BuilderBase, ABC):
+    """Builder for DataPrototypeInPortInterfaceInstanceRef with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: DataPrototypeInPortInterfaceInstanceRef = DataPrototypeInPortInterfaceInstanceRef()
+
+
+    def with_abstract_base(self, value: Optional[PortInterface]) -> "DataPrototypeInPortInterfaceInstanceRefBuilder":
+        """Set abstract_base attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.abstract_base = value
+        return self
+
+    def with_context_datas(self, items: list[any (ApplicationComposite)]) -> "DataPrototypeInPortInterfaceInstanceRefBuilder":
+        """Set context_datas list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.context_datas = list(items) if items else []
+        return self
+
+    def with_root_data(self, value: Optional[AutosarDataPrototype]) -> "DataPrototypeInPortInterfaceInstanceRefBuilder":
+        """Set root_data attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.root_data = value
+        return self
+
+    def with_target_data(self, value: DataPrototype) -> "DataPrototypeInPortInterfaceInstanceRefBuilder":
+        """Set target_data attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.target_data = value
+        return self
+
+
+    def add_context_data(self, item: any (ApplicationComposite)) -> "DataPrototypeInPortInterfaceInstanceRefBuilder":
+        """Add a single item to context_datas list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.context_datas.append(item)
+        return self
+
+    def clear_context_datas(self) -> "DataPrototypeInPortInterfaceInstanceRefBuilder":
+        """Clear all items from context_datas list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.context_datas = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> DataPrototypeInPortInterfaceInstanceRef:
+        """Build and return the DataPrototypeInPortInterfaceInstanceRef instance (abstract)."""
+        raise NotImplementedError

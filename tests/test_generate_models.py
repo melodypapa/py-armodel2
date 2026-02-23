@@ -71,25 +71,34 @@ def test_generate_builder_code():
     # Provide required arguments for generate_builder_code
     hierarchy_info = {
         "TestInterface": {
-            "base_classes": [],
-            "children": []
+            "parent": None,
+            "is_abstract": False
         }
     }
     
     package_data = {
         "M2::Test": {
-            "classes": ["TestInterface"],
+            "classes": [{
+                "name": "TestInterface",
+                "parent": None,
+                "is_abstract": False,
+                "attributes": []
+            }],
             "enums": [],
             "primitives": []
         }
     }
 
-    code = generate_builder_code(type_def, hierarchy_info, package_data)
+    # generate_builder_code now returns a tuple (builder_imports, builder_class_code)
+    builder_imports, builder_class_code = generate_builder_code(type_def, hierarchy_info, package_data)
 
-    # Check that builder is generated
-    assert "class TestInterfaceBuilder:" in code
-    assert "def __init__(self)" in code
-    assert "def build(self)" in code
+    # Check that builder is generated with BuilderBase inheritance
+    assert "class TestInterfaceBuilder(BuilderBase):" in builder_class_code
+    assert "def __init__(self)" in builder_class_code
+    assert "def build(self)" in builder_class_code
+    
+    # Check that imports include BuilderBase
+    assert "from armodel.models.M2.builder_base import BuilderBase" in builder_imports
 
 def test_full_generation(tmp_path):
     """Test full code generation process"""
@@ -129,4 +138,4 @@ def test_full_generation(tmp_path):
     # Check file content
     content = (output_dir / "M2" / "TestPackage" / "test_class.py").read_text()
     assert "class TestClass(ARObject):" in content
-    assert "class TestClassBuilder:" in content
+    assert "class TestClassBuilder(BuilderBase):" in content

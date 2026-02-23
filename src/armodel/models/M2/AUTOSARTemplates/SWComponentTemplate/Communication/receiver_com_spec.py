@@ -15,6 +15,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from abc import ABC, abstractmethod
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import RPortComSpecBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -26,7 +29,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.composite_network_representation import (
     CompositeNetworkRepresentation,
 )
-from abc import ABC, abstractmethod
 
 
 class ReceiverComSpec(RPortComSpec, ABC):
@@ -242,3 +244,229 @@ class ReceiverComSpec(RPortComSpec, ABC):
 
 
 
+class ReceiverComSpecBuilder(RPortComSpecBuilder):
+    """Builder for ReceiverComSpec with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: ReceiverComSpec = ReceiverComSpec()
+
+
+    def with_composite_networks(self, items: list[CompositeNetworkRepresentation]) -> "ReceiverComSpecBuilder":
+        """Set composite_networks list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.composite_networks = list(items) if items else []
+        return self
+
+    def with_data_element(self, value: Optional[AutosarDataPrototype]) -> "ReceiverComSpecBuilder":
+        """Set data_element attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.data_element = value
+        return self
+
+    def with_handle_out_of_range(self, value: Optional[any (HandleOutOfRange)]) -> "ReceiverComSpecBuilder":
+        """Set handle_out_of_range attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.handle_out_of_range = value
+        return self
+
+    def with_max_delta(self, value: Optional[PositiveInteger]) -> "ReceiverComSpecBuilder":
+        """Set max_delta attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.max_delta = value
+        return self
+
+    def with_sync_counter_init(self, value: Optional[PositiveInteger]) -> "ReceiverComSpecBuilder":
+        """Set sync_counter_init attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sync_counter_init = value
+        return self
+
+    def with_transformation_coms(self, items: list[any (TransformationCom)]) -> "ReceiverComSpecBuilder":
+        """Set transformation_coms list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.transformation_coms = list(items) if items else []
+        return self
+
+    def with_uses_end_to_end(self, value: Optional[Boolean]) -> "ReceiverComSpecBuilder":
+        """Set uses_end_to_end attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.uses_end_to_end = value
+        return self
+
+
+    def add_composite_network(self, item: CompositeNetworkRepresentation) -> "ReceiverComSpecBuilder":
+        """Add a single item to composite_networks list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.composite_networks.append(item)
+        return self
+
+    def clear_composite_networks(self) -> "ReceiverComSpecBuilder":
+        """Clear all items from composite_networks list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.composite_networks = []
+        return self
+
+    def add_transformation_com(self, item: any (TransformationCom)) -> "ReceiverComSpecBuilder":
+        """Add a single item to transformation_coms list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.transformation_coms.append(item)
+        return self
+
+    def clear_transformation_coms(self) -> "ReceiverComSpecBuilder":
+        """Clear all items from transformation_coms list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.transformation_coms = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> ReceiverComSpec:
+        """Build and return the ReceiverComSpec instance (abstract)."""
+        raise NotImplementedError

@@ -14,6 +14,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformatio
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformation_description import TransformationDescriptionBuilder
 
 
 class UserDefinedTransformationDescription(TransformationDescription):
@@ -73,176 +75,16 @@ class UserDefinedTransformationDescription(TransformationDescription):
 
 
 
-class UserDefinedTransformationDescriptionBuilder:
+class UserDefinedTransformationDescriptionBuilder(TransformationDescriptionBuilder):
     """Builder for UserDefinedTransformationDescription with fluent API."""
 
     def __init__(self) -> None:
         """Initialize builder with defaults."""
-        pass
+        super().__init__()
         self._obj: UserDefinedTransformationDescription = UserDefinedTransformationDescription()
 
 
-    def with_admin_data(self, value: Optional[AdminData]) -> "UserDefinedTransformationDescriptionBuilder":
-        """Set admin_data attribute.
 
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.admin_data = value
-        return self
-
-    def with_category(self, value: Optional[CategoryString]) -> "UserDefinedTransformationDescriptionBuilder":
-        """Set category attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.category = value
-        return self
-
-    def with_desc(self, value: Optional[MultiLanguageOverviewParagraph]) -> "UserDefinedTransformationDescriptionBuilder":
-        """Set desc attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.desc = value
-        return self
-
-    def with_introduction(self, value: Optional[DocumentationBlock]) -> "UserDefinedTransformationDescriptionBuilder":
-        """Set introduction attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.introduction = value
-        return self
-
-
-
-    @staticmethod
-    def _coerce_to_int(value: Any) -> int:
-        """Coerce value to int.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Integer value
-
-        Raises:
-            ValueError: If value cannot be coerced to int
-        """
-        if isinstance(value, int):
-            return value
-        if isinstance(value, str) and value.isdigit():
-            return int(value)
-        if isinstance(value, float):
-            return int(value)
-        if isinstance(value, bool):
-            return int(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
-
-    @staticmethod
-    def _coerce_to_float(value: Any) -> float:
-        """Coerce value to float.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Float value
-
-        Raises:
-            ValueError: If value cannot be coerced to float
-        """
-        if isinstance(value, float):
-            return value
-        if isinstance(value, int):
-            return float(value)
-        if isinstance(value, str):
-            try:
-                return float(value)
-            except ValueError:
-                pass
-        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
-
-    @staticmethod
-    def _coerce_to_bool(value: Any) -> bool:
-        """Coerce value to bool.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Boolean value
-
-        Raises:
-            ValueError: If value cannot be coerced to bool
-        """
-        if isinstance(value, bool):
-            return value
-        if isinstance(value, int):
-            return bool(value)
-        if isinstance(value, str):
-            if value.lower() in ("true", "1", "yes"):
-                return True
-            if value.lower() in ("false", "0", "no"):
-                return False
-        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
-
-    @staticmethod
-    def _coerce_to_str(value: Any) -> str:
-        """Coerce value to str.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            String value
-        """
-        return str(value)
-
-
-    @staticmethod
-    def _coerce_to_list(value: Any, item_type: str) -> list:
-        """Coerce value to list.
-
-        Args:
-            value: Value to coerce
-            item_type: Expected item type (for error messages)
-
-        Returns:
-            List value
-
-        Raises:
-            ValueError: If value cannot be coerced to list
-        """
-        if isinstance(value, list):
-            return value
-        if isinstance(value, tuple):
-            return list(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
 
 
     def _validate_instance(self) -> None:

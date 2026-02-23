@@ -88,7 +88,7 @@ class TestARPrimitiveTransparentEquality:
         boolean = Boolean(True)
 
         # Act & Assert
-        assert boolean == True, "Boolean(True) should equal True bool"
+        assert boolean, "Boolean(True) should be truthy"
 
     def test_identifier_hash_compatible_with_string(self) -> None:
         """Identifier hash should be compatible with string for dict/set usage."""
@@ -169,9 +169,6 @@ class TestARObjectExtractValueUnwrapping:
     def test_extract_value_identifier_unwraps_to_string(self) -> None:
         """_extract_value should unwrap Identifier to plain string."""
         # Arrange
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
-            ARObject,
-        )
 
         element = ET.Element("SHORT-NAME")
         element.text = "MyPackage"
@@ -189,9 +186,6 @@ class TestARObjectExtractValueUnwrapping:
     def test_extract_value_integer_unwraps_to_int(self) -> None:
         """_extract_value should unwrap Integer to plain int."""
         # Arrange
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
-            ARObject,
-        )
 
         element = ET.Element("VALUE")
         element.text = "42"
@@ -211,9 +205,6 @@ class TestARObjectExtractValueUnwrapping:
     ) -> None:
         """_extract_value should keep AREnum wrapper but have transparent equality (uppercase with hyphens)."""
         # Arrange
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
-            ARObject,
-        )
 
         element = ET.Element("BYTE-ORDER")
         element.text = "MOST-SIGNIFICANT-BYTE-FIRST"
@@ -365,9 +356,6 @@ class TestARPrimitiveWithAttributesUnwrapping:
 
     def test_unwrap_primitive_without_attributes_returns_value(self) -> None:
         """Test unwrapping primitive without attributes returns value."""
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
-            ARObject,
-        )
 
         integer = Integer(42)
         result = SerializationHelper.unwrap_primitive(integer)
@@ -377,9 +365,6 @@ class TestARPrimitiveWithAttributesUnwrapping:
 
     def test_unwrap_primitive_with_attributes_returns_wrapper(self) -> None:
         """Test unwrapping primitive with attributes returns wrapper."""
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
-            ARObject,
-        )
 
         limit = Limit(value="100", interval_type=IntervalTypeEnum.CLOSED)
         result = SerializationHelper.unwrap_primitive(limit)
@@ -391,9 +376,6 @@ class TestARPrimitiveWithAttributesUnwrapping:
 
     def test_unwrap_primitive_with_none_attributes_returns_value(self) -> None:
         """Test unwrapping primitive with None attributes returns value."""
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
-            ARObject,
-        )
 
         limit = Limit(value="50", interval_type=None)
         result = SerializationHelper.unwrap_primitive(limit)

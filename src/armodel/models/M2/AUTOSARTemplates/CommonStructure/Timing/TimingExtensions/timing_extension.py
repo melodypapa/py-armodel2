@@ -14,6 +14,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from abc import ABC, abstractmethod
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import ARElementBuilder
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
     TimingClock,
 )
@@ -26,7 +29,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.t
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
 )
-from abc import ABC, abstractmethod
 
 
 class TimingExtension(ARElement, ABC):
@@ -198,3 +200,239 @@ class TimingExtension(ARElement, ABC):
 
 
 
+class TimingExtensionBuilder(ARElementBuilder):
+    """Builder for TimingExtension with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: TimingExtension = TimingExtension()
+
+
+    def with_timing_clocks(self, items: list[TimingClock]) -> "TimingExtensionBuilder":
+        """Set timing_clocks list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.timing_clocks = list(items) if items else []
+        return self
+
+    def with_timing_clock_syncs(self, items: list[TimingClockSyncAccuracy]) -> "TimingExtensionBuilder":
+        """Set timing_clock_syncs list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.timing_clock_syncs = list(items) if items else []
+        return self
+
+    def with_timing_conditions(self, items: list[TimingCondition]) -> "TimingExtensionBuilder":
+        """Set timing_conditions list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.timing_conditions = list(items) if items else []
+        return self
+
+    def with_timings(self, items: list[TimingConstraint]) -> "TimingExtensionBuilder":
+        """Set timings list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.timings = list(items) if items else []
+        return self
+
+    def with_timing_resource(self, value: Optional[TimingExtension]) -> "TimingExtensionBuilder":
+        """Set timing_resource attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.timing_resource = value
+        return self
+
+
+    def add_timing_clock(self, item: TimingClock) -> "TimingExtensionBuilder":
+        """Add a single item to timing_clocks list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.timing_clocks.append(item)
+        return self
+
+    def clear_timing_clocks(self) -> "TimingExtensionBuilder":
+        """Clear all items from timing_clocks list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.timing_clocks = []
+        return self
+
+    def add_timing_clock_sync(self, item: TimingClockSyncAccuracy) -> "TimingExtensionBuilder":
+        """Add a single item to timing_clock_syncs list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.timing_clock_syncs.append(item)
+        return self
+
+    def clear_timing_clock_syncs(self) -> "TimingExtensionBuilder":
+        """Clear all items from timing_clock_syncs list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.timing_clock_syncs = []
+        return self
+
+    def add_timing_condition(self, item: TimingCondition) -> "TimingExtensionBuilder":
+        """Add a single item to timing_conditions list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.timing_conditions.append(item)
+        return self
+
+    def clear_timing_conditions(self) -> "TimingExtensionBuilder":
+        """Clear all items from timing_conditions list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.timing_conditions = []
+        return self
+
+    def add_timing(self, item: TimingConstraint) -> "TimingExtensionBuilder":
+        """Add a single item to timings list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.timings.append(item)
+        return self
+
+    def clear_timings(self) -> "TimingExtensionBuilder":
+        """Clear all items from timings list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.timings = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> TimingExtension:
+        """Build and return the TimingExtension instance (abstract)."""
+        raise NotImplementedError

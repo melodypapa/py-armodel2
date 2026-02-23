@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Union, Optional, cast
 
 try:
     import yaml
+
     _yaml: Optional[Any] = yaml
 except ImportError:
     _yaml = None

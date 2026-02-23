@@ -14,6 +14,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from abc import ABC, abstractmethod
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import FibexElementBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror import (
     MirroringProtocolEnum,
@@ -24,7 +27,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_chan
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
 )
-from abc import ABC, abstractmethod
 
 
 class BusMirrorChannelMapping(FibexElement, ABC):
@@ -187,3 +189,168 @@ class BusMirrorChannelMapping(FibexElement, ABC):
 
 
 
+class BusMirrorChannelMappingBuilder(FibexElementBuilder):
+    """Builder for BusMirrorChannelMapping with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: BusMirrorChannelMapping = BusMirrorChannelMapping()
+
+
+    def with_mirroring(self, value: Optional[MirroringProtocolEnum]) -> "BusMirrorChannelMappingBuilder":
+        """Set mirroring attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.mirroring = value
+        return self
+
+    def with_source_channel(self, value: Optional[BusMirrorChannel]) -> "BusMirrorChannelMappingBuilder":
+        """Set source_channel attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.source_channel = value
+        return self
+
+    def with_target_channel(self, value: Optional[BusMirrorChannel]) -> "BusMirrorChannelMappingBuilder":
+        """Set target_channel attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.target_channel = value
+        return self
+
+    def with_target_pdus(self, items: list[PduTriggering]) -> "BusMirrorChannelMappingBuilder":
+        """Set target_pdus list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.target_pdus = list(items) if items else []
+        return self
+
+
+    def add_target_pdu(self, item: PduTriggering) -> "BusMirrorChannelMappingBuilder":
+        """Add a single item to target_pdus list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.target_pdus.append(item)
+        return self
+
+    def clear_target_pdus(self) -> "BusMirrorChannelMappingBuilder":
+        """Clear all items from target_pdus list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.target_pdus = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> BusMirrorChannelMapping:
+        """Build and return the BusMirrorChannelMapping instance (abstract)."""
+        raise NotImplementedError

@@ -87,7 +87,7 @@
         }
       ],
       "attributes": {
-        "dataElementSystemInstanceRef": {
+        "dataElement": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
           "kind": "ref",

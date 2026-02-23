@@ -2,7 +2,12 @@
 
 from typing import Any, Dict, List, Optional, Set, Union
 
-from ._common import get_python_identifier, get_python_identifier_with_ref, to_snake_case, to_autosar_xml_format
+from ._common import (
+    get_python_identifier,
+    get_python_identifier_with_ref,
+    to_snake_case,
+    to_autosar_xml_format,
+)
 from .type_utils import (
     detect_circular_import,
     get_python_type,
@@ -13,7 +18,6 @@ from .type_utils import (
     extract_base_type,
     extract_attribute_metadata,
     get_type_coercion_function,
-    generate_type_coercion_helper,
     should_apply_type_coercion,
 )
 
@@ -31,6 +35,7 @@ def generate_class_code(
     json_file_path: str = "",
     dependency_graph: Optional[Dict[str, Set[str]]] = None,
     force_type_checking_imports: Optional[Dict[str, Union[List[str], str]]] = None,
+    builder_imports: str = "",
 ) -> str:
     """Generate Python class code from type definition.
 
@@ -42,6 +47,7 @@ def generate_class_code(
         json_file_path: Path to the JSON file containing the class definition
         dependency_graph: Complete dependency graph for circular import detection
         force_type_checking_imports: Dict mapping class names to types that should use TYPE_CHECKING
+        builder_imports: Import statements needed for Builder class (added at top of file)
 
     Returns:
         Generated Python code as string
@@ -161,7 +167,10 @@ def generate_class_code(
                         else:
                             # Auto-detect YS→IES pattern and add xml_element_name decorator
                             # Check if attribute name ends with "ies" and multiplicity is "*"
-                            if attr_name.lower().endswith("ies") and attr_info.get("multiplicity") == "*":
+                            if (
+                                attr_name.lower().endswith("ies")
+                                and attr_info.get("multiplicity") == "*"
+                            ):
                                 # Convert attribute name to XML tag
                                 snake_name = to_snake_case(attr_name)
                                 xml_tag = snake_name.upper().replace("_", "-")
@@ -187,12 +196,12 @@ def generate_class_code(
         else:
             basic_import = "from typing import TYPE_CHECKING, Optional\n"
         base_import = "import xml.etree.ElementTree as ET\n"
-        
+
         # Add xml_attribute import if needed
         decorator_import = ""
         if has_xml_attribute:
             decorator_import = "from armodel.serialization.decorators import xml_attribute\n"
-        
+
         # Check if this class has xml_element_name decorators
         has_xml_element_name = False
         if attribute_types:
@@ -203,7 +212,7 @@ def generate_class_code(
                     break
         if has_xml_element_name:
             decorator_import += "from armodel.serialization.decorators import xml_element_name\n"
-        
+
         # Check if this class uses atpVariation pattern
         atp_type = type_def.get("atp_type", None)
         if atp_type == "atpVariation":
@@ -230,7 +239,7 @@ def generate_class_code(
                     break
         if has_lang_abbr:
             decorator_import += "from armodel.serialization.decorators import lang_abbr\n"
-        
+
         # Check if this class has ref_conditional decorators
         has_ref_conditional = False
         if attribute_types:
@@ -241,7 +250,7 @@ def generate_class_code(
                     break
         if has_ref_conditional:
             decorator_import += "from armodel.serialization.decorators import ref_conditional\n"
-        
+
         code = f'''"""{docstring}"""
 
 {future_import}{basic_import}{base_import}{decorator_import}
@@ -263,6 +272,52 @@ def generate_class_code(
         code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
         # Add SerializationHelper import for all classes that use it in serialize/deserialize methods
         code += "from armodel.serialization import SerializationHelper\n"
+
+    # Add Builder imports at the top (after all other imports to avoid E402 errors)
+    # Deduplicate imports to avoid F811 redefinition errors
+    if builder_imports:
+        # Split builder imports into lines and check each one
+        for builder_import_line in builder_imports.strip().split("\n"):
+            # Skip empty lines
+            if not builder_import_line.strip():
+                continue
+
+            # Check if the exact import line already exists
+            if builder_import_line in code:
+                continue
+
+            # For 'from X import Y' statements, check for partial duplicates
+            # Example: "from abc import ABC, abstractmethod" when "from abc import ABC" exists
+            if " import " in builder_import_line:
+                import_parts = builder_import_line.split(" import ")
+                if len(import_parts) == 2:
+                    source = import_parts[0].replace("from ", "").strip()
+                    items = [item.strip() for item in import_parts[1].split(",")]
+
+                    # Check if items are already imported from this source
+                    # We need to find existing imports from the same source
+                    existing_import_pattern = f"from {source} import "
+                    if existing_import_pattern in code:
+                        # Extract all items already imported from this source
+                        import_start = code.find(existing_import_pattern)
+                        import_end = code.find("\n", import_start)
+                        existing_import = code[import_start:import_end]
+
+                        # Parse existing import to get already imported items
+                        existing_items_str = existing_import.split(" import ")[1].strip()
+                        existing_items = [item.strip() for item in existing_items_str.split(",")]
+
+                        # Find which items are not yet imported
+                        new_items = [item for item in items if item not in existing_items]
+
+                        if new_items:
+                            # Add only the new items
+                            code += f"from {source} import {', '.join(new_items)}\n"
+                        # If all items already exist, skip this import
+                        continue
+
+            # Not a duplicate, add the full import line
+            code += builder_import_line + "\n"
 
     # Collect attribute types for all classes
     attribute_types = {}
@@ -295,7 +350,10 @@ def generate_class_code(
                     else:
                         # Auto-detect YS→IES pattern and add xml_element_name decorator
                         # Check if attribute name ends with "ies" and multiplicity is "*"
-                        if attr_name.lower().endswith("ies") and attr_info.get("multiplicity") == "*":
+                        if (
+                            attr_name.lower().endswith("ies")
+                            and attr_info.get("multiplicity") == "*"
+                        ):
                             # Convert attribute name to XML tag
                             snake_name = to_snake_case(attr_name)
                             xml_tag = snake_name.upper().replace("_", "-")
@@ -315,7 +373,7 @@ def generate_class_code(
     # Initialize circular and non-circular import sets outside attribute_types block
     circular_imports = set()
     non_circular_imports = set()
-    
+
     if attribute_types:
         type_imports = set()
         primitive_imports = {}  # Changed from set to dict to track package path
@@ -447,11 +505,68 @@ def generate_class_code(
             # THREE newline characters create TWO blank lines
             code += "\n\n\n"
 
+    # Add abc import for abstract classes BEFORE adding builder imports
+    # This ensures builder import deduplication can detect it
+    if is_abstract:
+        code += "from abc import ABC, abstractmethod\n"
+
+    # Add ARObject import for all classes that use it in the deserialize method
+    # The generated deserialize method uses SerializationHelper.find_child_element and SerializationHelper.find_all_child_elements
+    if class_name != "ARObject":
+        code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
+        # Add SerializationHelper import for all classes that use it in serialize/deserialize methods
+        code += "from armodel.serialization import SerializationHelper\n"
+
+    # Add Builder imports at the top (after all other imports to avoid E402 errors)
+    # Deduplicate imports to avoid F811 redefinition errors
+    if builder_imports:
+        # Split builder imports into lines and check each one
+        for builder_import_line in builder_imports.strip().split("\n"):
+            # Skip empty lines
+            if not builder_import_line.strip():
+                continue
+
+            # Check if the exact import line already exists
+            if builder_import_line in code:
+                continue
+
+            # For 'from X import Y' statements, check for partial duplicates
+            # Example: "from abc import ABC, abstractmethod" when "from abc import ABC" exists
+            if " import " in builder_import_line:
+                import_parts = builder_import_line.split(" import ")
+                if len(import_parts) == 2:
+                    source = import_parts[0].replace("from ", "").strip()
+                    items = [item.strip() for item in import_parts[1].split(",")]
+
+                    # Check if items are already imported from this source
+                    # We need to find existing imports from the same source
+                    existing_import_pattern = f"from {source} import "
+                    if existing_import_pattern in code:
+                        # Extract all items already imported from this source
+                        import_start = code.find(existing_import_pattern)
+                        import_end = code.find("\n", import_start)
+                        existing_import = code[import_start:import_end]
+
+                        # Parse existing import to get already imported items
+                        existing_items_str = existing_import.split(" import ")[1].strip()
+                        existing_items = [item.strip() for item in existing_items_str.split(",")]
+
+                        # Find which items are not yet imported
+                        new_items = [item for item in items if item not in existing_items]
+
+                        if new_items:
+                            # Add only the new items
+                            code += f"from {source} import {', '.join(new_items)}\n"
+                        # If all items already exist, skip this import
+                        continue
+
+            # Not a duplicate, add the full import line
+            code += builder_import_line + "\n"
+
     # Generate class definition with ABC for abstract classes
     if is_abstract:
         # Abstract classes inherit from ABC
-        # Add abc import for abstract classes
-        code += "from abc import ABC, abstractmethod\n"
+        # (ABC import was already added above)
         if parent_class:
             code += f'''\n
 class {class_name}({parent_class}, ABC):
@@ -478,14 +593,14 @@ class {class_name}(ABC):
         # If there ARE circular imports, blank lines are already added after TYPE_CHECKING block
         if not circular_imports:
             code += "\n\n"
-        
+
         # Add @atp_variant decorator if this class uses atpVariation pattern
         atp_type = type_def.get("atp_type", None)
         if atp_type == "atpVariation":
-            code += '''@atp_variant()
+            code += """@atp_variant()
 
-'''
-        
+"""
+
         if parent_class:
             code += f'class {class_name}({parent_class}):\n    """AUTOSAR {class_name}."""\n'
         else:
@@ -522,12 +637,18 @@ class {class_name}(ABC):
 
             # Get Python identifier with Ref suffix if needed
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
-            
+
             # Get decorator_name if present
             decorator_name = attr_info.get("decorator_name")
 
             # For xml_attribute, lang_prefix, language_abbr, and xml_element_name, use private field with property
-            if kind == "xml_attribute" or decorator_name == "xml_attribute" or decorator_name == "lang_prefix" or kind == "language_abbr" or decorator_name == "xml_element_name":
+            if (
+                kind == "xml_attribute"
+                or decorator_name == "xml_attribute"
+                or decorator_name == "lang_prefix"
+                or kind == "language_abbr"
+                or decorator_name == "xml_element_name"
+            ):
                 private_name = f"_{python_name}"
                 code += f"    {private_name}: {python_type}\n"
             else:
@@ -566,12 +687,19 @@ class {class_name}(ABC):
 
             # Get Python identifier with Ref suffix if needed
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
-            
+
             # Get decorator_name if present
             decorator_name = attr_info.get("decorator_name")
-            
+
             # For xml_attribute, lang_prefix, lang_abbr, xml_element_name, and ref_conditional, use private field
-            if kind == "xml_attribute" or decorator_name == "xml_attribute" or decorator_name == "lang_prefix" or decorator_name == "lang_abbr" or decorator_name == "xml_element_name" or decorator_name == "ref_conditional":
+            if (
+                kind == "xml_attribute"
+                or decorator_name == "xml_attribute"
+                or decorator_name == "lang_prefix"
+                or decorator_name == "lang_abbr"
+                or decorator_name == "xml_element_name"
+                or decorator_name == "ref_conditional"
+            ):
                 private_name = f"_{python_name}"
                 attr_code = f"        self.{private_name}: {python_type} = {initial_value}\n"
                 code += attr_code
@@ -733,7 +861,9 @@ class {class_name}(ABC):
             class_name, attribute_types, parent_class, package_data
         )
         code += serialize_code + deserialize_code
-    elif attribute_types and any(attr_info.get("decorator_name") == "lang_prefix" for attr_info in attribute_types.values()):
+    elif attribute_types and any(
+        attr_info.get("decorator_name") == "lang_prefix" for attr_info in attribute_types.values()
+    ):
         # Classes with lang_prefix attributes need custom serialize/deserialize methods
         # because they use lang_prefix decorator handling
         if parent_class and parent_class != "ARObject":
@@ -832,7 +962,9 @@ def _generate_deserialize_method(
 
             # Debug output for ReferenceBase package attribute
             if class_name == "ReferenceBase" and attr_name == "package":
-                print(f"DEBUG [deserialize]: class={class_name}, attr={attr_name}, is_ref={is_ref}, kind={kind}, is_ref and kind == 'reference'={is_ref and kind == 'reference'}")
+                print(
+                    f"DEBUG [deserialize]: class={class_name}, attr={attr_name}, is_ref={is_ref}, kind={kind}, is_ref and kind == 'reference'={is_ref and kind == 'reference'}"
+                )
 
             # Get Python identifier
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
@@ -945,7 +1077,9 @@ def _generate_deserialize_method(
                             inner_tags = tag_levels[1:-1]  # Intermediate nesting levels (if any)
                         else:
                             # Single parameter: just container tag
-                            container_tag = decorator_params if isinstance(decorator_params, str) else xml_tag
+                            container_tag = (
+                                decorator_params if isinstance(decorator_params, str) else xml_tag
+                            )
                             child_tag = None
                             inner_tags = []
                     else:
@@ -964,19 +1098,19 @@ def _generate_deserialize_method(
                     code += f'''        # Parse {python_name} (list from container "{container_tag}")
         obj.{python_name} = []
         container = SerializationHelper.find_child_element(element, "{container_tag}")'''
-                    
+
                     # Add navigation through nested levels if inner_tags is not empty
                     if inner_tags:
-                        code += '''        # Navigate through nested container levels'''
+                        code += """        # Navigate through nested container levels"""
                         for inner_tag in inner_tags:
                             code += f'''
         if container is not None:
             container = SerializationHelper.find_child_element(container, "{inner_tag}")'''
-                    
-                    code += '''
+
+                    code += """
         if container is not None:
             for child in container:
-'''
+"""
 
                     # For reference lists, check if child is a reference element and use ARRef.deserialize()
                     # For primitive/enum lists, extract text directly
@@ -1006,7 +1140,7 @@ def _generate_deserialize_method(
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
 '''
                         else:
-                            code += '''                # Check if child is a reference element (ends with -REF or -TREF)
+                            code += """                # Check if child is a reference element (ends with -REF or -TREF)
                 child_element_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
@@ -1014,27 +1148,27 @@ def _generate_deserialize_method(
                 else:
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
-'''
+"""
                     elif is_primitive_type(attr_type, package_data):
                         # Simple primitive type - extract text directly
-                        code += f'''                # Extract primitive value ({attr_type}) as text
+                        code += f"""                # Extract primitive value ({attr_type}) as text
                 child_value = child.text
-'''
+"""
                     elif is_enum_type(attr_type, package_data):
                         # Enum type - use deserialize method for proper conversion
-                        code += f'''                # Extract enum value ({attr_type})
+                        code += f"""                # Extract enum value ({attr_type})
                 child_value = {attr_type}.deserialize(child)
-'''
+"""
                     else:
                         # Complex object type - deserialize dynamically
-                        code += '''                # Deserialize each child element dynamically based on its tag
+                        code += """                # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
-'''
-                    
-                    code += f'''                if child_value is not None:
+"""
+
+                    code += f"""                if child_value is not None:
                     obj.{python_name}.append(child_value)
 
-'''
+"""
                 else:
                     # Non-container list type (multiple instances of the same element)
                     # Check if this is a lang_prefix attribute
@@ -1074,7 +1208,12 @@ def _generate_deserialize_method(
 
 
 def _generate_value_extraction_code(
-    attr_type: str, element_var: str, package_data: Dict[str, Dict[str, Any]], var_name: str, is_ref: bool = False, kind: str = "attribute"
+    attr_type: str,
+    element_var: str,
+    package_data: Dict[str, Dict[str, Any]],
+    var_name: str,
+    is_ref: bool = False,
+    kind: str = "attribute",
 ) -> str:
     """Generate code to extract value from XML element.
 
@@ -1158,7 +1297,7 @@ def _generate_value_extraction_code(
             # For iref kind, don't pass class_name
             # This allows deserializing based on the actual XML tag (concrete subclass)
             # instead of forcing the abstract base class type
-            return f'''{value_var} = SerializationHelper.deserialize_by_tag({element_var})'''
+            return f"""{value_var} = SerializationHelper.deserialize_by_tag({element_var})"""
         else:
             # Use SerializationHelper.deserialize_by_tag to avoid TYPE_CHECKING issues
             # This doesn't require the type to be imported at runtime
@@ -1166,7 +1305,11 @@ def _generate_value_extraction_code(
 
 
 def _generate_value_extraction_code_for_attribute(
-    attr_type: str, attribute_value: str, package_data: Dict[str, Dict[str, Any]], var_name: str, is_ref: bool = False
+    attr_type: str,
+    attribute_value: str,
+    package_data: Dict[str, Dict[str, Any]],
+    var_name: str,
+    is_ref: bool = False,
 ) -> str:
     """Generate code to extract value from XML attribute.
 
@@ -1185,10 +1328,10 @@ def _generate_value_extraction_code_for_attribute(
     # Handle reference types (ARRef)
     if is_ref:
         # Use ARRef.deserialize() for reference types - need to create a fake element
-        return f'''from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+        return f"""from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
         fake_elem = ET.Element("FAKE")
         fake_elem.text = {attribute_value}
-        {value_var} = ARRef.deserialize(fake_elem)'''
+        {value_var} = ARRef.deserialize(fake_elem)"""
 
     # Handle primitive types
     if is_primitive_type(attr_type, package_data):
@@ -1660,6 +1803,37 @@ def _collect_all_attributes(
     return all_attributes
 
 
+def _collect_current_class_attributes(
+    class_name: str,
+    package_data: Dict[str, Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    """Collect only the current class's own attributes (not inherited).
+
+    Args:
+        class_name: Name of the class to collect attributes for
+        package_data: Package data containing class definitions
+
+    Returns:
+        List of current class's own attributes
+    """
+    # Search for current class in all packages
+    class_data = None
+    for pkg_path, pkg_data in package_data.items():
+        if "classes" in pkg_data:
+            for cls in pkg_data["classes"]:
+                if cls["name"] == class_name:
+                    class_data = cls
+                    break
+        if class_data:
+            break
+
+    # Add current class attributes only
+    if class_data and "attributes" in class_data:
+        return extract_attribute_metadata(class_name, class_data["attributes"])
+
+    return []
+
+
 def _get_builder_parent_class(
     class_name: str,
     hierarchy_info: Dict[str, Dict[str, Any]],
@@ -1682,11 +1856,7 @@ def _get_builder_parent_class(
     if not parent_class or parent_class == "ARObject":
         return None
 
-    # Check if parent is abstract - if so, skip it and look further up
-    if parent_class in hierarchy_info and hierarchy_info[parent_class].get("is_abstract", False):
-        return _get_builder_parent_class(parent_class, hierarchy_info)
-
-    # Return parent Builder class name
+    # Return parent Builder class name (allow abstract parents for method reuse)
     return f"{parent_class}Builder"
 
 
@@ -1717,7 +1887,38 @@ def _generate_with_method(
     coerce_func = get_type_coercion_function(base_type)
 
     # Build the assignment line - use setattr for Python keywords
-    python_keywords = {"class", "def", "return", "if", "else", "elif", "for", "while", "import", "from", "try", "except", "finally", "with", "lambda", "raise", "pass", "break", "continue", "and", "or", "not", "in", "is", "assert", "async", "await", "global", "nonlocal", "yield"}
+    python_keywords = {
+        "class",
+        "def",
+        "return",
+        "if",
+        "else",
+        "elif",
+        "for",
+        "while",
+        "import",
+        "from",
+        "try",
+        "except",
+        "finally",
+        "with",
+        "lambda",
+        "raise",
+        "pass",
+        "break",
+        "continue",
+        "and",
+        "or",
+        "not",
+        "in",
+        "is",
+        "assert",
+        "async",
+        "await",
+        "global",
+        "nonlocal",
+        "yield",
+    }
 
     if snake_attr_name in python_keywords:
         # Use setattr for Python keywords
@@ -1772,7 +1973,38 @@ def _generate_with_items_method(
     method_name = f"with_{snake_attr_name}"
 
     # Check if attribute name is a Python keyword
-    python_keywords = {"class", "def", "return", "if", "else", "elif", "for", "while", "import", "from", "try", "except", "finally", "with", "lambda", "raise", "pass", "break", "continue", "and", "or", "not", "in", "is", "assert", "async", "await", "global", "nonlocal", "yield"}
+    python_keywords = {
+        "class",
+        "def",
+        "return",
+        "if",
+        "else",
+        "elif",
+        "for",
+        "while",
+        "import",
+        "from",
+        "try",
+        "except",
+        "finally",
+        "with",
+        "lambda",
+        "raise",
+        "pass",
+        "break",
+        "continue",
+        "and",
+        "or",
+        "not",
+        "in",
+        "is",
+        "assert",
+        "async",
+        "await",
+        "global",
+        "nonlocal",
+        "yield",
+    }
 
     if snake_attr_name in python_keywords:
         assignment = f"setattr(self._obj, '{snake_attr_name}', list(items) if items else [])"
@@ -1815,10 +2047,43 @@ def _generate_list_methods(
     snake_attr_name = to_snake_case(attr_name)
 
     # Generate singular name for add_* method
-    singular_name = snake_attr_name.rstrip("s") if snake_attr_name.endswith("s") else snake_attr_name[:-1]
+    singular_name = (
+        snake_attr_name.rstrip("s") if snake_attr_name.endswith("s") else snake_attr_name[:-1]
+    )
 
     # Check if attribute name is a Python keyword
-    python_keywords = {"class", "def", "return", "if", "else", "elif", "for", "while", "import", "from", "try", "except", "finally", "with", "lambda", "raise", "pass", "break", "continue", "and", "or", "not", "in", "is", "assert", "async", "await", "global", "nonlocal", "yield"}
+    python_keywords = {
+        "class",
+        "def",
+        "return",
+        "if",
+        "else",
+        "elif",
+        "for",
+        "while",
+        "import",
+        "from",
+        "try",
+        "except",
+        "finally",
+        "with",
+        "lambda",
+        "raise",
+        "pass",
+        "break",
+        "continue",
+        "and",
+        "or",
+        "not",
+        "in",
+        "is",
+        "assert",
+        "async",
+        "await",
+        "global",
+        "nonlocal",
+        "yield",
+    }
 
     if snake_attr_name in python_keywords:
         append_line = f"getattr(self._obj, '{snake_attr_name}').append(item)"  # noqa: F841
@@ -1828,9 +2093,12 @@ def _generate_list_methods(
         clear_line = f"self._obj.{snake_attr_name} = []"  # noqa: F841
 
     # Add method
-    add_method = f'''
+    add_method = (
+        f'''
     def add_{singular_name}(self, item: {item_type}) -> "{class_name}Builder":
-        """Add a single item to ''' + snake_attr_name + ''' list.
+        """Add a single item to '''
+        + snake_attr_name
+        + ''' list.
 
         Args:
             item: Item to add
@@ -1838,21 +2106,30 @@ def _generate_list_methods(
         Returns:
             self for method chaining
         """
-        ''' + append_line + '''
+        '''
+        + append_line
+        + """
         return self
-'''
+"""
+    )
 
     # Clear method
-    clear_method = f'''
+    clear_method = (
+        f'''
     def clear_{snake_attr_name}(self) -> "{class_name}Builder":
-        """Clear all items from ''' + snake_attr_name + ''' list.
+        """Clear all items from '''
+        + snake_attr_name
+        + ''' list.
 
         Returns:
             self for method chaining
         """
-        ''' + clear_line + '''
+        '''
+        + clear_line
+        + """
         return self
-'''
+"""
+    )
 
     return [add_method, clear_method]
 
@@ -1944,7 +2221,7 @@ def generate_builder_code(
     hierarchy_info: Dict[str, Dict[str, Any]],
     package_data: Dict[str, Dict[str, Any]],
     include_members: bool = False,
-) -> str:
+) -> tuple[str, str]:
     """Generate builder class code from type definition.
 
     Args:
@@ -1954,25 +2231,47 @@ def generate_builder_code(
         include_members: Whether to include member methods
 
     Returns:
-        Generated builder code as string, or empty string if abstract class
+        Tuple of (builder_imports, builder_class_code) where:
+        - builder_imports: Import statements needed for the Builder class
+        - builder_class_code: The Builder class definition without imports
     """
     class_name = type_def["name"]
     is_abstract = type_def.get("is_abstract", False)
-
-    # Skip Builder generation for abstract classes
-    if is_abstract:
-        return ""
 
     builder_name = f"{class_name}Builder"
 
     # Get parent Builder class
     builder_parent = _get_builder_parent_class(class_name, hierarchy_info)
 
-    # Generate class definition with inheritance
+    # Build inheritance list
+    # Check if parent Builder (or its ancestors) already inherits from BuilderBase
+    # If so, we don't need to add BuilderBase again (avoids MRO conflict)
+    parent_inherits_builderbase = False
     if builder_parent:
-        class_def = f"class {builder_name}({builder_parent}):"
+        # Check if parent class is abstract (abstract parents inherit from BuilderBase, ABC)
+        parent_class = builder_parent.replace("Builder", "")
+        if parent_class in hierarchy_info and hierarchy_info[parent_class].get(
+            "is_abstract", False
+        ):
+            parent_inherits_builderbase = True
+        # Check if parent class itself is abstract in type_def
+        elif parent_class in type_def and type_def.get(parent_class, {}).get("is_abstract", False):
+            parent_inherits_builderbase = True
+
+    if parent_inherits_builderbase:
+        # Parent or ancestor already inherits from BuilderBase, so we just inherit from parent
+        inheritance_parts = [builder_parent]
+    elif builder_parent:
+        # Parent doesn't inherit from BuilderBase, so we add it
+        inheritance_parts = ["BuilderBase", builder_parent]
     else:
-        class_def = f"class {builder_name}:"
+        # No parent, we inherit from BuilderBase (and ABC if abstract)
+        inheritance_parts = ["BuilderBase"]
+        if is_abstract:
+            inheritance_parts.append("ABC")
+
+    inheritance_str = ", ".join(inheritance_parts)
+    class_def = f"class {builder_name}({inheritance_str}):"
 
     # ARObject is instantiated without parentheses
     if class_name == "ARObject":
@@ -1980,25 +2279,16 @@ def generate_builder_code(
     else:
         obj_init = f"{class_name}()"
 
-    # Generate with_* methods for all attributes (inherited + current class)
+    # Generate with_* methods only for current class attributes (not inherited)
     with_methods = []
     list_methods = []
 
     if include_members and "attributes" in type_def:
-        # Collect all attributes from inheritance chain
-        package_path = type_def.get("package", "")
-        all_attrs = _collect_all_attributes(class_name, hierarchy_info, package_data, package_path)
+        # Collect ONLY current class's own attributes
+        current_attrs = _collect_current_class_attributes(class_name, package_data)
 
-        # Track attributes we've already generated methods for (to avoid duplicates)
-        generated_attrs = set()
-
-        for attr in all_attrs:
+        for attr in current_attrs:
             attr_name = attr["name"]
-
-            # Skip if we've already generated a method for this attribute
-            if attr_name in generated_attrs:
-                continue
-
             attr_type = attr["type"]
             is_list = attr["is_list"]
             is_optional = attr["is_optional"]
@@ -2010,39 +2300,84 @@ def generate_builder_code(
                 list_methods.extend(_generate_list_methods(class_name, attr_name, item_type))
             else:
                 # Generate standard with_* method
-                with_methods.append(_generate_with_method(class_name, attr_name, attr_type, is_optional))
+                with_methods.append(
+                    _generate_with_method(class_name, attr_name, attr_type, is_optional)
+                )
 
-            generated_attrs.add(attr_name)
+    # Import ABC if this is an abstract class
+    abc_import = "from abc import ABC, abstractmethod\n" if is_abstract else ""
 
-    # Generate type coercion helpers
-    type_coercion_helpers = generate_type_coercion_helper()
+    # Import BuilderBase
+    builder_base_import = "from armodel.models.M2.builder_base import BuilderBase\n"
 
-    # Generate validation helper
-    validation_helper = _generate_validation_helper()
+    # Import parent Builder class if exists
+    parent_builder_import = ""
+    if builder_parent:
+        parent_class = builder_parent.replace("Builder", "")
+        parent_import_path = get_type_import_path(parent_class, package_data)
+        if parent_import_path:
+            # Extract the import path and modify it to import the Builder
+            # Current format: from armodel.models.M2.xxx.some_class import (SomeClass,)
+            # Need: from armodel.models.M2.xxx.some_class import SomeClassBuilder
+            parent_import_path = parent_import_path.replace(
+                f"import (\n    {parent_class},\n)", f"import {parent_class}Builder"
+            )
+            parent_builder_import = f"{parent_import_path}\n"
 
-    # Build the Builder class
+    # Check if parent Builder is abstract
+    parent_is_abstract = False
+    if builder_parent:
+        parent_class = builder_parent.replace("Builder", "")
+        if parent_class in hierarchy_info and hierarchy_info[parent_class].get(
+            "is_abstract", False
+        ):
+            parent_is_abstract = True
+
+    # Build the Builder class (without imports - imports will be returned separately)
     code_parts = [
         class_def,
         f'    """Builder for {class_name} with fluent API."""',
         "",
         "    def __init__(self) -> None:",
-        "        \"\"\"Initialize builder with defaults.\"\"\"",
-        f"        {'super().__init__()' if builder_parent else 'pass'}",
+        '        """Initialize builder with defaults."""',
+        "        super().__init__()",
         f"        self._obj: {class_name} = {obj_init}",
         "",
         "".join(with_methods),
         "".join(list_methods),
-        type_coercion_helpers,
-        validation_helper,
         "",
-        "    def build(self) -> " + class_name + ":",
-        "        \"\"\"Build and return the " + class_name + " instance with validation.\"\"\"",
-        "        self._validate_instance()",
-        f"        {'super().build()' if builder_parent else 'pass'}",
-        "        return self._obj",
+        # Generate validation helper method (has access to imports in this context)
+        _generate_validation_helper(),
+        "",
     ]
 
-    return "\n".join(code_parts)
+    # Add build method - abstract classes get abstract method, others get regular method
+    if is_abstract:
+        code_parts.append("    @abstractmethod")
+        code_parts.append(f"    def build(self) -> {class_name}:")
+        code_parts.append(
+            '        """Build and return the ' + class_name + ' instance (abstract)."""'
+        )
+        code_parts.append("        raise NotImplementedError")
+    else:
+        code_parts.append("    def build(self) -> " + class_name + ":")
+        code_parts.append(
+            '        """Build and return the ' + class_name + ' instance with validation."""'
+        )
+        code_parts.append("        self._validate_instance()")
+        # Only call super().build() if parent is not abstract
+        code_parts.append(
+            "        super().build()"
+            if builder_parent and not parent_is_abstract
+            else "        pass"
+        )
+        code_parts.append("        return self._obj")
+
+    # Combine builder imports
+    builder_imports = abc_import + builder_base_import + parent_builder_import
+
+    # Return tuple of (imports, builder_class_code)
+    return (builder_imports, "\n".join(code_parts))
 
 
 def generate_enum_code(enum_def: Dict[str, Any], json_file_path: str = "") -> str:
@@ -2515,7 +2850,9 @@ def _generate_serialize_method(
                             inner_tags = tag_levels[1:-1]  # Intermediate nesting levels (if any)
                         else:
                             # Single parameter: just container tag
-                            container_tag = decorator_params if isinstance(decorator_params, str) else xml_tag
+                            container_tag = (
+                                decorator_params if isinstance(decorator_params, str) else xml_tag
+                            )
                             child_tag = None
                             inner_tags = []
                     else:
@@ -2580,8 +2917,8 @@ def _generate_serialize_method(
                     child_elem = nested_wrapper
 '''
                                 # Append the outermost nested wrapper to the main wrapper
-                                code += '''                    wrapper.append(child_elem)
-'''
+                                code += """                    wrapper.append(child_elem)
+"""
                             else:
                                 # Single-level nesting
                                 code += f'''                    child_elem = ET.Element("{child_tag}")
@@ -2611,7 +2948,9 @@ def _generate_serialize_method(
                         child_elem.append(child)
                     wrapper.append(child_elem)
 '''
-                    elif is_primitive_type(attr_type, package_data) or is_enum_type(attr_type, package_data):
+                    elif is_primitive_type(attr_type, package_data) or is_enum_type(
+                        attr_type, package_data
+                    ):
                         # Primitive or enum type - wrap in child element with singular tag name
                         singular = xml_tag[:-1]  # Remove trailing 'S'
                         code += f'''                    child_elem = ET.Element("{singular}")
@@ -2625,13 +2964,13 @@ def _generate_serialize_method(
 '''
                     else:
                         # Complex object type - append directly (already has correct tag)
-                        code += '''                    wrapper.append(serialized)
-'''
-                    
-                    code += '''            if len(wrapper) > 0:
+                        code += """                    wrapper.append(serialized)
+"""
+
+                    code += """            if len(wrapper) > 0:
                 elem.append(wrapper)
 
-'''
+"""
                 else:
                     # Non-container list type (multiple instances of the same element)
                     # Check if this is an l_prefix attribute
@@ -3109,7 +3448,7 @@ def _generate_deserialize_method_for_atp_variant(
                     inner_tags = []
                     conditional_tag = None
                     ref_tag = None
-                    
+
                     if decorator_name == "ref_conditional":
                         # Use ref_conditional pattern: container stays as-is, each item wrapped in -REF-CONDITIONAL
                         container_tag = attr_info.get("decorator_params", xml_tag)
@@ -3128,7 +3467,9 @@ def _generate_deserialize_method_for_atp_variant(
                             inner_tags = tag_levels[1:-1]  # Intermediate nesting levels (if any)
                         else:
                             # Single parameter: just container tag
-                            container_tag = decorator_params if isinstance(decorator_params, str) else xml_tag
+                            container_tag = (
+                                decorator_params if isinstance(decorator_params, str) else xml_tag
+                            )
                             child_tag = None
                             inner_tags = []
                     else:
@@ -3139,15 +3480,15 @@ def _generate_deserialize_method_for_atp_variant(
                     code += f'''        # Parse {python_name} (list from container "{container_tag}")
         obj.{python_name} = []
         container = SerializationHelper.find_child_element(inner_elem, "{container_tag}")'''
-                    
+
                     # Add navigation through nested levels if inner_tags is not empty
                     if inner_tags:
-                        code += '''        # Navigate through nested container levels'''
+                        code += """        # Navigate through nested container levels"""
                         for inner_tag in inner_tags:
                             code += f'''
         if container is not None:
             container = SerializationHelper.find_child_element(container, "{inner_tag}")'''
-                    
+
                     # Generate the child parsing code based on decorator type
                     if decorator_name == "ref_conditional":
                         # Generate ref_conditional specific code
@@ -3239,7 +3580,9 @@ def _generate_deserialize_method_for_atp_variant(
 
 
 def generate_primitive_code(
-    primitive_def: Dict[str, Any], package_data: Optional[Dict[str, Dict[str, Any]]] = None, json_file_path: str = ""
+    primitive_def: Dict[str, Any],
+    package_data: Optional[Dict[str, Dict[str, Any]]] = None,
+    json_file_path: str = "",
 ) -> str:
     """Generate Python primitive type definition from primitive definition.
 

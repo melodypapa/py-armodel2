@@ -2,7 +2,7 @@
 
 import pytest
 
-from armodel.models import ImplementationDataType, ImplementationDataTypeBuilder
+from armodel.models import ImplementationDataTypeBuilder
 from armodel.core import GlobalSettingsManager
 
 

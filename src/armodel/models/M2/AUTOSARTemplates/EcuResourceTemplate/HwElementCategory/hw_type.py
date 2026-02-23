@@ -15,6 +15,8 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entit
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import HwDescriptionEntityBuilder
 
 
 class HwType(HwDescriptionEntity):
@@ -74,247 +76,16 @@ class HwType(HwDescriptionEntity):
 
 
 
-class HwTypeBuilder:
+class HwTypeBuilder(HwDescriptionEntityBuilder):
     """Builder for HwType with fluent API."""
 
     def __init__(self) -> None:
         """Initialize builder with defaults."""
-        pass
+        super().__init__()
         self._obj: HwType = HwType()
 
 
-    def with_short_name(self, value: Identifier) -> "HwTypeBuilder":
-        """Set short_name attribute.
 
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.short_name = value
-        return self
-
-    def with_short_name_fragments(self, items: list[ShortNameFragment]) -> "HwTypeBuilder":
-        """Set short_name_fragments list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments = list(items) if items else []
-        return self
-
-    def with_hw_attributes(self, items: list[HwAttributeValue]) -> "HwTypeBuilder":
-        """Set hw_attributes list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.hw_attributes = list(items) if items else []
-        return self
-
-    def with_hw_categories(self, items: list[HwCategory]) -> "HwTypeBuilder":
-        """Set hw_categories list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.hw_categories = list(items) if items else []
-        return self
-
-    def with_hw_type(self, value: Optional[HwType]) -> "HwTypeBuilder":
-        """Set hw_type attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.hw_type = value
-        return self
-
-
-    def add_short_name_fragment(self, item: ShortNameFragment) -> "HwTypeBuilder":
-        """Add a single item to short_name_fragments list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments.append(item)
-        return self
-
-    def clear_short_name_fragments(self) -> "HwTypeBuilder":
-        """Clear all items from short_name_fragments list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments = []
-        return self
-
-    def add_hw_attribute(self, item: HwAttributeValue) -> "HwTypeBuilder":
-        """Add a single item to hw_attributes list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.hw_attributes.append(item)
-        return self
-
-    def clear_hw_attributes(self) -> "HwTypeBuilder":
-        """Clear all items from hw_attributes list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.hw_attributes = []
-        return self
-
-    def add_hw_categorie(self, item: HwCategory) -> "HwTypeBuilder":
-        """Add a single item to hw_categories list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.hw_categories.append(item)
-        return self
-
-    def clear_hw_categories(self) -> "HwTypeBuilder":
-        """Clear all items from hw_categories list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.hw_categories = []
-        return self
-
-
-    @staticmethod
-    def _coerce_to_int(value: Any) -> int:
-        """Coerce value to int.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Integer value
-
-        Raises:
-            ValueError: If value cannot be coerced to int
-        """
-        if isinstance(value, int):
-            return value
-        if isinstance(value, str) and value.isdigit():
-            return int(value)
-        if isinstance(value, float):
-            return int(value)
-        if isinstance(value, bool):
-            return int(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
-
-    @staticmethod
-    def _coerce_to_float(value: Any) -> float:
-        """Coerce value to float.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Float value
-
-        Raises:
-            ValueError: If value cannot be coerced to float
-        """
-        if isinstance(value, float):
-            return value
-        if isinstance(value, int):
-            return float(value)
-        if isinstance(value, str):
-            try:
-                return float(value)
-            except ValueError:
-                pass
-        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
-
-    @staticmethod
-    def _coerce_to_bool(value: Any) -> bool:
-        """Coerce value to bool.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Boolean value
-
-        Raises:
-            ValueError: If value cannot be coerced to bool
-        """
-        if isinstance(value, bool):
-            return value
-        if isinstance(value, int):
-            return bool(value)
-        if isinstance(value, str):
-            if value.lower() in ("true", "1", "yes"):
-                return True
-            if value.lower() in ("false", "0", "no"):
-                return False
-        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
-
-    @staticmethod
-    def _coerce_to_str(value: Any) -> str:
-        """Coerce value to str.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            String value
-        """
-        return str(value)
-
-
-    @staticmethod
-    def _coerce_to_list(value: Any, item_type: str) -> list:
-        """Coerce value to list.
-
-        Args:
-            value: Value to coerce
-            item_type: Expected item type (for error messages)
-
-        Returns:
-            List value
-
-        Raises:
-            ValueError: If value cannot be coerced to list
-        """
-        if isinstance(value, list):
-            return value
-        if isinstance(value, tuple):
-            return list(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
 
 
     def _validate_instance(self) -> None:

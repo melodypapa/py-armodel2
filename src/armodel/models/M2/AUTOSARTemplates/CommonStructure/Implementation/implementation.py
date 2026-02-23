@@ -17,6 +17,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from abc import ABC, abstractmethod
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import ARElementBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation import (
     ProgramminglanguageEnum,
@@ -53,7 +56,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.reso
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.SwcBswMapping.swc_bsw_mapping import (
     SwcBswMapping,
 )
-from abc import ABC, abstractmethod
 
 
 class Implementation(ARElement, ABC):
@@ -458,3 +460,436 @@ class Implementation(ARElement, ABC):
 
 
 
+class ImplementationBuilder(ARElementBuilder):
+    """Builder for Implementation with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: Implementation = Implementation()
+
+
+    def with_build_action_manifest(self, value: Optional[BuildActionManifest]) -> "ImplementationBuilder":
+        """Set build_action_manifest attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.build_action_manifest = value
+        return self
+
+    def with_code_descriptors(self, items: list[Code]) -> "ImplementationBuilder":
+        """Set code_descriptors list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.code_descriptors = list(items) if items else []
+        return self
+
+    def with_compilers(self, items: list[Compiler]) -> "ImplementationBuilder":
+        """Set compilers list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.compilers = list(items) if items else []
+        return self
+
+    def with_generated_artifacts(self, items: list[DependencyOnArtifact]) -> "ImplementationBuilder":
+        """Set generated_artifacts list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.generated_artifacts = list(items) if items else []
+        return self
+
+    def with_hw_elements(self, items: list[HwElement]) -> "ImplementationBuilder":
+        """Set hw_elements list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.hw_elements = list(items) if items else []
+        return self
+
+    def with_linkers(self, items: list[Linker]) -> "ImplementationBuilder":
+        """Set linkers list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.linkers = list(items) if items else []
+        return self
+
+    def with_mc_support(self, value: Optional[McSupportData]) -> "ImplementationBuilder":
+        """Set mc_support attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.mc_support = value
+        return self
+
+    def with_programming_language(self, value: Optional[ProgramminglanguageEnum]) -> "ImplementationBuilder":
+        """Set programming_language attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.programming_language = value
+        return self
+
+    def with_required_artifacts(self, items: list[DependencyOnArtifact]) -> "ImplementationBuilder":
+        """Set required_artifacts list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.required_artifacts = list(items) if items else []
+        return self
+
+    def with_required_generator_tools(self, items: list[DependencyOnArtifact]) -> "ImplementationBuilder":
+        """Set required_generator_tools list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.required_generator_tools = list(items) if items else []
+        return self
+
+    def with_resource_consumption(self, value: Optional[ResourceConsumption]) -> "ImplementationBuilder":
+        """Set resource_consumption attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.resource_consumption = value
+        return self
+
+    def with_swc_bsw_mapping(self, value: Optional[SwcBswMapping]) -> "ImplementationBuilder":
+        """Set swc_bsw_mapping attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.swc_bsw_mapping = value
+        return self
+
+    def with_sw_version(self, value: Optional[RevisionLabelString]) -> "ImplementationBuilder":
+        """Set sw_version attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_version = value
+        return self
+
+    def with_used_code_generator(self, value: Optional[String]) -> "ImplementationBuilder":
+        """Set used_code_generator attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.used_code_generator = value
+        return self
+
+    def with_vendor_id(self, value: Optional[PositiveInteger]) -> "ImplementationBuilder":
+        """Set vendor_id attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.vendor_id = value
+        return self
+
+
+    def add_code_descriptor(self, item: Code) -> "ImplementationBuilder":
+        """Add a single item to code_descriptors list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.code_descriptors.append(item)
+        return self
+
+    def clear_code_descriptors(self) -> "ImplementationBuilder":
+        """Clear all items from code_descriptors list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.code_descriptors = []
+        return self
+
+    def add_compiler(self, item: Compiler) -> "ImplementationBuilder":
+        """Add a single item to compilers list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.compilers.append(item)
+        return self
+
+    def clear_compilers(self) -> "ImplementationBuilder":
+        """Clear all items from compilers list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.compilers = []
+        return self
+
+    def add_generated_artifact(self, item: DependencyOnArtifact) -> "ImplementationBuilder":
+        """Add a single item to generated_artifacts list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.generated_artifacts.append(item)
+        return self
+
+    def clear_generated_artifacts(self) -> "ImplementationBuilder":
+        """Clear all items from generated_artifacts list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.generated_artifacts = []
+        return self
+
+    def add_hw_element(self, item: HwElement) -> "ImplementationBuilder":
+        """Add a single item to hw_elements list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.hw_elements.append(item)
+        return self
+
+    def clear_hw_elements(self) -> "ImplementationBuilder":
+        """Clear all items from hw_elements list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.hw_elements = []
+        return self
+
+    def add_linker(self, item: Linker) -> "ImplementationBuilder":
+        """Add a single item to linkers list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.linkers.append(item)
+        return self
+
+    def clear_linkers(self) -> "ImplementationBuilder":
+        """Clear all items from linkers list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.linkers = []
+        return self
+
+    def add_required_artifact(self, item: DependencyOnArtifact) -> "ImplementationBuilder":
+        """Add a single item to required_artifacts list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.required_artifacts.append(item)
+        return self
+
+    def clear_required_artifacts(self) -> "ImplementationBuilder":
+        """Clear all items from required_artifacts list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.required_artifacts = []
+        return self
+
+    def add_required_generator_tool(self, item: DependencyOnArtifact) -> "ImplementationBuilder":
+        """Add a single item to required_generator_tools list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.required_generator_tools.append(item)
+        return self
+
+    def clear_required_generator_tools(self) -> "ImplementationBuilder":
+        """Clear all items from required_generator_tools list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.required_generator_tools = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> Implementation:
+        """Build and return the Implementation instance (abstract)."""
+        raise NotImplementedError

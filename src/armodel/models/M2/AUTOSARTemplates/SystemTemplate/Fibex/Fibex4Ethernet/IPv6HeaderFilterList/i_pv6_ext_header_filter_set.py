@@ -14,6 +14,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import ARElementBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.IPv6HeaderFilterList.i_pv6_ext_header_filter_list import (
     IPv6ExtHeaderFilterList,
@@ -114,136 +116,14 @@ class IPv6ExtHeaderFilterSet(ARElement):
 
 
 
-class IPv6ExtHeaderFilterSetBuilder:
+class IPv6ExtHeaderFilterSetBuilder(ARElementBuilder):
     """Builder for IPv6ExtHeaderFilterSet with fluent API."""
 
     def __init__(self) -> None:
         """Initialize builder with defaults."""
-        pass
+        super().__init__()
         self._obj: IPv6ExtHeaderFilterSet = IPv6ExtHeaderFilterSet()
 
-
-    def with_short_name(self, value: Identifier) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Set short_name attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.short_name = value
-        return self
-
-    def with_short_name_fragments(self, items: list[ShortNameFragment]) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Set short_name_fragments list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments = list(items) if items else []
-        return self
-
-    def with_long_name(self, value: Optional[MultilanguageLongName]) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Set long_name attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.long_name = value
-        return self
-
-    def with_admin_data(self, value: Optional[AdminData]) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Set admin_data attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.admin_data = value
-        return self
-
-    def with_annotations(self, items: list[Annotation]) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Set annotations list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.annotations = list(items) if items else []
-        return self
-
-    def with_desc(self, value: Optional[MultiLanguageOverviewParagraph]) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Set desc attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.desc = value
-        return self
-
-    def with_category(self, value: Optional[CategoryString]) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Set category attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.category = value
-        return self
-
-    def with_introduction(self, value: Optional[DocumentationBlock]) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Set introduction attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.introduction = value
-        return self
-
-    def with_uuid(self, value: Optional[String]) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Set uuid attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.uuid = value
-        return self
 
     def with_ext_header_filters(self, items: list[IPv6ExtHeaderFilterList]) -> "IPv6ExtHeaderFilterSetBuilder":
         """Set ext_header_filters list attribute.
@@ -257,48 +137,6 @@ class IPv6ExtHeaderFilterSetBuilder:
         self._obj.ext_header_filters = list(items) if items else []
         return self
 
-
-    def add_short_name_fragment(self, item: ShortNameFragment) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Add a single item to short_name_fragments list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments.append(item)
-        return self
-
-    def clear_short_name_fragments(self) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Clear all items from short_name_fragments list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments = []
-        return self
-
-    def add_annotation(self, item: Annotation) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Add a single item to annotations list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.annotations.append(item)
-        return self
-
-    def clear_annotations(self) -> "IPv6ExtHeaderFilterSetBuilder":
-        """Clear all items from annotations list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.annotations = []
-        return self
 
     def add_ext_header_filter(self, item: IPv6ExtHeaderFilterList) -> "IPv6ExtHeaderFilterSetBuilder":
         """Add a single item to ext_header_filters list.
@@ -321,110 +159,6 @@ class IPv6ExtHeaderFilterSetBuilder:
         self._obj.ext_header_filters = []
         return self
 
-
-    @staticmethod
-    def _coerce_to_int(value: Any) -> int:
-        """Coerce value to int.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Integer value
-
-        Raises:
-            ValueError: If value cannot be coerced to int
-        """
-        if isinstance(value, int):
-            return value
-        if isinstance(value, str) and value.isdigit():
-            return int(value)
-        if isinstance(value, float):
-            return int(value)
-        if isinstance(value, bool):
-            return int(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
-
-    @staticmethod
-    def _coerce_to_float(value: Any) -> float:
-        """Coerce value to float.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Float value
-
-        Raises:
-            ValueError: If value cannot be coerced to float
-        """
-        if isinstance(value, float):
-            return value
-        if isinstance(value, int):
-            return float(value)
-        if isinstance(value, str):
-            try:
-                return float(value)
-            except ValueError:
-                pass
-        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
-
-    @staticmethod
-    def _coerce_to_bool(value: Any) -> bool:
-        """Coerce value to bool.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Boolean value
-
-        Raises:
-            ValueError: If value cannot be coerced to bool
-        """
-        if isinstance(value, bool):
-            return value
-        if isinstance(value, int):
-            return bool(value)
-        if isinstance(value, str):
-            if value.lower() in ("true", "1", "yes"):
-                return True
-            if value.lower() in ("false", "0", "no"):
-                return False
-        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
-
-    @staticmethod
-    def _coerce_to_str(value: Any) -> str:
-        """Coerce value to str.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            String value
-        """
-        return str(value)
-
-
-    @staticmethod
-    def _coerce_to_list(value: Any, item_type: str) -> list:
-        """Coerce value to list.
-
-        Args:
-            value: Value to coerce
-            item_type: Expected item type (for error messages)
-
-        Returns:
-            List value
-
-        Raises:
-            ValueError: If value cannot be coerced to list
-        """
-        if isinstance(value, list):
-            return value
-        if isinstance(value, tuple):
-            return list(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
 
 
     def _validate_instance(self) -> None:

@@ -18,6 +18,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from abc import ABC, abstractmethod
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior import (
     ReentrancyLevelEnum,
@@ -37,7 +40,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executa
 from armodel.models.M2.MSR.DataDictionary.AuxillaryObjects.sw_addr_method import (
     SwAddrMethod,
 )
-from abc import ABC, abstractmethod
 
 
 class ExecutableEntity(Identifiable, ABC):
@@ -303,3 +305,267 @@ class ExecutableEntity(Identifiable, ABC):
 
 
 
+class ExecutableEntityBuilder(IdentifiableBuilder):
+    """Builder for ExecutableEntity with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: ExecutableEntity = ExecutableEntity()
+
+
+    def with_activation_reasons(self, items: list[ExecutableEntityActivationReason]) -> "ExecutableEntityBuilder":
+        """Set activation_reasons list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.activation_reasons = list(items) if items else []
+        return self
+
+    def with_can_enters(self, items: list[ExclusiveArea]) -> "ExecutableEntityBuilder":
+        """Set can_enters list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.can_enters = list(items) if items else []
+        return self
+
+    def with_exclusive_area_nesting_orders(self, items: list[ExclusiveAreaNestingOrder]) -> "ExecutableEntityBuilder":
+        """Set exclusive_area_nesting_orders list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_area_nesting_orders = list(items) if items else []
+        return self
+
+    def with_minimum_start_interval(self, value: Optional[TimeValue]) -> "ExecutableEntityBuilder":
+        """Set minimum_start_interval attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.minimum_start_interval = value
+        return self
+
+    def with_reentrancy_level(self, value: Optional[ReentrancyLevelEnum]) -> "ExecutableEntityBuilder":
+        """Set reentrancy_level attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.reentrancy_level = value
+        return self
+
+    def with_runs_insides(self, items: list[ExclusiveArea]) -> "ExecutableEntityBuilder":
+        """Set runs_insides list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.runs_insides = list(items) if items else []
+        return self
+
+    def with_sw_addr_method(self, value: Optional[SwAddrMethod]) -> "ExecutableEntityBuilder":
+        """Set sw_addr_method attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_addr_method = value
+        return self
+
+
+    def add_activation_reason(self, item: ExecutableEntityActivationReason) -> "ExecutableEntityBuilder":
+        """Add a single item to activation_reasons list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.activation_reasons.append(item)
+        return self
+
+    def clear_activation_reasons(self) -> "ExecutableEntityBuilder":
+        """Clear all items from activation_reasons list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.activation_reasons = []
+        return self
+
+    def add_can_enter(self, item: ExclusiveArea) -> "ExecutableEntityBuilder":
+        """Add a single item to can_enters list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.can_enters.append(item)
+        return self
+
+    def clear_can_enters(self) -> "ExecutableEntityBuilder":
+        """Clear all items from can_enters list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.can_enters = []
+        return self
+
+    def add_exclusive_area_nesting_order(self, item: ExclusiveAreaNestingOrder) -> "ExecutableEntityBuilder":
+        """Add a single item to exclusive_area_nesting_orders list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_area_nesting_orders.append(item)
+        return self
+
+    def clear_exclusive_area_nesting_orders(self) -> "ExecutableEntityBuilder":
+        """Clear all items from exclusive_area_nesting_orders list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_area_nesting_orders = []
+        return self
+
+    def add_runs_inside(self, item: ExclusiveArea) -> "ExecutableEntityBuilder":
+        """Add a single item to runs_insides list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.runs_insides.append(item)
+        return self
+
+    def clear_runs_insides(self) -> "ExecutableEntityBuilder":
+        """Clear all items from runs_insides list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.runs_insides = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> ExecutableEntity:
+        """Build and return the ExecutableEntity instance (abstract)."""
+        raise NotImplementedError

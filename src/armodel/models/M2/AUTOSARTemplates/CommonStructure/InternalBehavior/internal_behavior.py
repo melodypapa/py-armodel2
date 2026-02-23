@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from abc import ABC, abstractmethod
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification_mapping_set import (
     ConstantSpecificationMappingSet,
@@ -39,7 +42,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
-from abc import ABC, abstractmethod
 
 
 class InternalBehavior(Identifiable, ABC):
@@ -270,3 +272,291 @@ class InternalBehavior(Identifiable, ABC):
 
 
 
+class InternalBehaviorBuilder(IdentifiableBuilder):
+    """Builder for InternalBehavior with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: InternalBehavior = InternalBehavior()
+
+
+    def with_constant_memoris(self, items: list[ParameterDataPrototype]) -> "InternalBehaviorBuilder":
+        """Set constant_memoris list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.constant_memoris = list(items) if items else []
+        return self
+
+    def with_constant_value_mappings(self, items: list[ConstantSpecificationMappingSet]) -> "InternalBehaviorBuilder":
+        """Set constant_value_mappings list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.constant_value_mappings = list(items) if items else []
+        return self
+
+    def with_data_type_mappings(self, items: list[DataTypeMappingSet]) -> "InternalBehaviorBuilder":
+        """Set data_type_mappings list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.data_type_mappings = list(items) if items else []
+        return self
+
+    def with_exclusive_areas(self, items: list[ExclusiveArea]) -> "InternalBehaviorBuilder":
+        """Set exclusive_areas list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_areas = list(items) if items else []
+        return self
+
+    def with_exclusive_area_nesting_orders(self, items: list[ExclusiveAreaNestingOrder]) -> "InternalBehaviorBuilder":
+        """Set exclusive_area_nesting_orders list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_area_nesting_orders = list(items) if items else []
+        return self
+
+    def with_static_memories(self, items: list[VariableDataPrototype]) -> "InternalBehaviorBuilder":
+        """Set static_memories list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.static_memories = list(items) if items else []
+        return self
+
+
+    def add_constant_memori(self, item: ParameterDataPrototype) -> "InternalBehaviorBuilder":
+        """Add a single item to constant_memoris list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.constant_memoris.append(item)
+        return self
+
+    def clear_constant_memoris(self) -> "InternalBehaviorBuilder":
+        """Clear all items from constant_memoris list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.constant_memoris = []
+        return self
+
+    def add_constant_value_mapping(self, item: ConstantSpecificationMappingSet) -> "InternalBehaviorBuilder":
+        """Add a single item to constant_value_mappings list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.constant_value_mappings.append(item)
+        return self
+
+    def clear_constant_value_mappings(self) -> "InternalBehaviorBuilder":
+        """Clear all items from constant_value_mappings list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.constant_value_mappings = []
+        return self
+
+    def add_data_type_mapping(self, item: DataTypeMappingSet) -> "InternalBehaviorBuilder":
+        """Add a single item to data_type_mappings list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.data_type_mappings.append(item)
+        return self
+
+    def clear_data_type_mappings(self) -> "InternalBehaviorBuilder":
+        """Clear all items from data_type_mappings list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.data_type_mappings = []
+        return self
+
+    def add_exclusive_area(self, item: ExclusiveArea) -> "InternalBehaviorBuilder":
+        """Add a single item to exclusive_areas list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_areas.append(item)
+        return self
+
+    def clear_exclusive_areas(self) -> "InternalBehaviorBuilder":
+        """Clear all items from exclusive_areas list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_areas = []
+        return self
+
+    def add_exclusive_area_nesting_order(self, item: ExclusiveAreaNestingOrder) -> "InternalBehaviorBuilder":
+        """Add a single item to exclusive_area_nesting_orders list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_area_nesting_orders.append(item)
+        return self
+
+    def clear_exclusive_area_nesting_orders(self) -> "InternalBehaviorBuilder":
+        """Clear all items from exclusive_area_nesting_orders list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_area_nesting_orders = []
+        return self
+
+    def add_static_memorie(self, item: VariableDataPrototype) -> "InternalBehaviorBuilder":
+        """Add a single item to static_memories list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.static_memories.append(item)
+        return self
+
+    def clear_static_memories(self) -> "InternalBehaviorBuilder":
+        """Clear all items from static_memories list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.static_memories = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> InternalBehavior:
+        """Build and return the InternalBehavior instance (abstract)."""
+        raise NotImplementedError

@@ -14,6 +14,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.event_triggering_constraint import EventTriggeringConstraintBuilder
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.confidence_interval import (
     ConfidenceInterval,
 )
@@ -147,94 +149,14 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
 
 
 
-class ArbitraryEventTriggeringBuilder:
+class ArbitraryEventTriggeringBuilder(EventTriggeringConstraintBuilder):
     """Builder for ArbitraryEventTriggering with fluent API."""
 
     def __init__(self) -> None:
         """Initialize builder with defaults."""
-        pass
+        super().__init__()
         self._obj: ArbitraryEventTriggering = ArbitraryEventTriggering()
 
-
-    def with_short_name(self, value: Identifier) -> "ArbitraryEventTriggeringBuilder":
-        """Set short_name attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.short_name = value
-        return self
-
-    def with_short_name_fragments(self, items: list[ShortNameFragment]) -> "ArbitraryEventTriggeringBuilder":
-        """Set short_name_fragments list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments = list(items) if items else []
-        return self
-
-    def with_long_name(self, value: Optional[MultilanguageLongName]) -> "ArbitraryEventTriggeringBuilder":
-        """Set long_name attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.long_name = value
-        return self
-
-    def with_traces(self, items: list[Traceable]) -> "ArbitraryEventTriggeringBuilder":
-        """Set traces list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.traces = list(items) if items else []
-        return self
-
-    def with_timing_condition(self, value: Optional[TimingCondition]) -> "ArbitraryEventTriggeringBuilder":
-        """Set timing_condition attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.timing_condition = value
-        return self
-
-    def with_event(self, value: Optional[TimingDescriptionEvent]) -> "ArbitraryEventTriggeringBuilder":
-        """Set event attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.event = value
-        return self
 
     def with_confidence_intervals(self, items: list[ConfidenceInterval]) -> "ArbitraryEventTriggeringBuilder":
         """Set confidence_intervals list attribute.
@@ -272,48 +194,6 @@ class ArbitraryEventTriggeringBuilder:
         self._obj.minimums = list(items) if items else []
         return self
 
-
-    def add_short_name_fragment(self, item: ShortNameFragment) -> "ArbitraryEventTriggeringBuilder":
-        """Add a single item to short_name_fragments list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments.append(item)
-        return self
-
-    def clear_short_name_fragments(self) -> "ArbitraryEventTriggeringBuilder":
-        """Clear all items from short_name_fragments list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments = []
-        return self
-
-    def add_trace(self, item: Traceable) -> "ArbitraryEventTriggeringBuilder":
-        """Add a single item to traces list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.traces.append(item)
-        return self
-
-    def clear_traces(self) -> "ArbitraryEventTriggeringBuilder":
-        """Clear all items from traces list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.traces = []
-        return self
 
     def add_confidence_interval(self, item: ConfidenceInterval) -> "ArbitraryEventTriggeringBuilder":
         """Add a single item to confidence_intervals list.
@@ -378,110 +258,6 @@ class ArbitraryEventTriggeringBuilder:
         self._obj.minimums = []
         return self
 
-
-    @staticmethod
-    def _coerce_to_int(value: Any) -> int:
-        """Coerce value to int.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Integer value
-
-        Raises:
-            ValueError: If value cannot be coerced to int
-        """
-        if isinstance(value, int):
-            return value
-        if isinstance(value, str) and value.isdigit():
-            return int(value)
-        if isinstance(value, float):
-            return int(value)
-        if isinstance(value, bool):
-            return int(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
-
-    @staticmethod
-    def _coerce_to_float(value: Any) -> float:
-        """Coerce value to float.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Float value
-
-        Raises:
-            ValueError: If value cannot be coerced to float
-        """
-        if isinstance(value, float):
-            return value
-        if isinstance(value, int):
-            return float(value)
-        if isinstance(value, str):
-            try:
-                return float(value)
-            except ValueError:
-                pass
-        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
-
-    @staticmethod
-    def _coerce_to_bool(value: Any) -> bool:
-        """Coerce value to bool.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Boolean value
-
-        Raises:
-            ValueError: If value cannot be coerced to bool
-        """
-        if isinstance(value, bool):
-            return value
-        if isinstance(value, int):
-            return bool(value)
-        if isinstance(value, str):
-            if value.lower() in ("true", "1", "yes"):
-                return True
-            if value.lower() in ("false", "0", "no"):
-                return False
-        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
-
-    @staticmethod
-    def _coerce_to_str(value: Any) -> str:
-        """Coerce value to str.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            String value
-        """
-        return str(value)
-
-
-    @staticmethod
-    def _coerce_to_list(value: Any, item_type: str) -> list:
-        """Coerce value to list.
-
-        Args:
-            value: Value to coerce
-            item_type: Expected item type (for error messages)
-
-        Returns:
-            List value
-
-        Raises:
-            ValueError: If value cannot be coerced to list
-        """
-        if isinstance(value, list):
-            return value
-        if isinstance(value, tuple):
-            return list(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
 
 
     def _validate_instance(self) -> None:

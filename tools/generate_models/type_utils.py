@@ -44,7 +44,11 @@ def is_enum_type(type_name: str, package_data: Dict[str, Dict[str, Any]]) -> boo
 
 
 def get_python_type(
-    type_name: str, multiplicity: str, package_data: Dict[str, Dict[str, Any]], is_ref: bool = False, kind: str = "attribute"
+    type_name: str,
+    multiplicity: str,
+    package_data: Dict[str, Dict[str, Any]],
+    is_ref: bool = False,
+    kind: str = "attribute",
 ) -> str:
     """Get Python type annotation for AUTOSAR type.
 
@@ -86,7 +90,13 @@ def get_python_type(
     # Primitive types and enum types are referenced by their string values, not by ARRef
     # Note: iref kind represents instance references which are complex objects, not simple references
     # For iref kind, use the actual class type directly, not wrapped in ARRef
-    if is_ref and kind != "iref" and not is_primitive_type(type_name, package_data) and not is_enum_type(type_name, package_data) and type_name != "Any":
+    if (
+        is_ref
+        and kind != "iref"
+        and not is_primitive_type(type_name, package_data)
+        and not is_enum_type(type_name, package_data)
+        and type_name != "Any"
+    ):
         base_type = "ARRef"
 
     # Apply multiplicity
@@ -258,9 +268,7 @@ def detect_circular_import(
     return False
 
 
-def find_all_cycles_in_graph(
-    dependency_graph: Dict[str, Set[str]]
-) -> List[List[str]]:
+def find_all_cycles_in_graph(dependency_graph: Dict[str, Set[str]]) -> List[List[str]]:
     """Find all cycles in the dependency graph using Tarjan's strongly connected components algorithm.
 
     Args:
@@ -325,7 +333,7 @@ def find_all_cycles_in_graph(
             min_idx = cycle.index(min(cycle))
             # Rotate the cycle to start from the smallest class name
             cycle[:] = cycle[min_idx:] + cycle[:min_idx]
-    
+
     # Sort cycles by their first class name
     cycles.sort(key=lambda c: c[0] if c else "")
 
@@ -492,7 +500,11 @@ def extract_base_type(type_str: str) -> str:
         Base type string
     """
     # Remove outer wrapper
-    if type_str.startswith("Optional[") or type_str.startswith("List[") or type_str.startswith("list["):
+    if (
+        type_str.startswith("Optional[")
+        or type_str.startswith("List[")
+        or type_str.startswith("list[")
+    ):
         inner = type_str[type_str.index("[") + 1 : type_str.rindex("]")]
         return extract_base_type(inner)
 
@@ -529,21 +541,31 @@ def extract_attribute_metadata(
         multiplicity = attr_info.get("multiplicity", "1")
 
         # Determine if attribute is a list
-        is_list = multiplicity in ("*", "0..*") or attr_type.startswith("list[") or attr_type.startswith("List[")
+        is_list = (
+            multiplicity in ("*", "0..*")
+            or attr_type.startswith("list[")
+            or attr_type.startswith("List[")
+        )
 
         # Determine if attribute is optional
-        is_optional = multiplicity == "0..1" or attr_type.startswith("Optional[") or attr_type.startswith("Union[")
+        is_optional = (
+            multiplicity == "0..1"
+            or attr_type.startswith("Optional[")
+            or attr_type.startswith("Union[")
+        )
 
         # Extract base type for lists and optional types
         base_type = extract_base_type(attr_type)
 
-        enhanced_attrs.append({
-            "name": attr_name,
-            "type": attr_type,
-            "base_type": base_type,
-            "is_list": is_list,
-            "is_optional": is_optional,
-            "multiplicity": multiplicity,
-        })
+        enhanced_attrs.append(
+            {
+                "name": attr_name,
+                "type": attr_type,
+                "base_type": base_type,
+                "is_list": is_list,
+                "is_optional": is_optional,
+                "multiplicity": multiplicity,
+            }
+        )
 
     return enhanced_attrs
