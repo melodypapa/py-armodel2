@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.c
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -35,12 +36,23 @@ class DataTransformationSet(ARElement):
         return False
 
     datas: list[DataTransformation]
-    transformation_technologies: list[TransformationTechnology]
+    _transformation_technologies: list[TransformationTechnology]
     def __init__(self) -> None:
         """Initialize DataTransformationSet."""
         super().__init__()
         self.datas: list[DataTransformation] = []
-        self.transformation_technologies: list[TransformationTechnology] = []
+        self._transformation_technologies: list[TransformationTechnology] = []
+    @property
+    @xml_element_name("TRANSFORMATION-TECHNOLOGYS")
+    def transformation_technologies(self) -> list[TransformationTechnology]:
+        """Get transformation_technologies with custom XML element name."""
+        return self._transformation_technologies
+
+    @transformation_technologies.setter
+    def transformation_technologies(self, value: list[TransformationTechnology]) -> None:
+        """Set transformation_technologies with custom XML element name."""
+        self._transformation_technologies = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize DataTransformationSet to XML element.
@@ -76,9 +88,9 @@ class DataTransformationSet(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize transformation_technologies (list to container "TRANSFORMATION-TECHNOLOGIES")
+        # Serialize transformation_technologies (list to container "TRANSFORMATION-TECHNOLOGYS")
         if self.transformation_technologies:
-            wrapper = ET.Element("TRANSFORMATION-TECHNOLOGIES")
+            wrapper = ET.Element("TRANSFORMATION-TECHNOLOGYS")
             for item in self.transformation_technologies:
                 serialized = SerializationHelper.serialize_item(item, "TransformationTechnology")
                 if serialized is not None:
@@ -111,9 +123,9 @@ class DataTransformationSet(ARElement):
                 if child_value is not None:
                     obj.datas.append(child_value)
 
-        # Parse transformation_technologies (list from container "TRANSFORMATION-TECHNOLOGIES")
+        # Parse transformation_technologies (list from container "TRANSFORMATION-TECHNOLOGYS")
         obj.transformation_technologies = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-TECHNOLOGIES")
+        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-TECHNOLOGYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

@@ -13,6 +13,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInter
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.internal_behavior import (
     InternalBehavior,
@@ -78,14 +79,14 @@ class SwcInternalBehavior(InternalBehavior):
     included_data_type_set_refs: list[ARRef]
     included_modes: list[IncludedModeDeclarationGroupSet]
     instantiation_data_defs: list[InstantiationDataDefProps]
-    per_instance_memories: list[PerInstanceMemory]
+    _per_instance_memories: list[PerInstanceMemory]
     per_instances: list[ParameterDataPrototype]
     port_api_options: list[PortAPIOption]
     runnables: list[RunnableEntity]
     services: list[Any]
     shareds: list[ParameterDataPrototype]
     supports: Optional[Boolean]
-    variation_point_proxies: list[VariationPointProxy]
+    _variation_point_proxies: list[VariationPointProxy]
     def __init__(self) -> None:
         """Initialize SwcInternalBehavior."""
         super().__init__()
@@ -97,14 +98,36 @@ class SwcInternalBehavior(InternalBehavior):
         self.included_data_type_set_refs: list[ARRef] = []
         self.included_modes: list[IncludedModeDeclarationGroupSet] = []
         self.instantiation_data_defs: list[InstantiationDataDefProps] = []
-        self.per_instance_memories: list[PerInstanceMemory] = []
+        self._per_instance_memories: list[PerInstanceMemory] = []
         self.per_instances: list[ParameterDataPrototype] = []
         self.port_api_options: list[PortAPIOption] = []
         self.runnables: list[RunnableEntity] = []
         self.services: list[Any] = []
         self.shareds: list[ParameterDataPrototype] = []
         self.supports: Optional[Boolean] = None
-        self.variation_point_proxies: list[VariationPointProxy] = []
+        self._variation_point_proxies: list[VariationPointProxy] = []
+    @property
+    @xml_element_name("PER-INSTANCE-MEMORYS")
+    def per_instance_memories(self) -> list[PerInstanceMemory]:
+        """Get per_instance_memories with custom XML element name."""
+        return self._per_instance_memories
+
+    @per_instance_memories.setter
+    def per_instance_memories(self, value: list[PerInstanceMemory]) -> None:
+        """Set per_instance_memories with custom XML element name."""
+        self._per_instance_memories = value
+
+    @property
+    @xml_element_name("VARIATION-POINT-PROXYS")
+    def variation_point_proxies(self) -> list[VariationPointProxy]:
+        """Get variation_point_proxies with custom XML element name."""
+        return self._variation_point_proxies
+
+    @variation_point_proxies.setter
+    def variation_point_proxies(self, value: list[VariationPointProxy]) -> None:
+        """Set variation_point_proxies with custom XML element name."""
+        self._variation_point_proxies = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize SwcInternalBehavior to XML element.
@@ -238,9 +261,9 @@ class SwcInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize per_instance_memories (list to container "PER-INSTANCE-MEMORIES")
+        # Serialize per_instance_memories (list to container "PER-INSTANCE-MEMORYS")
         if self.per_instance_memories:
-            wrapper = ET.Element("PER-INSTANCE-MEMORIES")
+            wrapper = ET.Element("PER-INSTANCE-MEMORYS")
             for item in self.per_instance_memories:
                 serialized = SerializationHelper.serialize_item(item, "PerInstanceMemory")
                 if serialized is not None:
@@ -312,9 +335,9 @@ class SwcInternalBehavior(InternalBehavior):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXIES")
+        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXYS")
         if self.variation_point_proxies:
-            wrapper = ET.Element("VARIATION-POINT-PROXIES")
+            wrapper = ET.Element("VARIATION-POINT-PROXYS")
             for item in self.variation_point_proxies:
                 serialized = SerializationHelper.serialize_item(item, "VariationPointProxy")
                 if serialized is not None:
@@ -441,9 +464,9 @@ class SwcInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.instantiation_data_defs.append(child_value)
 
-        # Parse per_instance_memories (list from container "PER-INSTANCE-MEMORIES")
+        # Parse per_instance_memories (list from container "PER-INSTANCE-MEMORYS")
         obj.per_instance_memories = []
-        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORIES")
+        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -507,9 +530,9 @@ class SwcInternalBehavior(InternalBehavior):
             supports_value = child.text
             obj.supports = supports_value
 
-        # Parse variation_point_proxies (list from container "VARIATION-POINT-PROXIES")
+        # Parse variation_point_proxies (list from container "VARIATION-POINT-PROXYS")
         obj.variation_point_proxies = []
-        container = SerializationHelper.find_child_element(element, "VARIATION-POINT-PROXIES")
+        container = SerializationHelper.find_child_element(element, "VARIATION-POINT-PROXYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

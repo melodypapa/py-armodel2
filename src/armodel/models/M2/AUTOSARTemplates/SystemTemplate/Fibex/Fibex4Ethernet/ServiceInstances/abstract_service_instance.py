@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4E
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -42,17 +43,28 @@ class AbstractServiceInstance(Identifiable, ABC):
         """
         return True
 
-    capabilities: list[TagWithOptionalValue]
+    _capabilities: list[TagWithOptionalValue]
     major_version: Optional[PositiveInteger]
     method: Optional[PduActivationRoutingGroup]
     routing_group_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize AbstractServiceInstance."""
         super().__init__()
-        self.capabilities: list[TagWithOptionalValue] = []
+        self._capabilities: list[TagWithOptionalValue] = []
         self.major_version: Optional[PositiveInteger] = None
         self.method: Optional[PduActivationRoutingGroup] = None
         self.routing_group_refs: list[ARRef] = []
+    @property
+    @xml_element_name("CAPABILITYS")
+    def capabilities(self) -> list[TagWithOptionalValue]:
+        """Get capabilities with custom XML element name."""
+        return self._capabilities
+
+    @capabilities.setter
+    def capabilities(self, value: list[TagWithOptionalValue]) -> None:
+        """Set capabilities with custom XML element name."""
+        self._capabilities = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize AbstractServiceInstance to XML element.
@@ -78,9 +90,9 @@ class AbstractServiceInstance(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize capabilities (list to container "CAPABILITIES")
+        # Serialize capabilities (list to container "CAPABILITYS")
         if self.capabilities:
-            wrapper = ET.Element("CAPABILITIES")
+            wrapper = ET.Element("CAPABILITYS")
             for item in self.capabilities:
                 serialized = SerializationHelper.serialize_item(item, "TagWithOptionalValue")
                 if serialized is not None:
@@ -148,9 +160,9 @@ class AbstractServiceInstance(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractServiceInstance, cls).deserialize(element)
 
-        # Parse capabilities (list from container "CAPABILITIES")
+        # Parse capabilities (list from container "CAPABILITYS")
         obj.capabilities = []
-        container = SerializationHelper.find_child_element(element, "CAPABILITIES")
+        container = SerializationHelper.find_child_element(element, "CAPABILITYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

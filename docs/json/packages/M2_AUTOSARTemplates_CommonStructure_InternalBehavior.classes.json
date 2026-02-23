@@ -165,8 +165,8 @@
         }
       ],
       "attributes": {
-        "activations": {
-          "type": "ExecutableEntity",
+        "activationReasons": {
+          "type": "ExecutableEntityActivationReason",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -179,21 +179,21 @@
           "is_ref": true,
           "note": "This means that the executable entity can enter/leave the"
         },
-        "exclusiveAreaNestings": {
+        "exclusiveAreaNestingOrders": {
           "type": "ExclusiveAreaNestingOrder",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This represents the set of ExclusiveAreaNestingOrders recognized by this ExecutableEntity."
         },
-        "minimumStart": {
+        "minimumStartInterval": {
           "type": "TimeValue",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the time in seconds by which two consecutive of an ExecutableEntity are guaranteed to be"
         },
-        "reentrancyLevelEnum": {
+        "reentrancyLevel": {
           "type": "ReentrancyLevelEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
