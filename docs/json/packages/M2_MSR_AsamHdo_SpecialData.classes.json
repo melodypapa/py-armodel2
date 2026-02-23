@@ -204,9 +204,10 @@
         "gid": {
           "type": "NameToken",
           "multiplicity": "1",
-          "kind": "xml_attribute",
+          "kind": "aggr",
           "is_ref": false,
-          "note": "This attributes specifies an identifier. Gid comes from the SGML/XML-Term \"Generic Identifier\" which is the element name in XML. The role of this attribute is the same as the name of an XML - element."
+          "note": "This attributes specifies an identifier. Gid comes from the SGML/XML-Term \"Generic Identifier\" which is the element name in XML. The role of this attribute is the same as the name of an XML - element.",
+          "decorator": "xml_attribute"
         },
         "value": {
           "type": "VerbatimStringPlain",

@@ -8,7 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_Figure.classe
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import l_prefix
+from armodel.serialization.decorators import lang_prefix
 
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
@@ -61,7 +61,7 @@ class MlFigure(Paginateable):
         self.pgwide: Optional[PgwideEnum] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
     @property
-    @l_prefix("L-GRAPHIC")
+    @lang_prefix("L-GRAPHIC")
     def l_graphic(self) -> list[LGraphic]:
         """Get l_graphic with language-specific wrapper."""
         return self._l_graphic
@@ -138,11 +138,11 @@ class MlFigure(Paginateable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize l_graphic (list with l_prefix "L-GRAPHIC")
+        # Serialize l_graphic (list with lang_prefix "L-GRAPHIC")
         for item in self.l_graphic:
             serialized = SerializationHelper.serialize_item(item, "LGraphic")
             if serialized is not None:
-                # For l_prefix lists, wrap each item in the l_prefix tag
+                # For lang_prefix lists, wrap each item in the lang_prefix tag
                 wrapped = ET.Element("L-GRAPHIC")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -213,7 +213,7 @@ class MlFigure(Paginateable):
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
-        # Parse l_graphic (list with l_prefix "L-GRAPHIC")
+        # Parse l_graphic (list with lang_prefix "L-GRAPHIC")
         obj.l_graphic = []
         for child in SerializationHelper.find_all_child_elements(element, "L-GRAPHIC"):
             l_graphic_value = SerializationHelper.deserialize_by_tag(child, "LGraphic")

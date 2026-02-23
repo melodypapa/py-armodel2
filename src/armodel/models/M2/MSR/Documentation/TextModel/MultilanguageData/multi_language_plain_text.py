@@ -8,7 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import l_prefix
+from armodel.serialization.decorators import lang_prefix
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
@@ -35,7 +35,7 @@ class MultiLanguagePlainText(ARObject):
         super().__init__()
         self._l10: list[LPlainText] = []
     @property
-    @l_prefix("L-10")
+    @lang_prefix("L-10")
     def l10(self) -> list[LPlainText]:
         """Get l10 with language-specific wrapper."""
         return self._l10

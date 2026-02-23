@@ -11,7 +11,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import l_prefix
+from armodel.serialization.decorators import lang_prefix
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
@@ -38,7 +38,7 @@ class MultiLanguageOverviewParagraph(ARObject):
         super().__init__()
         self._l2: list[LOverviewParagraph] = []
     @property
-    @l_prefix("L-2")
+    @lang_prefix("L-2")
     def l2(self) -> list[LOverviewParagraph]:
         """Get l2 with language-specific wrapper."""
         return self._l2
@@ -73,11 +73,11 @@ class MultiLanguageOverviewParagraph(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize l2 (list with l_prefix "L-2")
+        # Serialize l2 (list with lang_prefix "L-2")
         for item in self.l2:
             serialized = SerializationHelper.serialize_item(item, "LOverviewParagraph")
             if serialized is not None:
-                # For l_prefix lists, wrap each item in the l_prefix tag
+                # For lang_prefix lists, wrap each item in the lang_prefix tag
                 wrapped = ET.Element("L-2")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -102,7 +102,7 @@ class MultiLanguageOverviewParagraph(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MultiLanguageOverviewParagraph, cls).deserialize(element)
 
-        # Parse l2 (list with l_prefix "L-2")
+        # Parse l2 (list with lang_prefix "L-2")
         obj.l2 = []
         for child in SerializationHelper.find_all_child_elements(element, "L-2"):
             l2_value = SerializationHelper.deserialize_by_tag(child, "LOverviewParagraph")

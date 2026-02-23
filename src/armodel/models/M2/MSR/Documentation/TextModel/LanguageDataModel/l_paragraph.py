@@ -14,7 +14,7 @@ from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.language_sp
 )
 from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization.decorators import l_prefix
+from armodel.serialization.decorators import lang_prefix
 
 
 class LParagraph(LanguageSpecific):
@@ -37,7 +37,7 @@ class LParagraph(LanguageSpecific):
         self._l3: list[LParagraph] = []
 
     @property
-    @l_prefix("L-1")
+    @lang_prefix("L-1")
     def l1(self) -> list[LParagraph]:
         """Get l1 with language-specific wrapper."""
         return self._l1
@@ -48,7 +48,7 @@ class LParagraph(LanguageSpecific):
         self._l1 = value
 
     @property
-    @l_prefix("L-2")
+    @lang_prefix("L-2")
     def l2(self) -> list[LParagraph]:
         """Get l2 with language-specific wrapper."""
         return self._l2
@@ -59,7 +59,7 @@ class LParagraph(LanguageSpecific):
         self._l2 = value
 
     @property
-    @l_prefix("L-3")
+    @lang_prefix("L-3")
     def l3(self) -> list[LParagraph]:
         """Get l3 with language-specific wrapper."""
         return self._l3

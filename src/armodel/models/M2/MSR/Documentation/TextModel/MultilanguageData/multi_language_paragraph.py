@@ -8,7 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import l_prefix
+from armodel.serialization.decorators import lang_prefix
 
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
@@ -43,7 +43,7 @@ class MultiLanguageParagraph(Paginateable):
         self.help_entry: Optional[String] = None
         self._l1: list[LParagraph] = []
     @property
-    @l_prefix("L-1")
+    @lang_prefix("L-1")
     def l1(self) -> list[LParagraph]:
         """Get l1 with language-specific wrapper."""
         return self._l1

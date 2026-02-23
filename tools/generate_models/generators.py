@@ -136,14 +136,13 @@ def generate_class_code(
                         multiplicity = attr_info["multiplicity"]
                         is_ref = attr_info.get("is_ref", False)
                         kind = attr_info.get("kind", "attribute")
+                        decorator_name = None  # Initialize decorator_name
                         attribute_types[attr_name] = {
                             "type": attr_type,
                             "multiplicity": multiplicity,
                             "is_ref": is_ref,
                             "kind": kind,
                         }
-                        if kind == "xml_attribute":
-                            has_xml_attribute = True
                         # Parse decorator field if present
                         if "decorator" in attr_info:
                             decorator_spec = attr_info["decorator"]
@@ -153,8 +152,12 @@ def generate_class_code(
                                 attribute_types[attr_name]["decorator_name"] = decorator_name
                                 attribute_types[attr_name]["decorator_params"] = params
                             else:
+                                decorator_name = decorator_spec
                                 attribute_types[attr_name]["decorator_name"] = decorator_spec
                                 attribute_types[attr_name]["decorator_params"] = None
+                        # Check if this attribute uses xml_attribute (via kind or decorator)
+                        if kind == "xml_attribute" or decorator_name == "xml_attribute":
+                            has_xml_attribute = True
                         else:
                             # Auto-detect YS→IES pattern and add xml_element_name decorator
                             # Check if attribute name ends with "ies" and multiplicity is "*"
@@ -216,18 +219,18 @@ def generate_class_code(
         atp_type = type_def.get("atp_type", None)
         if atp_type == "atpVariation":
             decorator_import += "from armodel.serialization.decorators import atp_variant\n"
-        
-        # Check if this class has l_prefix attributes
-        has_l_prefix = False
+
+        # Check if this class has lang_prefix attributes
+        has_lang_prefix = False
         if attribute_types:
             for attr_name, attr_info in attribute_types.items():
-                kind = attr_info.get("kind", "attribute")
-                if kind == "l_prefix":
-                    has_l_prefix = True
+                decorator_name = attr_info.get("decorator_name")
+                if decorator_name == "lang_prefix":
+                    has_lang_prefix = True
                     break
-        if has_l_prefix:
-            decorator_import += "from armodel.serialization.decorators import l_prefix\n"
-        
+        if has_lang_prefix:
+            decorator_import += "from armodel.serialization.decorators import lang_prefix\n"
+
         # Check if this class has language_abbr attributes
         has_language_abbr = False
         if attribute_types:
@@ -534,8 +537,8 @@ class {class_name}(ABC):
             # Get decorator_name if present
             decorator_name = attr_info.get("decorator_name")
 
-            # For xml_attribute, l_prefix, language_abbr, and xml_element_name, use private field with property
-            if kind == "xml_attribute" or kind == "l_prefix" or kind == "language_abbr" or decorator_name == "xml_element_name":
+            # For xml_attribute, lang_prefix, language_abbr, and xml_element_name, use private field with property
+            if kind == "xml_attribute" or decorator_name == "xml_attribute" or decorator_name == "lang_prefix" or kind == "language_abbr" or decorator_name == "xml_element_name":
                 private_name = f"_{python_name}"
                 code += f"    {private_name}: {python_type}\n"
             else:
@@ -578,8 +581,8 @@ class {class_name}(ABC):
             # Get decorator_name if present
             decorator_name = attr_info.get("decorator_name")
             
-            # For xml_attribute, l_prefix, language_abbr, and xml_element_name, use private field
-            if kind == "xml_attribute" or kind == "l_prefix" or kind == "language_abbr" or decorator_name == "xml_element_name" or decorator_name == "ref_conditional":
+            # For xml_attribute, lang_prefix, language_abbr, xml_element_name, and ref_conditional, use private field
+            if kind == "xml_attribute" or decorator_name == "xml_attribute" or decorator_name == "lang_prefix" or kind == "language_abbr" or decorator_name == "xml_element_name" or decorator_name == "ref_conditional":
                 private_name = f"_{python_name}"
                 attr_code = f"        self.{private_name}: {python_type} = {initial_value}\n"
                 code += attr_code
@@ -631,6 +634,37 @@ class {class_name}(ABC):
         self.{private_name} = value
 
 '''
+            elif decorator_name == "xml_attribute":
+                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
+                private_name = f"_{python_name}"
+                params = attr_info.get("decorator_params", "")
+                # Generate property with xml_attribute decorator
+                if params:
+                    code += f'''    @property
+    @xml_attribute("{params}")
+    def {python_name}(self) -> {attr_type}:
+        """Get {python_name} XML attribute."""
+        return self.{private_name}
+
+    @{python_name}.setter
+    def {python_name}(self, value: {attr_type}) -> None:
+        """Set {python_name} XML attribute."""
+        self.{private_name} = value
+
+'''
+                else:
+                    code += f'''    @property
+    @xml_attribute
+    def {python_name}(self) -> {attr_type}:
+        """Get {python_name} XML attribute."""
+        return self.{private_name}
+
+    @{python_name}.setter
+    def {python_name}(self, value: {attr_type}) -> None:
+        """Set {python_name} XML attribute."""
+        self.{private_name} = value
+
+'''
             elif decorator_name == "xml_element_name":
                 python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
                 private_name = f"_{python_name}"
@@ -669,18 +703,16 @@ class {class_name}(ABC):
         self.{private_name} = value
 
 '''
-            elif kind == "l_prefix":
+            elif decorator_name == "lang_prefix":
                 python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
                 private_name = f"_{python_name}"
                 # Determine Python type for this attribute
                 python_type = get_python_type(attr_type, multiplicity, package_data, is_ref, kind)
-                # Extract the suffix from attribute name (e.g., "l10" → "10", "lGraphic" → "Graphic")
-                # Convert to XML tag format (e.g., "L-10", "L-GRAPHIC")
-                suffix = attr_name[1:]  # Remove the 'l' prefix
-                l_prefix_tag = f"L-{suffix.upper()}"  # Convert to uppercase for AUTOSAR XML format
-                # Generate property with l_prefix decorator
+                # Extract the tag from decorator_params (e.g., "L-1", "L-10", "L-GRAPHIC")
+                lang_prefix_tag = attr_info.get("decorator_params", "")
+                # Generate property with lang_prefix decorator
                 code += f'''    @property
-    @l_prefix("{l_prefix_tag}")
+    @lang_prefix("{lang_prefix_tag}")
     def {python_name}(self) -> {python_type}:
         """Get {python_name} with language-specific wrapper."""
         return self.{private_name}
@@ -712,9 +744,9 @@ class {class_name}(ABC):
             class_name, attribute_types, parent_class, package_data
         )
         code += serialize_code + deserialize_code
-    elif attribute_types and any(attr_info.get("kind") == "l_prefix" for attr_info in attribute_types.values()):
-        # Classes with l_prefix attributes need custom serialize/deserialize methods
-        # because they use l_prefix decorator handling
+    elif attribute_types and any(attr_info.get("decorator_name") == "lang_prefix" for attr_info in attribute_types.values()):
+        # Classes with lang_prefix attributes need custom serialize/deserialize methods
+        # because they use lang_prefix decorator handling
         if parent_class and parent_class != "ARObject":
             # Parent class doesn't use reflection, so we need custom methods
             serialize_code = _generate_serialize_method(
@@ -838,10 +870,16 @@ def _generate_deserialize_method(
             decorator_name = attr_info.get("decorator_name")
 
             # Handle xml_attribute - parse from XML attributes, not child elements
-            if kind == "xml_attribute":
-                attribute_value = f'element.attrib["{xml_tag}"]'
+            if kind == "xml_attribute" or decorator_name == "xml_attribute":
+                # Get decorator params if present for custom XML attribute name
+                decorator_params = attr_info.get("decorator_params", None)
+                if decorator_params:
+                    xml_attr_tag = decorator_params  # Use custom attribute name from decorator
+                else:
+                    xml_attr_tag = xml_tag  # Use auto-converted name
+                attribute_value = f'element.attrib["{xml_attr_tag}"]'
                 code += f'''        # Parse {python_name} from XML attribute
-        if "{xml_tag}" in element.attrib:
+        if "{xml_attr_tag}" in element.attrib:
             {_generate_value_extraction_code_for_attribute(effective_type, attribute_value, package_data, python_name, is_ref)}
             obj.{python_name} = {python_name}_value
 
@@ -1010,14 +1048,13 @@ def _generate_deserialize_method(
 '''
                 else:
                     # Non-container list type (multiple instances of the same element)
-                    # Check if this is an l_prefix attribute
-                    if kind == "l_prefix":
-                        # l_prefix attributes use the l_prefix tag (e.g., L-1, L-10)
-                        suffix = attr_name[1:]  # Remove the 'l' prefix
-                        l_prefix_tag = f"L-{suffix.upper()}"  # Convert to uppercase
-                        code += f'''        # Parse {python_name} (list with l_prefix "{l_prefix_tag}")
+                    # Check if this is a lang_prefix attribute
+                    if decorator_name == "lang_prefix":
+                        # lang_prefix attributes use the tag from decorator_params (e.g., L-1, L-10)
+                        lang_prefix_tag = attr_info.get("decorator_params", "")
+                        code += f'''        # Parse {python_name} (list with lang_prefix "{lang_prefix_tag}")
         obj.{python_name} = []
-        for child in SerializationHelper.find_all_child_elements(element, "{l_prefix_tag}"):
+        for child in SerializationHelper.find_all_child_elements(element, "{lang_prefix_tag}"):
             {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
             obj.{python_name}.append({python_name}_value)
 
@@ -1109,23 +1146,23 @@ def _generate_value_extraction_code(
         # Check if the type has l_prefix attributes
         # If so, use _deserialize_with_type instead of _deserialize_by_tag
         # because the XML tag is a wrapper (like USED-LANGUAGES) not a class name
-        has_l_prefix = False
+        has_lang_prefix = False
         for package_path, data in package_data.items():
             if "classes" in data:
                 for cls in data["classes"]:
                     if cls["name"] == attr_type:
-                        # Check if any attribute has kind == "l_prefix"
+                        # Check if any attribute has decorator_name == "lang_prefix"
                         if "attributes" in cls:
                             for attr_info in cls["attributes"].values():
-                                if attr_info.get("kind") == "l_prefix":
-                                    has_l_prefix = True
+                                if attr_info.get("decorator_name") == "lang_prefix":
+                                    has_lang_prefix = True
                                     break
                         break
-                if has_l_prefix:
+                if has_lang_prefix:
                     break
 
-        if has_l_prefix:
-            # Use _deserialize_with_type for types with l_prefix attributes
+        if has_lang_prefix:
+            # Use _deserialize_with_type for types with lang_prefix attributes
             # This deserializes the element directly as the specified type
             return f'''{value_var} = SerializationHelper.deserialize_with_type({element_var}, "{attr_type}")'''
         elif kind == "iref":
@@ -2373,10 +2410,16 @@ def _generate_serialize_method(
             decorator_name = attr_info.get("decorator_name")
 
             # Handle xml_attribute - serialize as XML attribute, not child element
-            if kind == "xml_attribute":
+            if kind == "xml_attribute" or decorator_name == "xml_attribute":
+                # Get decorator params if present for custom XML attribute name
+                decorator_params = attr_info.get("decorator_params", None)
+                if decorator_params:
+                    xml_attr_tag = decorator_params  # Use custom attribute name from decorator
+                else:
+                    xml_attr_tag = xml_tag  # Use auto-converted name
                 code += f'''        # Serialize {python_name} as XML attribute
         if self.{python_name} is not None:
-            elem.attrib["{xml_tag}"] = str(self.{python_name})
+            elem.attrib["{xml_attr_tag}"] = str(self.{python_name})
 
 '''
             elif kind == "language_abbr":
@@ -2603,16 +2646,15 @@ def _generate_serialize_method(
                 else:
                     # Non-container list type (multiple instances of the same element)
                     # Check if this is an l_prefix attribute
-                    if kind == "l_prefix":
-                        # l_prefix attributes use the l_prefix tag (e.g., L-1, L-10)
-                        suffix = attr_name[1:]  # Remove the 'l' prefix
-                        l_prefix_tag = f"L-{suffix.upper()}"  # Convert to uppercase
-                        code += f'''        # Serialize {python_name} (list with l_prefix "{l_prefix_tag}")
+                    if decorator_name == "lang_prefix":
+                        # lang_prefix attributes use the tag from decorator_params (e.g., L-1, L-10)
+                        lang_prefix_tag = attr_info.get("decorator_params", "")
+                        code += f'''        # Serialize {python_name} (list with lang_prefix "{lang_prefix_tag}")
         for item in self.{python_name}:
             serialized = SerializationHelper.serialize_item(item, "{effective_type}")
             if serialized is not None:
-                # For l_prefix lists, wrap each item in the l_prefix tag
-                wrapped = ET.Element("{l_prefix_tag}")
+                # For lang_prefix lists, wrap each item in the lang_prefix tag
+                wrapped = ET.Element("{lang_prefix_tag}")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -2746,11 +2788,20 @@ def _generate_serialize_method_for_atp_variant(
             if attr_type.startswith("any ("):
                 effective_type = "Any"
 
+            # Get decorator_name if present
+            decorator_name = attr_info.get("decorator_name")
+
             # Handle xml_attribute - serialize as XML attribute, not child element
-            if kind == "xml_attribute":
+            if kind == "xml_attribute" or decorator_name == "xml_attribute":
+                # Get decorator params if present for custom XML attribute name
+                decorator_params = attr_info.get("decorator_params", None)
+                if decorator_params:
+                    xml_attr_tag = decorator_params  # Use custom attribute name from decorator
+                else:
+                    xml_attr_tag = xml_tag  # Use auto-converted name
                 code += f'''        # Serialize {python_name} as XML attribute
         if self.{python_name} is not None:
-            inner_elem.attrib["{xml_tag}"] = str(self.{python_name})
+            inner_elem.attrib["{xml_attr_tag}"] = str(self.{python_name})
 
 '''
             elif kind == "language_abbr":
@@ -2847,14 +2898,13 @@ def _generate_serialize_method_for_atp_variant(
 
 '''
                 else:
-                    if kind == "l_prefix":
-                        suffix = attr_name[1:]
-                        l_prefix_tag = f"L-{suffix.upper()}"
-                        code += f'''        # Serialize {python_name} (list with l_prefix "{l_prefix_tag}")
+                    if decorator_name == "lang_prefix":
+                        lang_prefix_tag = attr_info.get("decorator_params", "")
+                        code += f'''        # Serialize {python_name} (list with lang_prefix "{lang_prefix_tag}")
         for item in self.{python_name}:
             serialized = SerializationHelper.serialize_item(item, "{effective_type}")
             if serialized is not None:
-                wrapped = ET.Element("{l_prefix_tag}")
+                wrapped = ET.Element("{lang_prefix_tag}")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -2989,10 +3039,19 @@ def _generate_deserialize_method_for_atp_variant(
             if attr_type.startswith("any ("):
                 effective_type = "Any"
 
+            # Get decorator_name if present
+            decorator_name = attr_info.get("decorator_name")
+
             # Handle xml_attribute - parse from XML attribute
-            if kind == "xml_attribute":
+            if kind == "xml_attribute" or decorator_name == "xml_attribute":
+                # Get decorator params if present for custom XML attribute name
+                decorator_params = attr_info.get("decorator_params", None)
+                if decorator_params:
+                    xml_attr_tag = decorator_params  # Use custom attribute name from decorator
+                else:
+                    xml_attr_tag = xml_tag  # Use auto-converted name
                 code += f'''        # Parse {python_name} from XML attribute
-        {python_name}_value = inner_elem.get("{xml_tag}")
+        {python_name}_value = inner_elem.get("{xml_attr_tag}")
         if {python_name}_value is not None:
             {_generate_value_extraction_code(effective_type, "{python_name}_value", package_data, python_name, is_ref, kind)}
             obj.{python_name} = {python_name}_value
@@ -3157,12 +3216,11 @@ def _generate_deserialize_method_for_atp_variant(
 '''
                         code += ref_code
                 else:
-                    if kind == "l_prefix":
-                        suffix = attr_name[1:]
-                        l_prefix_tag = f"L-{suffix.upper()}"
-                        code += f'''        # Parse {python_name} (list with l_prefix "{l_prefix_tag}")
+                    if decorator_name == "lang_prefix":
+                        lang_prefix_tag = attr_info.get("decorator_params", "")
+                        code += f'''        # Parse {python_name} (list with lang_prefix "{lang_prefix_tag}")
         obj.{python_name} = []
-        for child in SerializationHelper.find_all_child_elements(inner_elem, "{l_prefix_tag}"):
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "{lang_prefix_tag}"):
             {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
             obj.{python_name}.append({python_name}_value)
 

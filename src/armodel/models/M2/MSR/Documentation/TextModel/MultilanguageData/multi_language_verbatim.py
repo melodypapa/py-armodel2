@@ -8,7 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import l_prefix
+from armodel.serialization.decorators import lang_prefix
 
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
@@ -54,7 +54,7 @@ class MultiLanguageVerbatim(Paginateable):
         self._l5: list[LVerbatim] = []
         self.pgwide: Optional[PgwideEnum] = None
     @property
-    @l_prefix("L-5")
+    @lang_prefix("L-5")
     def l5(self) -> list[LVerbatim]:
         """Get l5 with language-specific wrapper."""
         return self._l5
