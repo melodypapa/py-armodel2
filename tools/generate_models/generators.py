@@ -8,6 +8,7 @@ from ._common import (
     to_snake_case,
     to_autosar_xml_format,
 )
+from armodel.serialization.name_converter import NameConverter
 from .type_utils import (
     detect_circular_import,
     get_python_type,
@@ -1177,9 +1178,11 @@ def _generate_deserialize_method(
                     if decorator_name == "ref_conditional":
                         # Use ref_conditional pattern: container stays as-is, each item wrapped in -REF-CONDITIONAL
                         container_tag = attr_info.get("decorator_params", xml_tag)
-                        singular = container_tag[:-1]  # Remove trailing S
-                        conditional_tag = f"{singular}-REF-CONDITIONAL"
-                        ref_tag = f"{singular}-REF"
+                        # Use the type's XML tag for wrapper/reference generation (handles abbreviated container tags)
+                        type_xml_tag = NameConverter.to_xml_tag(attr_type)
+                        conditional_tag = f"{type_xml_tag}-REF-CONDITIONAL"
+                        ref_tag = f"{type_xml_tag}-REF"
+                        inner_tags = []
                     elif decorator_name == "xml_element_name":
                         # Parse decorator params: can be single value or multi-level path separated by '/'
                         # Examples: "PROVIDED-ENTRYS" or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
@@ -2991,9 +2994,10 @@ def _generate_serialize_method(
                     if decorator_name == "ref_conditional":
                         # Use ref_conditional pattern: container stays as-is, each item wrapped in -REF-CONDITIONAL
                         container_tag = attr_info.get("decorator_params", xml_tag)
-                        singular = container_tag[:-1]  # Remove trailing S
-                        conditional_tag = f"{singular}-REF-CONDITIONAL"
-                        ref_tag = f"{singular}-REF"
+                        # Use the type's XML tag for wrapper/reference generation (handles abbreviated container tags)
+                        type_xml_tag = NameConverter.to_xml_tag(attr_type)
+                        conditional_tag = f"{type_xml_tag}-REF-CONDITIONAL"
+                        ref_tag = f"{type_xml_tag}-REF"
                     elif decorator_name == "xml_element_name":
                         # Parse decorator params: can be single value or multi-level path separated by '/'
                         # Examples: "PROVIDED-ENTRYS" or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"

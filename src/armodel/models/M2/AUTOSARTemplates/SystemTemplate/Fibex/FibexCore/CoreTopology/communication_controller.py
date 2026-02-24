@@ -9,6 +9,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -18,7 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.serialization import SerializationHelper
 
 
-class CommunicationController(ARObject, ABC):
+class CommunicationController(Identifiable, ABC):
     """AUTOSAR CommunicationController."""
 
     @property
@@ -30,11 +33,11 @@ class CommunicationController(ARObject, ABC):
         """
         return True
 
-    wake_up_by: Optional[Boolean]
+    wake_up_by_controller_supported: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize CommunicationController."""
         super().__init__()
-        self.wake_up_by: Optional[Boolean] = None
+        self.wake_up_by_controller_supported: Optional[Boolean] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CommunicationController to XML element.
@@ -60,12 +63,12 @@ class CommunicationController(ARObject, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize wake_up_by
-        if self.wake_up_by is not None:
-            serialized = SerializationHelper.serialize_item(self.wake_up_by, "Boolean")
+        # Serialize wake_up_by_controller_supported
+        if self.wake_up_by_controller_supported is not None:
+            serialized = SerializationHelper.serialize_item(self.wake_up_by_controller_supported, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("WAKE-UP-BY")
+                wrapped = ET.Element("WAKE-UP-BY-CONTROLLER-SUPPORTED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -89,11 +92,11 @@ class CommunicationController(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommunicationController, cls).deserialize(element)
 
-        # Parse wake_up_by
-        child = SerializationHelper.find_child_element(element, "WAKE-UP-BY")
+        # Parse wake_up_by_controller_supported
+        child = SerializationHelper.find_child_element(element, "WAKE-UP-BY-CONTROLLER-SUPPORTED")
         if child is not None:
-            wake_up_by_value = child.text
-            obj.wake_up_by = wake_up_by_value
+            wake_up_by_controller_supported_value = child.text
+            obj.wake_up_by_controller_supported = wake_up_by_controller_supported_value
 
         return obj
 
@@ -108,8 +111,8 @@ class CommunicationControllerBuilder(BuilderBase, ABC):
         self._obj: CommunicationController = CommunicationController()
 
 
-    def with_wake_up_by(self, value: Optional[Boolean]) -> "CommunicationControllerBuilder":
-        """Set wake_up_by attribute.
+    def with_wake_up_by_controller_supported(self, value: Optional[Boolean]) -> "CommunicationControllerBuilder":
+        """Set wake_up_by_controller_supported attribute.
 
         Args:
             value: Value to set
@@ -119,7 +122,7 @@ class CommunicationControllerBuilder(BuilderBase, ABC):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.wake_up_by = value
+        self._obj.wake_up_by_controller_supported = value
         return self
 
 

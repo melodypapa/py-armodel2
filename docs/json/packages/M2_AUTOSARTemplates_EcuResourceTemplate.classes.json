@@ -55,7 +55,7 @@
         "hwElementConnections": {
           "type": "HwElementConnector",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents one particular connection between two elements. atpVariation"
         },
@@ -118,7 +118,7 @@
         "hwAttributeValues": {
           "type": "HwAttributeValue",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This aggregation represents a particular hardware value. atpVariation"
         },

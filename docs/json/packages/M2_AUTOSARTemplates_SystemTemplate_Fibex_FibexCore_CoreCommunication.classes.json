@@ -1529,7 +1529,7 @@
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": "atpPrototype",
-      "parent": null,
+      "parent": "Identifiable",
       "bases": [
         "ARObject",
         "Identifiable",
@@ -1553,7 +1553,7 @@
         }
       ],
       "attributes": {
-        "packingByte": {
+        "packingByteOrder": {
           "type": "ByteOrderEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -1574,7 +1574,7 @@
           "is_ref": false,
           "note": "This attribute describes the bitposition of a Pdu within a"
         },
-        "update": {
+        "updateIndicationBitPosition": {
           "type": "Integer",
           "multiplicity": "0..1",
           "kind": "attribute",
