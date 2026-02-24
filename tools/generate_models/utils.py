@@ -134,4 +134,4 @@ def create_directory_structure(
                     for subpkg in sorted(subpackages):
                         init_content += f'    "{subpkg}",\n'
                     init_content += "]\n"
-                parent_init.write_text(init_content)
+                parent_init.write_text(init_content, encoding="utf-8")

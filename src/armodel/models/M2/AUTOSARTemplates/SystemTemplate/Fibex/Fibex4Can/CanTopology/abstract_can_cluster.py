@@ -113,67 +113,6 @@ class AbstractCanCluster(CommunicationCluster, ABC):
                     wrapped.append(child)
                 inner_elem.append(wrapped)
 
-        # Serialize baudrate
-        if self.baudrate is not None:
-            serialized = SerializationHelper.serialize_item(self.baudrate, "PositiveUnlimitedInteger")
-            if serialized is not None:
-                wrapped = ET.Element("BAUDRATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
-
-        # Serialize physical_channels (list from container "PHYSICAL-CHANNELS")
-        if self.physical_channels:
-            container = ET.Element("PHYSICAL-CHANNELS")
-            for item in self.physical_channels:
-                # Complex object type
-                if hasattr(item, "serialize"):
-                    container.append(item.serialize())
-            inner_elem.append(container)
-
-        # Serialize protocol_name
-        if self.protocol_name is not None:
-            serialized = SerializationHelper.serialize_item(self.protocol_name, "String")
-            if serialized is not None:
-                wrapped = ET.Element("PROTOCOL-NAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
-
-        # Serialize protocol_version
-        if self.protocol_version is not None:
-            serialized = SerializationHelper.serialize_item(self.protocol_version, "String")
-            if serialized is not None:
-                wrapped = ET.Element("PROTOCOL-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
-
-        # Serialize speed
-        if self.speed is not None:
-            serialized = SerializationHelper.serialize_item(self.speed, "Integer")
-            if serialized is not None:
-                wrapped = ET.Element("SPEED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
-
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "AbstractCanCluster")
         elem.append(wrapped)
@@ -216,39 +155,6 @@ class AbstractCanCluster(CommunicationCluster, ABC):
         if child is not None:
             can_xl_baudrate_value = child.text
             obj.can_xl_baudrate = can_xl_baudrate_value
-
-        # Parse baudrate
-        child = SerializationHelper.find_child_element(inner_elem, "BAUDRATE")
-        if child is not None:
-            baudrate_value = child.text
-            obj.baudrate = baudrate_value
-
-        # Parse physical_channels (list from container "PHYSICAL-CHANNELS")
-        obj.physical_channels = []
-        container = SerializationHelper.find_child_element(inner_elem, "PHYSICAL-CHANNELS")
-        if container is not None:
-            for child in container:
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.physical_channels.append(child_value)
-
-        # Parse protocol_name
-        child = SerializationHelper.find_child_element(inner_elem, "PROTOCOL-NAME")
-        if child is not None:
-            protocol_name_value = child.text
-            obj.protocol_name = protocol_name_value
-
-        # Parse protocol_version
-        child = SerializationHelper.find_child_element(inner_elem, "PROTOCOL-VERSION")
-        if child is not None:
-            protocol_version_value = child.text
-            obj.protocol_version = protocol_version_value
-
-        # Parse speed
-        child = SerializationHelper.find_child_element(inner_elem, "SPEED")
-        if child is not None:
-            speed_value = child.text
-            obj.speed = speed_value
 
         return obj
 
