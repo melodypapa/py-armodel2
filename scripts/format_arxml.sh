@@ -26,6 +26,7 @@ OUTPUT_DIR="data/arxml"
 VERBOSE=false
 DRY_RUN=false
 ENCODING="UTF-8"
+PRESET=""
 
 # Parse arguments
 FILES_TO_FORMAT=()
@@ -43,6 +44,20 @@ while [[ $# -gt 0 ]]; do
             ENCODING="$2"
             shift 2
             ;;
+        --input|-i)
+            INPUT_DIR="$2"
+            shift 2
+            ;;
+        --output|-o)
+            OUTPUT_DIR="$2"
+            shift 2
+            ;;
+        --validated)
+            INPUT_DIR="demos/validated"
+            OUTPUT_DIR="data/validated"
+            PRESET="validated"
+            shift
+            ;;
         --help|-h)
             echo "Usage: $0 [OPTIONS] [files...]"
             echo ""
@@ -50,13 +65,18 @@ while [[ $# -gt 0 ]]; do
             echo "  --verbose, -v       Show detailed error messages"
             echo "  --dry-run           List files without formatting"
             echo "  --encoding, -e      Set output encoding (default: UTF-8)"
+            echo "  --input, -i DIR     Set input directory (default: demos/arxml)"
+            echo "  --output, -o DIR    Set output directory (default: data/arxml)"
+            echo "  --validated         Use demos/validated → data/validated"
             echo "  --help, -h          Show this help message"
             echo ""
             echo "Examples:"
-            echo "  $0                                    # Format all files"
+            echo "  $0                                    # Format all files from demos/arxml"
             echo "  $0 BswMMode.arxml CanSystem.arxml    # Format specific files"
             echo "  $0 --verbose                         # Format all with error details"
             echo "  $0 --dry-run                         # List files without formatting"
+            echo "  $0 --validated                       # Format from demos/validated"
+            echo "  $0 --input demos/validated --output data/validated  # Custom directories"
             echo "  $0 --encoding UTF-8                  # Use UTF-8 encoding"
             exit 0
             ;;

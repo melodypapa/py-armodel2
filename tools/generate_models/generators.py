@@ -213,9 +213,9 @@ def generate_class_code(
         if has_xml_element_name:
             decorator_import += "from armodel.serialization.decorators import xml_element_name\n"
 
-        # Check if this class uses atpVariation pattern
-        atp_type = type_def.get("atp_type", None)
-        if atp_type == "atpVariation":
+        # Check if this class uses atpVariation pattern via decorator key
+        class_decorator = type_def.get("decorator", None)
+        if class_decorator == "atp_variant":
             decorator_import += "from armodel.serialization.decorators import atp_variant\n"
 
         # Check if this class has lang_prefix attributes
@@ -605,9 +605,9 @@ class {class_name}(ABC):
         if not circular_imports:
             code += "\n\n"
 
-        # Add @atp_variant decorator if this class uses atpVariation pattern
-        atp_type = type_def.get("atp_type", None)
-        if atp_type == "atpVariation":
+        # Add @atp_variant decorator if this class has decorator key
+        class_decorator = type_def.get("decorator", None)
+        if class_decorator == "atp_variant":
             code += """@atp_variant()
 
 """
@@ -904,7 +904,7 @@ class {class_name}(ABC):
         # ARObject uses reflection-based serialization framework
         # Add serialize(), deserialize(), and helper methods
         code += _generate_ar_object_methods()
-    elif type_def.get("atp_type") == "atpVariation":
+    elif type_def.get("decorator") == "atp_variant":
         # atpVariant classes use custom serialize/deserialize methods
         # that wrap attributes in VARIANTS/CONDITIONAL structure
         serialize_code = _generate_serialize_method_for_atp_variant(

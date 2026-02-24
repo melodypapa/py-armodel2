@@ -657,7 +657,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Specifies that this parameter\u2019s value is used, together"
+          "note": "Specifies that this parameter’s value is used, together"
         },
         "withAuto": {
           "type": "Boolean",
@@ -957,7 +957,8 @@
           "standard_release": "R23-11"
         }
       ],
-      "attributes": {}
+      "attributes": {},
+      "decorator": "atp_variant"
     },
     {
       "name": "EcucMultilineStringParamDef",
@@ -994,7 +995,8 @@
           "standard_release": "R23-11"
         }
       ],
-      "attributes": {}
+      "attributes": {},
+      "decorator": "atp_variant"
     },
     {
       "name": "EcucLinkerSymbolDef",
@@ -1031,7 +1033,8 @@
           "standard_release": "R23-11"
         }
       ],
-      "attributes": {}
+      "attributes": {},
+      "decorator": "atp_variant"
     },
     {
       "name": "EcucFunctionNameDef",
@@ -1068,7 +1071,8 @@
           "standard_release": "R23-11"
         }
       ],
-      "attributes": {}
+      "attributes": {},
+      "decorator": "atp_variant"
     },
     {
       "name": "EcucEnumerationParamDef",
@@ -1545,14 +1549,14 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The context in the AUTOSAR Metamodel to which\u2019 this"
+          "note": "The context in the AUTOSAR Metamodel to which’ this"
         },
         "destinationType": {
           "type": "String",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The type in the AUTOSAR Metamodel to which\u2019 instance"
+          "note": "The type in the AUTOSAR Metamodel to which’ instance"
         }
       }
     },
@@ -1761,7 +1765,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Allows to define configuration items that are calculated based on the value of \u2022 other parameter values \u2022 elements (attributes/classes) defined in other AUTOSAR templates such as System template and SW component template",
+      "note": "Allows to define configuration items that are calculated based on the value of • other parameter values • elements (attributes/classes) defined in other AUTOSAR templates such as System template and SW component template",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_ECUConfiguration.pdf",

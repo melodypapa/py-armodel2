@@ -110,7 +110,8 @@
           "is_ref": true,
           "note": "MacMulticastGroup that is defined for the Subnet"
         }
-      }
+      },
+      "decorator": "atp_variant"
     },
     {
       "name": "MacMulticastGroup",
@@ -593,7 +594,8 @@
           "is_ref": false,
           "note": "This attribute specifies time when an unexpected link is evaluated as link down and indicated to the communication stack."
         }
-      }
+      },
+      "decorator": "atp_variant"
     },
     {
       "name": "EthernetCommunicationConnector",
@@ -2724,7 +2726,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Enables (TRUE) or disables (FALSE) support of Nagle\u2019s"
+          "note": "Enables (TRUE) or disables (FALSE) support of Nagle’s"
         },
         "tcpReceiveWindowMax": {
           "type": "PositiveInteger",
@@ -3354,7 +3356,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Indicates if Nagle\u2019s Algorithm is used."
+          "note": "Indicates if Nagle’s Algorithm is used."
         },
         "receiveWindowMin": {
           "type": "PositiveInteger",

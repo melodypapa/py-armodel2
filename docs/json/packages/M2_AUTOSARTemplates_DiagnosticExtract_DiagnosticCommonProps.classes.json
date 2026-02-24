@@ -104,7 +104,8 @@
           "is_ref": false,
           "note": "Select type of Event Combination support."
         }
-      }
+      },
+      "decorator": "atp_variant"
     }
   ]
 }

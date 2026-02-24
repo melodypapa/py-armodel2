@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCo
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import atp_variant
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -55,7 +54,7 @@ class CommunicationCluster(ARElement, ABC):
         self.speed: Optional[Integer] = None
 
     def serialize(self) -> ET.Element:
-        """Serialize CommunicationCluster to XML element with atp_variant wrapper.
+        """Serialize CommunicationCluster to XML element.
 
         Returns:
             xml.etree.ElementTree.Element representing this object
@@ -78,13 +77,11 @@ class CommunicationCluster(ARElement, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Create inner element to hold attributes before wrapping
-        inner_elem = ET.Element("INNER")
-
         # Serialize baudrate
         if self.baudrate is not None:
             serialized = SerializationHelper.serialize_item(self.baudrate, "PositiveUnlimitedInteger")
             if serialized is not None:
+                # Wrap with correct tag
                 wrapped = ET.Element("BAUDRATE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -92,35 +89,23 @@ class CommunicationCluster(ARElement, ABC):
                         wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
-                inner_elem.append(wrapped)
+                elem.append(wrapped)
 
-        # Serialize physical_channels (list from container "PHYSICAL-CHANNELS")
+        # Serialize physical_channels (list to container "PHYSICAL-CHANNELS")
         if self.physical_channels:
-            container = ET.Element("PHYSICAL-CHANNELS")
+            wrapper = ET.Element("PHYSICAL-CHANNELS")
             for item in self.physical_channels:
-                if is_ref:
-                    # For reference lists, serialize as reference
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                elif is_primitive_type("PhysicalChannel", package_data):
-                    # Simple primitive type
-                    child = ET.Element("PHYSICAL-CHANNEL")
-                    child.text = str(item)
-                    container.append(child)
-                elif is_enum_type("PhysicalChannel", package_data):
-                    # Enum type - use serialize method
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                else:
-                    # Complex object type
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-            inner_elem.append(container)
+                serialized = SerializationHelper.serialize_item(item, "PhysicalChannel")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
 
         # Serialize protocol_name
         if self.protocol_name is not None:
             serialized = SerializationHelper.serialize_item(self.protocol_name, "String")
             if serialized is not None:
+                # Wrap with correct tag
                 wrapped = ET.Element("PROTOCOL-NAME")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -128,12 +113,13 @@ class CommunicationCluster(ARElement, ABC):
                         wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
-                inner_elem.append(wrapped)
+                elem.append(wrapped)
 
         # Serialize protocol_version
         if self.protocol_version is not None:
             serialized = SerializationHelper.serialize_item(self.protocol_version, "String")
             if serialized is not None:
+                # Wrap with correct tag
                 wrapped = ET.Element("PROTOCOL-VERSION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -141,12 +127,13 @@ class CommunicationCluster(ARElement, ABC):
                         wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
-                inner_elem.append(wrapped)
+                elem.append(wrapped)
 
         # Serialize speed
         if self.speed is not None:
             serialized = SerializationHelper.serialize_item(self.speed, "Integer")
             if serialized is not None:
+                # Wrap with correct tag
                 wrapped = ET.Element("SPEED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -154,17 +141,13 @@ class CommunicationCluster(ARElement, ABC):
                         wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
-                inner_elem.append(wrapped)
-
-        # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
-        wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "CommunicationCluster")
-        elem.append(wrapped)
+                elem.append(wrapped)
 
         return elem
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CommunicationCluster":
-        """Deserialize XML element to CommunicationCluster object with atp_variant unwrapping.
+        """Deserialize XML element to CommunicationCluster object.
 
         Args:
             element: XML element to deserialize from
@@ -175,60 +158,36 @@ class CommunicationCluster(ARElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommunicationCluster, cls).deserialize(element)
 
-        # Unwrap atp_variant VARIANTS/CONDITIONAL structure
-        inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "CommunicationCluster")
-        if inner_elem is None:
-            # No wrapper structure found, return object with default values
-            return obj
-
         # Parse baudrate
-        child = SerializationHelper.find_child_element(inner_elem, "BAUDRATE")
+        child = SerializationHelper.find_child_element(element, "BAUDRATE")
         if child is not None:
             baudrate_value = child.text
             obj.baudrate = baudrate_value
 
         # Parse physical_channels (list from container "PHYSICAL-CHANNELS")
         obj.physical_channels = []
-        container = SerializationHelper.find_child_element(inner_elem, "PHYSICAL-CHANNELS")
+        container = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNELS")
         if container is not None:
             for child in container:
-                if is_ref:
-                    # Use the child_tag from decorator if specified to match specific child tag
-                    if child_tag:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "None":
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                    else:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("PhysicalChannel", package_data):
-                    child_value = child.text
-                elif is_enum_type("PhysicalChannel", package_data):
-                    child_value = PhysicalChannel.deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.physical_channels.append(child_value)
 
         # Parse protocol_name
-        child = SerializationHelper.find_child_element(inner_elem, "PROTOCOL-NAME")
+        child = SerializationHelper.find_child_element(element, "PROTOCOL-NAME")
         if child is not None:
             protocol_name_value = child.text
             obj.protocol_name = protocol_name_value
 
         # Parse protocol_version
-        child = SerializationHelper.find_child_element(inner_elem, "PROTOCOL-VERSION")
+        child = SerializationHelper.find_child_element(element, "PROTOCOL-VERSION")
         if child is not None:
             protocol_version_value = child.text
             obj.protocol_version = protocol_version_value
 
         # Parse speed
-        child = SerializationHelper.find_child_element(inner_elem, "SPEED")
+        child = SerializationHelper.find_child_element(element, "SPEED")
         if child is not None:
             speed_value = child.text
             obj.speed = speed_value

@@ -6,6 +6,7 @@
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": "atpVariation",
+      "decorator": "atp_variant",
       "parent": null,
       "bases": [
         "ARElement",
@@ -135,6 +136,7 @@
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": "atpVariation",
+      "decorator": "atp_variant",
       "parent": "AbstractCanCluster",
       "bases": [
         "ARElement",
@@ -236,6 +238,7 @@
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": "atpVariation",
+      "decorator": "atp_variant",
       "parent": null,
       "bases": [
         "ARObject",

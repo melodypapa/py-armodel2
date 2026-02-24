@@ -266,9 +266,10 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Number of bits used by the node to transmit the \u2019idle\u2019 part"
+          "note": "Number of bits used by the node to transmit the ’idle’ part"
         }
-      }
+      },
+      "decorator": "atp_variant"
     },
     {
       "name": "FlexrayCommunicationController",
@@ -503,7 +504,8 @@
           "is_ref": false,
           "note": "Number of repetitions of the Tx-wakeup symbol to be sent"
         }
-      }
+      },
+      "decorator": "atp_variant"
     },
     {
       "name": "FlexrayFifoConfiguration",
