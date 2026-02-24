@@ -46,8 +46,7 @@ class CanCluster(AbstractCanCluster):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
-        # Parent class also has atp_variant pattern
-        # Call parent's serialize to get attributes
+        # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanCluster, self).serialize()
 
         # Copy all attributes from parent element
@@ -57,13 +56,9 @@ class CanCluster(AbstractCanCluster):
         if parent_elem.text:
             elem.text = parent_elem.text
 
-        # Copy children EXCEPT for parent's VARIANTS wrapper
-        # (other children like SHORT-NAME from non-atp_variant ancestors should be kept)
-        parent_variants_tag = SerializationHelper.get_atp_variant_wrapper_tag("AbstractCanCluster")
+        # Copy all children from parent element
         for child in parent_elem:
-            child_tag = SerializationHelper.strip_namespace(child.tag)
-            if child_tag != parent_variants_tag:
-                elem.append(child)
+            elem.append(child)
 
         # Create inner element to hold attributes before wrapping
         inner_elem = ET.Element("INNER")
@@ -184,14 +179,8 @@ class CanCluster(AbstractCanCluster):
         Returns:
             Deserialized CanCluster object
         """
-        # Parent class has atp_variant, skip its deserialize
-        # Call nearest non-atp_variant ancestor's deserialize to handle inherited attributes
-        # like short_name that are NOT in any VARIANTS wrapper
-        # Create instance as the current class
-        obj = cls.__new__(cls)
-        obj.__init__()
-        # Let the ancestor handle non-atp_variant attributes from the element directly
-        # (these are NOT inside any VARIANTS wrapper)
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CanCluster, cls).deserialize(element)
 
         # Unwrap atp_variant VARIANTS/CONDITIONAL structure
         inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "CanCluster")

@@ -27,138 +27,6 @@ PRIMITIVE_BASE_CLASS = "ARPrimitive"
 ENUM_BASE_CLASS = "AREnum"
 
 
-def _parent_has_atp_variant(
-    parent_class: Optional[str],
-    package_data: Dict[str, Dict[str, Any]],
-) -> bool:
-    """Check if parent class has atp_type == "atpVariation".
-
-    This is used to determine if a child class should skip copying parent's
-    children during serialization, because the parent's VARIANTS wrapper
-    should not be included in the child's output.
-
-    Args:
-        parent_class: Name of parent class (if any)
-        package_data: Package data dictionary
-
-    Returns:
-        True if parent class has atp_type == "atpVariation", False otherwise
-    """
-    if not parent_class or parent_class == "ARObject":
-        return False
-
-    # Search through all packages to find the parent class definition
-    for package_path, data in package_data.items():
-        for cls_info in data.get("classes", []):
-            if cls_info.get("name") == parent_class:
-                return cls_info.get("atp_type") == "atpVariation"
-
-    return False
-
-
-def _collect_atp_variant_parent_attributes(
-    parent_class: Optional[str],
-    package_data: Dict[str, Dict[str, Any]],
-) -> Dict[str, Dict[str, Any]]:
-    """Collect attributes from parent classes that have atp_type == "atpVariation".
-
-    When a child class has atp_variant and its parent also has atp_variant,
-    all attributes should be serialized/deserialized in the child's VARIANTS wrapper.
-    This function collects inherited attributes from atp_variant parents.
-
-    Args:
-        parent_class: Name of parent class (if any)
-        package_data: Package data dictionary
-
-    Returns:
-        Dictionary of attribute name to attribute info for all atp_variant parent attributes
-    """
-    collected_attributes: Dict[str, Dict[str, Any]] = {}
-
-    if not parent_class or parent_class == "ARObject":
-        return collected_attributes
-
-    # Recursively collect attributes from parent chain
-    current_parent = parent_class
-    while current_parent and current_parent != "ARObject":
-        # Find parent class definition
-        parent_info = None
-        parent_package_path = None
-        for package_path, data in package_data.items():
-            for cls_info in data.get("classes", []):
-                if cls_info.get("name") == current_parent:
-                    parent_info = cls_info
-                    parent_package_path = package_path
-                    break
-            if parent_info:
-                break
-
-        if not parent_info:
-            break
-
-        # Only collect from parents that have atp_variant
-        if parent_info.get("atp_type") == "atpVariation":
-            # Add parent's attributes
-            for attr_name, attr_info in parent_info.get("attributes", {}).items():
-                if attr_name not in collected_attributes:
-                    collected_attributes[attr_name] = attr_info.copy()
-
-            # Continue up the chain
-            current_parent = parent_info.get("parent")
-        else:
-            # Parent doesn't have atp_variant, stop here
-            break
-
-    return collected_attributes
-
-
-def _find_nearest_non_atp_variant_ancestor(
-    parent_class: Optional[str],
-    package_data: Dict[str, Dict[str, Any]],
-) -> Optional[str]:
-    """Find the nearest ancestor class that does NOT have atp_type == "atpVariation".
-
-    This is used during deserialization to find the correct ancestor class
-    to call deserialize on, which will handle attributes like short_name
-    that are NOT inside any VARIANTS wrapper.
-
-    Args:
-        parent_class: Name of parent class (if any)
-        package_data: Package data dictionary
-
-    Returns:
-        Name of the nearest non-atp_variant ancestor, or None if not found
-    """
-    if not parent_class or parent_class == "ARObject":
-        return None
-
-    # Walk up the inheritance chain
-    current_class = parent_class
-    while current_class and current_class != "ARObject":
-        # Find class definition
-        class_info = None
-        for package_path, data in package_data.items():
-            for cls_info in data.get("classes", []):
-                if cls_info.get("name") == current_class:
-                    class_info = cls_info
-                    break
-            if class_info:
-                break
-
-        if not class_info:
-            break
-
-        # Check if this class has atp_variant
-        if class_info.get("atp_type") != "atpVariation":
-            # Found a non-atp_variant ancestor
-            return current_class
-
-        # Move to parent class
-        current_class = class_info.get("parent")
-
-    return None
-
-
 def generate_class_code(
     type_def: Dict[str, Any],
     hierarchy_info: Dict[str, Dict[str, Any]],
@@ -3334,11 +3202,6 @@ def _generate_serialize_method_for_atp_variant(
     2. Serializes own attributes to an inner element
     3. Wraps the inner element in VARIANTS/CONDITIONAL structure
 
-    When parent class also has atp_variant:
-    - Don't copy parent's VARIANTS wrapper (avoid nesting)
-    - Collect all attributes from the inheritance chain
-    - Serialize all attributes into this class's single VARIANTS wrapper
-
     Args:
         class_name: Name of the class
         attribute_types: Dictionary of attribute information
@@ -3348,15 +3211,6 @@ def _generate_serialize_method_for_atp_variant(
     Returns:
         Generated serialize() method code
     """
-    # Check if parent also has atp_variant
-    parent_has_atp_variant = _parent_has_atp_variant(parent_class, package_data)
-
-    # Collect attributes from atp_variant parents (these should be serialized in this class's wrapper)
-    parent_atp_variant_attributes = _collect_atp_variant_parent_attributes(parent_class, package_data)
-
-    # Merge own attributes with inherited atp_variant attributes
-    all_attributes = {**parent_atp_variant_attributes, **attribute_types}  # Own attributes override parent's
-
     code = f'''    def serialize(self) -> ET.Element:
         """Serialize {class_name} to XML element with atp_variant wrapper.
 
@@ -3371,35 +3225,7 @@ def _generate_serialize_method_for_atp_variant(
 
     # If class has a parent class, call parent's serialize first
     if parent_class:
-        # Check if parent also has atp_variant - if so, we need special handling
-        parent_has_atp_variant = _parent_has_atp_variant(parent_class, package_data)
-
-        if parent_has_atp_variant:
-            # Parent also has atp_variant, so don't copy its VARIANTS wrapper
-            # But DO copy other children (like SHORT-NAME from non-atp_variant ancestors)
-            code += f"""        # Parent class also has atp_variant pattern
-        # Call parent's serialize to get attributes
-        parent_elem = super({class_name}, self).serialize()
-
-        # Copy all attributes from parent element
-        elem.attrib.update(parent_elem.attrib)
-
-        # Copy text from parent element
-        if parent_elem.text:
-            elem.text = parent_elem.text
-
-        # Copy children EXCEPT for parent's VARIANTS wrapper
-        # (other children like SHORT-NAME from non-atp_variant ancestors should be kept)
-        parent_variants_tag = SerializationHelper.get_atp_variant_wrapper_tag("{parent_class}")
-        for child in parent_elem:
-            child_tag = SerializationHelper.strip_namespace(child.tag)
-            if child_tag != parent_variants_tag:
-                elem.append(child)
-
-"""
-        else:
-            # Parent does not have atp_variant, so copy everything normally
-            code += f"""        # First, call parent's serialize to handle inherited attributes
+        code += f"""        # First, call parent's serialize to handle inherited attributes
         parent_elem = super({class_name}, self).serialize()
 
         # Copy all attributes from parent element
@@ -3422,9 +3248,8 @@ def _generate_serialize_method_for_atp_variant(
 """
 
     # Generate code to serialize each attribute to inner element
-    # Use all_attributes which includes own attributes AND inherited atp_variant parent attributes
-    if all_attributes:
-        for attr_name, attr_info in all_attributes.items():
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
             attr_type = attr_info["type"]
             multiplicity = attr_info["multiplicity"]
             is_ref = attr_info.get("is_ref", False)
@@ -3532,49 +3357,27 @@ def _generate_serialize_method_for_atp_variant(
                         singular = xml_tag[:-1]
                         container_tag = f"{singular}-REFS"
 
-                    # Evaluate conditions at generation time and generate appropriate code
-                    if is_ref:
-                        code += f'''        # Serialize {python_name} (list from container "{container_tag}")
+                    code += f'''        # Serialize {python_name} (list from container "{container_tag}")
         if self.{python_name}:
             container = ET.Element("{container_tag}")
             for item in self.{python_name}:
-                # For reference lists, serialize as reference
-                if hasattr(item, "serialize"):
-                    container.append(item.serialize())
-            inner_elem.append(container)
-
-'''
-                    elif is_primitive_type(attr_type, package_data):
-                        code += f'''        # Serialize {python_name} (list from container "{container_tag}")
-        if self.{python_name}:
-            container = ET.Element("{container_tag}")
-            for item in self.{python_name}:
-                # Simple primitive type
-                child = ET.Element("{xml_tag[:-1]}")
-                child.text = str(item)
-                container.append(child)
-            inner_elem.append(container)
-
-'''
-                    elif is_enum_type(attr_type, package_data):
-                        code += f'''        # Serialize {python_name} (list from container "{container_tag}")
-        if self.{python_name}:
-            container = ET.Element("{container_tag}")
-            for item in self.{python_name}:
-                # Enum type - use serialize method
-                if hasattr(item, "serialize"):
-                    container.append(item.serialize())
-            inner_elem.append(container)
-
-'''
-                    else:
-                        code += f'''        # Serialize {python_name} (list from container "{container_tag}")
-        if self.{python_name}:
-            container = ET.Element("{container_tag}")
-            for item in self.{python_name}:
-                # Complex object type
-                if hasattr(item, "serialize"):
-                    container.append(item.serialize())
+                if is_ref:
+                    # For reference lists, serialize as reference
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                elif is_primitive_type("{attr_type}", package_data):
+                    # Simple primitive type
+                    child = ET.Element("{xml_tag[:-1]}")
+                    child.text = str(item)
+                    container.append(child)
+                elif is_enum_type("{attr_type}", package_data):
+                    # Enum type - use serialize method
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                else:
+                    # Complex object type
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
             inner_elem.append(container)
 
 '''
@@ -3647,14 +3450,9 @@ def _generate_deserialize_method_for_atp_variant(
     """Generate deserialize() method for atp_variant classes.
 
     This method generates a custom deserialize() implementation that:
-    1. Calls parent's deserialize to handle inherited attributes (if parent doesn't have atp_variant)
+    1. Calls parent's deserialize to handle inherited attributes
     2. Unwraps VARIANTS/CONDITIONAL structure to access attributes
-    3. Parses all attributes from the unwrapped element
-
-    When parent class also has atp_variant:
-    - Don't call parent's deserialize (parent will look for its own VARIANTS wrapper)
-    - Create instance directly
-    - Deserialize all attributes (own + inherited from atp_variant parents) from this class's VARIANTS wrapper
+    3. Parses own attributes from the unwrapped element
 
     Args:
         class_name: Name of the class
@@ -3665,15 +3463,6 @@ def _generate_deserialize_method_for_atp_variant(
     Returns:
         Generated deserialize() method code
     """
-    # Check if parent also has atp_variant
-    parent_has_atp_variant = _parent_has_atp_variant(parent_class, package_data)
-
-    # Collect attributes from atp_variant parents (these should be deserialized in this class's wrapper)
-    parent_atp_variant_attributes = _collect_atp_variant_parent_attributes(parent_class, package_data)
-
-    # Merge own attributes with inherited atp_variant attributes
-    all_attributes = {**parent_atp_variant_attributes, **attribute_types}  # Own attributes override parent's
-
     code = f'''    @classmethod
     def deserialize(cls, element: ET.Element) -> "{class_name}":
         """Deserialize XML element to {class_name} object with atp_variant unwrapping.
@@ -3686,34 +3475,9 @@ def _generate_deserialize_method_for_atp_variant(
         """
 '''
 
-    # If class has a parent class, we need to handle inherited attributes
+    # If class has a parent class, call parent's deserialize first
     if parent_class:
-        if parent_has_atp_variant:
-            # Parent also has atp_variant, so don't call parent's deserialize
-            # (parent will look for its own VARIANTS wrapper which doesn't exist)
-            # We need to find and call the nearest non-atp_variant ancestor's deserialize
-            # to handle attributes like short_name that are NOT in any VARIANTS wrapper
-            ancestor_class = _find_nearest_non_atp_variant_ancestor(parent_class, package_data)
-            if ancestor_class:
-                code += f"""        # Parent class has atp_variant, skip its deserialize
-        # Call nearest non-atp_variant ancestor's deserialize to handle inherited attributes
-        # like short_name that are NOT in any VARIANTS wrapper
-        # Create instance as the current class
-        obj = cls.__new__(cls)
-        obj.__init__()
-        # Let the ancestor handle non-atp_variant attributes from the element directly
-        # (these are NOT inside any VARIANTS wrapper)
-
-"""
-            else:
-                code += f"""        # No non-atp_variant ancestor found, create instance directly
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-"""
-        else:
-            # Parent does not have atp_variant, call parent's deserialize normally
-            code += f"""        # First, call parent's deserialize to handle inherited attributes
+        code += f"""        # First, call parent's deserialize to handle inherited attributes
         obj = super({class_name}, cls).deserialize(element)
 
 """
@@ -3735,9 +3499,8 @@ def _generate_deserialize_method_for_atp_variant(
 """
 
     # Generate code to parse each attribute from inner element
-    # Use all_attributes which includes own attributes AND inherited atp_variant parent attributes
-    if all_attributes:
-        for attr_name, attr_info in all_attributes.items():
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
             attr_type = attr_info["type"]
             multiplicity = attr_info["multiplicity"]
             is_ref = attr_info.get("is_ref", False)
@@ -3916,46 +3679,25 @@ def _generate_deserialize_method_for_atp_variant(
 
                     # Generate the child parsing code based on decorator type
                     if decorator_name == "ref_conditional":
-                        # Generate ref_conditional specific code - evaluate conditions at generation time
-                        if is_ref:
-                            ref_conditional_code = f'''
+                        # Generate ref_conditional specific code
+                        ref_conditional_code = f'''
         if container is not None:
             for child in container:
-                # Unwrap -REF-CONDITIONAL to extract the inner -REF
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag == "{conditional_tag}":
-                    ref_child = SerializationHelper.find_child_element(child, "{ref_tag}")
-                    if ref_child is not None:
-                        child_value = ARRef.deserialize(ref_child)
+                if is_ref:
+                    # Unwrap -REF-CONDITIONAL to extract the inner -REF
+                    child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                    if child_element_tag == "{conditional_tag}":
+                        ref_child = SerializationHelper.find_child_element(child, "{ref_tag}")
+                        if ref_child is not None:
+                            child_value = ARRef.deserialize(ref_child)
+                    else:
+                        child_value = SerializationHelper.deserialize_by_tag(child, None)
+                elif is_primitive_type("{attr_type}", package_data):
+                    child_value = child.text
+                elif is_enum_type("{attr_type}", package_data):
+                    child_value = {attr_type}.deserialize(child)
                 else:
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.{python_name}.append(child_value)
-
-'''
-                        elif is_primitive_type(attr_type, package_data):
-                            ref_conditional_code = f'''
-        if container is not None:
-            for child in container:
-                child_value = child.text
-                if child_value is not None:
-                    obj.{python_name}.append(child_value)
-
-'''
-                        elif is_enum_type(attr_type, package_data):
-                            ref_conditional_code = f'''
-        if container is not None:
-            for child in container:
-                child_value = {attr_type}.deserialize(child)
-                if child_value is not None:
-                    obj.{python_name}.append(child_value)
-
-'''
-                        else:
-                            ref_conditional_code = f'''
-        if container is not None:
-            for child in container:
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.{python_name}.append(child_value)
 
@@ -3963,57 +3705,29 @@ def _generate_deserialize_method_for_atp_variant(
                         code += ref_conditional_code
                     else:
                         # Generate standard reference parsing code
-                        # Evaluate conditions at generation time
-                        if is_ref:
-                            if child_tag:
-                                ref_code = f'''
+                        ref_code = f'''
         if container is not None:
             for child in container:
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag == "{child_tag}":
-                    child_value = ARRef.deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.{python_name}.append(child_value)
-
-'''
-                            else:
-                                ref_code = f'''
-        if container is not None:
-            for child in container:
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    child_value = ARRef.deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.{python_name}.append(child_value)
-
-'''
-                        elif is_primitive_type(attr_type, package_data):
-                            ref_code = f'''
-        if container is not None:
-            for child in container:
-                child_value = child.text
-                if child_value is not None:
-                    obj.{python_name}.append(child_value)
-
-'''
-                        elif is_enum_type(attr_type, package_data):
-                            ref_code = f'''
-        if container is not None:
-            for child in container:
-                child_value = {attr_type}.deserialize(child)
-                if child_value is not None:
-                    obj.{python_name}.append(child_value)
-
-'''
+                if is_ref:
+                    # Use the child_tag from decorator if specified to match specific child tag
+                    if child_tag:
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag == "{child_tag}":
+                            child_value = ARRef.deserialize(child)
                         else:
-                            ref_code = f'''
-        if container is not None:
-            for child in container:
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
+                    else:
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
+                elif is_primitive_type("{attr_type}", package_data):
+                    child_value = child.text
+                elif is_enum_type("{attr_type}", package_data):
+                    child_value = {attr_type}.deserialize(child)
+                else:
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.{python_name}.append(child_value)
 

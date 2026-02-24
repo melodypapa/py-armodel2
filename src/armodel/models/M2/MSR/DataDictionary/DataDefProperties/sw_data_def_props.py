@@ -214,9 +214,23 @@ class SwDataDefProps(ARObject):
         if self.annotations:
             container = ET.Element("ANNOTATIONS")
             for item in self.annotations:
-                # Complex object type
-                if hasattr(item, "serialize"):
-                    container.append(item.serialize())
+                if is_ref:
+                    # For reference lists, serialize as reference
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                elif is_primitive_type("Annotation", package_data):
+                    # Simple primitive type
+                    child = ET.Element("ANNOTATION")
+                    child.text = str(item)
+                    container.append(child)
+                elif is_enum_type("Annotation", package_data):
+                    # Enum type - use serialize method
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                else:
+                    # Complex object type
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
             inner_elem.append(container)
 
         # Serialize base_type_ref
@@ -392,9 +406,23 @@ class SwDataDefProps(ARObject):
         if self.sw_comparison_variables:
             container = ET.Element("SW-COMPARISON-VARIABLES")
             for item in self.sw_comparison_variables:
-                # Complex object type
-                if hasattr(item, "serialize"):
-                    container.append(item.serialize())
+                if is_ref:
+                    # For reference lists, serialize as reference
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                elif is_primitive_type("SwVariableRefProxy", package_data):
+                    # Simple primitive type
+                    child = ET.Element("SW-COMPARISON-VARIABLE")
+                    child.text = str(item)
+                    container.append(child)
+                elif is_enum_type("SwVariableRefProxy", package_data):
+                    # Enum type - use serialize method
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                else:
+                    # Complex object type
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
             inner_elem.append(container)
 
         # Serialize sw_data_dependency
@@ -544,10 +572,23 @@ class SwDataDefProps(ARObject):
         if self.sw_value_block_size_mults:
             container = ET.Element("SW-VALUE-BLOCK-SIZE-MULTS")
             for item in self.sw_value_block_size_mults:
-                # Simple primitive type
-                child = ET.Element("SW-VALUE-BLOCK-SIZE-MULT")
-                child.text = str(item)
-                container.append(child)
+                if is_ref:
+                    # For reference lists, serialize as reference
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                elif is_primitive_type("Numerical", package_data):
+                    # Simple primitive type
+                    child = ET.Element("SW-VALUE-BLOCK-SIZE-MULT")
+                    child.text = str(item)
+                    container.append(child)
+                elif is_enum_type("Numerical", package_data):
+                    # Enum type - use serialize method
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                else:
+                    # Complex object type
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
             inner_elem.append(container)
 
         # Serialize unit_ref
@@ -612,7 +653,26 @@ class SwDataDefProps(ARObject):
         container = SerializationHelper.find_child_element(inner_elem, "ANNOTATIONS")
         if container is not None:
             for child in container:
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if is_ref:
+                    # Use the child_tag from decorator if specified to match specific child tag
+                    if child_tag:
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag == "None":
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
+                    else:
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
+                elif is_primitive_type("Annotation", package_data):
+                    child_value = child.text
+                elif is_enum_type("Annotation", package_data):
+                    child_value = Annotation.deserialize(child)
+                else:
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.annotations.append(child_value)
 
@@ -699,7 +759,26 @@ class SwDataDefProps(ARObject):
         container = SerializationHelper.find_child_element(inner_elem, "SW-COMPARISON-VARIABLES")
         if container is not None:
             for child in container:
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if is_ref:
+                    # Use the child_tag from decorator if specified to match specific child tag
+                    if child_tag:
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag == "None":
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
+                    else:
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
+                elif is_primitive_type("SwVariableRefProxy", package_data):
+                    child_value = child.text
+                elif is_enum_type("SwVariableRefProxy", package_data):
+                    child_value = SwVariableRefProxy.deserialize(child)
+                else:
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_comparison_variables.append(child_value)
 
@@ -774,7 +853,26 @@ class SwDataDefProps(ARObject):
         container = SerializationHelper.find_child_element(inner_elem, "SW-VALUE-BLOCK-SIZE-MULTS")
         if container is not None:
             for child in container:
-                child_value = child.text
+                if is_ref:
+                    # Use the child_tag from decorator if specified to match specific child tag
+                    if child_tag:
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag == "None":
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
+                    else:
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
+                elif is_primitive_type("Numerical", package_data):
+                    child_value = child.text
+                elif is_enum_type("Numerical", package_data):
+                    child_value = Numerical.deserialize(child)
+                else:
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_value_block_size_mults.append(child_value)
 

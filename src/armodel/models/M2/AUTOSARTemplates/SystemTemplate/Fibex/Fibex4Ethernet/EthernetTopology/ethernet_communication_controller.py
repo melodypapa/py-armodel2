@@ -104,9 +104,23 @@ class EthernetCommunicationController(ARObject):
         if self.coupling_ports:
             container = ET.Element("COUPLING-PORTS")
             for item in self.coupling_ports:
-                # Complex object type
-                if hasattr(item, "serialize"):
-                    container.append(item.serialize())
+                if is_ref:
+                    # For reference lists, serialize as reference
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                elif is_primitive_type("CouplingPort", package_data):
+                    # Simple primitive type
+                    child = ET.Element("COUPLING-PORT")
+                    child.text = str(item)
+                    container.append(child)
+                elif is_enum_type("CouplingPort", package_data):
+                    # Enum type - use serialize method
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                else:
+                    # Complex object type
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
             inner_elem.append(container)
 
         # Serialize mac_layer_type
@@ -210,7 +224,26 @@ class EthernetCommunicationController(ARObject):
         container = SerializationHelper.find_child_element(inner_elem, "COUPLING-PORTS")
         if container is not None:
             for child in container:
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if is_ref:
+                    # Use the child_tag from decorator if specified to match specific child tag
+                    if child_tag:
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag == "None":
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
+                    else:
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
+                elif is_primitive_type("CouplingPort", package_data):
+                    child_value = child.text
+                elif is_enum_type("CouplingPort", package_data):
+                    child_value = CouplingPort.deserialize(child)
+                else:
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.coupling_ports.append(child_value)
 
