@@ -31,16 +31,16 @@ pip install -e ".[dev]"
 
 ```bash
 # Run all tests
-PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest
+PYTHONPATH=./src python -m pytest
 
 # Run specific test file
-PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test_core/test_version.py -v
+PYTHONPATH=./src python -m pytest tests/unit/test_core/test_version.py -v
 
 # Run with coverage
-PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest --cov=src --cov-report=html --cov-report=term
+PYTHONPATH=./src python -m pytest --cov=src --cov-report=html --cov-report=term
 
 # Binary comparison integration tests (verify read/write cycle produces identical XML)
-PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/integration/test_binary_comparison.py -v
+PYTHONPATH=./src python -m pytest tests/integration/test_binary_comparison.py -v
 ```
 
 **Note**: The project does not use pytest.ini or conftest to set PYTHONPATH. It must be set manually for each test run.
@@ -111,8 +111,9 @@ If you find bugs, issues, or needed improvements in files under `src/armodel/mod
 - `Item` - Custom serialization for item_contents
 - `DocumentationBlock` - Language-specific elements (L-1 through L-10)
 - `LanguageSpecific*` - Language-specific classes (LLongName, LPlainText, LParagraph, LOverviewParagraph, LVerbatim, MixedContent)
+- `BswModuleClientServerEntry` - Custom REF-CONDITIONAL wrapper pattern for reference lists
 
-**Note**: These classes use `@language_abbr` decorator for proper XML attribute serialization (e.g., `L="EN"`)
+**Note**: Language-specific classes use `@lang_abbr` decorator (formerly `@language_abbr`) for proper XML attribute serialization (e.g., `L="EN"`)
 
 ### GlobalSettingsManager
 
@@ -148,7 +149,7 @@ The project uses a reflection-based serialization framework that eliminates boil
 - `ARObject.deserialize()` - Uses `get_type_hints()` for type information
 - `NameConverter` - Handles snake_case ↔ UPPER-CASE-WITH-HYPHENS conversion
 - `ModelFactory` - Factory for creating model instances from XML tags (supports polymorphic deserialization)
-- Decorators: `@xml_attribute`, `@atp_variant()`, `@l_prefix()`, `@language_abbr()`
+- Decorators: `@xml_attribute`, `@atp_variant()`, `@lang_prefix()`, `@lang_abbr()`, `@xml_element_name()`, `@ref_conditional()`, `@instance_ref()`
 
 **How It Works**:
 ```python
@@ -169,6 +170,8 @@ class AUTOSAR(ARObject):
 - **CompuMethod**: `compu_internal_to_phys` → `<COMPU-INTERNAL-TO-PHYS>`, `compu_phys_to_internal` → `<COMPU-PHYS-TO-INTERNAL>`
 - **Item**: `item_contents` (DocumentationBlock) serializes as direct children of ITEM, not wrapped in ITEM-CONTENTS
 - **Language-specific classes**: Handle L-N naming (L-1, L-2, L-4, L-5, L-10) with inheritance-based parsing
+- **BswModuleClientServerEntry**: Uses `@ref_conditional()` decorator for REF-CONDITIONAL wrapper pattern on reference lists
+- **Instance references**: Use `@instance_ref(flatten=True/False)` decorator for -IREF pattern with flattening control
 
 ### Decorator System
 
@@ -188,19 +191,38 @@ class SwDataDefProps(ARObject):
     base_type_ref: Optional[ARRef] = None
 # Result: Wrapped in SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL
 
-# @l_prefix("L-N") - Language-specific naming
-@l_prefix("L-2")
+# @lang_prefix("L-N") - Language-specific naming (formerly @l_prefix)
+@lang_prefix("L-2")
 def l_2(self) -> str:
     return self._l_2
 # Result: <L-2>text</L-2> within multilanguage elements
 
-# @language_abbr("ATTR") - Custom XML attribute name
-@language_abbr("L")
+# @lang_abbr("L") - Language abbreviation XML attribute (formerly @language_abbr)
+@lang_abbr("L")
 @property
 def l(self) -> LEnum:
     return self._l
 # Result: <L-LONG-NAME L="EN">text</L-LONG-NAME>
 # Use when XML attribute name doesn't follow standard naming (e.g., L instead of LANG)
+
+# @xml_element_name("TAG") - Custom XML element name
+@xml_element_name("PROVIDED-ENTRYS")
+provided_client_server_entries: list[BswModuleClientServerEntry] = []
+# Result: <PROVIDED-ENTRYS>...</PROVIDED-ENTRYS> (instead of auto-generated PROVIDED-CLIENT-SERVER-ENTRYS)
+
+# @ref_conditional("TAG") - REF-CONDITIONAL wrapper pattern for reference lists
+@ref_conditional("FIBEX-ELEMENTS")
+@property
+def fibex_element_refs(self) -> list[ARRef]:
+    return self._fibex_element_refs
+# Result: <FIBEX-ELEMENTS><FIBEX-ELEMENT-REF-CONDITIONAL><FIBEX-ELEMENT-REF>...
+
+# @instance_ref(flatten=True, list_type="single") - Instance reference pattern
+@instance_ref(flatten=True)
+@property
+def provider_iref(self) -> PPortInCompositionInstanceRef:
+    return self._provider_iref
+# Result: <PROVIDER-IREF><CONTEXT-COMPONENT-REF>...</CONTEXT-COMPONENT-REF>...
 ```
 
 **Decorator Implementation**: All decorators are in `src/armodel/serialization/decorators.py`
@@ -532,7 +554,7 @@ Then verify:
 ```bash
 ruff check src/
 mypy src/
-PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest
+PYTHONPATH=./src python -m pytest
 ```
 
 ## Project Structure
@@ -596,9 +618,27 @@ Key rules from `docs/designs/design_rules.md`:
 - **Skip Classes**: `tools/skip_classes.yaml` - List of manually maintained classes excluded from code generation
 - **Generator README**: `tools/generate_models/README.md` - Code generator usage and options
 - **SerializationHelper**: `src/armodel/serialization/serialization_helper.py` - Utility methods for serialization (20+ helper functions)
-- **Decorators**: `src/armodel/serialization/decorators.py` - XML serialization decorators (@xml_attribute, @atp_variant, @l_prefix, @language_abbr)
+- **Decorators**: `src/armodel/serialization/decorators.py` - XML serialization decorators (@xml_attribute, @atp_variant, @lang_prefix, @lang_abbr, @xml_element_name, @ref_conditional, @instance_ref)
 
-## Recent Improvements (2026-02)
+## Recent Improvements (2025-2026)
+
+### Decorator Enhancements (PR #115-#129)
+- **@ref_conditional decorator** (PR #115): Handles AUTOSAR -REF-CONDITIONAL wrapper pattern for reference lists
+- **@lang_prefix renamed from @l_prefix** (PR #117): Improved decorator naming consistency
+- **@lang_abbr renamed from @language_abbr** (PR #119): Enhanced decorator naming consistency
+- **@xml_element_name multi-level nesting** (PR #113): Support for nested container paths with `/` separator
+- **@instance_ref decorator** (PR #125, #127): Flexible instance reference serialization with `flatten` and `list_type` parameters
+- **UUID as XML attribute** (PR #129): Convert UUID to XML attribute for proper serialization
+
+### Builder Pattern Simplification (PR #121, #123)
+- Simplified Builder classes using inheritance pattern to reduce code duplication
+- Applied @instance_ref to SystemTemplate classes with attribute fixes
+- Cleaned up model_mappings.yaml to only contain exceptional cases
+
+### Code Quality Improvements (PR #123)
+- Removed duplicate imports in generated model code
+- Fixed unused imports and code style issues
+- Improved type checking and import resolution
 
 ### Fluent API Builder Pattern (PR #96)
 - Added fluent API with method chaining to all 1,600+ Builder classes
@@ -624,13 +664,6 @@ Key rules from `docs/designs/design_rules.md`:
 - Improved code organization and maintainability
 - Static utility methods for common serialization operations
 - Better separation of concerns
-
-### @language_abbr Decorator (PR #86)
-- New decorator for handling language abbreviation XML attributes (e.g., `L="EN"`)
-- Enables proper serialization of language-specific elements in AUTOSAR files
-- Added `blueprint_value` attribute support to `LLongName` class
-- Updated code generator to support the new decorator pattern
-- Net reduction of 540 lines through documentation cleanup
 
 ### Inheritance Pattern Fixes
 - Fixed `Referrable` to properly call `super().serialize()` and `super().deserialize()`

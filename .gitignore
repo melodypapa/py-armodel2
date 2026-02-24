@@ -169,3 +169,6 @@ Temporary Items
 src/armodel/models/generated/
 output.arxml
 data
+
+# claude settings
+.claude/settings.local.json

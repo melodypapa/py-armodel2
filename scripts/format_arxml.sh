@@ -25,6 +25,7 @@ OUTPUT_DIR="data/arxml"
 # Flags
 VERBOSE=false
 DRY_RUN=false
+ENCODING="UTF-8"
 
 # Parse arguments
 FILES_TO_FORMAT=()
@@ -38,19 +39,25 @@ while [[ $# -gt 0 ]]; do
             DRY_RUN=true
             shift
             ;;
+        --encoding|-e)
+            ENCODING="$2"
+            shift 2
+            ;;
         --help|-h)
             echo "Usage: $0 [OPTIONS] [files...]"
             echo ""
             echo "Options:"
-            echo "  --verbose, -v    Show detailed error messages"
-            echo "  --dry-run        List files without formatting"
-            echo "  --help, -h       Show this help message"
+            echo "  --verbose, -v       Show detailed error messages"
+            echo "  --dry-run           List files without formatting"
+            echo "  --encoding, -e      Set output encoding (default: UTF-8)"
+            echo "  --help, -h          Show this help message"
             echo ""
             echo "Examples:"
             echo "  $0                                    # Format all files"
             echo "  $0 BswMMode.arxml CanSystem.arxml    # Format specific files"
             echo "  $0 --verbose                         # Format all with error details"
             echo "  $0 --dry-run                         # List files without formatting"
+            echo "  $0 --encoding UTF-8                  # Use UTF-8 encoding"
             exit 0
             ;;
         *.arxml)
@@ -84,9 +91,10 @@ unset IFS
 echo "======================================="
 echo "ARXML Format Script"
 echo "======================================="
-echo "Input:  $INPUT_DIR"
-echo "Output: $OUTPUT_DIR"
-echo "Files:  ${#FILES_TO_FORMAT[@]}"
+echo "Input:    $INPUT_DIR"
+echo "Output:   $OUTPUT_DIR"
+echo "Files:    ${#FILES_TO_FORMAT[@]}"
+echo "Encoding: $ENCODING"
 echo ""
 
 # Dry run: just list files
@@ -126,18 +134,18 @@ for i in "${!FILES_TO_FORMAT[@]}"; do
     # Run armodel format command
     if [ "$VERBOSE" = true ]; then
         # With verbose output
-        if armodel format "$input_file" -o "$output_file" 2>&1; then
+        if armodel format "$input_file" -o "$output_file" --encoding "$ENCODING" 2>&1; then
             echo "      ✓ Success"
             success_count=$((success_count + 1))
         else
             echo "      ✗ Failed"
             failed_count=$((failed_count + 1))
             failed_files+=("$basename")
-            failed_errors+=("$(armodel format "$input_file" -o "$output_file" -v 2>&1 | head -5)")
+            failed_errors+=("$(armodel format "$input_file" -o "$output_file" --encoding "$ENCODING" -v 2>&1 | head -5)")
         fi
     else
         # Quiet mode
-        if armodel format "$input_file" -o "$output_file" --quiet 2>/dev/null; then
+        if armodel format "$input_file" -o "$output_file" --encoding "$ENCODING" --quiet 2>/dev/null; then
             echo "      ✓ Success"
             success_count=$((success_count + 1))
         else
@@ -169,7 +177,7 @@ if [ $failed_count -gt 0 ]; then
     echo "To debug individual files:"
     for i in "${!failed_files[@]}"; do
         filename="${failed_files[$i]}"
-        echo "  armodel format demos/arxml/$filename -o data/output.arxml -v"
+        echo "  armodel format demos/arxml/$filename -o data/output.arxml --encoding $ENCODING -v"
     done
 fi
 
