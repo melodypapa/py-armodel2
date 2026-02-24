@@ -239,7 +239,7 @@
       "is_abstract": false,
       "atp_type": "atpVariation",
       "decorator": "atp_variant",
-      "parent": null,
+      "parent": "AbstractCanCommunicationController",
       "bases": [
         "ARObject",
         "AbstractCanCommunicationController",
@@ -272,7 +272,7 @@
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": true,
       "atp_type": "atpVariation",
-      "parent": null,
+      "parent": "CommunicationController",
       "bases": [
         "ARObject",
         "CommunicationController",

@@ -376,6 +376,7 @@
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
+          "decorator": "ref_conditional:COMM-CONNECTORS",
           "note": "Reference to the ECUInstance via a Communication assignment of Physical Channels to is expressed with atpVariation"
         },
         "frameTriggerings": {
@@ -455,7 +456,7 @@
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "is_abstract": true,
       "atp_type": "atpVariation",
-      "parent": null,
+      "parent": "Identifiable",
       "bases": [
         "ARObject",
         "Identifiable",
@@ -486,7 +487,7 @@
         }
       ],
       "attributes": {
-        "wakeUpBy": {
+        "wakeUpByControllerSupported": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",

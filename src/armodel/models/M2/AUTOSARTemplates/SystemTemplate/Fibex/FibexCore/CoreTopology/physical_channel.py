@@ -10,6 +10,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCo
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import ref_conditional
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -46,7 +47,7 @@ class PhysicalChannel(Identifiable, ABC):
         """
         return True
 
-    comm_connector_refs: list[ARRef]
+    _comm_connector_refs: list[ARRef]
     frame_triggerings: list[FrameTriggering]
     i_signal_triggerings: list[ISignalTriggering]
     managed_physical_channel_refs: list[ARRef]
@@ -54,11 +55,22 @@ class PhysicalChannel(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize PhysicalChannel."""
         super().__init__()
-        self.comm_connector_refs: list[ARRef] = []
+        self._comm_connector_refs: list[ARRef] = []
         self.frame_triggerings: list[FrameTriggering] = []
         self.i_signal_triggerings: list[ISignalTriggering] = []
         self.managed_physical_channel_refs: list[ARRef] = []
         self.pdu_triggerings: list[PduTriggering] = []
+    @property
+    @ref_conditional("COMM-CONNECTORS")
+    def comm_connector_refs(self) -> list[ARRef]:
+        """Get comm_connector_refs with ref_conditional wrapper."""
+        return self._comm_connector_refs
+
+    @comm_connector_refs.setter
+    def comm_connector_refs(self, value: list[ARRef]) -> None:
+        """Set comm_connector_refs with ref_conditional wrapper."""
+        self._comm_connector_refs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize PhysicalChannel to XML element.
@@ -84,20 +96,23 @@ class PhysicalChannel(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize comm_connector_refs (list to container "COMM-CONNECTOR-REFS")
+        # Serialize comm_connector_refs (list to container "COMM-CONNECTORS")
         if self.comm_connector_refs:
-            wrapper = ET.Element("COMM-CONNECTOR-REFS")
+            wrapper = ET.Element("COMM-CONNECTORS")
             for item in self.comm_connector_refs:
                 serialized = SerializationHelper.serialize_item(item, "CommunicationConnector")
                 if serialized is not None:
-                    child_elem = ET.Element("COMM-CONNECTOR-REF")
+                    # Wrap in COMMUNICATION-CONNECTOR-REF-CONDITIONAL
+                    conditional = ET.Element("COMMUNICATION-CONNECTOR-REF-CONDITIONAL")
+                    ref_elem = ET.Element("COMMUNICATION-CONNECTOR-REF")
                     if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
+                        ref_elem.attrib.update(serialized.attrib)
                     if serialized.text:
-                        child_elem.text = serialized.text
+                        ref_elem.text = serialized.text
                     for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                        ref_elem.append(child)
+                    conditional.append(ref_elem)
+                    wrapper.append(conditional)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -163,18 +178,18 @@ class PhysicalChannel(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PhysicalChannel, cls).deserialize(element)
 
-        # Parse comm_connector_refs (list from container "COMM-CONNECTOR-REFS")
+        # Parse comm_connector_refs (list from container "COMM-CONNECTORS")
         obj.comm_connector_refs = []
-        container = SerializationHelper.find_child_element(element, "COMM-CONNECTOR-REFS")
+        container = SerializationHelper.find_child_element(element, "COMM-CONNECTORS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
+                # Unwrap -REF-CONDITIONAL to extract the inner -REF
                 child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
+                if child_element_tag == "COMMUNICATION-CONNECTOR-REF-CONDITIONAL":
+                    ref_child = SerializationHelper.find_child_element(child, "COMMUNICATION-CONNECTOR-REF")
+                    if ref_child is not None:
+                        child_value = ARRef.deserialize(ref_child)
                 else:
-                    # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.comm_connector_refs.append(child_value)

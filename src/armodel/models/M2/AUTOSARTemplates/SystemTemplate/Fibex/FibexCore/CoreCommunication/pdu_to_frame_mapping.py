@@ -9,6 +9,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
@@ -24,7 +27,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.serialization import SerializationHelper
 
 
-class PduToFrameMapping(ARObject):
+class PduToFrameMapping(Identifiable):
     """AUTOSAR PduToFrameMapping."""
 
     @property
@@ -36,17 +39,17 @@ class PduToFrameMapping(ARObject):
         """
         return False
 
-    packing_byte: Optional[ByteOrderEnum]
+    packing_byte_order: Optional[ByteOrderEnum]
     pdu_ref: Optional[ARRef]
     start_position: Optional[Integer]
-    update: Optional[Integer]
+    update_indication_bit_position: Optional[Integer]
     def __init__(self) -> None:
         """Initialize PduToFrameMapping."""
         super().__init__()
-        self.packing_byte: Optional[ByteOrderEnum] = None
+        self.packing_byte_order: Optional[ByteOrderEnum] = None
         self.pdu_ref: Optional[ARRef] = None
         self.start_position: Optional[Integer] = None
-        self.update: Optional[Integer] = None
+        self.update_indication_bit_position: Optional[Integer] = None
 
     def serialize(self) -> ET.Element:
         """Serialize PduToFrameMapping to XML element.
@@ -72,12 +75,12 @@ class PduToFrameMapping(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize packing_byte
-        if self.packing_byte is not None:
-            serialized = SerializationHelper.serialize_item(self.packing_byte, "ByteOrderEnum")
+        # Serialize packing_byte_order
+        if self.packing_byte_order is not None:
+            serialized = SerializationHelper.serialize_item(self.packing_byte_order, "ByteOrderEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PACKING-BYTE")
+                wrapped = ET.Element("PACKING-BYTE-ORDER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -114,12 +117,12 @@ class PduToFrameMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize update
-        if self.update is not None:
-            serialized = SerializationHelper.serialize_item(self.update, "Integer")
+        # Serialize update_indication_bit_position
+        if self.update_indication_bit_position is not None:
+            serialized = SerializationHelper.serialize_item(self.update_indication_bit_position, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("UPDATE")
+                wrapped = ET.Element("UPDATE-INDICATION-BIT-POSITION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -143,11 +146,11 @@ class PduToFrameMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PduToFrameMapping, cls).deserialize(element)
 
-        # Parse packing_byte
-        child = SerializationHelper.find_child_element(element, "PACKING-BYTE")
+        # Parse packing_byte_order
+        child = SerializationHelper.find_child_element(element, "PACKING-BYTE-ORDER")
         if child is not None:
-            packing_byte_value = ByteOrderEnum.deserialize(child)
-            obj.packing_byte = packing_byte_value
+            packing_byte_order_value = ByteOrderEnum.deserialize(child)
+            obj.packing_byte_order = packing_byte_order_value
 
         # Parse pdu_ref
         child = SerializationHelper.find_child_element(element, "PDU-REF")
@@ -161,11 +164,11 @@ class PduToFrameMapping(ARObject):
             start_position_value = child.text
             obj.start_position = start_position_value
 
-        # Parse update
-        child = SerializationHelper.find_child_element(element, "UPDATE")
+        # Parse update_indication_bit_position
+        child = SerializationHelper.find_child_element(element, "UPDATE-INDICATION-BIT-POSITION")
         if child is not None:
-            update_value = child.text
-            obj.update = update_value
+            update_indication_bit_position_value = child.text
+            obj.update_indication_bit_position = update_indication_bit_position_value
 
         return obj
 
@@ -180,8 +183,8 @@ class PduToFrameMappingBuilder(BuilderBase):
         self._obj: PduToFrameMapping = PduToFrameMapping()
 
 
-    def with_packing_byte(self, value: Optional[ByteOrderEnum]) -> "PduToFrameMappingBuilder":
-        """Set packing_byte attribute.
+    def with_packing_byte_order(self, value: Optional[ByteOrderEnum]) -> "PduToFrameMappingBuilder":
+        """Set packing_byte_order attribute.
 
         Args:
             value: Value to set
@@ -191,7 +194,7 @@ class PduToFrameMappingBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.packing_byte = value
+        self._obj.packing_byte_order = value
         return self
 
     def with_pdu(self, value: Optional[Pdu]) -> "PduToFrameMappingBuilder":
@@ -222,8 +225,8 @@ class PduToFrameMappingBuilder(BuilderBase):
         self._obj.start_position = value
         return self
 
-    def with_update(self, value: Optional[Integer]) -> "PduToFrameMappingBuilder":
-        """Set update attribute.
+    def with_update_indication_bit_position(self, value: Optional[Integer]) -> "PduToFrameMappingBuilder":
+        """Set update_indication_bit_position attribute.
 
         Args:
             value: Value to set
@@ -233,7 +236,7 @@ class PduToFrameMappingBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.update = value
+        self._obj.update_indication_bit_position = value
         return self
 
 

@@ -9,13 +9,16 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_controller import (
+    CommunicationController,
+)
 from armodel.models.M2.builder_base import BuilderBase
 from abc import ABC, abstractmethod
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
 
 
-class AbstractCanCommunicationController(ARObject, ABC):
+class AbstractCanCommunicationController(CommunicationController, ABC):
     """AUTOSAR AbstractCanCommunicationController."""
 
     @property

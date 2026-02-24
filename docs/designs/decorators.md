@@ -337,6 +337,10 @@ The `@ref_conditional` decorator is configured via JSON mapping data in the clas
 3. **Markers**: Sets `_is_ref_conditional = True` and `_xml_tag = xml_tag` on the attribute
 4. **Property pattern**: Requires property getter/setter with private backing field
 5. **Automatic code generation**: The decorator is processed by the code generator to generate correct serialize/deserialize methods
+6. **Type tag derivation**: The code generator uses `NameConverter.to_xml_tag(attr_type)` to derive the correct type XML tag for the `-REF-CONDITIONAL` and `-REF` elements. This ensures that:
+   - `CommunicationConnector` type → `COMMUNICATION-CONNECTOR-REF-CONDITIONAL` / `COMMUNICATION-CONNECTOR-REF`
+   - `FibexElement` type → `FIBEX-ELEMENT-REF-CONDITIONAL` / `FIBEX-ELEMENT-REF`
+   - Correctly handles abbreviated container names like `COMM-CONNECTORS` without incorrect truncation
 
 #### XML Structure
 
@@ -344,17 +348,19 @@ The -REF-CONDITIONAL pattern creates a three-level nesting:
 
 ```
 <CONTAINER-TAG>
-  <SINGULAR-TAG>-REF-CONDITIONAL>
-    <SINGULAR-TAG>-REF DEST="...">...</SINGULAR-TAG-REF>
-  </SINGULAR-TAG>-REF-CONDITIONAL>
+  <TYPE-TAG>-REF-CONDITIONAL>
+    <TYPE-TAG>-REF DEST="...">...</TYPE-TAG>-REF>
+  </TYPE-TAG>-REF-CONDITIONAL>
 </CONTAINER-TAG>
 ```
 
 Where:
-- **CONTAINER-TAG**: The plural container name (e.g., "FIBEX-ELEMENTS")
-- **SINGULAR-TAG**: The singular form minus trailing "S" (e.g., "FIBEX-ELEMENT")
+- **CONTAINER-TAG**: The container element name from decorator params (e.g., "FIBEX-ELEMENTS", "COMM-CONNECTORS")
+- **TYPE-TAG**: The XML tag derived from the attribute's type name via `NameConverter.to_xml_tag()` (e.g., "FIBEX-ELEMENT", "COMMUNICATION-CONNECTOR")
 - **-REF-CONDITIONAL**: The atpVariation wrapper
 - **-REF**: The actual reference element with DEST attribute
+
+**Important**: The `TYPE-TAG` is derived from the **attribute's type name** (e.g., `CommunicationConnector` → `COMMUNICATION-CONNECTOR`), not from the container tag via simple string truncation. This ensures correct tag generation for abbreviated container names like `COMM-CONNECTORS` → `COMMUNICATION-CONNECTOR-REF-CONDITIONAL` (not `COMM-CONNECTOR-REF-CONDITIONAL`).
 
 #### Example Output
 
@@ -371,6 +377,36 @@ Where:
   </FIBEX-ELEMENT-REF-CONDITIONAL>
 </FIBEX-ELEMENTS>
 ```
+
+**Real-world example - PhysicalChannel.comm_connector_refs:**
+
+```json
+{
+  "name": "PhysicalChannel",
+  "attributes": {
+    "commConnectors": {
+      "type": "CommunicationConnector",
+      "multiplicity": "*",
+      "kind": "ref",
+      "is_ref": true,
+      "decorator": "ref_conditional:COMM-CONNECTORS"
+    }
+  }
+}
+```
+
+```xml
+<COMM-CONNECTORS>
+  <COMMUNICATION-CONNECTOR-REF-CONDITIONAL>
+    <COMMUNICATION-CONNECTOR-REF DEST="CAN-COMMUNICATION-CONNECTOR">/CanSystem/ECUINSTANCES/DebugNode/Conn_DebugNode</COMMUNICATION-CONNECTOR-REF>
+  </COMMUNICATION-CONNECTOR-REF-CONDITIONAL>
+  <COMMUNICATION-CONNECTOR-REF-CONDITIONAL>
+    <COMMUNICATION-CONNECTOR-REF DEST="CAN-COMMUNICATION-CONNECTOR">/CanSystem/ECUINSTANCES/EcuTestNode/Conn_EcuTestNode</COMMUNICATION-CONNECTOR-REF>
+  </COMMUNICATION-CONNECTOR-REF-CONDITIONAL>
+</COMM-CONNECTORS>
+```
+
+**Note**: The type tag `COMMUNICATION-CONNECTOR` is correctly derived from the `CommunicationConnector` type name, not from the abbreviated container `COMM-CONNECTORS` via simple truncation (which would incorrectly produce `COMM-CONNECTOR`).
 
 #### Difference from Standard Reference Lists
 
