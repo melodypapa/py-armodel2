@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.cla
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import atp_variant
 
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
@@ -47,7 +46,7 @@ class EcucAbstractStringParamDef(ARObject, ABC):
         self.regular: Optional[RegularExpression] = None
 
     def serialize(self) -> ET.Element:
-        """Serialize EcucAbstractStringParamDef to XML element with atp_variant wrapper.
+        """Serialize EcucAbstractStringParamDef to XML element.
 
         Returns:
             xml.etree.ElementTree.Element representing this object
@@ -70,13 +69,11 @@ class EcucAbstractStringParamDef(ARObject, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Create inner element to hold attributes before wrapping
-        inner_elem = ET.Element("INNER")
-
         # Serialize default_value
         if self.default_value is not None:
             serialized = SerializationHelper.serialize_item(self.default_value, "VerbatimString")
             if serialized is not None:
+                # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-VALUE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -84,12 +81,13 @@ class EcucAbstractStringParamDef(ARObject, ABC):
                         wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
-                inner_elem.append(wrapped)
+                elem.append(wrapped)
 
         # Serialize max_length
         if self.max_length is not None:
             serialized = SerializationHelper.serialize_item(self.max_length, "PositiveInteger")
             if serialized is not None:
+                # Wrap with correct tag
                 wrapped = ET.Element("MAX-LENGTH")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -97,12 +95,13 @@ class EcucAbstractStringParamDef(ARObject, ABC):
                         wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
-                inner_elem.append(wrapped)
+                elem.append(wrapped)
 
         # Serialize min_length
         if self.min_length is not None:
             serialized = SerializationHelper.serialize_item(self.min_length, "PositiveInteger")
             if serialized is not None:
+                # Wrap with correct tag
                 wrapped = ET.Element("MIN-LENGTH")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -110,12 +109,13 @@ class EcucAbstractStringParamDef(ARObject, ABC):
                         wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
-                inner_elem.append(wrapped)
+                elem.append(wrapped)
 
         # Serialize regular
         if self.regular is not None:
             serialized = SerializationHelper.serialize_item(self.regular, "RegularExpression")
             if serialized is not None:
+                # Wrap with correct tag
                 wrapped = ET.Element("REGULAR")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -123,17 +123,13 @@ class EcucAbstractStringParamDef(ARObject, ABC):
                         wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
-                inner_elem.append(wrapped)
-
-        # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
-        wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "EcucAbstractStringParamDef")
-        elem.append(wrapped)
+                elem.append(wrapped)
 
         return elem
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcucAbstractStringParamDef":
-        """Deserialize XML element to EcucAbstractStringParamDef object with atp_variant unwrapping.
+        """Deserialize XML element to EcucAbstractStringParamDef object.
 
         Args:
             element: XML element to deserialize from
@@ -144,32 +140,26 @@ class EcucAbstractStringParamDef(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucAbstractStringParamDef, cls).deserialize(element)
 
-        # Unwrap atp_variant VARIANTS/CONDITIONAL structure
-        inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "EcucAbstractStringParamDef")
-        if inner_elem is None:
-            # No wrapper structure found, return object with default values
-            return obj
-
         # Parse default_value
-        child = SerializationHelper.find_child_element(inner_elem, "DEFAULT-VALUE")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE")
         if child is not None:
             default_value_value = SerializationHelper.deserialize_by_tag(child, "VerbatimString")
             obj.default_value = default_value_value
 
         # Parse max_length
-        child = SerializationHelper.find_child_element(inner_elem, "MAX-LENGTH")
+        child = SerializationHelper.find_child_element(element, "MAX-LENGTH")
         if child is not None:
             max_length_value = child.text
             obj.max_length = max_length_value
 
         # Parse min_length
-        child = SerializationHelper.find_child_element(inner_elem, "MIN-LENGTH")
+        child = SerializationHelper.find_child_element(element, "MIN-LENGTH")
         if child is not None:
             min_length_value = child.text
             obj.min_length = min_length_value
 
         # Parse regular
-        child = SerializationHelper.find_child_element(inner_elem, "REGULAR")
+        child = SerializationHelper.find_child_element(element, "REGULAR")
         if child is not None:
             regular_value = child.text
             obj.regular = regular_value

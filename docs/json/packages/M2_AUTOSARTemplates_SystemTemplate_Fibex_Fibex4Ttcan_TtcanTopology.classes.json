@@ -59,7 +59,8 @@
           "is_ref": false,
           "note": "Possible operation modes"
         }
-      }
+      },
+      "decorator": "atp_variant"
     },
     {
       "name": "TtcanCommunicationController",
@@ -149,7 +150,8 @@
           "is_ref": false,
           "note": "The length of the Tx_Enable window shall be a four (4) bit"
         }
-      }
+      },
+      "decorator": "atp_variant"
     },
     {
       "name": "TtcanPhysicalChannel",

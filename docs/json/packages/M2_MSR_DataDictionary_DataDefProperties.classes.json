@@ -104,7 +104,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "that not all of the attributes or associated elements are useful all of the time. Hence, the process definition (e.g. expressed with an OCL or a Document Control Instance MSR-DCI) has the task of implementing limitations. SwDataDefProps covers various aspects: \u2022 Structure of the data element for calibration use cases: is it a single value, a curve, or a map, but also the recordLayouts which specify how such elements are mapped/converted to the DataTypes in the programming language (or in AUTOSAR). This is mainly expressed by properties like swRecordLayout and swCalprmAxisSet \u2022 Implementation aspects, mainly expressed by swImplPolicy, swVariableAccessImplPolicy, swAddr Method, swPointerTagetProps, baseType, implementationDataType and additionalNativeTypeQualifier \u2022 Access policy for the MCD system, mainly expressed by swCalibrationAccess \u2022 Semantics of the data element, mainly expressed by compuMethod and/or unit, dataConstr, invalid Value \u2022 Code generation policy provided by swRecordLayout Tags: vh.latestBindingTime=codeGenerationTime",
+      "note": "that not all of the attributes or associated elements are useful all of the time. Hence, the process definition (e.g. expressed with an OCL or a Document Control Instance MSR-DCI) has the task of implementing limitations. SwDataDefProps covers various aspects: • Structure of the data element for calibration use cases: is it a single value, a curve, or a map, but also the recordLayouts which specify how such elements are mapped/converted to the DataTypes in the programming language (or in AUTOSAR). This is mainly expressed by properties like swRecordLayout and swCalprmAxisSet • Implementation aspects, mainly expressed by swImplPolicy, swVariableAccessImplPolicy, swAddr Method, swPointerTagetProps, baseType, implementationDataType and additionalNativeTypeQualifier • Access policy for the MCD system, mainly expressed by swCalibrationAccess • Semantics of the data element, mainly expressed by compuMethod and/or unit, dataConstr, invalid Value • Code generation policy provided by swRecordLayout Tags: vh.latestBindingTime=codeGenerationTime",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -372,7 +372,8 @@
           "is_ref": true,
           "note": "The referenced ApplicationPrimitiveDataType represents the primitive data type of the value axis within a (e.g. curve, map). It supersedes and BaseType."
         }
-      }
+      },
+      "decorator": "atp_variant"
     },
     {
       "name": "SwTextProps",
@@ -563,7 +564,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This element describes the interdependencies of data objects, e.g. variables and parameters. Use cases: \u2022 Calculate the value of a calibration parameter (by the MCD system) from the value(s) of other calibration parameters. \u2022 Virtual data - that means the data object is not directly in the ecu and this property describes how the \"virtual variable\" can be computed from the real ones (by the MCD system).",
+      "note": "This element describes the interdependencies of data objects, e.g. variables and parameters. Use cases: • Calculate the value of a calibration parameter (by the MCD system) from the value(s) of other calibration parameters. • Virtual data - that means the data object is not directly in the ecu and this property describes how the \"virtual variable\" can be computed from the real ones (by the MCD system).",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
