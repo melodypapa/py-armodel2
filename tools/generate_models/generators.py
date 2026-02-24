@@ -3228,22 +3228,35 @@ def _generate_serialize_method_for_atp_variant(
         code += f"""        # First, call parent's serialize to handle inherited attributes
         parent_elem = super({class_name}, self).serialize()
 
-        # Copy all attributes from parent element
+        # Copy all attributes from parent element to outer element
         elem.attrib.update(parent_elem.attrib)
 
-        # Copy text from parent element
+        # Copy text from parent element to outer element
         if parent_elem.text:
             elem.text = parent_elem.text
 
-        # Copy all children from parent element
-        for child in parent_elem:
-            elem.append(child)
+"""
+
+    # Create inner element for attributes (will hold parent's non-metadata children and own attributes)
+    code += """        # Create inner element to hold attributes before wrapping
+        inner_elem = ET.Element("INNER")
 
 """
 
-    # Create inner element for attributes
-    code += """        # Create inner element to hold attributes before wrapping
-        inner_elem = ET.Element("INNER")
+    # If class has a parent class, handle children appropriately
+    # Metadata elements (SHORT-NAME, LONG-NAME, etc.) go to outer element
+    # Other children go to inner element (inside atp_variant wrapper)
+    if parent_class:
+        code += """        # Copy parent's children: metadata to outer element, others to inner element
+        metadata_tags = {'SHORT-NAME', 'LONG-NAME', 'DESC', 'ADMIN-DATA'}
+        for child in parent_elem:
+            tag = SerializationHelper.strip_namespace(child.tag)
+            if tag in metadata_tags:
+                # Metadata elements stay outside the atp_variant wrapper
+                elem.append(child)
+            else:
+                # Other elements go inside the atp_variant wrapper
+                inner_elem.append(child)
 
 """
 
@@ -3475,26 +3488,39 @@ def _generate_deserialize_method_for_atp_variant(
         """
 '''
 
-    # If class has a parent class, call parent's deserialize first
-    if parent_class:
-        code += f"""        # First, call parent's deserialize to handle inherited attributes
-        obj = super({class_name}, cls).deserialize(element)
-
-"""
-    else:
-        # No parent class to handle, create instance directly
-        code += """        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-"""
-
-    # Unwrap atp_variant structure
+    # Unwrap atp_variant structure to access inner element
     code += f"""        # Unwrap atp_variant VARIANTS/CONDITIONAL structure
         inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "{class_name}")
         if inner_elem is None:
-            # No wrapper structure found, return object with default values
+            # No wrapper structure found, create instance with default values
+            obj = cls.__new__(cls)
+            obj.__init__()
             return obj
+
+"""
+
+    # If class has a parent class, temporarily copy children from inner to outer element
+    # so parent's deserialize can find them, then clean up
+    if parent_class:
+        code += f"""        # Temporarily copy children from inner element to outer element
+        # so parent's deserialize can find inherited attributes
+        for child in list(inner_elem):
+            element.append(child)
+
+        # Call parent's deserialize with outer element (now contains parent's children)
+        obj = super({class_name}, cls).deserialize(element)
+
+        # Clean up: remove the temporarily copied children from outer element
+        # (they are now in obj, so we don't need them in element anymore)
+        for child in list(inner_elem):
+            element.remove(child)
+
+"""
+    else:
+        # No parent class, create instance directly
+        code += """        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
 
 """
 
