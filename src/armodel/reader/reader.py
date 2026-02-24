@@ -121,13 +121,19 @@ class ARXMLReader:
         Raises:
             FileNotFoundError: If file doesn't exist
             ET.ParseError: If XML is malformed
+            UnicodeDecodeError: If file is not valid UTF-8
         """
         filepath = Path(filepath)
 
         if not filepath.exists():
             raise FileNotFoundError(f"ARXML file not found: {filepath}")
 
-        tree = ET.parse(str(filepath))
+        # Explicitly open with UTF-8 encoding to avoid system default encoding issues
+        # On Windows with non-UTF-8 locales (e.g., Chinese GBK), ET.parse(filepath)
+        # would use system default encoding instead of the XML declaration's encoding
+        with open(filepath, 'r', encoding='utf-8') as f:
+            tree = ET.parse(f)
+
         return tree.getroot()
 
     def _populate_autosar(self, autosar: AUTOSAR, root: ET.Element) -> AUTOSAR:

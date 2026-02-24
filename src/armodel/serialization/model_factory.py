@@ -45,20 +45,22 @@ class ModelFactory:
     
     def load_mappings(self, yaml_path: Optional[Path] = None) -> None:
         """Load mappings from YAML file.
-        
+
         Args:
             yaml_path: Path to model_mappings.yaml, defaults to package path
         """
         if yaml_path is None:
             yaml_path = Path(__file__).parent.parent / "cfg" / "model_mappings.yaml"
-        
-        with open(yaml_path, "r") as f:
+
+        # Explicitly use UTF-8 encoding to avoid system default encoding issues
+        # On Windows with non-UTF-8 locales, open() would use system default encoding
+        with open(yaml_path, "r", encoding="utf-8") as f:
             self._mappings = yaml.safe_load(f)
-        
+
         # Build polymorphic cache
         if "polymorphic_types" in self._mappings:
             self._polymorphic_cache = self._mappings["polymorphic_types"]
-        
+
         # Build import path cache
         if "class_import_paths" in self._mappings:
             self._import_path_cache = self._mappings["class_import_paths"]
