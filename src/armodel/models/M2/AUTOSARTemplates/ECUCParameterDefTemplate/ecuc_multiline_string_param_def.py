@@ -46,19 +46,26 @@ class EcucMultilineStringParamDef(ARObject):
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucMultilineStringParamDef, self).serialize()
 
-        # Copy all attributes from parent element
+        # Copy all attributes from parent element to outer element
         elem.attrib.update(parent_elem.attrib)
 
-        # Copy text from parent element
+        # Copy text from parent element to outer element
         if parent_elem.text:
             elem.text = parent_elem.text
 
-        # Copy all children from parent element
-        for child in parent_elem:
-            elem.append(child)
-
         # Create inner element to hold attributes before wrapping
         inner_elem = ET.Element("INNER")
+
+        # Copy parent's children: metadata to outer element, others to inner element
+        metadata_tags = {'SHORT-NAME', 'LONG-NAME', 'DESC', 'ADMIN-DATA'}
+        for child in parent_elem:
+            tag = SerializationHelper.strip_namespace(child.tag)
+            if tag in metadata_tags:
+                # Metadata elements stay outside the atp_variant wrapper
+                elem.append(child)
+            else:
+                # Other elements go inside the atp_variant wrapper
+                inner_elem.append(child)
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "EcucMultilineStringParamDef")
@@ -76,14 +83,26 @@ class EcucMultilineStringParamDef(ARObject):
         Returns:
             Deserialized EcucMultilineStringParamDef object
         """
-        # First, call parent's deserialize to handle inherited attributes
-        obj = super(EcucMultilineStringParamDef, cls).deserialize(element)
-
         # Unwrap atp_variant VARIANTS/CONDITIONAL structure
         inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "EcucMultilineStringParamDef")
         if inner_elem is None:
-            # No wrapper structure found, return object with default values
+            # No wrapper structure found, create instance with default values
+            obj = cls.__new__(cls)
+            obj.__init__()
             return obj
+
+        # Temporarily copy children from inner element to outer element
+        # so parent's deserialize can find inherited attributes
+        for child in list(inner_elem):
+            element.append(child)
+
+        # Call parent's deserialize with outer element (now contains parent's children)
+        obj = super(EcucMultilineStringParamDef, cls).deserialize(element)
+
+        # Clean up: remove the temporarily copied children from outer element
+        # (they are now in obj, so we don't need them in element anymore)
+        for child in list(inner_elem):
+            element.remove(child)
 
         return obj
 
