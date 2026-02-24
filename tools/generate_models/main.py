@@ -76,9 +76,9 @@ def generate_all_models(
         class_details_map = {}
         for package_path, package_info in package_data.items():
             if "classes" in package_info:
-                json_file_path = str(
+                json_file_path = (
                     packages_dir / f"{package_path.replace('::', '_')}.classes.json"
-                )
+                ).as_posix()
                 for cls in package_info["classes"]:
                     class_json_file_map[cls["name"]] = json_file_path
                     # Store the full class details (including atp_type)
@@ -133,7 +133,7 @@ def generate_all_models(
 
             # Write to file (class code already includes builder imports at top)
             full_code = class_code + "\n\n" + builder_class_code
-            filename.write_text(full_code)
+            filename.write_text(full_code, encoding="utf-8")
             total_generated += 1
 
         print(f"Generated {len([t for t in types if t.get('type') == 'Class'])} model classes")
@@ -160,7 +160,7 @@ def generate_all_models(
                 enum_code = generate_enum_code(enum_def, json_file_path)
 
                 # Write to file
-                filename.write_text(enum_code)
+                filename.write_text(enum_code, encoding="utf-8")
                 total_generated += 1
                 total_enums += 1
 
@@ -190,7 +190,7 @@ def generate_all_models(
                 )
 
                 # Write to file
-                filename.write_text(primitive_code)
+                filename.write_text(primitive_code, encoding="utf-8")
                 total_generated += 1
                 total_primitives += 1
 

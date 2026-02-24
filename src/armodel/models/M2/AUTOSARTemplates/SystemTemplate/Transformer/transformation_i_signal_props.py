@@ -89,23 +89,9 @@ class TransformationISignalProps(ARObject, ABC):
         if self.data_prototype_refs:
             container = ET.Element("DATA-PROTOTYPE-REFS")
             for item in self.data_prototype_refs:
-                if is_ref:
-                    # For reference lists, serialize as reference
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                elif is_primitive_type("DataPrototype", package_data):
-                    # Simple primitive type
-                    child = ET.Element("DATA-PROTOTYPE")
-                    child.text = str(item)
-                    container.append(child)
-                elif is_enum_type("DataPrototype", package_data):
-                    # Enum type - use serialize method
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                else:
-                    # Complex object type
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
+                # For reference lists, serialize as reference
+                if hasattr(item, "serialize"):
+                    container.append(item.serialize())
             inner_elem.append(container)
 
         # Serialize transformer_ref
@@ -157,24 +143,9 @@ class TransformationISignalProps(ARObject, ABC):
         container = SerializationHelper.find_child_element(inner_elem, "DATA-PROTOTYPE-REFS")
         if container is not None:
             for child in container:
-                if is_ref:
-                    # Use the child_tag from decorator if specified to match specific child tag
-                    if child_tag:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "None":
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                    else:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("DataPrototype", package_data):
-                    child_value = child.text
-                elif is_enum_type("DataPrototype", package_data):
-                    child_value = DataPrototype.deserialize(child)
+                child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
+                    child_value = ARRef.deserialize(child)
                 else:
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:

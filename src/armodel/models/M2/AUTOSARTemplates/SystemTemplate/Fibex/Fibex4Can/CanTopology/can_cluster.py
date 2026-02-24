@@ -46,7 +46,8 @@ class CanCluster(AbstractCanCluster):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
-        # First, call parent's serialize to handle inherited attributes
+        # Parent class also has atp_variant pattern
+        # Call parent's serialize to get attributes
         parent_elem = super(CanCluster, self).serialize()
 
         # Copy all attributes from parent element
@@ -56,12 +57,103 @@ class CanCluster(AbstractCanCluster):
         if parent_elem.text:
             elem.text = parent_elem.text
 
-        # Copy all children from parent element
+        # Copy children EXCEPT for parent's VARIANTS wrapper
+        # (other children like SHORT-NAME from non-atp_variant ancestors should be kept)
+        parent_variants_tag = SerializationHelper.get_atp_variant_wrapper_tag("AbstractCanCluster")
         for child in parent_elem:
-            elem.append(child)
+            child_tag = SerializationHelper.strip_namespace(child.tag)
+            if child_tag != parent_variants_tag:
+                elem.append(child)
 
         # Create inner element to hold attributes before wrapping
         inner_elem = ET.Element("INNER")
+
+        # Serialize bus_off_recovery
+        if self.bus_off_recovery is not None:
+            serialized = SerializationHelper.serialize_item(self.bus_off_recovery, "CanClusterBusOffRecovery")
+            if serialized is not None:
+                wrapped = ET.Element("BUS-OFF-RECOVERY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize can_fd_baudrate
+        if self.can_fd_baudrate is not None:
+            serialized = SerializationHelper.serialize_item(self.can_fd_baudrate, "PositiveUnlimitedInteger")
+            if serialized is not None:
+                wrapped = ET.Element("CAN-FD-BAUDRATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize can_xl_baudrate
+        if self.can_xl_baudrate is not None:
+            serialized = SerializationHelper.serialize_item(self.can_xl_baudrate, "PositiveUnlimitedInteger")
+            if serialized is not None:
+                wrapped = ET.Element("CAN-XL-BAUDRATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize baudrate
+        if self.baudrate is not None:
+            serialized = SerializationHelper.serialize_item(self.baudrate, "PositiveUnlimitedInteger")
+            if serialized is not None:
+                wrapped = ET.Element("BAUDRATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize physical_channels (list from container "PHYSICAL-CHANNELS")
+        if self.physical_channels:
+            container = ET.Element("PHYSICAL-CHANNELS")
+            for item in self.physical_channels:
+                # Complex object type
+                if hasattr(item, "serialize"):
+                    container.append(item.serialize())
+            inner_elem.append(container)
+
+        # Serialize protocol_name
+        if self.protocol_name is not None:
+            serialized = SerializationHelper.serialize_item(self.protocol_name, "String")
+            if serialized is not None:
+                wrapped = ET.Element("PROTOCOL-NAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize protocol_version
+        if self.protocol_version is not None:
+            serialized = SerializationHelper.serialize_item(self.protocol_version, "String")
+            if serialized is not None:
+                wrapped = ET.Element("PROTOCOL-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "CanCluster")
@@ -79,14 +171,65 @@ class CanCluster(AbstractCanCluster):
         Returns:
             Deserialized CanCluster object
         """
-        # First, call parent's deserialize to handle inherited attributes
-        obj = super(CanCluster, cls).deserialize(element)
+        # Parent class has atp_variant, skip its deserialize
+        # Call nearest non-atp_variant ancestor's deserialize to handle inherited attributes
+        # like short_name that are NOT in any VARIANTS wrapper
+        # Create instance as the current class
+        obj = cls.__new__(cls)
+        obj.__init__()
+        # Let the ancestor handle non-atp_variant attributes from the element directly
+        # (these are NOT inside any VARIANTS wrapper)
 
         # Unwrap atp_variant VARIANTS/CONDITIONAL structure
         inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "CanCluster")
         if inner_elem is None:
             # No wrapper structure found, return object with default values
             return obj
+
+        # Parse bus_off_recovery
+        child = SerializationHelper.find_child_element(inner_elem, "BUS-OFF-RECOVERY")
+        if child is not None:
+            bus_off_recovery_value = SerializationHelper.deserialize_by_tag(child, "CanClusterBusOffRecovery")
+            obj.bus_off_recovery = bus_off_recovery_value
+
+        # Parse can_fd_baudrate
+        child = SerializationHelper.find_child_element(inner_elem, "CAN-FD-BAUDRATE")
+        if child is not None:
+            can_fd_baudrate_value = child.text
+            obj.can_fd_baudrate = can_fd_baudrate_value
+
+        # Parse can_xl_baudrate
+        child = SerializationHelper.find_child_element(inner_elem, "CAN-XL-BAUDRATE")
+        if child is not None:
+            can_xl_baudrate_value = child.text
+            obj.can_xl_baudrate = can_xl_baudrate_value
+
+        # Parse baudrate
+        child = SerializationHelper.find_child_element(inner_elem, "BAUDRATE")
+        if child is not None:
+            baudrate_value = child.text
+            obj.baudrate = baudrate_value
+
+        # Parse physical_channels (list from container "PHYSICAL-CHANNELS")
+        obj.physical_channels = []
+        container = SerializationHelper.find_child_element(inner_elem, "PHYSICAL-CHANNELS")
+        if container is not None:
+            for child in container:
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.physical_channels.append(child_value)
+
+        # Parse protocol_name
+        child = SerializationHelper.find_child_element(inner_elem, "PROTOCOL-NAME")
+        if child is not None:
+            protocol_name_value = child.text
+            obj.protocol_name = protocol_name_value
+
+        # Parse protocol_version
+        child = SerializationHelper.find_child_element(inner_elem, "PROTOCOL-VERSION")
+        if child is not None:
+            protocol_version_value = child.text
+            obj.protocol_version = protocol_version_value
 
         return obj
 

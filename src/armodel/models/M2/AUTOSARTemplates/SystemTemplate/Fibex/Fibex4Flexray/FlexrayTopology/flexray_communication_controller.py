@@ -257,23 +257,9 @@ class FlexrayCommunicationController(ARObject):
         if self.flexray_fifos:
             container = ET.Element("FLEXRAY-FIFOS")
             for item in self.flexray_fifos:
-                if is_ref:
-                    # For reference lists, serialize as reference
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                elif is_primitive_type("any (FlexrayFifo)", package_data):
-                    # Simple primitive type
-                    child = ET.Element("FLEXRAY-FIFO")
-                    child.text = str(item)
-                    container.append(child)
-                elif is_enum_type("any (FlexrayFifo)", package_data):
-                    # Enum type - use serialize method
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                else:
-                    # Complex object type
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
+                # Complex object type
+                if hasattr(item, "serialize"):
+                    container.append(item.serialize())
             inner_elem.append(container)
 
         # Serialize key_slot_id
@@ -587,26 +573,7 @@ class FlexrayCommunicationController(ARObject):
         container = SerializationHelper.find_child_element(inner_elem, "FLEXRAY-FIFOS")
         if container is not None:
             for child in container:
-                if is_ref:
-                    # Use the child_tag from decorator if specified to match specific child tag
-                    if child_tag:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "None":
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                    else:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("any (FlexrayFifo)", package_data):
-                    child_value = child.text
-                elif is_enum_type("any (FlexrayFifo)", package_data):
-                    child_value = any (FlexrayFifo).deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.flexray_fifos.append(child_value)
 

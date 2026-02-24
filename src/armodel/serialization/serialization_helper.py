@@ -47,6 +47,22 @@ class SerializationHelper:
         return f"{class_tag}-VARIANTS/{class_tag}-CONDITIONAL"
 
     @staticmethod
+    def get_atp_variant_wrapper_tag(class_name: str) -> str:
+        """Get the VARIANTS wrapper tag name for an atpVariation class.
+
+        This returns just the outer VARIANTS tag (e.g., "CAN-CLUSTER-VARIANTS")
+        without the inner CONDITIONAL tag.
+
+        Args:
+            class_name: Python class name (e.g., "CanCluster")
+
+        Returns:
+            VARIANTS tag name (e.g., "CAN-CLUSTER-VARIANTS")
+        """
+        class_tag = NameConverter.to_xml_tag(class_name)
+        return f"{class_tag}-VARIANTS"
+
+    @staticmethod
     def serialize_with_atp_variant(inner_elem: ET.Element, class_name: str) -> ET.Element:
         """Wrap serialized attributes in atp_variant VARIANTS/CONDITIONAL structure.
 

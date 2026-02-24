@@ -95,23 +95,9 @@ class CommunicationCluster(ARElement, ABC):
         if self.physical_channels:
             container = ET.Element("PHYSICAL-CHANNELS")
             for item in self.physical_channels:
-                if is_ref:
-                    # For reference lists, serialize as reference
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                elif is_primitive_type("PhysicalChannel", package_data):
-                    # Simple primitive type
-                    child = ET.Element("PHYSICAL-CHANNEL")
-                    child.text = str(item)
-                    container.append(child)
-                elif is_enum_type("PhysicalChannel", package_data):
-                    # Enum type - use serialize method
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                else:
-                    # Complex object type
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
+                # Complex object type
+                if hasattr(item, "serialize"):
+                    container.append(item.serialize())
             inner_elem.append(container)
 
         # Serialize protocol_name
@@ -176,26 +162,7 @@ class CommunicationCluster(ARElement, ABC):
         container = SerializationHelper.find_child_element(inner_elem, "PHYSICAL-CHANNELS")
         if container is not None:
             for child in container:
-                if is_ref:
-                    # Use the child_tag from decorator if specified to match specific child tag
-                    if child_tag:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "None":
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                    else:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("PhysicalChannel", package_data):
-                    child_value = child.text
-                elif is_enum_type("PhysicalChannel", package_data):
-                    child_value = PhysicalChannel.deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.physical_channels.append(child_value)
 
