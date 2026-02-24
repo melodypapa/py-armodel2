@@ -26,4 +26,5 @@ class CommunicationDirectionType(AREnum):
         """
         self._value_ = value
 
-    INOUT = "INOUT"
+    IN = "IN"
+    OUT = "OUT"

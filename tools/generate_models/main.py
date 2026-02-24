@@ -76,9 +76,9 @@ def generate_all_models(
         class_details_map = {}
         for package_path, package_info in package_data.items():
             if "classes" in package_info:
-                json_file_path = str(
+                json_file_path = (
                     packages_dir / f"{package_path.replace('::', '_')}.classes.json"
-                )
+                ).as_posix()
                 for cls in package_info["classes"]:
                     class_json_file_map[cls["name"]] = json_file_path
                     # Store the full class details (including atp_type)
@@ -133,7 +133,7 @@ def generate_all_models(
 
             # Write to file (class code already includes builder imports at top)
             full_code = class_code + "\n\n" + builder_class_code
-            filename.write_text(full_code)
+            filename.write_text(full_code, encoding="utf-8")
             total_generated += 1
 
         print(f"Generated {len([t for t in types if t.get('type') == 'Class'])} model classes")
@@ -156,11 +156,11 @@ def generate_all_models(
                 filename = dir_path / f"{to_snake_case(enum_name)}.py"
 
                 # Generate enum code with JSON file path
-                json_file_path = f"packages/{enum_file.name}"
+                json_file_path = enum_file.relative_to(packages_dir.parent).as_posix()
                 enum_code = generate_enum_code(enum_def, json_file_path)
 
                 # Write to file
-                filename.write_text(enum_code)
+                filename.write_text(enum_code, encoding="utf-8")
                 total_generated += 1
                 total_enums += 1
 
@@ -184,13 +184,13 @@ def generate_all_models(
                 filename = dir_path / f"{to_snake_case(primitive_name)}.py"
 
                 # Generate primitive code with JSON file path and package data
-                json_file_path = f"packages/{primitive_file.name}"
+                json_file_path = primitive_file.relative_to(packages_dir.parent).as_posix()
                 primitive_code = generate_primitive_code(
                     primitive_def, package_data, json_file_path
                 )
 
                 # Write to file
-                filename.write_text(primitive_code)
+                filename.write_text(primitive_code, encoding="utf-8")
                 total_generated += 1
                 total_primitives += 1
 

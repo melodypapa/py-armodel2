@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreTopology.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
@@ -14,6 +14,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication import (
+    CommunicationDirectionType,
+)
 from abc import ABC, abstractmethod
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
@@ -31,11 +34,11 @@ class CommConnectorPort(Identifiable, ABC):
         """
         return True
 
-    communication: Optional[Any]
+    communication_direction: Optional[CommunicationDirectionType]
     def __init__(self) -> None:
         """Initialize CommConnectorPort."""
         super().__init__()
-        self.communication: Optional[Any] = None
+        self.communication_direction: Optional[CommunicationDirectionType] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CommConnectorPort to XML element.
@@ -61,12 +64,12 @@ class CommConnectorPort(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize communication
-        if self.communication is not None:
-            serialized = SerializationHelper.serialize_item(self.communication, "Any")
+        # Serialize communication_direction
+        if self.communication_direction is not None:
+            serialized = SerializationHelper.serialize_item(self.communication_direction, "CommunicationDirectionType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COMMUNICATION")
+                wrapped = ET.Element("COMMUNICATION-DIRECTION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -90,11 +93,11 @@ class CommConnectorPort(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommConnectorPort, cls).deserialize(element)
 
-        # Parse communication
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION")
+        # Parse communication_direction
+        child = SerializationHelper.find_child_element(element, "COMMUNICATION-DIRECTION")
         if child is not None:
-            communication_value = child.text
-            obj.communication = communication_value
+            communication_direction_value = CommunicationDirectionType.deserialize(child)
+            obj.communication_direction = communication_direction_value
 
         return obj
 
@@ -109,8 +112,8 @@ class CommConnectorPortBuilder(IdentifiableBuilder):
         self._obj: CommConnectorPort = CommConnectorPort()
 
 
-    def with_communication(self, value: Optional[any (Communication)]) -> "CommConnectorPortBuilder":
-        """Set communication attribute.
+    def with_communication_direction(self, value: Optional[CommunicationDirectionType]) -> "CommConnectorPortBuilder":
+        """Set communication_direction attribute.
 
         Args:
             value: Value to set
@@ -120,7 +123,7 @@ class CommConnectorPortBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.communication = value
+        self._obj.communication_direction = value
         return self
 
 

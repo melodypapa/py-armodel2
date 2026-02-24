@@ -8,14 +8,12 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4C
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
     FrameTriggering,
 )
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import FrameTriggeringBuilder
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanCommunication import (
     CanAddressingModeType,
     CanFrameRxBehaviorEnum,
@@ -51,40 +49,29 @@ class CanFrameTriggering(FrameTriggering):
         """
         return False
 
-    _absolutelies: list[TtcanAbsolutelyScheduledTiming]
-    can_addressing: Optional[CanAddressingModeType]
+    absolutely_can_frame_triggerings: list[TtcanAbsolutelyScheduledTiming]
+    can_addressing_mode: Optional[CanAddressingModeType]
     can_frame_rx_behavior: Optional[CanFrameRxBehaviorEnum]
     can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum]
-    can_xl_frame_ref: Optional[ARRef]
+    can_xl_frame_triggering_props: Optional[CanXlFrameTriggeringProps]
     identifier: Optional[Integer]
     j1939requestable: Optional[Boolean]
-    rx_identifier_range_range: Optional[RxIdentifierRange]
+    rx_identifier_range: Optional[RxIdentifierRange]
     rx_mask: Optional[PositiveInteger]
     tx_mask: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CanFrameTriggering."""
         super().__init__()
-        self._absolutelies: list[TtcanAbsolutelyScheduledTiming] = []
-        self.can_addressing: Optional[CanAddressingModeType] = None
+        self.absolutely_can_frame_triggerings: list[TtcanAbsolutelyScheduledTiming] = []
+        self.can_addressing_mode: Optional[CanAddressingModeType] = None
         self.can_frame_rx_behavior: Optional[CanFrameRxBehaviorEnum] = None
         self.can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum] = None
-        self.can_xl_frame_ref: Optional[ARRef] = None
+        self.can_xl_frame_triggering_props: Optional[CanXlFrameTriggeringProps] = None
         self.identifier: Optional[Integer] = None
         self.j1939requestable: Optional[Boolean] = None
-        self.rx_identifier_range_range: Optional[RxIdentifierRange] = None
+        self.rx_identifier_range: Optional[RxIdentifierRange] = None
         self.rx_mask: Optional[PositiveInteger] = None
         self.tx_mask: Optional[PositiveInteger] = None
-    @property
-    @xml_element_name("ABSOLUTELYS")
-    def absolutelies(self) -> list[TtcanAbsolutelyScheduledTiming]:
-        """Get absolutelies with custom XML element name."""
-        return self._absolutelies
-
-    @absolutelies.setter
-    def absolutelies(self, value: list[TtcanAbsolutelyScheduledTiming]) -> None:
-        """Set absolutelies with custom XML element name."""
-        self._absolutelies = value
-
 
     def serialize(self) -> ET.Element:
         """Serialize CanFrameTriggering to XML element.
@@ -110,22 +97,22 @@ class CanFrameTriggering(FrameTriggering):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize absolutelies (list to container "ABSOLUTELYS")
-        if self.absolutelies:
-            wrapper = ET.Element("ABSOLUTELYS")
-            for item in self.absolutelies:
+        # Serialize absolutely_can_frame_triggerings (list to container "ABSOLUTELY-CAN-FRAME-TRIGGERINGS")
+        if self.absolutely_can_frame_triggerings:
+            wrapper = ET.Element("ABSOLUTELY-CAN-FRAME-TRIGGERINGS")
+            for item in self.absolutely_can_frame_triggerings:
                 serialized = SerializationHelper.serialize_item(item, "TtcanAbsolutelyScheduledTiming")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize can_addressing
-        if self.can_addressing is not None:
-            serialized = SerializationHelper.serialize_item(self.can_addressing, "CanAddressingModeType")
+        # Serialize can_addressing_mode
+        if self.can_addressing_mode is not None:
+            serialized = SerializationHelper.serialize_item(self.can_addressing_mode, "CanAddressingModeType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CAN-ADDRESSING")
+                wrapped = ET.Element("CAN-ADDRESSING-MODE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -162,12 +149,12 @@ class CanFrameTriggering(FrameTriggering):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize can_xl_frame_ref
-        if self.can_xl_frame_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.can_xl_frame_ref, "CanXlFrameTriggeringProps")
+        # Serialize can_xl_frame_triggering_props
+        if self.can_xl_frame_triggering_props is not None:
+            serialized = SerializationHelper.serialize_item(self.can_xl_frame_triggering_props, "CanXlFrameTriggeringProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CAN-XL-FRAME-REF")
+                wrapped = ET.Element("CAN-XL-FRAME-TRIGGERING-PROPS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -204,12 +191,12 @@ class CanFrameTriggering(FrameTriggering):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rx_identifier_range_range
-        if self.rx_identifier_range_range is not None:
-            serialized = SerializationHelper.serialize_item(self.rx_identifier_range_range, "RxIdentifierRange")
+        # Serialize rx_identifier_range
+        if self.rx_identifier_range is not None:
+            serialized = SerializationHelper.serialize_item(self.rx_identifier_range, "RxIdentifierRange")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RX-IDENTIFIER-RANGE-RANGE")
+                wrapped = ET.Element("RX-IDENTIFIER-RANGE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -261,21 +248,21 @@ class CanFrameTriggering(FrameTriggering):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanFrameTriggering, cls).deserialize(element)
 
-        # Parse absolutelies (list from container "ABSOLUTELYS")
-        obj.absolutelies = []
-        container = SerializationHelper.find_child_element(element, "ABSOLUTELYS")
+        # Parse absolutely_can_frame_triggerings (list from container "ABSOLUTELY-CAN-FRAME-TRIGGERINGS")
+        obj.absolutely_can_frame_triggerings = []
+        container = SerializationHelper.find_child_element(element, "ABSOLUTELY-CAN-FRAME-TRIGGERINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.absolutelies.append(child_value)
+                    obj.absolutely_can_frame_triggerings.append(child_value)
 
-        # Parse can_addressing
-        child = SerializationHelper.find_child_element(element, "CAN-ADDRESSING")
+        # Parse can_addressing_mode
+        child = SerializationHelper.find_child_element(element, "CAN-ADDRESSING-MODE")
         if child is not None:
-            can_addressing_value = CanAddressingModeType.deserialize(child)
-            obj.can_addressing = can_addressing_value
+            can_addressing_mode_value = CanAddressingModeType.deserialize(child)
+            obj.can_addressing_mode = can_addressing_mode_value
 
         # Parse can_frame_rx_behavior
         child = SerializationHelper.find_child_element(element, "CAN-FRAME-RX-BEHAVIOR")
@@ -289,11 +276,11 @@ class CanFrameTriggering(FrameTriggering):
             can_frame_tx_behavior_value = CanFrameTxBehaviorEnum.deserialize(child)
             obj.can_frame_tx_behavior = can_frame_tx_behavior_value
 
-        # Parse can_xl_frame_ref
-        child = SerializationHelper.find_child_element(element, "CAN-XL-FRAME-REF")
+        # Parse can_xl_frame_triggering_props
+        child = SerializationHelper.find_child_element(element, "CAN-XL-FRAME-TRIGGERING-PROPS")
         if child is not None:
-            can_xl_frame_ref_value = ARRef.deserialize(child)
-            obj.can_xl_frame_ref = can_xl_frame_ref_value
+            can_xl_frame_triggering_props_value = SerializationHelper.deserialize_by_tag(child, "CanXlFrameTriggeringProps")
+            obj.can_xl_frame_triggering_props = can_xl_frame_triggering_props_value
 
         # Parse identifier
         child = SerializationHelper.find_child_element(element, "IDENTIFIER")
@@ -307,11 +294,11 @@ class CanFrameTriggering(FrameTriggering):
             j1939requestable_value = child.text
             obj.j1939requestable = j1939requestable_value
 
-        # Parse rx_identifier_range_range
-        child = SerializationHelper.find_child_element(element, "RX-IDENTIFIER-RANGE-RANGE")
+        # Parse rx_identifier_range
+        child = SerializationHelper.find_child_element(element, "RX-IDENTIFIER-RANGE")
         if child is not None:
-            rx_identifier_range_range_value = SerializationHelper.deserialize_by_tag(child, "RxIdentifierRange")
-            obj.rx_identifier_range_range = rx_identifier_range_range_value
+            rx_identifier_range_value = SerializationHelper.deserialize_by_tag(child, "RxIdentifierRange")
+            obj.rx_identifier_range = rx_identifier_range_value
 
         # Parse rx_mask
         child = SerializationHelper.find_child_element(element, "RX-MASK")
@@ -338,8 +325,8 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
         self._obj: CanFrameTriggering = CanFrameTriggering()
 
 
-    def with_absolutelies(self, items: list[TtcanAbsolutelyScheduledTiming]) -> "CanFrameTriggeringBuilder":
-        """Set absolutelies list attribute.
+    def with_absolutely_can_frame_triggerings(self, items: list[TtcanAbsolutelyScheduledTiming]) -> "CanFrameTriggeringBuilder":
+        """Set absolutely_can_frame_triggerings list attribute.
 
         Args:
             items: List of items to set
@@ -347,11 +334,11 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.absolutelies = list(items) if items else []
+        self._obj.absolutely_can_frame_triggerings = list(items) if items else []
         return self
 
-    def with_can_addressing(self, value: Optional[CanAddressingModeType]) -> "CanFrameTriggeringBuilder":
-        """Set can_addressing attribute.
+    def with_can_addressing_mode(self, value: Optional[CanAddressingModeType]) -> "CanFrameTriggeringBuilder":
+        """Set can_addressing_mode attribute.
 
         Args:
             value: Value to set
@@ -361,7 +348,7 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.can_addressing = value
+        self._obj.can_addressing_mode = value
         return self
 
     def with_can_frame_rx_behavior(self, value: Optional[CanFrameRxBehaviorEnum]) -> "CanFrameTriggeringBuilder":
@@ -392,8 +379,8 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
         self._obj.can_frame_tx_behavior = value
         return self
 
-    def with_can_xl_frame(self, value: Optional[CanXlFrameTriggeringProps]) -> "CanFrameTriggeringBuilder":
-        """Set can_xl_frame attribute.
+    def with_can_xl_frame_triggering_props(self, value: Optional[CanXlFrameTriggeringProps]) -> "CanFrameTriggeringBuilder":
+        """Set can_xl_frame_triggering_props attribute.
 
         Args:
             value: Value to set
@@ -403,7 +390,7 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.can_xl_frame = value
+        self._obj.can_xl_frame_triggering_props = value
         return self
 
     def with_identifier(self, value: Optional[Integer]) -> "CanFrameTriggeringBuilder":
@@ -434,8 +421,8 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
         self._obj.j1939requestable = value
         return self
 
-    def with_rx_identifier_range_range(self, value: Optional[RxIdentifierRange]) -> "CanFrameTriggeringBuilder":
-        """Set rx_identifier_range_range attribute.
+    def with_rx_identifier_range(self, value: Optional[RxIdentifierRange]) -> "CanFrameTriggeringBuilder":
+        """Set rx_identifier_range attribute.
 
         Args:
             value: Value to set
@@ -445,7 +432,7 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.rx_identifier_range_range = value
+        self._obj.rx_identifier_range = value
         return self
 
     def with_rx_mask(self, value: Optional[PositiveInteger]) -> "CanFrameTriggeringBuilder":
@@ -477,8 +464,8 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
         return self
 
 
-    def add_absolutelie(self, item: TtcanAbsolutelyScheduledTiming) -> "CanFrameTriggeringBuilder":
-        """Add a single item to absolutelies list.
+    def add_absolutely_can_frame_triggering(self, item: TtcanAbsolutelyScheduledTiming) -> "CanFrameTriggeringBuilder":
+        """Add a single item to absolutely_can_frame_triggerings list.
 
         Args:
             item: Item to add
@@ -486,16 +473,16 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.absolutelies.append(item)
+        self._obj.absolutely_can_frame_triggerings.append(item)
         return self
 
-    def clear_absolutelies(self) -> "CanFrameTriggeringBuilder":
-        """Clear all items from absolutelies list.
+    def clear_absolutely_can_frame_triggerings(self) -> "CanFrameTriggeringBuilder":
+        """Clear all items from absolutely_can_frame_triggerings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.absolutelies = []
+        self._obj.absolutely_can_frame_triggerings = []
         return self
 
 

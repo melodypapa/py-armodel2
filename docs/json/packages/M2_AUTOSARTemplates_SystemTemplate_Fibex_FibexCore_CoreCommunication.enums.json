@@ -124,8 +124,13 @@
       ],
       "literals": [
         {
-          "name": "inout",
+          "name": "in",
           "index": 1,
+          "description": "Reception (Input)<br>Tags: atp.EnumerationLiteralIndex=0"
+        },
+        {
+          "name": "out",
+          "index": 2,
           "description": "Reception (Input)<br>Tags: atp.EnumerationLiteralIndex=1"
         }
       ]
