@@ -65,14 +65,14 @@
         }
       ],
       "attributes": {
-        "absolutelies": {
+        "absolutelyCanFrameTriggerings": {
           "type": "TtcanAbsolutelyScheduledTiming",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Each frame in TTCAN is identified by its slot id and communication cycle. A description is provided by the of AbsolutelyScheduledTiming."
         },
-        "canAddressing": {
+        "canAddressingMode": {
           "type": "CanAddressingModeType",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -93,11 +93,11 @@
           "is_ref": false,
           "note": "Defines which CAN protocol shall be used for frame transmission."
         },
-        "canXlFrame": {
+        "canXlFrameTriggeringProps": {
           "type": "CanXlFrameTriggeringProps",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Definition of CAN XL specific attributes in case the frame is a CAN XL frame."
         },
         "identifier": {
@@ -114,7 +114,7 @@
           "is_ref": false,
           "note": "Frame can be triggered by the J1939 request message."
         },
-        "rxIdentifierRangeRange": {
+        "rxIdentifierRange": {
           "type": "RxIdentifierRange",
           "multiplicity": "0..1",
           "kind": "attribute",

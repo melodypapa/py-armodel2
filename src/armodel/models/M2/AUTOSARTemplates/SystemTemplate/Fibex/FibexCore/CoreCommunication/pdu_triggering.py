@@ -48,16 +48,16 @@ class PduTriggering(Identifiable):
         """
         return False
 
-    i_pdu_ref: Optional[ARRef]
     i_pdu_port_refs: list[ARRef]
+    i_pdu_ref: Optional[ARRef]
     i_signal_refs: list[ARRef]
     sec_oc_crypto_service_ref: Optional[ARRef]
     trigger_i_pdu_send_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize PduTriggering."""
         super().__init__()
-        self.i_pdu_ref: Optional[ARRef] = None
         self.i_pdu_port_refs: list[ARRef] = []
+        self.i_pdu_ref: Optional[ARRef] = None
         self.i_signal_refs: list[ARRef] = []
         self.sec_oc_crypto_service_ref: Optional[ARRef] = None
         self.trigger_i_pdu_send_refs: list[ARRef] = []
@@ -86,20 +86,6 @@ class PduTriggering(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize i_pdu_ref
-        if self.i_pdu_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.i_pdu_ref, "Pdu")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
         # Serialize i_pdu_port_refs (list to container "I-PDU-PORT-REFS")
         if self.i_pdu_port_refs:
             wrapper = ET.Element("I-PDU-PORT-REFS")
@@ -116,6 +102,20 @@ class PduTriggering(Identifiable):
                     wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
+
+        # Serialize i_pdu_ref
+        if self.i_pdu_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.i_pdu_ref, "Pdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("I-PDU-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize i_signal_refs (list to container "I-SIGNAL-REFS")
         if self.i_signal_refs:
@@ -180,12 +180,6 @@ class PduTriggering(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PduTriggering, cls).deserialize(element)
 
-        # Parse i_pdu_ref
-        child = SerializationHelper.find_child_element(element, "I-PDU-REF")
-        if child is not None:
-            i_pdu_ref_value = ARRef.deserialize(child)
-            obj.i_pdu_ref = i_pdu_ref_value
-
         # Parse i_pdu_port_refs (list from container "I-PDU-PORT-REFS")
         obj.i_pdu_port_refs = []
         container = SerializationHelper.find_child_element(element, "I-PDU-PORT-REFS")
@@ -201,6 +195,12 @@ class PduTriggering(Identifiable):
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.i_pdu_port_refs.append(child_value)
+
+        # Parse i_pdu_ref
+        child = SerializationHelper.find_child_element(element, "I-PDU-REF")
+        if child is not None:
+            i_pdu_ref_value = ARRef.deserialize(child)
+            obj.i_pdu_ref = i_pdu_ref_value
 
         # Parse i_signal_refs (list from container "I-SIGNAL-REFS")
         obj.i_signal_refs = []
@@ -253,6 +253,18 @@ class PduTriggeringBuilder(IdentifiableBuilder):
         self._obj: PduTriggering = PduTriggering()
 
 
+    def with_i_pdu_ports(self, items: list[IPduPort]) -> "PduTriggeringBuilder":
+        """Set i_pdu_ports list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.i_pdu_ports = list(items) if items else []
+        return self
+
     def with_i_pdu(self, value: Optional[Pdu]) -> "PduTriggeringBuilder":
         """Set i_pdu attribute.
 
@@ -265,18 +277,6 @@ class PduTriggeringBuilder(IdentifiableBuilder):
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
         self._obj.i_pdu = value
-        return self
-
-    def with_i_pdu_ports(self, items: list[IPduPort]) -> "PduTriggeringBuilder":
-        """Set i_pdu_ports list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.i_pdu_ports = list(items) if items else []
         return self
 
     def with_i_signals(self, items: list[ISignalTriggering]) -> "PduTriggeringBuilder":

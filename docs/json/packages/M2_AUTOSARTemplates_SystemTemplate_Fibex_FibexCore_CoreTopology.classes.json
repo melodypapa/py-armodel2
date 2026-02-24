@@ -75,6 +75,13 @@
           "kind": "attribute",
           "is_ref": false,
           "note": "The version of the protocol used."
+        },
+         "speed": {
+          "type": "Integer",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Channels speed in kbps. (AUTOSAR 4.0.3)"
         }
       }
     },
@@ -128,28 +135,28 @@
         }
       ],
       "attributes": {
-        "associatedComs": {
+        "associatedComIPduGroups": {
           "type": "ISignalIPduGroup",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "With this reference it is possible to identify which ISignal are applicable for which Communication level ISignalIPduGroups shall be referenced by If an ISignalIPduGroup contains other these contained ISignalIPdu not be referenced by the EcuInstance. are associated to an Ecu the top level ISignalIPduGroup. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "associateds": {
+        "associatedConsumedProvidedServiceInstanceGroups": {
           "type": "ConsumedProvidedServiceInstanceGroup",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "With this reference it is possible to identify which ConsumedProvidedServiceInstanceGroups are for which ECUInstance. atpSplitable; atpVariation Group Tags:"
         },
-        "associatedPdurs": {
+        "associatedPdurIPduGroups": {
           "type": "PdurIPduGroup",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "With this reference it is possible to identify which PduR Groups are applicable for which Communication"
         },
-        "channel": {
+        "channelSynchronousWakeup": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -163,14 +170,28 @@
           "is_ref": false,
           "note": "Restriction of the Client Identifier for this Ecu to an"
         },
-        "com": {
+        "comConfigurationGwTimeBase": {
           "type": "TimeValue",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "The period between successive calls to Com_Main of the AUTOSAR COM module in seconds."
         },
-        "comEnable": {
+        "comConfigurationRxTimeBase": {
+          "type": "TimeValue",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The period between successive calls to Com_Main of the AUTOSAR COM module in seconds."
+        },
+        "comConfigurationTxTimeBase": {
+          "type": "TimeValue",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The period between successive calls to Com_Main of the AUTOSAR COM module in seconds."
+        },
+        "comEnableMDTForCyclicTransmission": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -178,14 +199,14 @@
           "note": "Enables for the Com module of this EcuInstance the"
         },
         "commControllers": {
-          "type": "any (Communication)",
+          "type": "CommunicationController",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "CommunicationControllers of the ECU."
         },
         "connectors": {
-          "type": "any (Communication)",
+          "type": "CommunicationConnector",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -212,7 +233,7 @@
           "is_ref": true,
           "note": "Reference to OsTaskProxies assigned to the Ecu"
         },
-        "ethSwitchPort": {
+        "ethSwitchPortGroupDerivation": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -240,14 +261,14 @@
           "is_ref": false,
           "note": "Defines if this EcuInstance shall request Nm on all its"
         },
-        "pncPrepare": {
+        "pncPrepareSleepTimer": {
           "type": "TimeValue",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Time in seconds the PNC state machine shall wait in"
         },
-        "pnc": {
+        "pncSynchronousWakeup": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -261,7 +282,7 @@
           "is_ref": false,
           "note": "Specifies the runtime of the reset timer in seconds. This is valid for the reset of PN requests in the EIRA the ERA."
         },
-        "sleepMode": {
+        "sleepModeSupported": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -283,7 +304,7 @@
           "note": "EcuInstance specific TcpIp Stack attributes."
         },
         "v2xSupported": {
-          "type": "any (V2xSupportEnum)",
+          "type": "V2xSupportEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -603,12 +624,12 @@
         }
       ],
       "attributes": {
-        "communication": {
-          "type": "any (Communication)",
+        "communicationDirection": {
+          "type": "CommunicationDirectionType",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Communication Direction of the Connector Port (input or"
+          "note": "Communication Direction of the Connector Port (input or output Port)."
         }
       }
     },

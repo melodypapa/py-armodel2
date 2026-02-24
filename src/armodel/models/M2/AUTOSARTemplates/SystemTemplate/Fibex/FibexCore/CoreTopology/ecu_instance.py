@@ -9,7 +9,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreTopology.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization.decorators import xml_element_name
 
@@ -25,6 +25,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.client_id_range import (
     ClientIdRange,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
+    CommunicationConnector,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_controller import (
+    CommunicationController,
 )
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.consumed_provided_service_instance_group import (
     ConsumedProvidedServiceInstanceGroup,
@@ -72,56 +78,60 @@ class EcuInstance(FibexElement):
         """
         return False
 
-    associated_com_refs: list[ARRef]
-    associated_refs: list[ARRef]
-    associated_pdur_refs: list[ARRef]
-    channel: Optional[Boolean]
+    associated_com_i_pdu_group_refs: list[ARRef]
+    associated_consumed_provided_service_instance_group_refs: list[ARRef]
+    associated_pdur_i_pdu_group_refs: list[ARRef]
+    channel_synchronous_wakeup: Optional[Boolean]
     client_id_range: Optional[ClientIdRange]
-    com: Optional[TimeValue]
-    com_enable: Optional[Boolean]
-    comm_controllers: list[Any]
-    connectors: list[Any]
+    com_configuration_gw_time_base: Optional[TimeValue]
+    com_configuration_rx_time_base: Optional[TimeValue]
+    com_configuration_tx_time_base: Optional[TimeValue]
+    com_enable_mdt_for_cyclic_transmission: Optional[Boolean]
+    comm_controllers: list[CommunicationController]
+    connectors: list[CommunicationConnector]
     dlt_config: Optional[DltConfig]
     do_ip_config: Optional[DoIpConfig]
     _ecu_task_proxie_refs: list[ARRef]
-    eth_switch_port: Optional[Boolean]
+    eth_switch_port_group_derivation: Optional[Boolean]
     firewall_rule_refs: list[ARRef]
     partitions: list[EcuPartition]
     pnc_nm_request: Optional[Boolean]
-    pnc_prepare: Optional[TimeValue]
-    pnc: Optional[Boolean]
+    pnc_prepare_sleep_timer: Optional[TimeValue]
+    pnc_synchronous_wakeup: Optional[Boolean]
     pn_reset_time: Optional[TimeValue]
-    sleep_mode: Optional[Boolean]
+    sleep_mode_supported: Optional[Boolean]
     tcp_ip_icmp_props_ref: Optional[ARRef]
     tcp_ip_props_ref: Optional[ARRef]
-    v2x_supported: Optional[Any]
+    v2x_supported: Optional[V2xSupportEnum]
     wake_up_over_bus_supported: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcuInstance."""
         super().__init__()
-        self.associated_com_refs: list[ARRef] = []
-        self.associated_refs: list[ARRef] = []
-        self.associated_pdur_refs: list[ARRef] = []
-        self.channel: Optional[Boolean] = None
+        self.associated_com_i_pdu_group_refs: list[ARRef] = []
+        self.associated_consumed_provided_service_instance_group_refs: list[ARRef] = []
+        self.associated_pdur_i_pdu_group_refs: list[ARRef] = []
+        self.channel_synchronous_wakeup: Optional[Boolean] = None
         self.client_id_range: Optional[ClientIdRange] = None
-        self.com: Optional[TimeValue] = None
-        self.com_enable: Optional[Boolean] = None
-        self.comm_controllers: list[Any] = []
-        self.connectors: list[Any] = []
+        self.com_configuration_gw_time_base: Optional[TimeValue] = None
+        self.com_configuration_rx_time_base: Optional[TimeValue] = None
+        self.com_configuration_tx_time_base: Optional[TimeValue] = None
+        self.com_enable_mdt_for_cyclic_transmission: Optional[Boolean] = None
+        self.comm_controllers: list[CommunicationController] = []
+        self.connectors: list[CommunicationConnector] = []
         self.dlt_config: Optional[DltConfig] = None
         self.do_ip_config: Optional[DoIpConfig] = None
         self._ecu_task_proxie_refs: list[ARRef] = []
-        self.eth_switch_port: Optional[Boolean] = None
+        self.eth_switch_port_group_derivation: Optional[Boolean] = None
         self.firewall_rule_refs: list[ARRef] = []
         self.partitions: list[EcuPartition] = []
         self.pnc_nm_request: Optional[Boolean] = None
-        self.pnc_prepare: Optional[TimeValue] = None
-        self.pnc: Optional[Boolean] = None
+        self.pnc_prepare_sleep_timer: Optional[TimeValue] = None
+        self.pnc_synchronous_wakeup: Optional[Boolean] = None
         self.pn_reset_time: Optional[TimeValue] = None
-        self.sleep_mode: Optional[Boolean] = None
+        self.sleep_mode_supported: Optional[Boolean] = None
         self.tcp_ip_icmp_props_ref: Optional[ARRef] = None
         self.tcp_ip_props_ref: Optional[ARRef] = None
-        self.v2x_supported: Optional[Any] = None
+        self.v2x_supported: Optional[V2xSupportEnum] = None
         self.wake_up_over_bus_supported: Optional[Boolean] = None
     @property
     @xml_element_name("ECU-TASK-PROXYS")
@@ -159,13 +169,13 @@ class EcuInstance(FibexElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize associated_com_refs (list to container "ASSOCIATED-COM-REFS")
-        if self.associated_com_refs:
-            wrapper = ET.Element("ASSOCIATED-COM-REFS")
-            for item in self.associated_com_refs:
+        # Serialize associated_com_i_pdu_group_refs (list to container "ASSOCIATED-COM-I-PDU-GROUP-REFS")
+        if self.associated_com_i_pdu_group_refs:
+            wrapper = ET.Element("ASSOCIATED-COM-I-PDU-GROUP-REFS")
+            for item in self.associated_com_i_pdu_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("ASSOCIATED-COM-REF")
+                    child_elem = ET.Element("ASSOCIATED-COM-I-PDU-GROUP-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -176,13 +186,13 @@ class EcuInstance(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize associated_refs (list to container "ASSOCIATED-REFS")
-        if self.associated_refs:
-            wrapper = ET.Element("ASSOCIATED-REFS")
-            for item in self.associated_refs:
+        # Serialize associated_consumed_provided_service_instance_group_refs (list to container "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REFS")
+        if self.associated_consumed_provided_service_instance_group_refs:
+            wrapper = ET.Element("ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REFS")
+            for item in self.associated_consumed_provided_service_instance_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConsumedProvidedServiceInstanceGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("ASSOCIATED-REF")
+                    child_elem = ET.Element("ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -193,13 +203,13 @@ class EcuInstance(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize associated_pdur_refs (list to container "ASSOCIATED-PDUR-REFS")
-        if self.associated_pdur_refs:
-            wrapper = ET.Element("ASSOCIATED-PDUR-REFS")
-            for item in self.associated_pdur_refs:
+        # Serialize associated_pdur_i_pdu_group_refs (list to container "ASSOCIATED-PDUR-I-PDU-GROUP-REFS")
+        if self.associated_pdur_i_pdu_group_refs:
+            wrapper = ET.Element("ASSOCIATED-PDUR-I-PDU-GROUP-REFS")
+            for item in self.associated_pdur_i_pdu_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "PdurIPduGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("ASSOCIATED-PDUR-REF")
+                    child_elem = ET.Element("ASSOCIATED-PDUR-I-PDU-GROUP-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -210,12 +220,12 @@ class EcuInstance(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize channel
-        if self.channel is not None:
-            serialized = SerializationHelper.serialize_item(self.channel, "Boolean")
+        # Serialize channel_synchronous_wakeup
+        if self.channel_synchronous_wakeup is not None:
+            serialized = SerializationHelper.serialize_item(self.channel_synchronous_wakeup, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CHANNEL")
+                wrapped = ET.Element("CHANNEL-SYNCHRONOUS-WAKEUP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -238,12 +248,12 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize com
-        if self.com is not None:
-            serialized = SerializationHelper.serialize_item(self.com, "TimeValue")
+        # Serialize com_configuration_gw_time_base
+        if self.com_configuration_gw_time_base is not None:
+            serialized = SerializationHelper.serialize_item(self.com_configuration_gw_time_base, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COM")
+                wrapped = ET.Element("COM-CONFIGURATION-GW-TIME-BASE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -252,12 +262,40 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize com_enable
-        if self.com_enable is not None:
-            serialized = SerializationHelper.serialize_item(self.com_enable, "Boolean")
+        # Serialize com_configuration_rx_time_base
+        if self.com_configuration_rx_time_base is not None:
+            serialized = SerializationHelper.serialize_item(self.com_configuration_rx_time_base, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COM-ENABLE")
+                wrapped = ET.Element("COM-CONFIGURATION-RX-TIME-BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize com_configuration_tx_time_base
+        if self.com_configuration_tx_time_base is not None:
+            serialized = SerializationHelper.serialize_item(self.com_configuration_tx_time_base, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COM-CONFIGURATION-TX-TIME-BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize com_enable_mdt_for_cyclic_transmission
+        if self.com_enable_mdt_for_cyclic_transmission is not None:
+            serialized = SerializationHelper.serialize_item(self.com_enable_mdt_for_cyclic_transmission, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -270,7 +308,7 @@ class EcuInstance(FibexElement):
         if self.comm_controllers:
             wrapper = ET.Element("COMM-CONTROLLERS")
             for item in self.comm_controllers:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "CommunicationController")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -280,7 +318,7 @@ class EcuInstance(FibexElement):
         if self.connectors:
             wrapper = ET.Element("CONNECTORS")
             for item in self.connectors:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "CommunicationConnector")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -331,12 +369,12 @@ class EcuInstance(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize eth_switch_port
-        if self.eth_switch_port is not None:
-            serialized = SerializationHelper.serialize_item(self.eth_switch_port, "Boolean")
+        # Serialize eth_switch_port_group_derivation
+        if self.eth_switch_port_group_derivation is not None:
+            serialized = SerializationHelper.serialize_item(self.eth_switch_port_group_derivation, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ETH-SWITCH-PORT")
+                wrapped = ET.Element("ETH-SWITCH-PORT-GROUP-DERIVATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -386,12 +424,12 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize pnc_prepare
-        if self.pnc_prepare is not None:
-            serialized = SerializationHelper.serialize_item(self.pnc_prepare, "TimeValue")
+        # Serialize pnc_prepare_sleep_timer
+        if self.pnc_prepare_sleep_timer is not None:
+            serialized = SerializationHelper.serialize_item(self.pnc_prepare_sleep_timer, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PNC-PREPARE")
+                wrapped = ET.Element("PNC-PREPARE-SLEEP-TIMER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -400,12 +438,12 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize pnc
-        if self.pnc is not None:
-            serialized = SerializationHelper.serialize_item(self.pnc, "Boolean")
+        # Serialize pnc_synchronous_wakeup
+        if self.pnc_synchronous_wakeup is not None:
+            serialized = SerializationHelper.serialize_item(self.pnc_synchronous_wakeup, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PNC")
+                wrapped = ET.Element("PNC-SYNCHRONOUS-WAKEUP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -428,12 +466,12 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sleep_mode
-        if self.sleep_mode is not None:
-            serialized = SerializationHelper.serialize_item(self.sleep_mode, "Boolean")
+        # Serialize sleep_mode_supported
+        if self.sleep_mode_supported is not None:
+            serialized = SerializationHelper.serialize_item(self.sleep_mode_supported, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SLEEP-MODE")
+                wrapped = ET.Element("SLEEP-MODE-SUPPORTED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -472,7 +510,7 @@ class EcuInstance(FibexElement):
 
         # Serialize v2x_supported
         if self.v2x_supported is not None:
-            serialized = SerializationHelper.serialize_item(self.v2x_supported, "Any")
+            serialized = SerializationHelper.serialize_item(self.v2x_supported, "V2xSupportEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("V2X-SUPPORTED")
@@ -513,9 +551,9 @@ class EcuInstance(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcuInstance, cls).deserialize(element)
 
-        # Parse associated_com_refs (list from container "ASSOCIATED-COM-REFS")
-        obj.associated_com_refs = []
-        container = SerializationHelper.find_child_element(element, "ASSOCIATED-COM-REFS")
+        # Parse associated_com_i_pdu_group_refs (list from container "ASSOCIATED-COM-I-PDU-GROUP-REFS")
+        obj.associated_com_i_pdu_group_refs = []
+        container = SerializationHelper.find_child_element(element, "ASSOCIATED-COM-I-PDU-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -527,11 +565,11 @@ class EcuInstance(FibexElement):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.associated_com_refs.append(child_value)
+                    obj.associated_com_i_pdu_group_refs.append(child_value)
 
-        # Parse associated_refs (list from container "ASSOCIATED-REFS")
-        obj.associated_refs = []
-        container = SerializationHelper.find_child_element(element, "ASSOCIATED-REFS")
+        # Parse associated_consumed_provided_service_instance_group_refs (list from container "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REFS")
+        obj.associated_consumed_provided_service_instance_group_refs = []
+        container = SerializationHelper.find_child_element(element, "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -543,11 +581,11 @@ class EcuInstance(FibexElement):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.associated_refs.append(child_value)
+                    obj.associated_consumed_provided_service_instance_group_refs.append(child_value)
 
-        # Parse associated_pdur_refs (list from container "ASSOCIATED-PDUR-REFS")
-        obj.associated_pdur_refs = []
-        container = SerializationHelper.find_child_element(element, "ASSOCIATED-PDUR-REFS")
+        # Parse associated_pdur_i_pdu_group_refs (list from container "ASSOCIATED-PDUR-I-PDU-GROUP-REFS")
+        obj.associated_pdur_i_pdu_group_refs = []
+        container = SerializationHelper.find_child_element(element, "ASSOCIATED-PDUR-I-PDU-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -559,13 +597,13 @@ class EcuInstance(FibexElement):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.associated_pdur_refs.append(child_value)
+                    obj.associated_pdur_i_pdu_group_refs.append(child_value)
 
-        # Parse channel
-        child = SerializationHelper.find_child_element(element, "CHANNEL")
+        # Parse channel_synchronous_wakeup
+        child = SerializationHelper.find_child_element(element, "CHANNEL-SYNCHRONOUS-WAKEUP")
         if child is not None:
-            channel_value = child.text
-            obj.channel = channel_value
+            channel_synchronous_wakeup_value = child.text
+            obj.channel_synchronous_wakeup = channel_synchronous_wakeup_value
 
         # Parse client_id_range
         child = SerializationHelper.find_child_element(element, "CLIENT-ID-RANGE")
@@ -573,17 +611,29 @@ class EcuInstance(FibexElement):
             client_id_range_value = SerializationHelper.deserialize_by_tag(child, "ClientIdRange")
             obj.client_id_range = client_id_range_value
 
-        # Parse com
-        child = SerializationHelper.find_child_element(element, "COM")
+        # Parse com_configuration_gw_time_base
+        child = SerializationHelper.find_child_element(element, "COM-CONFIGURATION-GW-TIME-BASE")
         if child is not None:
-            com_value = child.text
-            obj.com = com_value
+            com_configuration_gw_time_base_value = child.text
+            obj.com_configuration_gw_time_base = com_configuration_gw_time_base_value
 
-        # Parse com_enable
-        child = SerializationHelper.find_child_element(element, "COM-ENABLE")
+        # Parse com_configuration_rx_time_base
+        child = SerializationHelper.find_child_element(element, "COM-CONFIGURATION-RX-TIME-BASE")
         if child is not None:
-            com_enable_value = child.text
-            obj.com_enable = com_enable_value
+            com_configuration_rx_time_base_value = child.text
+            obj.com_configuration_rx_time_base = com_configuration_rx_time_base_value
+
+        # Parse com_configuration_tx_time_base
+        child = SerializationHelper.find_child_element(element, "COM-CONFIGURATION-TX-TIME-BASE")
+        if child is not None:
+            com_configuration_tx_time_base_value = child.text
+            obj.com_configuration_tx_time_base = com_configuration_tx_time_base_value
+
+        # Parse com_enable_mdt_for_cyclic_transmission
+        child = SerializationHelper.find_child_element(element, "COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION")
+        if child is not None:
+            com_enable_mdt_for_cyclic_transmission_value = child.text
+            obj.com_enable_mdt_for_cyclic_transmission = com_enable_mdt_for_cyclic_transmission_value
 
         # Parse comm_controllers (list from container "COMM-CONTROLLERS")
         obj.comm_controllers = []
@@ -633,11 +683,11 @@ class EcuInstance(FibexElement):
                 if child_value is not None:
                     obj.ecu_task_proxie_refs.append(child_value)
 
-        # Parse eth_switch_port
-        child = SerializationHelper.find_child_element(element, "ETH-SWITCH-PORT")
+        # Parse eth_switch_port_group_derivation
+        child = SerializationHelper.find_child_element(element, "ETH-SWITCH-PORT-GROUP-DERIVATION")
         if child is not None:
-            eth_switch_port_value = child.text
-            obj.eth_switch_port = eth_switch_port_value
+            eth_switch_port_group_derivation_value = child.text
+            obj.eth_switch_port_group_derivation = eth_switch_port_group_derivation_value
 
         # Parse firewall_rule_refs (list from container "FIREWALL-RULE-REFS")
         obj.firewall_rule_refs = []
@@ -671,17 +721,17 @@ class EcuInstance(FibexElement):
             pnc_nm_request_value = child.text
             obj.pnc_nm_request = pnc_nm_request_value
 
-        # Parse pnc_prepare
-        child = SerializationHelper.find_child_element(element, "PNC-PREPARE")
+        # Parse pnc_prepare_sleep_timer
+        child = SerializationHelper.find_child_element(element, "PNC-PREPARE-SLEEP-TIMER")
         if child is not None:
-            pnc_prepare_value = child.text
-            obj.pnc_prepare = pnc_prepare_value
+            pnc_prepare_sleep_timer_value = child.text
+            obj.pnc_prepare_sleep_timer = pnc_prepare_sleep_timer_value
 
-        # Parse pnc
-        child = SerializationHelper.find_child_element(element, "PNC")
+        # Parse pnc_synchronous_wakeup
+        child = SerializationHelper.find_child_element(element, "PNC-SYNCHRONOUS-WAKEUP")
         if child is not None:
-            pnc_value = child.text
-            obj.pnc = pnc_value
+            pnc_synchronous_wakeup_value = child.text
+            obj.pnc_synchronous_wakeup = pnc_synchronous_wakeup_value
 
         # Parse pn_reset_time
         child = SerializationHelper.find_child_element(element, "PN-RESET-TIME")
@@ -689,11 +739,11 @@ class EcuInstance(FibexElement):
             pn_reset_time_value = child.text
             obj.pn_reset_time = pn_reset_time_value
 
-        # Parse sleep_mode
-        child = SerializationHelper.find_child_element(element, "SLEEP-MODE")
+        # Parse sleep_mode_supported
+        child = SerializationHelper.find_child_element(element, "SLEEP-MODE-SUPPORTED")
         if child is not None:
-            sleep_mode_value = child.text
-            obj.sleep_mode = sleep_mode_value
+            sleep_mode_supported_value = child.text
+            obj.sleep_mode_supported = sleep_mode_supported_value
 
         # Parse tcp_ip_icmp_props_ref
         child = SerializationHelper.find_child_element(element, "TCP-IP-ICMP-PROPS-REF")
@@ -710,7 +760,7 @@ class EcuInstance(FibexElement):
         # Parse v2x_supported
         child = SerializationHelper.find_child_element(element, "V2X-SUPPORTED")
         if child is not None:
-            v2x_supported_value = child.text
+            v2x_supported_value = SerializationHelper.deserialize_by_tag(child, "V2xSupportEnum")
             obj.v2x_supported = v2x_supported_value
 
         # Parse wake_up_over_bus_supported
@@ -732,8 +782,8 @@ class EcuInstanceBuilder(FibexElementBuilder):
         self._obj: EcuInstance = EcuInstance()
 
 
-    def with_associated_coms(self, items: list[ISignalIPduGroup]) -> "EcuInstanceBuilder":
-        """Set associated_coms list attribute.
+    def with_associated_com_i_pdu_groups(self, items: list[ISignalIPduGroup]) -> "EcuInstanceBuilder":
+        """Set associated_com_i_pdu_groups list attribute.
 
         Args:
             items: List of items to set
@@ -741,11 +791,11 @@ class EcuInstanceBuilder(FibexElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.associated_coms = list(items) if items else []
+        self._obj.associated_com_i_pdu_groups = list(items) if items else []
         return self
 
-    def with_associateds(self, items: list[ConsumedProvidedServiceInstanceGroup]) -> "EcuInstanceBuilder":
-        """Set associateds list attribute.
+    def with_associated_consumed_provided_service_instance_groups(self, items: list[ConsumedProvidedServiceInstanceGroup]) -> "EcuInstanceBuilder":
+        """Set associated_consumed_provided_service_instance_groups list attribute.
 
         Args:
             items: List of items to set
@@ -753,11 +803,11 @@ class EcuInstanceBuilder(FibexElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.associateds = list(items) if items else []
+        self._obj.associated_consumed_provided_service_instance_groups = list(items) if items else []
         return self
 
-    def with_associated_pdurs(self, items: list[PdurIPduGroup]) -> "EcuInstanceBuilder":
-        """Set associated_pdurs list attribute.
+    def with_associated_pdur_i_pdu_groups(self, items: list[PdurIPduGroup]) -> "EcuInstanceBuilder":
+        """Set associated_pdur_i_pdu_groups list attribute.
 
         Args:
             items: List of items to set
@@ -765,11 +815,11 @@ class EcuInstanceBuilder(FibexElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.associated_pdurs = list(items) if items else []
+        self._obj.associated_pdur_i_pdu_groups = list(items) if items else []
         return self
 
-    def with_channel(self, value: Optional[Boolean]) -> "EcuInstanceBuilder":
-        """Set channel attribute.
+    def with_channel_synchronous_wakeup(self, value: Optional[Boolean]) -> "EcuInstanceBuilder":
+        """Set channel_synchronous_wakeup attribute.
 
         Args:
             value: Value to set
@@ -779,7 +829,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.channel = value
+        self._obj.channel_synchronous_wakeup = value
         return self
 
     def with_client_id_range(self, value: Optional[ClientIdRange]) -> "EcuInstanceBuilder":
@@ -796,8 +846,8 @@ class EcuInstanceBuilder(FibexElementBuilder):
         self._obj.client_id_range = value
         return self
 
-    def with_com(self, value: Optional[TimeValue]) -> "EcuInstanceBuilder":
-        """Set com attribute.
+    def with_com_configuration_gw_time_base(self, value: Optional[TimeValue]) -> "EcuInstanceBuilder":
+        """Set com_configuration_gw_time_base attribute.
 
         Args:
             value: Value to set
@@ -807,11 +857,11 @@ class EcuInstanceBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.com = value
+        self._obj.com_configuration_gw_time_base = value
         return self
 
-    def with_com_enable(self, value: Optional[Boolean]) -> "EcuInstanceBuilder":
-        """Set com_enable attribute.
+    def with_com_configuration_rx_time_base(self, value: Optional[TimeValue]) -> "EcuInstanceBuilder":
+        """Set com_configuration_rx_time_base attribute.
 
         Args:
             value: Value to set
@@ -821,10 +871,38 @@ class EcuInstanceBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.com_enable = value
+        self._obj.com_configuration_rx_time_base = value
         return self
 
-    def with_comm_controllers(self, items: list[any (Communication)]) -> "EcuInstanceBuilder":
+    def with_com_configuration_tx_time_base(self, value: Optional[TimeValue]) -> "EcuInstanceBuilder":
+        """Set com_configuration_tx_time_base attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.com_configuration_tx_time_base = value
+        return self
+
+    def with_com_enable_mdt_for_cyclic_transmission(self, value: Optional[Boolean]) -> "EcuInstanceBuilder":
+        """Set com_enable_mdt_for_cyclic_transmission attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.com_enable_mdt_for_cyclic_transmission = value
+        return self
+
+    def with_comm_controllers(self, items: list[CommunicationController]) -> "EcuInstanceBuilder":
         """Set comm_controllers list attribute.
 
         Args:
@@ -836,7 +914,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
         self._obj.comm_controllers = list(items) if items else []
         return self
 
-    def with_connectors(self, items: list[any (Communication)]) -> "EcuInstanceBuilder":
+    def with_connectors(self, items: list[CommunicationConnector]) -> "EcuInstanceBuilder":
         """Set connectors list attribute.
 
         Args:
@@ -888,8 +966,8 @@ class EcuInstanceBuilder(FibexElementBuilder):
         self._obj.ecu_task_proxies = list(items) if items else []
         return self
 
-    def with_eth_switch_port(self, value: Optional[Boolean]) -> "EcuInstanceBuilder":
-        """Set eth_switch_port attribute.
+    def with_eth_switch_port_group_derivation(self, value: Optional[Boolean]) -> "EcuInstanceBuilder":
+        """Set eth_switch_port_group_derivation attribute.
 
         Args:
             value: Value to set
@@ -899,7 +977,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.eth_switch_port = value
+        self._obj.eth_switch_port_group_derivation = value
         return self
 
     def with_firewall_rules(self, items: list[StateDependentFirewall]) -> "EcuInstanceBuilder":
@@ -940,8 +1018,8 @@ class EcuInstanceBuilder(FibexElementBuilder):
         self._obj.pnc_nm_request = value
         return self
 
-    def with_pnc_prepare(self, value: Optional[TimeValue]) -> "EcuInstanceBuilder":
-        """Set pnc_prepare attribute.
+    def with_pnc_prepare_sleep_timer(self, value: Optional[TimeValue]) -> "EcuInstanceBuilder":
+        """Set pnc_prepare_sleep_timer attribute.
 
         Args:
             value: Value to set
@@ -951,11 +1029,11 @@ class EcuInstanceBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.pnc_prepare = value
+        self._obj.pnc_prepare_sleep_timer = value
         return self
 
-    def with_pnc(self, value: Optional[Boolean]) -> "EcuInstanceBuilder":
-        """Set pnc attribute.
+    def with_pnc_synchronous_wakeup(self, value: Optional[Boolean]) -> "EcuInstanceBuilder":
+        """Set pnc_synchronous_wakeup attribute.
 
         Args:
             value: Value to set
@@ -965,7 +1043,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.pnc = value
+        self._obj.pnc_synchronous_wakeup = value
         return self
 
     def with_pn_reset_time(self, value: Optional[TimeValue]) -> "EcuInstanceBuilder":
@@ -982,8 +1060,8 @@ class EcuInstanceBuilder(FibexElementBuilder):
         self._obj.pn_reset_time = value
         return self
 
-    def with_sleep_mode(self, value: Optional[Boolean]) -> "EcuInstanceBuilder":
-        """Set sleep_mode attribute.
+    def with_sleep_mode_supported(self, value: Optional[Boolean]) -> "EcuInstanceBuilder":
+        """Set sleep_mode_supported attribute.
 
         Args:
             value: Value to set
@@ -993,7 +1071,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sleep_mode = value
+        self._obj.sleep_mode_supported = value
         return self
 
     def with_tcp_ip_icmp_props(self, value: Optional[EthTcpIpIcmpProps]) -> "EcuInstanceBuilder":
@@ -1024,7 +1102,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
         self._obj.tcp_ip_props = value
         return self
 
-    def with_v2x_supported(self, value: Optional[any (V2xSupportEnum)]) -> "EcuInstanceBuilder":
+    def with_v2x_supported(self, value: Optional[V2xSupportEnum]) -> "EcuInstanceBuilder":
         """Set v2x_supported attribute.
 
         Args:
@@ -1053,8 +1131,8 @@ class EcuInstanceBuilder(FibexElementBuilder):
         return self
 
 
-    def add_associated_com(self, item: ISignalIPduGroup) -> "EcuInstanceBuilder":
-        """Add a single item to associated_coms list.
+    def add_associated_com_i_pdu_group(self, item: ISignalIPduGroup) -> "EcuInstanceBuilder":
+        """Add a single item to associated_com_i_pdu_groups list.
 
         Args:
             item: Item to add
@@ -1062,20 +1140,20 @@ class EcuInstanceBuilder(FibexElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.associated_coms.append(item)
+        self._obj.associated_com_i_pdu_groups.append(item)
         return self
 
-    def clear_associated_coms(self) -> "EcuInstanceBuilder":
-        """Clear all items from associated_coms list.
+    def clear_associated_com_i_pdu_groups(self) -> "EcuInstanceBuilder":
+        """Clear all items from associated_com_i_pdu_groups list.
 
         Returns:
             self for method chaining
         """
-        self._obj.associated_coms = []
+        self._obj.associated_com_i_pdu_groups = []
         return self
 
-    def add_associated(self, item: ConsumedProvidedServiceInstanceGroup) -> "EcuInstanceBuilder":
-        """Add a single item to associateds list.
+    def add_associated_consumed_provided_service_instance_group(self, item: ConsumedProvidedServiceInstanceGroup) -> "EcuInstanceBuilder":
+        """Add a single item to associated_consumed_provided_service_instance_groups list.
 
         Args:
             item: Item to add
@@ -1083,20 +1161,20 @@ class EcuInstanceBuilder(FibexElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.associateds.append(item)
+        self._obj.associated_consumed_provided_service_instance_groups.append(item)
         return self
 
-    def clear_associateds(self) -> "EcuInstanceBuilder":
-        """Clear all items from associateds list.
+    def clear_associated_consumed_provided_service_instance_groups(self) -> "EcuInstanceBuilder":
+        """Clear all items from associated_consumed_provided_service_instance_groups list.
 
         Returns:
             self for method chaining
         """
-        self._obj.associateds = []
+        self._obj.associated_consumed_provided_service_instance_groups = []
         return self
 
-    def add_associated_pdur(self, item: PdurIPduGroup) -> "EcuInstanceBuilder":
-        """Add a single item to associated_pdurs list.
+    def add_associated_pdur_i_pdu_group(self, item: PdurIPduGroup) -> "EcuInstanceBuilder":
+        """Add a single item to associated_pdur_i_pdu_groups list.
 
         Args:
             item: Item to add
@@ -1104,19 +1182,19 @@ class EcuInstanceBuilder(FibexElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.associated_pdurs.append(item)
+        self._obj.associated_pdur_i_pdu_groups.append(item)
         return self
 
-    def clear_associated_pdurs(self) -> "EcuInstanceBuilder":
-        """Clear all items from associated_pdurs list.
+    def clear_associated_pdur_i_pdu_groups(self) -> "EcuInstanceBuilder":
+        """Clear all items from associated_pdur_i_pdu_groups list.
 
         Returns:
             self for method chaining
         """
-        self._obj.associated_pdurs = []
+        self._obj.associated_pdur_i_pdu_groups = []
         return self
 
-    def add_comm_controller(self, item: any (Communication)) -> "EcuInstanceBuilder":
+    def add_comm_controller(self, item: CommunicationController) -> "EcuInstanceBuilder":
         """Add a single item to comm_controllers list.
 
         Args:
@@ -1137,7 +1215,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
         self._obj.comm_controllers = []
         return self
 
-    def add_connector(self, item: any (Communication)) -> "EcuInstanceBuilder":
+    def add_connector(self, item: CommunicationConnector) -> "EcuInstanceBuilder":
         """Add a single item to connectors list.
 
         Args:

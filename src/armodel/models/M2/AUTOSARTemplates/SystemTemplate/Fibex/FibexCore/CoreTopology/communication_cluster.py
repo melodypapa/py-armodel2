@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
     PositiveUnlimitedInteger,
     String,
 )
@@ -43,6 +44,7 @@ class CommunicationCluster(ARElement, ABC):
     physical_channels: list[PhysicalChannel]
     protocol_name: Optional[String]
     protocol_version: Optional[String]
+    speed: Optional[Integer]
     def __init__(self) -> None:
         """Initialize CommunicationCluster."""
         super().__init__()
@@ -50,6 +52,7 @@ class CommunicationCluster(ARElement, ABC):
         self.physical_channels: list[PhysicalChannel] = []
         self.protocol_name: Optional[String] = None
         self.protocol_version: Optional[String] = None
+        self.speed: Optional[Integer] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CommunicationCluster to XML element with atp_variant wrapper.
@@ -126,6 +129,19 @@ class CommunicationCluster(ARElement, ABC):
                     wrapped.append(child)
                 inner_elem.append(wrapped)
 
+        # Serialize speed
+        if self.speed is not None:
+            serialized = SerializationHelper.serialize_item(self.speed, "Integer")
+            if serialized is not None:
+                wrapped = ET.Element("SPEED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "CommunicationCluster")
         elem.append(wrapped)
@@ -177,6 +193,12 @@ class CommunicationCluster(ARElement, ABC):
         if child is not None:
             protocol_version_value = child.text
             obj.protocol_version = protocol_version_value
+
+        # Parse speed
+        child = SerializationHelper.find_child_element(inner_elem, "SPEED")
+        if child is not None:
+            speed_value = child.text
+            obj.speed = speed_value
 
         return obj
 
@@ -243,6 +265,20 @@ class CommunicationClusterBuilder(BuilderBase, ABC):
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
         self._obj.protocol_version = value
+        return self
+
+    def with_speed(self, value: Optional[Integer]) -> "CommunicationClusterBuilder":
+        """Set speed attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.speed = value
         return self
 
 

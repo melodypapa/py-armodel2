@@ -43,14 +43,14 @@ class FrameTriggering(Identifiable, ABC):
         """
         return True
 
-    frame_ref: Optional[ARRef]
     frame_port_refs: list[ARRef]
+    frame_ref: Optional[ARRef]
     pdu_triggering_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize FrameTriggering."""
         super().__init__()
-        self.frame_ref: Optional[ARRef] = None
         self.frame_port_refs: list[ARRef] = []
+        self.frame_ref: Optional[ARRef] = None
         self.pdu_triggering_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
@@ -77,20 +77,6 @@ class FrameTriggering(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize frame_ref
-        if self.frame_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.frame_ref, "Frame")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRAME-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
         # Serialize frame_port_refs (list to container "FRAME-PORT-REFS")
         if self.frame_port_refs:
             wrapper = ET.Element("FRAME-PORT-REFS")
@@ -107,6 +93,20 @@ class FrameTriggering(Identifiable, ABC):
                     wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
+
+        # Serialize frame_ref
+        if self.frame_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.frame_ref, "Frame")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FRAME-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize pdu_triggering_refs (list to container "PDU-TRIGGERING-REFS")
         if self.pdu_triggering_refs:
@@ -140,12 +140,6 @@ class FrameTriggering(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FrameTriggering, cls).deserialize(element)
 
-        # Parse frame_ref
-        child = SerializationHelper.find_child_element(element, "FRAME-REF")
-        if child is not None:
-            frame_ref_value = ARRef.deserialize(child)
-            obj.frame_ref = frame_ref_value
-
         # Parse frame_port_refs (list from container "FRAME-PORT-REFS")
         obj.frame_port_refs = []
         container = SerializationHelper.find_child_element(element, "FRAME-PORT-REFS")
@@ -161,6 +155,12 @@ class FrameTriggering(Identifiable, ABC):
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.frame_port_refs.append(child_value)
+
+        # Parse frame_ref
+        child = SerializationHelper.find_child_element(element, "FRAME-REF")
+        if child is not None:
+            frame_ref_value = ARRef.deserialize(child)
+            obj.frame_ref = frame_ref_value
 
         # Parse pdu_triggering_refs (list from container "PDU-TRIGGERING-REFS")
         obj.pdu_triggering_refs = []
@@ -191,6 +191,18 @@ class FrameTriggeringBuilder(IdentifiableBuilder):
         self._obj: FrameTriggering = FrameTriggering()
 
 
+    def with_frame_ports(self, items: list[FramePort]) -> "FrameTriggeringBuilder":
+        """Set frame_ports list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.frame_ports = list(items) if items else []
+        return self
+
     def with_frame(self, value: Optional[Frame]) -> "FrameTriggeringBuilder":
         """Set frame attribute.
 
@@ -203,18 +215,6 @@ class FrameTriggeringBuilder(IdentifiableBuilder):
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
         self._obj.frame = value
-        return self
-
-    def with_frame_ports(self, items: list[FramePort]) -> "FrameTriggeringBuilder":
-        """Set frame_ports list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.frame_ports = list(items) if items else []
         return self
 
     def with_pdu_triggerings(self, items: list[PduTriggering]) -> "FrameTriggeringBuilder":

@@ -127,6 +127,19 @@ class AbstractCanCluster(CommunicationCluster, ABC):
                     wrapped.append(child)
                 inner_elem.append(wrapped)
 
+        # Serialize speed
+        if self.speed is not None:
+            serialized = SerializationHelper.serialize_item(self.speed, "Integer")
+            if serialized is not None:
+                wrapped = ET.Element("SPEED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
         # Serialize bus_off_recovery
         if self.bus_off_recovery is not None:
             serialized = SerializationHelper.serialize_item(self.bus_off_recovery, "CanClusterBusOffRecovery")
@@ -223,6 +236,12 @@ class AbstractCanCluster(CommunicationCluster, ABC):
         if child is not None:
             protocol_version_value = child.text
             obj.protocol_version = protocol_version_value
+
+        # Parse speed
+        child = SerializationHelper.find_child_element(inner_elem, "SPEED")
+        if child is not None:
+            speed_value = child.text
+            obj.speed = speed_value
 
         # Parse bus_off_recovery
         child = SerializationHelper.find_child_element(inner_elem, "BUS-OFF-RECOVERY")

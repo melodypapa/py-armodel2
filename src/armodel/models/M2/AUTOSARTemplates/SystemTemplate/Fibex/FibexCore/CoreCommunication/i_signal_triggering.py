@@ -41,15 +41,15 @@ class ISignalTriggering(Identifiable):
         """
         return False
 
-    i_signal_ref: Optional[ARRef]
     i_signal_group_ref: Optional[ARRef]
     i_signal_port_refs: list[ARRef]
+    i_signal_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ISignalTriggering."""
         super().__init__()
-        self.i_signal_ref: Optional[ARRef] = None
         self.i_signal_group_ref: Optional[ARRef] = None
         self.i_signal_port_refs: list[ARRef] = []
+        self.i_signal_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ISignalTriggering to XML element.
@@ -74,20 +74,6 @@ class ISignalTriggering(Identifiable):
         # Copy all children from parent element
         for child in parent_elem:
             elem.append(child)
-
-        # Serialize i_signal_ref
-        if self.i_signal_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.i_signal_ref, "ISignal")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
 
         # Serialize i_signal_group_ref
         if self.i_signal_group_ref is not None:
@@ -120,6 +106,20 @@ class ISignalTriggering(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
+        # Serialize i_signal_ref
+        if self.i_signal_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.i_signal_ref, "ISignal")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("I-SIGNAL-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
         return elem
 
     @classmethod
@@ -134,12 +134,6 @@ class ISignalTriggering(Identifiable):
         """
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignalTriggering, cls).deserialize(element)
-
-        # Parse i_signal_ref
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-REF")
-        if child is not None:
-            i_signal_ref_value = ARRef.deserialize(child)
-            obj.i_signal_ref = i_signal_ref_value
 
         # Parse i_signal_group_ref
         child = SerializationHelper.find_child_element(element, "I-SIGNAL-GROUP-REF")
@@ -163,6 +157,12 @@ class ISignalTriggering(Identifiable):
                 if child_value is not None:
                     obj.i_signal_port_refs.append(child_value)
 
+        # Parse i_signal_ref
+        child = SerializationHelper.find_child_element(element, "I-SIGNAL-REF")
+        if child is not None:
+            i_signal_ref_value = ARRef.deserialize(child)
+            obj.i_signal_ref = i_signal_ref_value
+
         return obj
 
 
@@ -175,20 +175,6 @@ class ISignalTriggeringBuilder(IdentifiableBuilder):
         super().__init__()
         self._obj: ISignalTriggering = ISignalTriggering()
 
-
-    def with_i_signal(self, value: Optional[ISignal]) -> "ISignalTriggeringBuilder":
-        """Set i_signal attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.i_signal = value
-        return self
 
     def with_i_signal_group(self, value: Optional[ISignalGroup]) -> "ISignalTriggeringBuilder":
         """Set i_signal_group attribute.
@@ -214,6 +200,20 @@ class ISignalTriggeringBuilder(IdentifiableBuilder):
             self for method chaining
         """
         self._obj.i_signal_ports = list(items) if items else []
+        return self
+
+    def with_i_signal(self, value: Optional[ISignal]) -> "ISignalTriggeringBuilder":
+        """Set i_signal attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.i_signal = value
         return self
 
 

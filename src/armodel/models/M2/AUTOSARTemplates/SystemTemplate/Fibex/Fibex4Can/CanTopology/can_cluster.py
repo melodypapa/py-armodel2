@@ -155,6 +155,19 @@ class CanCluster(AbstractCanCluster):
                     wrapped.append(child)
                 inner_elem.append(wrapped)
 
+        # Serialize speed
+        if self.speed is not None:
+            serialized = SerializationHelper.serialize_item(self.speed, "Integer")
+            if serialized is not None:
+                wrapped = ET.Element("SPEED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "CanCluster")
         elem.append(wrapped)
@@ -230,6 +243,12 @@ class CanCluster(AbstractCanCluster):
         if child is not None:
             protocol_version_value = child.text
             obj.protocol_version = protocol_version_value
+
+        # Parse speed
+        child = SerializationHelper.find_child_element(inner_elem, "SPEED")
+        if child is not None:
+            speed_value = child.text
+            obj.speed = speed_value
 
         return obj
 

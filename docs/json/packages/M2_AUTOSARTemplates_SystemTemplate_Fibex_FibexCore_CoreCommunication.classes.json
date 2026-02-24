@@ -434,19 +434,19 @@
         }
       ],
       "attributes": {
-        "frame": {
-          "type": "Frame",
-          "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
-          "note": "One frame can be triggered several times, e.g. on"
-        },
         "framePorts": {
           "type": "FramePort",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "References to the FramePort on every ECU of the system and/or receives the frame. both the sender and the receiver side included when the system is completely defined."
+        },
+        "frame": {
+          "type": "Frame",
+          "multiplicity": "0..1",
+          "kind": "ref",
+          "is_ref": true,
+          "note": "One frame can be triggered several times, e.g. on"
         },
         "pduTriggerings": {
           "type": "PduTriggering",
@@ -681,19 +681,19 @@
         }
       ],
       "attributes": {
-        "iPdu": {
-          "type": "Pdu",
-          "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
-          "note": "Reference to the Pdu for which the PduTriggering is"
-        },
         "iPduPorts": {
           "type": "IPduPort",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "References to the IPduPort on every ECU of the system and/or receives the I-PDU. both the sender and the receiver side included when the system is completely defined."
+        },
+         "iPdu": {
+          "type": "Pdu",
+          "multiplicity": "0..1",
+          "kind": "ref",
+          "is_ref": true,
+          "note": "Reference to the Pdu for which the PduTriggering is"
         },
         "iSignals": {
           "type": "ISignalTriggering",
@@ -1257,13 +1257,6 @@
         }
       ],
       "attributes": {
-        "iSignal": {
-          "type": "ISignal",
-          "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
-          "note": "This reference shall be used if an ISignal is transported"
-        },
         "iSignalGroup": {
           "type": "ISignalGroup",
           "multiplicity": "0..1",
@@ -1277,6 +1270,13 @@
           "kind": "ref",
           "is_ref": true,
           "note": "References to the ISignalPort on every ECU of the sends and/or receives the ISignal. both the sender and the receiver side included when the system is completely defined."
+        },
+        "iSignal": {
+          "type": "ISignal",
+          "multiplicity": "0..1",
+          "kind": "ref",
+          "is_ref": true,
+          "note": "This reference shall be used if an ISignal is transported"
         }
       }
     },
