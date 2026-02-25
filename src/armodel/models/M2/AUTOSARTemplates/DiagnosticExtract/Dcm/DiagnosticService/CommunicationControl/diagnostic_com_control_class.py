@@ -73,13 +73,13 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize all_channel_refs (list to container "ALL-CHANNELSE-REFS")
+        # Serialize all_channel_refs (list to container "ALL-CHANNEL-REFS")
         if self.all_channel_refs:
-            wrapper = ET.Element("ALL-CHANNELSE-REFS")
+            wrapper = ET.Element("ALL-CHANNEL-REFS")
             for item in self.all_channel_refs:
                 serialized = SerializationHelper.serialize_item(item, "CommunicationCluster")
                 if serialized is not None:
-                    child_elem = ET.Element("ALL-CHANNELSE-REF")
+                    child_elem = ET.Element("ALL-CHANNEL-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -142,9 +142,9 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticComControlClass, cls).deserialize(element)
 
-        # Parse all_channel_refs (list from container "ALL-CHANNELSE-REFS")
+        # Parse all_channel_refs (list from container "ALL-CHANNEL-REFS")
         obj.all_channel_refs = []
-        container = SerializationHelper.find_child_element(element, "ALL-CHANNELSE-REFS")
+        container = SerializationHelper.find_child_element(element, "ALL-CHANNEL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

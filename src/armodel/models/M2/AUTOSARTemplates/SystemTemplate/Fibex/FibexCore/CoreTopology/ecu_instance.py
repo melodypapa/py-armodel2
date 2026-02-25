@@ -340,13 +340,13 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecu_task_proxy_refs (list to container "ECU-TASK-PROXIE-REFS")
+        # Serialize ecu_task_proxy_refs (list to container "ECU-TASK-PROXY-REFS")
         if self.ecu_task_proxy_refs:
-            wrapper = ET.Element("ECU-TASK-PROXIE-REFS")
+            wrapper = ET.Element("ECU-TASK-PROXY-REFS")
             for item in self.ecu_task_proxy_refs:
                 serialized = SerializationHelper.serialize_item(item, "OsTaskProxy")
                 if serialized is not None:
-                    child_elem = ET.Element("ECU-TASK-PROXIE-REF")
+                    child_elem = ET.Element("ECU-TASK-PROXY-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -655,9 +655,9 @@ class EcuInstance(FibexElement):
             do_ip_config_value = SerializationHelper.deserialize_by_tag(child, "DoIpConfig")
             obj.do_ip_config = do_ip_config_value
 
-        # Parse ecu_task_proxy_refs (list from container "ECU-TASK-PROXIE-REFS")
+        # Parse ecu_task_proxy_refs (list from container "ECU-TASK-PROXY-REFS")
         obj.ecu_task_proxy_refs = []
-        container = SerializationHelper.find_child_element(element, "ECU-TASK-PROXIE-REFS")
+        container = SerializationHelper.find_child_element(element, "ECU-TASK-PROXY-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

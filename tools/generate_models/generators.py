@@ -1297,10 +1297,9 @@ def _generate_deserialize_method(
                         container_tag = xml_tag
                         child_tag = None
                         if is_ref:
-                            # For reference lists, the container tag is singular form + -REFS
-                            # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
-                            singular = xml_tag[:-1]  # Remove trailing 'S'
-                            container_tag = f"{singular}-REFS"
+                            # For reference lists, the container tag is python_name converted to XML format
+                            # e.g., hw_category_refs -> HW-CATEGORY-REFS
+                            container_tag = python_name.upper().replace('_', '-')
 
                     # Handle no container case (direct children)
                     if container_tag is None:
@@ -3201,11 +3200,9 @@ def _generate_serialize_method(
                         child_tag = None
                         inner_tags = []
                         if is_ref:
-                            # For reference lists, the container tag is singular form + -REFS
-                            # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
-                            # Child tag is singular form + -REF
-                            singular = xml_tag[:-1]  # Remove trailing 'S'
-                            container_tag = f"{singular}-REFS"
+                            # For reference lists, the container tag is python_name converted to XML format
+                            # e.g., hw_category_refs -> HW-CATEGORY-REFS
+                            container_tag = python_name.upper().replace('_', '-')
 
                     # Handle no container case (direct children)
                     if container_tag is None:
@@ -3285,14 +3282,17 @@ def _generate_serialize_method(
                     wrapper.append(child_elem)
 '''
                             else:
-                                # Generate child tag from xml_tag
-                                singular = xml_tag[:-1]  # Remove trailing 'S'
-                                # Use the kind field from JSON to determine the suffix
-                                # "tref" -> -TREF, "ref" -> -REF
-                                if kind == "tref":
-                                    generated_child_tag = f"{singular}-TREF"
+                                # Generate child tag from python_name (remove plural 's' from suffix)
+                                # e.g., hw_category_refs -> hw_category_ref -> HW-CATEGORY-REF
+                                if python_name.endswith('_refs'):
+                                    singular_python = python_name[:-1]  # Remove trailing 's'
+                                elif python_name.endswith('_trefs'):
+                                    singular_python = python_name[:-1]  # Remove trailing 's'
+                                elif python_name.endswith('_irefs'):
+                                    singular_python = python_name[:-1]  # Remove trailing 's'
                                 else:
-                                    generated_child_tag = f"{singular}-REF"
+                                    singular_python = python_name
+                                generated_child_tag = singular_python.upper().replace('_', '-')
                                 code += f'''                    child_elem = ET.Element("{generated_child_tag}")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
@@ -3306,7 +3306,11 @@ def _generate_serialize_method(
                             attr_type, package_data
                         ):
                             # Primitive or enum type - wrap in child element with singular tag name
-                            singular = xml_tag[:-1]  # Remove trailing 'S'
+                            # Use to_singular for proper singularization (handles 'ies' -> 'y')
+                            from tools.generate_models._common import to_singular
+                            snake_from_xml = xml_tag.lower().replace('-', '_')
+                            singular_snake = to_singular(snake_from_xml)
+                            singular = singular_snake.upper().replace('_', '-')
                             code += f'''                    child_elem = ET.Element("{singular}")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
@@ -3892,7 +3896,11 @@ def _generate_deserialize_method_for_atp_variant(
                     if decorator_name == "ref_conditional":
                         # Use ref_conditional pattern: container stays as-is, each item wrapped in -REF-CONDITIONAL
                         container_tag = attr_info.get("decorator_params", xml_tag)
-                        singular = container_tag[:-1]  # Remove trailing S
+                        # Use to_singular for proper singularization (handles 'ies' -> 'y')
+                        from tools.generate_models._common import to_singular
+                        snake_from_xml = container_tag.lower().replace('-', '_')
+                        singular_snake = to_singular(snake_from_xml)
+                        singular = singular_snake.upper().replace('_', '-')
                         conditional_tag = f"{singular}-REF-CONDITIONAL"
                         ref_tag = f"{singular}-REF"
                     elif decorator_name == "xml_element_name":

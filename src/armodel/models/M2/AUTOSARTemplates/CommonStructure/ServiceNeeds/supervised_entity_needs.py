@@ -93,13 +93,13 @@ class SupervisedEntityNeeds(ServiceNeeds):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize checkpoint_refs (list to container "CHECKPOINTSE-REFS")
+        # Serialize checkpoint_refs (list to container "CHECKPOINT-REFS")
         if self.checkpoint_refs:
-            wrapper = ET.Element("CHECKPOINTSE-REFS")
+            wrapper = ET.Element("CHECKPOINT-REFS")
             for item in self.checkpoint_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("CHECKPOINTSE-REF")
+                    child_elem = ET.Element("CHECKPOINT-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -201,9 +201,9 @@ class SupervisedEntityNeeds(ServiceNeeds):
             activate_at_start_value = child.text
             obj.activate_at_start = activate_at_start_value
 
-        # Parse checkpoint_refs (list from container "CHECKPOINTSE-REFS")
+        # Parse checkpoint_refs (list from container "CHECKPOINT-REFS")
         obj.checkpoint_refs = []
-        container = SerializationHelper.find_child_element(element, "CHECKPOINTSE-REFS")
+        container = SerializationHelper.find_child_element(element, "CHECKPOINT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

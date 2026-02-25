@@ -91,13 +91,13 @@ class ConsistencyNeeds(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize dpg_require_refs (list to container "DPG-REQUIRESE-REFS")
+        # Serialize dpg_require_refs (list to container "DPG-REQUIRE-REFS")
         if self.dpg_require_refs:
-            wrapper = ET.Element("DPG-REQUIRESE-REFS")
+            wrapper = ET.Element("DPG-REQUIRE-REFS")
             for item in self.dpg_require_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataPrototypeGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("DPG-REQUIRESE-REF")
+                    child_elem = ET.Element("DPG-REQUIRE-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -125,13 +125,13 @@ class ConsistencyNeeds(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize reg_require_refs (list to container "REG-REQUIRESE-REFS")
+        # Serialize reg_require_refs (list to container "REG-REQUIRE-REFS")
         if self.reg_require_refs:
-            wrapper = ET.Element("REG-REQUIRESE-REFS")
+            wrapper = ET.Element("REG-REQUIRE-REFS")
             for item in self.reg_require_refs:
                 serialized = SerializationHelper.serialize_item(item, "RunnableEntityGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("REG-REQUIRESE-REF")
+                    child_elem = ET.Element("REG-REQUIRE-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -173,9 +173,9 @@ class ConsistencyNeeds(Identifiable):
                 if child_value is not None:
                     obj.dpg_does_not_refs.append(child_value)
 
-        # Parse dpg_require_refs (list from container "DPG-REQUIRESE-REFS")
+        # Parse dpg_require_refs (list from container "DPG-REQUIRE-REFS")
         obj.dpg_require_refs = []
-        container = SerializationHelper.find_child_element(element, "DPG-REQUIRESE-REFS")
+        container = SerializationHelper.find_child_element(element, "DPG-REQUIRE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -205,9 +205,9 @@ class ConsistencyNeeds(Identifiable):
                 if child_value is not None:
                     obj.reg_does_not_refs.append(child_value)
 
-        # Parse reg_require_refs (list from container "REG-REQUIRESE-REFS")
+        # Parse reg_require_refs (list from container "REG-REQUIRE-REFS")
         obj.reg_require_refs = []
-        container = SerializationHelper.find_child_element(element, "REG-REQUIRESE-REFS")
+        container = SerializationHelper.find_child_element(element, "REG-REQUIRE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

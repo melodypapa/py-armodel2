@@ -77,13 +77,13 @@ class RunnableEntityGroup(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize runnable_entity_group_group_in_composition_instance_ref (list to container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
+        # Serialize runnable_entity_group_group_in_composition_instance_ref (list to container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
         if self.runnable_entity_group_group_in_composition_instance_ref:
-            wrapper = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
+            wrapper = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
             for item in self.runnable_entity_group_group_in_composition_instance_ref:
                 serialized = SerializationHelper.serialize_item(item, "RunnableEntityGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REF")
+                    child_elem = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -119,9 +119,9 @@ class RunnableEntityGroup(Identifiable):
                 if child_value is not None:
                     obj.runnable_entities.append(child_value)
 
-        # Parse runnable_entity_group_group_in_composition_instance_ref (list from container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
+        # Parse runnable_entity_group_group_in_composition_instance_ref (list from container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
         obj.runnable_entity_group_group_in_composition_instance_ref = []
-        container = SerializationHelper.find_child_element(element, "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
+        container = SerializationHelper.find_child_element(element, "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
