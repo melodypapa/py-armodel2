@@ -227,16 +227,19 @@ class BswModuleDescription(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize provided_client_server_entries (list to container "PROVIDED-ENTRYS")
+        # Serialize provided_client_server_entries (list of direct "PROVIDED-ENTRYS" children, no container)
         if self.provided_client_server_entries:
-            wrapper = ET.Element("PROVIDED-ENTRYS")
             for item in self.provided_client_server_entries:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleClientServerEntry")
                 if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
-
+                    child_elem = ET.Element("PROVIDED-ENTRYS")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    elem.append(child_elem)
         # Serialize provided_datas (list to container "PROVIDED-DATAS")
         if self.provided_datas:
             wrapper = ET.Element("PROVIDED-DATAS")
@@ -267,16 +270,19 @@ class BswModuleDescription(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize required_client_server_entries (list to container "REQUIRED-ENTRYS")
+        # Serialize required_client_server_entries (list of direct "REQUIRED-ENTRYS" children, no container)
         if self.required_client_server_entries:
-            wrapper = ET.Element("REQUIRED-ENTRYS")
             for item in self.required_client_server_entries:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleClientServerEntry")
                 if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
-
+                    child_elem = ET.Element("REQUIRED-ENTRYS")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    elem.append(child_elem)
         # Serialize required_datas (list to container "REQUIRED-DATAS")
         if self.required_datas:
             wrapper = ET.Element("REQUIRED-DATAS")
@@ -386,12 +392,11 @@ class BswModuleDescription(ARElement):
             module_id_value = child.text
             obj.module_id = module_id_value
 
-        # Parse provided_client_server_entries (list from container "PROVIDED-ENTRYS")
+        # Parse provided_client_server_entries (list of direct "PROVIDED-ENTRYS" children, no container)
         obj.provided_client_server_entries = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-ENTRYS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
+        for child in element:
+            child_element_tag = SerializationHelper.strip_namespace(child.tag)
+            if child_element_tag == "PROVIDED-ENTRYS":                # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.provided_client_server_entries.append(child_value)
@@ -426,12 +431,11 @@ class BswModuleDescription(ARElement):
                 if child_value is not None:
                     obj.released_triggers.append(child_value)
 
-        # Parse required_client_server_entries (list from container "REQUIRED-ENTRYS")
+        # Parse required_client_server_entries (list of direct "REQUIRED-ENTRYS" children, no container)
         obj.required_client_server_entries = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-ENTRYS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
+        for child in element:
+            child_element_tag = SerializationHelper.strip_namespace(child.tag)
+            if child_element_tag == "REQUIRED-ENTRYS":                # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.required_client_server_entries.append(child_value)

@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization.decorators import xml_attribute
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
@@ -39,13 +40,24 @@ class ARList(Paginateable):
         """
         return False
 
-    items: list[Item]
+    _items: list[Item]
     _type: Optional[ListEnum]
     def __init__(self) -> None:
         """Initialize ARList."""
         super().__init__()
-        self.items: list[Item] = []
+        self._items: list[Item] = []
         self._type: Optional[ListEnum] = None
+    @property
+    @xml_element_name("ITEM")
+    def items(self) -> list[Item]:
+        """Get items with custom XML element name."""
+        return self._items
+
+    @items.setter
+    def items(self, value: list[Item]) -> None:
+        """Set items with custom XML element name."""
+        self._items = value
+
     @property
     @xml_attribute
     def type(self) -> ListEnum:
@@ -82,21 +94,19 @@ class ARList(Paginateable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize items (list directly as ITEM children)
+        # Serialize items (list of direct "ITEM" children, no container)
         if self.items:
             for item in self.items:
                 serialized = SerializationHelper.serialize_item(item, "Item")
                 if serialized is not None:
-                    # Wrap each item with ITEM tag
-                    wrapped = ET.Element("ITEM")
+                    child_elem = ET.Element("ITEM")
                     if hasattr(serialized, 'attrib'):
-                        wrapped.attrib.update(serialized.attrib)
+                        child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
-                        wrapped.text = serialized.text
+                        child_elem.text = serialized.text
                     for child in serialized:
-                        wrapped.append(child)
-                    elem.append(wrapped)
-
+                        child_elem.append(child)
+                    elem.append(child_elem)
         # Serialize type as XML attribute
         if self.type is not None:
             elem.attrib["TYPE"] = str(self.type)
@@ -116,12 +126,11 @@ class ARList(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ARList, cls).deserialize(element)
 
-        # Parse items (list of direct ITEM children)
+        # Parse items (list of direct "ITEM" children, no container)
         obj.items = []
         for child in element:
-            # Only deserialize ITEM children
-            if SerializationHelper.strip_namespace(child.tag) == "ITEM":
-                # Deserialize each child element dynamically based on its tag
+            child_element_tag = SerializationHelper.strip_namespace(child.tag)
+            if child_element_tag == "ITEM":                # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.items.append(child_value)

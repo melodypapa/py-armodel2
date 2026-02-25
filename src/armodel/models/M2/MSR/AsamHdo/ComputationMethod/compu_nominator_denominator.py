@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
@@ -29,11 +30,22 @@ class CompuNominatorDenominator(ARObject):
         """
         return False
 
-    vs: list[Numerical]
+    _vs: list[Numerical]
     def __init__(self) -> None:
         """Initialize CompuNominatorDenominator."""
         super().__init__()
-        self.vs: list[Numerical] = []
+        self._vs: list[Numerical] = []
+    @property
+    @xml_element_name("V")
+    def vs(self) -> list[Numerical]:
+        """Get vs with custom XML element name."""
+        return self._vs
+
+    @vs.setter
+    def vs(self, value: list[Numerical]) -> None:
+        """Set vs with custom XML element name."""
+        self._vs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize CompuNominatorDenominator to XML element.
@@ -59,9 +71,8 @@ class CompuNominatorDenominator(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize vs (list to container "VS")
+        # Serialize vs (list of direct "V" children, no container)
         if self.vs:
-            wrapper = ET.Element("VS")
             for item in self.vs:
                 serialized = SerializationHelper.serialize_item(item, "Numerical")
                 if serialized is not None:
@@ -72,10 +83,7 @@ class CompuNominatorDenominator(ARObject):
                         child_elem.text = serialized.text
                     for child in serialized:
                         child_elem.append(child)
-                    wrapper.append(child_elem)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
-
+                    elem.append(child_elem)
         return elem
 
     @classmethod
@@ -91,12 +99,11 @@ class CompuNominatorDenominator(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuNominatorDenominator, cls).deserialize(element)
 
-        # Parse vs (list from container "VS")
+        # Parse vs (list of direct "V" children, no container)
         obj.vs = []
-        container = SerializationHelper.find_child_element(element, "VS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (Numerical) as text
+        for child in element:
+            child_element_tag = SerializationHelper.strip_namespace(child.tag)
+            if child_element_tag == "V":                # Extract primitive value (Numerical) as text
                 child_value = child.text
                 if child_value is not None:
                     obj.vs.append(child_value)
