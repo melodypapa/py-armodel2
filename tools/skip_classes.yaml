@@ -47,6 +47,9 @@ skip_classes:
   # Item requires custom serialization - item_contents (DocumentationBlock) is serialized as direct children of ITEM, not wrapped in ITEM-CONTENTS
   - "Item"
 
+  # ARList requires custom serialization - items are serialized as direct ITEM children (no ITEMS container wrapper)
+  - "ARList"
+
   # DocumentationBlock requires custom serialization - handles L-1 through L-10 language-specific elements (P paragraphs)
   - "DocumentationBlock"
 
