@@ -39,7 +39,7 @@
         }
       ],
       "attributes": {
-        "mcFunctions": {
+        "mcFunction": {
           "type": "McFunction",
           "multiplicity": "*",
           "kind": "ref",
@@ -60,7 +60,7 @@
           "is_ref": true,
           "note": "Refers to the set of measurable belonging to this Mc atpSplitable"
         },
-        "subGroups": {
+        "subGroup": {
           "type": "McGroup",
           "multiplicity": "*",
           "kind": "ref",
@@ -102,14 +102,14 @@
         }
       ],
       "attributes": {
-        "flatMapEntries": {
+        "flatMapEntry": {
           "type": "FlatInstanceDescriptor",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Refers to an entry in a FlatMap that is part of the set, for calibration parameter or measured variable. atpSplitable property has no atp.Splitkey due (PropertySetPattern)."
         },
-        "mcDataInstances": {
+        "mcDataInstance": {
           "type": "McDataInstance",
           "multiplicity": "*",
           "kind": "ref",

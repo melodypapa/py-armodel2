@@ -28,14 +28,14 @@
         }
       ],
       "attributes": {
-        "operations": {
+        "operation": {
           "type": "any (SwcToSwcOperation)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The arguments sent in one direction (either from client to or server to client) of the operations that shall take signal path."
         },
-        "signals": {
+        "signal": {
           "type": "SwcToSwcSignal",
           "multiplicity": "*",
           "kind": "attribute",
@@ -73,7 +73,7 @@
         }
       ],
       "attributes": {
-        "dataElements": {
+        "dataElement": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "ref",
@@ -100,7 +100,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "The SwcToSwcOperationArguments describes the information (client server operation arguments, plus the operation identification, if required) that are exchanged between two SW Components from exactly one client to one server, or from one server back to one client. The direction attribute defines which direction is described. If direction == IN, all arguments sent from the client to the server are described by the SwcToSwcOperationArguments, in direction == OUT, it\u2019s the arguments sent back from server to client.",
+      "note": "The SwcToSwcOperationArguments describes the information (client server operation arguments, plus the operation identification, if required) that are exchanged between two SW Components from exactly one client to one server, or from one server back to one client. The direction attribute defines which direction is described. If direction == IN, all arguments sent from the client to the server are described by the SwcToSwcOperationArguments, in direction == OUT, it’s the arguments sent back from server to client.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SystemTemplate.pdf",
@@ -117,7 +117,7 @@
           "is_ref": false,
           "note": "Direction addressed by this SwcToSwcClientServer element."
         },
-        "operations": {
+        "operation": {
           "type": "ClientServerOperation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -153,21 +153,21 @@
         }
       ],
       "attributes": {
-        "operations": {
+        "operation": {
           "type": "any (SwcToSwcOperation)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Reference to the operation arguments of one operation shall not take the predefined way in the topology."
         },
-        "physicalChannels": {
+        "physicalChannel": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "The SwcToSwcSignal shall not be transmitted on one of physical channels."
         },
-        "signals": {
+        "signal": {
           "type": "SwcToSwcSignal",
           "multiplicity": "*",
           "kind": "attribute",
@@ -203,21 +203,21 @@
         }
       ],
       "attributes": {
-        "operations": {
+        "operation": {
           "type": "any (SwcToSwcOperation)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The arguments of an operation that can take the way in the topology."
         },
-        "physicalChannels": {
+        "physicalChannel": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "The SwcToSwcSignal can be transmitted on one of these channels."
         },
-        "signals": {
+        "signal": {
           "type": "SwcToSwcSignal",
           "multiplicity": "*",
           "kind": "attribute",
@@ -253,14 +253,14 @@
         }
       ],
       "attributes": {
-        "operations": {
+        "operation": {
           "type": "any (SwcToSwcOperation)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The SwcToSwcOperationArguments that shall not take same way (Signal Path) in the topology."
         },
-        "signals": {
+        "signal": {
           "type": "SwcToSwcSignal",
           "multiplicity": "*",
           "kind": "attribute",

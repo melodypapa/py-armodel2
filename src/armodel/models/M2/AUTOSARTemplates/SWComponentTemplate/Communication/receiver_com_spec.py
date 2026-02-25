@@ -569,7 +569,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
         self._obj.composite_network_representations = []
         return self
 
-    def add_transformation_com_spec_propse(self, item: TransformationComSpecProps) -> "ReceiverComSpecBuilder":
+    def add_transformation_com_spec_props(self, item: TransformationComSpecProps) -> "ReceiverComSpecBuilder":
         """Add a single item to transformation_com_spec_propses list.
 
         Args:

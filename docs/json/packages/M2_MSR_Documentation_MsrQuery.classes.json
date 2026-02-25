@@ -169,7 +169,7 @@
           "is_ref": false,
           "note": "This element contains a commentary in text form."
         },
-        "msrQueryArgs": {
+        "msrQueryArg": {
           "type": "MsrQueryArg",
           "multiplicity": "*",
           "kind": "attribute",
@@ -253,7 +253,7 @@
         }
       ],
       "attributes": {
-        "chapters": {
+        "chapter": {
           "type": "Chapter",
           "multiplicity": "*",
           "kind": "attribute",

@@ -47,7 +47,7 @@
         }
       ],
       "attributes": {
-        "contexts": {
+        "context": {
           "type": "DocumentationContext",
           "multiplicity": "*",
           "kind": "attribute",

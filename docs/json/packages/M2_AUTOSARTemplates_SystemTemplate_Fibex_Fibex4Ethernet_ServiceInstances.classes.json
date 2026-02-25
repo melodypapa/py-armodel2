@@ -57,14 +57,14 @@
           "is_ref": false,
           "note": "EventGroup ID. Shall be unique within one system to service discovery."
         },
-        "eventMulticasts": {
+        "eventMulticast": {
           "type": "ApplicationEndpoint",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This reference defines the multicast address or a address resource where the events of the event received. multicast address is determined via configuration at runtime via service discovery this reference the multicast address over which the events will multicast address is determined at runtime via this reference shall be used to define local multicast address resources, i.e. in the TcpIp module in which the multicast stored at runtime. Please note that in this case address may be defined as ANY UDP port IP address since the multicast address will be runtime. If several multicast addresses are be used the ConsumedEventGroup shall different ApplicationEndpoint objects to reserve resources in the configuration. atpVariation"
         },
-        "pduActivationRoutings": {
+        "pduActivationRouting": {
           "type": "PduActivationRoutingGroup",
           "multiplicity": "*",
           "kind": "attribute",
@@ -78,7 +78,7 @@
           "is_ref": false,
           "note": "Defines the frame priority where values from 0 (best 7 (highest) are allowed."
         },
-        "routingGroups": {
+        "routingGroup": {
           "type": "SoAdRoutingGroup",
           "multiplicity": "*",
           "kind": "ref",
@@ -138,7 +138,7 @@
         }
       ],
       "attributes": {
-        "allowedServices": {
+        "allowedService": {
           "type": "NetworkEndpoint",
           "multiplicity": "*",
           "kind": "ref",
@@ -152,14 +152,14 @@
           "is_ref": false,
           "note": "Defines that this ConsumedServiceInstance shall be"
         },
-        "blocklisteds": {
+        "blocklisted": {
           "type": "SomeipServiceVersion",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of blocklisted versions atp.Status=draft"
         },
-        "consumedEventGroups": {
+        "consumedEventGroup": {
           "type": "ConsumedEventGroup",
           "multiplicity": "*",
           "kind": "ref",
@@ -275,7 +275,7 @@
         }
       ],
       "attributes": {
-        "allowedServices": {
+        "allowedService": {
           "type": "NetworkEndpoint",
           "multiplicity": "*",
           "kind": "ref",
@@ -289,7 +289,7 @@
           "is_ref": false,
           "note": "Defines that this ProvidedServiceInstance shall be"
         },
-        "eventHandlers": {
+        "eventHandler": {
           "type": "EventHandler",
           "multiplicity": "*",
           "kind": "attribute",
@@ -331,14 +331,14 @@
           "is_ref": false,
           "note": "Defines the frame priority where values from 0 (best 7 (highest) are allowed."
         },
-        "remoteMulticasts": {
+        "remoteMulticast": {
           "type": "ApplicationEndpoint",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This reference defines the remote multicast subscribed of service consumers. This reference shall be used if the remote address of the clients is the configuration and not at runtime. atpVariation"
         },
-        "remoteUnicasts": {
+        "remoteUnicast": {
           "type": "ApplicationEndpoint",
           "multiplicity": "*",
           "kind": "ref",
@@ -394,14 +394,14 @@
         }
       ],
       "attributes": {
-        "connections": {
+        "connection": {
           "type": "SocketConnection",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of SocketConnectionBundles. Stereotypes: atpSplitable; atpVariation 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
-        "socketAddresses": {
+        "socketAddress": {
           "type": "SocketAddress",
           "multiplicity": "*",
           "kind": "attribute",
@@ -481,7 +481,7 @@
           "is_ref": false,
           "note": "The 20-bit Flow Label field in the IPv6 header may be a source to label sequences of packets for which special handling by the IPv6 routers, such as of service. If not set a Flow Label of used to indicate packets that have not been 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
-        "multicasts": {
+        "multicast": {
           "type": "any (EthernetCommunication)",
           "multiplicity": "*",
           "kind": "ref",
@@ -502,7 +502,7 @@
           "is_ref": false,
           "note": "Defines the time in seconds which shall pass before a with Pdu collection enabled shall be transmitted to layer after the first Pdu has been put into the"
         },
-        "staticSockets": {
+        "staticSocket": {
           "type": "StaticSocketConnection",
           "multiplicity": "*",
           "kind": "attribute",
@@ -550,7 +550,7 @@
         }
       ],
       "attributes": {
-        "serviceInstances": {
+        "serviceInstance": {
           "type": "AbstractServiceInstance",
           "multiplicity": "*",
           "kind": "attribute",
@@ -596,7 +596,7 @@
         }
       ],
       "attributes": {
-        "capabilities": {
+        "capability": {
           "type": "TagWithOptionalValue",
           "multiplicity": "*",
           "kind": "attribute",
@@ -617,7 +617,7 @@
           "is_ref": false,
           "note": "The ServiceDiscovery module is able to activate and deactivate the PDU routing for ClientServerOperations methods). atpVariation"
         },
-        "routingGroups": {
+        "routingGroup": {
           "type": "SoAdRoutingGroup",
           "multiplicity": "*",
           "kind": "ref",
@@ -664,7 +664,7 @@
           "is_ref": true,
           "note": "This attribute defines the type of a RoutingGroup. There are RoutingGroups that activate the data path for unicast events of an event group. And there are activate the data path for initial are triggered, namely events that are sent out server side after a client got subscribed. Please this attribute is only valid for event Receiver communication) and omitted in MethodActivationRoutingGroups."
         },
-        "iPduIdentifiers": {
+        "iPduIdentifier": {
           "type": "SoConIPduIdentifier",
           "multiplicity": "*",
           "kind": "ref",
@@ -765,7 +765,7 @@
         }
       ],
       "attributes": {
-        "iPduIdentifiers": {
+        "iPduIdentifier": {
           "type": "SoConIPduIdentifier",
           "multiplicity": "*",
           "kind": "attribute",
@@ -803,7 +803,7 @@
         }
       ],
       "attributes": {
-        "consumedEventGroups": {
+        "consumedEventGroup": {
           "type": "ConsumedEventGroup",
           "multiplicity": "*",
           "kind": "ref",
@@ -831,14 +831,14 @@
           "is_ref": false,
           "note": "Specifies the number of subscribed clients that trigger the to change the transmission of events to multicast. to 0 only unicast will be used. If configured the first client will be already served by multicast. If 2 the first client will be server with unicast soon as the second client arrives both will be multicast. not influence the handling of initial events, served using unicast only."
         },
-        "pduActivationRoutings": {
+        "pduActivationRouting": {
           "type": "PduActivationRoutingGroup",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The ServiceDiscovery module is able to activate and deactivate the PDU routing for events."
         },
-        "routingGroups": {
+        "routingGroup": {
           "type": "SoAdRoutingGroup",
           "multiplicity": "*",
           "kind": "ref",
@@ -1162,14 +1162,14 @@
         }
       ],
       "attributes": {
-        "consumedServices": {
+        "consumedService": {
           "type": "any (ConsumedService)",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This reference assigns a set of ProvidedServiceInstances to the ConsumedProvidedServiceInstanceGroup. atpVariation"
         },
-        "providedServices": {
+        "providedService": {
           "type": "any (ProvidedService)",
           "multiplicity": "*",
           "kind": "ref",
@@ -1207,7 +1207,7 @@
         }
       ],
       "attributes": {
-        "iPduIdentifiers": {
+        "iPduIdentifier": {
           "type": "SoConIPduIdentifier",
           "multiplicity": "*",
           "kind": "ref",

@@ -119,7 +119,7 @@
         }
       ],
       "attributes": {
-        "pids": {
+        "pid": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "ref",

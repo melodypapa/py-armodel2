@@ -50,7 +50,7 @@ class MlFigure(Paginateable):
     figure_caption: Optional[Caption]
     frame: Optional[FrameEnum]
     help_entry: Optional[String]
-    _l_graphic: list[LGraphic]
+    _l_graphics: list[LGraphic]
     pgwide: Optional[PgwideEnum]
     verbatim: Optional[MultiLanguageVerbatim]
     def __init__(self) -> None:
@@ -59,19 +59,19 @@ class MlFigure(Paginateable):
         self.figure_caption: Optional[Caption] = None
         self.frame: Optional[FrameEnum] = None
         self.help_entry: Optional[String] = None
-        self._l_graphic: list[LGraphic] = []
+        self._l_graphics: list[LGraphic] = []
         self.pgwide: Optional[PgwideEnum] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
     @property
     @lang_prefix("L-GRAPHIC")
-    def l_graphic(self) -> list[LGraphic]:
-        """Get l_graphic with language-specific wrapper."""
-        return self._l_graphic
+    def l_graphics(self) -> list[LGraphic]:
+        """Get l_graphics with language-specific wrapper."""
+        return self._l_graphics
 
-    @l_graphic.setter
-    def l_graphic(self, value: list[LGraphic]) -> None:
-        """Set l_graphic with language-specific wrapper."""
-        self._l_graphic = value
+    @l_graphics.setter
+    def l_graphics(self, value: list[LGraphic]) -> None:
+        """Set l_graphics with language-specific wrapper."""
+        self._l_graphics = value
 
 
     def serialize(self) -> ET.Element:
@@ -140,20 +140,19 @@ class MlFigure(Paginateable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize l_graphic (list with lang_prefix "L-GRAPHIC")
-        for item in self.l_graphic:
-            serialized = SerializationHelper.serialize_item(item, "LGraphic")
-            if serialized is not None:
-                # For lang_prefix lists, wrap each item in the lang_prefix tag
-                wrapped = ET.Element("L-GRAPHIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
+        # Serialize l_graphics (list of direct "L-GRAPHIC" children, no container)
+        if self.l_graphics:
+            for item in self.l_graphics:
+                serialized = SerializationHelper.serialize_item(item, "LGraphic")
+                if serialized is not None:
+                    child_elem = ET.Element("L-GRAPHIC")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    elem.append(child_elem)
         # Serialize pgwide
         if self.pgwide is not None:
             serialized = SerializationHelper.serialize_item(self.pgwide, "PgwideEnum")
@@ -215,11 +214,14 @@ class MlFigure(Paginateable):
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
-        # Parse l_graphic (list with lang_prefix "L-GRAPHIC")
-        obj.l_graphic = []
-        for child in SerializationHelper.find_all_child_elements(element, "L-GRAPHIC"):
-            l_graphic_value = SerializationHelper.deserialize_by_tag(child, "LGraphic")
-            obj.l_graphic.append(l_graphic_value)
+        # Parse l_graphics (list of direct "L-GRAPHIC" children, no container)
+        obj.l_graphics = []
+        for child in element:
+            child_element_tag = SerializationHelper.strip_namespace(child.tag)
+            if child_element_tag == "L-GRAPHIC":                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.l_graphics.append(child_value)
 
         # Parse pgwide
         child = SerializationHelper.find_child_element(element, "PGWIDE")
@@ -288,8 +290,8 @@ class MlFigureBuilder(PaginateableBuilder):
         self._obj.help_entry = value
         return self
 
-    def with_l_graphic(self, items: list[LGraphic]) -> "MlFigureBuilder":
-        """Set l_graphic list attribute.
+    def with_l_graphics(self, items: list[LGraphic]) -> "MlFigureBuilder":
+        """Set l_graphics list attribute.
 
         Args:
             items: List of items to set
@@ -297,7 +299,7 @@ class MlFigureBuilder(PaginateableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.l_graphic = list(items) if items else []
+        self._obj.l_graphics = list(items) if items else []
         return self
 
     def with_pgwide(self, value: Optional[PgwideEnum]) -> "MlFigureBuilder":
@@ -329,8 +331,8 @@ class MlFigureBuilder(PaginateableBuilder):
         return self
 
 
-    def add_l_graphi(self, item: LGraphic) -> "MlFigureBuilder":
-        """Add a single item to l_graphic list.
+    def add_l_graphic(self, item: LGraphic) -> "MlFigureBuilder":
+        """Add a single item to l_graphics list.
 
         Args:
             item: Item to add
@@ -338,16 +340,16 @@ class MlFigureBuilder(PaginateableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.l_graphic.append(item)
+        self._obj.l_graphics.append(item)
         return self
 
-    def clear_l_graphic(self) -> "MlFigureBuilder":
-        """Clear all items from l_graphic list.
+    def clear_l_graphics(self) -> "MlFigureBuilder":
+        """Clear all items from l_graphics list.
 
         Returns:
             self for method chaining
         """
-        self._obj.l_graphic = []
+        self._obj.l_graphics = []
         return self
 
 

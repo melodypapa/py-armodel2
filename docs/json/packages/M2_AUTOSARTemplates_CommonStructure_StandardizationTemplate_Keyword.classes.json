@@ -43,7 +43,7 @@
           "is_ref": false,
           "note": "This attribute specifies an abbreviated name of a"
         },
-        "classifications": {
+        "classification": {
           "type": "NameToken",
           "multiplicity": "*",
           "kind": "attribute",
@@ -87,7 +87,7 @@
         }
       ],
       "attributes": {
-        "keywords": {
+        "keyword": {
           "type": "Keyword",
           "multiplicity": "*",
           "kind": "attribute",

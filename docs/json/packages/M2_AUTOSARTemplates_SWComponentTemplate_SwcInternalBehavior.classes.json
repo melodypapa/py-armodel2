@@ -66,14 +66,14 @@
         }
       ],
       "attributes": {
-        "arguments": {
+        "argument": {
           "type": "RunnableEntity",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the formal definition of a an argument to"
         },
-        "asynchronousServers": {
+        "asynchronousServer": {
           "type": "any (AsynchronousServer)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -87,77 +87,77 @@
           "is_ref": false,
           "note": "If the value of this attribute is set to \"true\" the enclosing"
         },
-        "dataReads": {
+        "dataRead": {
           "type": "VariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "RunnableEntity has implicit read access to dataElement"
         },
-        "dataReceives": {
+        "dataReceif": {
           "type": "VariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "RunnableEntity has explicit read access to dataElement"
         },
-        "dataSendPoints": {
+        "dataSendPoint": {
           "type": "VariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "RunnableEntity has explicit write access to dataElement"
         },
-        "dataWrites": {
+        "dataWrite": {
           "type": "VariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "RunnableEntity has implicit write access to dataElement"
         },
-        "externals": {
+        "external": {
           "type": "ExternalTriggeringPoint",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "The aggregation of ExternalTriggeringPoint is subject to with the purpose to support the conditional trigger ports or the variant existence of points in the implementation. atpVariation"
         },
-        "internals": {
+        "internal": {
           "type": "InternalTriggeringPoint",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "The aggregation of InternalTriggeringPoint is subject to with the purpose to support the variant internal triggering points in the atpVariation"
         },
-        "modeAccessPoints": {
+        "modeAccessPoint": {
           "type": "ModeAccessPoint",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The runnable has a mode access point. The aggregation ModeAccessPoint is subject to variability with the support the conditional existence of mode the variant existence of mode access points in atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "modeSwitchPoints": {
+        "modeSwitchPoint": {
           "type": "ModeSwitchPoint",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The runnable has a mode switch point. The aggregation ModeSwitchPoint is subject to variability with the support the conditional existence of mode the variant existence of mode switch points in the atpVariation"
         },
-        "parameterAccesses": {
+        "parameterAccess": {
           "type": "ParameterAccess",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The presence of a ParameterAccess implies that a needs read only access to a Parameter may either be local or within a Port of ParameterAccess is subject to the purpose to support the conditional parameter ports and component local well as the variant existence of Parameter in the implementation. atpVariation"
         },
-        "readLocals": {
+        "readLocal": {
           "type": "VariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The presence of a readLocalVariable implies that a"
         },
-        "serverCallPoints": {
+        "serverCallPoint": {
           "type": "ServerCallPoint",
           "multiplicity": "*",
           "kind": "attribute",
@@ -169,16 +169,16 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The symbol describing this RunnableEntity\u2019s entry point."
+          "note": "The symbol describing this RunnableEntity’s entry point."
         },
-        "waitPoints": {
+        "waitPoint": {
           "type": "WaitPoint",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The WaitPoint associated with the RunnableEntity."
         },
-        "writtenLocals": {
+        "writtenLocal": {
           "type": "VariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
@@ -252,112 +252,112 @@
         }
       ],
       "attributes": {
-        "arTypedPers": {
+        "arTypedPerInstanceMemory": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Defines an AUTOSAR typed memory-block that needs to available for each instance of the SW-component. is typically only useful if supportsMultipleInstantiation to \"true\" or if the component defines NVRAM permanent blocks. of arTypedPerInstanceMemory is subject with the purpose to support variability in the implementations. Typically different the implementation are requiring different memory objects. atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "events": {
+        "event": {
           "type": "RTEEvent",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This is a RTEEvent specified for the particular Swc of RTEEvent is subject to variability with to support the conditional existence of RTE the number of RTE events might vary due conditional existence of PortPrototypes using Data due to different scheduling needs of atpVariation"
         },
-        "exclusiveAreas": {
+        "exclusiveAreaPolicy": {
           "type": "SwcExclusiveAreaPolicy",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Options how to generate the ExclusiveArea related APIs. When no SwcExclusiveAreaPolicy is specified for an default values apply. atpVariation"
         },
-        "explicitInters": {
+        "explicitInterRunnableVariable": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Implement state message semantics for establishing among runnables of the same The aggregation of explicitInterRunnable subject to variability with the purpose to in the software components different algorithms in the requiring different number of memory atpVariation"
         },
-        "implicitInters": {
+        "implicitInterRunnableVariable": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Implement state message semantics for establishing among runnables of the same The aggregation of implicitInterRunnable subject to variability with the purpose to in the software components different algorithms in the requiring different number of memory atpVariation"
         },
-        "includedDataTypeSets": {
+        "includedDataTypeSet": {
           "type": "IncludedDataTypeSet",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "The includedDataTypeSet is used by a software for its implementation."
         },
-        "includedModes": {
+        "includedModeDeclarationGroupSet": {
           "type": "IncludedModeDeclarationGroupSet",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation represents the included Mode DeclarationGroups atpSplitable 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "instantiationDataDefs": {
+        "instantiationDataDefProp": {
           "type": "InstantiationDataDefProps",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "The purpose of this is that within the context of a given SwComponentType some data def properties of individual be modified. The aggregation of subject to variability with the support the conditional existence of Port component local memories like \"per \"arTypedPerInstanceMemory\". atpVariation"
         },
-        "perInstanceMemories": {
+        "perInstanceMemory": {
           "type": "PerInstanceMemory",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Defines a per-instance memory object needed by this component. The aggregation of PerInstance subject to variability with the purpose to in the software components different algorithms in the requiring different number of memory atpVariation"
         },
-        "perInstances": {
+        "perInstanceParameter": {
           "type": "ParameterDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Defines parameter(s) or characteristic value(s) that needs to be available for each instance of the is typically only useful if set to \"true\". The perInstanceParameter is subject to the purpose to support variability in the implementations. Typically different the implementation are requiring different memory objects. atpVariation"
         },
-        "portAPIOptions": {
+        "portAPIOption": {
           "type": "PortAPIOption",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Options for generating the signature of port-related calls"
         },
-        "runnables": {
+        "runnable": {
           "type": "RunnableEntity",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This is a RunnableEntity specified for the particular Swc"
         },
-        "services": {
-          "type": "any (SwcService)",
+        "serviceDependency": {
+          "type": "SwcServiceDependency",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines the requirements on AUTOSAR Services for a particular item. of SwcServiceDependency is subject to the purpose to support the conditional ports as well as the conditional existence of owned by an SwcInternal be located in a different physical file in order that SwcServiceDependency might be later development steps or even by different (e.g OBD expert for Obd related Service Therefore the aggregation is <<atp atpVariation"
         },
-        "shareds": {
+        "sharedParameter": {
           "type": "ParameterDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines parameter(s) or characteristic value(s) shared between SwComponentPrototypes of the same Sw aggregation of sharedParameter is variability with the purpose to support variability software components implementations. Typically in the implementation are requiring of memory objects. atpVariation"
         },
-        "supports": {
+        "supportMultipleInstantiations": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Indicate whether the corresponding software-component"
         },
-        "variationPointProxies": {
+        "variationPointProxy": {
           "type": "VariationPointProxy",
           "multiplicity": "*",
           "kind": "attribute",

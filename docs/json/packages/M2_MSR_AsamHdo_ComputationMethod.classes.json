@@ -342,7 +342,7 @@
         }
       ],
       "attributes": {
-        "compuScales": {
+        "compuScale": {
           "type": "CompuScale",
           "multiplicity": "*",
           "kind": "attribute",
@@ -680,6 +680,7 @@
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "xml_element_name:V",
           "note": "Value calculated via a system constant. This element is"
         }
       }

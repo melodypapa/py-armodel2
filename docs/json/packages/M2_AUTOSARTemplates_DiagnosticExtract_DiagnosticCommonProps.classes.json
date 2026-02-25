@@ -34,7 +34,7 @@
           "is_ref": false,
           "note": "This attribute defines the time (in seconds) that the state is maintained in default-session if no communication from the authenticated client. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "debounces": {
+        "debounce": {
           "type": "any (DiagnosticDebounce)",
           "multiplicity": "*",
           "kind": "attribute",

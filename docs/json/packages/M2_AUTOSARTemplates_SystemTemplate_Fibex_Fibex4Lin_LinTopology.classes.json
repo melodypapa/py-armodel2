@@ -114,7 +114,7 @@
         }
       ],
       "attributes": {
-        "linSlaves": {
+        "linSlaf": {
           "type": "LinSlaveConfig",
           "multiplicity": "*",
           "kind": "attribute",
@@ -192,7 +192,7 @@
           "is_ref": false,
           "note": "Initial NAD of the LIN slave."
         },
-        "linConfigurableFrames": {
+        "linConfigurableFrame": {
           "type": "LinConfigurableFrame",
           "multiplicity": "*",
           "kind": "attribute",
@@ -206,7 +206,7 @@
           "is_ref": false,
           "note": "Each slave node shall publish one response error in one its transmitted unconditional frames."
         },
-        "linOrdereds": {
+        "linOrdered": {
           "type": "LinOrderedConfigurableFrame",
           "multiplicity": "*",
           "kind": "attribute",
@@ -393,14 +393,14 @@
           "is_ref": false,
           "note": "Initial NAD of the LIN slave."
         },
-        "linConfigurableFrames": {
+        "linConfigurableFrame": {
           "type": "LinConfigurableFrame",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "LinConfigurableFrames shall list all frames (unconditional event-triggered frames and sporadic frames) the slave node. This element is necessary LIN 2.0 Assign-Frame command."
         },
-        "linOrdereds": {
+        "linOrdered": {
           "type": "LinOrderedConfigurableFrame",
           "multiplicity": "*",
           "kind": "attribute",
@@ -539,7 +539,7 @@
           "is_ref": false,
           "note": "This attribute shall be used to set an idle timeout period the enclosing LinPhysicalChannel. 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
-        "scheduleTables": {
+        "scheduleTable": {
           "type": "LinScheduleTable",
           "multiplicity": "*",
           "kind": "attribute",

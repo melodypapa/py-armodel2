@@ -211,7 +211,7 @@ class StateDependentFirewallBuilder(ARElementBuilder):
         return self
 
 
-    def add_firewall_rule_propse(self, item: FirewallRuleProps) -> "StateDependentFirewallBuilder":
+    def add_firewall_rule_props(self, item: FirewallRuleProps) -> "StateDependentFirewallBuilder":
         """Add a single item to firewall_rule_propses list.
 
         Args:

@@ -56,7 +56,7 @@ class GlobalTimeDomain(FibexElement):
 
     debounce_time: Optional[TimeValue]
     domain_id: Optional[PositiveInteger]
-    gateways: list[GlobalTimeGateway]
+    gatewaies: list[GlobalTimeGateway]
     global_time: Optional[AbstractGlobalTimeDomainProps]
     global_time_master: Optional[GlobalTimeMaster]
     global_time_sub_refs: list[ARRef]
@@ -70,7 +70,7 @@ class GlobalTimeDomain(FibexElement):
         super().__init__()
         self.debounce_time: Optional[TimeValue] = None
         self.domain_id: Optional[PositiveInteger] = None
-        self.gateways: list[GlobalTimeGateway] = []
+        self.gatewaies: list[GlobalTimeGateway] = []
         self.global_time: Optional[AbstractGlobalTimeDomainProps] = None
         self.global_time_master: Optional[GlobalTimeMaster] = None
         self.global_time_sub_refs: list[ARRef] = []
@@ -132,10 +132,10 @@ class GlobalTimeDomain(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize gateways (list to container "GATEWAYS")
-        if self.gateways:
-            wrapper = ET.Element("GATEWAYS")
-            for item in self.gateways:
+        # Serialize gatewaies (list to container "GATEWAIES")
+        if self.gatewaies:
+            wrapper = ET.Element("GATEWAIES")
+            for item in self.gatewaies:
                 serialized = SerializationHelper.serialize_item(item, "GlobalTimeGateway")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -280,15 +280,15 @@ class GlobalTimeDomain(FibexElement):
             domain_id_value = child.text
             obj.domain_id = domain_id_value
 
-        # Parse gateways (list from container "GATEWAYS")
-        obj.gateways = []
-        container = SerializationHelper.find_child_element(element, "GATEWAYS")
+        # Parse gatewaies (list from container "GATEWAIES")
+        obj.gatewaies = []
+        container = SerializationHelper.find_child_element(element, "GATEWAIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.gateways.append(child_value)
+                    obj.gatewaies.append(child_value)
 
         # Parse global_time
         child = SerializationHelper.find_child_element(element, "GLOBAL-TIME")
@@ -393,8 +393,8 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
         self._obj.domain_id = value
         return self
 
-    def with_gateways(self, items: list[GlobalTimeGateway]) -> "GlobalTimeDomainBuilder":
-        """Set gateways list attribute.
+    def with_gatewaies(self, items: list[GlobalTimeGateway]) -> "GlobalTimeDomainBuilder":
+        """Set gatewaies list attribute.
 
         Args:
             items: List of items to set
@@ -402,7 +402,7 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.gateways = list(items) if items else []
+        self._obj.gatewaies = list(items) if items else []
         return self
 
     def with_global_time(self, value: Optional[AbstractGlobalTimeDomainProps]) -> "GlobalTimeDomainBuilder":
@@ -515,7 +515,7 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
 
 
     def add_gateway(self, item: GlobalTimeGateway) -> "GlobalTimeDomainBuilder":
-        """Add a single item to gateways list.
+        """Add a single item to gatewaies list.
 
         Args:
             item: Item to add
@@ -523,16 +523,16 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.gateways.append(item)
+        self._obj.gatewaies.append(item)
         return self
 
-    def clear_gateways(self) -> "GlobalTimeDomainBuilder":
-        """Clear all items from gateways list.
+    def clear_gatewaies(self) -> "GlobalTimeDomainBuilder":
+        """Clear all items from gatewaies list.
 
         Returns:
             self for method chaining
         """
-        self._obj.gateways = []
+        self._obj.gatewaies = []
         return self
 
     def add_global_time_sub(self, item: GlobalTimeDomain) -> "GlobalTimeDomainBuilder":
@@ -556,7 +556,7 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
         self._obj.global_time_subs = []
         return self
 
-    def add_slave(self, item: GlobalTimeSlave) -> "GlobalTimeDomainBuilder":
+    def add_slaf(self, item: GlobalTimeSlave) -> "GlobalTimeDomainBuilder":
         """Add a single item to slaves list.
 
         Args:

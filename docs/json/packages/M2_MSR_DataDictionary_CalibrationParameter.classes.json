@@ -27,7 +27,7 @@
         }
       ],
       "attributes": {
-        "swCalprmAxises": {
+        "swCalprmAxis": {
           "type": "SwCalprmAxis",
           "multiplicity": "*",
           "kind": "attribute",

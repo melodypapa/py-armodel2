@@ -272,7 +272,7 @@ class CanTpConfigBuilder(TpConfigBuilder):
         return self
 
 
-    def add_tp_addresse(self, item: CanTpAddress) -> "CanTpConfigBuilder":
+    def add_tp_address(self, item: CanTpAddress) -> "CanTpConfigBuilder":
         """Add a single item to tp_addresses list.
 
         Args:

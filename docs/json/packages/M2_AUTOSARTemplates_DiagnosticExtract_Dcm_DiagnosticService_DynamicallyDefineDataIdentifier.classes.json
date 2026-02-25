@@ -106,7 +106,7 @@
           "is_ref": false,
           "note": "This configuration switch defines whether DDDID definition is handled as non-volatile information or not."
         },
-        "subfunctions": {
+        "subfunction": {
           "type": "any (DiagnosticDynamically)",
           "multiplicity": "*",
           "kind": "attribute",

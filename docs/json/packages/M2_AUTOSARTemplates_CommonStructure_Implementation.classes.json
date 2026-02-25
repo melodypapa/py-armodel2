@@ -121,35 +121,35 @@
           "is_ref": true,
           "note": "A manifest specifying the intended build actions for the delivered with this implementation. atpVariation"
         },
-        "codeDescriptors": {
+        "codeDescriptor": {
           "type": "Code",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the provided implementation code."
         },
-        "compilers": {
+        "compiler": {
           "type": "Compiler",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the compiler for which this implementation has"
         },
-        "generatedArtifacts": {
+        "generatedArtifact": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
           "note": "Relates to an artifact that will be generated during the of this Implementation by an associated Note that this is an optional information might not always be in the scope of a single component to provide this information. atpVariation"
         },
-        "hwElements": {
+        "hwElement": {
           "type": "HwElement",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "The hardware elements (e.g. the processor) required for"
         },
-        "linkers": {
+        "linker": {
           "type": "Linker",
           "multiplicity": "*",
           "kind": "attribute",
@@ -170,14 +170,14 @@
           "is_ref": false,
           "note": "Programming language the implementation was created in."
         },
-        "requiredArtifacts": {
+        "requiredArtifact": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
           "note": "Specifies that this Implementation depends on the another artifact (e.g. a library). This DependencyOnArtifact is subject to the purpose to support variability in the algorithms in the cause different dependencies, e.g. of used libraries. atpVariation"
         },
-        "requiredGeneratorTools": {
+        "requiredGeneratorTool": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
           "kind": "aggr",
@@ -256,14 +256,14 @@
         }
       ],
       "attributes": {
-        "artifactDescriptors": {
+        "artifactDescriptor": {
           "type": "AutosarEngineeringObject",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Refers to the artifact belonging to this code descriptor."
         },
-        "callbackHeaders": {
+        "callbackHeader": {
           "type": "ServiceNeeds",
           "multiplicity": "*",
           "kind": "ref",
@@ -316,7 +316,7 @@
           "is_ref": false,
           "note": "The specified artifact needs to exist."
         },
-        "usages": {
+        "usage": {
           "type": "DependencyUsageEnum",
           "multiplicity": "*",
           "kind": "ref",

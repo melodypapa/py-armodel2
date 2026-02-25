@@ -116,28 +116,18 @@ class DiagnosticCommonProps(ARObject):
                     wrapped.append(child)
                 inner_elem.append(wrapped)
 
-        # Serialize debounces (list from container "DEBOUNCES")
-        if self.debounces:
-            container = ET.Element("DEBOUNCES")
-            for item in self.debounces:
-                if is_ref:
-                    # For reference lists, serialize as reference
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                elif is_primitive_type("any (DiagnosticDebounce)", package_data):
-                    # Simple primitive type
-                    child = ET.Element("DEBOUNCE")
-                    child.text = str(item)
-                    container.append(child)
-                elif is_enum_type("any (DiagnosticDebounce)", package_data):
-                    # Enum type - use serialize method
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                else:
-                    # Complex object type
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-            inner_elem.append(container)
+        # Serialize debounces (list)
+        for item in self.debounces:
+            serialized = SerializationHelper.serialize_item(item, "Any")
+            if serialized is not None:
+                wrapped = ET.Element("DEBOUNCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
 
         # Serialize default
         if self.default is not None:
@@ -299,33 +289,11 @@ class DiagnosticCommonProps(ARObject):
             authentication_value = child.text
             obj.authentication = authentication_value
 
-        # Parse debounces (list from container "DEBOUNCES")
+        # Parse debounces (list)
         obj.debounces = []
-        container = SerializationHelper.find_child_element(inner_elem, "DEBOUNCES")
-        if container is not None:
-            for child in container:
-                if is_ref:
-                    # Use the child_tag from decorator if specified to match specific child tag
-                    if child_tag:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "None":
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                    else:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("any (DiagnosticDebounce)", package_data):
-                    child_value = child.text
-                elif is_enum_type("any (DiagnosticDebounce)", package_data):
-                    child_value = any (DiagnosticDebounce).deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.debounces.append(child_value)
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "DEBOUNCE"):
+            debounces_value = child.text
+            obj.debounces.append(debounces_value)
 
         # Parse default
         child = SerializationHelper.find_child_element(inner_elem, "DEFAULT")

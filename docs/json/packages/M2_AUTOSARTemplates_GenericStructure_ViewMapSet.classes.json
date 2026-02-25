@@ -36,7 +36,7 @@
         }
       ],
       "attributes": {
-        "firstElements": {
+        "firstElement": {
           "type": "AtpFeature",
           "multiplicity": "*",
           "kind": "attribute",
@@ -50,7 +50,7 @@
           "is_ref": false,
           "note": "This attribute is used to describe specific mapping"
         },
-        "secondElements": {
+        "secondElement": {
           "type": "AtpFeature",
           "multiplicity": "*",
           "kind": "attribute",
@@ -97,7 +97,7 @@
         }
       ],
       "attributes": {
-        "viewMaps": {
+        "viewMap": {
           "type": "ViewMap",
           "multiplicity": "*",
           "kind": "attribute",

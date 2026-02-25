@@ -234,7 +234,7 @@
         }
       ],
       "attributes": {
-        "arrayElements": {
+        "arrayElement": {
           "type": "any (SenderRecArray)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -287,7 +287,7 @@
         }
       ],
       "attributes": {
-        "recordElements": {
+        "recordElement": {
           "type": "any (SenderRecRecord)",
           "multiplicity": "*",
           "kind": "attribute",

@@ -139,7 +139,7 @@
         }
       ],
       "attributes": {
-        "disabledModeInstanceRefs": {
+        "disabledModeInstanceRef": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "attribute",
@@ -681,7 +681,7 @@
         "AtpStructureElement"
       ],
       "implemented_by": [],
-      "note": "This RTEEvent is supposed to be used for initialization purposes, i.e. for starting and restarting a partition. It is not guaranteed that all RunnableEntities referenced by this InitEvent are executed before the \u2019regular\u2019 RunnableEntities are executed for the first time. The execution order depends on the task mapping.",
+      "note": "This RTEEvent is supposed to be used for initialization purposes, i.e. for starting and restarting a partition. It is not guaranteed that all RunnableEntities referenced by this InitEvent are executed before the ’regular’ RunnableEntities are executed for the first time. The execution order depends on the task mapping.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",

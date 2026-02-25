@@ -1067,6 +1067,16 @@ def _generate_deserialize_method(
             # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
             snake_name = to_snake_case(attr_name)
             xml_tag = snake_name.upper().replace("_", "-")
+
+            # For list attributes (multiplicity "*" or "0..*"), pluralize the XML tag
+            # This creates container tags like SUB-ELEMENTS for subElement JSON attribute
+            # For reference attributes, the container tag will be created as SINGULAR-REFS below
+            if multiplicity in ("*", "0..*"):
+                # Pluralize the xml_tag for container elements
+                from ._common import to_plural as pluralize_snake
+                plural_snake = pluralize_snake(snake_name)
+                xml_tag = plural_snake.upper().replace("_", "-")
+
             # Add -TREF or -REF suffix for reference attributes with multiplicity != "*"
             # Container elements (multiplicity "*") should not have -REF suffix
             # Note: iref kind is handled separately below and doesn't get -REF suffix
@@ -1137,13 +1147,13 @@ def _generate_deserialize_method(
 
                 # Determine iref_wrapper_tag based on list_type
                 # For multi-wrapper lists, use singular form for wrapper tag (e.g., COMPONENT-IREF, not COMPONENTS-IREF)
-                if multiplicity == "*" and list_type == "multi":
+                if multiplicity in ("*", "1..*") and list_type == "multi":
                     singular_tag = xml_tag[:-1] if xml_tag.endswith("S") else xml_tag
                     iref_wrapper_tag = f"{singular_tag}-IREF"
                 else:
                     iref_wrapper_tag = f"{xml_tag}-IREF"
 
-                if multiplicity == "*":
+                if multiplicity in ("*", "1..*"):
                                     # List type
                                     if list_type == "multi":
                                         # Multi-wrapper list: deserialize from <TAG>-IREFS container with multiple <TAG>-IREF children
@@ -1210,24 +1220,33 @@ def _generate_deserialize_method(
                 obj.{python_name} = {python_name}_value
 
 '''
-            elif multiplicity == "*":
+            elif multiplicity in ("*", "1..*"):
                 # List type
+                # Initialize container_tag and child_tag
+                container_tag = None
+                child_tag = None
+                inner_tags = []
+                decorator_name = attr_info.get("decorator_name")
+                
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to create a wrapper
                 if xml_tag.endswith("S"):
-                    # Check if ref_conditional decorator is present
-                    decorator_name = attr_info.get("decorator_name")
-                    if decorator_name == "ref_conditional":
+                    if decorator_name == "lang_prefix":
+                        # Treat as non-container list - each item uses its own tag
+                        container_tag = None
+                        child_tag = attr_info.get("decorator_params", xml_tag)
+                        inner_tags = []
+                    elif decorator_name == "ref_conditional":
                         # Use ref_conditional pattern: container stays as-is, each item wrapped in -REF-CONDITIONAL
                         container_tag = attr_info.get("decorator_params", xml_tag)
                         # Use the type's XML tag for wrapper/reference generation (handles abbreviated container tags)
                         type_xml_tag = NameConverter.to_xml_tag(attr_type)
                         conditional_tag = f"{type_xml_tag}-REF-CONDITIONAL"
                         ref_tag = f"{type_xml_tag}-REF"
-                        inner_tags = []
                     elif decorator_name == "xml_element_name":
                         # Parse decorator params: can be single value or multi-level path separated by '/'
-                        # Examples: "PROVIDED-ENTRYS" or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
+                        # Examples: "V" (direct child, no container) or "PROVIDED-ENTRYS" (container)
+                        #           or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
                         decorator_params = attr_info.get("decorator_params", xml_tag)
                         if isinstance(decorator_params, str) and "/" in decorator_params:
                             # Multi-level nesting: split on '/' to get all levels
@@ -1236,38 +1255,74 @@ def _generate_deserialize_method(
                             child_tag = tag_levels[-1]  # Innermost tag for individual items
                             inner_tags = tag_levels[1:-1]  # Intermediate nesting levels (if any)
                         else:
-                            # Single parameter: just container tag
-                            container_tag = (
-                                decorator_params if isinstance(decorator_params, str) else xml_tag
-                            )
-                            child_tag = None
-                            inner_tags = []
+                            # Single parameter: can be container tag OR direct child tag (no container)
+                            # Detection logic:
+                            # - Known direct child tags (short singular forms): ITEM, ENTRY, V, NAME, TYPE, VALUE, REF
+                            # - If ends with "ES" (e.g., BOXES, ELEMENTS): container tag
+                            # - If ends with "S" but is short (<=4 chars): likely direct child
+                            # - Otherwise: container tag (most common case for lists)
+
+                            single_value = decorator_params if isinstance(decorator_params, str) else xml_tag
+
+                            # Known direct child tags (from AUTOSAR schema)
+                            known_direct_children = {"ITEM", "ENTRY", "V", "VALUE", "NAME", "TYPE", "REF"}
+
+                            if single_value.upper() in known_direct_children:
+                                # Direct child tag, no container
+                                container_tag = None
+                                child_tag = single_value
+                            elif single_value.endswith("ES"):
+                                # Ends with ES (e.g., BOXES, ELEMENTS) -> container tag
+                                container_tag = single_value
+                                child_tag = None
+                            elif single_value.endswith("S"):
+                                # Ends with S (e.g., ITEMS, ENTRYS, REFS)
+                                # Check if it's a known direct child tag that happens to end with S
+                                if len(single_value) <= 4 and single_value.upper() in known_direct_children:
+                                    # Short word ending with S, likely a direct child
+                                    container_tag = None
+                                    child_tag = single_value
+                                else:
+                                    # Longer word ending with S, likely a container
+                                    container_tag = single_value
+                                    child_tag = None
+                            else:
+                                # Doesn't end with S -> direct child tag
+                                container_tag = None
+                                child_tag = single_value
                     else:
                         # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
                         # For reference lists (is_ref=True), the container tag should be singular + -REFS
                         # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
                         container_tag = xml_tag
                         child_tag = None
-                        inner_tags = []
                         if is_ref:
                             # For reference lists, the container tag is singular form + -REFS
                             # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
                             singular = xml_tag[:-1]  # Remove trailing 'S'
                             container_tag = f"{singular}-REFS"
 
-                    code += f'''        # Parse {python_name} (list from container "{container_tag}")
+                    # Handle no container case (direct children)
+                    if container_tag is None:
+                        code += f'''        # Parse {python_name} (list of direct "{child_tag}" children, no container)
+        obj.{python_name} = []
+        for child in element:
+            child_element_tag = SerializationHelper.strip_namespace(child.tag)
+            if child_element_tag == "{child_tag}":'''
+                    else:
+                        code += f'''        # Parse {python_name} (list from container "{container_tag}")
         obj.{python_name} = []
         container = SerializationHelper.find_child_element(element, "{container_tag}")'''
 
-                    # Add navigation through nested levels if inner_tags is not empty
-                    if inner_tags:
-                        code += """        # Navigate through nested container levels"""
-                        for inner_tag in inner_tags:
-                            code += f'''
+                        # Add navigation through nested levels if inner_tags is not empty
+                        if inner_tags:
+                            code += """        # Navigate through nested container levels"""
+                            for inner_tag in inner_tags:
+                                code += f'''
         if container is not None:
             container = SerializationHelper.find_child_element(container, "{inner_tag}")'''
 
-                    code += """
+                        code += """
         if container is not None:
             for child in container:
 """
@@ -2147,19 +2202,21 @@ def _generate_with_items_method(
     class_name: str,
     attr_name: str,
     item_type: str,
+    multiplicity: str = "*",
 ) -> str:
     """Generate with_items method for list attributes.
 
     Args:
         class_name: Name of the class
-        attr_name: Name of the list attribute (camelCase from JSON)
+        attr_name: Name of the list attribute (camelCase from JSON, now singular)
         item_type: Type of items in the list
+        multiplicity: Multiplicity of the attribute (e.g., "*", "0..*")
 
     Returns:
         Generated with_items method code
     """
-    # Convert attribute name to snake_case
-    snake_attr_name = to_snake_case(attr_name)
+    # Convert attribute name to Python identifier (plural for list attributes)
+    snake_attr_name = get_python_identifier_with_ref(attr_name, is_ref=False, multiplicity=multiplicity)
     method_name = f"with_{snake_attr_name}"
 
     # Check if attribute name is a Python keyword
@@ -2222,24 +2279,24 @@ def _generate_list_methods(
     class_name: str,
     attr_name: str,
     item_type: str,
+    multiplicity: str = "*",
 ) -> List[str]:
     """Generate add_item and clear_items methods for list attributes.
 
     Args:
         class_name: Name of the class
-        attr_name: Name of the list attribute (camelCase from JSON)
+        attr_name: Name of the list attribute (camelCase from JSON, now singular)
         item_type: Type of items in the list
+        multiplicity: Multiplicity of the attribute (e.g., "*", "0..*")
 
     Returns:
         List of generated method code
     """
-    # Convert attribute name to snake_case
-    snake_attr_name = to_snake_case(attr_name)
+    # Convert attribute name to Python identifier (plural for list attributes)
+    snake_attr_name = get_python_identifier_with_ref(attr_name, is_ref=False, multiplicity=multiplicity)
 
-    # Generate singular name for add_* method
-    singular_name = (
-        snake_attr_name.rstrip("s") if snake_attr_name.endswith("s") else snake_attr_name[:-1]
-    )
+    # Generate singular name for add_* method (from the singular JSON attr_name)
+    singular_snake_name = to_snake_case(attr_name)
 
     # Check if attribute name is a Python keyword
     python_keywords = {
@@ -2285,7 +2342,7 @@ def _generate_list_methods(
     # Add method
     add_method = (
         f'''
-    def add_{singular_name}(self, item: {item_type}) -> "{class_name}Builder":
+    def add_{singular_snake_name}(self, item: {item_type}) -> "{class_name}Builder":
         """Add a single item to '''
         + snake_attr_name
         + ''' list.
@@ -2486,8 +2543,9 @@ def generate_builder_code(
             if is_list:
                 # Generate list-specific methods
                 item_type = attr["base_type"]
-                with_methods.append(_generate_with_items_method(class_name, attr_name, item_type))
-                list_methods.extend(_generate_list_methods(class_name, attr_name, item_type))
+                multiplicity = attr.get("multiplicity", "*")
+                with_methods.append(_generate_with_items_method(class_name, attr_name, item_type, multiplicity))
+                list_methods.extend(_generate_list_methods(class_name, attr_name, item_type, multiplicity))
             else:
                 # Generate standard with_* method
                 with_methods.append(
@@ -2906,6 +2964,16 @@ def _generate_serialize_method(
             # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
             snake_name = to_snake_case(attr_name)
             xml_tag = snake_name.upper().replace("_", "-")
+
+            # For list attributes (multiplicity "*" or "0..*"), pluralize the XML tag
+            # This creates container tags like SUB-ELEMENTS for subElement JSON attribute
+            # For reference attributes, the container tag will be created as SINGULAR-REFS below
+            if multiplicity in ("*", "0..*"):
+                # Pluralize the xml_tag for container elements
+                from ._common import to_plural as pluralize_snake
+                plural_snake = pluralize_snake(snake_name)
+                xml_tag = plural_snake.upper().replace("_", "-")
+
             # Add -TREF or -REF suffix for reference attributes with multiplicity != "*"
             # Container elements (multiplicity "*") should not have -REF suffix
             # Note: iref kind is handled separately below and doesn't get -REF suffix
@@ -2972,14 +3040,14 @@ def _generate_serialize_method(
 
                 # Determine iref_wrapper_tag based on list_type
                 # For multi-wrapper lists, use singular form for wrapper tag (e.g., COMPONENT-IREF, not COMPONENTS-IREF)
-                if multiplicity == "*" and list_type == "multi":
+                if multiplicity in ("*", "1..*") and list_type == "multi":
                     singular_tag = xml_tag[:-1] if xml_tag.endswith("S") else xml_tag
                     iref_wrapper_tag = f"{singular_tag}-IREF"
                 else:
                     iref_wrapper_tag = f"{xml_tag}-IREF"
                 if should_flatten:
                     # Flattened type: flatten children directly into iref wrapper
-                    if multiplicity == "*":
+                    if multiplicity in ("*", "1..*"):
                         if list_type == "multi":
                             # Multi-wrapper list: create <TAG>-IREFS container with multiple <TAG>-IREF children
                             # Use singular form for container tag (e.g., COMPONENT-IREFS, not COMPONENTS-IREFS)
@@ -3030,7 +3098,7 @@ def _generate_serialize_method(
 '''
                 else:
                     # Non-flattened type: wrap in its own element
-                    if multiplicity == "*":
+                    if multiplicity in ("*", "1..*"):
                         # List type - check if not empty
                         code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
         if self.{python_name}:
@@ -3056,14 +3124,20 @@ def _generate_serialize_method(
                 elem.append(iref_wrapper)
 
 '''
-            elif multiplicity == "*":
+            elif multiplicity in ("*", "1..*"):
                 # List type
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to create a wrapper
                 if xml_tag.endswith("S"):
-                    # Check if ref_conditional decorator is present
+                    # Check if lang_prefix decorator is present - if so, skip container logic
+                    # lang_prefix specifies each item should use its own tag (e.g., L-GRAPHIC)
                     decorator_name = attr_info.get("decorator_name")
-                    if decorator_name == "ref_conditional":
+                    if decorator_name == "lang_prefix":
+                        # Treat as non-container list - each item uses its own tag
+                        container_tag = None
+                        child_tag = attr_info.get("decorator_params", xml_tag)
+                        inner_tags = []
+                    elif decorator_name == "ref_conditional":
                         # Use ref_conditional pattern: container stays as-is, each item wrapped in -REF-CONDITIONAL
                         container_tag = attr_info.get("decorator_params", xml_tag)
                         # Use the type's XML tag for wrapper/reference generation (handles abbreviated container tags)
@@ -3072,7 +3146,8 @@ def _generate_serialize_method(
                         ref_tag = f"{type_xml_tag}-REF"
                     elif decorator_name == "xml_element_name":
                         # Parse decorator params: can be single value or multi-level path separated by '/'
-                        # Examples: "PROVIDED-ENTRYS" or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
+                        # Examples: "V" (direct child, no container) or "PROVIDED-ENTRYS" (container)
+                        #           or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
                         decorator_params = attr_info.get("decorator_params", xml_tag)
                         if isinstance(decorator_params, str) and "/" in decorator_params:
                             # Multi-level nesting: split on '/' to get all levels
@@ -3081,11 +3156,42 @@ def _generate_serialize_method(
                             child_tag = tag_levels[-1]  # Innermost tag for individual items
                             inner_tags = tag_levels[1:-1]  # Intermediate nesting levels (if any)
                         else:
-                            # Single parameter: just container tag
-                            container_tag = (
-                                decorator_params if isinstance(decorator_params, str) else xml_tag
-                            )
-                            child_tag = None
+                            # Single parameter: can be container tag OR direct child tag (no container)
+                            # Detection logic:
+                            # - Known direct child tags (short singular forms): ITEM, ENTRY, V, NAME, TYPE, VALUE, REF
+                            # - If ends with "ES" (e.g., BOXES, ELEMENTS): container tag
+                            # - If ends with "S" but is short (<=4 chars): likely direct child
+                            # - Otherwise: container tag (most common case for lists)
+
+                            single_value = decorator_params if isinstance(decorator_params, str) else xml_tag
+
+                            # Known direct child tags (from AUTOSAR schema)
+                            known_direct_children = {"ITEM", "ENTRY", "V", "VALUE", "NAME", "TYPE", "REF"}
+
+                            if single_value.upper() in known_direct_children:
+                                # Direct child tag, no container
+                                container_tag = None
+                                child_tag = single_value
+                            elif single_value.endswith("ES"):
+                                # Ends with ES (e.g., BOXES, ELEMENTS) -> container tag
+                                container_tag = single_value
+                                child_tag = None
+                            elif single_value.endswith("S"):
+                                # Ends with S (e.g., ITEMS, ENTRYS, REFS)
+                                # Check if it's a known direct child tag that happens to end with S
+                                if len(single_value) <= 4 and single_value.upper() in known_direct_children:
+                                    # Short word ending with S, likely a direct child
+                                    container_tag = None
+                                    child_tag = single_value
+                                else:
+                                    # Longer word ending with S, likely a container
+                                    container_tag = single_value
+                                    child_tag = None
+                            else:
+                                # Doesn't end with S -> direct child tag
+                                container_tag = None
+                                child_tag = single_value
+
                             inner_tags = []
                     else:
                         # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
@@ -3101,7 +3207,24 @@ def _generate_serialize_method(
                             singular = xml_tag[:-1]  # Remove trailing 'S'
                             container_tag = f"{singular}-REFS"
 
-                    code += f'''        # Serialize {python_name} (list to container "{container_tag}")
+                    # Handle no container case (direct children)
+                    if container_tag is None:
+                        code += f'''        # Serialize {python_name} (list of direct "{child_tag}" children, no container)
+        if self.{python_name}:
+            for item in self.{python_name}:
+                serialized = SerializationHelper.serialize_item(item, "{effective_type}")
+                if serialized is not None:
+                    child_elem = ET.Element("{child_tag}")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    elem.append(child_elem)
+'''
+                    else:
+                        code += f'''        # Serialize {python_name} (list to container "{container_tag}")
         if self.{python_name}:
             wrapper = ET.Element("{container_tag}")
             for item in self.{python_name}:
@@ -3109,15 +3232,14 @@ def _generate_serialize_method(
                 if serialized is not None:
 '''
 
-                    # For reference lists, wrap each item in a child element with -REF suffix
-                    # For primitive/enum lists, wrap each item in a child element with singular tag name
-                    # For complex object lists, append the serialized item directly (it already has correct tag)
-                    if is_ref:
-                        # Check if ref_conditional decorator is present
-                        decorator_name = attr_info.get("decorator_name")
-                        if decorator_name == "ref_conditional":
-                            # Wrap each reference in -REF-CONDITIONAL containing the actual -REF
-                            code += f'''                    # Wrap in {conditional_tag}
+                        # For reference lists, wrap each item in a child element with -REF suffix
+                        # For primitive/enum lists, wrap each item in a child element with singular tag name
+                        # For complex object lists, append the serialized item directly (it already has correct tag)
+                        if is_ref:
+                            # Check if ref_conditional decorator is present
+                            if decorator_name == "ref_conditional":
+                                # Wrap each reference in -REF-CONDITIONAL containing the actual -REF
+                                code += f'''                    # Wrap in {conditional_tag}
                     conditional = ET.Element("{conditional_tag}")
                     ref_elem = ET.Element("{ref_tag}")
                     if hasattr(serialized, 'attrib'):
@@ -3129,12 +3251,12 @@ def _generate_serialize_method(
                     conditional.append(ref_elem)
                     wrapper.append(conditional)
 '''
-                        # Use the child_tag from decorator if specified, otherwise generate from xml_tag
-                        elif child_tag:
-                            # Multi-level nesting: create nested wrappers for intermediate levels
-                            if inner_tags:
-                                # Start with the innermost child element
-                                code += f'''                    child_elem = ET.Element("{child_tag}")
+                            # Use the child_tag from decorator if specified, otherwise generate from xml_tag
+                            elif child_tag:
+                                # Multi-level nesting: create nested wrappers for intermediate levels
+                                if inner_tags:
+                                    # Start with the innermost child element
+                                    code += f'''                    child_elem = ET.Element("{child_tag}")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -3142,18 +3264,50 @@ def _generate_serialize_method(
                     for child in serialized:
                         child_elem.append(child)
 '''
-                                # Create nested wrappers in reverse order (innermost to outermost)
-                                for tag in reversed(inner_tags):
-                                    code += f'''                    nested_wrapper = ET.Element("{tag}")
+                                    # Create nested wrappers in reverse order (innermost to outermost)
+                                    for tag in reversed(inner_tags):
+                                        code += f'''                    nested_wrapper = ET.Element("{tag}")
                     nested_wrapper.append(child_elem)
                     child_elem = nested_wrapper
 '''
-                                # Append the outermost nested wrapper to the main wrapper
-                                code += """                    wrapper.append(child_elem)
+                                    # Append the outermost nested wrapper to the main wrapper
+                                    code += """                    wrapper.append(child_elem)
 """
+                                else:
+                                    # Single-level nesting
+                                    code += f'''                    child_elem = ET.Element("{child_tag}")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+'''
                             else:
-                                # Single-level nesting
-                                code += f'''                    child_elem = ET.Element("{child_tag}")
+                                # Generate child tag from xml_tag
+                                singular = xml_tag[:-1]  # Remove trailing 'S'
+                                # Use the kind field from JSON to determine the suffix
+                                # "tref" -> -TREF, "ref" -> -REF
+                                if kind == "tref":
+                                    generated_child_tag = f"{singular}-TREF"
+                                else:
+                                    generated_child_tag = f"{singular}-REF"
+                                code += f'''                    child_elem = ET.Element("{generated_child_tag}")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+'''
+                        elif is_primitive_type(attr_type, package_data) or is_enum_type(
+                            attr_type, package_data
+                        ):
+                            # Primitive or enum type - wrap in child element with singular tag name
+                            singular = xml_tag[:-1]  # Remove trailing 'S'
+                            code += f'''                    child_elem = ET.Element("{singular}")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -3163,43 +3317,11 @@ def _generate_serialize_method(
                     wrapper.append(child_elem)
 '''
                         else:
-                            # Generate child tag from xml_tag
-                            singular = xml_tag[:-1]  # Remove trailing 'S'
-                            # Use the kind field from JSON to determine the suffix
-                            # "tref" -> -TREF, "ref" -> -REF
-                            if kind == "tref":
-                                generated_child_tag = f"{singular}-TREF"
-                            else:
-                                generated_child_tag = f"{singular}-REF"
-                            code += f'''                    child_elem = ET.Element("{generated_child_tag}")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
-'''
-                    elif is_primitive_type(attr_type, package_data) or is_enum_type(
-                        attr_type, package_data
-                    ):
-                        # Primitive or enum type - wrap in child element with singular tag name
-                        singular = xml_tag[:-1]  # Remove trailing 'S'
-                        code += f'''                    child_elem = ET.Element("{singular}")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
-'''
-                    else:
-                        # Complex object type - append directly (already has correct tag)
-                        code += """                    wrapper.append(serialized)
+                            # Complex object type - append directly (already has correct tag)
+                            code += """                    wrapper.append(serialized)
 """
 
-                    code += """            if len(wrapper) > 0:
+                        code += """            if len(wrapper) > 0:
                 elem.append(wrapper)
 
 """
@@ -3423,7 +3545,7 @@ def _generate_serialize_method_for_atp_variant(
                 iref_wrapper_tag = f"{xml_tag}-IREF"
 
                 if should_flatten:
-                    if multiplicity == "*":
+                    if multiplicity in ("*", "1..*"):
                         code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
         if self.{python_name}:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
@@ -3446,7 +3568,7 @@ def _generate_serialize_method_for_atp_variant(
 
 '''
                 else:
-                    if multiplicity == "*":
+                    if multiplicity in ("*", "1..*"):
                         code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
         if self.{python_name}:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
@@ -3466,7 +3588,7 @@ def _generate_serialize_method_for_atp_variant(
                 inner_elem.append(iref_wrapper)
 
 '''
-            elif multiplicity == "*":
+            elif multiplicity in ("*", "1..*"):
                 # List type
                 if xml_tag.endswith("S"):
                     container_tag = xml_tag
@@ -3713,7 +3835,7 @@ def _generate_deserialize_method_for_atp_variant(
                 iref_wrapper_tag = f"{xml_tag}-IREF"
 
                 if should_flatten:
-                    if multiplicity == "*":
+                    if multiplicity in ("*", "1..*"):
                         code += f'''        # Parse {python_name} (list of instance references from wrapper "{iref_wrapper_tag}")
         obj.{python_name} = []
         wrapper = SerializationHelper.find_child_element(inner_elem, "{iref_wrapper_tag}")
@@ -3732,7 +3854,7 @@ def _generate_deserialize_method_for_atp_variant(
 
 '''
                 else:
-                    if multiplicity == "*":
+                    if multiplicity in ("*", "1..*"):
                         code += f'''        # Parse {python_name} (list of instance references from wrapper "{iref_wrapper_tag}")
         obj.{python_name} = []
         wrapper = SerializationHelper.find_child_element(inner_elem, "{iref_wrapper_tag}")
@@ -3755,7 +3877,7 @@ def _generate_deserialize_method_for_atp_variant(
                 obj.{python_name} = {python_name}_value
 
 '''
-            elif multiplicity == "*":
+            elif multiplicity in ("*", "1..*"):
                 # List type
                 if xml_tag.endswith("S"):
                     # Check if ref_conditional decorator is present

@@ -10,7 +10,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.cla
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition_element import (
     EcucDefinitionElement,
@@ -46,7 +45,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         return True
 
     destination_uri_refs: list[ARRef]
-    _multiplicities: list[EcucMultiplicityConfigurationClass]
+    multiplicities: list[EcucMultiplicityConfigurationClass]
     origin: Optional[String]
     post_build_variant: Optional[Boolean]
     requires_index: Optional[Boolean]
@@ -54,21 +53,10 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         """Initialize EcucContainerDef."""
         super().__init__()
         self.destination_uri_refs: list[ARRef] = []
-        self._multiplicities: list[EcucMultiplicityConfigurationClass] = []
+        self.multiplicities: list[EcucMultiplicityConfigurationClass] = []
         self.origin: Optional[String] = None
         self.post_build_variant: Optional[Boolean] = None
         self.requires_index: Optional[Boolean] = None
-    @property
-    @xml_element_name("MULTIPLICITYS")
-    def multiplicities(self) -> list[EcucMultiplicityConfigurationClass]:
-        """Get multiplicities with custom XML element name."""
-        return self._multiplicities
-
-    @multiplicities.setter
-    def multiplicities(self, value: list[EcucMultiplicityConfigurationClass]) -> None:
-        """Set multiplicities with custom XML element name."""
-        self._multiplicities = value
-
 
     def serialize(self) -> ET.Element:
         """Serialize EcucContainerDef to XML element.
@@ -111,9 +99,9 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize multiplicities (list to container "MULTIPLICITYS")
+        # Serialize multiplicities (list to container "MULTIPLICITIES")
         if self.multiplicities:
-            wrapper = ET.Element("MULTIPLICITYS")
+            wrapper = ET.Element("MULTIPLICITIES")
             for item in self.multiplicities:
                 serialized = SerializationHelper.serialize_item(item, "EcucMultiplicityConfigurationClass")
                 if serialized is not None:
@@ -194,9 +182,9 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
                 if child_value is not None:
                     obj.destination_uri_refs.append(child_value)
 
-        # Parse multiplicities (list from container "MULTIPLICITYS")
+        # Parse multiplicities (list from container "MULTIPLICITIES")
         obj.multiplicities = []
-        container = SerializationHelper.find_child_element(element, "MULTIPLICITYS")
+        container = SerializationHelper.find_child_element(element, "MULTIPLICITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -323,7 +311,7 @@ class EcucContainerDefBuilder(EcucDefinitionElementBuilder):
         self._obj.destination_uris = []
         return self
 
-    def add_multiplicitie(self, item: EcucMultiplicityConfigurationClass) -> "EcucContainerDefBuilder":
+    def add_multiplicity(self, item: EcucMultiplicityConfigurationClass) -> "EcucContainerDefBuilder":
         """Add a single item to multiplicities list.
 
         Args:

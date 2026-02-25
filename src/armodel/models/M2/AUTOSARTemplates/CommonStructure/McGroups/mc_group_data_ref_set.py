@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_McGroups.cla
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 from armodel.serialization.decorators import atp_variant
 
 from armodel.models.M2.builder_base import BuilderBase
@@ -38,24 +37,13 @@ class McGroupDataRefSet(ARObject):
         """
         return False
 
-    _flat_map_entrie_refs: list[ARRef]
+    flat_map_entry_refs: list[ARRef]
     mc_data_instance_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize McGroupDataRefSet."""
         super().__init__()
-        self._flat_map_entrie_refs: list[ARRef] = []
+        self.flat_map_entry_refs: list[ARRef] = []
         self.mc_data_instance_refs: list[ARRef] = []
-    @property
-    @xml_element_name("FLAT-MAP-ENTRYS")
-    def flat_map_entrie_refs(self) -> list[ARRef]:
-        """Get flat_map_entrie_refs with custom XML element name."""
-        return self._flat_map_entrie_refs
-
-    @flat_map_entrie_refs.setter
-    def flat_map_entrie_refs(self, value: list[ARRef]) -> None:
-        """Set flat_map_entrie_refs with custom XML element name."""
-        self._flat_map_entrie_refs = value
-
 
     def serialize(self) -> ET.Element:
         """Serialize McGroupDataRefSet to XML element with atp_variant wrapper.
@@ -91,51 +79,31 @@ class McGroupDataRefSet(ARObject):
                 # Other elements go inside the atp_variant wrapper
                 inner_elem.append(child)
 
-        # Serialize flat_map_entrie_refs (list from container "FLAT-MAP-ENTRIE-REFS")
-        if self.flat_map_entrie_refs:
-            container = ET.Element("FLAT-MAP-ENTRIE-REFS")
-            for item in self.flat_map_entrie_refs:
-                if is_ref:
-                    # For reference lists, serialize as reference
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                elif is_primitive_type("FlatInstanceDescriptor", package_data):
-                    # Simple primitive type
-                    child = ET.Element("FLAT-MAP-ENTRIE")
-                    child.text = str(item)
-                    container.append(child)
-                elif is_enum_type("FlatInstanceDescriptor", package_data):
-                    # Enum type - use serialize method
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                else:
-                    # Complex object type
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-            inner_elem.append(container)
+        # Serialize flat_map_entry_refs (list)
+        for item in self.flat_map_entry_refs:
+            serialized = SerializationHelper.serialize_item(item, "FlatInstanceDescriptor")
+            if serialized is not None:
+                wrapped = ET.Element("FLAT-MAP-ENTRY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
 
-        # Serialize mc_data_instance_refs (list from container "MC-DATA-INSTANCE-REFS")
-        if self.mc_data_instance_refs:
-            container = ET.Element("MC-DATA-INSTANCE-REFS")
-            for item in self.mc_data_instance_refs:
-                if is_ref:
-                    # For reference lists, serialize as reference
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                elif is_primitive_type("McDataInstance", package_data):
-                    # Simple primitive type
-                    child = ET.Element("MC-DATA-INSTANCE")
-                    child.text = str(item)
-                    container.append(child)
-                elif is_enum_type("McDataInstance", package_data):
-                    # Enum type - use serialize method
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                else:
-                    # Complex object type
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-            inner_elem.append(container)
+        # Serialize mc_data_instance_refs (list)
+        for item in self.mc_data_instance_refs:
+            serialized = SerializationHelper.serialize_item(item, "McDataInstance")
+            if serialized is not None:
+                wrapped = ET.Element("MC-DATA-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "McGroupDataRefSet")
@@ -174,61 +142,17 @@ class McGroupDataRefSet(ARObject):
         for child in list(inner_elem):
             element.remove(child)
 
-        # Parse flat_map_entrie_refs (list from container "FLAT-MAP-ENTRYS")
-        obj.flat_map_entrie_refs = []
-        container = SerializationHelper.find_child_element(inner_elem, "FLAT-MAP-ENTRYS")
-        if container is not None:
-            for child in container:
-                if is_ref:
-                    # Use the child_tag from decorator if specified to match specific child tag
-                    if child_tag:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "None":
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                    else:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("FlatInstanceDescriptor", package_data):
-                    child_value = child.text
-                elif is_enum_type("FlatInstanceDescriptor", package_data):
-                    child_value = FlatInstanceDescriptor.deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.flat_map_entrie_refs.append(child_value)
+        # Parse flat_map_entry_refs (list)
+        obj.flat_map_entry_refs = []
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "FLAT-MAP-ENTRY"):
+            flat_map_entry_refs_value = ARRef.deserialize(child)
+            obj.flat_map_entry_refs.append(flat_map_entry_refs_value)
 
-        # Parse mc_data_instance_refs (list from container "MC-DATA-INSTANCE-REFS")
+        # Parse mc_data_instance_refs (list)
         obj.mc_data_instance_refs = []
-        container = SerializationHelper.find_child_element(inner_elem, "MC-DATA-INSTANCE-REFS")
-        if container is not None:
-            for child in container:
-                if is_ref:
-                    # Use the child_tag from decorator if specified to match specific child tag
-                    if child_tag:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "None":
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                    else:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("McDataInstance", package_data):
-                    child_value = child.text
-                elif is_enum_type("McDataInstance", package_data):
-                    child_value = McDataInstance.deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mc_data_instance_refs.append(child_value)
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "MC-DATA-INSTANCE"):
+            mc_data_instance_refs_value = ARRef.deserialize(child)
+            obj.mc_data_instance_refs.append(mc_data_instance_refs_value)
 
         return obj
 
@@ -268,7 +192,7 @@ class McGroupDataRefSetBuilder(BuilderBase):
         return self
 
 
-    def add_flat_map_entrie(self, item: FlatInstanceDescriptor) -> "McGroupDataRefSetBuilder":
+    def add_flat_map_entry(self, item: FlatInstanceDescriptor) -> "McGroupDataRefSetBuilder":
         """Add a single item to flat_map_entries list.
 
         Args:

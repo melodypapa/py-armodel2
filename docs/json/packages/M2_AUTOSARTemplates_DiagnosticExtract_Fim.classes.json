@@ -117,7 +117,7 @@
           "is_ref": false,
           "note": "This represents the value of the inhibition mask behavior."
         },
-        "inhibitSources": {
+        "inhibitSource": {
           "type": "any (DiagnosticFunction)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -204,7 +204,7 @@
         }
       ],
       "attributes": {
-        "events": {
+        "event": {
           "type": "DiagnosticEvent",
           "multiplicity": "*",
           "kind": "ref",
@@ -247,7 +247,7 @@
         }
       ],
       "attributes": {
-        "groupedAliases": {
+        "groupedAlias": {
           "type": "any (DiagnosticFimAlias)",
           "multiplicity": "*",
           "kind": "ref",

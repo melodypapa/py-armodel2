@@ -131,7 +131,7 @@
         }
       ],
       "attributes": {
-        "compositeNetworkRepresentations": {
+        "compositeNetworkRepresentation": {
           "type": "CompositeNetworkRepresentation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -201,7 +201,7 @@
           "is_ref": false,
           "note": "Number of Data required for validating the consistency of that shall be received with a valid counter (i.e. the allowed lock-in range) after the an unexpected behavior of a received E2E wrapper approach involves are not subjected to the AUTOSAR is superseded by the superior E2E (which is fully standardized by new projects (without legacy to carry-over parts) shall use the fully transformer approach."
         },
-        "transformationComSpecPropses": {
+        "transformationComSpecProps": {
           "type": "TransformationComSpecProps",
           "multiplicity": "*",
           "kind": "attribute",
@@ -305,7 +305,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Initial value to be used in case the sending component is initialized. If the sender also specifies an initial the receiver\u2019s value will be used."
+          "note": "Initial value to be used in case the sending component is initialized. If the sender also specifies an initial the receiver’s value will be used."
         },
         "timeoutSubstitutionValue": {
           "type": "ValueSpecification",
@@ -436,7 +436,7 @@
         }
       ],
       "attributes": {
-        "compositeNetworkRepresentations": {
+        "compositeNetworkRepresentation": {
           "type": "CompositeNetworkRepresentation",
           "multiplicity": "*",
           "kind": "aggr",
@@ -564,6 +564,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "Initial value to be sent if sender component is not yet fully receiver needs data already."
         }
       }
@@ -734,7 +735,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This attribute defines the maximum time interval in which application shall expect the servers\u2019s response (time the sending of the call invocation until the arrival server\u2019s response)."
+          "note": "This attribute defines the maximum time interval in which application shall expect the servers’s response (time the sending of the call invocation until the arrival server’s response)."
         },
         "operation": {
           "type": "ClientServerOperation",
@@ -743,7 +744,7 @@
           "is_ref": true,
           "note": "This represents the corresponding ClientServerOperation."
         },
-        "transformationComSpecProps": {
+        "transformationComSpecProp": {
           "type": "TransformationComSpecProps",
           "multiplicity": "*",
           "kind": "attribute",
@@ -794,7 +795,7 @@
           "is_ref": false,
           "note": "Length of call queue on the server side. The queue is the RTE. The value shall be greater or 1. Setting the value of queueLength to 1 implies requests are rejected while another request earlier is being processed."
         },
-        "transformationComs": {
+        "transformationCom": {
           "type": "any (TransformationCom)",
           "multiplicity": "*",
           "kind": "attribute",

@@ -40,7 +40,7 @@
         }
       ],
       "attributes": {
-        "chapters": {
+        "chapter": {
           "type": "Chapter",
           "multiplicity": "*",
           "kind": "attribute",

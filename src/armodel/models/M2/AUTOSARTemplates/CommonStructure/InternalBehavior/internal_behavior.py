@@ -13,7 +13,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_InternalBeha
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -61,7 +60,7 @@ class InternalBehavior(Identifiable, ABC):
     data_type_mapping_refs: list[ARRef]
     exclusive_areas: list[ExclusiveArea]
     exclusive_area_nesting_orders: list[ExclusiveAreaNestingOrder]
-    _static_memories: list[VariableDataPrototype]
+    static_memories: list[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize InternalBehavior."""
         super().__init__()
@@ -70,18 +69,7 @@ class InternalBehavior(Identifiable, ABC):
         self.data_type_mapping_refs: list[ARRef] = []
         self.exclusive_areas: list[ExclusiveArea] = []
         self.exclusive_area_nesting_orders: list[ExclusiveAreaNestingOrder] = []
-        self._static_memories: list[VariableDataPrototype] = []
-    @property
-    @xml_element_name("STATIC-MEMORYS")
-    def static_memories(self) -> list[VariableDataPrototype]:
-        """Get static_memories with custom XML element name."""
-        return self._static_memories
-
-    @static_memories.setter
-    def static_memories(self, value: list[VariableDataPrototype]) -> None:
-        """Set static_memories with custom XML element name."""
-        self._static_memories = value
-
+        self.static_memories: list[VariableDataPrototype] = []
 
     def serialize(self) -> ET.Element:
         """Serialize InternalBehavior to XML element.
@@ -171,9 +159,9 @@ class InternalBehavior(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize static_memories (list to container "STATIC-MEMORYS")
+        # Serialize static_memories (list to container "STATIC-MEMORIES")
         if self.static_memories:
-            wrapper = ET.Element("STATIC-MEMORYS")
+            wrapper = ET.Element("STATIC-MEMORIES")
             for item in self.static_memories:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
@@ -258,9 +246,9 @@ class InternalBehavior(Identifiable, ABC):
                 if child_value is not None:
                     obj.exclusive_area_nesting_orders.append(child_value)
 
-        # Parse static_memories (list from container "STATIC-MEMORYS")
+        # Parse static_memories (list from container "STATIC-MEMORIES")
         obj.static_memories = []
-        container = SerializationHelper.find_child_element(element, "STATIC-MEMORYS")
+        container = SerializationHelper.find_child_element(element, "STATIC-MEMORIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -459,7 +447,7 @@ class InternalBehaviorBuilder(IdentifiableBuilder):
         self._obj.exclusive_area_nesting_orders = []
         return self
 
-    def add_static_memorie(self, item: VariableDataPrototype) -> "InternalBehaviorBuilder":
+    def add_static_memory(self, item: VariableDataPrototype) -> "InternalBehaviorBuilder":
         """Add a single item to static_memories list.
 
         Args:

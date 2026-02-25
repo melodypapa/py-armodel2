@@ -181,7 +181,7 @@
           "is_ref": false,
           "note": "This attribute defines the key-server priority. atp.Status=candidate"
         },
-        "mkaParticipants": {
+        "mkaParticipant": {
           "type": "MacSecKayParticipant",
           "multiplicity": "*",
           "kind": "ref",
@@ -295,7 +295,7 @@
           "is_ref": true,
           "note": "Reference to the EthernetCluster (Link) on which the KaY located"
         },
-        "mkaParticipants": {
+        "mkaParticipant": {
           "type": "MacSecKayParticipant",
           "multiplicity": "*",
           "kind": "attribute",
@@ -747,14 +747,14 @@
         }
       ],
       "attributes": {
-        "keyExchanges": {
+        "keyExchange": {
           "type": "CryptoServicePrimitive",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This reference identifies the shared(i.e. applicable for the aggregated cipher suites) crypto service the execution of key exchange during the"
         },
-        "tlsCipherSuites": {
+        "tlsCipherSuite": {
           "type": "TlsCryptoCipherSuite",
           "multiplicity": "*",
           "kind": "attribute",
@@ -835,7 +835,7 @@
           "is_ref": false,
           "note": "Name of the CipherSuite according to the IANA"
         },
-        "ellipticCurves": {
+        "ellipticCurf": {
           "type": "CryptoEllipticCurveProps",
           "multiplicity": "*",
           "kind": "ref",
@@ -849,7 +849,7 @@
           "is_ref": true,
           "note": "This reference identifies the crypto service primitive for of encryption."
         },
-        "keyExchanges": {
+        "keyExchange": {
           "type": "CryptoServicePrimitive",
           "multiplicity": "*",
           "kind": "ref",
@@ -884,7 +884,7 @@
           "is_ref": true,
           "note": "This reference identifies the applicable remote certificate."
         },
-        "signatures": {
+        "signature": {
           "type": "CryptoSignatureScheme",
           "multiplicity": "*",
           "kind": "ref",
@@ -1102,7 +1102,7 @@
           "is_ref": true,
           "note": "Global IPsec configuration settings that are valid for all that are defined on the NetworkEndpoint."
         },
-        "ipSecRules": {
+        "ipSecRule": {
           "type": "IPSecRule",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1161,7 +1161,7 @@
           "is_ref": false,
           "note": "This attribute defines the relevant IP protocol used in the Database (SPD) entry."
         },
-        "localCertificates": {
+        "localCertificate": {
           "type": "any (CryptoService)",
           "multiplicity": "*",
           "kind": "ref",
@@ -1180,7 +1180,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This attribute restricts the traffic monitoring and defines a value for the local port range. attribute is not set then this rule shall be effective local ports. that port ranges are currently not supported AUTOSAR AP\u2019s operating system backend. If AP involved, each IPsec rule may only contain a"
+          "note": "This attribute restricts the traffic monitoring and defines a value for the local port range. attribute is not set then this rule shall be effective local ports. that port ranges are currently not supported AUTOSAR AP’s operating system backend. If AP involved, each IPsec rule may only contain a"
         },
         "mode": {
           "type": "IPsecModeEnum",
@@ -1210,7 +1210,7 @@
           "is_ref": false,
           "note": "This attribute defines the priority of the IPSecRule (SPD processing of entries is based on priority, the highest priority \"0\"."
         },
-        "remotes": {
+        "remote": {
           "type": "any (CryptoService)",
           "multiplicity": "*",
           "kind": "ref",
@@ -1224,7 +1224,7 @@
           "is_ref": false,
           "note": "This attribute defines how the remote participant should"
         },
-        "remoteIps": {
+        "remoteIp": {
           "type": "NetworkEndpoint",
           "multiplicity": "*",
           "kind": "ref",
@@ -1236,7 +1236,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This attribute restricts the traffic monitoring and defines a value for the remote port range. attribute is not set then this rule shall be effective local ports. that port ranges are currently not supported AUTOSAR AP\u2019s operating system backend. If AP involved, each IPsec rule may only contain a"
+          "note": "This attribute restricts the traffic monitoring and defines a value for the remote port range. attribute is not set then this rule shall be effective local ports. that port ranges are currently not supported AUTOSAR AP’s operating system backend. If AP involved, each IPsec rule may only contain a"
         }
       }
     },
@@ -1274,7 +1274,7 @@
         }
       ],
       "attributes": {
-        "ahCipherSuites": {
+        "ahCipherSuite": {
           "type": "String",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1295,7 +1295,7 @@
           "is_ref": false,
           "note": "This attribute describes the interval to check the liveness peer actively using IKEv2 INFORMATIONAL DPD checking is only enforced if no ESP/AH packet has been received for the delay. configured the value \"5 minutes\" shall be assumed."
         },
-        "espCipherSuites": {
+        "espCipherSuite": {
           "type": "String",
           "multiplicity": "*",
           "kind": "attribute",

@@ -189,7 +189,7 @@
         }
       ],
       "attributes": {
-        "rteEventInstanceRefs": {
+        "rteEventInstanceRef": {
           "type": "RTEEvent",
           "multiplicity": "*",
           "kind": "attribute",
@@ -279,7 +279,7 @@
         }
       ],
       "attributes": {
-        "rteEventInstanceRefs": {
+        "rteEventInstanceRef": {
           "type": "RTEEvent",
           "multiplicity": "*",
           "kind": "attribute",

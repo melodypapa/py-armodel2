@@ -37,7 +37,7 @@
         }
       ],
       "attributes": {
-        "dltArguments": {
+        "dltArgument": {
           "type": "DltArgument",
           "multiplicity": "*",
           "kind": "attribute",
@@ -130,7 +130,7 @@
           "is_ref": false,
           "note": "This attribute identifies the SW-C/BSW module in the log"
         },
-        "contexts": {
+        "context": {
           "type": "DltContext",
           "multiplicity": "*",
           "kind": "ref",
@@ -193,7 +193,7 @@
           "is_ref": false,
           "note": "This attribute is used to group log and trace messages"
         },
-        "dltMessages": {
+        "dltMessage": {
           "type": "DltMessage",
           "multiplicity": "*",
           "kind": "ref",
@@ -242,7 +242,7 @@
         }
       ],
       "attributes": {
-        "applications": {
+        "application": {
           "type": "DltApplication",
           "multiplicity": "*",
           "kind": "attribute",
@@ -293,7 +293,7 @@
         }
       ],
       "attributes": {
-        "dltArguments": {
+        "dltArgument": {
           "type": "DltArgument",
           "multiplicity": "*",
           "kind": "attribute",
@@ -371,7 +371,7 @@
         }
       ],
       "attributes": {
-        "dltMessages": {
+        "dltMessage": {
           "type": "DltMessage",
           "multiplicity": "*",
           "kind": "attribute",

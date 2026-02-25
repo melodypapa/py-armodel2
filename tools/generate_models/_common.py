@@ -114,6 +114,10 @@ def get_python_identifier_with_ref(
     # Convert to snake_case first
     identifier = to_snake_case(name)
 
+    # Pluralize for multiplicity "*" or "0..*" (for non-reference attributes)
+    if multiplicity in ("*", "0..*") and not is_ref:
+        identifier = to_plural(identifier)
+
     # If it's a reference, handle the suffix
     if is_ref:
         # Determine the suffix based on kind
@@ -209,3 +213,162 @@ def to_autosar_xml_format(name: str) -> str:
             result += "-"
         result += char.upper()
     return result
+
+
+def to_singular(name: str) -> str:
+    """Convert plural name to singular form.
+
+    Rules applied in order:
+    1. Special cases (e.g., 'values' -> 'value')
+    2. 'ies' -> 'y' (entities -> entity)
+    3. 'ses' -> 's' (buses -> bus)
+    4. 'ves' -> 'f' (knives -> knife) or special (leaves -> leaf)
+    5. 'es' ending with specific patterns
+    6. 's' -> '' (elements -> element)
+
+    Args:
+        name: Plural name to convert
+
+    Returns:
+        Singular form of the name
+    """
+    # Special cases for common AUTOSAR and irregular plurals
+    special_cases = {
+        "values": "value",
+        "axes": "axis",
+        "indices": "index",
+        "bases": "base",
+        "classes": "class",
+        "types": "type",
+        "packages": "package",
+        "variables": "variable",
+        "libraries": "library",
+        "entries": "entry",
+        "bodies": "body",
+        "leaves": "leaf",
+        "knives": "knife",
+        "lives": "life",
+        "dies": "die",
+    }
+    if name in special_cases:
+        return special_cases[name]
+
+    # Handle 'ies' -> 'y'
+    if name.endswith("ies"):
+        return name[:-3] + "y"
+
+    # Handle 'ves' -> 'f' or 'fe' (wives -> wife, calves -> calf)
+    if name.endswith("ves"):
+        return name[:-3] + "f"
+
+    # Handle 'es' - check if removing 'es' leaves a valid ending
+    if name.endswith("es"):
+        without_s = name[:-1]   # Remove just 's'
+        without_es = name[:-2]  # Remove 'es'
+
+        # For words ending in 'ses': need to determine if we keep 'e' or not
+        if name.endswith("ses"):
+            # buses -> bus (remove 'es'), but houses -> house (remove 's')
+            # Pattern check: what does without_es look like?
+            # without_es for houses = hous, we need to add 'e' -> house
+            # without_es for buses = bus, this is correct as-is
+            # Check if without_es ends with vowel+'s' sound pattern that needs 'e'
+            # hous -> house (need e), bus -> bus (correct)
+            # The key: words where without_es ends with consonant+s and we need to add e
+            # vs words where without_es is already complete
+            if without_es.endswith(('ous', 'ase', 'ise', 'ose')):
+                # houses -> house, cases -> case
+                return without_s
+            else:
+                # buses -> bus, gases -> gas
+                return without_es
+
+        # For words ending in 'xes', 'zes', 'ches', 'shes' (box, size, church, bush)
+        if name.endswith(("xes", "zes", "ches", "shes")):
+            return without_es
+
+        # Default for other 'es' endings: just remove 's'
+        # This handles packages -> package, values -> value, ages -> age
+        return without_s
+
+    # Handle simple 's' -> ''
+    if name.endswith("s"):
+        return name[:-1]
+
+    return name
+
+
+def to_plural(name: str) -> str:
+    """Convert singular name to plural form for Python variable names.
+
+    Args:
+        name: Singular name to convert
+
+    Returns:
+        Plural form of the name
+    """
+    # Irregular plurals - must match to_singular special cases
+    special_cases = {
+        "body": "bodies",
+        "entity": "entities",
+        "entry": "entries",
+        "leaf": "leaves",
+        "knife": "knives",
+        "calf": "calves",
+        "life": "lives",
+        "die": "dies",
+        "value": "values",
+        "axis": "axes",
+        "index": "indices",
+        "base": "bases",
+        "class": "classes",
+        "type": "types",
+        "package": "packages",
+        "variable": "variables",
+        "library": "libraries",
+        # Common AUTOSAR abbreviations that should simply add 'S' for pluralization
+        # These abbreviations should NOT follow the 'f' -> 'ves' rule
+        "def": "defs",
+        "ref": "refs",
+        "conf": "confs",
+        "calib": "calibs",
+        "swc": "swcs",
+        "bsw": "bsws",
+        "hmi": "hmis",
+        "spec": "specs",
+        "cfg": "cfgs",
+        "prof": "profs",
+        "buf": "bufs",
+        "brief": "briefs",
+        "chef": "chefs",
+    }
+    if name in special_cases:
+        return special_cases[name]
+
+    # Check if the word ends with a known AUTOSAR abbreviation
+    # This handles compound words like "vendor_specific_module_def" -> "vendor_specific_module_defs"
+    # instead of applying the 'f' -> 'ves' rule which would produce "vendor_specific_module_deves"
+    known_abbreviations = ["def", "ref", "conf", "calib", "swc", "bsw", "hmi", "spec", "cfg", "prof", "buf", "brief", "chef"]
+    for abbr in known_abbreviations:
+        if name.endswith(abbr):
+            # Check if it's an exact match (already handled above) or a suffix
+            if name != abbr:
+                # It's a suffix, pluralize by adding 's'
+                return name + "s"
+
+    # Handle 'y' -> 'ies' (entity -> entities, body -> bodies)
+    if name.endswith("y"):
+        return name[:-1] + "ies"
+
+    # Handle 'f' -> 'ves' (leaf -> leaves, knife -> knives, calf -> calves, life -> lives)
+    if name.endswith("fe"):
+        return name[:-2] + "ves"
+    if name.endswith("f") and not name.endswith("ff"):
+        return name[:-1] + "ves"
+
+    # Handle 's', 'x', 'z', 'ch', 'sh' -> add 'es'
+    if name.endswith(("s", "x", "z", "o")) or name.endswith("ch") or name.endswith("sh"):
+        return name + "es"
+
+    # Default: add 's'
+    return name + "s"

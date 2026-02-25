@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
@@ -29,11 +30,22 @@ class CompuNominatorDenominator(ARObject):
         """
         return False
 
-    v: list[Numerical]
+    _vs: list[Numerical]
     def __init__(self) -> None:
         """Initialize CompuNominatorDenominator."""
         super().__init__()
-        self.v: list[Numerical] = []
+        self._vs: list[Numerical] = []
+    @property
+    @xml_element_name("V")
+    def vs(self) -> list[Numerical]:
+        """Get vs with custom XML element name."""
+        return self._vs
+
+    @vs.setter
+    def vs(self, value: list[Numerical]) -> None:
+        """Set vs with custom XML element name."""
+        self._vs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize CompuNominatorDenominator to XML element.
@@ -59,20 +71,19 @@ class CompuNominatorDenominator(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize v (list)
-        for item in self.v:
-            serialized = SerializationHelper.serialize_item(item, "Numerical")
-            if serialized is not None:
-                # For non-container lists, wrap with correct tag
-                wrapped = ET.Element("V")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
+        # Serialize vs (list of direct "V" children, no container)
+        if self.vs:
+            for item in self.vs:
+                serialized = SerializationHelper.serialize_item(item, "Numerical")
+                if serialized is not None:
+                    child_elem = ET.Element("V")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    elem.append(child_elem)
         return elem
 
     @classmethod
@@ -88,11 +99,14 @@ class CompuNominatorDenominator(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuNominatorDenominator, cls).deserialize(element)
 
-        # Parse v (list)
-        obj.v = []
-        for child in SerializationHelper.find_all_child_elements(element, "V"):
-            v_value = child.text
-            obj.v.append(v_value)
+        # Parse vs (list of direct "V" children, no container)
+        obj.vs = []
+        for child in element:
+            child_element_tag = SerializationHelper.strip_namespace(child.tag)
+            if child_element_tag == "V":                # Extract primitive value (Numerical) as text
+                child_value = child.text
+                if child_value is not None:
+                    obj.vs.append(child_value)
 
         return obj
 
@@ -107,8 +121,8 @@ class CompuNominatorDenominatorBuilder(BuilderBase):
         self._obj: CompuNominatorDenominator = CompuNominatorDenominator()
 
 
-    def with_v(self, items: list[Numerical]) -> "CompuNominatorDenominatorBuilder":
-        """Set v list attribute.
+    def with_vs(self, items: list[Numerical]) -> "CompuNominatorDenominatorBuilder":
+        """Set vs list attribute.
 
         Args:
             items: List of items to set
@@ -116,12 +130,12 @@ class CompuNominatorDenominatorBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.v = list(items) if items else []
+        self._obj.vs = list(items) if items else []
         return self
 
 
-    def add_(self, item: Numerical) -> "CompuNominatorDenominatorBuilder":
-        """Add a single item to v list.
+    def add_v(self, item: Numerical) -> "CompuNominatorDenominatorBuilder":
+        """Add a single item to vs list.
 
         Args:
             item: Item to add
@@ -129,16 +143,16 @@ class CompuNominatorDenominatorBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.v.append(item)
+        self._obj.vs.append(item)
         return self
 
-    def clear_v(self) -> "CompuNominatorDenominatorBuilder":
-        """Clear all items from v list.
+    def clear_vs(self) -> "CompuNominatorDenominatorBuilder":
+        """Clear all items from vs list.
 
         Returns:
             self for method chaining
         """
-        self._obj.v = []
+        self._obj.vs = []
         return self
 
 

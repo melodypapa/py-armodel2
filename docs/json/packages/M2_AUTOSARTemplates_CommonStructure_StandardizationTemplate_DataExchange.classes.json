@@ -27,7 +27,7 @@
         }
       ],
       "attributes": {
-        "specificationDocuments": {
+        "specificationDocument": {
           "type": "SpecificationDocumentScope",
           "multiplicity": "*",
           "kind": "attribute",
@@ -74,7 +74,7 @@
           "is_ref": true,
           "note": "reference to a custom defined specification."
         },
-        "documents": {
+        "document": {
           "type": "DocumentElementScope",
           "multiplicity": "*",
           "kind": "attribute",
@@ -121,7 +121,7 @@
           "is_ref": true,
           "note": "Reference to a custom defined specification element."
         },
-        "tailorings": {
+        "tailoring": {
           "type": "any (DataFormatElement)",
           "multiplicity": "*",
           "kind": "ref",

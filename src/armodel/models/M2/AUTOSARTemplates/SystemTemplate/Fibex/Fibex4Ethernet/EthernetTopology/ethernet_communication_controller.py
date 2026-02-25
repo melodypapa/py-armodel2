@@ -107,28 +107,18 @@ class EthernetCommunicationController(ARObject):
                     wrapped.append(child)
                 inner_elem.append(wrapped)
 
-        # Serialize coupling_ports (list from container "COUPLING-PORTS")
-        if self.coupling_ports:
-            container = ET.Element("COUPLING-PORTS")
-            for item in self.coupling_ports:
-                if is_ref:
-                    # For reference lists, serialize as reference
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                elif is_primitive_type("CouplingPort", package_data):
-                    # Simple primitive type
-                    child = ET.Element("COUPLING-PORT")
-                    child.text = str(item)
-                    container.append(child)
-                elif is_enum_type("CouplingPort", package_data):
-                    # Enum type - use serialize method
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                else:
-                    # Complex object type
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-            inner_elem.append(container)
+        # Serialize coupling_ports (list)
+        for item in self.coupling_ports:
+            serialized = SerializationHelper.serialize_item(item, "CouplingPort")
+            if serialized is not None:
+                wrapped = ET.Element("COUPLING-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
 
         # Serialize mac_layer_type
         if self.mac_layer_type is not None:
@@ -238,33 +228,11 @@ class EthernetCommunicationController(ARObject):
             can_xl_config_ref_value = ARRef.deserialize(child)
             obj.can_xl_config_ref = can_xl_config_ref_value
 
-        # Parse coupling_ports (list from container "COUPLING-PORTS")
+        # Parse coupling_ports (list)
         obj.coupling_ports = []
-        container = SerializationHelper.find_child_element(inner_elem, "COUPLING-PORTS")
-        if container is not None:
-            for child in container:
-                if is_ref:
-                    # Use the child_tag from decorator if specified to match specific child tag
-                    if child_tag:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "None":
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                    else:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("CouplingPort", package_data):
-                    child_value = child.text
-                elif is_enum_type("CouplingPort", package_data):
-                    child_value = CouplingPort.deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.coupling_ports.append(child_value)
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "COUPLING-PORT"):
+            coupling_ports_value = SerializationHelper.deserialize_by_tag(child, "CouplingPort")
+            obj.coupling_ports.append(coupling_ports_value)
 
         # Parse mac_layer_type
         child = SerializationHelper.find_child_element(inner_elem, "MAC-LAYER-TYPE")

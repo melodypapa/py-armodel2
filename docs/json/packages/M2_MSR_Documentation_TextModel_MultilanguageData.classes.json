@@ -58,7 +58,7 @@
       "attributes": {
         "l2": {
           "type": "LOverviewParagraph",
-          "multiplicity": "*",
+          "multiplicity": "1..*",
           "kind": "aggr",
           "is_ref": false,
           "note": "",

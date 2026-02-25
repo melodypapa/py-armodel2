@@ -122,39 +122,20 @@ class MultiLanguageOverviewParagraphBuilder(BuilderBase):
         self._obj: MultiLanguageOverviewParagraph = MultiLanguageOverviewParagraph()
 
 
-    def with_l2(self, items: list[LOverviewParagraph]) -> "MultiLanguageOverviewParagraphBuilder":
-        """Set l2 list attribute.
+    def with_l2(self, value: LOverviewParagraph) -> "MultiLanguageOverviewParagraphBuilder":
+        """Set l2 attribute.
 
         Args:
-            items: List of items to set
+            value: Value to set
 
         Returns:
             self for method chaining
         """
-        self._obj.l2 = list(items) if items else []
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.l2 = value
         return self
 
-
-    def add_l(self, item: LOverviewParagraph) -> "MultiLanguageOverviewParagraphBuilder":
-        """Add a single item to l2 list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.l2.append(item)
-        return self
-
-    def clear_l2(self) -> "MultiLanguageOverviewParagraphBuilder":
-        """Clear all items from l2 list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.l2 = []
-        return self
 
 
 

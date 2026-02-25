@@ -120,7 +120,7 @@ class SwCalprmAxisSetBuilder(BuilderBase):
         return self
 
 
-    def add_sw_calprm_axise(self, item: SwCalprmAxis) -> "SwCalprmAxisSetBuilder":
+    def add_sw_calprm_axis(self, item: SwCalprmAxis) -> "SwCalprmAxisSetBuilder":
         """Add a single item to sw_calprm_axises list.
 
         Args:

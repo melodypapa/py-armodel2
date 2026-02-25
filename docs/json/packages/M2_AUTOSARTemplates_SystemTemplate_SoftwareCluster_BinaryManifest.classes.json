@@ -40,28 +40,28 @@
           "is_ref": true,
           "note": "This reference identifies the CpSoftwareCluster to which enclosing CpSoftwareClusterBinaryManifest is an integration phase while the referenced Cp a design element. Therefore, sense to use a reference rather than an the relation of the two meta-classes."
         },
-        "metaDataFields": {
+        "metaDataField": {
           "type": "BinaryManifestMetaDataField",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation identifies the collection of meta-data in the enclosing binary manifest."
         },
-        "provides": {
+        "provide": {
           "type": "BinaryManifestProvideResource",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation represents the collection of provided resources in the enclosing binary manifest."
         },
-        "requires": {
+        "require": {
           "type": "BinaryManifestRequireResource",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation represents the collection of required resources in the enclosing binary manifest."
         },
-        "resources": {
+        "resource": {
           "type": "any (BinaryManifest)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -247,7 +247,7 @@
         }
       ],
       "attributes": {
-        "itemDefinitions": {
+        "itemDefinition": {
           "type": "BinaryManifestItem",
           "multiplicity": "*",
           "kind": "attribute",
@@ -287,7 +287,7 @@
         }
       ],
       "attributes": {
-        "auxiliaryFields": {
+        "auxiliaryField": {
           "type": "BinaryManifestItem",
           "multiplicity": "*",
           "kind": "attribute",
@@ -347,7 +347,7 @@
         }
       ],
       "attributes": {
-        "auxiliaryFields": {
+        "auxiliaryField": {
           "type": "BinaryManifestItem",
           "multiplicity": "*",
           "kind": "attribute",

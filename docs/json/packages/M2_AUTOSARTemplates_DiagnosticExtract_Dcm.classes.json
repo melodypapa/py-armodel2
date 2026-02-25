@@ -41,7 +41,7 @@
           "is_ref": false,
           "note": "The existence of this aggregation indicates that an authentication is foreseen. The details are clarified by the"
         },
-        "diagnosticSessions": {
+        "diagnosticSession": {
           "type": "DiagnosticSession",
           "multiplicity": "*",
           "kind": "ref",
@@ -55,7 +55,7 @@
           "is_ref": true,
           "note": "This represents the environmental conditions associated"
         },
-        "securityLevels": {
+        "securityLevel": {
           "type": "DiagnosticSecurityLevel",
           "multiplicity": "*",
           "kind": "ref",
@@ -109,7 +109,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This attribute represents the ability to define whether this diagnostic session allows to jump to Bootloader (OEM System Supplier Bootloader). diagnostic session doesn\u2019t allow to jump to value JumpToBootLoaderEnum.noBoot chosen. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
+          "note": "This attribute represents the ability to define whether this diagnostic session allows to jump to Bootloader (OEM System Supplier Bootloader). diagnostic session doesn’t allow to jump to value JumpToBootLoaderEnum.noBoot chosen. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
         "p2ServerMax": {
           "type": "TimeValue",
@@ -223,7 +223,7 @@
         }
       ],
       "attributes": {
-        "authentications": {
+        "authentication": {
           "type": "DiagnosticAuthRole",
           "multiplicity": "*",
           "kind": "ref",

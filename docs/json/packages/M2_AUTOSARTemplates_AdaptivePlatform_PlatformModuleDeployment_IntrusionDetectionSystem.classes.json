@@ -41,7 +41,7 @@
         }
       ],
       "attributes": {
-        "networks": {
+        "network": {
           "type": "PlatformModuleEthernetEndpointConfiguration",
           "multiplicity": "*",
           "kind": "ref",

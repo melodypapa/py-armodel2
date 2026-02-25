@@ -37,7 +37,7 @@
           "is_ref": true,
           "note": "This represents the SenderReceiverInterface that acts as in this InstanceRef definition"
         },
-        "contextDatas": {
+        "contextData": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "*",
           "kind": "ref",

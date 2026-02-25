@@ -42,21 +42,21 @@
         }
       ],
       "attributes": {
-        "controls": {
+        "control": {
           "type": "ConsumedEventGroup",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the EventGroup which encapsulates the payload."
         },
-        "controlPncs": {
+        "controlPnc": {
           "type": "PncMappingIdent",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the PNCs which control the offer/subscribe the translated service instance."
         },
-        "controlProvideds": {
+        "controlProvided": {
           "type": "EventHandler",
           "multiplicity": "*",
           "kind": "ref",
@@ -70,7 +70,7 @@
           "is_ref": false,
           "note": "Defines how the service instance control shall behave."
         },
-        "signalServiceEventPropses": {
+        "signalServiceEventProps": {
           "type": "any (SignalService)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -113,7 +113,7 @@
         }
       ],
       "attributes": {
-        "signalServicePropses": {
+        "signalServiceProps": {
           "type": "any (SignalService)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -151,7 +151,7 @@
         }
       ],
       "attributes": {
-        "elementPropses": {
+        "elementProps": {
           "type": "any (SignalService)",
           "multiplicity": "*",
           "kind": "attribute",

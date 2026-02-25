@@ -96,7 +96,7 @@
           "is_ref": false,
           "note": "This attribute is only valid if the attribute category is set toSTRUCTURE."
         },
-        "subElements": {
+        "subElement": {
           "type": "ImplementationDataTypeElement",
           "multiplicity": "*",
           "kind": "attribute",
@@ -201,7 +201,7 @@
           "is_ref": false,
           "note": "This attribute represents the ability to declare the"
         },
-        "subElements": {
+        "subElement": {
           "type": "any (ImplementationData)",
           "multiplicity": "*",
           "kind": "attribute",

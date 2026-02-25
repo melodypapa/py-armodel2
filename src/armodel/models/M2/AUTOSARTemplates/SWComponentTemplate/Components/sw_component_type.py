@@ -342,7 +342,7 @@ class SwComponentTypeBuilder(ARElementBuilder):
         return self
 
 
-    def add_consistency_needse(self, item: ConsistencyNeeds) -> "SwComponentTypeBuilder":
+    def add_consistency_needs(self, item: ConsistencyNeeds) -> "SwComponentTypeBuilder":
         """Add a single item to consistency_needses list.
 
         Args:

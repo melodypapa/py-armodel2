@@ -35,7 +35,7 @@
         }
       ],
       "attributes": {
-        "controlEnables": {
+        "controlEnable": {
           "type": "any (DiagnosticControl)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -147,7 +147,7 @@
           "is_ref": false,
           "note": "This attribute represents the bit number of the bit in the record. Bit number 0 is the most significant in the first byte of the CEMR in the network"
         },
-        "controlledDatas": {
+        "controlledData": {
           "type": "DiagnosticDataElement",
           "multiplicity": "*",
           "kind": "ref",

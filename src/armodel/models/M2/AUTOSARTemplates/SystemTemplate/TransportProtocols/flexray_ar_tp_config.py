@@ -198,7 +198,7 @@ class FlexrayArTpConfigBuilder(TpConfigBuilder):
         return self
 
 
-    def add_tp_addresse(self, item: TpAddress) -> "FlexrayArTpConfigBuilder":
+    def add_tp_address(self, item: TpAddress) -> "FlexrayArTpConfigBuilder":
         """Add a single item to tp_addresses list.
 
         Args:

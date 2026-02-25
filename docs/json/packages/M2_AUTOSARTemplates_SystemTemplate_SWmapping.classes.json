@@ -20,7 +20,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This meta-class is used: \u2022 to map SwComponentPrototypes to a specific ECU Instance unit, \u2022 optionally to map SwComponentPrototypes to a HwElement with category ProcessingUnit, \u2022 optionally to map SwComponentPrototypes typed by SensorActuatorSwComponentType to a Hw Element with category SensorActuator. For each combination of ECUInstance and the optional ProcessingUnit and the optional SensorActuator only one SwcToEcuMapping shall be used.",
+      "note": "This meta-class is used: • to map SwComponentPrototypes to a specific ECU Instance unit, • optionally to map SwComponentPrototypes to a HwElement with category ProcessingUnit, • optionally to map SwComponentPrototypes typed by SensorActuatorSwComponentType to a Hw Element with category SensorActuator. For each combination of ECUInstance and the optional ProcessingUnit and the optional SensorActuator only one SwcToEcuMapping shall be used.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SystemTemplate.pdf",
@@ -30,7 +30,7 @@
         }
       ],
       "attributes": {
-        "components": {
+        "component": {
           "type": "ComponentInSystemInstanceRef",
           "multiplicity": "*",
           "kind": "iref",
@@ -208,7 +208,7 @@
         }
       ],
       "attributes": {
-        "applications": {
+        "application": {
           "type": "ApplicationPartition",
           "multiplicity": "*",
           "kind": "ref",
@@ -330,7 +330,7 @@
         }
       ],
       "attributes": {
-        "clustereds": {
+        "clustered": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -526,7 +526,7 @@
           "is_ref": false,
           "note": "Estimation for the resource consumption of the run time"
         },
-        "swCompToEcus": {
+        "swCompToEcu": {
           "type": "SwcToEcuMapping",
           "multiplicity": "*",
           "kind": "ref",

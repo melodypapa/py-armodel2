@@ -56,7 +56,7 @@
           "is_ref": false,
           "note": "This represents the ID of the GlobalTimeDomain used in messages sent on behalf of global time"
         },
-        "gateways": {
+        "gateway": {
           "type": "GlobalTimeGateway",
           "multiplicity": "*",
           "kind": "attribute",
@@ -77,7 +77,7 @@
           "is_ref": false,
           "note": "This represents the single master of a GlobalTime A GlobalTimeDomain may have no GlobalTime when it gets its time from a GPS atpVariation"
         },
-        "globalTimeSubs": {
+        "globalTimeSub": {
           "type": "GlobalTimeDomain",
           "multiplicity": "*",
           "kind": "ref",
@@ -105,7 +105,7 @@
           "is_ref": true,
           "note": "This PduTriggering will be taken to transmit the global"
         },
-        "slaves": {
+        "slaf": {
           "type": "GlobalTimeSlave",
           "multiplicity": "*",
           "kind": "attribute",

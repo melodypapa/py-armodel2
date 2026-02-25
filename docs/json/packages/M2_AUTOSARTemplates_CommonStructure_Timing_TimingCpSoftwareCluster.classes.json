@@ -33,7 +33,7 @@
         }
       ],
       "attributes": {
-        "tdCpSoftwares": {
+        "tdCpSoftware": {
           "type": "any (TDCpSoftwareCluster)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -78,7 +78,7 @@
           "is_ref": true,
           "note": "This is the software cluster that provides the temporal and"
         },
-        "requestors": {
+        "requestor": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
           "kind": "ref",

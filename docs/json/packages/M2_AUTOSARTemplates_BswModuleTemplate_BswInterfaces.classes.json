@@ -60,7 +60,7 @@
         }
       ],
       "attributes": {
-        "arguments": {
+        "argument": {
           "type": "SwServiceArg",
           "multiplicity": "*",
           "kind": "attribute",
@@ -225,7 +225,7 @@
         }
       ],
       "attributes": {
-        "bswEntryRelationships": {
+        "bswEntryRelationship": {
           "type": "BswEntryRelationship",
           "multiplicity": "*",
           "kind": "attribute",

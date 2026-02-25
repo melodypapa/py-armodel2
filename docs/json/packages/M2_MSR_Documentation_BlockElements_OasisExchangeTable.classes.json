@@ -142,7 +142,7 @@
           "is_ref": false,
           "note": "Indicates if by default a line shall be drawn between the this table group."
         },
-        "colspecs": {
+        "colspec": {
           "type": "Colspec",
           "multiplicity": "*",
           "kind": "attribute",

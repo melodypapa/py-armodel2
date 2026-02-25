@@ -134,28 +134,28 @@
         }
       ],
       "attributes": {
-        "allChannelses": {
+        "allChannels": {
           "type": "CommunicationCluster",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This reference represents the semantics that all available be affected. It is still necessary to refer to because there could CommunicationClusters in the System Extract not subject to the service \"communication to the applicable CommunicationClusters it made sure that only the affected Communication accessed."
         },
-        "allPhysicals": {
+        "allPhysical": {
           "type": "any (EthernetPhysical)",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This reference represents the semantics that all available channels shall be affected. It is still necessary to refer to because there could VLANs (and thus private EthernetPhysical the System Extract that are not subject to \"communication control\". to the applicable EthernetPhysicalChannels it made sure that only the affected EthernetPhysical accessed."
         },
-        "specificChannels": {
+        "specificChannel": {
           "type": "DiagnosticComControl",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the ability to add additional attributes to case that only specific channels are supposed to be"
         },
-        "subNodes": {
+        "subNode": {
           "type": "DiagnosticComControl",
           "multiplicity": "*",
           "kind": "attribute",

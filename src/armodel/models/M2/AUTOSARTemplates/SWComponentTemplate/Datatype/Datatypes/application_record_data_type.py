@@ -8,7 +8,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_Datatypes.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_composite_data_type import (
@@ -16,6 +16,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.a
 )
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_composite_data_type import ApplicationCompositeDataTypeBuilder
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.application_record_element import (
+    ApplicationRecordElement,
+)
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
 
@@ -32,11 +35,11 @@ class ApplicationRecordDataType(ApplicationCompositeDataType):
         """
         return False
 
-    elements: list[Any]
+    elements: list[ApplicationRecordElement]
     def __init__(self) -> None:
         """Initialize ApplicationRecordDataType."""
         super().__init__()
-        self.elements: list[Any] = []
+        self.elements: list[ApplicationRecordElement] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ApplicationRecordDataType to XML element.
@@ -66,7 +69,7 @@ class ApplicationRecordDataType(ApplicationCompositeDataType):
         if self.elements:
             wrapper = ET.Element("ELEMENTS")
             for item in self.elements:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "ApplicationRecordElement")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -110,7 +113,7 @@ class ApplicationRecordDataTypeBuilder(ApplicationCompositeDataTypeBuilder):
         self._obj: ApplicationRecordDataType = ApplicationRecordDataType()
 
 
-    def with_elements(self, items: list[any (ApplicationRecord)]) -> "ApplicationRecordDataTypeBuilder":
+    def with_elements(self, items: list[ApplicationRecordElement]) -> "ApplicationRecordDataTypeBuilder":
         """Set elements list attribute.
 
         Args:
@@ -123,7 +126,7 @@ class ApplicationRecordDataTypeBuilder(ApplicationCompositeDataTypeBuilder):
         return self
 
 
-    def add_element(self, item: any (ApplicationRecord)) -> "ApplicationRecordDataTypeBuilder":
+    def add_element(self, item: ApplicationRecordElement) -> "ApplicationRecordDataTypeBuilder":
         """Add a single item to elements list.
 
         Args:

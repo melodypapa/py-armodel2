@@ -45,14 +45,14 @@
         }
       ],
       "attributes": {
-        "atpReferences": {
+        "atpReference": {
           "type": "Referrable",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "The referable object shall yield a numerical / boolean"
         },
-        "atpStrings": {
+        "atpString": {
           "type": "Referrable",
           "multiplicity": "*",
           "kind": "ref",

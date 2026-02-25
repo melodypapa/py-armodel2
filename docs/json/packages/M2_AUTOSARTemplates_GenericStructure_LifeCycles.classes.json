@@ -42,7 +42,7 @@
         }
       ],
       "attributes": {
-        "lcStates": {
+        "lcState": {
           "type": "LifeCycleState",
           "multiplicity": "*",
           "kind": "attribute",
@@ -149,11 +149,12 @@
           "is_ref": false,
           "note": "Default expiry date, i.e. default end point of period for all specified lifeCycleInfo apply. Note that the can be overridden for each lifeCycleInfo"
         },
-        "lifeCycleInfos": {
+        "lifeCycleInfo": {
           "type": "LifeCycleInfo",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "xml_element_name:LIFE-CYCLE-INFOS/LIFE-CYCLE-INFO",
           "note": "This represents one particular life cycle information."
         },
         "usedLifeCycleStateDefinitionGroup": {
@@ -284,7 +285,7 @@
           "is_ref": false,
           "note": "Remark describing for example the element was given the specified life cycle semantics of useInstead"
         },
-        "useInsteads": {
+        "useInstead": {
           "type": "Referrable",
           "multiplicity": "*",
           "kind": "ref",

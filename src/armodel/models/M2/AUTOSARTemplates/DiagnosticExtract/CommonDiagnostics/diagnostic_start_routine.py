@@ -179,7 +179,7 @@ class DiagnosticStartRoutineBuilder(DiagnosticRoutineSubfunctionBuilder):
         self._obj.requests = []
         return self
 
-    def add_response(self, item: DiagnosticParameter) -> "DiagnosticStartRoutineBuilder":
+    def add_respons(self, item: DiagnosticParameter) -> "DiagnosticStartRoutineBuilder":
         """Add a single item to responses list.
 
         Args:

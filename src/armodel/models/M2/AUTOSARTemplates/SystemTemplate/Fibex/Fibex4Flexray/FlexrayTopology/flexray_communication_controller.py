@@ -46,7 +46,7 @@ class FlexrayCommunicationController(ARObject):
     extern_offset: Optional[Integer]
     extern_rate: Optional[Integer]
     fall_back_internal: Optional[Boolean]
-    flexray_fifos: list[Any]
+    flexray_fifoes: list[Any]
     key_slot_id: Optional[PositiveInteger]
     key_slot_only: Optional[Boolean]
     key_slot_used_for: Optional[Boolean]
@@ -77,7 +77,7 @@ class FlexrayCommunicationController(ARObject):
         self.extern_offset: Optional[Integer] = None
         self.extern_rate: Optional[Integer] = None
         self.fall_back_internal: Optional[Boolean] = None
-        self.flexray_fifos: list[Any] = []
+        self.flexray_fifoes: list[Any] = []
         self.key_slot_id: Optional[PositiveInteger] = None
         self.key_slot_only: Optional[Boolean] = None
         self.key_slot_used_for: Optional[Boolean] = None
@@ -260,28 +260,18 @@ class FlexrayCommunicationController(ARObject):
                     wrapped.append(child)
                 inner_elem.append(wrapped)
 
-        # Serialize flexray_fifos (list from container "FLEXRAY-FIFOS")
-        if self.flexray_fifos:
-            container = ET.Element("FLEXRAY-FIFOS")
-            for item in self.flexray_fifos:
-                if is_ref:
-                    # For reference lists, serialize as reference
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                elif is_primitive_type("any (FlexrayFifo)", package_data):
-                    # Simple primitive type
-                    child = ET.Element("FLEXRAY-FIFO")
-                    child.text = str(item)
-                    container.append(child)
-                elif is_enum_type("any (FlexrayFifo)", package_data):
-                    # Enum type - use serialize method
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                else:
-                    # Complex object type
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-            inner_elem.append(container)
+        # Serialize flexray_fifoes (list)
+        for item in self.flexray_fifoes:
+            serialized = SerializationHelper.serialize_item(item, "Any")
+            if serialized is not None:
+                wrapped = ET.Element("FLEXRAY-FIFO")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
 
         # Serialize key_slot_id
         if self.key_slot_id is not None:
@@ -601,33 +591,11 @@ class FlexrayCommunicationController(ARObject):
             fall_back_internal_value = child.text
             obj.fall_back_internal = fall_back_internal_value
 
-        # Parse flexray_fifos (list from container "FLEXRAY-FIFOS")
-        obj.flexray_fifos = []
-        container = SerializationHelper.find_child_element(inner_elem, "FLEXRAY-FIFOS")
-        if container is not None:
-            for child in container:
-                if is_ref:
-                    # Use the child_tag from decorator if specified to match specific child tag
-                    if child_tag:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "None":
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                    else:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("any (FlexrayFifo)", package_data):
-                    child_value = child.text
-                elif is_enum_type("any (FlexrayFifo)", package_data):
-                    child_value = any (FlexrayFifo).deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.flexray_fifos.append(child_value)
+        # Parse flexray_fifoes (list)
+        obj.flexray_fifoes = []
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "FLEXRAY-FIFO"):
+            flexray_fifoes_value = child.text
+            obj.flexray_fifoes.append(flexray_fifoes_value)
 
         # Parse key_slot_id
         child = SerializationHelper.find_child_element(inner_elem, "KEY-SLOT-ID")
@@ -884,8 +852,8 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
         self._obj.fall_back_internal = value
         return self
 
-    def with_flexray_fifos(self, items: list[any (FlexrayFifo)]) -> "FlexrayCommunicationControllerBuilder":
-        """Set flexray_fifos list attribute.
+    def with_flexray_fifoes(self, items: list[any (FlexrayFifo)]) -> "FlexrayCommunicationControllerBuilder":
+        """Set flexray_fifoes list attribute.
 
         Args:
             items: List of items to set
@@ -893,7 +861,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.flexray_fifos = list(items) if items else []
+        self._obj.flexray_fifoes = list(items) if items else []
         return self
 
     def with_key_slot_id(self, value: Optional[PositiveInteger]) -> "FlexrayCommunicationControllerBuilder":
@@ -1136,7 +1104,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
 
 
     def add_flexray_fifo(self, item: any (FlexrayFifo)) -> "FlexrayCommunicationControllerBuilder":
-        """Add a single item to flexray_fifos list.
+        """Add a single item to flexray_fifoes list.
 
         Args:
             item: Item to add
@@ -1144,16 +1112,16 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.flexray_fifos.append(item)
+        self._obj.flexray_fifoes.append(item)
         return self
 
-    def clear_flexray_fifos(self) -> "FlexrayCommunicationControllerBuilder":
-        """Clear all items from flexray_fifos list.
+    def clear_flexray_fifoes(self) -> "FlexrayCommunicationControllerBuilder":
+        """Clear all items from flexray_fifoes list.
 
         Returns:
             self for method chaining
         """
-        self._obj.flexray_fifos = []
+        self._obj.flexray_fifoes = []
         return self
 
 

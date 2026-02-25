@@ -78,7 +78,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This class specifies an assignment of a role to a particular data object in either \u2022 the SwcInternalBehavior of a software component (or in the BswInternalBehavior of a BSW module or BSW cluster) in the context of an AUTOSAR Service or \u2022 an NvBlockDescriptor to sort out the assignment of event-based writing strategies to data elements in a PortPrototype. With this assignment, the role of the data can be mapped to a DataPrototype that is used in the context of the definition of a specific ServiceNeeds or NvBlockDescriptor, so that a tool is able to create the correct access or writing strategy.",
+      "note": "This class specifies an assignment of a role to a particular data object in either • the SwcInternalBehavior of a software component (or in the BswInternalBehavior of a BSW module or BSW cluster) in the context of an AUTOSAR Service or • an NvBlockDescriptor to sort out the assignment of event-based writing strategies to data elements in a PortPrototype. With this assignment, the role of the data can be mapped to a DataPrototype that is used in the context of the definition of a specific ServiceNeeds or NvBlockDescriptor, so that a tool is able to create the correct access or writing strategy.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -454,7 +454,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "that this value has to be recalculated with respect to the WdgM\u2019s own cycle time for ECU configuration. Table 12.12: SupervisedEntityNeeds 234 of 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Basic Software Module Description Template AUTOSAR CP R23-11",
+      "note": "that this value has to be recalculated with respect to the WdgM’s own cycle time for ECU configuration. Table 12.12: SupervisedEntityNeeds 234 of 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Basic Software Module Description Template AUTOSAR CP R23-11",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -477,7 +477,7 @@
           "is_ref": false,
           "note": "true/false: supervision activation status of Supervised"
         },
-        "checkpointses": {
+        "checkpoints": {
           "type": "any (SupervisedEntity)",
           "multiplicity": "*",
           "kind": "ref",
@@ -833,7 +833,7 @@
         }
       ],
       "attributes": {
-        "audiences": {
+        "audience": {
           "type": "DiagnosticAudienceEnum",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1368,7 +1368,7 @@
         }
       ],
       "attributes": {
-        "deferringFids": {
+        "deferringFid": {
           "type": "FunctionInhibitionNeeds",
           "multiplicity": "*",
           "kind": "ref",
@@ -1389,7 +1389,7 @@
           "is_ref": true,
           "note": "This represents the primary Function Inhibition Identifier inhibition of the diagnostic monitor. The FID inhibit the monitoring of a symptom or the detected faults."
         },
-        "inhibitings": {
+        "inhibiting": {
           "type": "FunctionInhibitionNeeds",
           "multiplicity": "*",
           "kind": "ref",
@@ -1697,7 +1697,7 @@
         }
       ],
       "attributes": {
-        "tracedFailures": {
+        "tracedFailure": {
           "type": "TracedFailure",
           "multiplicity": "*",
           "kind": "attribute",
@@ -3452,7 +3452,7 @@
         }
       ],
       "attributes": {
-        "possibleErrorReactions": {
+        "possibleErrorReaction": {
           "type": "any (PossibleErrorReaction)",
           "multiplicity": "*",
           "kind": "attribute",

@@ -293,7 +293,7 @@ class FlexrayTpConfigBuilder(TpConfigBuilder):
         self._obj.pdu_pools = []
         return self
 
-    def add_tp_addresse(self, item: TpAddress) -> "FlexrayTpConfigBuilder":
+    def add_tp_address(self, item: TpAddress) -> "FlexrayTpConfigBuilder":
         """Add a single item to tp_addresses list.
 
         Args:

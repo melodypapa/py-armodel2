@@ -74,21 +74,21 @@
           "is_ref": false,
           "note": "This attribute allows to denote a particular role of the"
         },
-        "elements": {
+        "element": {
           "type": "Identifiable",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This is an element in the collection. Note that Collection"
         },
-        "sourceElements": {
+        "sourceElement": {
           "type": "Identifiable",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Only if Category = \"RELATION\". This represents the"
         },
-        "sourceInstances": {
+        "sourceInstance": {
           "type": "AnyInstanceRef",
           "multiplicity": "*",
           "kind": "iref",

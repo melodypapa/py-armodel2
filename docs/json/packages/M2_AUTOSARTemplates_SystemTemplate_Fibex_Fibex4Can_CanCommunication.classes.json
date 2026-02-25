@@ -65,7 +65,7 @@
         }
       ],
       "attributes": {
-        "absolutelyCanFrameTriggerings": {
+        "absolutelyCanFrameTriggering": {
           "type": "TtcanAbsolutelyScheduledTiming",
           "multiplicity": "*",
           "kind": "aggr",

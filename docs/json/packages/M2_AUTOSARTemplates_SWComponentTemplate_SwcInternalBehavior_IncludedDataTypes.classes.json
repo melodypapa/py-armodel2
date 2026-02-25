@@ -28,7 +28,7 @@
         }
       ],
       "attributes": {
-        "dataTypes": {
+        "dataType": {
           "type": "AutosarDataType",
           "multiplicity": "*",
           "kind": "ref",

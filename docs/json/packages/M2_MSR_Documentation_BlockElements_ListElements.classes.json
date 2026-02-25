@@ -34,6 +34,7 @@
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "xml_element_name:ITEM",
           "note": "block.Therefore lists can be arbitrarily is discouraged to have a very deep nesting. atpVariation"
         },
         "type": {

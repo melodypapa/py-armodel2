@@ -197,7 +197,7 @@
           "is_ref": false,
           "note": ""
         },
-        "manageds": {
+        "managed": {
           "type": "any (EthGlobalTime)",
           "multiplicity": "*",
           "kind": "attribute",

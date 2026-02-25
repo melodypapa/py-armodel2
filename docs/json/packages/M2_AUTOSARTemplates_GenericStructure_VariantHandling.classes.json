@@ -100,7 +100,7 @@
         }
       ],
       "attributes": {
-        "annotations": {
+        "annotation": {
           "type": "Annotation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -167,21 +167,21 @@
         }
       ],
       "attributes": {
-        "includedVariants": {
+        "includedVariant": {
           "type": "PredefinedVariant",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "The associated variants are considered part of this means the settings of the are included in the settings of the Nevertheless the included be included in several predefined variants."
         },
-        "postBuildVariants": {
+        "postBuildVariant": {
           "type": "any (PostBuildVariant)",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This is the postBuildVariantCriterionValueSet contributing to the predefinded variant."
         },
-        "sws": {
+        "sw": {
           "type": "SwSystemconstantValueSet",
           "multiplicity": "*",
           "kind": "ref",
@@ -252,7 +252,7 @@
         }
       ],
       "attributes": {
-        "sws": {
+        "sw": {
           "type": "SwSystemconstValue",
           "multiplicity": "*",
           "kind": "attribute",
@@ -350,7 +350,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This class represents a condition which is computed based on system constants according to the specified expression. The expected result is considered as boolean value. The result of the expression is interpreted as a condition. \u2022 \"0\" represents \"false\"; \u2022 a value other than zero is considered \"true\"",
+      "note": "This class represents a condition which is computed based on system constants according to the specified expression. The expected result is considered as boolean value. The result of the expression is interpreted as a condition. • \"0\" represents \"false\"; • a value other than zero is considered \"true\"",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
@@ -486,7 +486,7 @@
         }
       ],
       "attributes": {
-        "postBuildVariants": {
+        "postBuildVariant": {
           "type": "any (PostBuildVariant)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -591,7 +591,7 @@
         }
       ],
       "attributes": {
-        "annotations": {
+        "annotation": {
           "type": "Annotation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -653,7 +653,7 @@
           "is_ref": false,
           "note": "Defines the approval status of a predefined variant. Two"
         },
-        "evaluateds": {
+        "evaluated": {
           "type": "PredefinedVariant",
           "multiplicity": "*",
           "kind": "ref",

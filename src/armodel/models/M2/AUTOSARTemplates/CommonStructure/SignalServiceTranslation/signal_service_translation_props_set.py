@@ -121,7 +121,7 @@ class SignalServiceTranslationPropsSetBuilder(ARElementBuilder):
         return self
 
 
-    def add_signal_service_propse(self, item: any (SignalService)) -> "SignalServiceTranslationPropsSetBuilder":
+    def add_signal_service_props(self, item: any (SignalService)) -> "SignalServiceTranslationPropsSetBuilder":
         """Add a single item to signal_service_propses list.
 
         Args:

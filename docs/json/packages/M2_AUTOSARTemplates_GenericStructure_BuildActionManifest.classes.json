@@ -48,28 +48,28 @@
         }
       ],
       "attributes": {
-        "buildActions": {
+        "buildAction": {
           "type": "BuildActionEnvironment",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents a build action environment. atpSplitable; atpVariation"
         },
-        "dynamicActions": {
+        "dynamicAction": {
           "type": "BuildAction",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This denotes an Action which is to be executed as part of action set."
         },
-        "startActions": {
+        "startAction": {
           "type": "BuildAction",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This specifies the list of actions to be performed at the the process. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "tearDownActions": {
+        "tearDownAction": {
           "type": "BuildAction",
           "multiplicity": "*",
           "kind": "ref",
@@ -117,35 +117,35 @@
         }
       ],
       "attributes": {
-        "createdDatas": {
+        "createdData": {
           "type": "BuildActionIoElement",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the artifacts which are created by the"
         },
-        "followUpActions": {
+        "followUpAction": {
           "type": "BuildAction",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This association specifies a set of follow up actions."
         },
-        "inputDatas": {
+        "inputData": {
           "type": "BuildActionIoElement",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the artifacts which are read by the"
         },
-        "modifiedDatas": {
+        "modifiedData": {
           "type": "BuildActionIoElement",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This denotes the data which are modified by the action."
         },
-        "predecessors": {
+        "predecessor": {
           "type": "BuildAction",
           "multiplicity": "*",
           "kind": "ref",
@@ -210,7 +210,7 @@
           "is_ref": false,
           "note": "This attribute allows to denote a particular role of the"
         },
-        "sdgs": {
+        "sdg": {
           "type": "Sdg",
           "multiplicity": "*",
           "kind": "attribute",
@@ -257,7 +257,7 @@
         }
       ],
       "attributes": {
-        "sdgs": {
+        "sdg": {
           "type": "Sdg",
           "multiplicity": "*",
           "kind": "attribute",
@@ -300,7 +300,7 @@
         }
       ],
       "attributes": {
-        "deliveryArtifacts": {
+        "deliveryArtifact": {
           "type": "AutosarEngineeringObject",
           "multiplicity": "*",
           "kind": "attribute",
@@ -368,7 +368,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "that instanceRefs are not supported, since there was no use case. It could be supported using a FlatMap.(cid:99)() \u2022 [TPS_GST_00237] engineeringObject (cid:100)This indicates an engineering ob- ject. The specified permissions apply to all objects in the partial model which is stored in the denoted AutosarEngineeringObject.(cid:99)() 379 of 535 Document ID 202: AUTOSAR_FO_TPS_GenericStructureTemplate Generic Structure Template AUTOSAR FO R23-11 ARElement +derivedFromBlueprint Identifiable AtpBlueprintable \u00abatpUriDef\u00bb 0..* AtpBlueprint AclObjectSet + aclObjectClass: ReferrableSubtypesEnum [0..*] + aclScope: AclScopeEnum ARElement +collection Collection 0..1 + autoCollect: AutoCollectEnum [0..1] + collectionSemantics: NameToken [0..1] + elementRole: Identifier [0..1] EngineeringObject +engineeringObject AutosarEngineeringObject 0..* Referrable +object \u00abatpIdentityContributor\u00bb 0..* + shortName: Identifier AtpDefinition +objectDefinition \u00abatpUriDef\u00bb 0..* ARElement ARElement HwCategory PostBuildVariantCriterion Identifiable ARElement EcucDefinitionElement SwSystemconst + scope: EcucScopeEnum [0..1] \u00abatpVariation\u00bb + lowerMultiplicity: PositiveInteger [0..1] + upperMultiplicity: PositiveInteger [0..1] + upperMultiplicityInfinite: Boolean [0..1] Figure 11.2: Roles and Rights Object Set Listing 11.1 illustrates how the roles and rights approach can be applied to control the access on objects in an AUTOSAR description. It defines \u2022 a set of permissions named \"Integrator\" representing the Relation in [TPS_GST_00226] based on the definitions below \u2022 a role named \"ECU_Integrator\" \u2022 an object set named \"MemoryStackConfiguration\" \u2022 two operations <AR-PACKAGE> <SHORT-NAME>GenericStructureTemplate</SHORT-NAME> 380 of 535 Document ID 202: AUTOSAR_FO_TPS_GenericStructureTemplate Generic Structure Template AUTOSAR FO R23-11 <CATEGORY>EXAMPLE</CATEGORY> <AR-PACKAGES> <AR-PACKAGE> <SHORT-NAME>AclPermissions</SHORT-NAME> <ELEMENTS> <ACL-PERMISSION> <SHORT-NAME>Integrator</SHORT-NAME> <ACL-OBJECT-REFS> <ACL-OBJECT-REF DEST=\"ACL-OBJECT-SET\">/AUTOSAR/ GenericStructureTemplate/AccessObjectSets/ MemoryStackConfiguration</ACL-OBJECT-REF> </ACL-OBJECT-REFS> <ACL-OPERATION-REFS> <ACL-OPERATION-REF DEST=\"ACL-OPERATION\">/AUTOSAR/ GenericStructureTemplate/AclOperations/AssignValue</ACL- OPERATION-REF> <ACL-OPERATION-REF DEST=\"ACL-OPERATION\">/AUTOSAR/ GenericStructureTemplate/AclOperations/ReassignValue</ACL- OPERATION-REF> </ACL-OPERATION-REFS> <ACL-ROLE-REFS> <ACL-ROLE-REF DEST=\"ACL-ROLE\">/AUTOSAR/ GenericStructureTemplate/AclRoles/ECU_Integrator</ACL-ROLE- REF> </ACL-ROLE-REFS> </ACL-PERMISSION> </ELEMENTS> </AR-PACKAGE> <AR-PACKAGE> <SHORT-NAME>AccessObjectSets</SHORT-NAME> <ELEMENTS> <ACL-OBJECT-SET> <SHORT-NAME>MemoryStackConfiguration</SHORT-NAME> <ACL-SCOPE>DESCENDANT</ACL-SCOPE> <OBJECT-DEFINITION-REFS> <OBJECT-DEFINITION-REF DEST=\"ECUC-MODULE-DEF\">/AUTOSAR/ EcucDefs/MemIf</OBJECT-DEFINITION-REF> <OBJECT-DEFINITION-REF DEST=\"ECUC-MODULE-DEF\">/AUTOSAR/ EcucDefs/MemMap</OBJECT-DEFINITION-REF> <OBJECT-DEFINITION-REF DEST=\"ECUC-MODULE-DEF\">/AUTOSAR/ EcucDefs/NvM</OBJECT-DEFINITION-REF> </OBJECT-DEFINITION-REFS> </ACL-OBJECT-SET> </ELEMENTS> </AR-PACKAGE> <AR-PACKAGE> <SHORT-NAME>AclOperations</SHORT-NAME> <REFERENCE-BASES> <REFERENCE-BASE> <SHORT-LABEL>op</SHORT-LABEL> <BASE-IS-THIS-PACKAGE>true</BASE-IS-THIS-PACKAGE> </REFERENCE-BASE> </REFERENCE-BASES> <ELEMENTS> <ACL-OPERATION> <SHORT-NAME>AssignValue</SHORT-NAME> 381 of 535 Document ID 202: AUTOSAR_FO_TPS_GenericStructureTemplate Generic Structure Template AUTOSAR FO R23-11 </ACL-OPERATION> <ACL-OPERATION> <SHORT-NAME>ReassignValue</SHORT-NAME> <IMPLIED-OPERATION-REFS> <IMPLIED-OPERATION-REF DEST=\"ACL-OPERATION\" BASE=\"op\"> AssignValue</IMPLIED-OPERATION-REF> </IMPLIED-OPERATION-REFS> </ACL-OPERATION> </ELEMENTS> </AR-PACKAGE> <AR-PACKAGE> <SHORT-NAME>AclRoles</SHORT-NAME> <ELEMENTS> <ACL-ROLE> <SHORT-NAME>ECU_Integrator</SHORT-NAME> <LONG-NAME> <L-4 L=\"EN\">See <TT>ECU Integrator</TT></L-4> </LONG-NAME> </ACL-ROLE> </ELEMENTS> </AR-PACKAGE> </AR-PACKAGES> </AR-PACKAGE> Listing 11.1: Example for Access Control",
+      "note": "that instanceRefs are not supported, since there was no use case. It could be supported using a FlatMap.(cid:99)() • [TPS_GST_00237] engineeringObject (cid:100)This indicates an engineering ob- ject. The specified permissions apply to all objects in the partial model which is stored in the denoted AutosarEngineeringObject.(cid:99)() 379 of 535 Document ID 202: AUTOSAR_FO_TPS_GenericStructureTemplate Generic Structure Template AUTOSAR FO R23-11 ARElement +derivedFromBlueprint Identifiable AtpBlueprintable «atpUriDef» 0..* AtpBlueprint AclObjectSet + aclObjectClass: ReferrableSubtypesEnum [0..*] + aclScope: AclScopeEnum ARElement +collection Collection 0..1 + autoCollect: AutoCollectEnum [0..1] + collectionSemantics: NameToken [0..1] + elementRole: Identifier [0..1] EngineeringObject +engineeringObject AutosarEngineeringObject 0..* Referrable +object «atpIdentityContributor» 0..* + shortName: Identifier AtpDefinition +objectDefinition «atpUriDef» 0..* ARElement ARElement HwCategory PostBuildVariantCriterion Identifiable ARElement EcucDefinitionElement SwSystemconst + scope: EcucScopeEnum [0..1] «atpVariation» + lowerMultiplicity: PositiveInteger [0..1] + upperMultiplicity: PositiveInteger [0..1] + upperMultiplicityInfinite: Boolean [0..1] Figure 11.2: Roles and Rights Object Set Listing 11.1 illustrates how the roles and rights approach can be applied to control the access on objects in an AUTOSAR description. It defines • a set of permissions named \"Integrator\" representing the Relation in [TPS_GST_00226] based on the definitions below • a role named \"ECU_Integrator\" • an object set named \"MemoryStackConfiguration\" • two operations <AR-PACKAGE> <SHORT-NAME>GenericStructureTemplate</SHORT-NAME> 380 of 535 Document ID 202: AUTOSAR_FO_TPS_GenericStructureTemplate Generic Structure Template AUTOSAR FO R23-11 <CATEGORY>EXAMPLE</CATEGORY> <AR-PACKAGES> <AR-PACKAGE> <SHORT-NAME>AclPermissions</SHORT-NAME> <ELEMENTS> <ACL-PERMISSION> <SHORT-NAME>Integrator</SHORT-NAME> <ACL-OBJECT-REFS> <ACL-OBJECT-REF DEST=\"ACL-OBJECT-SET\">/AUTOSAR/ GenericStructureTemplate/AccessObjectSets/ MemoryStackConfiguration</ACL-OBJECT-REF> </ACL-OBJECT-REFS> <ACL-OPERATION-REFS> <ACL-OPERATION-REF DEST=\"ACL-OPERATION\">/AUTOSAR/ GenericStructureTemplate/AclOperations/AssignValue</ACL- OPERATION-REF> <ACL-OPERATION-REF DEST=\"ACL-OPERATION\">/AUTOSAR/ GenericStructureTemplate/AclOperations/ReassignValue</ACL- OPERATION-REF> </ACL-OPERATION-REFS> <ACL-ROLE-REFS> <ACL-ROLE-REF DEST=\"ACL-ROLE\">/AUTOSAR/ GenericStructureTemplate/AclRoles/ECU_Integrator</ACL-ROLE- REF> </ACL-ROLE-REFS> </ACL-PERMISSION> </ELEMENTS> </AR-PACKAGE> <AR-PACKAGE> <SHORT-NAME>AccessObjectSets</SHORT-NAME> <ELEMENTS> <ACL-OBJECT-SET> <SHORT-NAME>MemoryStackConfiguration</SHORT-NAME> <ACL-SCOPE>DESCENDANT</ACL-SCOPE> <OBJECT-DEFINITION-REFS> <OBJECT-DEFINITION-REF DEST=\"ECUC-MODULE-DEF\">/AUTOSAR/ EcucDefs/MemIf</OBJECT-DEFINITION-REF> <OBJECT-DEFINITION-REF DEST=\"ECUC-MODULE-DEF\">/AUTOSAR/ EcucDefs/MemMap</OBJECT-DEFINITION-REF> <OBJECT-DEFINITION-REF DEST=\"ECUC-MODULE-DEF\">/AUTOSAR/ EcucDefs/NvM</OBJECT-DEFINITION-REF> </OBJECT-DEFINITION-REFS> </ACL-OBJECT-SET> </ELEMENTS> </AR-PACKAGE> <AR-PACKAGE> <SHORT-NAME>AclOperations</SHORT-NAME> <REFERENCE-BASES> <REFERENCE-BASE> <SHORT-LABEL>op</SHORT-LABEL> <BASE-IS-THIS-PACKAGE>true</BASE-IS-THIS-PACKAGE> </REFERENCE-BASE> </REFERENCE-BASES> <ELEMENTS> <ACL-OPERATION> <SHORT-NAME>AssignValue</SHORT-NAME> 381 of 535 Document ID 202: AUTOSAR_FO_TPS_GenericStructureTemplate Generic Structure Template AUTOSAR FO R23-11 </ACL-OPERATION> <ACL-OPERATION> <SHORT-NAME>ReassignValue</SHORT-NAME> <IMPLIED-OPERATION-REFS> <IMPLIED-OPERATION-REF DEST=\"ACL-OPERATION\" BASE=\"op\"> AssignValue</IMPLIED-OPERATION-REF> </IMPLIED-OPERATION-REFS> </ACL-OPERATION> </ELEMENTS> </AR-PACKAGE> <AR-PACKAGE> <SHORT-NAME>AclRoles</SHORT-NAME> <ELEMENTS> <ACL-ROLE> <SHORT-NAME>ECU_Integrator</SHORT-NAME> <LONG-NAME> <L-4 L=\"EN\">See <TT>ECU Integrator</TT></L-4> </LONG-NAME> </ACL-ROLE> </ELEMENTS> </AR-PACKAGE> </AR-PACKAGES> </AR-PACKAGE> Listing 11.1: Example for Access Control",
       "sources": [
         {
           "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",

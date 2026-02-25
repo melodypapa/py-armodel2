@@ -774,14 +774,14 @@
           "is_ref": false,
           "note": "This is used to describe the specific event type of a"
         },
-        "tdHeaderIdFilters": {
+        "tdHeaderIdFilter": {
           "type": "TDHeaderIdRange",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the header identifier or a range of header if contained in the Ethernet frame let the"
         },
-        "tdPduTriggerings": {
+        "tdPduTriggering": {
           "type": "PduTriggering",
           "multiplicity": "*",
           "kind": "ref",
@@ -1219,7 +1219,7 @@
         }
       ],
       "attributes": {
-        "arguments": {
+        "argument": {
           "type": "AutosarOperationArgumentInstance",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1233,14 +1233,14 @@
           "is_ref": false,
           "note": "This is the expression formula which is used to describe occurrence expression."
         },
-        "modes": {
+        "mode": {
           "type": "TimingModeInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "An occurrence expression can reference an arbitrary TimingModeInstances in its expression. This instance references to Mode can be referenced in the expression."
         },
-        "variables": {
+        "variable": {
           "type": "any (AutosarVariable)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1326,7 +1326,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This class represents a reference to a variable instance within AUTOSAR. This way it is possible to reference a variable instance in the occurrence expression formula. The variable instance can target to one of the following variables: \u2022 a variable provided via a PortPrototype as whole \u2022 an element inside of a composite variable provided via a PortPrototype",
+      "note": "This class represents a reference to a variable instance within AUTOSAR. This way it is possible to reference a variable instance in the occurrence expression formula. The variable instance can target to one of the following variables: • a variable provided via a PortPrototype as whole • an element inside of a composite variable provided via a PortPrototype",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_TimingExtensions.pdf",
@@ -1365,7 +1365,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This class represents a reference to an argument instance. This way it is possible to reference an argument instance in the occurrence expression formula. The argument instance can target to one of the following arguments: \u2022 a whole argument used in an operation of a PortPrototype with ClientServerInterface \u2022 an element inside of a composite argument used in an operation of a PortPrototype with ClientServer Interface",
+      "note": "This class represents a reference to an argument instance. This way it is possible to reference an argument instance in the occurrence expression formula. The argument instance can target to one of the following arguments: • a whole argument used in an operation of a PortPrototype with ClientServerInterface • an element inside of a composite argument used in an operation of a PortPrototype with ClientServer Interface",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_TimingExtensions.pdf",

@@ -178,7 +178,7 @@ class SoAdConfigBuilder(BuilderBase):
         self._obj.connections = []
         return self
 
-    def add_socket_addresse(self, item: SocketAddress) -> "SoAdConfigBuilder":
+    def add_socket_address(self, item: SocketAddress) -> "SoAdConfigBuilder":
         """Add a single item to socket_addresses list.
 
         Args:

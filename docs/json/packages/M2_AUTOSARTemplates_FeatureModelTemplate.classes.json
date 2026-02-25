@@ -39,7 +39,7 @@
         }
       ],
       "attributes": {
-        "features": {
+        "feature": {
           "type": "FMFeature",
           "multiplicity": "*",
           "kind": "ref",
@@ -93,14 +93,14 @@
         }
       ],
       "attributes": {
-        "attributeDefs": {
+        "attributeDef": {
           "type": "FMAttributeDef",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This defines the attributes of the given feature."
         },
-        "decompositionDecompositions": {
+        "decompositionDecomposition": {
           "type": "FMFeature",
           "multiplicity": "*",
           "kind": "attribute",
@@ -121,14 +121,14 @@
           "is_ref": false,
           "note": "Defines a lower bound for the binding time of the variation that are associated with the FMFeature. This is meant as a hint for the development process."
         },
-        "relations": {
+        "relation": {
           "type": "FMFeatureRelation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines relations for FMFeatures, for example other FMFeatures, or conflicts with A FMFeature can only be part of a all its relations are fulfilled."
         },
-        "restrictions": {
+        "restriction": {
           "type": "FMFeatureRestriction",
           "multiplicity": "*",
           "kind": "attribute",
@@ -222,7 +222,7 @@
           "is_ref": false,
           "note": "The category of a FMFeatureDecomposition defines the"
         },
-        "features": {
+        "feature": {
           "type": "FMFeature",
           "multiplicity": "*",
           "kind": "ref",
@@ -312,7 +312,7 @@
         }
       ],
       "attributes": {
-        "features": {
+        "feature": {
           "type": "FMFeature",
           "multiplicity": "*",
           "kind": "ref",
@@ -357,7 +357,7 @@
         }
       ],
       "attributes": {
-        "attributeValues": {
+        "attributeValue": {
           "type": "FMAttributeValue",
           "multiplicity": "*",
           "kind": "attribute",
@@ -440,21 +440,21 @@
         }
       ],
       "attributes": {
-        "featureModels": {
+        "featureModel": {
           "type": "FMFeatureModel",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "All FMFeatures in this FMFeatureSelectionSet shall be the referenced FMFeatureModel."
         },
-        "includes": {
+        "include": {
           "type": "FMFeatureSelectionSet",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Each FMFeatureSelectionSet may include one or more establishes a hierarchy See constr_5003 and details."
         },
-        "selections": {
+        "selection": {
           "type": "FMFeatureSelection",
           "multiplicity": "*",
           "kind": "attribute",
@@ -495,7 +495,7 @@
         }
       ],
       "attributes": {
-        "mappings": {
+        "mapping": {
           "type": "FMFeatureMapElement",
           "multiplicity": "*",
           "kind": "attribute",
@@ -533,28 +533,28 @@
         }
       ],
       "attributes": {
-        "assertions": {
+        "assertion": {
           "type": "FMFeatureMap",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines a boolean expression based on features and"
         },
-        "conditions": {
+        "condition": {
           "type": "FMFeatureMap",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines a condition which needs to be fulfilled for this"
         },
-        "postBuildVariants": {
+        "postBuildVariant": {
           "type": "any (PostBuildVariant)",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Selects a set of values for postbuild variant criterions."
         },
-        "swValueSets": {
+        "swValueSet": {
           "type": "SwSystemconstantValueSet",
           "multiplicity": "*",
           "kind": "ref",

@@ -37,14 +37,14 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         """
         return False
 
-    all_channelse_refs: list[ARRef]
+    all_channel_refs: list[ARRef]
     all_physical_refs: list[Any]
     specific_channels: list[DiagnosticComControl]
     sub_nodes: list[DiagnosticComControl]
     def __init__(self) -> None:
         """Initialize DiagnosticComControlClass."""
         super().__init__()
-        self.all_channelse_refs: list[ARRef] = []
+        self.all_channel_refs: list[ARRef] = []
         self.all_physical_refs: list[Any] = []
         self.specific_channels: list[DiagnosticComControl] = []
         self.sub_nodes: list[DiagnosticComControl] = []
@@ -73,10 +73,10 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize all_channelse_refs (list to container "ALL-CHANNELSE-REFS")
-        if self.all_channelse_refs:
+        # Serialize all_channel_refs (list to container "ALL-CHANNELSE-REFS")
+        if self.all_channel_refs:
             wrapper = ET.Element("ALL-CHANNELSE-REFS")
-            for item in self.all_channelse_refs:
+            for item in self.all_channel_refs:
                 serialized = SerializationHelper.serialize_item(item, "CommunicationCluster")
                 if serialized is not None:
                     child_elem = ET.Element("ALL-CHANNELSE-REF")
@@ -142,8 +142,8 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticComControlClass, cls).deserialize(element)
 
-        # Parse all_channelse_refs (list from container "ALL-CHANNELSE-REFS")
-        obj.all_channelse_refs = []
+        # Parse all_channel_refs (list from container "ALL-CHANNELSE-REFS")
+        obj.all_channel_refs = []
         container = SerializationHelper.find_child_element(element, "ALL-CHANNELSE-REFS")
         if container is not None:
             for child in container:
@@ -156,7 +156,7 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.all_channelse_refs.append(child_value)
+                    obj.all_channel_refs.append(child_value)
 
         # Parse all_physical_refs (list from container "ALL-PHYSICAL-REFS")
         obj.all_physical_refs = []
@@ -256,7 +256,7 @@ class DiagnosticComControlClassBuilder(DiagnosticServiceClassBuilder):
         return self
 
 
-    def add_all_channelse(self, item: CommunicationCluster) -> "DiagnosticComControlClassBuilder":
+    def add_all_channels(self, item: CommunicationCluster) -> "DiagnosticComControlClassBuilder":
         """Add a single item to all_channelses list.
 
         Args:

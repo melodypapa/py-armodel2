@@ -181,7 +181,7 @@ class McDataAccessDetailsBuilder(BuilderBase):
         self._obj.rte_event_refs = []
         return self
 
-    def add_variable_accesse(self, item: VariableAccess) -> "McDataAccessDetailsBuilder":
+    def add_variable_access(self, item: VariableAccess) -> "McDataAccessDetailsBuilder":
         """Add a single item to variable_accesses list.
 
         Args:

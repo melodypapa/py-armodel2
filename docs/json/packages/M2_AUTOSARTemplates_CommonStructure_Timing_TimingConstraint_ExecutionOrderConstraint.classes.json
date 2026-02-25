@@ -61,7 +61,7 @@
           "is_ref": false,
           "note": "Indicates whether the ExecutionOrderConstraint is only"
         },
-        "orderedElements": {
+        "orderedElement": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -114,7 +114,7 @@
         }
       ],
       "attributes": {
-        "directSuccessors": {
+        "directSuccessor": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "ref",
@@ -160,7 +160,7 @@
           "is_ref": false,
           "note": "Specifies the data exchange paradigm between ExecutableEntitys within a LET interval. atp.Status=draft"
         },
-        "letIntervals": {
+        "letInterval": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "*",
           "kind": "ref",
@@ -195,14 +195,14 @@
           "is_ref": false,
           "note": "Repetitive Execution Order Constraint only: number of ExecutableEntitys (slots) that are a given order within a cycle, for the Repetitive Constraint."
         },
-        "nestedElements": {
+        "nestedElement": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This association is used to establish hierarchies of EOCEER Groups and References."
         },
-        "successors": {
+        "successor": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "ref",
@@ -269,7 +269,7 @@
           "is_ref": true,
           "note": "The ExecutableEntity whose execution order is restricted contraint."
         },
-        "successors": {
+        "successor": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "ref",
@@ -329,7 +329,7 @@
           "is_ref": true,
           "note": "The AbstractEvent (event) whose execution order is the contraint."
         },
-        "successors": {
+        "successor": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "ref",

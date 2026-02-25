@@ -75,35 +75,35 @@
         }
       ],
       "attributes": {
-        "components": {
+        "component": {
           "type": "SwComponentPrototype",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The instantiated components that are part of this"
         },
-        "connectors": {
+        "connector": {
           "type": "SwConnector",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "SwConnectors have the principal ability to establish a"
         },
-        "constantValueMappings": {
+        "constantValueMapping": {
           "type": "ConstantSpecificationMappingSet",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the ConstantSpecificationMapping to be applied for initValues of PPortComSpecs and 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "dataTypeMappings": {
+        "dataTypeMapping": {
           "type": "DataTypeMappingSet",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the DataTypeMappingSet to be applied the used ApplicationDataTypes in developing subsystems it may happen are used on the surface In this case it reasonable to be able to also provide the to the ImplementationDataTypes. mapping shall be informal and not for the implementors mainly because generator is not concerned about the the mapping of ApplicationDataTypes delegated and inner PortPrototype matches mapping to ImplementationDataTypes is not"
         },
-        "instantiationRTEEventProps": {
+        "instantiationRTEEventProp": {
           "type": "InstantiationRTEEventProps",
           "multiplicity": "*",
           "kind": "attribute",

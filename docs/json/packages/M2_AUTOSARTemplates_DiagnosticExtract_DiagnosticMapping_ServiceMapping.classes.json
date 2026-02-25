@@ -93,7 +93,7 @@
         }
       ],
       "attributes": {
-        "contextElements": {
+        "contextElement": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "ref",

@@ -54,7 +54,7 @@
         }
       ],
       "attributes": {
-        "dataConstrRules": {
+        "dataConstrRule": {
           "type": "DataConstrRule",
           "multiplicity": "*",
           "kind": "attribute",
@@ -178,7 +178,7 @@
           "is_ref": false,
           "note": "This specifies the monotony constraints on the data"
         },
-        "scaleConstrs": {
+        "scaleConstr": {
           "type": "ScaleConstr",
           "multiplicity": "*",
           "kind": "attribute",
@@ -255,7 +255,7 @@
           "is_ref": false,
           "note": "This element specifies the monotony characteristics of"
         },
-        "scaleConstrs": {
+        "scaleConstr": {
           "type": "ScaleConstr",
           "multiplicity": "*",
           "kind": "attribute",

@@ -20,7 +20,7 @@
                       <SHORT-NAME>SCHM_BSWM_EXCLUSIVE_AREA</SHORT-NAME>
                     </EXCLUSIVE-AREA>
                   </EXCLUSIVE-AREAS>
-                  <ENTITYS>
+                  <ENTITIES>
                     <BSW-SCHEDULABLE-ENTITY>
                       <SHORT-NAME>BswM_MainFunction</SHORT-NAME>
                       <CAN-ENTER-EXCLUSIVE-AREA-REFS>
@@ -29,7 +29,7 @@
                       <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
                       <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_BswM/BswModuleEntrys/BswM_MainFunction</IMPLEMENTED-ENTRY-REF>
                     </BSW-SCHEDULABLE-ENTITY>
-                  </ENTITYS>
+                  </ENTITIES>
                   <EVENTS>
                     <BSW-TIMING-EVENT>
                       <SHORT-NAME>TimingEvent_MainFunction</SHORT-NAME>

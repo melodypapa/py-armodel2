@@ -63,7 +63,7 @@
           "is_ref": true,
           "note": "This is the base from which navigation path begins."
         },
-        "contextElements": {
+        "contextElement": {
           "type": "AtpFeature",
           "multiplicity": "*",
           "kind": "ref",

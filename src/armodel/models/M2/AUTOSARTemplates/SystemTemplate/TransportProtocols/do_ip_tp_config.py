@@ -161,7 +161,7 @@ class DoIpTpConfigBuilder(TpConfigBuilder):
         return self
 
 
-    def add_do_ip_logic_address_addresse(self, item: DoIpLogicAddress) -> "DoIpTpConfigBuilder":
+    def add_do_ip_logic_address_address(self, item: DoIpLogicAddress) -> "DoIpTpConfigBuilder":
         """Add a single item to do_ip_logic_address_addresses list.
 
         Args:

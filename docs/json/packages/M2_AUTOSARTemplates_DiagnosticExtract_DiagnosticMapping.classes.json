@@ -235,7 +235,7 @@
         }
       ],
       "attributes": {
-        "cryptoServices": {
+        "cryptoService": {
           "type": "any (CryptoService)",
           "multiplicity": "*",
           "kind": "ref",
@@ -924,7 +924,7 @@
         }
       ],
       "attributes": {
-        "dataIdentifiers": {
+        "dataIdentifier": {
           "type": "any (DiagnosticWriteDataBy)",
           "multiplicity": "*",
           "kind": "ref",

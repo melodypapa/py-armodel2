@@ -236,7 +236,7 @@ class SignalServiceTranslationEventPropsBuilder(IdentifiableBuilder):
         return self
 
 
-    def add_element_propse(self, item: any (SignalService)) -> "SignalServiceTranslationEventPropsBuilder":
+    def add_element_props(self, item: any (SignalService)) -> "SignalServiceTranslationEventPropsBuilder":
         """Add a single item to element_propses list.
 
         Args:

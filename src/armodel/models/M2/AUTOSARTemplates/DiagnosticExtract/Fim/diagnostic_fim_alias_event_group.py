@@ -31,11 +31,11 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
         """
         return False
 
-    grouped_aliase_refs: list[Any]
+    grouped_alia_refs: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFimAliasEventGroup."""
         super().__init__()
-        self.grouped_aliase_refs: list[Any] = []
+        self.grouped_alia_refs: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFimAliasEventGroup to XML element.
@@ -61,10 +61,10 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize grouped_aliase_refs (list to container "GROUPED-ALIASE-REFS")
-        if self.grouped_aliase_refs:
+        # Serialize grouped_alia_refs (list to container "GROUPED-ALIASE-REFS")
+        if self.grouped_alia_refs:
             wrapper = ET.Element("GROUPED-ALIASE-REFS")
-            for item in self.grouped_aliase_refs:
+            for item in self.grouped_alia_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("GROUPED-ALIASE-REF")
@@ -93,8 +93,8 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticFimAliasEventGroup, cls).deserialize(element)
 
-        # Parse grouped_aliase_refs (list from container "GROUPED-ALIASE-REFS")
-        obj.grouped_aliase_refs = []
+        # Parse grouped_alia_refs (list from container "GROUPED-ALIASE-REFS")
+        obj.grouped_alia_refs = []
         container = SerializationHelper.find_child_element(element, "GROUPED-ALIASE-REFS")
         if container is not None:
             for child in container:
@@ -107,7 +107,7 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.grouped_aliase_refs.append(child_value)
+                    obj.grouped_alia_refs.append(child_value)
 
         return obj
 
@@ -135,7 +135,7 @@ class DiagnosticFimAliasEventGroupBuilder(DiagnosticAbstractAliasEventBuilder):
         return self
 
 
-    def add_grouped_aliase(self, item: any (DiagnosticFimAlias)) -> "DiagnosticFimAliasEventGroupBuilder":
+    def add_grouped_alias(self, item: any (DiagnosticFimAlias)) -> "DiagnosticFimAliasEventGroupBuilder":
         """Add a single item to grouped_aliases list.
 
         Args:

@@ -9,6 +9,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communic
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import polymorphic
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.sender_com_spec import (
     SenderComSpec,
@@ -41,12 +42,23 @@ class NonqueuedSenderComSpec(SenderComSpec):
         return False
 
     data_filter: Optional[DataFilter]
-    init_value: Optional[ValueSpecification]
+    _init_value: Optional[ValueSpecification]
     def __init__(self) -> None:
         """Initialize NonqueuedSenderComSpec."""
         super().__init__()
         self.data_filter: Optional[DataFilter] = None
-        self.init_value: Optional[ValueSpecification] = None
+        self._init_value: Optional[ValueSpecification] = None
+    @property
+    @polymorphic({"INIT-VALUE": "ValueSpecification"})
+    def init_value(self) -> Optional[ValueSpecification]:
+        """Get init_value with polymorphic wrapper handling."""
+        return self._init_value
+
+    @init_value.setter
+    def init_value(self, value: Optional[ValueSpecification]) -> None:
+        """Set init_value with polymorphic wrapper handling."""
+        self._init_value = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize NonqueuedSenderComSpec to XML element.
@@ -86,18 +98,13 @@ class NonqueuedSenderComSpec(SenderComSpec):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize init_value
+        # Serialize init_value (polymorphic wrapper "INIT-VALUE")
         if self.init_value is not None:
             serialized = SerializationHelper.serialize_item(self.init_value, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
+                # For polymorphic types, wrap the serialized element (preserving concrete type)
                 wrapped = ET.Element("INIT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
+                wrapped.append(serialized)
                 elem.append(wrapped)
 
         return elem
@@ -121,10 +128,10 @@ class NonqueuedSenderComSpec(SenderComSpec):
             data_filter_value = SerializationHelper.deserialize_by_tag(child, "DataFilter")
             obj.data_filter = data_filter_value
 
-        # Parse init_value
-        child = SerializationHelper.find_child_element(element, "INIT-VALUE")
-        if child is not None:
-            init_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
+        # Parse init_value (polymorphic wrapper "INIT-VALUE")
+        wrapper = SerializationHelper.find_child_element(element, "INIT-VALUE")
+        if wrapper is not None:
+            init_value_value = SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
             obj.init_value = init_value_value
 
         return obj

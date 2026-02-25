@@ -57,7 +57,7 @@
           "is_ref": false,
           "note": "For modules where several instances of the VSMD can"
         },
-        "containers": {
+        "container": {
           "type": "EcucContainerDef",
           "multiplicity": "*",
           "kind": "attribute",
@@ -78,7 +78,7 @@
           "is_ref": true,
           "note": "Optional reference from the Vendor Specific Module"
         },
-        "supporteds": {
+        "supported": {
           "type": "any (EcucConfiguration)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -128,7 +128,7 @@
         }
       ],
       "attributes": {
-        "modules": {
+        "module": {
           "type": "EcucModuleDef",
           "multiplicity": "*",
           "kind": "ref",
@@ -189,14 +189,14 @@
         }
       ],
       "attributes": {
-        "destinationUris": {
+        "destinationUri": {
           "type": "EcucDestinationUriDef",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Several destinationUris can be defined for an Ecuc such destinationUris an Ecuc applicable for several EcucUriReference"
         },
-        "multiplicities": {
+        "multiplicity": {
           "type": "EcucMultiplicityConfigurationClass",
           "multiplicity": "*",
           "kind": "attribute",
@@ -262,21 +262,21 @@
         }
       ],
       "attributes": {
-        "parameters": {
+        "parameter": {
           "type": "EcucParameterDef",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The parameters defined within the EcucParamConf"
         },
-        "references": {
+        "reference": {
           "type": "any (EcucAbstractReference)",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "The references defined within the EcucParamConf"
         },
-        "subContainers": {
+        "subContainer": {
           "type": "EcucContainerDef",
           "multiplicity": "*",
           "kind": "attribute",
@@ -320,7 +320,7 @@
         }
       ],
       "attributes": {
-        "choices": {
+        "choice": {
           "type": "EcucParamConfContainerDef",
           "multiplicity": "*",
           "kind": "attribute",
@@ -379,7 +379,7 @@
           "is_ref": false,
           "note": "If it evaluates to true the Ecu Parameter definition shall be"
         },
-        "ecucValidations": {
+        "ecucValidation": {
           "type": "EcucValidationCondition",
           "multiplicity": "*",
           "kind": "attribute",
@@ -452,7 +452,7 @@
         }
       ],
       "attributes": {
-        "multiplicities": {
+        "multiplicity": {
           "type": "EcucMultiplicityConfigurationClass",
           "multiplicity": "*",
           "kind": "attribute",
@@ -480,7 +480,7 @@
           "is_ref": false,
           "note": "Used to define whether the value element for this"
         },
-        "valueConfigs": {
+        "valueConfig": {
           "type": "EcucValueConfigurationClass",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1122,7 +1122,7 @@
           "is_ref": false,
           "note": "Default value of the enumeration configuration parameter."
         },
-        "literals": {
+        "literal": {
           "type": "EcucEnumerationLiteralDef",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1454,7 +1454,7 @@
         }
       ],
       "attributes": {
-        "destinations": {
+        "destination": {
           "type": "EcucContainerDef",
           "multiplicity": "*",
           "kind": "ref",
@@ -1646,7 +1646,7 @@
         }
       ],
       "attributes": {
-        "destinationUriDefs": {
+        "destinationUriDef": {
           "type": "EcucDestinationUriDef",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1719,7 +1719,7 @@
         }
       ],
       "attributes": {
-        "containers": {
+        "container": {
           "type": "EcucContainerDef",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1733,14 +1733,14 @@
           "is_ref": false,
           "note": "This attribute defines how the referenced target Ecuc ContainerDef is described."
         },
-        "parameters": {
+        "parameter": {
           "type": "EcucParameterDef",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Description of parameters that are contained in the target"
         },
-        "references": {
+        "reference": {
           "type": "any (EcucAbstractReference)",
           "multiplicity": "*",
           "kind": "ref",
@@ -1782,7 +1782,7 @@
           "is_ref": false,
           "note": "Definition of the formula used to calculate the value of the"
         },
-        "ecucQueries": {
+        "ecucQuery": {
           "type": "EcucQuery",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1943,7 +1943,7 @@
           "is_ref": false,
           "note": "Definition of the formula used to define existence"
         },
-        "ecucQueries": {
+        "ecucQuery": {
           "type": "EcucQuery",
           "multiplicity": "*",
           "kind": "attribute",
@@ -2025,7 +2025,7 @@
         }
       ],
       "attributes": {
-        "ecucQueries": {
+        "ecucQuery": {
           "type": "EcucQuery",
           "multiplicity": "*",
           "kind": "attribute",

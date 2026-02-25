@@ -102,11 +102,11 @@ def get_python_type(
     # Apply multiplicity
     # For all types:
     # - multiplicity 0..1: Use Optional[Type] and initialize with None
-    # - multiplicity *: Use list[Type] and initialize with []
+    # - multiplicity * or 1..*: Use list[Type] and initialize with []
     # - multiplicity 1: Use Type and initialize with None
     if multiplicity == "0..1":
         return f"Optional[{base_type}]"
-    elif multiplicity == "*":
+    elif multiplicity in ("*", "1..*"):
         return f"list[{base_type}]"
     elif multiplicity == "1":
         return base_type

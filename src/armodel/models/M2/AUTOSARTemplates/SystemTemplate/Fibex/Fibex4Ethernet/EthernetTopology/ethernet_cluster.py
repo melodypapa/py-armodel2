@@ -91,28 +91,18 @@ class EthernetCluster(ARObject):
                     wrapped.append(child)
                 inner_elem.append(wrapped)
 
-        # Serialize mac_multicast_group_refs (list from container "MAC-MULTICAST-GROUP-REFS")
-        if self.mac_multicast_group_refs:
-            container = ET.Element("MAC-MULTICAST-GROUP-REFS")
-            for item in self.mac_multicast_group_refs:
-                if is_ref:
-                    # For reference lists, serialize as reference
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                elif is_primitive_type("MacMulticastGroup", package_data):
-                    # Simple primitive type
-                    child = ET.Element("MAC-MULTICAST-GROUP")
-                    child.text = str(item)
-                    container.append(child)
-                elif is_enum_type("MacMulticastGroup", package_data):
-                    # Enum type - use serialize method
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                else:
-                    # Complex object type
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-            inner_elem.append(container)
+        # Serialize mac_multicast_group_refs (list)
+        for item in self.mac_multicast_group_refs:
+            serialized = SerializationHelper.serialize_item(item, "MacMulticastGroup")
+            if serialized is not None:
+                wrapped = ET.Element("MAC-MULTICAST-GROUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "EthernetCluster")
@@ -157,33 +147,11 @@ class EthernetCluster(ARObject):
             coupling_port_value = child.text
             obj.coupling_port = coupling_port_value
 
-        # Parse mac_multicast_group_refs (list from container "MAC-MULTICAST-GROUP-REFS")
+        # Parse mac_multicast_group_refs (list)
         obj.mac_multicast_group_refs = []
-        container = SerializationHelper.find_child_element(inner_elem, "MAC-MULTICAST-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                if is_ref:
-                    # Use the child_tag from decorator if specified to match specific child tag
-                    if child_tag:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "None":
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                    else:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("MacMulticastGroup", package_data):
-                    child_value = child.text
-                elif is_enum_type("MacMulticastGroup", package_data):
-                    child_value = MacMulticastGroup.deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mac_multicast_group_refs.append(child_value)
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "MAC-MULTICAST-GROUP"):
+            mac_multicast_group_refs_value = ARRef.deserialize(child)
+            obj.mac_multicast_group_refs.append(mac_multicast_group_refs_value)
 
         return obj
 

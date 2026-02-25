@@ -247,7 +247,7 @@ class DdsCpProvidedServiceInstanceBuilder(DdsCpServiceInstanceBuilder):
         return self
 
 
-    def add_provided_ddse(self, item: DdsCpServiceInstance) -> "DdsCpProvidedServiceInstanceBuilder":
+    def add_provided_dds(self, item: DdsCpServiceInstance) -> "DdsCpProvidedServiceInstanceBuilder":
         """Add a single item to provided_ddses list.
 
         Args:

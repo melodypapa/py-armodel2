@@ -200,28 +200,18 @@ class SOMEIPTransformationISignalProps(ARObject):
                     wrapped.append(child)
                 inner_elem.append(wrapped)
 
-        # Serialize tlv_data_id_refs (list from container "TLV-DATA-ID-REFS")
-        if self.tlv_data_id_refs:
-            container = ET.Element("TLV-DATA-ID-REFS")
-            for item in self.tlv_data_id_refs:
-                if is_ref:
-                    # For reference lists, serialize as reference
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                elif is_primitive_type("TlvDataIdDefinitionSet", package_data):
-                    # Simple primitive type
-                    child = ET.Element("TLV-DATA-ID")
-                    child.text = str(item)
-                    container.append(child)
-                elif is_enum_type("TlvDataIdDefinitionSet", package_data):
-                    # Enum type - use serialize method
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                else:
-                    # Complex object type
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-            inner_elem.append(container)
+        # Serialize tlv_data_id_refs (list)
+        for item in self.tlv_data_id_refs:
+            serialized = SerializationHelper.serialize_item(item, "TlvDataIdDefinitionSet")
+            if serialized is not None:
+                wrapped = ET.Element("TLV-DATA-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "SOMEIPTransformationISignalProps")
@@ -308,33 +298,11 @@ class SOMEIPTransformationISignalProps(ARObject):
             size_of_union_value = child.text
             obj.size_of_union = size_of_union_value
 
-        # Parse tlv_data_id_refs (list from container "TLV-DATA-ID-REFS")
+        # Parse tlv_data_id_refs (list)
         obj.tlv_data_id_refs = []
-        container = SerializationHelper.find_child_element(inner_elem, "TLV-DATA-ID-REFS")
-        if container is not None:
-            for child in container:
-                if is_ref:
-                    # Use the child_tag from decorator if specified to match specific child tag
-                    if child_tag:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "None":
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                    else:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("TlvDataIdDefinitionSet", package_data):
-                    child_value = child.text
-                elif is_enum_type("TlvDataIdDefinitionSet", package_data):
-                    child_value = TlvDataIdDefinitionSet.deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tlv_data_id_refs.append(child_value)
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "TLV-DATA-ID"):
+            tlv_data_id_refs_value = ARRef.deserialize(child)
+            obj.tlv_data_id_refs.append(tlv_data_id_refs_value)
 
         return obj
 

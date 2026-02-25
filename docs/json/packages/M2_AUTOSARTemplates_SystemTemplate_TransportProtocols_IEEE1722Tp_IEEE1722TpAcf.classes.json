@@ -36,7 +36,7 @@
         }
       ],
       "attributes": {
-        "acfParts": {
+        "acfPart": {
           "type": "IEEE1722TpAcfBusPart",
           "multiplicity": "*",
           "kind": "attribute",

@@ -44,14 +44,14 @@ class AdminData(ARObject):
 
     doc_revisions: list[DocRevision]
     language: Optional[LEnum]
-    sdg: list[Sdg]
+    sdgs: list[Sdg]
     used_languages: Optional[MultiLanguagePlainText]
     def __init__(self) -> None:
         """Initialize AdminData."""
         super().__init__()
         self.doc_revisions: list[DocRevision] = []
         self.language: Optional[LEnum] = None
-        self.sdg: list[Sdg] = []
+        self.sdgs: list[Sdg] = []
         self.used_languages: Optional[MultiLanguagePlainText] = None
 
     def serialize(self) -> ET.Element:
@@ -102,19 +102,15 @@ class AdminData(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sdg (list)
-        for item in self.sdg:
-            serialized = SerializationHelper.serialize_item(item, "Sdg")
-            if serialized is not None:
-                # For non-container lists, wrap with correct tag
-                wrapped = ET.Element("SDG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+        # Serialize sdgs (list to container "SDGS")
+        if self.sdgs:
+            wrapper = ET.Element("SDGS")
+            for item in self.sdgs:
+                serialized = SerializationHelper.serialize_item(item, "Sdg")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
 
         # Serialize used_languages
         if self.used_languages is not None:
@@ -161,11 +157,15 @@ class AdminData(ARObject):
             language_value = LEnum.deserialize(child)
             obj.language = language_value
 
-        # Parse sdg (list)
-        obj.sdg = []
-        for child in SerializationHelper.find_all_child_elements(element, "SDG"):
-            sdg_value = SerializationHelper.deserialize_by_tag(child, "Sdg")
-            obj.sdg.append(sdg_value)
+        # Parse sdgs (list from container "SDGS")
+        obj.sdgs = []
+        container = SerializationHelper.find_child_element(element, "SDGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sdgs.append(child_value)
 
         # Parse used_languages
         child = SerializationHelper.find_child_element(element, "USED-LANGUAGES")
@@ -212,8 +212,8 @@ class AdminDataBuilder(BuilderBase):
         self._obj.language = value
         return self
 
-    def with_sdg(self, items: list[Sdg]) -> "AdminDataBuilder":
-        """Set sdg list attribute.
+    def with_sdgs(self, items: list[Sdg]) -> "AdminDataBuilder":
+        """Set sdgs list attribute.
 
         Args:
             items: List of items to set
@@ -221,7 +221,7 @@ class AdminDataBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.sdg = list(items) if items else []
+        self._obj.sdgs = list(items) if items else []
         return self
 
     def with_used_languages(self, value: Optional[MultiLanguagePlainText]) -> "AdminDataBuilder":
@@ -260,8 +260,8 @@ class AdminDataBuilder(BuilderBase):
         self._obj.doc_revisions = []
         return self
 
-    def add_sd(self, item: Sdg) -> "AdminDataBuilder":
-        """Add a single item to sdg list.
+    def add_sdg(self, item: Sdg) -> "AdminDataBuilder":
+        """Add a single item to sdgs list.
 
         Args:
             item: Item to add
@@ -269,16 +269,16 @@ class AdminDataBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.sdg.append(item)
+        self._obj.sdgs.append(item)
         return self
 
-    def clear_sdg(self) -> "AdminDataBuilder":
-        """Clear all items from sdg list.
+    def clear_sdgs(self) -> "AdminDataBuilder":
+        """Clear all items from sdgs list.
 
         Returns:
             self for method chaining
         """
-        self._obj.sdg = []
+        self._obj.sdgs = []
         return self
 
 

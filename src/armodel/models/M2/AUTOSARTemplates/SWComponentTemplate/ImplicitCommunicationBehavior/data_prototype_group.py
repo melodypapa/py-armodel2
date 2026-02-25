@@ -35,12 +35,12 @@ class DataPrototypeGroup(Identifiable):
         """
         return False
 
-    data_prototype_group_group_in_composition_instance_ref_refs: list[ARRef]
+    data_prototype_group_group_in_composition_instance_ref: list[ARRef]
     implicit_data_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize DataPrototypeGroup."""
         super().__init__()
-        self.data_prototype_group_group_in_composition_instance_ref_refs: list[ARRef] = []
+        self.data_prototype_group_group_in_composition_instance_ref: list[ARRef] = []
         self.implicit_data_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
@@ -67,10 +67,10 @@ class DataPrototypeGroup(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_prototype_group_group_in_composition_instance_ref_refs (list to container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
-        if self.data_prototype_group_group_in_composition_instance_ref_refs:
+        # Serialize data_prototype_group_group_in_composition_instance_ref (list to container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
+        if self.data_prototype_group_group_in_composition_instance_ref:
             wrapper = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
-            for item in self.data_prototype_group_group_in_composition_instance_ref_refs:
+            for item in self.data_prototype_group_group_in_composition_instance_ref:
                 serialized = SerializationHelper.serialize_item(item, "DataPrototypeGroup")
                 if serialized is not None:
                     child_elem = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REF")
@@ -116,8 +116,8 @@ class DataPrototypeGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototypeGroup, cls).deserialize(element)
 
-        # Parse data_prototype_group_group_in_composition_instance_ref_refs (list from container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
-        obj.data_prototype_group_group_in_composition_instance_ref_refs = []
+        # Parse data_prototype_group_group_in_composition_instance_ref (list from container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
+        obj.data_prototype_group_group_in_composition_instance_ref = []
         container = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
         if container is not None:
             for child in container:
@@ -130,7 +130,7 @@ class DataPrototypeGroup(Identifiable):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.data_prototype_group_group_in_composition_instance_ref_refs.append(child_value)
+                    obj.data_prototype_group_group_in_composition_instance_ref.append(child_value)
 
         # Parse implicit_data_refs (list from container "IMPLICIT-DATA-REFS")
         obj.implicit_data_refs = []

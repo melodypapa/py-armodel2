@@ -93,7 +93,7 @@
           "is_ref": true,
           "note": "This is the base from which the navigaion path starts."
         },
-        "atpContexts": {
+        "atpContext": {
           "type": "AtpPrototype",
           "multiplicity": "*",
           "kind": "ref",
@@ -139,7 +139,7 @@
         }
       ],
       "attributes": {
-        "atpFeatures": {
+        "atpFeature": {
           "type": "AtpFeature",
           "multiplicity": "*",
           "kind": "attribute",

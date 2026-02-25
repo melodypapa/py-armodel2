@@ -144,14 +144,14 @@
         }
       ],
       "attributes": {
-        "operations": {
+        "operation": {
           "type": "ClientServerOperation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "ClientServerOperation(s) of this ClientServerInterface. atpVariation"
         },
-        "possibleErrors": {
+        "possibleError": {
           "type": "ApplicationError",
           "multiplicity": "*",
           "kind": "attribute",
@@ -245,7 +245,7 @@
         }
       ],
       "attributes": {
-        "arguments": {
+        "argument": {
           "type": "ArgumentDataPrototype",
           "multiplicity": "*",
           "kind": "aggr",
@@ -259,7 +259,7 @@
           "is_ref": false,
           "note": "This attribute shall only be used in the implementation of"
         },
-        "possibleErrors": {
+        "possibleError": {
           "type": "ApplicationError",
           "multiplicity": "*",
           "kind": "ref",
@@ -337,21 +337,21 @@
         }
       ],
       "attributes": {
-        "dataElements": {
+        "dataElement": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
           "note": "The data elements of this SenderReceiverInterface."
         },
-        "invalidationPolicyPolicies": {
+        "invalidationPolicyPolicy": {
           "type": "InvalidationPolicy",
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
           "note": "InvalidationPolicy for a particular dataElement"
         },
-        "metaDataItemSets": {
+        "metaDataItemSet": {
           "type": "MetaDataItemSet",
           "multiplicity": "*",
           "kind": "aggr",
@@ -470,7 +470,7 @@
         }
       ],
       "attributes": {
-        "nvDatas": {
+        "nvData": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "ref",
@@ -618,7 +618,7 @@
         }
       ],
       "attributes": {
-        "parameters": {
+        "parameter": {
           "type": "ParameterDataPrototype",
           "multiplicity": "*",
           "kind": "ref",
@@ -749,14 +749,14 @@
         }
       ],
       "attributes": {
-        "dataElements": {
+        "dataElement": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This reference identifies the dataElement for which the of meta-data items is defined."
         },
-        "metaDataItems": {
+        "metaDataItem": {
           "type": "MetaDataItem",
           "multiplicity": "*",
           "kind": "attribute",
@@ -853,7 +853,7 @@
         }
       ],
       "attributes": {
-        "triggers": {
+        "trigger": {
           "type": "Trigger",
           "multiplicity": "*",
           "kind": "ref",
@@ -956,7 +956,7 @@
         }
       ],
       "attributes": {
-        "portInterfaces": {
+        "portInterface": {
           "type": "PortInterfaceMapping",
           "multiplicity": "*",
           "kind": "ref",
@@ -1059,7 +1059,7 @@
         }
       ],
       "attributes": {
-        "dataMappings": {
+        "dataMapping": {
           "type": "DataPrototypeMapping",
           "multiplicity": "*",
           "kind": "ref",
@@ -1129,7 +1129,7 @@
           "is_ref": true,
           "note": "This defines the need to execute the reverse Data <Mip>_Inv_<transformerId> functions of transformation chain when communicating from the the Data"
         },
-        "subElements": {
+        "subElement": {
           "type": "SubElementMapping",
           "multiplicity": "*",
           "kind": "ref",
@@ -1178,14 +1178,14 @@
         }
       ],
       "attributes": {
-        "errorMappings": {
+        "errorMapping": {
           "type": "ClientServerApplicationErrorMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Map two different ApplicationErrors defined in the context two different ClientServerInterfaces."
         },
-        "operations": {
+        "operation": {
           "type": "ClientServerOperation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1220,7 +1220,7 @@
         }
       ],
       "attributes": {
-        "arguments": {
+        "argument": {
           "type": "DataPrototypeMapping",
           "multiplicity": "*",
           "kind": "ref",
@@ -1369,7 +1369,7 @@
         }
       ],
       "attributes": {
-        "modes": {
+        "mode": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1412,7 +1412,7 @@
         }
       ],
       "attributes": {
-        "firstModes": {
+        "firstMode": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "ref",
@@ -1461,7 +1461,7 @@
         }
       ],
       "attributes": {
-        "triggerMappings": {
+        "triggerMapping": {
           "type": "TriggerMapping",
           "multiplicity": "*",
           "kind": "ref",
@@ -1694,7 +1694,7 @@
           "is_ref": true,
           "note": "Specifies the conversion direction for which the TextTable is applicable."
         },
-        "valuePairs": {
+        "valuePair": {
           "type": "TextTableValuePair",
           "multiplicity": "*",
           "kind": "attribute",

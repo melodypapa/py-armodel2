@@ -124,7 +124,7 @@ class TransformationPropsSetBuilder(ARElementBuilder):
         return self
 
 
-    def add_transformation_props_propse(self, item: TransformationProps) -> "TransformationPropsSetBuilder":
+    def add_transformation_props_props(self, item: TransformationProps) -> "TransformationPropsSetBuilder":
         """Add a single item to transformation_props_propses list.
 
         Args:

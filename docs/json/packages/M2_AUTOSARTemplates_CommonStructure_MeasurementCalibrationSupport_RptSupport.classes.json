@@ -37,14 +37,14 @@
         }
       ],
       "attributes": {
-        "flatMapEntries": {
+        "flatMapEntry": {
           "type": "FlatInstanceDescriptor",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Refers to an entry in a FlatMap that is part of the set, for calibration parameter or measured variable. atpSplitable property has no atp.Splitkey due (PropertySetPattern)."
         },
-        "mcDataInstances": {
+        "mcDataInstance": {
           "type": "McDataInstance",
           "multiplicity": "*",
           "kind": "ref",
@@ -80,21 +80,21 @@
         }
       ],
       "attributes": {
-        "executions": {
+        "execution": {
           "type": "RptExecutionContext",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines an environment for the execution of Executable"
         },
-        "rptComponents": {
+        "rptComponent": {
           "type": "RptComponent",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Description of components for which rapid prototyping"
         },
-        "rptServicePoints": {
+        "rptServicePoint": {
           "type": "RptServicePoint",
           "multiplicity": "*",
           "kind": "attribute",
@@ -188,7 +188,7 @@
         }
       ],
       "attributes": {
-        "mcDatas": {
+        "mcData": {
           "type": "RoleBasedMcDataAssignment",
           "multiplicity": "*",
           "kind": "attribute",
@@ -202,7 +202,7 @@
           "is_ref": false,
           "note": "Describes the implemented code preparation for rapid"
         },
-        "rptExecutableEntities": {
+        "rptExecutableEntity": {
           "type": "RptExecutableEntity",
           "multiplicity": "*",
           "kind": "attribute",
@@ -240,21 +240,21 @@
         }
       ],
       "attributes": {
-        "rptExecutableEntities": {
+        "rptExecutableEntity": {
           "type": "RptExecutableEntity",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "ExecutableEntity event instance activation the owning Rpt ExecutableEntity. atpVariation"
         },
-        "rptReads": {
+        "rptRead": {
           "type": "RoleBasedMcDataAssignment",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "read access to a variable atpSplitable; atpVariation"
         },
-        "rptWrites": {
+        "rptWrite": {
           "type": "RoleBasedMcDataAssignment",
           "multiplicity": "*",
           "kind": "attribute",
@@ -299,14 +299,14 @@
         }
       ],
       "attributes": {
-        "executions": {
+        "execution": {
           "type": "RptExecutionContext",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This describes the context in which the event of the entity is executed."
         },
-        "mcDatas": {
+        "mcData": {
           "type": "RoleBasedMcDataAssignment",
           "multiplicity": "*",
           "kind": "attribute",
@@ -334,7 +334,7 @@
           "is_ref": false,
           "note": "Describes the RptImplPolicy of a RptExecutableEvent for"
         },
-        "rptServicePoints": {
+        "rptServicePoint": {
           "type": "RptServicePoint",
           "multiplicity": "*",
           "kind": "ref",

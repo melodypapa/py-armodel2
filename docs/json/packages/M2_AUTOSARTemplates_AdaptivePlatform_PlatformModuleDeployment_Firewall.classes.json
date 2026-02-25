@@ -42,14 +42,14 @@
           "is_ref": false,
           "note": "This attribute defines a defaultAction in case that the not yet set."
         },
-        "firewallRulePropses": {
+        "firewallRuleProps": {
           "type": "FirewallRuleProps",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of firewall rules that apply in the vehicle mode Tags: atp.Status=candidate"
         },
-        "firewallStates": {
+        "firewallState": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "ref",
@@ -91,14 +91,14 @@
           "is_ref": false,
           "note": "Action that is performed by the firewall if the matching fulfilled."
         },
-        "matchingEgressRules": {
+        "matchingEgressRule": {
           "type": "FirewallRule",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This element defines an egress rule expression against"
         },
-        "matchingIngressRules": {
+        "matchingIngressRule": {
           "type": "FirewallRule",
           "multiplicity": "*",
           "kind": "ref",
@@ -176,7 +176,7 @@
           "is_ref": false,
           "note": "Configuration of rules on the Network Layer atp.Status=candidate"
         },
-        "payloadBytePatterns": {
+        "payloadBytePattern": {
           "type": "any (PayloadBytePattern)",
           "multiplicity": "*",
           "kind": "attribute",

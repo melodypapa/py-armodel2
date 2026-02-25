@@ -160,14 +160,14 @@
           "is_ref": true,
           "note": "System which describes the software components of the"
         },
-        "rptContainers": {
+        "rptContainer": {
           "type": "RptContainer",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Top-level rptContainer definitions of this specific rapid atpVariation"
         },
-        "rptProfiles": {
+        "rptProfile": {
           "type": "RptProfile",
           "multiplicity": "*",
           "kind": "attribute",
@@ -263,21 +263,21 @@
         }
       ],
       "attributes": {
-        "byPassPoints": {
+        "byPassPoint": {
           "type": "AtpFeature",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "byPassPoint describes the required preparation of the"
         },
-        "explicitRpts": {
+        "explicitRpt": {
           "type": "RptProfile",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This attribute defines the applicable RptProfiles for the"
         },
-        "rptContainers": {
+        "rptContainer": {
           "type": "RptContainer",
           "multiplicity": "*",
           "kind": "attribute",
@@ -361,7 +361,7 @@
           "is_ref": false,
           "note": "This describes the hook with the means of another"
         },
-        "sdgs": {
+        "sdg": {
           "type": "Sdg",
           "multiplicity": "*",
           "kind": "attribute",

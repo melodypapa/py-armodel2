@@ -36,7 +36,7 @@
           "is_ref": true,
           "note": "This represents the base of the instanceRef."
         },
-        "contextSws": {
+        "contextSw": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "ref",
@@ -87,7 +87,7 @@
           "is_ref": true,
           "note": "This represents the base of the InstanceRef."
         },
-        "contextSws": {
+        "contextSw": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "ref",
@@ -138,7 +138,7 @@
           "is_ref": true,
           "note": "This represents the base of the InstanceRef."
         },
-        "contextSws": {
+        "contextSw": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "ref",
@@ -196,7 +196,7 @@
           "is_ref": true,
           "note": "This represents a reference to a context PortPrototype. xml.sequenceOffset=30"
         },
-        "contextSws": {
+        "contextSw": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "ref",
