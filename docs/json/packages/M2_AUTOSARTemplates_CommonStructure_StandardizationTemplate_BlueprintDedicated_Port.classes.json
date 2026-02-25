@@ -51,7 +51,7 @@
         }
       ],
       "attributes": {
-        "initValues": {
+        "initValue": {
           "type": "PortPrototypeBlueprint",
           "multiplicity": "*",
           "kind": "ref",
@@ -65,14 +65,14 @@
           "is_ref": true,
           "note": "This is the interface for which the blueprint is defined. It a blueprint itself or a standardized PortInterface"
         },
-        "providedComs": {
+        "providedCom": {
           "type": "PPortComSpec",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Provided communication attributes per interface element"
         },
-        "requiredComs": {
+        "requiredCom": {
           "type": "RPortComSpec",
           "multiplicity": "*",
           "kind": "attribute",

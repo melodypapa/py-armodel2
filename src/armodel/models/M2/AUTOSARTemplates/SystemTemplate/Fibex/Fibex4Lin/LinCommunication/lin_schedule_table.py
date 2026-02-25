@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4L
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -40,24 +39,13 @@ class LinScheduleTable(Identifiable):
 
     resume_position: Optional[ResumePosition]
     run_mode: Optional[RunMode]
-    _table_entries: list[ScheduleTableEntry]
+    table_entries: list[ScheduleTableEntry]
     def __init__(self) -> None:
         """Initialize LinScheduleTable."""
         super().__init__()
         self.resume_position: Optional[ResumePosition] = None
         self.run_mode: Optional[RunMode] = None
-        self._table_entries: list[ScheduleTableEntry] = []
-    @property
-    @xml_element_name("TABLE-ENTRYS")
-    def table_entries(self) -> list[ScheduleTableEntry]:
-        """Get table_entries with custom XML element name."""
-        return self._table_entries
-
-    @table_entries.setter
-    def table_entries(self, value: list[ScheduleTableEntry]) -> None:
-        """Set table_entries with custom XML element name."""
-        self._table_entries = value
-
+        self.table_entries: list[ScheduleTableEntry] = []
 
     def serialize(self) -> ET.Element:
         """Serialize LinScheduleTable to XML element.
@@ -111,9 +99,9 @@ class LinScheduleTable(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize table_entries (list to container "TABLE-ENTRYS")
+        # Serialize table_entries (list to container "TABLE-ENTRIES")
         if self.table_entries:
-            wrapper = ET.Element("TABLE-ENTRYS")
+            wrapper = ET.Element("TABLE-ENTRIES")
             for item in self.table_entries:
                 serialized = SerializationHelper.serialize_item(item, "ScheduleTableEntry")
                 if serialized is not None:
@@ -148,9 +136,9 @@ class LinScheduleTable(Identifiable):
             run_mode_value = RunMode.deserialize(child)
             obj.run_mode = run_mode_value
 
-        # Parse table_entries (list from container "TABLE-ENTRYS")
+        # Parse table_entries (list from container "TABLE-ENTRIES")
         obj.table_entries = []
-        container = SerializationHelper.find_child_element(element, "TABLE-ENTRYS")
+        container = SerializationHelper.find_child_element(element, "TABLE-ENTRIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -212,7 +200,7 @@ class LinScheduleTableBuilder(IdentifiableBuilder):
         return self
 
 
-    def add_table_entrie(self, item: ScheduleTableEntry) -> "LinScheduleTableBuilder":
+    def add_table_entry(self, item: ScheduleTableEntry) -> "LinScheduleTableBuilder":
         """Add a single item to table_entries list.
 
         Args:

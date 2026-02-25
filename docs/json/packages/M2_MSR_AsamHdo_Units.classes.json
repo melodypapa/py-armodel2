@@ -119,7 +119,7 @@
         }
       ],
       "attributes": {
-        "units": {
+        "unit": {
           "type": "Unit",
           "multiplicity": "*",
           "kind": "ref",
@@ -285,7 +285,7 @@
         }
       ],
       "attributes": {
-        "physicals": {
+        "physical": {
           "type": "PhysicalDimension",
           "multiplicity": "*",
           "kind": "attribute",

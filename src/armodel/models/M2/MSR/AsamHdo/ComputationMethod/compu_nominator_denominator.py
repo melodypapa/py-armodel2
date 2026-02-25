@@ -29,11 +29,11 @@ class CompuNominatorDenominator(ARObject):
         """
         return False
 
-    v: list[Numerical]
+    vs: list[Numerical]
     def __init__(self) -> None:
         """Initialize CompuNominatorDenominator."""
         super().__init__()
-        self.v: list[Numerical] = []
+        self.vs: list[Numerical] = []
 
     def serialize(self) -> ET.Element:
         """Serialize CompuNominatorDenominator to XML element.
@@ -59,19 +59,22 @@ class CompuNominatorDenominator(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize v (list)
-        for item in self.v:
-            serialized = SerializationHelper.serialize_item(item, "Numerical")
-            if serialized is not None:
-                # For non-container lists, wrap with correct tag
-                wrapped = ET.Element("V")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
+        # Serialize vs (list to container "VS")
+        if self.vs:
+            wrapper = ET.Element("VS")
+            for item in self.vs:
+                serialized = SerializationHelper.serialize_item(item, "Numerical")
+                if serialized is not None:
+                    child_elem = ET.Element("V")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
 
         return elem
 
@@ -88,11 +91,15 @@ class CompuNominatorDenominator(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuNominatorDenominator, cls).deserialize(element)
 
-        # Parse v (list)
-        obj.v = []
-        for child in SerializationHelper.find_all_child_elements(element, "V"):
-            v_value = child.text
-            obj.v.append(v_value)
+        # Parse vs (list from container "VS")
+        obj.vs = []
+        container = SerializationHelper.find_child_element(element, "VS")
+        if container is not None:
+            for child in container:
+                # Extract primitive value (Numerical) as text
+                child_value = child.text
+                if child_value is not None:
+                    obj.vs.append(child_value)
 
         return obj
 
@@ -107,8 +114,8 @@ class CompuNominatorDenominatorBuilder(BuilderBase):
         self._obj: CompuNominatorDenominator = CompuNominatorDenominator()
 
 
-    def with_v(self, items: list[Numerical]) -> "CompuNominatorDenominatorBuilder":
-        """Set v list attribute.
+    def with_vs(self, items: list[Numerical]) -> "CompuNominatorDenominatorBuilder":
+        """Set vs list attribute.
 
         Args:
             items: List of items to set
@@ -116,12 +123,12 @@ class CompuNominatorDenominatorBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.v = list(items) if items else []
+        self._obj.vs = list(items) if items else []
         return self
 
 
-    def add_(self, item: Numerical) -> "CompuNominatorDenominatorBuilder":
-        """Add a single item to v list.
+    def add_v(self, item: Numerical) -> "CompuNominatorDenominatorBuilder":
+        """Add a single item to vs list.
 
         Args:
             item: Item to add
@@ -129,16 +136,16 @@ class CompuNominatorDenominatorBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.v.append(item)
+        self._obj.vs.append(item)
         return self
 
-    def clear_v(self) -> "CompuNominatorDenominatorBuilder":
-        """Clear all items from v list.
+    def clear_vs(self) -> "CompuNominatorDenominatorBuilder":
+        """Clear all items from vs list.
 
         Returns:
             self for method chaining
         """
-        self._obj.v = []
+        self._obj.vs = []
         return self
 
 

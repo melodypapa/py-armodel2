@@ -34,11 +34,11 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
         """
         return False
 
-    resource_needse_refs: list[ARRef]
+    resource_need_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterServiceResource."""
         super().__init__()
-        self.resource_needse_refs: list[ARRef] = []
+        self.resource_need_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterServiceResource to XML element.
@@ -64,10 +64,10 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize resource_needse_refs (list to container "RESOURCE-NEEDSE-REFS")
-        if self.resource_needse_refs:
+        # Serialize resource_need_refs (list to container "RESOURCE-NEEDSE-REFS")
+        if self.resource_need_refs:
             wrapper = ET.Element("RESOURCE-NEEDSE-REFS")
-            for item in self.resource_needse_refs:
+            for item in self.resource_need_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucContainerValue")
                 if serialized is not None:
                     child_elem = ET.Element("RESOURCE-NEEDSE-REF")
@@ -96,8 +96,8 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterServiceResource, cls).deserialize(element)
 
-        # Parse resource_needse_refs (list from container "RESOURCE-NEEDSE-REFS")
-        obj.resource_needse_refs = []
+        # Parse resource_need_refs (list from container "RESOURCE-NEEDSE-REFS")
+        obj.resource_need_refs = []
         container = SerializationHelper.find_child_element(element, "RESOURCE-NEEDSE-REFS")
         if container is not None:
             for child in container:
@@ -110,7 +110,7 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.resource_needse_refs.append(child_value)
+                    obj.resource_need_refs.append(child_value)
 
         return obj
 
@@ -138,7 +138,7 @@ class CpSoftwareClusterServiceResourceBuilder(CpSoftwareClusterResourceBuilder):
         return self
 
 
-    def add_resource_needse(self, item: EcucContainerValue) -> "CpSoftwareClusterServiceResourceBuilder":
+    def add_resource_needs(self, item: EcucContainerValue) -> "CpSoftwareClusterServiceResourceBuilder":
         """Add a single item to resource_needses list.
 
         Args:

@@ -13,7 +13,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInte
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_interface import (
     DataInterface,
@@ -46,25 +45,14 @@ class SenderReceiverInterface(DataInterface):
         return False
 
     data_elements: list[VariableDataPrototype]
-    _invalidation_policy_policies: list[InvalidationPolicy]
+    invalidation_policy_policies: list[InvalidationPolicy]
     meta_data_item_sets: list[MetaDataItemSet]
     def __init__(self) -> None:
         """Initialize SenderReceiverInterface."""
         super().__init__()
         self.data_elements: list[VariableDataPrototype] = []
-        self._invalidation_policy_policies: list[InvalidationPolicy] = []
+        self.invalidation_policy_policies: list[InvalidationPolicy] = []
         self.meta_data_item_sets: list[MetaDataItemSet] = []
-    @property
-    @xml_element_name("INVALIDATION-POLICY-POLICYS")
-    def invalidation_policy_policies(self) -> list[InvalidationPolicy]:
-        """Get invalidation_policy_policies with custom XML element name."""
-        return self._invalidation_policy_policies
-
-    @invalidation_policy_policies.setter
-    def invalidation_policy_policies(self, value: list[InvalidationPolicy]) -> None:
-        """Set invalidation_policy_policies with custom XML element name."""
-        self._invalidation_policy_policies = value
-
 
     def serialize(self) -> ET.Element:
         """Serialize SenderReceiverInterface to XML element.
@@ -100,9 +88,9 @@ class SenderReceiverInterface(DataInterface):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize invalidation_policy_policies (list to container "INVALIDATION-POLICY-POLICYS")
+        # Serialize invalidation_policy_policies (list to container "INVALIDATION-POLICY-POLICIES")
         if self.invalidation_policy_policies:
-            wrapper = ET.Element("INVALIDATION-POLICY-POLICYS")
+            wrapper = ET.Element("INVALIDATION-POLICY-POLICIES")
             for item in self.invalidation_policy_policies:
                 serialized = SerializationHelper.serialize_item(item, "InvalidationPolicy")
                 if serialized is not None:
@@ -145,9 +133,9 @@ class SenderReceiverInterface(DataInterface):
                 if child_value is not None:
                     obj.data_elements.append(child_value)
 
-        # Parse invalidation_policy_policies (list from container "INVALIDATION-POLICY-POLICYS")
+        # Parse invalidation_policy_policies (list from container "INVALIDATION-POLICY-POLICIES")
         obj.invalidation_policy_policies = []
-        container = SerializationHelper.find_child_element(element, "INVALIDATION-POLICY-POLICYS")
+        container = SerializationHelper.find_child_element(element, "INVALIDATION-POLICY-POLICIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -236,7 +224,7 @@ class SenderReceiverInterfaceBuilder(DataInterfaceBuilder):
         self._obj.data_elements = []
         return self
 
-    def add_invalidation_policy_policie(self, item: InvalidationPolicy) -> "SenderReceiverInterfaceBuilder":
+    def add_invalidation_policy_policy(self, item: InvalidationPolicy) -> "SenderReceiverInterfaceBuilder":
         """Add a single item to invalidation_policy_policies list.
 
         Args:

@@ -55,7 +55,7 @@
           "is_ref": false,
           "note": "This attribute defines the number of operation cycles with failed result before a confirmed DTC is set to 1. The this attribute is a by \"1\" increased value the confirmation threshold of the \"trip in ISO 14229-1 in figure D.4. A value defines the immediate confirmation of the DTC the first reported failed. This is also sometimes trip DTC\". A value of \"2\" defines a DTC the operation cycle after the first occurred value of \"2\" is typically used in the US for OBD"
         },
-        "connecteds": {
+        "connected": {
           "type": "any (DiagnosticConnected)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -240,7 +240,7 @@
         }
       ],
       "attributes": {
-        "iumprs": {
+        "iumpr": {
           "type": "DiagnosticIumpr",
           "multiplicity": "*",
           "kind": "ref",
@@ -324,7 +324,7 @@
         }
       ],
       "attributes": {
-        "iumprs": {
+        "iumpr": {
           "type": "DiagnosticIumpr",
           "multiplicity": "*",
           "kind": "ref",

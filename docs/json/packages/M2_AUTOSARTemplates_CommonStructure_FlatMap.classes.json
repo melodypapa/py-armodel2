@@ -48,7 +48,7 @@
         }
       ],
       "attributes": {
-        "aliasNames": {
+        "aliasName": {
           "type": "AliasNameAssignment",
           "multiplicity": "*",
           "kind": "attribute",
@@ -250,7 +250,7 @@
         }
       ],
       "attributes": {
-        "instances": {
+        "instance": {
           "type": "FlatInstanceDescriptor",
           "multiplicity": "*",
           "kind": "attribute",

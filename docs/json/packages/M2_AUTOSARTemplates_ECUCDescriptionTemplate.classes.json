@@ -45,7 +45,7 @@
         }
       ],
       "attributes": {
-        "containers": {
+        "container": {
           "type": "EcucContainerValue",
           "multiplicity": "*",
           "kind": "attribute",
@@ -64,7 +64,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This is the version info of the ModuleDef ECUC to which this values conform to / are Definition of ModuleDef ECUC Parameters the be used to express the semantic compatibility rules between the definition revision labels is up to the module\u2019s vendor."
+          "note": "This is the version info of the ModuleDef ECUC to which this values conform to / are Definition of ModuleDef ECUC Parameters the be used to express the semantic compatibility rules between the definition revision labels is up to the module’s vendor."
         },
         "implementation": {
           "type": "any (EcucConfiguration)",
@@ -133,7 +133,7 @@
         }
       ],
       "attributes": {
-        "ecucValues": {
+        "ecucValue": {
           "type": "any (EcucModule)",
           "multiplicity": "*",
           "kind": "ref",
@@ -245,21 +245,21 @@
           "is_ref": true,
           "note": "Reference to the definition of this Container in the ECU Definition."
         },
-        "parameterValues": {
+        "parameterValue": {
           "type": "EcucParameterValue",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Aggregates all ECU Configuration Values within this atpVariation"
         },
-        "referenceValues": {
+        "referenceValue": {
           "type": "any (EcucAbstractReference)",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Aggregates all References with this container. [RS_ECUC_00079] atpVariation"
         },
-        "subContainers": {
+        "subContainer": {
           "type": "EcucContainerValue",
           "multiplicity": "*",
           "kind": "attribute",
@@ -315,7 +315,7 @@
         }
       ],
       "attributes": {
-        "annotations": {
+        "annotation": {
           "type": "Annotation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -506,7 +506,7 @@
         }
       ],
       "attributes": {
-        "annotations": {
+        "annotation": {
           "type": "Annotation",
           "multiplicity": "*",
           "kind": "attribute",

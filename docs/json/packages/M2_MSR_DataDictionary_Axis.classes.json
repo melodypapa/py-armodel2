@@ -70,7 +70,7 @@
           "is_ref": false,
           "note": "Minimum number of base points contained in the axis of a"
         },
-        "swVariableRefProxies": {
+        "swVariableRefProxy": {
           "type": "SwVariableRefProxy",
           "multiplicity": "*",
           "kind": "ref",
@@ -119,7 +119,7 @@
           "is_ref": true,
           "note": "Associated axis calculation strategy."
         },
-        "swGenericAxisParams": {
+        "swGenericAxisParam": {
           "type": "SwGenericAxisParam",
           "multiplicity": "*",
           "kind": "attribute",
@@ -167,7 +167,7 @@
           "is_ref": false,
           "note": "Associated axis description in textual form. xml.sequenceOffset=20 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
-        "swGenericAxisParams": {
+        "swGenericAxisParam": {
           "type": "SwGenericAxisParam",
           "multiplicity": "*",
           "kind": "attribute",
@@ -230,7 +230,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This meta-class describes a generic axis parameter type, namely: \u2022 Plausibility checks can be specified via dataConstr. \u2022 Textual description (desc), as a formal description is not of any use, due to the large variety of possibilities. \u2022 If this parameter contains structures, these can be simulated through the recursive use of SwGeneric AxisParamTypes.",
+      "note": "This meta-class describes a generic axis parameter type, namely: • Plausibility checks can be specified via dataConstr. • Textual description (desc), as a formal description is not of any use, due to the large variety of possibilities. • If this parameter contains structures, these can be simulated through the recursive use of SwGeneric AxisParamTypes.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",

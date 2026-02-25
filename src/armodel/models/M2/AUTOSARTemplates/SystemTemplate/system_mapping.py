@@ -111,7 +111,7 @@ class SystemMapping(Identifiable):
     crypto_service_mappings: list[CryptoServiceMapping]
     data_mappings: list[DataMapping]
     dds_i_signal_to_topic_mappings: list[DdsCpISignalToDdsTopicMapping]
-    ecu_resources_mapping: list[ECUMapping]
+    ecu_resources_mappings: list[ECUMapping]
     j1939_controller_application_to_j1939_nm_node_mappings: list[J1939ControllerApplicationToJ1939NmNodeMapping]
     mapping_constraints: list[MappingConstraint]
     pnc_mappings: list[PncMapping]
@@ -138,7 +138,7 @@ class SystemMapping(Identifiable):
         self.crypto_service_mappings: list[CryptoServiceMapping] = []
         self.data_mappings: list[DataMapping] = []
         self.dds_i_signal_to_topic_mappings: list[DdsCpISignalToDdsTopicMapping] = []
-        self.ecu_resources_mapping: list[ECUMapping] = []
+        self.ecu_resources_mappings: list[ECUMapping] = []
         self.j1939_controller_application_to_j1939_nm_node_mappings: list[J1939ControllerApplicationToJ1939NmNodeMapping] = []
         self.mapping_constraints: list[MappingConstraint] = []
         self.pnc_mappings: list[PncMapping] = []
@@ -241,19 +241,15 @@ class SystemMapping(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize ecu_resources_mapping (list)
-        for item in self.ecu_resources_mapping:
-            serialized = SerializationHelper.serialize_item(item, "ECUMapping")
-            if serialized is not None:
-                # For non-container lists, wrap with correct tag
-                wrapped = ET.Element("ECU-RESOURCES-MAPPING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+        # Serialize ecu_resources_mappings (list to container "ECU-RESOURCES-MAPPINGS")
+        if self.ecu_resources_mappings:
+            wrapper = ET.Element("ECU-RESOURCES-MAPPINGS")
+            for item in self.ecu_resources_mappings:
+                serialized = SerializationHelper.serialize_item(item, "ECUMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
 
         # Serialize j1939_controller_application_to_j1939_nm_node_mappings (list to container "J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPINGS")
         if self.j1939_controller_application_to_j1939_nm_node_mappings:
@@ -500,11 +496,15 @@ class SystemMapping(Identifiable):
                 if child_value is not None:
                     obj.dds_i_signal_to_topic_mappings.append(child_value)
 
-        # Parse ecu_resources_mapping (list)
-        obj.ecu_resources_mapping = []
-        for child in SerializationHelper.find_all_child_elements(element, "ECU-RESOURCES-MAPPING"):
-            ecu_resources_mapping_value = SerializationHelper.deserialize_by_tag(child, "ECUMapping")
-            obj.ecu_resources_mapping.append(ecu_resources_mapping_value)
+        # Parse ecu_resources_mappings (list from container "ECU-RESOURCES-MAPPINGS")
+        obj.ecu_resources_mappings = []
+        container = SerializationHelper.find_child_element(element, "ECU-RESOURCES-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ecu_resources_mappings.append(child_value)
 
         # Parse j1939_controller_application_to_j1939_nm_node_mappings (list from container "J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPINGS")
         obj.j1939_controller_application_to_j1939_nm_node_mappings = []
@@ -761,8 +761,8 @@ class SystemMappingBuilder(IdentifiableBuilder):
         self._obj.dds_i_signal_to_topic_mappings = list(items) if items else []
         return self
 
-    def with_ecu_resources_mapping(self, items: list[ECUMapping]) -> "SystemMappingBuilder":
-        """Set ecu_resources_mapping list attribute.
+    def with_ecu_resources_mappings(self, items: list[ECUMapping]) -> "SystemMappingBuilder":
+        """Set ecu_resources_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -770,7 +770,7 @@ class SystemMappingBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.ecu_resources_mapping = list(items) if items else []
+        self._obj.ecu_resources_mappings = list(items) if items else []
         return self
 
     def with_j1939_controller_application_to_j1939_nm_node_mappings(self, items: list[J1939ControllerApplicationToJ1939NmNodeMapping]) -> "SystemMappingBuilder":
@@ -1104,8 +1104,8 @@ class SystemMappingBuilder(IdentifiableBuilder):
         self._obj.dds_i_signal_to_topic_mappings = []
         return self
 
-    def add_ecu_resources_mappin(self, item: ECUMapping) -> "SystemMappingBuilder":
-        """Add a single item to ecu_resources_mapping list.
+    def add_ecu_resources_mapping(self, item: ECUMapping) -> "SystemMappingBuilder":
+        """Add a single item to ecu_resources_mappings list.
 
         Args:
             item: Item to add
@@ -1113,16 +1113,16 @@ class SystemMappingBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.ecu_resources_mapping.append(item)
+        self._obj.ecu_resources_mappings.append(item)
         return self
 
-    def clear_ecu_resources_mapping(self) -> "SystemMappingBuilder":
-        """Clear all items from ecu_resources_mapping list.
+    def clear_ecu_resources_mappings(self) -> "SystemMappingBuilder":
+        """Clear all items from ecu_resources_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.ecu_resources_mapping = []
+        self._obj.ecu_resources_mappings = []
         return self
 
     def add_j1939_controller_application_to_j1939_nm_node_mapping(self, item: J1939ControllerApplicationToJ1939NmNodeMapping) -> "SystemMappingBuilder":

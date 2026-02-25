@@ -40,14 +40,14 @@
           "is_ref": false,
           "note": "This attribute represents a collection of diagnostic properties that are shared among the entire Diagnostic"
         },
-        "elements": {
+        "element": {
           "type": "any (DiagnosticCommon)",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This represents a DiagnosticCommonElement considered the context of the DiagnosticContributionSet atpVariation 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "serviceTables": {
+        "serviceTable": {
           "type": "DiagnosticServiceTable",
           "multiplicity": "*",
           "kind": "ref",
@@ -89,7 +89,7 @@
         }
       ],
       "attributes": {
-        "diagnostics": {
+        "diagnostic": {
           "type": "DiagnosticConnection",
           "multiplicity": "*",
           "kind": "ref",
@@ -159,7 +159,7 @@
         }
       ],
       "attributes": {
-        "diagnostics": {
+        "diagnostic": {
           "type": "DiagnosticConnection",
           "multiplicity": "*",
           "kind": "ref",
@@ -180,7 +180,7 @@
           "is_ref": false,
           "note": "This identifies the applicable protocol."
         },
-        "serviceInstances": {
+        "serviceInstance": {
           "type": "any (DiagnosticService)",
           "multiplicity": "*",
           "kind": "ref",
@@ -222,7 +222,7 @@
         }
       ],
       "attributes": {
-        "ecuInstances": {
+        "ecuInstance": {
           "type": "EcuInstance",
           "multiplicity": "*",
           "kind": "ref",

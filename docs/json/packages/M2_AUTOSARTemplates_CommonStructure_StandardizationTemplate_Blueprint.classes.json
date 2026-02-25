@@ -33,7 +33,7 @@
         }
       ],
       "attributes": {
-        "consistencyNeedses": {
+        "consistencyNeeds": {
           "type": "ConsistencyNeeds",
           "multiplicity": "*",
           "kind": "attribute",

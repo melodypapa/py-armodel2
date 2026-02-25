@@ -47,7 +47,7 @@ class LifeCycleInfoSet(ARElement):
     default_lc_state_ref: ARRef
     default_period_begin: Optional[LifeCyclePeriod]
     default_period_end: Optional[LifeCyclePeriod]
-    life_cycle_infos: list[LifeCycleInfo]
+    life_cycle_infoes: list[LifeCycleInfo]
     used_life_cycle_state_definition_group_ref: ARRef
     def __init__(self) -> None:
         """Initialize LifeCycleInfoSet."""
@@ -55,7 +55,7 @@ class LifeCycleInfoSet(ARElement):
         self.default_lc_state_ref: ARRef = None
         self.default_period_begin: Optional[LifeCyclePeriod] = None
         self.default_period_end: Optional[LifeCyclePeriod] = None
-        self.life_cycle_infos: list[LifeCycleInfo] = []
+        self.life_cycle_infoes: list[LifeCycleInfo] = []
         self.used_life_cycle_state_definition_group_ref: ARRef = None
 
     def serialize(self) -> ET.Element:
@@ -124,10 +124,10 @@ class LifeCycleInfoSet(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize life_cycle_infos (list to container "LIFE-CYCLE-INFOS")
-        if self.life_cycle_infos:
-            wrapper = ET.Element("LIFE-CYCLE-INFOS")
-            for item in self.life_cycle_infos:
+        # Serialize life_cycle_infoes (list to container "LIFE-CYCLE-INFOES")
+        if self.life_cycle_infoes:
+            wrapper = ET.Element("LIFE-CYCLE-INFOES")
+            for item in self.life_cycle_infoes:
                 serialized = SerializationHelper.serialize_item(item, "LifeCycleInfo")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -181,15 +181,15 @@ class LifeCycleInfoSet(ARElement):
             default_period_end_value = SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod")
             obj.default_period_end = default_period_end_value
 
-        # Parse life_cycle_infos (list from container "LIFE-CYCLE-INFOS")
-        obj.life_cycle_infos = []
-        container = SerializationHelper.find_child_element(element, "LIFE-CYCLE-INFOS")
+        # Parse life_cycle_infoes (list from container "LIFE-CYCLE-INFOES")
+        obj.life_cycle_infoes = []
+        container = SerializationHelper.find_child_element(element, "LIFE-CYCLE-INFOES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.life_cycle_infos.append(child_value)
+                    obj.life_cycle_infoes.append(child_value)
 
         # Parse used_life_cycle_state_definition_group_ref
         child = SerializationHelper.find_child_element(element, "USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF")
@@ -252,8 +252,8 @@ class LifeCycleInfoSetBuilder(ARElementBuilder):
         self._obj.default_period_end = value
         return self
 
-    def with_life_cycle_infos(self, items: list[LifeCycleInfo]) -> "LifeCycleInfoSetBuilder":
-        """Set life_cycle_infos list attribute.
+    def with_life_cycle_infoes(self, items: list[LifeCycleInfo]) -> "LifeCycleInfoSetBuilder":
+        """Set life_cycle_infoes list attribute.
 
         Args:
             items: List of items to set
@@ -261,7 +261,7 @@ class LifeCycleInfoSetBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.life_cycle_infos = list(items) if items else []
+        self._obj.life_cycle_infoes = list(items) if items else []
         return self
 
     def with_used_life_cycle_state_definition_group(self, value: LifeCycleStateDefinitionGroup) -> "LifeCycleInfoSetBuilder":
@@ -280,7 +280,7 @@ class LifeCycleInfoSetBuilder(ARElementBuilder):
 
 
     def add_life_cycle_info(self, item: LifeCycleInfo) -> "LifeCycleInfoSetBuilder":
-        """Add a single item to life_cycle_infos list.
+        """Add a single item to life_cycle_infoes list.
 
         Args:
             item: Item to add
@@ -288,16 +288,16 @@ class LifeCycleInfoSetBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.life_cycle_infos.append(item)
+        self._obj.life_cycle_infoes.append(item)
         return self
 
-    def clear_life_cycle_infos(self) -> "LifeCycleInfoSetBuilder":
-        """Clear all items from life_cycle_infos list.
+    def clear_life_cycle_infoes(self) -> "LifeCycleInfoSetBuilder":
+        """Clear all items from life_cycle_infoes list.
 
         Returns:
             self for method chaining
         """
-        self._obj.life_cycle_infos = []
+        self._obj.life_cycle_infoes = []
         return self
 
 

@@ -33,11 +33,11 @@ class HwCategory(ARElement):
         """
         return False
 
-    hw_attribute_defs: list[HwAttributeDef]
+    hw_attribute_deves: list[HwAttributeDef]
     def __init__(self) -> None:
         """Initialize HwCategory."""
         super().__init__()
-        self.hw_attribute_defs: list[HwAttributeDef] = []
+        self.hw_attribute_deves: list[HwAttributeDef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize HwCategory to XML element.
@@ -63,10 +63,10 @@ class HwCategory(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize hw_attribute_defs (list to container "HW-ATTRIBUTE-DEFS")
-        if self.hw_attribute_defs:
-            wrapper = ET.Element("HW-ATTRIBUTE-DEFS")
-            for item in self.hw_attribute_defs:
+        # Serialize hw_attribute_deves (list to container "HW-ATTRIBUTE-DEVES")
+        if self.hw_attribute_deves:
+            wrapper = ET.Element("HW-ATTRIBUTE-DEVES")
+            for item in self.hw_attribute_deves:
                 serialized = SerializationHelper.serialize_item(item, "HwAttributeDef")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -88,15 +88,15 @@ class HwCategory(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwCategory, cls).deserialize(element)
 
-        # Parse hw_attribute_defs (list from container "HW-ATTRIBUTE-DEFS")
-        obj.hw_attribute_defs = []
-        container = SerializationHelper.find_child_element(element, "HW-ATTRIBUTE-DEFS")
+        # Parse hw_attribute_deves (list from container "HW-ATTRIBUTE-DEVES")
+        obj.hw_attribute_deves = []
+        container = SerializationHelper.find_child_element(element, "HW-ATTRIBUTE-DEVES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.hw_attribute_defs.append(child_value)
+                    obj.hw_attribute_deves.append(child_value)
 
         return obj
 
@@ -111,8 +111,8 @@ class HwCategoryBuilder(ARElementBuilder):
         self._obj: HwCategory = HwCategory()
 
 
-    def with_hw_attribute_defs(self, items: list[HwAttributeDef]) -> "HwCategoryBuilder":
-        """Set hw_attribute_defs list attribute.
+    def with_hw_attribute_deves(self, items: list[HwAttributeDef]) -> "HwCategoryBuilder":
+        """Set hw_attribute_deves list attribute.
 
         Args:
             items: List of items to set
@@ -120,12 +120,12 @@ class HwCategoryBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.hw_attribute_defs = list(items) if items else []
+        self._obj.hw_attribute_deves = list(items) if items else []
         return self
 
 
     def add_hw_attribute_def(self, item: HwAttributeDef) -> "HwCategoryBuilder":
-        """Add a single item to hw_attribute_defs list.
+        """Add a single item to hw_attribute_deves list.
 
         Args:
             item: Item to add
@@ -133,16 +133,16 @@ class HwCategoryBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.hw_attribute_defs.append(item)
+        self._obj.hw_attribute_deves.append(item)
         return self
 
-    def clear_hw_attribute_defs(self) -> "HwCategoryBuilder":
-        """Clear all items from hw_attribute_defs list.
+    def clear_hw_attribute_deves(self) -> "HwCategoryBuilder":
+        """Clear all items from hw_attribute_deves list.
 
         Returns:
             self for method chaining
         """
-        self._obj.hw_attribute_defs = []
+        self._obj.hw_attribute_deves = []
         return self
 
 

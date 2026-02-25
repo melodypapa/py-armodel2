@@ -46,12 +46,12 @@ class RTEEvent(AbstractEvent, ABC):
         """
         return True
 
-    disabled_mode_instance_refs: list[ModeDeclaration]
+    disabled_mode_instance_reves: list[ModeDeclaration]
     start_on_event_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RTEEvent."""
         super().__init__()
-        self.disabled_mode_instance_refs: list[ModeDeclaration] = []
+        self.disabled_mode_instance_reves: list[ModeDeclaration] = []
         self.start_on_event_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -78,10 +78,10 @@ class RTEEvent(AbstractEvent, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize disabled_mode_instance_refs (list to container "DISABLED-MODE-INSTANCE-REFS")
-        if self.disabled_mode_instance_refs:
-            wrapper = ET.Element("DISABLED-MODE-INSTANCE-REFS")
-            for item in self.disabled_mode_instance_refs:
+        # Serialize disabled_mode_instance_reves (list to container "DISABLED-MODE-INSTANCE-REVES")
+        if self.disabled_mode_instance_reves:
+            wrapper = ET.Element("DISABLED-MODE-INSTANCE-REVES")
+            for item in self.disabled_mode_instance_reves:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclaration")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -117,15 +117,15 @@ class RTEEvent(AbstractEvent, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RTEEvent, cls).deserialize(element)
 
-        # Parse disabled_mode_instance_refs (list from container "DISABLED-MODE-INSTANCE-REFS")
-        obj.disabled_mode_instance_refs = []
-        container = SerializationHelper.find_child_element(element, "DISABLED-MODE-INSTANCE-REFS")
+        # Parse disabled_mode_instance_reves (list from container "DISABLED-MODE-INSTANCE-REVES")
+        obj.disabled_mode_instance_reves = []
+        container = SerializationHelper.find_child_element(element, "DISABLED-MODE-INSTANCE-REVES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.disabled_mode_instance_refs.append(child_value)
+                    obj.disabled_mode_instance_reves.append(child_value)
 
         # Parse start_on_event_ref
         child = SerializationHelper.find_child_element(element, "START-ON-EVENT-REF")
@@ -146,8 +146,8 @@ class RTEEventBuilder(AbstractEventBuilder):
         self._obj: RTEEvent = RTEEvent()
 
 
-    def with_disabled_mode_instance_refs(self, items: list[ModeDeclaration]) -> "RTEEventBuilder":
-        """Set disabled_mode_instance_refs list attribute.
+    def with_disabled_mode_instance_reves(self, items: list[ModeDeclaration]) -> "RTEEventBuilder":
+        """Set disabled_mode_instance_reves list attribute.
 
         Args:
             items: List of items to set
@@ -155,7 +155,7 @@ class RTEEventBuilder(AbstractEventBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.disabled_mode_instance_refs = list(items) if items else []
+        self._obj.disabled_mode_instance_reves = list(items) if items else []
         return self
 
     def with_start_on_event(self, value: Optional[RunnableEntity]) -> "RTEEventBuilder":
@@ -174,7 +174,7 @@ class RTEEventBuilder(AbstractEventBuilder):
 
 
     def add_disabled_mode_instance_ref(self, item: ModeDeclaration) -> "RTEEventBuilder":
-        """Add a single item to disabled_mode_instance_refs list.
+        """Add a single item to disabled_mode_instance_reves list.
 
         Args:
             item: Item to add
@@ -182,16 +182,16 @@ class RTEEventBuilder(AbstractEventBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.disabled_mode_instance_refs.append(item)
+        self._obj.disabled_mode_instance_reves.append(item)
         return self
 
-    def clear_disabled_mode_instance_refs(self) -> "RTEEventBuilder":
-        """Clear all items from disabled_mode_instance_refs list.
+    def clear_disabled_mode_instance_reves(self) -> "RTEEventBuilder":
+        """Clear all items from disabled_mode_instance_reves list.
 
         Returns:
             self for method chaining
         """
-        self._obj.disabled_mode_instance_refs = []
+        self._obj.disabled_mode_instance_reves = []
         return self
 
 

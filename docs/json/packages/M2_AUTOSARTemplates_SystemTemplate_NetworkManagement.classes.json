@@ -88,21 +88,21 @@
         }
       ],
       "attributes": {
-        "nmClusters": {
+        "nmCluster": {
           "type": "NmCluster",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of NM Clusters"
         },
-        "nmClusterCouplings": {
+        "nmClusterCoupling": {
           "type": "NmClusterCoupling",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of NmClusterCouplings Derived, because NmCluster can vary. atpVariation"
         },
-        "nmIfEcus": {
+        "nmIfEcu": {
           "type": "NmEcu",
           "multiplicity": "*",
           "kind": "attribute",
@@ -237,7 +237,7 @@
         }
       ],
       "attributes": {
-        "busDependentNmEcus": {
+        "busDependentNmEcu": {
           "type": "BusspecificNmEcu",
           "multiplicity": "*",
           "kind": "attribute",
@@ -393,7 +393,7 @@
           "is_ref": false,
           "note": "This attribute defines the maximum shutdown time (in of a connected and coordinated NM-Cluster."
         },
-        "nmNodes": {
+        "nmNode": {
           "type": "NmNode",
           "multiplicity": "*",
           "kind": "ref",
@@ -483,14 +483,14 @@
           "is_ref": false,
           "note": "Enables support of the Passive Mode. The passive mode"
         },
-        "rxNmPdus": {
+        "rxNmPdu": {
           "type": "NmPdu",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "receive NM Pdu."
         },
-        "txNmPdus": {
+        "txNmPdu": {
           "type": "NmPdu",
           "multiplicity": "*",
           "kind": "ref",
@@ -685,7 +685,7 @@
         }
       ],
       "attributes": {
-        "coupledClusters": {
+        "coupledCluster": {
           "type": "FlexrayNmCluster",
           "multiplicity": "*",
           "kind": "ref",
@@ -903,7 +903,7 @@
         }
       ],
       "attributes": {
-        "coupledClusters": {
+        "coupledCluster": {
           "type": "CanNmCluster",
           "multiplicity": "*",
           "kind": "ref",
@@ -1143,7 +1143,7 @@
         }
       ],
       "attributes": {
-        "coupledClusters": {
+        "coupledCluster": {
           "type": "UdpNmCluster",
           "multiplicity": "*",
           "kind": "ref",

@@ -89,7 +89,7 @@
         }
       ],
       "attributes": {
-        "memoryRanges": {
+        "memoryRange": {
           "type": "any (DiagnosticMemory)",
           "multiplicity": "*",
           "kind": "ref",

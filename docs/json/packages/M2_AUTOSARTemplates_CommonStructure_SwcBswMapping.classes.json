@@ -57,7 +57,7 @@
           "is_ref": true,
           "note": "The mapped BswInternalBehavior"
         },
-        "runnableMappings": {
+        "runnableMapping": {
           "type": "SwcBswRunnableMapping",
           "multiplicity": "*",
           "kind": "aggr",
@@ -71,14 +71,14 @@
           "is_ref": true,
           "note": "The mapped SwcInternalBehavior."
         },
-        "synchronizedModeGroups": {
+        "synchronizedModeGroup": {
           "type": "SwcBswSynchronizedModeGroupPrototype",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "A pair of SWC and BSW Triggers to be synchronized by the scheduler. atpVariation"
         },
-        "synchronizedTriggers": {
+        "synchronizedTrigger": {
           "type": "SwcBswSynchronizedTrigger",
           "multiplicity": "*",
           "kind": "attribute",

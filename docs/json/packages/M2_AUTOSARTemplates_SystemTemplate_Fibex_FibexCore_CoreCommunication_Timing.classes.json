@@ -27,7 +27,7 @@
         }
       ],
       "attributes": {
-        "modeDrivens": {
+        "modeDriven": {
           "type": "ModeDrivenTransmissionModeCondition",
           "multiplicity": "*",
           "kind": "attribute",
@@ -112,7 +112,7 @@
         }
       ],
       "attributes": {
-        "modes": {
+        "mode": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "ref",
@@ -138,7 +138,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "If the COM Transmission Mode is false the timing is aggregated by the TransmissionModeTiming element in the role of transmissionModeFalseTiming. If the COM Transmission Mode is true the timing is aggregated by the TransmissionModeTiming element in the role of transmissionModeTrueTiming. COM supports the following Transmission Modes: \u2022 Periodic (Cyclic Timing) \u2022 Direct /n-times (EventControlledTiming) \u2022 Mixed (Cyclic and EventControlledTiming are assigned) \u2022 None (no timing is assigned)",
+      "note": "If the COM Transmission Mode is false the timing is aggregated by the TransmissionModeTiming element in the role of transmissionModeFalseTiming. If the COM Transmission Mode is true the timing is aggregated by the TransmissionModeTiming element in the role of transmissionModeTrueTiming. COM supports the following Transmission Modes: • Periodic (Cyclic Timing) • Direct /n-times (EventControlledTiming) • Mixed (Cyclic and EventControlledTiming are assigned) • None (no timing is assigned)",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SystemTemplate.pdf",
@@ -392,7 +392,7 @@
         }
       ],
       "attributes": {
-        "modes": {
+        "mode": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "ref",

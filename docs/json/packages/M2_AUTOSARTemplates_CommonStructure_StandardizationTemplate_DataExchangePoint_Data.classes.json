@@ -307,7 +307,7 @@
         }
       ],
       "attributes": {
-        "classContents": {
+        "classContent": {
           "type": "ClassContentConditional",
           "multiplicity": "*",
           "kind": "attribute",
@@ -349,7 +349,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Specifies the valid content of the class. The content can optionally depend on a condition. (E.g. value of attribute \u2019category\u2019)",
+      "note": "Specifies the valid content of the class. The content can optionally depend on a condition. (E.g. value of attribute ’category’)",
       "sources": [
         {
           "pdf_file": "AUTOSAR_FO_TPS_StandardizationTemplate.pdf",
@@ -359,7 +359,7 @@
         }
       ],
       "attributes": {
-        "attributes": {
+        "attribute": {
           "type": "AttributeTailoring",
           "multiplicity": "*",
           "kind": "attribute",
@@ -373,14 +373,14 @@
           "is_ref": false,
           "note": "The rules on the content of this class are enabled if the to true."
         },
-        "constraints": {
+        "constraint": {
           "type": "ConstraintTailoring",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specification of tailorings of Constraints of that are owned this Meta Classes"
         },
-        "sdgTailorings": {
+        "sdgTailoring": {
           "type": "SdgTailoring",
           "multiplicity": "*",
           "kind": "attribute",
@@ -686,7 +686,7 @@
           "is_ref": false,
           "note": "Specification of how to handle AUTOSAR defined default values."
         },
-        "subAttributes": {
+        "subAttribute": {
           "type": "any (PrimitiveAttribute)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -736,7 +736,7 @@
         }
       ],
       "attributes": {
-        "typeTailorings": {
+        "typeTailoring": {
           "type": "ClassTailoring",
           "multiplicity": "*",
           "kind": "attribute",
@@ -779,7 +779,7 @@
         }
       ],
       "attributes": {
-        "typeTailorings": {
+        "typeTailoring": {
           "type": "ClassTailoring",
           "multiplicity": "*",
           "kind": "attribute",
@@ -908,14 +908,14 @@
         }
       ],
       "attributes": {
-        "classTailorings": {
+        "classTailoring": {
           "type": "ClassTailoring",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specification of tailorings of Meta Classes"
         },
-        "constraints": {
+        "constraint": {
           "type": "ConstraintTailoring",
           "multiplicity": "*",
           "kind": "attribute",

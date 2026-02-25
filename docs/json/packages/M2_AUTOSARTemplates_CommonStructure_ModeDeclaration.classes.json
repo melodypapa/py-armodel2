@@ -150,7 +150,7 @@
           "is_ref": true,
           "note": "The initial mode of the ModeDeclarationGroup. This active before any mode switches occurred."
         },
-        "modeDeclarations": {
+        "modeDeclaration": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "attribute",
@@ -164,7 +164,7 @@
           "is_ref": false,
           "note": "This represents the ability to define the error behavior by the mode manager in case of errors on the side (e.g. terminated mode user)."
         },
-        "modeTransitions": {
+        "modeTransition": {
           "type": "ModeTransition",
           "multiplicity": "*",
           "kind": "attribute",

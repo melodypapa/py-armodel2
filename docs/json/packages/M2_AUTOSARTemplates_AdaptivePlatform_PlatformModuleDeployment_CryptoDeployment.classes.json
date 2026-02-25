@@ -58,7 +58,7 @@
           "is_ref": false,
           "note": "Restricts how this keySlot may be used Tags: atp.Status=candidate"
         },
-        "keySlotContentAllowedUsages": {
+        "keySlotContentAllowedUsage": {
           "type": "CryptoKeySlotContentAllowedUsage",
           "multiplicity": "*",
           "kind": "attribute",

@@ -9,7 +9,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
@@ -36,6 +36,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
     SystemSignal,
 )
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformation_i_signal_props import (
+    TransformationISignalProps,
+)
 
 if TYPE_CHECKING:
     from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
@@ -61,29 +64,29 @@ class ISignal(FibexElement):
         """
         return False
 
-    data_ref: Optional[ARRef]
+    data_transformation_ref: Optional[ARRef]
     data_type_policy_enum: Optional[DataTypePolicyEnum]
     init_value: Optional[ValueSpecification]
     i_signal_props: Optional[ISignalProps]
-    i_signal_type_enum: Optional[ISignalTypeEnum]
+    i_signal_type: Optional[ISignalTypeEnum]
     length: Optional[UnlimitedInteger]
-    network: Optional[SwDataDefProps]
+    network_representation_props: Optional[SwDataDefProps]
     system_signal_ref: Optional[ARRef]
-    timeout: Optional[ValueSpecification]
-    transformation_i_signals: list[Any]
+    timeout_substitution_value: Optional[ValueSpecification]
+    transformation_i_signal_props: list[TransformationISignalProps]
     def __init__(self) -> None:
         """Initialize ISignal."""
         super().__init__()
-        self.data_ref: Optional[ARRef] = None
+        self.data_transformation_ref: Optional[ARRef] = None
         self.data_type_policy_enum: Optional[DataTypePolicyEnum] = None
         self.init_value: Optional[ValueSpecification] = None
         self.i_signal_props: Optional[ISignalProps] = None
-        self.i_signal_type_enum: Optional[ISignalTypeEnum] = None
+        self.i_signal_type: Optional[ISignalTypeEnum] = None
         self.length: Optional[UnlimitedInteger] = None
-        self.network: Optional[SwDataDefProps] = None
+        self.network_representation_props: Optional[SwDataDefProps] = None
         self.system_signal_ref: Optional[ARRef] = None
-        self.timeout: Optional[ValueSpecification] = None
-        self.transformation_i_signals: list[Any] = []
+        self.timeout_substitution_value: Optional[ValueSpecification] = None
+        self.transformation_i_signal_props: list[TransformationISignalProps] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ISignal to XML element.
@@ -109,12 +112,12 @@ class ISignal(FibexElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_ref
-        if self.data_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.data_ref, "DataTransformation")
+        # Serialize data_transformation_ref
+        if self.data_transformation_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.data_transformation_ref, "DataTransformation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-REF")
+                wrapped = ET.Element("DATA-TRANSFORMATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -165,12 +168,12 @@ class ISignal(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_signal_type_enum
-        if self.i_signal_type_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.i_signal_type_enum, "ISignalTypeEnum")
+        # Serialize i_signal_type
+        if self.i_signal_type is not None:
+            serialized = SerializationHelper.serialize_item(self.i_signal_type, "ISignalTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-TYPE-ENUM")
+                wrapped = ET.Element("I-SIGNAL-TYPE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -193,12 +196,12 @@ class ISignal(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize network
-        if self.network is not None:
-            serialized = SerializationHelper.serialize_item(self.network, "SwDataDefProps")
+        # Serialize network_representation_props
+        if self.network_representation_props is not None:
+            serialized = SerializationHelper.serialize_item(self.network_representation_props, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("NETWORK")
+                wrapped = ET.Element("NETWORK-REPRESENTATION-PROPS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -221,12 +224,12 @@ class ISignal(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize timeout
-        if self.timeout is not None:
-            serialized = SerializationHelper.serialize_item(self.timeout, "ValueSpecification")
+        # Serialize timeout_substitution_value
+        if self.timeout_substitution_value is not None:
+            serialized = SerializationHelper.serialize_item(self.timeout_substitution_value, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT")
+                wrapped = ET.Element("TIMEOUT-SUBSTITUTION-VALUE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -235,11 +238,11 @@ class ISignal(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transformation_i_signals (list to container "TRANSFORMATION-I-SIGNALS")
-        if self.transformation_i_signals:
-            wrapper = ET.Element("TRANSFORMATION-I-SIGNALS")
-            for item in self.transformation_i_signals:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize transformation_i_signal_props (list to container "TRANSFORMATION-I-SIGNAL-PROPS")
+        if self.transformation_i_signal_props:
+            wrapper = ET.Element("TRANSFORMATION-I-SIGNAL-PROPS")
+            for item in self.transformation_i_signal_props:
+                serialized = SerializationHelper.serialize_item(item, "TransformationISignalProps")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -260,11 +263,11 @@ class ISignal(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignal, cls).deserialize(element)
 
-        # Parse data_ref
-        child = SerializationHelper.find_child_element(element, "DATA-REF")
+        # Parse data_transformation_ref
+        child = SerializationHelper.find_child_element(element, "DATA-TRANSFORMATION-REF")
         if child is not None:
-            data_ref_value = ARRef.deserialize(child)
-            obj.data_ref = data_ref_value
+            data_transformation_ref_value = ARRef.deserialize(child)
+            obj.data_transformation_ref = data_transformation_ref_value
 
         # Parse data_type_policy_enum
         child = SerializationHelper.find_child_element(element, "DATA-TYPE-POLICY-ENUM")
@@ -284,11 +287,11 @@ class ISignal(FibexElement):
             i_signal_props_value = SerializationHelper.deserialize_by_tag(child, "ISignalProps")
             obj.i_signal_props = i_signal_props_value
 
-        # Parse i_signal_type_enum
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-TYPE-ENUM")
+        # Parse i_signal_type
+        child = SerializationHelper.find_child_element(element, "I-SIGNAL-TYPE")
         if child is not None:
-            i_signal_type_enum_value = ISignalTypeEnum.deserialize(child)
-            obj.i_signal_type_enum = i_signal_type_enum_value
+            i_signal_type_value = ISignalTypeEnum.deserialize(child)
+            obj.i_signal_type = i_signal_type_value
 
         # Parse length
         child = SerializationHelper.find_child_element(element, "LENGTH")
@@ -296,11 +299,11 @@ class ISignal(FibexElement):
             length_value = child.text
             obj.length = length_value
 
-        # Parse network
-        child = SerializationHelper.find_child_element(element, "NETWORK")
+        # Parse network_representation_props
+        child = SerializationHelper.find_child_element(element, "NETWORK-REPRESENTATION-PROPS")
         if child is not None:
-            network_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.network = network_value
+            network_representation_props_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
+            obj.network_representation_props = network_representation_props_value
 
         # Parse system_signal_ref
         child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
@@ -308,21 +311,21 @@ class ISignal(FibexElement):
             system_signal_ref_value = ARRef.deserialize(child)
             obj.system_signal_ref = system_signal_ref_value
 
-        # Parse timeout
-        child = SerializationHelper.find_child_element(element, "TIMEOUT")
+        # Parse timeout_substitution_value
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-SUBSTITUTION-VALUE")
         if child is not None:
-            timeout_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
-            obj.timeout = timeout_value
+            timeout_substitution_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
+            obj.timeout_substitution_value = timeout_substitution_value_value
 
-        # Parse transformation_i_signals (list from container "TRANSFORMATION-I-SIGNALS")
-        obj.transformation_i_signals = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-I-SIGNALS")
+        # Parse transformation_i_signal_props (list from container "TRANSFORMATION-I-SIGNAL-PROPS")
+        obj.transformation_i_signal_props = []
+        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-I-SIGNAL-PROPS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.transformation_i_signals.append(child_value)
+                    obj.transformation_i_signal_props.append(child_value)
 
         return obj
 
@@ -337,8 +340,8 @@ class ISignalBuilder(FibexElementBuilder):
         self._obj: ISignal = ISignal()
 
 
-    def with_data(self, value: Optional[DataTransformation]) -> "ISignalBuilder":
-        """Set data attribute.
+    def with_data_transformation(self, value: Optional[DataTransformation]) -> "ISignalBuilder":
+        """Set data_transformation attribute.
 
         Args:
             value: Value to set
@@ -348,7 +351,7 @@ class ISignalBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.data = value
+        self._obj.data_transformation = value
         return self
 
     def with_data_type_policy_enum(self, value: Optional[DataTypePolicyEnum]) -> "ISignalBuilder":
@@ -393,8 +396,8 @@ class ISignalBuilder(FibexElementBuilder):
         self._obj.i_signal_props = value
         return self
 
-    def with_i_signal_type_enum(self, value: Optional[ISignalTypeEnum]) -> "ISignalBuilder":
-        """Set i_signal_type_enum attribute.
+    def with_i_signal_type(self, value: Optional[ISignalTypeEnum]) -> "ISignalBuilder":
+        """Set i_signal_type attribute.
 
         Args:
             value: Value to set
@@ -404,7 +407,7 @@ class ISignalBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.i_signal_type_enum = value
+        self._obj.i_signal_type = value
         return self
 
     def with_length(self, value: Optional[UnlimitedInteger]) -> "ISignalBuilder":
@@ -421,8 +424,8 @@ class ISignalBuilder(FibexElementBuilder):
         self._obj.length = value
         return self
 
-    def with_network(self, value: Optional[SwDataDefProps]) -> "ISignalBuilder":
-        """Set network attribute.
+    def with_network_representation_props(self, value: Optional[SwDataDefProps]) -> "ISignalBuilder":
+        """Set network_representation_props attribute.
 
         Args:
             value: Value to set
@@ -432,7 +435,7 @@ class ISignalBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.network = value
+        self._obj.network_representation_props = value
         return self
 
     def with_system_signal(self, value: Optional[SystemSignal]) -> "ISignalBuilder":
@@ -449,8 +452,8 @@ class ISignalBuilder(FibexElementBuilder):
         self._obj.system_signal = value
         return self
 
-    def with_timeout(self, value: Optional[ValueSpecification]) -> "ISignalBuilder":
-        """Set timeout attribute.
+    def with_timeout_substitution_value(self, value: Optional[ValueSpecification]) -> "ISignalBuilder":
+        """Set timeout_substitution_value attribute.
 
         Args:
             value: Value to set
@@ -460,11 +463,11 @@ class ISignalBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.timeout = value
+        self._obj.timeout_substitution_value = value
         return self
 
-    def with_transformation_i_signals(self, items: list[any (TransformationISignal)]) -> "ISignalBuilder":
-        """Set transformation_i_signals list attribute.
+    def with_transformation_i_signal_props(self, items: list[TransformationISignalProps]) -> "ISignalBuilder":
+        """Set transformation_i_signal_props list attribute.
 
         Args:
             items: List of items to set
@@ -472,12 +475,12 @@ class ISignalBuilder(FibexElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.transformation_i_signals = list(items) if items else []
+        self._obj.transformation_i_signal_props = list(items) if items else []
         return self
 
 
-    def add_transformation_i_signal(self, item: any (TransformationISignal)) -> "ISignalBuilder":
-        """Add a single item to transformation_i_signals list.
+    def add_transformation_i_signal_prop(self, item: TransformationISignalProps) -> "ISignalBuilder":
+        """Add a single item to transformation_i_signal_props list.
 
         Args:
             item: Item to add
@@ -485,16 +488,16 @@ class ISignalBuilder(FibexElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.transformation_i_signals.append(item)
+        self._obj.transformation_i_signal_props.append(item)
         return self
 
-    def clear_transformation_i_signals(self) -> "ISignalBuilder":
-        """Clear all items from transformation_i_signals list.
+    def clear_transformation_i_signal_props(self) -> "ISignalBuilder":
+        """Clear all items from transformation_i_signal_props list.
 
         Returns:
             self for method chaining
         """
-        self._obj.transformation_i_signals = []
+        self._obj.transformation_i_signal_props = []
         return self
 
 

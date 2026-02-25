@@ -50,7 +50,7 @@
           "is_ref": false,
           "note": "Specifies whether the transformer chain is executed even"
         },
-        "transformers": {
+        "transformer": {
           "type": "any (Transformation)",
           "multiplicity": "*",
           "kind": "ref",
@@ -592,14 +592,14 @@
         }
       ],
       "attributes": {
-        "datas": {
+        "data": {
           "type": "DataTransformation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This container consists of all transformer chains which be used for transformation of data communication. atpVariation"
         },
-        "transformationTechnologies": {
+        "transformationTechnology": {
           "type": "TransformationTechnology",
           "multiplicity": "*",
           "kind": "attribute",
@@ -676,7 +676,7 @@
           "is_ref": false,
           "note": "Defines whether the transformer chain of client/server coordinates an autonomous error reaction the RTE or whether any error reaction is the the application."
         },
-        "dataPrototypes": {
+        "dataPrototype": {
           "type": "DataPrototype",
           "multiplicity": "*",
           "kind": "ref",
@@ -828,7 +828,7 @@
           "is_ref": false,
           "note": "The size of all length fields (in Bytes) of unions in the message. This attribute is valid for all available Unions in the SOME/IP message. For a granular modeling on the level of Data DataPrototypeTransformationProps shall"
         },
-        "tlvDataIds": {
+        "tlvDataId": {
           "type": "TlvDataIdDefinitionSet",
           "multiplicity": "*",
           "kind": "ref",
@@ -872,7 +872,7 @@
         }
       ],
       "attributes": {
-        "transformationPropsPropses": {
+        "transformationPropsProps": {
           "type": "TransformationProps",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1268,7 +1268,7 @@
         }
       ],
       "attributes": {
-        "tlvDataIds": {
+        "tlvDataId": {
           "type": "TlvDataIdDefinition",
           "multiplicity": "*",
           "kind": "attribute",

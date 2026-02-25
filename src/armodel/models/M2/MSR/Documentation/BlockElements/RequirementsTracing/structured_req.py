@@ -50,7 +50,7 @@ class StructuredReq(Paginateable):
         """
         return False
 
-    applies_tos: list[StandardNameEnum]
+    applies_toes: list[StandardNameEnum]
     conflicts: Optional[DocumentationBlock]
     date: DateTime
     dependencies: Optional[DocumentationBlock]
@@ -66,7 +66,7 @@ class StructuredReq(Paginateable):
     def __init__(self) -> None:
         """Initialize StructuredReq."""
         super().__init__()
-        self.applies_tos: list[StandardNameEnum] = []
+        self.applies_toes: list[StandardNameEnum] = []
         self.conflicts: Optional[DocumentationBlock] = None
         self.date: DateTime = None
         self.dependencies: Optional[DocumentationBlock] = None
@@ -104,13 +104,13 @@ class StructuredReq(Paginateable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize applies_tos (list to container "APPLIES-TOS")
-        if self.applies_tos:
-            wrapper = ET.Element("APPLIES-TOS")
-            for item in self.applies_tos:
+        # Serialize applies_toes (list to container "APPLIES-TOES")
+        if self.applies_toes:
+            wrapper = ET.Element("APPLIES-TOES")
+            for item in self.applies_toes:
                 serialized = SerializationHelper.serialize_item(item, "StandardNameEnum")
                 if serialized is not None:
-                    child_elem = ET.Element("APPLIES-TO")
+                    child_elem = ET.Element("APPLIES-TOE")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -307,15 +307,15 @@ class StructuredReq(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StructuredReq, cls).deserialize(element)
 
-        # Parse applies_tos (list from container "APPLIES-TOS")
-        obj.applies_tos = []
-        container = SerializationHelper.find_child_element(element, "APPLIES-TOS")
+        # Parse applies_toes (list from container "APPLIES-TOES")
+        obj.applies_toes = []
+        container = SerializationHelper.find_child_element(element, "APPLIES-TOES")
         if container is not None:
             for child in container:
                 # Extract enum value (StandardNameEnum)
                 child_value = StandardNameEnum.deserialize(child)
                 if child_value is not None:
-                    obj.applies_tos.append(child_value)
+                    obj.applies_toes.append(child_value)
 
         # Parse conflicts
         child = SerializationHelper.find_child_element(element, "CONFLICTS")
@@ -412,8 +412,8 @@ class StructuredReqBuilder(PaginateableBuilder):
         self._obj: StructuredReq = StructuredReq()
 
 
-    def with_applies_tos(self, items: list[StandardNameEnum]) -> "StructuredReqBuilder":
-        """Set applies_tos list attribute.
+    def with_applies_toes(self, items: list[StandardNameEnum]) -> "StructuredReqBuilder":
+        """Set applies_toes list attribute.
 
         Args:
             items: List of items to set
@@ -421,7 +421,7 @@ class StructuredReqBuilder(PaginateableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.applies_tos = list(items) if items else []
+        self._obj.applies_toes = list(items) if items else []
         return self
 
     def with_conflicts(self, value: Optional[DocumentationBlock]) -> "StructuredReqBuilder":
@@ -592,7 +592,7 @@ class StructuredReqBuilder(PaginateableBuilder):
 
 
     def add_applies_to(self, item: StandardNameEnum) -> "StructuredReqBuilder":
-        """Add a single item to applies_tos list.
+        """Add a single item to applies_toes list.
 
         Args:
             item: Item to add
@@ -600,16 +600,16 @@ class StructuredReqBuilder(PaginateableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.applies_tos.append(item)
+        self._obj.applies_toes.append(item)
         return self
 
-    def clear_applies_tos(self) -> "StructuredReqBuilder":
-        """Clear all items from applies_tos list.
+    def clear_applies_toes(self) -> "StructuredReqBuilder":
+        """Clear all items from applies_toes list.
 
         Returns:
             self for method chaining
         """
-        self._obj.applies_tos = []
+        self._obj.applies_toes = []
         return self
 
     def add_tested_item(self, item: Traceable) -> "StructuredReqBuilder":

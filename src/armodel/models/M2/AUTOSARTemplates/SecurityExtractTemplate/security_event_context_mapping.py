@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.clas
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_mapping import (
     IdsMapping,
@@ -38,24 +37,13 @@ class SecurityEventContextMapping(IdsMapping, ABC):
 
     filter_chain_ref: Optional[Any]
     idsm_instance_ref: Optional[ARRef]
-    _mapped_securities: list[Any]
+    mapped_securities: list[Any]
     def __init__(self) -> None:
         """Initialize SecurityEventContextMapping."""
         super().__init__()
         self.filter_chain_ref: Optional[Any] = None
         self.idsm_instance_ref: Optional[ARRef] = None
-        self._mapped_securities: list[Any] = []
-    @property
-    @xml_element_name("MAPPED-SECURITYS")
-    def mapped_securities(self) -> list[Any]:
-        """Get mapped_securities with custom XML element name."""
-        return self._mapped_securities
-
-    @mapped_securities.setter
-    def mapped_securities(self, value: list[Any]) -> None:
-        """Set mapped_securities with custom XML element name."""
-        self._mapped_securities = value
-
+        self.mapped_securities: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventContextMapping to XML element.
@@ -109,9 +97,9 @@ class SecurityEventContextMapping(IdsMapping, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mapped_securities (list to container "MAPPED-SECURITYS")
+        # Serialize mapped_securities (list to container "MAPPED-SECURITIES")
         if self.mapped_securities:
-            wrapper = ET.Element("MAPPED-SECURITYS")
+            wrapper = ET.Element("MAPPED-SECURITIES")
             for item in self.mapped_securities:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -146,9 +134,9 @@ class SecurityEventContextMapping(IdsMapping, ABC):
             idsm_instance_ref_value = ARRef.deserialize(child)
             obj.idsm_instance_ref = idsm_instance_ref_value
 
-        # Parse mapped_securities (list from container "MAPPED-SECURITYS")
+        # Parse mapped_securities (list from container "MAPPED-SECURITIES")
         obj.mapped_securities = []
-        container = SerializationHelper.find_child_element(element, "MAPPED-SECURITYS")
+        container = SerializationHelper.find_child_element(element, "MAPPED-SECURITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -210,7 +198,7 @@ class SecurityEventContextMappingBuilder(IdsMappingBuilder):
         return self
 
 
-    def add_mapped_securitie(self, item: any (SecurityEventContext)) -> "SecurityEventContextMappingBuilder":
+    def add_mapped_security(self, item: any (SecurityEventContext)) -> "SecurityEventContextMappingBuilder":
         """Add a single item to mapped_securities list.
 
         Args:

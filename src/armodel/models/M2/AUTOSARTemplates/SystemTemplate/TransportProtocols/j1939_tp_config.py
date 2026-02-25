@@ -198,7 +198,7 @@ class J1939TpConfigBuilder(TpConfigBuilder):
         return self
 
 
-    def add_tp_addresse(self, item: TpAddress) -> "J1939TpConfigBuilder":
+    def add_tp_address(self, item: TpAddress) -> "J1939TpConfigBuilder":
         """Add a single item to tp_addresses list.
 
         Args:

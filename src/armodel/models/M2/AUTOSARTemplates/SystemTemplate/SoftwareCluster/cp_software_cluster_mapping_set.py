@@ -39,17 +39,17 @@ class CpSoftwareClusterMappingSet(ARElement):
         """
         return False
 
-    port_element_tos: list[PortElementToCommunicationResourceMapping]
-    resource_tos: list[CpSoftwareCluster]
+    port_element_toes: list[PortElementToCommunicationResourceMapping]
+    resource_toes: list[CpSoftwareCluster]
     software_clusters: list[Any]
-    swc_tos: list[SwcToApplicationPartitionMapping]
+    swc_toes: list[SwcToApplicationPartitionMapping]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterMappingSet."""
         super().__init__()
-        self.port_element_tos: list[PortElementToCommunicationResourceMapping] = []
-        self.resource_tos: list[CpSoftwareCluster] = []
+        self.port_element_toes: list[PortElementToCommunicationResourceMapping] = []
+        self.resource_toes: list[CpSoftwareCluster] = []
         self.software_clusters: list[Any] = []
-        self.swc_tos: list[SwcToApplicationPartitionMapping] = []
+        self.swc_toes: list[SwcToApplicationPartitionMapping] = []
 
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterMappingSet to XML element.
@@ -75,20 +75,20 @@ class CpSoftwareClusterMappingSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize port_element_tos (list to container "PORT-ELEMENT-TOS")
-        if self.port_element_tos:
-            wrapper = ET.Element("PORT-ELEMENT-TOS")
-            for item in self.port_element_tos:
+        # Serialize port_element_toes (list to container "PORT-ELEMENT-TOES")
+        if self.port_element_toes:
+            wrapper = ET.Element("PORT-ELEMENT-TOES")
+            for item in self.port_element_toes:
                 serialized = SerializationHelper.serialize_item(item, "PortElementToCommunicationResourceMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize resource_tos (list to container "RESOURCE-TOS")
-        if self.resource_tos:
-            wrapper = ET.Element("RESOURCE-TOS")
-            for item in self.resource_tos:
+        # Serialize resource_toes (list to container "RESOURCE-TOES")
+        if self.resource_toes:
+            wrapper = ET.Element("RESOURCE-TOES")
+            for item in self.resource_toes:
                 serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -105,10 +105,10 @@ class CpSoftwareClusterMappingSet(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize swc_tos (list to container "SWC-TOS")
-        if self.swc_tos:
-            wrapper = ET.Element("SWC-TOS")
-            for item in self.swc_tos:
+        # Serialize swc_toes (list to container "SWC-TOES")
+        if self.swc_toes:
+            wrapper = ET.Element("SWC-TOES")
+            for item in self.swc_toes:
                 serialized = SerializationHelper.serialize_item(item, "SwcToApplicationPartitionMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -130,25 +130,25 @@ class CpSoftwareClusterMappingSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterMappingSet, cls).deserialize(element)
 
-        # Parse port_element_tos (list from container "PORT-ELEMENT-TOS")
-        obj.port_element_tos = []
-        container = SerializationHelper.find_child_element(element, "PORT-ELEMENT-TOS")
+        # Parse port_element_toes (list from container "PORT-ELEMENT-TOES")
+        obj.port_element_toes = []
+        container = SerializationHelper.find_child_element(element, "PORT-ELEMENT-TOES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.port_element_tos.append(child_value)
+                    obj.port_element_toes.append(child_value)
 
-        # Parse resource_tos (list from container "RESOURCE-TOS")
-        obj.resource_tos = []
-        container = SerializationHelper.find_child_element(element, "RESOURCE-TOS")
+        # Parse resource_toes (list from container "RESOURCE-TOES")
+        obj.resource_toes = []
+        container = SerializationHelper.find_child_element(element, "RESOURCE-TOES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.resource_tos.append(child_value)
+                    obj.resource_toes.append(child_value)
 
         # Parse software_clusters (list from container "SOFTWARE-CLUSTERS")
         obj.software_clusters = []
@@ -160,15 +160,15 @@ class CpSoftwareClusterMappingSet(ARElement):
                 if child_value is not None:
                     obj.software_clusters.append(child_value)
 
-        # Parse swc_tos (list from container "SWC-TOS")
-        obj.swc_tos = []
-        container = SerializationHelper.find_child_element(element, "SWC-TOS")
+        # Parse swc_toes (list from container "SWC-TOES")
+        obj.swc_toes = []
+        container = SerializationHelper.find_child_element(element, "SWC-TOES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.swc_tos.append(child_value)
+                    obj.swc_toes.append(child_value)
 
         return obj
 
@@ -183,8 +183,8 @@ class CpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         self._obj: CpSoftwareClusterMappingSet = CpSoftwareClusterMappingSet()
 
 
-    def with_port_element_tos(self, items: list[PortElementToCommunicationResourceMapping]) -> "CpSoftwareClusterMappingSetBuilder":
-        """Set port_element_tos list attribute.
+    def with_port_element_toes(self, items: list[PortElementToCommunicationResourceMapping]) -> "CpSoftwareClusterMappingSetBuilder":
+        """Set port_element_toes list attribute.
 
         Args:
             items: List of items to set
@@ -192,11 +192,11 @@ class CpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.port_element_tos = list(items) if items else []
+        self._obj.port_element_toes = list(items) if items else []
         return self
 
-    def with_resource_tos(self, items: list[CpSoftwareCluster]) -> "CpSoftwareClusterMappingSetBuilder":
-        """Set resource_tos list attribute.
+    def with_resource_toes(self, items: list[CpSoftwareCluster]) -> "CpSoftwareClusterMappingSetBuilder":
+        """Set resource_toes list attribute.
 
         Args:
             items: List of items to set
@@ -204,7 +204,7 @@ class CpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.resource_tos = list(items) if items else []
+        self._obj.resource_toes = list(items) if items else []
         return self
 
     def with_software_clusters(self, items: list[any (CpSoftwareClusterTo)]) -> "CpSoftwareClusterMappingSetBuilder":
@@ -219,8 +219,8 @@ class CpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         self._obj.software_clusters = list(items) if items else []
         return self
 
-    def with_swc_tos(self, items: list[SwcToApplicationPartitionMapping]) -> "CpSoftwareClusterMappingSetBuilder":
-        """Set swc_tos list attribute.
+    def with_swc_toes(self, items: list[SwcToApplicationPartitionMapping]) -> "CpSoftwareClusterMappingSetBuilder":
+        """Set swc_toes list attribute.
 
         Args:
             items: List of items to set
@@ -228,12 +228,12 @@ class CpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.swc_tos = list(items) if items else []
+        self._obj.swc_toes = list(items) if items else []
         return self
 
 
     def add_port_element_to(self, item: PortElementToCommunicationResourceMapping) -> "CpSoftwareClusterMappingSetBuilder":
-        """Add a single item to port_element_tos list.
+        """Add a single item to port_element_toes list.
 
         Args:
             item: Item to add
@@ -241,20 +241,20 @@ class CpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.port_element_tos.append(item)
+        self._obj.port_element_toes.append(item)
         return self
 
-    def clear_port_element_tos(self) -> "CpSoftwareClusterMappingSetBuilder":
-        """Clear all items from port_element_tos list.
+    def clear_port_element_toes(self) -> "CpSoftwareClusterMappingSetBuilder":
+        """Clear all items from port_element_toes list.
 
         Returns:
             self for method chaining
         """
-        self._obj.port_element_tos = []
+        self._obj.port_element_toes = []
         return self
 
     def add_resource_to(self, item: CpSoftwareCluster) -> "CpSoftwareClusterMappingSetBuilder":
-        """Add a single item to resource_tos list.
+        """Add a single item to resource_toes list.
 
         Args:
             item: Item to add
@@ -262,16 +262,16 @@ class CpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.resource_tos.append(item)
+        self._obj.resource_toes.append(item)
         return self
 
-    def clear_resource_tos(self) -> "CpSoftwareClusterMappingSetBuilder":
-        """Clear all items from resource_tos list.
+    def clear_resource_toes(self) -> "CpSoftwareClusterMappingSetBuilder":
+        """Clear all items from resource_toes list.
 
         Returns:
             self for method chaining
         """
-        self._obj.resource_tos = []
+        self._obj.resource_toes = []
         return self
 
     def add_software_cluster(self, item: any (CpSoftwareClusterTo)) -> "CpSoftwareClusterMappingSetBuilder":
@@ -296,7 +296,7 @@ class CpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         return self
 
     def add_swc_to(self, item: SwcToApplicationPartitionMapping) -> "CpSoftwareClusterMappingSetBuilder":
-        """Add a single item to swc_tos list.
+        """Add a single item to swc_toes list.
 
         Args:
             item: Item to add
@@ -304,16 +304,16 @@ class CpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.swc_tos.append(item)
+        self._obj.swc_toes.append(item)
         return self
 
-    def clear_swc_tos(self) -> "CpSoftwareClusterMappingSetBuilder":
-        """Clear all items from swc_tos list.
+    def clear_swc_toes(self) -> "CpSoftwareClusterMappingSetBuilder":
+        """Clear all items from swc_toes list.
 
         Returns:
             self for method chaining
         """
-        self._obj.swc_tos = []
+        self._obj.swc_toes = []
         return self
 
 

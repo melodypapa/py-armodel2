@@ -115,14 +115,14 @@
           "is_ref": true,
           "note": "The option is valid for generated functions related to this port"
         },
-        "portArgValues": {
+        "portArgValue": {
           "type": "PortDefinedArgumentValue",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "An argument value defined by this port."
         },
-        "supporteds": {
+        "supported": {
           "type": "SwcSupportedFeature",
           "multiplicity": "*",
           "kind": "attribute",

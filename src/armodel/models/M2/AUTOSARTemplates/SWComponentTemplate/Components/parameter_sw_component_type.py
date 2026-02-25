@@ -43,13 +43,13 @@ class ParameterSwComponentType(SwComponentType):
 
     constant_refs: list[ARRef]
     data_type_refs: list[ARRef]
-    instantiation_data_defs: list[InstantiationDataDefProps]
+    instantiation_data_deves: list[InstantiationDataDefProps]
     def __init__(self) -> None:
         """Initialize ParameterSwComponentType."""
         super().__init__()
         self.constant_refs: list[ARRef] = []
         self.data_type_refs: list[ARRef] = []
-        self.instantiation_data_defs: list[InstantiationDataDefProps] = []
+        self.instantiation_data_deves: list[InstantiationDataDefProps] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ParameterSwComponentType to XML element.
@@ -109,10 +109,10 @@ class ParameterSwComponentType(SwComponentType):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize instantiation_data_defs (list to container "INSTANTIATION-DATA-DEFS")
-        if self.instantiation_data_defs:
-            wrapper = ET.Element("INSTANTIATION-DATA-DEFS")
-            for item in self.instantiation_data_defs:
+        # Serialize instantiation_data_deves (list to container "INSTANTIATION-DATA-DEVES")
+        if self.instantiation_data_deves:
+            wrapper = ET.Element("INSTANTIATION-DATA-DEVES")
+            for item in self.instantiation_data_deves:
                 serialized = SerializationHelper.serialize_item(item, "InstantiationDataDefProps")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -166,15 +166,15 @@ class ParameterSwComponentType(SwComponentType):
                 if child_value is not None:
                     obj.data_type_refs.append(child_value)
 
-        # Parse instantiation_data_defs (list from container "INSTANTIATION-DATA-DEFS")
-        obj.instantiation_data_defs = []
-        container = SerializationHelper.find_child_element(element, "INSTANTIATION-DATA-DEFS")
+        # Parse instantiation_data_deves (list from container "INSTANTIATION-DATA-DEVES")
+        obj.instantiation_data_deves = []
+        container = SerializationHelper.find_child_element(element, "INSTANTIATION-DATA-DEVES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.instantiation_data_defs.append(child_value)
+                    obj.instantiation_data_deves.append(child_value)
 
         return obj
 
@@ -213,8 +213,8 @@ class ParameterSwComponentTypeBuilder(SwComponentTypeBuilder):
         self._obj.data_types = list(items) if items else []
         return self
 
-    def with_instantiation_data_defs(self, items: list[InstantiationDataDefProps]) -> "ParameterSwComponentTypeBuilder":
-        """Set instantiation_data_defs list attribute.
+    def with_instantiation_data_deves(self, items: list[InstantiationDataDefProps]) -> "ParameterSwComponentTypeBuilder":
+        """Set instantiation_data_deves list attribute.
 
         Args:
             items: List of items to set
@@ -222,7 +222,7 @@ class ParameterSwComponentTypeBuilder(SwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.instantiation_data_defs = list(items) if items else []
+        self._obj.instantiation_data_deves = list(items) if items else []
         return self
 
 
@@ -269,7 +269,7 @@ class ParameterSwComponentTypeBuilder(SwComponentTypeBuilder):
         return self
 
     def add_instantiation_data_def(self, item: InstantiationDataDefProps) -> "ParameterSwComponentTypeBuilder":
-        """Add a single item to instantiation_data_defs list.
+        """Add a single item to instantiation_data_deves list.
 
         Args:
             item: Item to add
@@ -277,16 +277,16 @@ class ParameterSwComponentTypeBuilder(SwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.instantiation_data_defs.append(item)
+        self._obj.instantiation_data_deves.append(item)
         return self
 
-    def clear_instantiation_data_defs(self) -> "ParameterSwComponentTypeBuilder":
-        """Clear all items from instantiation_data_defs list.
+    def clear_instantiation_data_deves(self) -> "ParameterSwComponentTypeBuilder":
+        """Clear all items from instantiation_data_deves list.
 
         Returns:
             self for method chaining
         """
-        self._obj.instantiation_data_defs = []
+        self._obj.instantiation_data_deves = []
         return self
 
 

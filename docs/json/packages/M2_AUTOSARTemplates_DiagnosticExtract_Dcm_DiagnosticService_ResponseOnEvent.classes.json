@@ -35,7 +35,7 @@
         }
       ],
       "attributes": {
-        "eventWindows": {
+        "eventWindow": {
           "type": "DiagnosticEventWindow",
           "multiplicity": "*",
           "kind": "attribute",

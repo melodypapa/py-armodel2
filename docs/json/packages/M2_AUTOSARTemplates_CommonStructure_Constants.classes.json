@@ -75,7 +75,7 @@
           "is_ref": false,
           "note": "This represents the category of the RuleBasedValue"
         },
-        "swAxisConts": {
+        "swAxisCont": {
           "type": "RuleBasedAxisCont",
           "multiplicity": "*",
           "kind": "attribute",
@@ -160,7 +160,7 @@
         }
       ],
       "attributes": {
-        "elements": {
+        "element": {
           "type": "ValueSpecification",
           "multiplicity": "*",
           "kind": "attribute",
@@ -664,7 +664,7 @@
           "is_ref": false,
           "note": "Specifies to which category of ApplicationDataType this"
         },
-        "swAxisConts": {
+        "swAxisCont": {
           "type": "SwAxisCont",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1190,7 +1190,7 @@
         }
       ],
       "attributes": {
-        "mappings": {
+        "mapping": {
           "type": "ConstantSpecification",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1458,14 +1458,14 @@
         }
       ],
       "attributes": {
-        "arguments": {
+        "argument": {
           "type": "CompositeValueSpecification",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the collection of aggregated Value Specifications. The last ValueSpecification in the be taken to execute the filling rule."
         },
-        "compounds": {
+        "compound": {
           "type": "any (CompositeRuleBased)",
           "multiplicity": "*",
           "kind": "attribute",

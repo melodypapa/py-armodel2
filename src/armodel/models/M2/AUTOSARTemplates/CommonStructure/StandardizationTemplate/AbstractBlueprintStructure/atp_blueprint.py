@@ -10,7 +10,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Standardizat
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -37,22 +36,11 @@ class AtpBlueprint(Identifiable, ABC):
         """
         return True
 
-    _blueprint_policies: list[BlueprintPolicy]
+    blueprint_policies: list[BlueprintPolicy]
     def __init__(self) -> None:
         """Initialize AtpBlueprint."""
         super().__init__()
-        self._blueprint_policies: list[BlueprintPolicy] = []
-    @property
-    @xml_element_name("BLUEPRINT-POLICYS")
-    def blueprint_policies(self) -> list[BlueprintPolicy]:
-        """Get blueprint_policies with custom XML element name."""
-        return self._blueprint_policies
-
-    @blueprint_policies.setter
-    def blueprint_policies(self, value: list[BlueprintPolicy]) -> None:
-        """Set blueprint_policies with custom XML element name."""
-        self._blueprint_policies = value
-
+        self.blueprint_policies: list[BlueprintPolicy] = []
 
     def serialize(self) -> ET.Element:
         """Serialize AtpBlueprint to XML element.
@@ -78,9 +66,9 @@ class AtpBlueprint(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize blueprint_policies (list to container "BLUEPRINT-POLICYS")
+        # Serialize blueprint_policies (list to container "BLUEPRINT-POLICIES")
         if self.blueprint_policies:
-            wrapper = ET.Element("BLUEPRINT-POLICYS")
+            wrapper = ET.Element("BLUEPRINT-POLICIES")
             for item in self.blueprint_policies:
                 serialized = SerializationHelper.serialize_item(item, "BlueprintPolicy")
                 if serialized is not None:
@@ -103,9 +91,9 @@ class AtpBlueprint(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AtpBlueprint, cls).deserialize(element)
 
-        # Parse blueprint_policies (list from container "BLUEPRINT-POLICYS")
+        # Parse blueprint_policies (list from container "BLUEPRINT-POLICIES")
         obj.blueprint_policies = []
-        container = SerializationHelper.find_child_element(element, "BLUEPRINT-POLICYS")
+        container = SerializationHelper.find_child_element(element, "BLUEPRINT-POLICIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -139,7 +127,7 @@ class AtpBlueprintBuilder(IdentifiableBuilder):
         return self
 
 
-    def add_blueprint_policie(self, item: BlueprintPolicy) -> "AtpBlueprintBuilder":
+    def add_blueprint_policy(self, item: BlueprintPolicy) -> "AtpBlueprintBuilder":
         """Add a single item to blueprint_policies list.
 
         Args:

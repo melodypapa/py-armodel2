@@ -50,7 +50,7 @@
         }
       ],
       "attributes": {
-        "appliesTos": {
+        "appliesTo": {
           "type": "StandardNameEnum",
           "multiplicity": "*",
           "kind": "attribute",
@@ -120,7 +120,7 @@
           "is_ref": false,
           "note": "This represents an informal specification of the material."
         },
-        "testedItems": {
+        "testedItem": {
           "type": "Traceable",
           "multiplicity": "*",
           "kind": "ref",
@@ -164,7 +164,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This meta-class represents the ability to denote a traceable text item such as requirements etc. The following approach applies: \u2022 shortName represents the tag for tracing \u2022 longName represents the head line \u2022 category represents the kind of the tagged text (see [constr_2540])",
+      "note": "This meta-class represents the ability to denote a traceable text item such as requirements etc. The following approach applies: • shortName represents the tag for tracing • longName represents the head line • category represents the kind of the tagged text (see [constr_2540])",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf",
@@ -234,7 +234,7 @@
         }
       ],
       "attributes": {
-        "traces": {
+        "trace": {
           "type": "Traceable",
           "multiplicity": "*",
           "kind": "ref",

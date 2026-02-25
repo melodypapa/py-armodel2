@@ -42,7 +42,7 @@
         }
       ],
       "attributes": {
-        "dependents": {
+        "dependent": {
           "type": "RoleBasedResourceDependency",
           "multiplicity": "*",
           "kind": "attribute",
@@ -164,14 +164,14 @@
           "is_ref": false,
           "note": "This attribute represents the value of the id of the CP software cluster."
         },
-        "swComponents": {
+        "swComponent": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This is the collection of SwComponentPrototype"
         },
-        "swCompositionComponentTypes": {
+        "swCompositionComponentType": {
           "type": "CompositionSwComponentType",
           "multiplicity": "*",
           "kind": "ref",
@@ -223,7 +223,7 @@
           "is_ref": false,
           "note": "Unique number of the (virtual or physical) machine to Software Cluster is mapped."
         },
-        "swClusters": {
+        "swCluster": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
           "kind": "ref",
@@ -310,28 +310,28 @@
         }
       ],
       "attributes": {
-        "portElementTos": {
+        "portElementTo": {
           "type": "PortElementToCommunicationResourceMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "maps a communication resource to CP Software Clusters"
         },
-        "resourceTos": {
+        "resourceTo": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Maps a Software Cluster resource to an Application Partition to restrict the usage. Stereotypes: atpSplitable; atpVariation Mapping Tags:"
         },
-        "softwareClusters": {
+        "softwareCluster": {
           "type": "any (CpSoftwareClusterTo)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "maps a service resource to CP Software Clusters Stereotypes: atpSplitable; atpVariation Mapping Tags:"
         },
-        "swcTos": {
+        "swcTo": {
           "type": "SwcToApplicationPartitionMapping",
           "multiplicity": "*",
           "kind": "attribute",
@@ -370,7 +370,7 @@
         }
       ],
       "attributes": {
-        "applications": {
+        "application": {
           "type": "ApplicationPartition",
           "multiplicity": "*",
           "kind": "ref",
@@ -543,14 +543,14 @@
         }
       ],
       "attributes": {
-        "ecuScopes": {
+        "ecuScope": {
           "type": "EcuInstance",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This reference identifies the EcuInstance in which the is defined."
         },
-        "resources": {
+        "resource": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
           "kind": "attribute",
@@ -740,7 +740,7 @@
         }
       ],
       "attributes": {
-        "resourceNeedses": {
+        "resourceNeeds": {
           "type": "EcucContainerValue",
           "multiplicity": "*",
           "kind": "ref",
@@ -769,7 +769,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This meta class maps a service resource to CP Software Clusters. By this mapping it\u2019s specified whether the Software Cluster has to provide or to require the resource.",
+      "note": "This meta class maps a service resource to CP Software Clusters. By this mapping it’s specified whether the Software Cluster has to provide or to require the resource.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SystemTemplate.pdf",
@@ -786,7 +786,7 @@
           "is_ref": true,
           "note": "CP Software Cluster providing the resource"
         },
-        "requesters": {
+        "requester": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
           "kind": "ref",

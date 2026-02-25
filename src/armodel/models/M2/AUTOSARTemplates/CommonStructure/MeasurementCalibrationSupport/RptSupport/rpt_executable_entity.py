@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementC
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -37,28 +36,17 @@ class RptExecutableEntity(Identifiable):
         """
         return False
 
-    _rpt_executable_entities: list[RptExecutableEntity]
+    rpt_executable_entities: list[RptExecutableEntity]
     rpt_reads: list[RoleBasedMcDataAssignment]
     rpt_writes: list[RoleBasedMcDataAssignment]
     symbol: Optional[CIdentifier]
     def __init__(self) -> None:
         """Initialize RptExecutableEntity."""
         super().__init__()
-        self._rpt_executable_entities: list[RptExecutableEntity] = []
+        self.rpt_executable_entities: list[RptExecutableEntity] = []
         self.rpt_reads: list[RoleBasedMcDataAssignment] = []
         self.rpt_writes: list[RoleBasedMcDataAssignment] = []
         self.symbol: Optional[CIdentifier] = None
-    @property
-    @xml_element_name("RPT-EXECUTABLE-ENTITYS")
-    def rpt_executable_entities(self) -> list[RptExecutableEntity]:
-        """Get rpt_executable_entities with custom XML element name."""
-        return self._rpt_executable_entities
-
-    @rpt_executable_entities.setter
-    def rpt_executable_entities(self, value: list[RptExecutableEntity]) -> None:
-        """Set rpt_executable_entities with custom XML element name."""
-        self._rpt_executable_entities = value
-
 
     def serialize(self) -> ET.Element:
         """Serialize RptExecutableEntity to XML element.
@@ -84,9 +72,9 @@ class RptExecutableEntity(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize rpt_executable_entities (list to container "RPT-EXECUTABLE-ENTITYS")
+        # Serialize rpt_executable_entities (list to container "RPT-EXECUTABLE-ENTITIES")
         if self.rpt_executable_entities:
-            wrapper = ET.Element("RPT-EXECUTABLE-ENTITYS")
+            wrapper = ET.Element("RPT-EXECUTABLE-ENTITIES")
             for item in self.rpt_executable_entities:
                 serialized = SerializationHelper.serialize_item(item, "RptExecutableEntity")
                 if serialized is not None:
@@ -143,9 +131,9 @@ class RptExecutableEntity(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptExecutableEntity, cls).deserialize(element)
 
-        # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITYS")
+        # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITIES")
         obj.rpt_executable_entities = []
-        container = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITYS")
+        container = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -243,7 +231,7 @@ class RptExecutableEntityBuilder(IdentifiableBuilder):
         return self
 
 
-    def add_rpt_executable_entitie(self, item: RptExecutableEntity) -> "RptExecutableEntityBuilder":
+    def add_rpt_executable_entity(self, item: RptExecutableEntity) -> "RptExecutableEntityBuilder":
         """Add a single item to rpt_executable_entities list.
 
         Args:

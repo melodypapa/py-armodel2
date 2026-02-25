@@ -39,14 +39,14 @@
         }
       ],
       "attributes": {
-        "functionalRequests": {
+        "functionalRequest": {
           "type": "TpConnectionIdent",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to functional request messages. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "periodicResponseUudts": {
+        "periodicResponseUudt": {
           "type": "PduTriggering",
           "multiplicity": "*",
           "kind": "ref",

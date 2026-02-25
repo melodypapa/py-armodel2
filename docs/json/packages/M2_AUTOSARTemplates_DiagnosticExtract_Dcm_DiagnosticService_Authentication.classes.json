@@ -308,7 +308,7 @@
         }
       ],
       "attributes": {
-        "certificates": {
+        "certificate": {
           "type": "any (DiagnosticAuthTransmit)",
           "multiplicity": "*",
           "kind": "attribute",

@@ -79,28 +79,18 @@ class LinMaster(ARObject):
                 # Other elements go inside the atp_variant wrapper
                 inner_elem.append(child)
 
-        # Serialize lin_slaves (list from container "LIN-SLAVES")
-        if self.lin_slaves:
-            container = ET.Element("LIN-SLAVES")
-            for item in self.lin_slaves:
-                if is_ref:
-                    # For reference lists, serialize as reference
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                elif is_primitive_type("LinSlaveConfig", package_data):
-                    # Simple primitive type
-                    child = ET.Element("LIN-SLAVE")
-                    child.text = str(item)
-                    container.append(child)
-                elif is_enum_type("LinSlaveConfig", package_data):
-                    # Enum type - use serialize method
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-                else:
-                    # Complex object type
-                    if hasattr(item, "serialize"):
-                        container.append(item.serialize())
-            inner_elem.append(container)
+        # Serialize lin_slaves (list)
+        for item in self.lin_slaves:
+            serialized = SerializationHelper.serialize_item(item, "LinSlaveConfig")
+            if serialized is not None:
+                wrapped = ET.Element("LIN-SLAF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
 
         # Serialize time_base
         if self.time_base is not None:
@@ -165,33 +155,11 @@ class LinMaster(ARObject):
         for child in list(inner_elem):
             element.remove(child)
 
-        # Parse lin_slaves (list from container "LIN-SLAVES")
+        # Parse lin_slaves (list)
         obj.lin_slaves = []
-        container = SerializationHelper.find_child_element(inner_elem, "LIN-SLAVES")
-        if container is not None:
-            for child in container:
-                if is_ref:
-                    # Use the child_tag from decorator if specified to match specific child tag
-                    if child_tag:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag == "None":
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                    else:
-                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                            child_value = ARRef.deserialize(child)
-                        else:
-                            child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("LinSlaveConfig", package_data):
-                    child_value = child.text
-                elif is_enum_type("LinSlaveConfig", package_data):
-                    child_value = LinSlaveConfig.deserialize(child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.lin_slaves.append(child_value)
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "LIN-SLAF"):
+            lin_slaves_value = SerializationHelper.deserialize_by_tag(child, "LinSlaveConfig")
+            obj.lin_slaves.append(lin_slaves_value)
 
         # Parse time_base
         child = SerializationHelper.find_child_element(inner_elem, "TIME-BASE")
@@ -259,7 +227,7 @@ class LinMasterBuilder(BuilderBase):
         return self
 
 
-    def add_lin_slave(self, item: LinSlaveConfig) -> "LinMasterBuilder":
+    def add_lin_slaf(self, item: LinSlaveConfig) -> "LinMasterBuilder":
         """Add a single item to lin_slaves list.
 
         Args:

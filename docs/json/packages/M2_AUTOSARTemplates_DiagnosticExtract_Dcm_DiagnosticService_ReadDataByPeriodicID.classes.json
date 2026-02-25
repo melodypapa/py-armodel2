@@ -85,7 +85,7 @@
           "is_ref": false,
           "note": "This represents the maximum number of data identifiers can be included in one request."
         },
-        "periodicRates": {
+        "periodicRate": {
           "type": "DiagnosticPeriodicRate",
           "multiplicity": "*",
           "kind": "attribute",

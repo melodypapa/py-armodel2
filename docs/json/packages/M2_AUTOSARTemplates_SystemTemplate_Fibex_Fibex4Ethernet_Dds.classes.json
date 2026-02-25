@@ -168,14 +168,14 @@
           "is_ref": false,
           "note": "Minor Version of the Service that is provided by this Dds"
         },
-        "providedDdses": {
+        "providedDds": {
           "type": "DdsCpServiceInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of provided events. Stereotypes: atpSplitable; atpVariation Event Tags:"
         },
-        "staticRemotes": {
+        "staticRemote": {
           "type": "ApplicationEndpoint",
           "multiplicity": "*",
           "kind": "ref",
@@ -215,7 +215,7 @@
         }
       ],
       "attributes": {
-        "consumedDdses": {
+        "consumedDds": {
           "type": "DdsCpServiceInstance",
           "multiplicity": "*",
           "kind": "attribute",
@@ -363,14 +363,14 @@
         }
       ],
       "attributes": {
-        "ddsDomains": {
+        "ddsDomain": {
           "type": "DdsCpDomain",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of DDS Domain definitions."
         },
-        "ddsQosProfiles": {
+        "ddsQosProfile": {
           "type": "DdsCpQosProfile",
           "multiplicity": "*",
           "kind": "attribute",
@@ -408,14 +408,14 @@
         }
       ],
       "attributes": {
-        "ddsPartitions": {
+        "ddsPartition": {
           "type": "DdsCpPartition",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of DDS Partition definitions."
         },
-        "ddsTopics": {
+        "ddsTopic": {
           "type": "DdsCpTopic",
           "multiplicity": "*",
           "kind": "attribute",
@@ -510,7 +510,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Definition of the DDS Partition Name. \u2019*\u2019 may be used to"
+          "note": "Definition of the DDS Partition Name. ’*’ may be used to"
         }
       }
     },

@@ -35,12 +35,12 @@ class McDataAccessDetails(ARObject):
         """
         return False
 
-    rte_event_refs: list[RTEEvent]
+    rte_event_reves: list[RTEEvent]
     variable_accesses: list[VariableAccess]
     def __init__(self) -> None:
         """Initialize McDataAccessDetails."""
         super().__init__()
-        self.rte_event_refs: list[RTEEvent] = []
+        self.rte_event_reves: list[RTEEvent] = []
         self.variable_accesses: list[VariableAccess] = []
 
     def serialize(self) -> ET.Element:
@@ -67,10 +67,10 @@ class McDataAccessDetails(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize rte_event_refs (list to container "RTE-EVENT-REFS")
-        if self.rte_event_refs:
-            wrapper = ET.Element("RTE-EVENT-REFS")
-            for item in self.rte_event_refs:
+        # Serialize rte_event_reves (list to container "RTE-EVENT-REVES")
+        if self.rte_event_reves:
+            wrapper = ET.Element("RTE-EVENT-REVES")
+            for item in self.rte_event_reves:
                 serialized = SerializationHelper.serialize_item(item, "RTEEvent")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -102,15 +102,15 @@ class McDataAccessDetails(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(McDataAccessDetails, cls).deserialize(element)
 
-        # Parse rte_event_refs (list from container "RTE-EVENT-REFS")
-        obj.rte_event_refs = []
-        container = SerializationHelper.find_child_element(element, "RTE-EVENT-REFS")
+        # Parse rte_event_reves (list from container "RTE-EVENT-REVES")
+        obj.rte_event_reves = []
+        container = SerializationHelper.find_child_element(element, "RTE-EVENT-REVES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.rte_event_refs.append(child_value)
+                    obj.rte_event_reves.append(child_value)
 
         # Parse variable_accesses (list from container "VARIABLE-ACCESSES")
         obj.variable_accesses = []
@@ -135,8 +135,8 @@ class McDataAccessDetailsBuilder(BuilderBase):
         self._obj: McDataAccessDetails = McDataAccessDetails()
 
 
-    def with_rte_event_refs(self, items: list[RTEEvent]) -> "McDataAccessDetailsBuilder":
-        """Set rte_event_refs list attribute.
+    def with_rte_event_reves(self, items: list[RTEEvent]) -> "McDataAccessDetailsBuilder":
+        """Set rte_event_reves list attribute.
 
         Args:
             items: List of items to set
@@ -144,7 +144,7 @@ class McDataAccessDetailsBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_refs = list(items) if items else []
+        self._obj.rte_event_reves = list(items) if items else []
         return self
 
     def with_variable_accesses(self, items: list[VariableAccess]) -> "McDataAccessDetailsBuilder":
@@ -161,7 +161,7 @@ class McDataAccessDetailsBuilder(BuilderBase):
 
 
     def add_rte_event_ref(self, item: RTEEvent) -> "McDataAccessDetailsBuilder":
-        """Add a single item to rte_event_refs list.
+        """Add a single item to rte_event_reves list.
 
         Args:
             item: Item to add
@@ -169,19 +169,19 @@ class McDataAccessDetailsBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_refs.append(item)
+        self._obj.rte_event_reves.append(item)
         return self
 
-    def clear_rte_event_refs(self) -> "McDataAccessDetailsBuilder":
-        """Clear all items from rte_event_refs list.
+    def clear_rte_event_reves(self) -> "McDataAccessDetailsBuilder":
+        """Clear all items from rte_event_reves list.
 
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_refs = []
+        self._obj.rte_event_reves = []
         return self
 
-    def add_variable_accesse(self, item: VariableAccess) -> "McDataAccessDetailsBuilder":
+    def add_variable_access(self, item: VariableAccess) -> "McDataAccessDetailsBuilder":
         """Add a single item to variable_accesses list.
 
         Args:

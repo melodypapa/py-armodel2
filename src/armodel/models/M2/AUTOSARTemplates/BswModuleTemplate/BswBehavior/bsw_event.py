@@ -43,13 +43,13 @@ class BswEvent(AbstractEvent, ABC):
         return True
 
     context_refs: list[ARRef]
-    disabled_in_mode_description_instance_refs: list[ModeDeclaration]
+    disabled_in_mode_description_instance_reves: list[ModeDeclaration]
     starts_on_event_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize BswEvent."""
         super().__init__()
         self.context_refs: list[ARRef] = []
-        self.disabled_in_mode_description_instance_refs: list[ModeDeclaration] = []
+        self.disabled_in_mode_description_instance_reves: list[ModeDeclaration] = []
         self.starts_on_event_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -93,10 +93,10 @@ class BswEvent(AbstractEvent, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize disabled_in_mode_description_instance_refs (list to container "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS")
-        if self.disabled_in_mode_description_instance_refs:
-            wrapper = ET.Element("DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS")
-            for item in self.disabled_in_mode_description_instance_refs:
+        # Serialize disabled_in_mode_description_instance_reves (list to container "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REVES")
+        if self.disabled_in_mode_description_instance_reves:
+            wrapper = ET.Element("DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REVES")
+            for item in self.disabled_in_mode_description_instance_reves:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclaration")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -148,15 +148,15 @@ class BswEvent(AbstractEvent, ABC):
                 if child_value is not None:
                     obj.context_refs.append(child_value)
 
-        # Parse disabled_in_mode_description_instance_refs (list from container "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS")
-        obj.disabled_in_mode_description_instance_refs = []
-        container = SerializationHelper.find_child_element(element, "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS")
+        # Parse disabled_in_mode_description_instance_reves (list from container "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REVES")
+        obj.disabled_in_mode_description_instance_reves = []
+        container = SerializationHelper.find_child_element(element, "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REVES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.disabled_in_mode_description_instance_refs.append(child_value)
+                    obj.disabled_in_mode_description_instance_reves.append(child_value)
 
         # Parse starts_on_event_ref
         child = SerializationHelper.find_child_element(element, "STARTS-ON-EVENT-REF")
@@ -189,8 +189,8 @@ class BswEventBuilder(AbstractEventBuilder):
         self._obj.contexts = list(items) if items else []
         return self
 
-    def with_disabled_in_mode_description_instance_refs(self, items: list[ModeDeclaration]) -> "BswEventBuilder":
-        """Set disabled_in_mode_description_instance_refs list attribute.
+    def with_disabled_in_mode_description_instance_reves(self, items: list[ModeDeclaration]) -> "BswEventBuilder":
+        """Set disabled_in_mode_description_instance_reves list attribute.
 
         Args:
             items: List of items to set
@@ -198,7 +198,7 @@ class BswEventBuilder(AbstractEventBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.disabled_in_mode_description_instance_refs = list(items) if items else []
+        self._obj.disabled_in_mode_description_instance_reves = list(items) if items else []
         return self
 
     def with_starts_on_event(self, value: Optional[BswModuleEntity]) -> "BswEventBuilder":
@@ -238,7 +238,7 @@ class BswEventBuilder(AbstractEventBuilder):
         return self
 
     def add_disabled_in_mode_description_instance_ref(self, item: ModeDeclaration) -> "BswEventBuilder":
-        """Add a single item to disabled_in_mode_description_instance_refs list.
+        """Add a single item to disabled_in_mode_description_instance_reves list.
 
         Args:
             item: Item to add
@@ -246,16 +246,16 @@ class BswEventBuilder(AbstractEventBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.disabled_in_mode_description_instance_refs.append(item)
+        self._obj.disabled_in_mode_description_instance_reves.append(item)
         return self
 
-    def clear_disabled_in_mode_description_instance_refs(self) -> "BswEventBuilder":
-        """Clear all items from disabled_in_mode_description_instance_refs list.
+    def clear_disabled_in_mode_description_instance_reves(self) -> "BswEventBuilder":
+        """Clear all items from disabled_in_mode_description_instance_reves list.
 
         Returns:
             self for method chaining
         """
-        self._obj.disabled_in_mode_description_instance_refs = []
+        self._obj.disabled_in_mode_description_instance_reves = []
         return self
 
 

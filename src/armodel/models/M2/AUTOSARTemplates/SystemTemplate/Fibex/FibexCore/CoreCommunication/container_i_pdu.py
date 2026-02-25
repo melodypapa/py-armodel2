@@ -472,7 +472,7 @@ class ContainerIPduBuilder(IPduBuilder):
         return self
 
 
-    def add_contained_i_pdu_propse(self, item: ContainedIPduProps) -> "ContainerIPduBuilder":
+    def add_contained_i_pdu_props(self, item: ContainedIPduProps) -> "ContainerIPduBuilder":
         """Add a single item to contained_i_pdu_propses list.
 
         Args:

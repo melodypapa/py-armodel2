@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4E
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
@@ -51,7 +50,7 @@ class CouplingPortDetails(ARObject):
     ethernet_traffic: CouplingPortTrafficClassAssignment
     global_time_coupling: Optional[GlobalTimeCouplingPortProps]
     last_egress_ref: Optional[ARRef]
-    _rate_policies: list[CouplingPortRatePolicy]
+    rate_policies: list[CouplingPortRatePolicy]
     def __init__(self) -> None:
         """Initialize CouplingPortDetails."""
         super().__init__()
@@ -60,18 +59,7 @@ class CouplingPortDetails(ARObject):
         self.ethernet_traffic: CouplingPortTrafficClassAssignment = None
         self.global_time_coupling: Optional[GlobalTimeCouplingPortProps] = None
         self.last_egress_ref: Optional[ARRef] = None
-        self._rate_policies: list[CouplingPortRatePolicy] = []
-    @property
-    @xml_element_name("RATE-POLICYS")
-    def rate_policies(self) -> list[CouplingPortRatePolicy]:
-        """Get rate_policies with custom XML element name."""
-        return self._rate_policies
-
-    @rate_policies.setter
-    def rate_policies(self, value: list[CouplingPortRatePolicy]) -> None:
-        """Set rate_policies with custom XML element name."""
-        self._rate_policies = value
-
+        self.rate_policies: list[CouplingPortRatePolicy] = []
 
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortDetails to XML element.
@@ -163,9 +151,9 @@ class CouplingPortDetails(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rate_policies (list to container "RATE-POLICYS")
+        # Serialize rate_policies (list to container "RATE-POLICIES")
         if self.rate_policies:
-            wrapper = ET.Element("RATE-POLICYS")
+            wrapper = ET.Element("RATE-POLICIES")
             for item in self.rate_policies:
                 serialized = SerializationHelper.serialize_item(item, "CouplingPortRatePolicy")
                 if serialized is not None:
@@ -222,9 +210,9 @@ class CouplingPortDetails(ARObject):
             last_egress_ref_value = ARRef.deserialize(child)
             obj.last_egress_ref = last_egress_ref_value
 
-        # Parse rate_policies (list from container "RATE-POLICYS")
+        # Parse rate_policies (list from container "RATE-POLICIES")
         obj.rate_policies = []
-        container = SerializationHelper.find_child_element(element, "RATE-POLICYS")
+        container = SerializationHelper.find_child_element(element, "RATE-POLICIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -347,7 +335,7 @@ class CouplingPortDetailsBuilder(BuilderBase):
         self._obj.coupling_ports = []
         return self
 
-    def add_rate_policie(self, item: CouplingPortRatePolicy) -> "CouplingPortDetailsBuilder":
+    def add_rate_policy(self, item: CouplingPortRatePolicy) -> "CouplingPortDetailsBuilder":
         """Add a single item to rate_policies list.
 
         Args:

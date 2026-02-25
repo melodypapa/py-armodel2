@@ -204,14 +204,14 @@
         }
       ],
       "attributes": {
-        "dataTypeMaps": {
+        "dataTypeMap": {
           "type": "DataTypeMap",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This is one particular association between an Application"
         },
-        "modeRequestTypeMaps": {
+        "modeRequestTypeMap": {
           "type": "ModeRequestTypeMap",
           "multiplicity": "*",
           "kind": "attribute",
@@ -504,7 +504,7 @@
         }
       ],
       "attributes": {
-        "elements": {
+        "element": {
           "type": "any (ApplicationRecord)",
           "multiplicity": "*",
           "kind": "attribute",

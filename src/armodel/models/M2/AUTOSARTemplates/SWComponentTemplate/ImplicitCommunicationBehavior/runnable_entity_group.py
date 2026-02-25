@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Implicit
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -36,24 +35,13 @@ class RunnableEntityGroup(Identifiable):
         """
         return False
 
-    _runnable_entities: list[RunnableEntity]
-    runnable_entity_group_group_in_composition_instance_ref_refs: list[ARRef]
+    runnable_entities: list[RunnableEntity]
+    runnable_entity_group_group_in_composition_instance_ref: list[ARRef]
     def __init__(self) -> None:
         """Initialize RunnableEntityGroup."""
         super().__init__()
-        self._runnable_entities: list[RunnableEntity] = []
-        self.runnable_entity_group_group_in_composition_instance_ref_refs: list[ARRef] = []
-    @property
-    @xml_element_name("RUNNABLE-ENTITYS")
-    def runnable_entities(self) -> list[RunnableEntity]:
-        """Get runnable_entities with custom XML element name."""
-        return self._runnable_entities
-
-    @runnable_entities.setter
-    def runnable_entities(self, value: list[RunnableEntity]) -> None:
-        """Set runnable_entities with custom XML element name."""
-        self._runnable_entities = value
-
+        self.runnable_entities: list[RunnableEntity] = []
+        self.runnable_entity_group_group_in_composition_instance_ref: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize RunnableEntityGroup to XML element.
@@ -79,9 +67,9 @@ class RunnableEntityGroup(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize runnable_entities (list to container "RUNNABLE-ENTITYS")
+        # Serialize runnable_entities (list to container "RUNNABLE-ENTITIES")
         if self.runnable_entities:
-            wrapper = ET.Element("RUNNABLE-ENTITYS")
+            wrapper = ET.Element("RUNNABLE-ENTITIES")
             for item in self.runnable_entities:
                 serialized = SerializationHelper.serialize_item(item, "RunnableEntity")
                 if serialized is not None:
@@ -89,13 +77,13 @@ class RunnableEntityGroup(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize runnable_entity_group_group_in_composition_instance_ref_refs (list to container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
-        if self.runnable_entity_group_group_in_composition_instance_ref_refs:
-            wrapper = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
-            for item in self.runnable_entity_group_group_in_composition_instance_ref_refs:
+        # Serialize runnable_entity_group_group_in_composition_instance_ref (list to container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REFS")
+        if self.runnable_entity_group_group_in_composition_instance_ref:
+            wrapper = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REFS")
+            for item in self.runnable_entity_group_group_in_composition_instance_ref:
                 serialized = SerializationHelper.serialize_item(item, "RunnableEntityGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REF")
+                    child_elem = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -121,9 +109,9 @@ class RunnableEntityGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RunnableEntityGroup, cls).deserialize(element)
 
-        # Parse runnable_entities (list from container "RUNNABLE-ENTITYS")
+        # Parse runnable_entities (list from container "RUNNABLE-ENTITIES")
         obj.runnable_entities = []
-        container = SerializationHelper.find_child_element(element, "RUNNABLE-ENTITYS")
+        container = SerializationHelper.find_child_element(element, "RUNNABLE-ENTITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -131,9 +119,9 @@ class RunnableEntityGroup(Identifiable):
                 if child_value is not None:
                     obj.runnable_entities.append(child_value)
 
-        # Parse runnable_entity_group_group_in_composition_instance_ref_refs (list from container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
-        obj.runnable_entity_group_group_in_composition_instance_ref_refs = []
-        container = SerializationHelper.find_child_element(element, "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
+        # Parse runnable_entity_group_group_in_composition_instance_ref (list from container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REFS")
+        obj.runnable_entity_group_group_in_composition_instance_ref = []
+        container = SerializationHelper.find_child_element(element, "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -145,7 +133,7 @@ class RunnableEntityGroup(Identifiable):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.runnable_entity_group_group_in_composition_instance_ref_refs.append(child_value)
+                    obj.runnable_entity_group_group_in_composition_instance_ref.append(child_value)
 
         return obj
 
@@ -172,8 +160,8 @@ class RunnableEntityGroupBuilder(IdentifiableBuilder):
         self._obj.runnable_entities = list(items) if items else []
         return self
 
-    def with_runnable_entity_group_group_in_composition_instance_refs(self, items: list[RunnableEntityGroup]) -> "RunnableEntityGroupBuilder":
-        """Set runnable_entity_group_group_in_composition_instance_refs list attribute.
+    def with_runnable_entity_group_group_in_composition_instance_reves(self, items: list[RunnableEntityGroup]) -> "RunnableEntityGroupBuilder":
+        """Set runnable_entity_group_group_in_composition_instance_reves list attribute.
 
         Args:
             items: List of items to set
@@ -181,11 +169,11 @@ class RunnableEntityGroupBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.runnable_entity_group_group_in_composition_instance_refs = list(items) if items else []
+        self._obj.runnable_entity_group_group_in_composition_instance_reves = list(items) if items else []
         return self
 
 
-    def add_runnable_entitie(self, item: RunnableEntity) -> "RunnableEntityGroupBuilder":
+    def add_runnable_entity(self, item: RunnableEntity) -> "RunnableEntityGroupBuilder":
         """Add a single item to runnable_entities list.
 
         Args:
@@ -207,7 +195,7 @@ class RunnableEntityGroupBuilder(IdentifiableBuilder):
         return self
 
     def add_runnable_entity_group_group_in_composition_instance_ref(self, item: RunnableEntityGroup) -> "RunnableEntityGroupBuilder":
-        """Add a single item to runnable_entity_group_group_in_composition_instance_refs list.
+        """Add a single item to runnable_entity_group_group_in_composition_instance_reves list.
 
         Args:
             item: Item to add
@@ -215,16 +203,16 @@ class RunnableEntityGroupBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.runnable_entity_group_group_in_composition_instance_refs.append(item)
+        self._obj.runnable_entity_group_group_in_composition_instance_reves.append(item)
         return self
 
-    def clear_runnable_entity_group_group_in_composition_instance_refs(self) -> "RunnableEntityGroupBuilder":
-        """Clear all items from runnable_entity_group_group_in_composition_instance_refs list.
+    def clear_runnable_entity_group_group_in_composition_instance_reves(self) -> "RunnableEntityGroupBuilder":
+        """Clear all items from runnable_entity_group_group_in_composition_instance_reves list.
 
         Returns:
             self for method chaining
         """
-        self._obj.runnable_entity_group_group_in_composition_instance_refs = []
+        self._obj.runnable_entity_group_group_in_composition_instance_reves = []
         return self
 
 

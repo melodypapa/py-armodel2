@@ -55,7 +55,7 @@
           "is_ref": false,
           "note": "Channels speed in bits/s."
         },
-        "physicalChannels": {
+        "physicalChannel": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
           "kind": "attribute",
@@ -76,7 +76,7 @@
           "is_ref": false,
           "note": "The version of the protocol used."
         },
-         "speed": {
+        "speed": {
           "type": "Integer",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -135,21 +135,21 @@
         }
       ],
       "attributes": {
-        "associatedComIPduGroups": {
+        "associatedComIPduGroup": {
           "type": "ISignalIPduGroup",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "With this reference it is possible to identify which ISignal are applicable for which Communication level ISignalIPduGroups shall be referenced by If an ISignalIPduGroup contains other these contained ISignalIPdu not be referenced by the EcuInstance. are associated to an Ecu the top level ISignalIPduGroup. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "associatedConsumedProvidedServiceInstanceGroups": {
+        "associatedConsumedProvidedServiceInstanceGroup": {
           "type": "ConsumedProvidedServiceInstanceGroup",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "With this reference it is possible to identify which ConsumedProvidedServiceInstanceGroups are for which ECUInstance. atpSplitable; atpVariation Group Tags:"
         },
-        "associatedPdurIPduGroups": {
+        "associatedPdurIPduGroup": {
           "type": "PdurIPduGroup",
           "multiplicity": "*",
           "kind": "ref",
@@ -198,14 +198,14 @@
           "is_ref": false,
           "note": "Enables for the Com module of this EcuInstance the"
         },
-        "commControllers": {
+        "commController": {
           "type": "CommunicationController",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "CommunicationControllers of the ECU."
         },
-        "connectors": {
+        "connector": {
           "type": "CommunicationConnector",
           "multiplicity": "*",
           "kind": "attribute",
@@ -226,7 +226,7 @@
           "is_ref": false,
           "note": "DoIp configuration on this EcuInstance."
         },
-        "ecuTaskProxies": {
+        "ecuTaskProxy": {
           "type": "OsTaskProxy",
           "multiplicity": "*",
           "kind": "ref",
@@ -240,14 +240,14 @@
           "is_ref": false,
           "note": "Defines whether the derivation of SwitchPortGroups"
         },
-        "firewallRules": {
+        "firewallRule": {
           "type": "StateDependentFirewall",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Firewall rules defined in the context of an EcuInstance."
         },
-        "partitions": {
+        "partition": {
           "type": "EcuPartition",
           "multiplicity": "*",
           "kind": "attribute",
@@ -371,7 +371,7 @@
         }
       ],
       "attributes": {
-        "commConnectors": {
+        "commConnector": {
           "type": "CommunicationConnector",
           "multiplicity": "*",
           "kind": "ref",
@@ -379,28 +379,28 @@
           "decorator": "ref_conditional:COMM-CONNECTORS",
           "note": "Reference to the ECUInstance via a Communication assignment of Physical Channels to is expressed with atpVariation"
         },
-        "frameTriggerings": {
+        "frameTriggering": {
           "type": "FrameTriggering",
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
           "note": "One frame triggering is defined for exactly one channel. have assigned an arbitrary number of signals/PDUs/frames are variable, the shall be variable, too. atpVariation"
         },
-        "iSignalTriggerings": {
+        "iSignalTriggering": {
           "type": "ISignalTriggering",
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
           "note": "One ISignalTriggering is defined for exactly one channel. may have assigned an arbitrary number of signals/PDUs/frames are variable, the shall be variable, too. atpVariation 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "managedPhysicalChannels": {
+        "managedPhysicalChannel": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference between a channel with role managing and a channel with role managed channel."
         },
-        "pduTriggerings": {
+        "pduTriggering": {
           "type": "PduTriggering",
           "multiplicity": "*",
           "kind": "aggr",
@@ -565,14 +565,14 @@
           "is_ref": false,
           "note": "Defines if this EcuInstance shall implement the dynamic"
         },
-        "ecuCommPortInstances": {
+        "ecuCommPortInstance": {
           "type": "CommConnectorPort",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "An ECUs reception or send ports. If signals/PDUs/frames are variable, the shall be variable, too. atpVariation"
         },
-        "pncFilterArrayMasks": {
+        "pncFilterArrayMask": {
           "type": "PositiveInteger",
           "multiplicity": "*",
           "kind": "attribute",

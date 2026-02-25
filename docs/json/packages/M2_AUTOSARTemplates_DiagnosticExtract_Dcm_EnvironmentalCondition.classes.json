@@ -41,7 +41,7 @@
           "is_ref": false,
           "note": "This attribute represents the formula part of the"
         },
-        "modeElements": {
+        "modeElement": {
           "type": "any (DiagnosticEnvMode)",
           "multiplicity": "*",
           "kind": "attribute",

@@ -41,7 +41,7 @@
           "is_ref": false,
           "note": "This attribute shall be taken to verbally describe the"
         },
-        "recordElements": {
+        "recordElement": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",

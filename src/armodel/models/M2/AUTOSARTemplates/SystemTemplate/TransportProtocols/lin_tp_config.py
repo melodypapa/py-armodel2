@@ -198,7 +198,7 @@ class LinTpConfigBuilder(TpConfigBuilder):
         return self
 
 
-    def add_tp_addresse(self, item: TpAddress) -> "LinTpConfigBuilder":
+    def add_tp_address(self, item: TpAddress) -> "LinTpConfigBuilder":
         """Add a single item to tp_addresses list.
 
         Args:

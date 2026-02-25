@@ -171,7 +171,7 @@
         }
       ],
       "attributes": {
-        "elements": {
+        "element": {
           "type": "IdsCommonElement",
           "multiplicity": "*",
           "kind": "ref",
@@ -313,7 +313,7 @@
         }
       ],
       "attributes": {
-        "blockIfStates": {
+        "blockIfState": {
           "type": "BlockState",
           "multiplicity": "*",
           "kind": "ref",
@@ -605,7 +605,7 @@
           "is_ref": true,
           "note": "This reference defines the IdsmInstance onto which the are mapped. atpVariation 97 Document ID 980: AUTOSAR_FO_TPS_SecurityExtractTemplate Template R23-11"
         },
-        "mappedSecurities": {
+        "mappedSecurity": {
           "type": "any (SecurityEventContext)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -743,7 +743,7 @@
         }
       ],
       "attributes": {
-        "commConnectors": {
+        "commConnector": {
           "type": "CommunicationConnector",
           "multiplicity": "*",
           "kind": "ref",
@@ -833,7 +833,7 @@
         }
       ],
       "attributes": {
-        "blockStates": {
+        "blockState": {
           "type": "BlockState",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1043,14 +1043,14 @@
         }
       ],
       "attributes": {
-        "rateLimitations": {
+        "rateLimitation": {
           "type": "IdsmRateLimitation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation represents the collection of rate filters for security events in the enclosing 97 Document ID 980: AUTOSAR_FO_TPS_SecurityExtractTemplate Template R23-11"
         },
-        "trafficLimitations": {
+        "trafficLimitation": {
           "type": "IdsmTrafficLimitation",
           "multiplicity": "*",
           "kind": "attribute",

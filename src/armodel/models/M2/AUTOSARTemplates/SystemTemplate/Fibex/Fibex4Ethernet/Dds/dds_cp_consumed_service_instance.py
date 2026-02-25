@@ -236,7 +236,7 @@ class DdsCpConsumedServiceInstanceBuilder(DdsCpServiceInstanceBuilder):
         return self
 
 
-    def add_consumed_ddse(self, item: DdsCpServiceInstance) -> "DdsCpConsumedServiceInstanceBuilder":
+    def add_consumed_dds(self, item: DdsCpServiceInstance) -> "DdsCpConsumedServiceInstanceBuilder":
         """Add a single item to consumed_ddses list.
 
         Args:

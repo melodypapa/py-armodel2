@@ -33,7 +33,7 @@
         }
       ],
       "attributes": {
-        "calibrations": {
+        "calibration": {
           "type": "any (CalibrationParameter)",
           "multiplicity": "*",
           "kind": "attribute",

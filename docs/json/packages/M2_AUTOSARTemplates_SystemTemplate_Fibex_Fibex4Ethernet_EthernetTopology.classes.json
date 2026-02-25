@@ -37,7 +37,7 @@
         }
       ],
       "attributes": {
-        "networkEndpoints": {
+        "networkEndpoint": {
           "type": "NetworkEndpoint",
           "multiplicity": "*",
           "kind": "attribute",
@@ -103,7 +103,7 @@
           "is_ref": false,
           "note": "Switch off delay for CouplingPorts in seconds. It denotes delay of switching off couplingPorts after the request off a couplingPort was issued. (e.g. switch off of ports)."
         },
-        "macMulticastGroups": {
+        "macMulticastGroup": {
           "type": "MacMulticastGroup",
           "multiplicity": "*",
           "kind": "ref",
@@ -235,7 +235,7 @@
           "is_ref": false,
           "note": "Definition of details for this specific CouplingElement. Stereotypes: atpSplitable; atpVariation 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
-        "couplingPorts": {
+        "couplingPort": {
           "type": "CouplingPort",
           "multiplicity": "*",
           "kind": "attribute",
@@ -256,7 +256,7 @@
           "is_ref": true,
           "note": "Optional reference to the ECU where the Coupling located."
         },
-        "firewallRules": {
+        "firewallRule": {
           "type": "StateDependentFirewall",
           "multiplicity": "*",
           "kind": "ref",
@@ -330,14 +330,14 @@
           "is_ref": false,
           "note": "Specifies the mac layer type of the CouplingPort."
         },
-        "macMulticastGroups": {
+        "macMulticastGroup": {
           "type": "MacMulticastGroup",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Assigns a set of MAC-Multicast-Addresses which are via this CouplingPort. This is a static further addresses may be learned"
         },
-        "macSecPropses": {
+        "macSecProps": {
           "type": "MacSecProps",
           "multiplicity": "*",
           "kind": "attribute",
@@ -358,7 +358,7 @@
           "is_ref": false,
           "note": "Optional properties for configuration of PLCA (Physical"
         },
-        "pncMappingIdents": {
+        "pncMappingIdent": {
           "type": "PncMappingIdent",
           "multiplicity": "*",
           "kind": "ref",
@@ -372,7 +372,7 @@
           "is_ref": false,
           "note": "Defines the handling of frames at the ingress port."
         },
-        "vlans": {
+        "vlan": {
           "type": "VlanMembership",
           "multiplicity": "*",
           "kind": "attribute",
@@ -484,7 +484,7 @@
           "is_ref": true,
           "note": "Reference to the first CouplingPort that is connected via 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
-        "nodePorts": {
+        "nodePort": {
           "type": "CouplingPort",
           "multiplicity": "*",
           "kind": "ref",
@@ -552,7 +552,7 @@
           "is_ref": true,
           "note": "If the Ethernet frames handled by this Ethernet"
         },
-        "couplingPorts": {
+        "couplingPort": {
           "type": "CouplingPort",
           "multiplicity": "*",
           "kind": "attribute",
@@ -691,7 +691,7 @@
         }
       ],
       "attributes": {
-        "couplingPorts": {
+        "couplingPort": {
           "type": "CouplingPortStructuralElement",
           "multiplicity": "*",
           "kind": "attribute",
@@ -726,7 +726,7 @@
           "is_ref": true,
           "note": "Defines which CouplingPortScheduler is the last in the port structure."
         },
-        "ratePolicies": {
+        "ratePolicy": {
           "type": "CouplingPortRatePolicy",
           "multiplicity": "*",
           "kind": "attribute",
@@ -810,7 +810,7 @@
           "is_ref": false,
           "note": "Defines the schedule algorithm to be used."
         },
-        "predecessors": {
+        "predecessor": {
           "type": "CouplingPortStructuralElement",
           "multiplicity": "*",
           "kind": "ref",
@@ -972,7 +972,7 @@
           "is_ref": false,
           "note": "Time interval used to define the base of the rate policy."
         },
-        "vLans": {
+        "vLan": {
           "type": "any (EthernetPhysical)",
           "multiplicity": "*",
           "kind": "ref",
@@ -1157,7 +1157,7 @@
           "is_ref": false,
           "note": "Amount of time in seconds that a client may keep the IP"
         },
-        "dnsServers": {
+        "dnsServer": {
           "type": "Ip4AddressString",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1221,7 +1221,7 @@
           "is_ref": false,
           "note": "Amount of time in seconds that a client may keep the IP"
         },
-        "dnsServers": {
+        "dnsServer": {
           "type": "Ip6AddressString",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1301,35 +1301,35 @@
         }
       ],
       "attributes": {
-        "flowMeterings": {
+        "flowMetering": {
           "type": "SwitchFlowMeteringEntry",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of Flow Metering Entries. atp.Status=candidate"
         },
-        "streamFilters": {
+        "streamFilter": {
           "type": "SwitchStreamFilterEntry",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of Stream Filter Entries. atp.Status=candidate"
         },
-        "streamGates": {
+        "streamGate": {
           "type": "SwitchStreamGateEntry",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of Stream Gate Entries."
         },
-        "switchStreams": {
+        "switchStream": {
           "type": "any (SwitchStream)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of switch stream identification entries. Tags: atp.Status=candidate (ordered)"
         },
-        "trafficShapers": {
+        "trafficShaper": {
           "type": "SwitchAsynchronousTrafficShaperGroupEntry",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1367,7 +1367,7 @@
         }
       ],
       "attributes": {
-        "egressPorts": {
+        "egressPort": {
           "type": "CouplingPort",
           "multiplicity": "*",
           "kind": "ref",
@@ -1402,7 +1402,7 @@
           "is_ref": false,
           "note": "Defines the action to modify the VLAN-ID within a VLAN of an Ethernet frame."
         },
-        "ingressPorts": {
+        "ingressPort": {
           "type": "CouplingPort",
           "multiplicity": "*",
           "kind": "ref",
@@ -1602,7 +1602,7 @@
           "is_ref": false,
           "note": "Filter to match packets with the destination IPv6 address range."
         },
-        "destinationPorts": {
+        "destinationPort": {
           "type": "StreamFilterPortRange",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1616,7 +1616,7 @@
           "is_ref": false,
           "note": "Filter to match packets with the source IPv6 address range."
         },
-        "sourcePorts": {
+        "sourcePort": {
           "type": "StreamFilterPortRange",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1804,7 +1804,7 @@
         }
       ],
       "attributes": {
-        "egressPorts": {
+        "egressPort": {
           "type": "CouplingPort",
           "multiplicity": "*",
           "kind": "ref",
@@ -3011,7 +3011,7 @@
         }
       ],
       "attributes": {
-        "ethernets": {
+        "ethernet": {
           "type": "any (EthernetWakeupSleep)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -3091,7 +3091,7 @@
         }
       ],
       "attributes": {
-        "consumedServices": {
+        "consumedService": {
           "type": "any (ConsumedService)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -3119,7 +3119,7 @@
           "is_ref": false,
           "note": "Defines the frame priority where values from 0 (best 7 (highest) are allowed."
         },
-        "providedServices": {
+        "providedService": {
           "type": "any (ProvidedService)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -3638,7 +3638,7 @@
           "is_ref": false,
           "note": "Optional IPSec configuration that provides security"
         },
-        "networkEndpoints": {
+        "networkEndpoint": {
           "type": "NetworkEndpoint",
           "multiplicity": "*",
           "kind": "attribute",
@@ -3730,7 +3730,7 @@
           "is_ref": false,
           "note": "IP address of the default gateway."
         },
-        "dnsServers": {
+        "dnsServer": {
           "type": "Ip4AddressString",
           "multiplicity": "*",
           "kind": "attribute",
@@ -3815,7 +3815,7 @@
           "is_ref": false,
           "note": "IP address of the default router."
         },
-        "dnsServers": {
+        "dnsServer": {
           "type": "Ip6AddressString",
           "multiplicity": "*",
           "kind": "attribute",
@@ -4012,7 +4012,7 @@
         }
       ],
       "attributes": {
-        "orderedMasters": {
+        "orderedMaster": {
           "type": "OrderedMaster",
           "multiplicity": "*",
           "kind": "attribute",

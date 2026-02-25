@@ -78,7 +78,7 @@
         }
       ],
       "attributes": {
-        "blueprintPolicies": {
+        "blueprintPolicy": {
           "type": "BlueprintPolicy",
           "multiplicity": "*",
           "kind": "attribute",

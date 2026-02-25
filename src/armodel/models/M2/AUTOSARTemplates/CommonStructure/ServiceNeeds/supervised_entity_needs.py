@@ -38,7 +38,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
         return False
 
     activate_at_start: Optional[Boolean]
-    checkpointse_refs: list[Any]
+    checkpoint_refs: list[Any]
     enable: Optional[Boolean]
     expected_alive: Optional[TimeValue]
     max_alive_cycle: Optional[TimeValue]
@@ -48,7 +48,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
         """Initialize SupervisedEntityNeeds."""
         super().__init__()
         self.activate_at_start: Optional[Boolean] = None
-        self.checkpointse_refs: list[Any] = []
+        self.checkpoint_refs: list[Any] = []
         self.enable: Optional[Boolean] = None
         self.expected_alive: Optional[TimeValue] = None
         self.max_alive_cycle: Optional[TimeValue] = None
@@ -93,10 +93,10 @@ class SupervisedEntityNeeds(ServiceNeeds):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize checkpointse_refs (list to container "CHECKPOINTSE-REFS")
-        if self.checkpointse_refs:
+        # Serialize checkpoint_refs (list to container "CHECKPOINTSE-REFS")
+        if self.checkpoint_refs:
             wrapper = ET.Element("CHECKPOINTSE-REFS")
-            for item in self.checkpointse_refs:
+            for item in self.checkpoint_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("CHECKPOINTSE-REF")
@@ -201,8 +201,8 @@ class SupervisedEntityNeeds(ServiceNeeds):
             activate_at_start_value = child.text
             obj.activate_at_start = activate_at_start_value
 
-        # Parse checkpointse_refs (list from container "CHECKPOINTSE-REFS")
-        obj.checkpointse_refs = []
+        # Parse checkpoint_refs (list from container "CHECKPOINTSE-REFS")
+        obj.checkpoint_refs = []
         container = SerializationHelper.find_child_element(element, "CHECKPOINTSE-REFS")
         if container is not None:
             for child in container:
@@ -215,7 +215,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.checkpointse_refs.append(child_value)
+                    obj.checkpoint_refs.append(child_value)
 
         # Parse enable
         child = SerializationHelper.find_child_element(element, "ENABLE")
@@ -357,7 +357,7 @@ class SupervisedEntityNeedsBuilder(ServiceNeedsBuilder):
         return self
 
 
-    def add_checkpointse(self, item: any (SupervisedEntity)) -> "SupervisedEntityNeedsBuilder":
+    def add_checkpoints(self, item: any (SupervisedEntity)) -> "SupervisedEntityNeedsBuilder":
         """Add a single item to checkpointses list.
 
         Args:

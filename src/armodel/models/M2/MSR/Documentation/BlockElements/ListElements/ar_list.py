@@ -39,12 +39,12 @@ class ARList(Paginateable):
         """
         return False
 
-    item: list[Item]
+    items: list[Item]
     _type: Optional[ListEnum]
     def __init__(self) -> None:
         """Initialize ARList."""
         super().__init__()
-        self.item: list[Item] = []
+        self.items: list[Item] = []
         self._type: Optional[ListEnum] = None
     @property
     @xml_attribute
@@ -82,19 +82,15 @@ class ARList(Paginateable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize item (list)
-        for item in self.item:
-            serialized = SerializationHelper.serialize_item(item, "Item")
-            if serialized is not None:
-                # For non-container lists, wrap with correct tag
-                wrapped = ET.Element("ITEM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+        # Serialize items (list to container "ITEMS")
+        if self.items:
+            wrapper = ET.Element("ITEMS")
+            for item in self.items:
+                serialized = SerializationHelper.serialize_item(item, "Item")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
 
         # Serialize type as XML attribute
         if self.type is not None:
@@ -115,11 +111,15 @@ class ARList(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ARList, cls).deserialize(element)
 
-        # Parse item (list)
-        obj.item = []
-        for child in SerializationHelper.find_all_child_elements(element, "ITEM"):
-            item_value = SerializationHelper.deserialize_by_tag(child, "Item")
-            obj.item.append(item_value)
+        # Parse items (list from container "ITEMS")
+        obj.items = []
+        container = SerializationHelper.find_child_element(element, "ITEMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.items.append(child_value)
 
         # Parse type from XML attribute
         if "TYPE" in element.attrib:
@@ -139,8 +139,8 @@ class ARListBuilder(BuilderBase):
         self._obj: ARList = ARList()
 
 
-    def with_item(self, items: list[Item]) -> "ARListBuilder":
-        """Set item list attribute.
+    def with_items(self, items: list[Item]) -> "ARListBuilder":
+        """Set items list attribute.
 
         Args:
             items: List of items to set
@@ -148,7 +148,7 @@ class ARListBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.item = list(items) if items else []
+        self._obj.items = list(items) if items else []
         return self
 
     def with_type(self, value: Optional[ListEnum]) -> "ARListBuilder":
@@ -166,8 +166,8 @@ class ARListBuilder(BuilderBase):
         return self
 
 
-    def add_ite(self, item: Item) -> "ARListBuilder":
-        """Add a single item to item list.
+    def add_item(self, item: Item) -> "ARListBuilder":
+        """Add a single item to items list.
 
         Args:
             item: Item to add
@@ -175,16 +175,16 @@ class ARListBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.item.append(item)
+        self._obj.items.append(item)
         return self
 
-    def clear_item(self) -> "ARListBuilder":
-        """Clear all items from item list.
+    def clear_items(self) -> "ARListBuilder":
+        """Clear all items from items list.
 
         Returns:
             self for method chaining
         """
-        self._obj.item = []
+        self._obj.items = []
         return self
 
 

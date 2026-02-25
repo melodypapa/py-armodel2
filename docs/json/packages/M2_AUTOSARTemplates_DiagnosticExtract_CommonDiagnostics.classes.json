@@ -159,7 +159,7 @@
         }
       ],
       "attributes": {
-        "dataElements": {
+        "dataElement": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -363,7 +363,7 @@
           "is_ref": false,
           "note": "This attribute indicates that the enclosing Diagnostic an array and configures size in terms of the number of elements of the"
         },
-        "subElements": {
+        "subElement": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -408,7 +408,7 @@
         }
       ],
       "attributes": {
-        "subElements": {
+        "subElement": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -679,14 +679,14 @@
         }
       ],
       "attributes": {
-        "requests": {
+        "request": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the request parameters."
         },
-        "responses": {
+        "respons": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -725,14 +725,14 @@
         }
       ],
       "attributes": {
-        "requests": {
+        "request": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the request parameters."
         },
-        "responses": {
+        "respons": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -771,14 +771,14 @@
         }
       ],
       "attributes": {
-        "requests": {
+        "request": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the request parameters."
         },
-        "responses": {
+        "respons": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -820,7 +820,7 @@
         }
       ],
       "attributes": {
-        "dataElements": {
+        "dataElement": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -961,7 +961,7 @@
         }
       ],
       "attributes": {
-        "dataElements": {
+        "dataElement": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",

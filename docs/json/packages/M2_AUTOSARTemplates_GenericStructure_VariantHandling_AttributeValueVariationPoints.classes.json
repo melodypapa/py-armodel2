@@ -493,7 +493,7 @@
         }
       ],
       "attributes": {
-        "entries": {
+        "entry": {
           "type": "any (EnumerationMapping)",
           "multiplicity": "*",
           "kind": "ref",

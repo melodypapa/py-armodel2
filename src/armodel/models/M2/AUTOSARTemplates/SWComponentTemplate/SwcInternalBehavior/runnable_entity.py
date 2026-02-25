@@ -795,7 +795,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.data_reads = []
         return self
 
-    def add_data_receive(self, item: VariableAccess) -> "RunnableEntityBuilder":
+    def add_data_receif(self, item: VariableAccess) -> "RunnableEntityBuilder":
         """Add a single item to data_receives list.
 
         Args:
@@ -942,7 +942,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.mode_switch_points = []
         return self
 
-    def add_parameter_accesse(self, item: ParameterAccess) -> "RunnableEntityBuilder":
+    def add_parameter_access(self, item: ParameterAccess) -> "RunnableEntityBuilder":
         """Add a single item to parameter_accesses list.
 
         Args:

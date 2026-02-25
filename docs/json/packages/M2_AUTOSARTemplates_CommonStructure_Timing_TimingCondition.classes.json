@@ -132,21 +132,21 @@
         }
       ],
       "attributes": {
-        "timingArguments": {
+        "timingArgument": {
           "type": "AutosarOperationArgumentInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This refers to an instance reference of an argument of an call. atpVariation 277 Document ID 411: AUTOSAR_CP_TPS_TimingExtensions Timing Extensions for Classic R23-11"
         },
-        "timingModes": {
+        "timingMode": {
           "type": "TimingModeInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This refers to an instance reference of a mode atpVariation"
         },
-        "timingVariables": {
+        "timingVariable": {
           "type": "any (AutosarVariable)",
           "multiplicity": "*",
           "kind": "attribute",
@@ -280,7 +280,7 @@
           "is_ref": true,
           "note": "Specifies the SW component representing the base of the"
         },
-        "contexts": {
+        "context": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "ref",

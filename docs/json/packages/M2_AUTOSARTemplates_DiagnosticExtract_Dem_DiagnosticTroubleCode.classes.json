@@ -268,7 +268,7 @@
         }
       ],
       "attributes": {
-        "dtcs": {
+        "dtc": {
           "type": "DiagnosticTroubleCode",
           "multiplicity": "*",
           "kind": "ref",
@@ -331,14 +331,14 @@
           "is_ref": true,
           "note": "Reference to the applicable DiagnosticMemory Destination. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "extendedDatas": {
+        "extendedData": {
           "type": "DiagnosticExtendedDataRecord",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Defines the links to an extended data class sampler. Stereotypes: atpSplitable; atpVariation"
         },
-        "freezeFrames": {
+        "freezeFrame": {
           "type": "DiagnosticFreezeFrame",
           "multiplicity": "*",
           "kind": "ref",
@@ -422,7 +422,7 @@
         }
       ],
       "attributes": {
-        "dataIdentifiers": {
+        "dataIdentifier": {
           "type": "DiagnosticDataIdentifier",
           "multiplicity": "*",
           "kind": "ref",

@@ -110,7 +110,7 @@
           "is_ref": false,
           "note": "This represents the administrative data of an Autosar file."
         },
-        "arPackages": {
+        "arPackage": {
           "type": "ARPackage",
           "multiplicity": "*",
           "kind": "attribute",
@@ -159,7 +159,7 @@
         }
       ],
       "attributes": {
-        "sdgs": {
+        "sdg": {
           "type": "Sdg",
           "multiplicity": "*",
           "kind": "attribute",

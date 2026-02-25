@@ -1067,6 +1067,16 @@ def _generate_deserialize_method(
             # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
             snake_name = to_snake_case(attr_name)
             xml_tag = snake_name.upper().replace("_", "-")
+
+            # For list attributes (multiplicity "*" or "0..*"), pluralize the XML tag
+            # This creates container tags like SUB-ELEMENTS for subElement JSON attribute
+            # For reference attributes, the container tag will be created as SINGULAR-REFS below
+            if multiplicity in ("*", "0..*"):
+                # Pluralize the xml_tag for container elements
+                from ._common import to_plural as pluralize_snake
+                plural_snake = pluralize_snake(snake_name)
+                xml_tag = plural_snake.upper().replace("_", "-")
+
             # Add -TREF or -REF suffix for reference attributes with multiplicity != "*"
             # Container elements (multiplicity "*") should not have -REF suffix
             # Note: iref kind is handled separately below and doesn't get -REF suffix
@@ -2147,19 +2157,21 @@ def _generate_with_items_method(
     class_name: str,
     attr_name: str,
     item_type: str,
+    multiplicity: str = "*",
 ) -> str:
     """Generate with_items method for list attributes.
 
     Args:
         class_name: Name of the class
-        attr_name: Name of the list attribute (camelCase from JSON)
+        attr_name: Name of the list attribute (camelCase from JSON, now singular)
         item_type: Type of items in the list
+        multiplicity: Multiplicity of the attribute (e.g., "*", "0..*")
 
     Returns:
         Generated with_items method code
     """
-    # Convert attribute name to snake_case
-    snake_attr_name = to_snake_case(attr_name)
+    # Convert attribute name to Python identifier (plural for list attributes)
+    snake_attr_name = get_python_identifier_with_ref(attr_name, is_ref=False, multiplicity=multiplicity)
     method_name = f"with_{snake_attr_name}"
 
     # Check if attribute name is a Python keyword
@@ -2222,24 +2234,24 @@ def _generate_list_methods(
     class_name: str,
     attr_name: str,
     item_type: str,
+    multiplicity: str = "*",
 ) -> List[str]:
     """Generate add_item and clear_items methods for list attributes.
 
     Args:
         class_name: Name of the class
-        attr_name: Name of the list attribute (camelCase from JSON)
+        attr_name: Name of the list attribute (camelCase from JSON, now singular)
         item_type: Type of items in the list
+        multiplicity: Multiplicity of the attribute (e.g., "*", "0..*")
 
     Returns:
         List of generated method code
     """
-    # Convert attribute name to snake_case
-    snake_attr_name = to_snake_case(attr_name)
+    # Convert attribute name to Python identifier (plural for list attributes)
+    snake_attr_name = get_python_identifier_with_ref(attr_name, is_ref=False, multiplicity=multiplicity)
 
-    # Generate singular name for add_* method
-    singular_name = (
-        snake_attr_name.rstrip("s") if snake_attr_name.endswith("s") else snake_attr_name[:-1]
-    )
+    # Generate singular name for add_* method (from the singular JSON attr_name)
+    singular_snake_name = to_snake_case(attr_name)
 
     # Check if attribute name is a Python keyword
     python_keywords = {
@@ -2285,7 +2297,7 @@ def _generate_list_methods(
     # Add method
     add_method = (
         f'''
-    def add_{singular_name}(self, item: {item_type}) -> "{class_name}Builder":
+    def add_{singular_snake_name}(self, item: {item_type}) -> "{class_name}Builder":
         """Add a single item to '''
         + snake_attr_name
         + ''' list.
@@ -2486,8 +2498,9 @@ def generate_builder_code(
             if is_list:
                 # Generate list-specific methods
                 item_type = attr["base_type"]
-                with_methods.append(_generate_with_items_method(class_name, attr_name, item_type))
-                list_methods.extend(_generate_list_methods(class_name, attr_name, item_type))
+                multiplicity = attr.get("multiplicity", "*")
+                with_methods.append(_generate_with_items_method(class_name, attr_name, item_type, multiplicity))
+                list_methods.extend(_generate_list_methods(class_name, attr_name, item_type, multiplicity))
             else:
                 # Generate standard with_* method
                 with_methods.append(
@@ -2906,6 +2919,16 @@ def _generate_serialize_method(
             # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
             snake_name = to_snake_case(attr_name)
             xml_tag = snake_name.upper().replace("_", "-")
+
+            # For list attributes (multiplicity "*" or "0..*"), pluralize the XML tag
+            # This creates container tags like SUB-ELEMENTS for subElement JSON attribute
+            # For reference attributes, the container tag will be created as SINGULAR-REFS below
+            if multiplicity in ("*", "0..*"):
+                # Pluralize the xml_tag for container elements
+                from ._common import to_plural as pluralize_snake
+                plural_snake = pluralize_snake(snake_name)
+                xml_tag = plural_snake.upper().replace("_", "-")
+
             # Add -TREF or -REF suffix for reference attributes with multiplicity != "*"
             # Container elements (multiplicity "*") should not have -REF suffix
             # Note: iref kind is handled separately below and doesn't get -REF suffix

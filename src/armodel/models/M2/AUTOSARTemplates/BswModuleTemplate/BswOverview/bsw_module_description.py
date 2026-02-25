@@ -67,10 +67,10 @@ class BswModuleDescription(ARElement):
         """
         return False
 
-    bsw_modules_dependency: list[BswModuleDependency]
+    bsw_modules_dependencies: list[BswModuleDependency]
     bsw_module_documentation: Optional[SwComponentDocumentation]
-    _expected_entrie_refs: list[ARRef]
-    _implemented_entrie_refs: list[ARRef]
+    expected_entry_refs: list[ARRef]
+    implemented_entry_refs: list[ARRef]
     internal_behaviors: list[BswInternalBehavior]
     module_id: Optional[PositiveInteger]
     _provided_client_server_entries: list[BswModuleClientServerEntry]
@@ -84,10 +84,10 @@ class BswModuleDescription(ARElement):
     def __init__(self) -> None:
         """Initialize BswModuleDescription."""
         super().__init__()
-        self.bsw_modules_dependency: list[BswModuleDependency] = []
+        self.bsw_modules_dependencies: list[BswModuleDependency] = []
         self.bsw_module_documentation: Optional[SwComponentDocumentation] = None
-        self._expected_entrie_refs: list[ARRef] = []
-        self._implemented_entrie_refs: list[ARRef] = []
+        self.expected_entry_refs: list[ARRef] = []
+        self.implemented_entry_refs: list[ARRef] = []
         self.internal_behaviors: list[BswInternalBehavior] = []
         self.module_id: Optional[PositiveInteger] = None
         self._provided_client_server_entries: list[BswModuleClientServerEntry] = []
@@ -98,28 +98,6 @@ class BswModuleDescription(ARElement):
         self.required_datas: list[VariableDataPrototype] = []
         self.required_mode_groups: list[ModeDeclarationGroup] = []
         self.required_triggers: list[Trigger] = []
-    @property
-    @xml_element_name("EXPECTED-ENTRYS")
-    def expected_entrie_refs(self) -> list[ARRef]:
-        """Get expected_entrie_refs with custom XML element name."""
-        return self._expected_entrie_refs
-
-    @expected_entrie_refs.setter
-    def expected_entrie_refs(self, value: list[ARRef]) -> None:
-        """Set expected_entrie_refs with custom XML element name."""
-        self._expected_entrie_refs = value
-
-    @property
-    @xml_element_name("IMPLEMENTED-ENTRYS")
-    def implemented_entrie_refs(self) -> list[ARRef]:
-        """Get implemented_entrie_refs with custom XML element name."""
-        return self._implemented_entrie_refs
-
-    @implemented_entrie_refs.setter
-    def implemented_entrie_refs(self, value: list[ARRef]) -> None:
-        """Set implemented_entrie_refs with custom XML element name."""
-        self._implemented_entrie_refs = value
-
     @property
     @xml_element_name("PROVIDED-ENTRYS")
     def provided_client_server_entries(self) -> list[BswModuleClientServerEntry]:
@@ -167,19 +145,15 @@ class BswModuleDescription(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize bsw_modules_dependency (list)
-        for item in self.bsw_modules_dependency:
-            serialized = SerializationHelper.serialize_item(item, "BswModuleDependency")
-            if serialized is not None:
-                # For non-container lists, wrap with correct tag
-                wrapped = ET.Element("BSW-MODULES-DEPENDENCY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+        # Serialize bsw_modules_dependencies (list to container "BSW-MODULES-DEPENDENCIES")
+        if self.bsw_modules_dependencies:
+            wrapper = ET.Element("BSW-MODULES-DEPENDENCIES")
+            for item in self.bsw_modules_dependencies:
+                serialized = SerializationHelper.serialize_item(item, "BswModuleDependency")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
 
         # Serialize bsw_module_documentation
         if self.bsw_module_documentation is not None:
@@ -195,10 +169,10 @@ class BswModuleDescription(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize expected_entrie_refs (list to container "EXPECTED-ENTRYS")
-        if self.expected_entrie_refs:
-            wrapper = ET.Element("EXPECTED-ENTRYS")
-            for item in self.expected_entrie_refs:
+        # Serialize expected_entry_refs (list to container "EXPECTED-ENTRIE-REFS")
+        if self.expected_entry_refs:
+            wrapper = ET.Element("EXPECTED-ENTRIE-REFS")
+            for item in self.expected_entry_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
                     child_elem = ET.Element("EXPECTED-ENTRIE-REF")
@@ -212,10 +186,10 @@ class BswModuleDescription(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize implemented_entrie_refs (list to container "IMPLEMENTED-ENTRYS")
-        if self.implemented_entrie_refs:
-            wrapper = ET.Element("IMPLEMENTED-ENTRYS")
-            for item in self.implemented_entrie_refs:
+        # Serialize implemented_entry_refs (list to container "IMPLEMENTED-ENTRIE-REFS")
+        if self.implemented_entry_refs:
+            wrapper = ET.Element("IMPLEMENTED-ENTRIE-REFS")
+            for item in self.implemented_entry_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
                     child_elem = ET.Element("IMPLEMENTED-ENTRIE-REF")
@@ -348,11 +322,15 @@ class BswModuleDescription(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleDescription, cls).deserialize(element)
 
-        # Parse bsw_modules_dependency (list)
-        obj.bsw_modules_dependency = []
-        for child in SerializationHelper.find_all_child_elements(element, "BSW-MODULES-DEPENDENCY"):
-            bsw_modules_dependency_value = SerializationHelper.deserialize_by_tag(child, "BswModuleDependency")
-            obj.bsw_modules_dependency.append(bsw_modules_dependency_value)
+        # Parse bsw_modules_dependencies (list from container "BSW-MODULES-DEPENDENCIES")
+        obj.bsw_modules_dependencies = []
+        container = SerializationHelper.find_child_element(element, "BSW-MODULES-DEPENDENCIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.bsw_modules_dependencies.append(child_value)
 
         # Parse bsw_module_documentation
         child = SerializationHelper.find_child_element(element, "BSW-MODULE-DOCUMENTATION")
@@ -360,9 +338,9 @@ class BswModuleDescription(ARElement):
             bsw_module_documentation_value = SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation")
             obj.bsw_module_documentation = bsw_module_documentation_value
 
-        # Parse expected_entrie_refs (list from container "EXPECTED-ENTRYS")
-        obj.expected_entrie_refs = []
-        container = SerializationHelper.find_child_element(element, "EXPECTED-ENTRYS")
+        # Parse expected_entry_refs (list from container "EXPECTED-ENTRIE-REFS")
+        obj.expected_entry_refs = []
+        container = SerializationHelper.find_child_element(element, "EXPECTED-ENTRIE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -374,11 +352,11 @@ class BswModuleDescription(ARElement):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.expected_entrie_refs.append(child_value)
+                    obj.expected_entry_refs.append(child_value)
 
-        # Parse implemented_entrie_refs (list from container "IMPLEMENTED-ENTRYS")
-        obj.implemented_entrie_refs = []
-        container = SerializationHelper.find_child_element(element, "IMPLEMENTED-ENTRYS")
+        # Parse implemented_entry_refs (list from container "IMPLEMENTED-ENTRIE-REFS")
+        obj.implemented_entry_refs = []
+        container = SerializationHelper.find_child_element(element, "IMPLEMENTED-ENTRIE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -390,7 +368,7 @@ class BswModuleDescription(ARElement):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.implemented_entrie_refs.append(child_value)
+                    obj.implemented_entry_refs.append(child_value)
 
         # Parse internal_behaviors (list from container "INTERNAL-BEHAVIORS")
         obj.internal_behaviors = []
@@ -501,8 +479,8 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj: BswModuleDescription = BswModuleDescription()
 
 
-    def with_bsw_modules_dependency(self, items: list[BswModuleDependency]) -> "BswModuleDescriptionBuilder":
-        """Set bsw_modules_dependency list attribute.
+    def with_bsw_modules_dependencies(self, items: list[BswModuleDependency]) -> "BswModuleDescriptionBuilder":
+        """Set bsw_modules_dependencies list attribute.
 
         Args:
             items: List of items to set
@@ -510,7 +488,7 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.bsw_modules_dependency = list(items) if items else []
+        self._obj.bsw_modules_dependencies = list(items) if items else []
         return self
 
     def with_bsw_module_documentation(self, value: Optional[SwComponentDocumentation]) -> "BswModuleDescriptionBuilder":
@@ -674,8 +652,8 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         return self
 
 
-    def add_bsw_modules_dependenc(self, item: BswModuleDependency) -> "BswModuleDescriptionBuilder":
-        """Add a single item to bsw_modules_dependency list.
+    def add_bsw_modules_dependency(self, item: BswModuleDependency) -> "BswModuleDescriptionBuilder":
+        """Add a single item to bsw_modules_dependencies list.
 
         Args:
             item: Item to add
@@ -683,19 +661,19 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.bsw_modules_dependency.append(item)
+        self._obj.bsw_modules_dependencies.append(item)
         return self
 
-    def clear_bsw_modules_dependency(self) -> "BswModuleDescriptionBuilder":
-        """Clear all items from bsw_modules_dependency list.
+    def clear_bsw_modules_dependencies(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from bsw_modules_dependencies list.
 
         Returns:
             self for method chaining
         """
-        self._obj.bsw_modules_dependency = []
+        self._obj.bsw_modules_dependencies = []
         return self
 
-    def add_expected_entrie(self, item: BswModuleEntry) -> "BswModuleDescriptionBuilder":
+    def add_expected_entry(self, item: BswModuleEntry) -> "BswModuleDescriptionBuilder":
         """Add a single item to expected_entries list.
 
         Args:
@@ -716,7 +694,7 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.expected_entries = []
         return self
 
-    def add_implemented_entrie(self, item: BswModuleEntry) -> "BswModuleDescriptionBuilder":
+    def add_implemented_entry(self, item: BswModuleEntry) -> "BswModuleDescriptionBuilder":
         """Add a single item to implemented_entries list.
 
         Args:
@@ -758,7 +736,7 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.internal_behaviors = []
         return self
 
-    def add_provided_client_server_entrie(self, item: BswModuleClientServerEntry) -> "BswModuleDescriptionBuilder":
+    def add_provided_client_server_entry(self, item: BswModuleClientServerEntry) -> "BswModuleDescriptionBuilder":
         """Add a single item to provided_client_server_entries list.
 
         Args:
@@ -842,7 +820,7 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.released_triggers = []
         return self
 
-    def add_required_client_server_entrie(self, item: BswModuleClientServerEntry) -> "BswModuleDescriptionBuilder":
+    def add_required_client_server_entry(self, item: BswModuleClientServerEntry) -> "BswModuleDescriptionBuilder":
         """Add a single item to required_client_server_entries list.
 
         Args:

@@ -373,7 +373,7 @@ class SignalServiceTranslationPropsBuilder(IdentifiableBuilder):
         self._obj.control_provideds = []
         return self
 
-    def add_signal_service_event_propse(self, item: any (SignalService)) -> "SignalServiceTranslationPropsBuilder":
+    def add_signal_service_event_props(self, item: any (SignalService)) -> "SignalServiceTranslationPropsBuilder":
         """Add a single item to signal_service_event_propses list.
 
         Args:

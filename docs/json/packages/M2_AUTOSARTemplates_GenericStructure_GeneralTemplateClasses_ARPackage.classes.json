@@ -348,7 +348,7 @@
         "AtpBlueprintable"
       ],
       "implemented_by": [],
-      "note": "AUTOSAR package, allowing to create top level packages to structure the contained ARElements. ARPackages are open sets. This means that in a file based description system multiple files can be used to partially describe the contents of a package. This is an extended version of MSR\u2019s SW-SYSTEM.",
+      "note": "AUTOSAR package, allowing to create top level packages to structure the contained ARElements. ARPackages are open sets. This means that in a file based description system multiple files can be used to partially describe the contents of a package. This is an extended version of MSR’s SW-SYSTEM.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -412,21 +412,21 @@
         }
       ],
       "attributes": {
-        "referenceBases": {
+        "referenceBas": {
           "type": "ReferenceBase",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This denotes the reference bases for the package. This is"
         },
-        "elements": {
+        "element": {
           "type": "PackageableElement",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Elements that are part of this package atpVariation"
         },
-        "arPackages": {
+        "arPackage": {
           "type": "ARPackage",
           "multiplicity": "*",
           "kind": "attribute",
@@ -547,14 +547,14 @@
           "is_ref": true,
           "note": "This association specifies the basis of all relative the base equals shortLabel."
         },
-        "globalElements": {
+        "globalElement": {
           "type": "ReferrableSubtypesEnum",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This attribute represents a meta-class for which the global is supported via this reference base."
         },
-        "globalInPackages": {
+        "globalInPackage": {
           "type": "ARPackage",
           "multiplicity": "*",
           "kind": "ref",

@@ -126,12 +126,12 @@ class Collection(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize collected_instance_irefs (list of instance references with wrapper "COLLECTED-INSTANCE-IREF")
+        # Serialize collected_instance_irefs (list of instance references with wrapper "COLLECTED-INSTANCES-IREF")
         if self.collected_instance_irefs:
             serialized = SerializationHelper.serialize_item(self.collected_instance_irefs, "AnyInstanceRef")
             if serialized is not None:
                 # Wrap in IREF wrapper element
-                iref_wrapper = ET.Element("COLLECTED-INSTANCE-IREF")
+                iref_wrapper = ET.Element("COLLECTED-INSTANCES-IREF")
                 # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
                     iref_wrapper.append(child)
@@ -231,8 +231,8 @@ class Collection(ARElement):
             auto_collect_value = AutoCollectEnum.deserialize(child)
             obj.auto_collect = auto_collect_value
 
-        # Parse collected_instance_irefs (list from wrapper "COLLECTED-INSTANCE-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "COLLECTED-INSTANCE-IREF")
+        # Parse collected_instance_irefs (list from wrapper "COLLECTED-INSTANCES-IREF")
+        wrapper = SerializationHelper.find_child_element(element, "COLLECTED-INSTANCES-IREF")
         if wrapper is not None:
             # Deserialize wrapper element directly as the type (flattened structure)
             collected_instance_irefs_value = SerializationHelper.deserialize_by_tag(wrapper, "AnyInstanceRef")
@@ -316,8 +316,8 @@ class CollectionBuilder(ARElementBuilder):
         self._obj.auto_collect = value
         return self
 
-    def with_collected_instance(self, items: list[AnyInstanceRef]) -> "CollectionBuilder":
-        """Set collected_instance list attribute.
+    def with_collected_instances(self, items: list[AnyInstanceRef]) -> "CollectionBuilder":
+        """Set collected_instances list attribute.
 
         Args:
             items: List of items to set
@@ -325,7 +325,7 @@ class CollectionBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.collected_instance = list(items) if items else []
+        self._obj.collected_instances = list(items) if items else []
         return self
 
     def with_collection_semantics(self, value: Optional[NameToken]) -> "CollectionBuilder":
@@ -393,8 +393,8 @@ class CollectionBuilder(ARElementBuilder):
         return self
 
 
-    def add_collected_instanc(self, item: AnyInstanceRef) -> "CollectionBuilder":
-        """Add a single item to collected_instance list.
+    def add_collected_instance(self, item: AnyInstanceRef) -> "CollectionBuilder":
+        """Add a single item to collected_instances list.
 
         Args:
             item: Item to add
@@ -402,16 +402,16 @@ class CollectionBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.collected_instance.append(item)
+        self._obj.collected_instances.append(item)
         return self
 
-    def clear_collected_instance(self) -> "CollectionBuilder":
-        """Clear all items from collected_instance list.
+    def clear_collected_instances(self) -> "CollectionBuilder":
+        """Clear all items from collected_instances list.
 
         Returns:
             self for method chaining
         """
-        self._obj.collected_instance = []
+        self._obj.collected_instances = []
         return self
 
     def add_element(self, item: Identifiable) -> "CollectionBuilder":

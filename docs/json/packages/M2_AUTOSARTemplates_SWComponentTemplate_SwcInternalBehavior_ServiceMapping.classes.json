@@ -152,14 +152,14 @@
         }
       ],
       "attributes": {
-        "assignedDatas": {
+        "assignedData": {
           "type": "any (RoleBasedData)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines the role of an associated data object of the same atpVariation"
         },
-        "assignedPorts": {
+        "assignedPort": {
           "type": "RoleBasedPortAssignment",
           "multiplicity": "*",
           "kind": "attribute",

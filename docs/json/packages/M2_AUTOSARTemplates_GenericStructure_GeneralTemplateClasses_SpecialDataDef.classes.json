@@ -39,7 +39,7 @@
         }
       ],
       "attributes": {
-        "sdgClasses": {
+        "sdgClass": {
           "type": "SdgClass",
           "multiplicity": "*",
           "kind": "attribute",
@@ -127,7 +127,7 @@
         }
       ],
       "attributes": {
-        "attributes": {
+        "attribute": {
           "type": "SdgAttribute",
           "multiplicity": "*",
           "kind": "attribute",
@@ -148,7 +148,7 @@
           "is_ref": false,
           "note": "The AUTOSAR Meta-Class that may be extended by this"
         },
-        "sdgConstraints": {
+        "sdgConstraint": {
           "type": "TraceableText",
           "multiplicity": "*",
           "kind": "ref",
@@ -329,7 +329,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Describes that the Sdg may contain another Sdg. The gid of the nested Sdg is defined by subSdg. Represents \u2019sdg\u2019.",
+      "note": "Describes that the Sdg may contain another Sdg. The gid of the nested Sdg is defined by subSdg. Represents ’sdg’.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",

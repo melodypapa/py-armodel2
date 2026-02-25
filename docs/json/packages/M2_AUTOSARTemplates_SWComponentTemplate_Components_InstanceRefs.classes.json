@@ -194,7 +194,7 @@
           "is_ref": true,
           "note": "Stereotypes: atpDerived"
         },
-        "contexts": {
+        "context": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "ref",

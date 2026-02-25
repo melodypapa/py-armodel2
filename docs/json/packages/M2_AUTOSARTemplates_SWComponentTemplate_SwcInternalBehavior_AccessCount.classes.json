@@ -27,7 +27,7 @@
         }
       ],
       "attributes": {
-        "accessCounts": {
+        "accessCount": {
           "type": "AccessCount",
           "multiplicity": "*",
           "kind": "attribute",

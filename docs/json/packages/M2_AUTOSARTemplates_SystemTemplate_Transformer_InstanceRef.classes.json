@@ -37,7 +37,7 @@
           "is_ref": true,
           "note": "Stereotypes: atpDerived"
         },
-        "contextDatas": {
+        "contextData": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "*",
           "kind": "ref",
@@ -97,7 +97,7 @@
           "is_ref": true,
           "note": "Stereotypes: atpDerived"
         },
-        "contextDatas": {
+        "contextData": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "*",
           "kind": "ref",
@@ -148,7 +148,7 @@
         }
       ],
       "attributes": {
-        "contexts": {
+        "context": {
           "type": "any (AbstractImplementation)",
           "multiplicity": "*",
           "kind": "ref",
@@ -193,7 +193,7 @@
         "AtpInstanceRef"
       ],
       "implemented_by": [],
-      "note": "This meta-class represents the ability to: \u2022 refer to a DataPrototype in the context of a PortInterface. \u2022 refer to the internal structure of a DataPrototype which is typed by an ApplicationDatatype in the context of a PortInterface.",
+      "note": "This meta-class represents the ability to: • refer to a DataPrototype in the context of a PortInterface. • refer to the internal structure of a DataPrototype which is typed by an ApplicationDatatype in the context of a PortInterface.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SystemTemplate.pdf",
@@ -210,7 +210,7 @@
           "is_ref": true,
           "note": "Stereotypes: atpAbstract"
         },
-        "contextDatas": {
+        "contextData": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "*",
           "kind": "ref",

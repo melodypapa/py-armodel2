@@ -167,13 +167,13 @@ class BswImplementation(Implementation):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize vendor_specific_module_def_refs (list to container "VENDOR-SPECIFIC-MODULE-DEF-REFS")
+        # Serialize vendor_specific_module_def_refs (list to container "VENDOR-SPECIFIC-MODULE-DEVE-REFS")
         if self.vendor_specific_module_def_refs:
-            wrapper = ET.Element("VENDOR-SPECIFIC-MODULE-DEF-REFS")
+            wrapper = ET.Element("VENDOR-SPECIFIC-MODULE-DEVE-REFS")
             for item in self.vendor_specific_module_def_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucModuleDef")
                 if serialized is not None:
-                    child_elem = ET.Element("VENDOR-SPECIFIC-MODULE-DEF-REF")
+                    child_elem = ET.Element("VENDOR-SPECIFIC-MODULE-DEVE-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -249,9 +249,9 @@ class BswImplementation(Implementation):
             vendor_api_infix_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.vendor_api_infix = vendor_api_infix_value
 
-        # Parse vendor_specific_module_def_refs (list from container "VENDOR-SPECIFIC-MODULE-DEF-REFS")
+        # Parse vendor_specific_module_def_refs (list from container "VENDOR-SPECIFIC-MODULE-DEVE-REFS")
         obj.vendor_specific_module_def_refs = []
-        container = SerializationHelper.find_child_element(element, "VENDOR-SPECIFIC-MODULE-DEF-REFS")
+        container = SerializationHelper.find_child_element(element, "VENDOR-SPECIFIC-MODULE-DEVE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -344,8 +344,8 @@ class BswImplementationBuilder(ImplementationBuilder):
         self._obj.vendor_api_infix = value
         return self
 
-    def with_vendor_specific_module_defs(self, items: list[EcucModuleDef]) -> "BswImplementationBuilder":
-        """Set vendor_specific_module_defs list attribute.
+    def with_vendor_specific_module_deves(self, items: list[EcucModuleDef]) -> "BswImplementationBuilder":
+        """Set vendor_specific_module_deves list attribute.
 
         Args:
             items: List of items to set
@@ -353,7 +353,7 @@ class BswImplementationBuilder(ImplementationBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.vendor_specific_module_defs = list(items) if items else []
+        self._obj.vendor_specific_module_deves = list(items) if items else []
         return self
 
 
@@ -400,7 +400,7 @@ class BswImplementationBuilder(ImplementationBuilder):
         return self
 
     def add_vendor_specific_module_def(self, item: EcucModuleDef) -> "BswImplementationBuilder":
-        """Add a single item to vendor_specific_module_defs list.
+        """Add a single item to vendor_specific_module_deves list.
 
         Args:
             item: Item to add
@@ -408,16 +408,16 @@ class BswImplementationBuilder(ImplementationBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.vendor_specific_module_defs.append(item)
+        self._obj.vendor_specific_module_deves.append(item)
         return self
 
-    def clear_vendor_specific_module_defs(self) -> "BswImplementationBuilder":
-        """Clear all items from vendor_specific_module_defs list.
+    def clear_vendor_specific_module_deves(self) -> "BswImplementationBuilder":
+        """Clear all items from vendor_specific_module_deves list.
 
         Returns:
             self for method chaining
         """
-        self._obj.vendor_specific_module_defs = []
+        self._obj.vendor_specific_module_deves = []
         return self
 
 

@@ -91,7 +91,7 @@
           "is_ref": false,
           "note": "If set to true the Server \"learns\" the client Port on"
         },
-        "pdus": {
+        "pdu": {
           "type": "SocketConnectionIpduIdentifierSet",
           "multiplicity": "*",
           "kind": "attribute",

@@ -124,7 +124,7 @@ class ConsistencyNeedsBlueprintSetBuilder(ARElementBuilder):
         return self
 
 
-    def add_consistency_needse(self, item: ConsistencyNeeds) -> "ConsistencyNeedsBlueprintSetBuilder":
+    def add_consistency_needs(self, item: ConsistencyNeeds) -> "ConsistencyNeedsBlueprintSetBuilder":
         """Add a single item to consistency_needses list.
 
         Args:

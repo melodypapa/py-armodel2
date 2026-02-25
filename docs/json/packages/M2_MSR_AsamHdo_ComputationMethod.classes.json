@@ -342,7 +342,7 @@
         }
       ],
       "attributes": {
-        "compuScales": {
+        "compuScale": {
           "type": "CompuScale",
           "multiplicity": "*",
           "kind": "attribute",

@@ -47,7 +47,7 @@ class AclObjectSet(ARElement):
         """
         return False
 
-    acl_object_classe_refs: list[ReferrableSubtypesEnum]
+    acl_object_clas_refs: list[ReferrableSubtypesEnum]
     acl_scope: AclScopeEnum
     collection_ref: Optional[ARRef]
     derived_from_refs: list[ARRef]
@@ -55,7 +55,7 @@ class AclObjectSet(ARElement):
     def __init__(self) -> None:
         """Initialize AclObjectSet."""
         super().__init__()
-        self.acl_object_classe_refs: list[ReferrableSubtypesEnum] = []
+        self.acl_object_clas_refs: list[ReferrableSubtypesEnum] = []
         self.acl_scope: AclScopeEnum = None
         self.collection_ref: Optional[ARRef] = None
         self.derived_from_refs: list[ARRef] = []
@@ -85,10 +85,10 @@ class AclObjectSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize acl_object_classe_refs (list to container "ACL-OBJECT-CLASSE-REFS")
-        if self.acl_object_classe_refs:
+        # Serialize acl_object_clas_refs (list to container "ACL-OBJECT-CLASSE-REFS")
+        if self.acl_object_clas_refs:
             wrapper = ET.Element("ACL-OBJECT-CLASSE-REFS")
-            for item in self.acl_object_classe_refs:
+            for item in self.acl_object_clas_refs:
                 serialized = SerializationHelper.serialize_item(item, "ReferrableSubtypesEnum")
                 if serialized is not None:
                     child_elem = ET.Element("ACL-OBJECT-CLASSE-REF")
@@ -172,8 +172,8 @@ class AclObjectSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AclObjectSet, cls).deserialize(element)
 
-        # Parse acl_object_classe_refs (list from container "ACL-OBJECT-CLASSE-REFS")
-        obj.acl_object_classe_refs = []
+        # Parse acl_object_clas_refs (list from container "ACL-OBJECT-CLASSE-REFS")
+        obj.acl_object_clas_refs = []
         container = SerializationHelper.find_child_element(element, "ACL-OBJECT-CLASSE-REFS")
         if container is not None:
             for child in container:
@@ -186,7 +186,7 @@ class AclObjectSet(ARElement):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.acl_object_classe_refs.append(child_value)
+                    obj.acl_object_clas_refs.append(child_value)
 
         # Parse acl_scope
         child = SerializationHelper.find_child_element(element, "ACL-SCOPE")
@@ -304,7 +304,7 @@ class AclObjectSetBuilder(ARElementBuilder):
         return self
 
 
-    def add_acl_object_classe(self, item: ReferrableSubtypesEnum) -> "AclObjectSetBuilder":
+    def add_acl_object_class(self, item: ReferrableSubtypesEnum) -> "AclObjectSetBuilder":
         """Add a single item to acl_object_classes list.
 
         Args:

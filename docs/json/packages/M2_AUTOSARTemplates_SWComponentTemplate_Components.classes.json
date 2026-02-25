@@ -164,7 +164,7 @@
         }
       ],
       "attributes": {
-        "hardwares": {
+        "hardware": {
           "type": "HwDescriptionEntity",
           "multiplicity": "*",
           "kind": "ref",
@@ -230,7 +230,7 @@
         }
       ],
       "attributes": {
-        "hardwares": {
+        "hardware": {
           "type": "HwDescriptionEntity",
           "multiplicity": "*",
           "kind": "ref",
@@ -421,7 +421,7 @@
         }
       ],
       "attributes": {
-        "clientServers": {
+        "clientServer": {
           "type": "ClientServerAnnotation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -435,42 +435,42 @@
           "is_ref": false,
           "note": "Annotations on this delegated port."
         },
-        "ioHwAbstractionServerAnnotations": {
+        "ioHwAbstractionServerAnnotation": {
           "type": "IoHwAbstractionServerAnnotation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Annotations on this IO Hardware Abstraction port."
         },
-        "modePortAnnotations": {
+        "modePortAnnotation": {
           "type": "ModePortAnnotation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Annotations on this mode port."
         },
-        "nvDataPortAnnotations": {
+        "nvDataPortAnnotation": {
           "type": "NvDataPortAnnotation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Annotations on this non voilatile data port."
         },
-        "parameterPorts": {
+        "parameterPort": {
           "type": "ParameterPortAnnotation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Annotations on this parameter port."
         },
-        "senderReceivers": {
+        "senderReceiver": {
           "type": "any (SenderReceiver)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of annotations of this ports sender/receiver communication."
         },
-        "triggerPortAnnotations": {
+        "triggerPortAnnotation": {
           "type": "TriggerPortAnnotation",
           "multiplicity": "*",
           "kind": "ref",
@@ -751,28 +751,28 @@
         }
       ],
       "attributes": {
-        "consistencyNeedses": {
+        "consistencyNeeds": {
           "type": "ConsistencyNeeds",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the collection of ConsistencyNeeds by the enclosing SwComponentType. atpVariation"
         },
-        "ports": {
+        "port": {
           "type": "PortPrototype",
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
           "note": "The PortPrototypes through which this SwComponent communicate. of PortPrototype is subject to variability purpose to support the conditional existence of atpVariation"
         },
-        "portGroups": {
+        "portGroup": {
           "type": "PortGroup",
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
           "note": "A port group being part of this component. atpVariation"
         },
-        "swcMappingConstraints": {
+        "swcMappingConstraint": {
           "type": "SwComponentMappingConstraints",
           "multiplicity": "*",
           "kind": "ref",
@@ -786,7 +786,7 @@
           "is_ref": false,
           "note": "This adds a documentation to the SwComponentType."
         },
-        "unitGroups": {
+        "unitGroup": {
           "type": "UnitGroup",
           "multiplicity": "*",
           "kind": "ref",
@@ -839,21 +839,21 @@
         }
       ],
       "attributes": {
-        "constants": {
+        "constant": {
           "type": "ConstantSpecification",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the ConstantSpecificationMapping to be applied for the particular ParameterSwComponentType"
         },
-        "dataTypes": {
+        "dataType": {
           "type": "DataTypeMappingSet",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the DataTypeMapping to be applied for the ParameterSwComponentType"
         },
-        "instantiationDataDefs": {
+        "instantiationDataDef": {
           "type": "InstantiationDataDefProps",
           "multiplicity": "*",
           "kind": "attribute",
@@ -915,7 +915,7 @@
         }
       ],
       "attributes": {
-        "requiredComSpecs": {
+        "requiredComSpec": {
           "type": "RPortComSpec",
           "multiplicity": "*",
           "kind": "aggr",
@@ -964,7 +964,7 @@
         }
       ],
       "attributes": {
-        "providedComSpecs": {
+        "providedComSpec": {
           "type": "PPortComSpec",
           "multiplicity": "*",
           "kind": "aggr",
@@ -1089,14 +1089,14 @@
         }
       ],
       "attributes": {
-        "innerGroups": {
+        "innerGroup": {
           "type": "PortGroup",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "defined in a component which is part of this by: InnerPortGroupIn"
         },
-        "outerPorts": {
+        "outerPort": {
           "type": "PortPrototype",
           "multiplicity": "*",
           "kind": "ref",
@@ -1241,7 +1241,7 @@
         "AtpType"
       ],
       "implemented_by": [],
-      "note": "This class provides the ability to express a software-component which provides access to an internal service for remote ECUs. It acts as a proxy for the service providing access to the service. An important use case is the request of vehicle mode switches: Such requests can be communicated via sender-receiver interfaces across ECU boundaries, but the mode manager being responsible to perform the mode switches is an AUTOSAR Service which is located in the Basic Software and is not visible in the VFB view. To handle this situation, a ServiceProxySwComponentType will act as proxy for the mode manager. It will have R-Ports to be connected with the mode requestors on VFB level and Service-Ports to be connected with the local mode manager at ECU integration time. Apart from the semantics, a ServiceProxySwComponentType has these specific properties: \u2022 A prototype of it can be mapped to more than one ECUs in the system description. \u2022 Exactly one additional instance of it will be created in the ECU-Extract per ECU to which the prototype has been mapped. \u2022 For remote communication, it can have only R-Ports with sender-receiver interfaces and 1:n semantics. \u2022 There shall be no connectors between two prototypes of any ServiceProxySwComponentType.",
+      "note": "This class provides the ability to express a software-component which provides access to an internal service for remote ECUs. It acts as a proxy for the service providing access to the service. An important use case is the request of vehicle mode switches: Such requests can be communicated via sender-receiver interfaces across ECU boundaries, but the mode manager being responsible to perform the mode switches is an AUTOSAR Service which is located in the Basic Software and is not visible in the VFB view. To handle this situation, a ServiceProxySwComponentType will act as proxy for the mode manager. It will have R-Ports to be connected with the mode requestors on VFB level and Service-Ports to be connected with the local mode manager at ECU integration time. Apart from the semantics, a ServiceProxySwComponentType has these specific properties: • A prototype of it can be mapped to more than one ECUs in the system description. • Exactly one additional instance of it will be created in the ECU-Extract per ECU to which the prototype has been mapped. • For remote communication, it can have only R-Ports with sender-receiver interfaces and 1:n semantics. • There shall be no connectors between two prototypes of any ServiceProxySwComponentType.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
@@ -1303,14 +1303,14 @@
         }
       ],
       "attributes": {
-        "bulkNvDatas": {
+        "bulkNvData": {
           "type": "BulkNvDataDescriptor",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation formally defines the bulk Nv Blocks that provided to the application software by the enclosing atpVariation"
         },
-        "nvBlocks": {
+        "nvBlock": {
           "type": "NvBlockDescriptor",
           "multiplicity": "*",
           "kind": "attribute",

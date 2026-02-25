@@ -45,7 +45,7 @@
           "is_ref": true,
           "note": "The response event representing the point in time where chain is terminated."
         },
-        "segments": {
+        "segment": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "*",
           "kind": "ref",
@@ -133,7 +133,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "A timing event is the abstract representation of a specific system behavior \u2013 that can be observed at runtime \u2013 in the AUTOSAR specification. Timing events are used to define the scope for timing constraints. Depending on the specific scope, the view on the system, and the level of abstraction different types of events are defined. In order to avoid confusion with existing event descriptions in the AUTOSAR templates the timing specific event types use the prefix TD.",
+      "note": "A timing event is the abstract representation of a specific system behavior – that can be observed at runtime – in the AUTOSAR specification. Timing events are used to define the scope for timing constraints. Depending on the specific scope, the view on the system, and the level of abstraction different types of events are defined. In order to avoid confusion with existing event descriptions in the AUTOSAR templates the timing specific event types use the prefix TD.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_TimingExtensions.pdf",

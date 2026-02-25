@@ -46,7 +46,7 @@ class FMFeature(ARElement):
         """
         return False
 
-    attribute_defs: list[FMAttributeDef]
+    attribute_deves: list[FMAttributeDef]
     decomposition_decompositions: list[FMFeature]
     maximum: Optional[BindingTimeEnum]
     minimum: Optional[BindingTimeEnum]
@@ -55,7 +55,7 @@ class FMFeature(ARElement):
     def __init__(self) -> None:
         """Initialize FMFeature."""
         super().__init__()
-        self.attribute_defs: list[FMAttributeDef] = []
+        self.attribute_deves: list[FMAttributeDef] = []
         self.decomposition_decompositions: list[FMFeature] = []
         self.maximum: Optional[BindingTimeEnum] = None
         self.minimum: Optional[BindingTimeEnum] = None
@@ -86,10 +86,10 @@ class FMFeature(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize attribute_defs (list to container "ATTRIBUTE-DEFS")
-        if self.attribute_defs:
-            wrapper = ET.Element("ATTRIBUTE-DEFS")
-            for item in self.attribute_defs:
+        # Serialize attribute_deves (list to container "ATTRIBUTE-DEVES")
+        if self.attribute_deves:
+            wrapper = ET.Element("ATTRIBUTE-DEVES")
+            for item in self.attribute_deves:
                 serialized = SerializationHelper.serialize_item(item, "FMAttributeDef")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -169,15 +169,15 @@ class FMFeature(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeature, cls).deserialize(element)
 
-        # Parse attribute_defs (list from container "ATTRIBUTE-DEFS")
-        obj.attribute_defs = []
-        container = SerializationHelper.find_child_element(element, "ATTRIBUTE-DEFS")
+        # Parse attribute_deves (list from container "ATTRIBUTE-DEVES")
+        obj.attribute_deves = []
+        container = SerializationHelper.find_child_element(element, "ATTRIBUTE-DEVES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.attribute_defs.append(child_value)
+                    obj.attribute_deves.append(child_value)
 
         # Parse decomposition_decompositions (list from container "DECOMPOSITION-DECOMPOSITIONS")
         obj.decomposition_decompositions = []
@@ -234,8 +234,8 @@ class FMFeatureBuilder(ARElementBuilder):
         self._obj: FMFeature = FMFeature()
 
 
-    def with_attribute_defs(self, items: list[FMAttributeDef]) -> "FMFeatureBuilder":
-        """Set attribute_defs list attribute.
+    def with_attribute_deves(self, items: list[FMAttributeDef]) -> "FMFeatureBuilder":
+        """Set attribute_deves list attribute.
 
         Args:
             items: List of items to set
@@ -243,7 +243,7 @@ class FMFeatureBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.attribute_defs = list(items) if items else []
+        self._obj.attribute_deves = list(items) if items else []
         return self
 
     def with_decomposition_decompositions(self, items: list[FMFeature]) -> "FMFeatureBuilder":
@@ -312,7 +312,7 @@ class FMFeatureBuilder(ARElementBuilder):
 
 
     def add_attribute_def(self, item: FMAttributeDef) -> "FMFeatureBuilder":
-        """Add a single item to attribute_defs list.
+        """Add a single item to attribute_deves list.
 
         Args:
             item: Item to add
@@ -320,16 +320,16 @@ class FMFeatureBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.attribute_defs.append(item)
+        self._obj.attribute_deves.append(item)
         return self
 
-    def clear_attribute_defs(self) -> "FMFeatureBuilder":
-        """Clear all items from attribute_defs list.
+    def clear_attribute_deves(self) -> "FMFeatureBuilder":
+        """Clear all items from attribute_deves list.
 
         Returns:
             self for method chaining
         """
-        self._obj.attribute_defs = []
+        self._obj.attribute_deves = []
         return self
 
     def add_decomposition_decomposition(self, item: FMFeature) -> "FMFeatureBuilder":

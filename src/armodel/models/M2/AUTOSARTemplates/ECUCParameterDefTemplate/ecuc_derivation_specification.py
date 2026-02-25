@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.cla
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query import (
@@ -34,25 +33,14 @@ class EcucDerivationSpecification(ARObject):
         return False
 
     calculation: Optional[Any]
-    _ecuc_queries: list[EcucQuery]
+    ecuc_queries: list[EcucQuery]
     informal_formula: Optional[MlFormula]
     def __init__(self) -> None:
         """Initialize EcucDerivationSpecification."""
         super().__init__()
         self.calculation: Optional[Any] = None
-        self._ecuc_queries: list[EcucQuery] = []
+        self.ecuc_queries: list[EcucQuery] = []
         self.informal_formula: Optional[MlFormula] = None
-    @property
-    @xml_element_name("ECUC-QUERYS")
-    def ecuc_queries(self) -> list[EcucQuery]:
-        """Get ecuc_queries with custom XML element name."""
-        return self._ecuc_queries
-
-    @ecuc_queries.setter
-    def ecuc_queries(self, value: list[EcucQuery]) -> None:
-        """Set ecuc_queries with custom XML element name."""
-        self._ecuc_queries = value
-
 
     def serialize(self) -> ET.Element:
         """Serialize EcucDerivationSpecification to XML element.
@@ -92,9 +80,9 @@ class EcucDerivationSpecification(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecuc_queries (list to container "ECUC-QUERYS")
+        # Serialize ecuc_queries (list to container "ECUC-QUERIES")
         if self.ecuc_queries:
-            wrapper = ET.Element("ECUC-QUERYS")
+            wrapper = ET.Element("ECUC-QUERIES")
             for item in self.ecuc_queries:
                 serialized = SerializationHelper.serialize_item(item, "EcucQuery")
                 if serialized is not None:
@@ -137,9 +125,9 @@ class EcucDerivationSpecification(ARObject):
             calculation_value = child.text
             obj.calculation = calculation_value
 
-        # Parse ecuc_queries (list from container "ECUC-QUERYS")
+        # Parse ecuc_queries (list from container "ECUC-QUERIES")
         obj.ecuc_queries = []
-        container = SerializationHelper.find_child_element(element, "ECUC-QUERYS")
+        container = SerializationHelper.find_child_element(element, "ECUC-QUERIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -207,7 +195,7 @@ class EcucDerivationSpecificationBuilder(BuilderBase):
         return self
 
 
-    def add_ecuc_querie(self, item: EcucQuery) -> "EcucDerivationSpecificationBuilder":
+    def add_ecuc_query(self, item: EcucQuery) -> "EcucDerivationSpecificationBuilder":
         """Add a single item to ecuc_queries list.
 
         Args:

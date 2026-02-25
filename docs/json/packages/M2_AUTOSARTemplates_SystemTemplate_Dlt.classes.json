@@ -34,7 +34,7 @@
           "is_ref": true,
           "note": "Reference to the Ecu representation in the Log And Trace"
         },
-        "dltLogChannels": {
+        "dltLogChannel": {
           "type": "DltLogChannel",
           "multiplicity": "*",
           "kind": "attribute",
@@ -86,7 +86,7 @@
         }
       ],
       "attributes": {
-        "applications": {
+        "application": {
           "type": "DltContext",
           "multiplicity": "*",
           "kind": "ref",
@@ -100,7 +100,7 @@
           "is_ref": false,
           "note": "This attributes defines the default trace status."
         },
-        "dltMessages": {
+        "dltMessage": {
           "type": "DltMessage",
           "multiplicity": "*",
           "kind": "ref",

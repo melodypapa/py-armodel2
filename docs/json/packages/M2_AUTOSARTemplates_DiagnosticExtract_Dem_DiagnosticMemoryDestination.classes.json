@@ -175,7 +175,7 @@
         }
       ],
       "attributes": {
-        "authRoles": {
+        "authRole": {
           "type": "DiagnosticAuthRole",
           "multiplicity": "*",
           "kind": "ref",

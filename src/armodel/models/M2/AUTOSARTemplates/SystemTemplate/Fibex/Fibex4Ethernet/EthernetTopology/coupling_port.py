@@ -655,7 +655,7 @@ class CouplingPortBuilder(IdentifiableBuilder):
         self._obj.mac_multicast_groups = []
         return self
 
-    def add_mac_sec_propse(self, item: MacSecProps) -> "CouplingPortBuilder":
+    def add_mac_sec_props(self, item: MacSecProps) -> "CouplingPortBuilder":
         """Add a single item to mac_sec_propses list.
 
         Args:

@@ -176,7 +176,7 @@ class SecureCommunicationPropsSetBuilder(FibexElementBuilder):
         self._obj.authentications = []
         return self
 
-    def add_freshness_propse(self, item: any (SecureCommunication)) -> "SecureCommunicationPropsSetBuilder":
+    def add_freshness_props(self, item: any (SecureCommunication)) -> "SecureCommunicationPropsSetBuilder":
         """Add a single item to freshness_propses list.
 
         Args:

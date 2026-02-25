@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_NvBlockC
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -65,7 +64,7 @@ class NvBlockDescriptor(Identifiable):
     client_server_ports: list[RoleBasedPortAssignment]
     constant_value_refs: list[ARRef]
     data_type_refs: list[ARRef]
-    instantiation_data_defs: list[InstantiationDataDefProps]
+    instantiation_data_deves: list[InstantiationDataDefProps]
     mode_switch_events: list[Any]
     nv_block_data_refs: list[ARRef]
     nv_block_needs: Optional[NvBlockNeeds]
@@ -73,14 +72,14 @@ class NvBlockDescriptor(Identifiable):
     rom_block_ref: Optional[ARRef]
     support_dirty: Optional[Boolean]
     timing_event_ref: Optional[ARRef]
-    _writing_strategies: list[Any]
+    writing_strategies: list[Any]
     def __init__(self) -> None:
         """Initialize NvBlockDescriptor."""
         super().__init__()
         self.client_server_ports: list[RoleBasedPortAssignment] = []
         self.constant_value_refs: list[ARRef] = []
         self.data_type_refs: list[ARRef] = []
-        self.instantiation_data_defs: list[InstantiationDataDefProps] = []
+        self.instantiation_data_deves: list[InstantiationDataDefProps] = []
         self.mode_switch_events: list[Any] = []
         self.nv_block_data_refs: list[ARRef] = []
         self.nv_block_needs: Optional[NvBlockNeeds] = None
@@ -88,18 +87,7 @@ class NvBlockDescriptor(Identifiable):
         self.rom_block_ref: Optional[ARRef] = None
         self.support_dirty: Optional[Boolean] = None
         self.timing_event_ref: Optional[ARRef] = None
-        self._writing_strategies: list[Any] = []
-    @property
-    @xml_element_name("WRITING-STRATEGYS")
-    def writing_strategies(self) -> list[Any]:
-        """Get writing_strategies with custom XML element name."""
-        return self._writing_strategies
-
-    @writing_strategies.setter
-    def writing_strategies(self, value: list[Any]) -> None:
-        """Set writing_strategies with custom XML element name."""
-        self._writing_strategies = value
-
+        self.writing_strategies: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize NvBlockDescriptor to XML element.
@@ -169,10 +157,10 @@ class NvBlockDescriptor(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize instantiation_data_defs (list to container "INSTANTIATION-DATA-DEFS")
-        if self.instantiation_data_defs:
-            wrapper = ET.Element("INSTANTIATION-DATA-DEFS")
-            for item in self.instantiation_data_defs:
+        # Serialize instantiation_data_deves (list to container "INSTANTIATION-DATA-DEVES")
+        if self.instantiation_data_deves:
+            wrapper = ET.Element("INSTANTIATION-DATA-DEVES")
+            for item in self.instantiation_data_deves:
                 serialized = SerializationHelper.serialize_item(item, "InstantiationDataDefProps")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -276,9 +264,9 @@ class NvBlockDescriptor(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize writing_strategies (list to container "WRITING-STRATEGYS")
+        # Serialize writing_strategies (list to container "WRITING-STRATEGIES")
         if self.writing_strategies:
-            wrapper = ET.Element("WRITING-STRATEGYS")
+            wrapper = ET.Element("WRITING-STRATEGIES")
             for item in self.writing_strategies:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -343,15 +331,15 @@ class NvBlockDescriptor(Identifiable):
                 if child_value is not None:
                     obj.data_type_refs.append(child_value)
 
-        # Parse instantiation_data_defs (list from container "INSTANTIATION-DATA-DEFS")
-        obj.instantiation_data_defs = []
-        container = SerializationHelper.find_child_element(element, "INSTANTIATION-DATA-DEFS")
+        # Parse instantiation_data_deves (list from container "INSTANTIATION-DATA-DEVES")
+        obj.instantiation_data_deves = []
+        container = SerializationHelper.find_child_element(element, "INSTANTIATION-DATA-DEVES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.instantiation_data_defs.append(child_value)
+                    obj.instantiation_data_deves.append(child_value)
 
         # Parse mode_switch_events (list from container "MODE-SWITCH-EVENTS")
         obj.mode_switch_events = []
@@ -409,9 +397,9 @@ class NvBlockDescriptor(Identifiable):
             timing_event_ref_value = ARRef.deserialize(child)
             obj.timing_event_ref = timing_event_ref_value
 
-        # Parse writing_strategies (list from container "WRITING-STRATEGYS")
+        # Parse writing_strategies (list from container "WRITING-STRATEGIES")
         obj.writing_strategies = []
-        container = SerializationHelper.find_child_element(element, "WRITING-STRATEGYS")
+        container = SerializationHelper.find_child_element(element, "WRITING-STRATEGIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -468,8 +456,8 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
         self._obj.data_types = list(items) if items else []
         return self
 
-    def with_instantiation_data_defs(self, items: list[InstantiationDataDefProps]) -> "NvBlockDescriptorBuilder":
-        """Set instantiation_data_defs list attribute.
+    def with_instantiation_data_deves(self, items: list[InstantiationDataDefProps]) -> "NvBlockDescriptorBuilder":
+        """Set instantiation_data_deves list attribute.
 
         Args:
             items: List of items to set
@@ -477,7 +465,7 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.instantiation_data_defs = list(items) if items else []
+        self._obj.instantiation_data_deves = list(items) if items else []
         return self
 
     def with_mode_switch_events(self, items: list[any (ModeSwitchEvent)]) -> "NvBlockDescriptorBuilder":
@@ -651,7 +639,7 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
         return self
 
     def add_instantiation_data_def(self, item: InstantiationDataDefProps) -> "NvBlockDescriptorBuilder":
-        """Add a single item to instantiation_data_defs list.
+        """Add a single item to instantiation_data_deves list.
 
         Args:
             item: Item to add
@@ -659,16 +647,16 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.instantiation_data_defs.append(item)
+        self._obj.instantiation_data_deves.append(item)
         return self
 
-    def clear_instantiation_data_defs(self) -> "NvBlockDescriptorBuilder":
-        """Clear all items from instantiation_data_defs list.
+    def clear_instantiation_data_deves(self) -> "NvBlockDescriptorBuilder":
+        """Clear all items from instantiation_data_deves list.
 
         Returns:
             self for method chaining
         """
-        self._obj.instantiation_data_defs = []
+        self._obj.instantiation_data_deves = []
         return self
 
     def add_mode_switch_event(self, item: any (ModeSwitchEvent)) -> "NvBlockDescriptorBuilder":
@@ -713,7 +701,7 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
         self._obj.nv_block_datas = []
         return self
 
-    def add_writing_strategie(self, item: any (RoleBasedData)) -> "NvBlockDescriptorBuilder":
+    def add_writing_strategy(self, item: any (RoleBasedData)) -> "NvBlockDescriptorBuilder":
         """Add a single item to writing_strategies list.
 
         Args:

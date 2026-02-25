@@ -75,7 +75,7 @@
         }
       ],
       "attributes": {
-        "enableConditions": {
+        "enableCondition": {
           "type": "any (DiagnosticEnable)",
           "multiplicity": "*",
           "kind": "ref",
@@ -118,7 +118,7 @@
         }
       ],
       "attributes": {
-        "storages": {
+        "storage": {
           "type": "any (DiagnosticStorage)",
           "multiplicity": "*",
           "kind": "ref",

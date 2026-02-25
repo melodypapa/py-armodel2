@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.cla
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_condition_formula import (
@@ -37,25 +36,14 @@ class EcucConditionSpecification(ARObject):
         return False
 
     condition: Optional[EcucConditionFormula]
-    _ecuc_queries: list[EcucQuery]
+    ecuc_queries: list[EcucQuery]
     informal_formula: Optional[MlFormula]
     def __init__(self) -> None:
         """Initialize EcucConditionSpecification."""
         super().__init__()
         self.condition: Optional[EcucConditionFormula] = None
-        self._ecuc_queries: list[EcucQuery] = []
+        self.ecuc_queries: list[EcucQuery] = []
         self.informal_formula: Optional[MlFormula] = None
-    @property
-    @xml_element_name("ECUC-QUERYS")
-    def ecuc_queries(self) -> list[EcucQuery]:
-        """Get ecuc_queries with custom XML element name."""
-        return self._ecuc_queries
-
-    @ecuc_queries.setter
-    def ecuc_queries(self, value: list[EcucQuery]) -> None:
-        """Set ecuc_queries with custom XML element name."""
-        self._ecuc_queries = value
-
 
     def serialize(self) -> ET.Element:
         """Serialize EcucConditionSpecification to XML element.
@@ -95,9 +83,9 @@ class EcucConditionSpecification(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecuc_queries (list to container "ECUC-QUERYS")
+        # Serialize ecuc_queries (list to container "ECUC-QUERIES")
         if self.ecuc_queries:
-            wrapper = ET.Element("ECUC-QUERYS")
+            wrapper = ET.Element("ECUC-QUERIES")
             for item in self.ecuc_queries:
                 serialized = SerializationHelper.serialize_item(item, "EcucQuery")
                 if serialized is not None:
@@ -140,9 +128,9 @@ class EcucConditionSpecification(ARObject):
             condition_value = SerializationHelper.deserialize_by_tag(child, "EcucConditionFormula")
             obj.condition = condition_value
 
-        # Parse ecuc_queries (list from container "ECUC-QUERYS")
+        # Parse ecuc_queries (list from container "ECUC-QUERIES")
         obj.ecuc_queries = []
-        container = SerializationHelper.find_child_element(element, "ECUC-QUERYS")
+        container = SerializationHelper.find_child_element(element, "ECUC-QUERIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -210,7 +198,7 @@ class EcucConditionSpecificationBuilder(BuilderBase):
         return self
 
 
-    def add_ecuc_querie(self, item: EcucQuery) -> "EcucConditionSpecificationBuilder":
+    def add_ecuc_query(self, item: EcucQuery) -> "EcucConditionSpecificationBuilder":
         """Add a single item to ecuc_queries list.
 
         Args:

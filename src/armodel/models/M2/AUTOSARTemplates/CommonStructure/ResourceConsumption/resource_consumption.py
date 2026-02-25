@@ -409,7 +409,7 @@ class ResourceConsumptionBuilder(IdentifiableBuilder):
         self._obj.memory_sections = []
         return self
 
-    def add_section_name_prefixe(self, item: SectionNamePrefix) -> "ResourceConsumptionBuilder":
+    def add_section_name_prefix(self, item: SectionNamePrefix) -> "ResourceConsumptionBuilder":
         """Add a single item to section_name_prefixes list.
 
         Args:

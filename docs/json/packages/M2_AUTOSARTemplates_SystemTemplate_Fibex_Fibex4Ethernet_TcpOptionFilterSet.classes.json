@@ -33,7 +33,7 @@
         }
       ],
       "attributes": {
-        "tcpOptionFilterLists": {
+        "tcpOptionFilterList": {
           "type": "TcpOptionFilterList",
           "multiplicity": "*",
           "kind": "ref",
@@ -71,7 +71,7 @@
         }
       ],
       "attributes": {
-        "allowedTcpOptions": {
+        "allowedTcpOption": {
           "type": "PositiveInteger",
           "multiplicity": "*",
           "kind": "attribute",

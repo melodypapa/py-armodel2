@@ -10,7 +10,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcImple
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implementation import (
     Implementation,
@@ -44,25 +43,14 @@ class SwcImplementation(Implementation):
         return False
 
     behavior_ref: Optional[ARRef]
-    _per_instance_memories: list[PerInstanceMemory]
+    per_instance_memories: list[PerInstanceMemory]
     required: Optional[String]
     def __init__(self) -> None:
         """Initialize SwcImplementation."""
         super().__init__()
         self.behavior_ref: Optional[ARRef] = None
-        self._per_instance_memories: list[PerInstanceMemory] = []
+        self.per_instance_memories: list[PerInstanceMemory] = []
         self.required: Optional[String] = None
-    @property
-    @xml_element_name("PER-INSTANCE-MEMORYS")
-    def per_instance_memories(self) -> list[PerInstanceMemory]:
-        """Get per_instance_memories with custom XML element name."""
-        return self._per_instance_memories
-
-    @per_instance_memories.setter
-    def per_instance_memories(self, value: list[PerInstanceMemory]) -> None:
-        """Set per_instance_memories with custom XML element name."""
-        self._per_instance_memories = value
-
 
     def serialize(self) -> ET.Element:
         """Serialize SwcImplementation to XML element.
@@ -102,9 +90,9 @@ class SwcImplementation(Implementation):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize per_instance_memories (list to container "PER-INSTANCE-MEMORYS")
+        # Serialize per_instance_memories (list to container "PER-INSTANCE-MEMORIES")
         if self.per_instance_memories:
-            wrapper = ET.Element("PER-INSTANCE-MEMORYS")
+            wrapper = ET.Element("PER-INSTANCE-MEMORIES")
             for item in self.per_instance_memories:
                 serialized = SerializationHelper.serialize_item(item, "PerInstanceMemory")
                 if serialized is not None:
@@ -147,9 +135,9 @@ class SwcImplementation(Implementation):
             behavior_ref_value = ARRef.deserialize(child)
             obj.behavior_ref = behavior_ref_value
 
-        # Parse per_instance_memories (list from container "PER-INSTANCE-MEMORYS")
+        # Parse per_instance_memories (list from container "PER-INSTANCE-MEMORIES")
         obj.per_instance_memories = []
-        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORYS")
+        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -217,7 +205,7 @@ class SwcImplementationBuilder(ImplementationBuilder):
         return self
 
 
-    def add_per_instance_memorie(self, item: PerInstanceMemory) -> "SwcImplementationBuilder":
+    def add_per_instance_memory(self, item: PerInstanceMemory) -> "SwcImplementationBuilder":
         """Add a single item to per_instance_memories list.
 
         Args:

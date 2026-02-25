@@ -125,7 +125,7 @@ class SdgDefBuilder(ARElementBuilder):
         return self
 
 
-    def add_sdg_classe(self, item: SdgClass) -> "SdgDefBuilder":
+    def add_sdg_class(self, item: SdgClass) -> "SdgDefBuilder":
         """Add a single item to sdg_classes list.
 
         Args:

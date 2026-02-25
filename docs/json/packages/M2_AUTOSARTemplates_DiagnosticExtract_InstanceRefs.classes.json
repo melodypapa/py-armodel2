@@ -37,14 +37,14 @@
           "is_ref": true,
           "note": "This represents the base of the InstanceRef"
         },
-        "contexts": {
+        "context": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         },
-        "contextDatas": {
+        "contextData": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "*",
           "kind": "ref",
@@ -121,7 +121,7 @@
           "is_ref": true,
           "note": ""
         },
-        "contextSwPrototypes": {
+        "contextSwPrototype": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "ref",
