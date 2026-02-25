@@ -59,7 +59,7 @@ class LifeCycleInfoSet(ARElement):
         self._life_cycle_infoes: list[LifeCycleInfo] = []
         self.used_life_cycle_state_definition_group_ref: ARRef = None
     @property
-    @xml_element_name("LIFE-CYCLE-INFOS/LIFE-CYCLE-INFO")
+    @xml_element_name("LIFE-CYCLE-INFOS")
     def life_cycle_infoes(self) -> list[LifeCycleInfo]:
         """Get life_cycle_infoes with custom XML element name."""
         return self._life_cycle_infoes

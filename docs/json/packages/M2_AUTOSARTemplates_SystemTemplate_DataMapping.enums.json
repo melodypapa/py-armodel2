@@ -30,19 +30,9 @@
           "description": "In case the System Description doesn’t use a complete Software Component Description (VFB View) this value can be chosen. This supports the inclusion of legacy signals. The aggregation of SwDataDefProps shall be used to configure the \"ComSignalDataInvalidValue\" and the Data Semantics.<br>Tags: atp.EnumerationLiteralIndex=0"
         },
         {
-          "name": "network",
-          "index": null,
-          "description": "Ignore any networkRepresentationProps of this ISignal and use the networkRepresentation from the"
-        },
-        {
-          "name": "Representation",
-          "index": null,
-          "description": "ComSpec."
-        },
-        {
-          "name": "FromComSpec",
+          "name": "networkRepresentationFromComSpec",
           "index": 1,
-          "description": "Please note that the usage does not imply the existence of the SwDataDefProps in the role network Representation aggregated by the SenderComSpec or ReceiverComSpec if an ImplementationData Type is defined.<br>Tags: atp.EnumerationLiteralIndex=1"
+          "description": "Ignore any networkRepresentationProps of this ISignal and use the networkRepresentation from the"
         },
         {
           "name": "override",
@@ -53,6 +43,11 @@
           "name": "transformingISignal",
           "index": 4,
           "description": "This literal indicates that a transformer chain shall be used to communicate the ISignal as UINT8_N over the bus.<br>Tags: atp.EnumerationLiteralIndex=4"
+        },
+        {
+          "name": "portInterfaceDefinition",
+          "index": 3,
+          "description": "This literal indicates that the port interface definition shall be used to communicate the ISignal.<br>Tags: atp.EnumerationLiteralIndex=3"
         }
       ]
     }

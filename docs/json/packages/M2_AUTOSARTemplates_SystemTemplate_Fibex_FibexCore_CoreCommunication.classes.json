@@ -61,7 +61,7 @@
           "is_ref": true,
           "note": "Optional reference to a DataTransformation which the transformer chain that is used to transform that shall be placed inside this ISignal. atpVariation"
         },
-        "dataTypePolicyEnum": {
+        "dataTypePolicy": {
           "type": "DataTypePolicyEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -73,6 +73,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "Optional definition of a ISignal’s initValue in case the doesn't use a complete Software (VFB View). This supports the legacy system signals. can be used to configure the Signal’s \"Init full DataMapping exist for the SystemSignal this be available from a configured Sender ReceiverComSpec. In this case the SenderComSpec and/or ReceiverComSpec optional value specification. Further from the RTE specification."
         },
         "iSignalProps": {
@@ -624,7 +625,7 @@
         }
       ],
       "attributes": {
-        "hasDynamic": {
+        "hasDynamicLength": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -883,21 +884,21 @@
         }
       ],
       "attributes": {
-        "iPduTiming": {
+        "iPduTimingSpecification": {
           "type": "IPduTiming",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Timing specification for Com IPdus (Transmission"
         },
-        "iSignalToPdu": {
+        "iSignalToPduMapping": {
           "type": "ISignalToIPduMapping",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Definition of SignalToIPduMappings included in the Signal content of a PDU can be variable. atpVariation"
         },
-        "unusedBit": {
+        "unusedBitPattern": {
           "type": "Integer",
           "multiplicity": "0..1",
           "kind": "attribute",

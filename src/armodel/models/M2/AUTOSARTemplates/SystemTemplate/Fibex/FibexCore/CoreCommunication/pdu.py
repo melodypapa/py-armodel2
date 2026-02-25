@@ -36,12 +36,12 @@ class Pdu(FibexElement, ABC):
         """
         return True
 
-    has_dynamic: Optional[Boolean]
+    has_dynamic_length: Optional[Boolean]
     length: Optional[UnlimitedInteger]
     def __init__(self) -> None:
         """Initialize Pdu."""
         super().__init__()
-        self.has_dynamic: Optional[Boolean] = None
+        self.has_dynamic_length: Optional[Boolean] = None
         self.length: Optional[UnlimitedInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -68,12 +68,12 @@ class Pdu(FibexElement, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize has_dynamic
-        if self.has_dynamic is not None:
-            serialized = SerializationHelper.serialize_item(self.has_dynamic, "Boolean")
+        # Serialize has_dynamic_length
+        if self.has_dynamic_length is not None:
+            serialized = SerializationHelper.serialize_item(self.has_dynamic_length, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HAS-DYNAMIC")
+                wrapped = ET.Element("HAS-DYNAMIC-LENGTH")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,11 +111,11 @@ class Pdu(FibexElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Pdu, cls).deserialize(element)
 
-        # Parse has_dynamic
-        child = SerializationHelper.find_child_element(element, "HAS-DYNAMIC")
+        # Parse has_dynamic_length
+        child = SerializationHelper.find_child_element(element, "HAS-DYNAMIC-LENGTH")
         if child is not None:
-            has_dynamic_value = child.text
-            obj.has_dynamic = has_dynamic_value
+            has_dynamic_length_value = child.text
+            obj.has_dynamic_length = has_dynamic_length_value
 
         # Parse length
         child = SerializationHelper.find_child_element(element, "LENGTH")
@@ -136,8 +136,8 @@ class PduBuilder(FibexElementBuilder):
         self._obj: Pdu = Pdu()
 
 
-    def with_has_dynamic(self, value: Optional[Boolean]) -> "PduBuilder":
-        """Set has_dynamic attribute.
+    def with_has_dynamic_length(self, value: Optional[Boolean]) -> "PduBuilder":
+        """Set has_dynamic_length attribute.
 
         Args:
             value: Value to set
@@ -147,7 +147,7 @@ class PduBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.has_dynamic = value
+        self._obj.has_dynamic_length = value
         return self
 
     def with_length(self, value: Optional[UnlimitedInteger]) -> "PduBuilder":
