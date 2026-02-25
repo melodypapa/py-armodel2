@@ -42,11 +42,11 @@ class DataPrototype(Identifiable, ABC):
         """
         return True
 
-    sw_data_def: Optional[SwDataDefProps]
+    sw_data_def_props: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize DataPrototype."""
         super().__init__()
-        self.sw_data_def: Optional[SwDataDefProps] = None
+        self.sw_data_def_props: Optional[SwDataDefProps] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DataPrototype to XML element.
@@ -72,12 +72,12 @@ class DataPrototype(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sw_data_def
-        if self.sw_data_def is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
+        # Serialize sw_data_def_props
+        if self.sw_data_def_props is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_data_def_props, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-DATA-DEF")
+                wrapped = ET.Element("SW-DATA-DEF-PROPS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,11 +101,11 @@ class DataPrototype(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototype, cls).deserialize(element)
 
-        # Parse sw_data_def
-        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
+        # Parse sw_data_def_props
+        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF-PROPS")
         if child is not None:
-            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.sw_data_def = sw_data_def_value
+            sw_data_def_props_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
+            obj.sw_data_def_props = sw_data_def_props_value
 
         return obj
 
@@ -120,8 +120,8 @@ class DataPrototypeBuilder(IdentifiableBuilder):
         self._obj: DataPrototype = DataPrototype()
 
 
-    def with_sw_data_def(self, value: Optional[SwDataDefProps]) -> "DataPrototypeBuilder":
-        """Set sw_data_def attribute.
+    def with_sw_data_def_props(self, value: Optional[SwDataDefProps]) -> "DataPrototypeBuilder":
+        """Set sw_data_def_props attribute.
 
         Args:
             value: Value to set
@@ -131,7 +131,7 @@ class DataPrototypeBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_data_def = value
+        self._obj.sw_data_def_props = value
         return self
 
 

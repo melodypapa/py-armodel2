@@ -275,6 +275,104 @@ class SerializationHelper:
         return None
 
     @staticmethod
+    def has_polymorphic(cls: type, attr_name: str) -> bool:
+        """Check if an attribute has @polymorphic decorator.
+
+        Args:
+            cls: The class to check
+            attr_name: Name of the attribute to check
+
+        Returns:
+            True if attribute has @polymorphic decorator
+        """
+        # Check if it's a property
+        prop = getattr(cls, attr_name, None)
+        if prop and isinstance(prop, property) and hasattr(prop.fget, '_is_polymorphic'):
+            return True
+
+        # Check if the attribute itself has the marker
+        attr = getattr(cls, attr_name, None)
+        if attr and hasattr(attr, '_is_polymorphic'):
+            return True
+
+        return False
+
+    @staticmethod
+    def get_polymorphic_mapping(cls: type, attr_name: str) -> Optional[dict[str, str]]:  # type: ignore[no-any-return]
+        """Get the polymorphic mapping from a @polymorphic decorator.
+
+        Args:
+            cls: The class to check
+            attr_name: Name of the attribute to check
+
+        Returns:
+            Dictionary mapping wrapper XML tags to base class names,
+            or None if attribute doesn't have @polymorphic decorator
+        """
+        # Check if it's a property
+        prop = getattr(cls, attr_name, None)
+        if prop and isinstance(prop, property) and hasattr(prop.fget, '_polymorphic_mapping'):
+            return prop.fget._polymorphic_mapping  # type: ignore[union-attr]
+
+        # Check if the attribute itself has the marker
+        attr = getattr(cls, attr_name, None)
+        if attr and hasattr(attr, '_polymorphic_mapping'):
+            return attr._polymorphic_mapping  # type: ignore[union-attr]
+
+        return None
+
+    @staticmethod
+    def deserialize_polymorphic(wrapper_element: ET.Element, base_class_name: str) -> Optional["ARObject"]:  # type: ignore[no-any-return]
+        """Deserialize polymorphic content from a wrapper element.
+
+        This method handles AUTOSAR pattern where a wrapper element (e.g., <VALUE-SPEC>)
+        contains a concrete implementation element (e.g., <NUMERICAL-VALUE-SPECIFICATION>).
+
+        Args:
+            wrapper_element: The wrapper XML element (e.g., <VALUE-SPEC>)
+            base_class_name: Expected base class name (e.g., "ValueSpecification")
+
+        Returns:
+            Deserialized concrete object, or None if wrapper is empty
+
+        Raises:
+            ValueError: If child element is not a valid polymorphic implementation
+        """
+        from armodel.serialization.model_factory import ModelFactory
+
+        factory = ModelFactory()
+        if not factory.is_initialized():
+            factory.load_mappings()
+
+        # Find the first child element (the concrete implementation)
+        children = list(wrapper_element)
+        if not children:
+            return None
+
+        concrete_elem = children[0]
+        concrete_tag = SerializationHelper.strip_namespace(concrete_elem.tag)
+
+        # Get the concrete class from the XML tag
+        concrete_class = factory.get_class(concrete_tag)
+        if concrete_class is None:
+            raise ValueError(
+                f"Unknown concrete type '{concrete_tag}' in polymorphic wrapper. "
+                f"Expected a subclass of '{base_class_name}'."
+            )
+
+        # Verify it's a valid polymorphic implementation
+        resolved_class = factory.resolve_polymorphic_type(concrete_tag, base_class_name)
+        if resolved_class is None:
+            raise ValueError(
+                f"Class '{concrete_class.__name__}' (XML tag: {concrete_tag}) "
+                f"is not a valid polymorphic implementation of '{base_class_name}'. "
+                f"Valid implementations: {factory.get_polymorphic_implementations(base_class_name)}"
+            )
+
+        # Deserialize using the concrete class
+        return SerializationHelper.unwrap_primitive(concrete_class.deserialize(concrete_elem))
+
+    @staticmethod
     def serialize_l_prefix(child_elem: ET.Element, l_prefix_tag: str) -> ET.Element:
         """Wrap a child element in the l_prefix tag.
 

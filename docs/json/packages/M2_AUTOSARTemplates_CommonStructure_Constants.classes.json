@@ -219,6 +219,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:VALUE-SPEC=ValueSpecification",
           "note": "Specification of an expression leading to a value for this"
         }
       }

@@ -131,7 +131,7 @@
         }
       ],
       "attributes": {
-        "compositeNetworks": {
+        "compositeNetworkRepresentations": {
           "type": "CompositeNetworkRepresentation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -146,18 +146,53 @@
           "note": "Data element these attributes belong to."
         },
         "handleOutOfRange": {
-          "type": "any (HandleOutOfRange)",
+          "type": "HandleOutOfRangeEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute controls how values that are out of the specified range are handled according to the values of HandleOutOfRangeEnum."
+        },
+        "handleOutOfRangeStatus": {
+          "type": "HandleOutOfRangeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Control the way how return values are created in case of an out-of-range situation."
         },
-        "maxDelta": {
+        "maxDeltaCounterInit": {
           "type": "PositiveInteger",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Initial maximum allowed gap between two counter values two consecutively received valid Data, i.e. how many data is accepted. For example, if the Data with counter 1 and MaxDeltaCounter 1, then at the next reception the receiver can accept values 2 and 3, but not 4."
+        },
+        "maxNoNewOrRepeatedData": {
+          "type": "PositiveInteger",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The maximum amount of missing or repeated Data which the receiver does not expect to exceed under normal communication conditions."
+        },
+        "networkRepresentation": {
+          "type": "SwDataDefProps",
+          "multiplicity": "0..1",
+          "kind": "aggr",
+          "is_ref": false,
+          "note": "A networkRepresentation is used to define how the data Element is mapped to a communication bus.."
+        },
+        "receptionProps": {
+          "type": "ReceptionComSpecProps",
+          "multiplicity": "0..1",
+          "kind": "aggr",
+          "is_ref": false,
+          "note": "This aggregation represents the definition transmission props in the context of the enclosing ReceiverComSpec."
+        },
+        "replaceWith": {
+          "type": "VariableAccess",
+          "multiplicity": "0..1",
+          "kind": "aggr",
+          "is_ref": false,
+          "note": "The maximum amount of missing or repeated Data which the receiver does not expect to exceed under normal communication conditions."
         },
         "syncCounterInit": {
           "type": "PositiveInteger",
@@ -166,14 +201,14 @@
           "is_ref": false,
           "note": "Number of Data required for validating the consistency of that shall be received with a valid counter (i.e. the allowed lock-in range) after the an unexpected behavior of a received E2E wrapper approach involves are not subjected to the AUTOSAR is superseded by the superior E2E (which is fully standardized by new projects (without legacy to carry-over parts) shall use the fully transformer approach."
         },
-        "transformationComs": {
-          "type": "any (TransformationCom)",
+        "transformationComSpecPropses": {
+          "type": "TransformationComSpecProps",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This references the TransformationComSpecProps which define port-specific configuration for data transformation."
         },
-        "usesEndToEnd": {
+        "usesEndToEndProtection": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -244,21 +279,21 @@
           "is_ref": false,
           "note": "The applicable filter algorithm for filtering the value of the"
         },
-        "handleData": {
+        "handleDataStatus": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "If this attribute is set to true, then the Rte_IStatus API"
         },
-        "handleNever": {
+        "handleNeverReceived": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute specifies whether for the corresponding"
         },
-        "handleTimeoutEnum": {
+        "handleTimeoutType": {
           "type": "HandleTimeoutEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -272,7 +307,7 @@
           "is_ref": false,
           "note": "Initial value to be used in case the sending component is initialized. If the sender also specifies an initial the receiver\u2019s value will be used."
         },
-        "timeout": {
+        "timeoutSubstitutionValue": {
           "type": "ValueSpecification",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -401,10 +436,10 @@
         }
       ],
       "attributes": {
-        "compositeNetworks": {
+        "compositeNetworkRepresentations": {
           "type": "CompositeNetworkRepresentation",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents a CompositeNetworkRepresentation defined in the context of a SenderComSpec. atpSplitable"
         },
@@ -416,34 +451,34 @@
           "note": "Data element these quality of service attributes apply to."
         },
         "handleOutOfRange": {
-          "type": "any (HandleOutOfRange)",
+          "type": "HandleOutOfRangeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute controls how out-of-range values shall be dealt with."
         },
-        "network": {
+        "networkRepresentation": {
           "type": "SwDataDefProps",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "A networkRepresentation is used to define how the data"
         },
-        "transmission": {
-          "type": "any (Transmission)",
+        "transmissionAcknowledge": {
+          "type": "TransmissionAcknowledgementRequest",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Requested transmission acknowledgement for data"
         },
-        "transmissionComSpec": {
+        "transmissionProps": {
           "type": "TransmissionComSpecProps",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This aggregation represents the definition transmission props in the context of the enclosing SenderComSpec. 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
-        "usesEndToEnd": {
+        "usesEndToEndProtection": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -694,7 +729,7 @@
         }
       ],
       "attributes": {
-        "endToEndCall": {
+        "endToEndCallResponseTimeout": {
           "type": "TimeValue",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -708,8 +743,8 @@
           "is_ref": true,
           "note": "This represents the corresponding ClientServerOperation."
         },
-        "transformationComs": {
-          "type": "any (TransformationCom)",
+        "transformationComSpecProps": {
+          "type": "TransformationComSpecProps",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -796,7 +831,7 @@
         }
       ],
       "attributes": {
-        "enhancedMode": {
+        "enhancedModeApi": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -811,9 +846,9 @@
           "note": "ModeDeclarationGroupPrototype (of the same Port to which these communication attributes apply."
         },
         "modeSwitchedAck": {
-          "type": "any (ModeSwitchedAck)",
+          "type": "ModeSwitchedAckRequest",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "If this aggregation exists an acknowledgement for the successful processing of the mode switch request is"
         },
@@ -1072,17 +1107,17 @@
         }
       ],
       "attributes": {
-        "ramBlockInit": {
+        "ramBlockInitValue": {
           "type": "ValueSpecification",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents the initial value of the RAM Block that to the referenced variable."
         },
-        "romBlockInit": {
+        "romBlockInitValue": {
           "type": "ValueSpecification",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents the initial value of the ROM block that to the referenced variable."
         },

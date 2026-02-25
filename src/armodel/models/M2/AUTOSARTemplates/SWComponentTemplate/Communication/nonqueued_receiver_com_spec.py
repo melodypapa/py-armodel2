@@ -51,22 +51,22 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
     alive_timeout: Optional[TimeValue]
     enable_update: Optional[Boolean]
     filter: Optional[DataFilter]
-    handle_data: Optional[Boolean]
-    handle_never: Optional[Boolean]
-    handle_timeout_enum: Optional[HandleTimeoutEnum]
+    handle_data_status: Optional[Boolean]
+    handle_never_received: Optional[Boolean]
+    handle_timeout_type: Optional[HandleTimeoutEnum]
     init_value: Optional[ValueSpecification]
-    timeout: Optional[ValueSpecification]
+    timeout_substitution_value: Optional[ValueSpecification]
     def __init__(self) -> None:
         """Initialize NonqueuedReceiverComSpec."""
         super().__init__()
         self.alive_timeout: Optional[TimeValue] = None
         self.enable_update: Optional[Boolean] = None
         self.filter: Optional[DataFilter] = None
-        self.handle_data: Optional[Boolean] = None
-        self.handle_never: Optional[Boolean] = None
-        self.handle_timeout_enum: Optional[HandleTimeoutEnum] = None
+        self.handle_data_status: Optional[Boolean] = None
+        self.handle_never_received: Optional[Boolean] = None
+        self.handle_timeout_type: Optional[HandleTimeoutEnum] = None
         self.init_value: Optional[ValueSpecification] = None
-        self.timeout: Optional[ValueSpecification] = None
+        self.timeout_substitution_value: Optional[ValueSpecification] = None
 
     def serialize(self) -> ET.Element:
         """Serialize NonqueuedReceiverComSpec to XML element.
@@ -134,12 +134,12 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize handle_data
-        if self.handle_data is not None:
-            serialized = SerializationHelper.serialize_item(self.handle_data, "Boolean")
+        # Serialize handle_data_status
+        if self.handle_data_status is not None:
+            serialized = SerializationHelper.serialize_item(self.handle_data_status, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HANDLE-DATA")
+                wrapped = ET.Element("HANDLE-DATA-STATUS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -148,12 +148,12 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize handle_never
-        if self.handle_never is not None:
-            serialized = SerializationHelper.serialize_item(self.handle_never, "Boolean")
+        # Serialize handle_never_received
+        if self.handle_never_received is not None:
+            serialized = SerializationHelper.serialize_item(self.handle_never_received, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HANDLE-NEVER")
+                wrapped = ET.Element("HANDLE-NEVER-RECEIVED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -162,12 +162,12 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize handle_timeout_enum
-        if self.handle_timeout_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.handle_timeout_enum, "HandleTimeoutEnum")
+        # Serialize handle_timeout_type
+        if self.handle_timeout_type is not None:
+            serialized = SerializationHelper.serialize_item(self.handle_timeout_type, "HandleTimeoutEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HANDLE-TIMEOUT-ENUM")
+                wrapped = ET.Element("HANDLE-TIMEOUT-TYPE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -190,12 +190,12 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize timeout
-        if self.timeout is not None:
-            serialized = SerializationHelper.serialize_item(self.timeout, "ValueSpecification")
+        # Serialize timeout_substitution_value
+        if self.timeout_substitution_value is not None:
+            serialized = SerializationHelper.serialize_item(self.timeout_substitution_value, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT")
+                wrapped = ET.Element("TIMEOUT-SUBSTITUTION-VALUE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -237,23 +237,23 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
             filter_value = SerializationHelper.deserialize_by_tag(child, "DataFilter")
             obj.filter = filter_value
 
-        # Parse handle_data
-        child = SerializationHelper.find_child_element(element, "HANDLE-DATA")
+        # Parse handle_data_status
+        child = SerializationHelper.find_child_element(element, "HANDLE-DATA-STATUS")
         if child is not None:
-            handle_data_value = child.text
-            obj.handle_data = handle_data_value
+            handle_data_status_value = child.text
+            obj.handle_data_status = handle_data_status_value
 
-        # Parse handle_never
-        child = SerializationHelper.find_child_element(element, "HANDLE-NEVER")
+        # Parse handle_never_received
+        child = SerializationHelper.find_child_element(element, "HANDLE-NEVER-RECEIVED")
         if child is not None:
-            handle_never_value = child.text
-            obj.handle_never = handle_never_value
+            handle_never_received_value = child.text
+            obj.handle_never_received = handle_never_received_value
 
-        # Parse handle_timeout_enum
-        child = SerializationHelper.find_child_element(element, "HANDLE-TIMEOUT-ENUM")
+        # Parse handle_timeout_type
+        child = SerializationHelper.find_child_element(element, "HANDLE-TIMEOUT-TYPE")
         if child is not None:
-            handle_timeout_enum_value = HandleTimeoutEnum.deserialize(child)
-            obj.handle_timeout_enum = handle_timeout_enum_value
+            handle_timeout_type_value = HandleTimeoutEnum.deserialize(child)
+            obj.handle_timeout_type = handle_timeout_type_value
 
         # Parse init_value
         child = SerializationHelper.find_child_element(element, "INIT-VALUE")
@@ -261,11 +261,11 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
             init_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
             obj.init_value = init_value_value
 
-        # Parse timeout
-        child = SerializationHelper.find_child_element(element, "TIMEOUT")
+        # Parse timeout_substitution_value
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-SUBSTITUTION-VALUE")
         if child is not None:
-            timeout_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
-            obj.timeout = timeout_value
+            timeout_substitution_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
+            obj.timeout_substitution_value = timeout_substitution_value_value
 
         return obj
 
@@ -322,8 +322,8 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
         self._obj.filter = value
         return self
 
-    def with_handle_data(self, value: Optional[Boolean]) -> "NonqueuedReceiverComSpecBuilder":
-        """Set handle_data attribute.
+    def with_handle_data_status(self, value: Optional[Boolean]) -> "NonqueuedReceiverComSpecBuilder":
+        """Set handle_data_status attribute.
 
         Args:
             value: Value to set
@@ -333,11 +333,11 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.handle_data = value
+        self._obj.handle_data_status = value
         return self
 
-    def with_handle_never(self, value: Optional[Boolean]) -> "NonqueuedReceiverComSpecBuilder":
-        """Set handle_never attribute.
+    def with_handle_never_received(self, value: Optional[Boolean]) -> "NonqueuedReceiverComSpecBuilder":
+        """Set handle_never_received attribute.
 
         Args:
             value: Value to set
@@ -347,11 +347,11 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.handle_never = value
+        self._obj.handle_never_received = value
         return self
 
-    def with_handle_timeout_enum(self, value: Optional[HandleTimeoutEnum]) -> "NonqueuedReceiverComSpecBuilder":
-        """Set handle_timeout_enum attribute.
+    def with_handle_timeout_type(self, value: Optional[HandleTimeoutEnum]) -> "NonqueuedReceiverComSpecBuilder":
+        """Set handle_timeout_type attribute.
 
         Args:
             value: Value to set
@@ -361,7 +361,7 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.handle_timeout_enum = value
+        self._obj.handle_timeout_type = value
         return self
 
     def with_init_value(self, value: Optional[ValueSpecification]) -> "NonqueuedReceiverComSpecBuilder":
@@ -378,8 +378,8 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
         self._obj.init_value = value
         return self
 
-    def with_timeout(self, value: Optional[ValueSpecification]) -> "NonqueuedReceiverComSpecBuilder":
-        """Set timeout attribute.
+    def with_timeout_substitution_value(self, value: Optional[ValueSpecification]) -> "NonqueuedReceiverComSpecBuilder":
+        """Set timeout_substitution_value attribute.
 
         Args:
             value: Value to set
@@ -389,7 +389,7 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.timeout = value
+        self._obj.timeout_substitution_value = value
         return self
 
 

@@ -34,11 +34,11 @@ class AbstractProvidedPortPrototype(PortPrototype, ABC):
         """
         return True
 
-    provided_coms: list[PPortComSpec]
+    provided_com_specs: list[PPortComSpec]
     def __init__(self) -> None:
         """Initialize AbstractProvidedPortPrototype."""
         super().__init__()
-        self.provided_coms: list[PPortComSpec] = []
+        self.provided_com_specs: list[PPortComSpec] = []
 
     def serialize(self) -> ET.Element:
         """Serialize AbstractProvidedPortPrototype to XML element.
@@ -64,10 +64,10 @@ class AbstractProvidedPortPrototype(PortPrototype, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize provided_coms (list to container "PROVIDED-COMS")
-        if self.provided_coms:
-            wrapper = ET.Element("PROVIDED-COMS")
-            for item in self.provided_coms:
+        # Serialize provided_com_specs (list to container "PROVIDED-COM-SPECS")
+        if self.provided_com_specs:
+            wrapper = ET.Element("PROVIDED-COM-SPECS")
+            for item in self.provided_com_specs:
                 serialized = SerializationHelper.serialize_item(item, "PPortComSpec")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -89,15 +89,15 @@ class AbstractProvidedPortPrototype(PortPrototype, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractProvidedPortPrototype, cls).deserialize(element)
 
-        # Parse provided_coms (list from container "PROVIDED-COMS")
-        obj.provided_coms = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-COMS")
+        # Parse provided_com_specs (list from container "PROVIDED-COM-SPECS")
+        obj.provided_com_specs = []
+        container = SerializationHelper.find_child_element(element, "PROVIDED-COM-SPECS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.provided_coms.append(child_value)
+                    obj.provided_com_specs.append(child_value)
 
         return obj
 
@@ -112,8 +112,8 @@ class AbstractProvidedPortPrototypeBuilder(PortPrototypeBuilder):
         self._obj: AbstractProvidedPortPrototype = AbstractProvidedPortPrototype()
 
 
-    def with_provided_coms(self, items: list[PPortComSpec]) -> "AbstractProvidedPortPrototypeBuilder":
-        """Set provided_coms list attribute.
+    def with_provided_com_specs(self, items: list[PPortComSpec]) -> "AbstractProvidedPortPrototypeBuilder":
+        """Set provided_com_specs list attribute.
 
         Args:
             items: List of items to set
@@ -121,12 +121,12 @@ class AbstractProvidedPortPrototypeBuilder(PortPrototypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.provided_coms = list(items) if items else []
+        self._obj.provided_com_specs = list(items) if items else []
         return self
 
 
-    def add_provided_com(self, item: PPortComSpec) -> "AbstractProvidedPortPrototypeBuilder":
-        """Add a single item to provided_coms list.
+    def add_provided_com_spec(self, item: PPortComSpec) -> "AbstractProvidedPortPrototypeBuilder":
+        """Add a single item to provided_com_specs list.
 
         Args:
             item: Item to add
@@ -134,16 +134,16 @@ class AbstractProvidedPortPrototypeBuilder(PortPrototypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.provided_coms.append(item)
+        self._obj.provided_com_specs.append(item)
         return self
 
-    def clear_provided_coms(self) -> "AbstractProvidedPortPrototypeBuilder":
-        """Clear all items from provided_coms list.
+    def clear_provided_com_specs(self) -> "AbstractProvidedPortPrototypeBuilder":
+        """Clear all items from provided_com_specs list.
 
         Returns:
             self for method chaining
         """
-        self._obj.provided_coms = []
+        self._obj.provided_com_specs = []
         return self
 
 
