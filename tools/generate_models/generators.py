@@ -1231,7 +1231,12 @@ def _generate_deserialize_method(
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to create a wrapper
                 if xml_tag.endswith("S"):
-                    if decorator_name == "ref_conditional":
+                    if decorator_name == "lang_prefix":
+                        # Treat as non-container list - each item uses its own tag
+                        container_tag = None
+                        child_tag = attr_info.get("decorator_params", xml_tag)
+                        inner_tags = []
+                    elif decorator_name == "ref_conditional":
                         # Use ref_conditional pattern: container stays as-is, each item wrapped in -REF-CONDITIONAL
                         container_tag = attr_info.get("decorator_params", xml_tag)
                         # Use the type's XML tag for wrapper/reference generation (handles abbreviated container tags)
@@ -3124,9 +3129,15 @@ def _generate_serialize_method(
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to create a wrapper
                 if xml_tag.endswith("S"):
-                    # Check if ref_conditional decorator is present
+                    # Check if lang_prefix decorator is present - if so, skip container logic
+                    # lang_prefix specifies each item should use its own tag (e.g., L-GRAPHIC)
                     decorator_name = attr_info.get("decorator_name")
-                    if decorator_name == "ref_conditional":
+                    if decorator_name == "lang_prefix":
+                        # Treat as non-container list - each item uses its own tag
+                        container_tag = None
+                        child_tag = attr_info.get("decorator_params", xml_tag)
+                        inner_tags = []
+                    elif decorator_name == "ref_conditional":
                         # Use ref_conditional pattern: container stays as-is, each item wrapped in -REF-CONDITIONAL
                         container_tag = attr_info.get("decorator_params", xml_tag)
                         # Use the type's XML tag for wrapper/reference generation (handles abbreviated container tags)

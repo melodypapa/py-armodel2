@@ -140,16 +140,19 @@ class MlFigure(Paginateable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize l_graphics (list to container "L-GRAPHICS")
+        # Serialize l_graphics (list of direct "L-GRAPHIC" children, no container)
         if self.l_graphics:
-            wrapper = ET.Element("L-GRAPHICS")
             for item in self.l_graphics:
                 serialized = SerializationHelper.serialize_item(item, "LGraphic")
                 if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
-
+                    child_elem = ET.Element("L-GRAPHIC")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    elem.append(child_elem)
         # Serialize pgwide
         if self.pgwide is not None:
             serialized = SerializationHelper.serialize_item(self.pgwide, "PgwideEnum")
@@ -211,12 +214,11 @@ class MlFigure(Paginateable):
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
-        # Parse l_graphics (list from container "L-GRAPHICS")
+        # Parse l_graphics (list of direct "L-GRAPHIC" children, no container)
         obj.l_graphics = []
-        container = SerializationHelper.find_child_element(element, "L-GRAPHICS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
+        for child in element:
+            child_element_tag = SerializationHelper.strip_namespace(child.tag)
+            if child_element_tag == "L-GRAPHIC":                # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.l_graphics.append(child_value)
