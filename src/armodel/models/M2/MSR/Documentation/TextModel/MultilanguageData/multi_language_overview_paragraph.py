@@ -33,21 +33,21 @@ class MultiLanguageOverviewParagraph(ARObject):
         """
         return False
 
-    _l2s: list[LOverviewParagraph]
+    _l2: list[LOverviewParagraph]
     def __init__(self) -> None:
         """Initialize MultiLanguageOverviewParagraph."""
         super().__init__()
-        self._l2s: list[LOverviewParagraph] = []
+        self._l2: list[LOverviewParagraph] = []
     @property
     @lang_prefix("L-2")
-    def l2s(self) -> list[LOverviewParagraph]:
-        """Get l2s with language-specific wrapper."""
-        return self._l2s
+    def l2(self) -> list[LOverviewParagraph]:
+        """Get l2 with language-specific wrapper."""
+        return self._l2
 
-    @l2s.setter
-    def l2s(self, value: list[LOverviewParagraph]) -> None:
-        """Set l2s with language-specific wrapper."""
-        self._l2s = value
+    @l2.setter
+    def l2(self, value: list[LOverviewParagraph]) -> None:
+        """Set l2 with language-specific wrapper."""
+        self._l2 = value
 
 
     def serialize(self) -> ET.Element:
@@ -74,15 +74,19 @@ class MultiLanguageOverviewParagraph(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize l2s (list to container "L2S")
-        if self.l2s:
-            wrapper = ET.Element("L2S")
-            for item in self.l2s:
-                serialized = SerializationHelper.serialize_item(item, "LOverviewParagraph")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+        # Serialize l2 (list with lang_prefix "L-2")
+        for item in self.l2:
+            serialized = SerializationHelper.serialize_item(item, "LOverviewParagraph")
+            if serialized is not None:
+                # For lang_prefix lists, wrap each item in the lang_prefix tag
+                wrapped = ET.Element("L-2")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         return elem
 
@@ -99,15 +103,11 @@ class MultiLanguageOverviewParagraph(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MultiLanguageOverviewParagraph, cls).deserialize(element)
 
-        # Parse l2s (list from container "L2S")
-        obj.l2s = []
-        container = SerializationHelper.find_child_element(element, "L2S")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.l2s.append(child_value)
+        # Parse l2 (list with lang_prefix "L-2")
+        obj.l2 = []
+        for child in SerializationHelper.find_all_child_elements(element, "L-2"):
+            l2_value = SerializationHelper.deserialize_by_tag(child, "LOverviewParagraph")
+            obj.l2.append(l2_value)
 
         return obj
 
@@ -122,39 +122,20 @@ class MultiLanguageOverviewParagraphBuilder(BuilderBase):
         self._obj: MultiLanguageOverviewParagraph = MultiLanguageOverviewParagraph()
 
 
-    def with_l2s(self, items: list[LOverviewParagraph]) -> "MultiLanguageOverviewParagraphBuilder":
-        """Set l2s list attribute.
+    def with_l2(self, value: LOverviewParagraph) -> "MultiLanguageOverviewParagraphBuilder":
+        """Set l2 attribute.
 
         Args:
-            items: List of items to set
+            value: Value to set
 
         Returns:
             self for method chaining
         """
-        self._obj.l2s = list(items) if items else []
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.l2 = value
         return self
 
-
-    def add_l2(self, item: LOverviewParagraph) -> "MultiLanguageOverviewParagraphBuilder":
-        """Add a single item to l2s list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.l2s.append(item)
-        return self
-
-    def clear_l2s(self) -> "MultiLanguageOverviewParagraphBuilder":
-        """Clear all items from l2s list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.l2s = []
-        return self
 
 
 

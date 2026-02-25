@@ -1147,13 +1147,13 @@ def _generate_deserialize_method(
 
                 # Determine iref_wrapper_tag based on list_type
                 # For multi-wrapper lists, use singular form for wrapper tag (e.g., COMPONENT-IREF, not COMPONENTS-IREF)
-                if multiplicity == "*" and list_type == "multi":
+                if multiplicity in ("*", "1..*") and list_type == "multi":
                     singular_tag = xml_tag[:-1] if xml_tag.endswith("S") else xml_tag
                     iref_wrapper_tag = f"{singular_tag}-IREF"
                 else:
                     iref_wrapper_tag = f"{xml_tag}-IREF"
 
-                if multiplicity == "*":
+                if multiplicity in ("*", "1..*"):
                                     # List type
                                     if list_type == "multi":
                                         # Multi-wrapper list: deserialize from <TAG>-IREFS container with multiple <TAG>-IREF children
@@ -1220,7 +1220,7 @@ def _generate_deserialize_method(
                 obj.{python_name} = {python_name}_value
 
 '''
-            elif multiplicity == "*":
+            elif multiplicity in ("*", "1..*"):
                 # List type
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to create a wrapper
@@ -2995,14 +2995,14 @@ def _generate_serialize_method(
 
                 # Determine iref_wrapper_tag based on list_type
                 # For multi-wrapper lists, use singular form for wrapper tag (e.g., COMPONENT-IREF, not COMPONENTS-IREF)
-                if multiplicity == "*" and list_type == "multi":
+                if multiplicity in ("*", "1..*") and list_type == "multi":
                     singular_tag = xml_tag[:-1] if xml_tag.endswith("S") else xml_tag
                     iref_wrapper_tag = f"{singular_tag}-IREF"
                 else:
                     iref_wrapper_tag = f"{xml_tag}-IREF"
                 if should_flatten:
                     # Flattened type: flatten children directly into iref wrapper
-                    if multiplicity == "*":
+                    if multiplicity in ("*", "1..*"):
                         if list_type == "multi":
                             # Multi-wrapper list: create <TAG>-IREFS container with multiple <TAG>-IREF children
                             # Use singular form for container tag (e.g., COMPONENT-IREFS, not COMPONENTS-IREFS)
@@ -3053,7 +3053,7 @@ def _generate_serialize_method(
 '''
                 else:
                     # Non-flattened type: wrap in its own element
-                    if multiplicity == "*":
+                    if multiplicity in ("*", "1..*"):
                         # List type - check if not empty
                         code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
         if self.{python_name}:
@@ -3079,7 +3079,7 @@ def _generate_serialize_method(
                 elem.append(iref_wrapper)
 
 '''
-            elif multiplicity == "*":
+            elif multiplicity in ("*", "1..*"):
                 # List type
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to create a wrapper
@@ -3446,7 +3446,7 @@ def _generate_serialize_method_for_atp_variant(
                 iref_wrapper_tag = f"{xml_tag}-IREF"
 
                 if should_flatten:
-                    if multiplicity == "*":
+                    if multiplicity in ("*", "1..*"):
                         code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
         if self.{python_name}:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
@@ -3469,7 +3469,7 @@ def _generate_serialize_method_for_atp_variant(
 
 '''
                 else:
-                    if multiplicity == "*":
+                    if multiplicity in ("*", "1..*"):
                         code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
         if self.{python_name}:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
@@ -3489,7 +3489,7 @@ def _generate_serialize_method_for_atp_variant(
                 inner_elem.append(iref_wrapper)
 
 '''
-            elif multiplicity == "*":
+            elif multiplicity in ("*", "1..*"):
                 # List type
                 if xml_tag.endswith("S"):
                     container_tag = xml_tag
@@ -3736,7 +3736,7 @@ def _generate_deserialize_method_for_atp_variant(
                 iref_wrapper_tag = f"{xml_tag}-IREF"
 
                 if should_flatten:
-                    if multiplicity == "*":
+                    if multiplicity in ("*", "1..*"):
                         code += f'''        # Parse {python_name} (list of instance references from wrapper "{iref_wrapper_tag}")
         obj.{python_name} = []
         wrapper = SerializationHelper.find_child_element(inner_elem, "{iref_wrapper_tag}")
@@ -3755,7 +3755,7 @@ def _generate_deserialize_method_for_atp_variant(
 
 '''
                 else:
-                    if multiplicity == "*":
+                    if multiplicity in ("*", "1..*"):
                         code += f'''        # Parse {python_name} (list of instance references from wrapper "{iref_wrapper_tag}")
         obj.{python_name} = []
         wrapper = SerializationHelper.find_child_element(inner_elem, "{iref_wrapper_tag}")
@@ -3778,7 +3778,7 @@ def _generate_deserialize_method_for_atp_variant(
                 obj.{python_name} = {python_name}_value
 
 '''
-            elif multiplicity == "*":
+            elif multiplicity in ("*", "1..*"):
                 # List type
                 if xml_tag.endswith("S"):
                     # Check if ref_conditional decorator is present
