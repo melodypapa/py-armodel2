@@ -160,13 +160,13 @@ class TlsCryptoCipherSuite(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize elliptic_curf_refs (list to container "ELLIPTIC-CURVE-REFS")
+        # Serialize elliptic_curf_refs (list to container "ELLIPTIC-CURF-REFS")
         if self.elliptic_curf_refs:
-            wrapper = ET.Element("ELLIPTIC-CURVE-REFS")
+            wrapper = ET.Element("ELLIPTIC-CURF-REFS")
             for item in self.elliptic_curf_refs:
                 serialized = SerializationHelper.serialize_item(item, "CryptoEllipticCurveProps")
                 if serialized is not None:
-                    child_elem = ET.Element("ELLIPTIC-CURVE-REF")
+                    child_elem = ET.Element("ELLIPTIC-CURF-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -334,9 +334,9 @@ class TlsCryptoCipherSuite(Identifiable):
             cipher_suite_value = child.text
             obj.cipher_suite = cipher_suite_value
 
-        # Parse elliptic_curf_refs (list from container "ELLIPTIC-CURVE-REFS")
+        # Parse elliptic_curf_refs (list from container "ELLIPTIC-CURF-REFS")
         obj.elliptic_curf_refs = []
-        container = SerializationHelper.find_child_element(element, "ELLIPTIC-CURVE-REFS")
+        container = SerializationHelper.find_child_element(element, "ELLIPTIC-CURF-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

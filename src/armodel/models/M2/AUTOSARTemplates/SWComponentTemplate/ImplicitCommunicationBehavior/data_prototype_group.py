@@ -67,13 +67,13 @@ class DataPrototypeGroup(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_prototype_group_group_in_composition_instance_ref (list to container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
+        # Serialize data_prototype_group_group_in_composition_instance_ref (list to container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
         if self.data_prototype_group_group_in_composition_instance_ref:
-            wrapper = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
+            wrapper = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
             for item in self.data_prototype_group_group_in_composition_instance_ref:
                 serialized = SerializationHelper.serialize_item(item, "DataPrototypeGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REF")
+                    child_elem = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -116,9 +116,9 @@ class DataPrototypeGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototypeGroup, cls).deserialize(element)
 
-        # Parse data_prototype_group_group_in_composition_instance_ref (list from container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
+        # Parse data_prototype_group_group_in_composition_instance_ref (list from container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
         obj.data_prototype_group_group_in_composition_instance_ref = []
-        container = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
+        container = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

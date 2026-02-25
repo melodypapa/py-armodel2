@@ -169,13 +169,13 @@ class BswModuleDescription(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize expected_entry_refs (list to container "EXPECTED-ENTRIE-REFS")
+        # Serialize expected_entry_refs (list to container "EXPECTED-ENTRY-REFS")
         if self.expected_entry_refs:
-            wrapper = ET.Element("EXPECTED-ENTRIE-REFS")
+            wrapper = ET.Element("EXPECTED-ENTRY-REFS")
             for item in self.expected_entry_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
-                    child_elem = ET.Element("EXPECTED-ENTRIE-REF")
+                    child_elem = ET.Element("EXPECTED-ENTRY-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -186,13 +186,13 @@ class BswModuleDescription(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize implemented_entry_refs (list to container "IMPLEMENTED-ENTRIE-REFS")
+        # Serialize implemented_entry_refs (list to container "IMPLEMENTED-ENTRY-REFS")
         if self.implemented_entry_refs:
-            wrapper = ET.Element("IMPLEMENTED-ENTRIE-REFS")
+            wrapper = ET.Element("IMPLEMENTED-ENTRY-REFS")
             for item in self.implemented_entry_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
-                    child_elem = ET.Element("IMPLEMENTED-ENTRIE-REF")
+                    child_elem = ET.Element("IMPLEMENTED-ENTRY-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -338,9 +338,9 @@ class BswModuleDescription(ARElement):
             bsw_module_documentation_value = SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation")
             obj.bsw_module_documentation = bsw_module_documentation_value
 
-        # Parse expected_entry_refs (list from container "EXPECTED-ENTRIE-REFS")
+        # Parse expected_entry_refs (list from container "EXPECTED-ENTRY-REFS")
         obj.expected_entry_refs = []
-        container = SerializationHelper.find_child_element(element, "EXPECTED-ENTRIE-REFS")
+        container = SerializationHelper.find_child_element(element, "EXPECTED-ENTRY-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -354,9 +354,9 @@ class BswModuleDescription(ARElement):
                 if child_value is not None:
                     obj.expected_entry_refs.append(child_value)
 
-        # Parse implemented_entry_refs (list from container "IMPLEMENTED-ENTRIE-REFS")
+        # Parse implemented_entry_refs (list from container "IMPLEMENTED-ENTRY-REFS")
         obj.implemented_entry_refs = []
-        container = SerializationHelper.find_child_element(element, "IMPLEMENTED-ENTRIE-REFS")
+        container = SerializationHelper.find_child_element(element, "IMPLEMENTED-ENTRY-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
