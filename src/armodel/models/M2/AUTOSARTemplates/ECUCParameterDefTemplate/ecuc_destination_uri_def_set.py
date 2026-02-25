@@ -33,11 +33,11 @@ class EcucDestinationUriDefSet(ARElement):
         """
         return False
 
-    destination_uri_deves: list[EcucDestinationUriDef]
+    destination_uri_defs: list[EcucDestinationUriDef]
     def __init__(self) -> None:
         """Initialize EcucDestinationUriDefSet."""
         super().__init__()
-        self.destination_uri_deves: list[EcucDestinationUriDef] = []
+        self.destination_uri_defs: list[EcucDestinationUriDef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize EcucDestinationUriDefSet to XML element.
@@ -63,10 +63,10 @@ class EcucDestinationUriDefSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize destination_uri_deves (list to container "DESTINATION-URI-DEVES")
-        if self.destination_uri_deves:
-            wrapper = ET.Element("DESTINATION-URI-DEVES")
-            for item in self.destination_uri_deves:
+        # Serialize destination_uri_defs (list to container "DESTINATION-URI-DEFS")
+        if self.destination_uri_defs:
+            wrapper = ET.Element("DESTINATION-URI-DEFS")
+            for item in self.destination_uri_defs:
                 serialized = SerializationHelper.serialize_item(item, "EcucDestinationUriDef")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -88,15 +88,15 @@ class EcucDestinationUriDefSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucDestinationUriDefSet, cls).deserialize(element)
 
-        # Parse destination_uri_deves (list from container "DESTINATION-URI-DEVES")
-        obj.destination_uri_deves = []
-        container = SerializationHelper.find_child_element(element, "DESTINATION-URI-DEVES")
+        # Parse destination_uri_defs (list from container "DESTINATION-URI-DEFS")
+        obj.destination_uri_defs = []
+        container = SerializationHelper.find_child_element(element, "DESTINATION-URI-DEFS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.destination_uri_deves.append(child_value)
+                    obj.destination_uri_defs.append(child_value)
 
         return obj
 
@@ -111,8 +111,8 @@ class EcucDestinationUriDefSetBuilder(ARElementBuilder):
         self._obj: EcucDestinationUriDefSet = EcucDestinationUriDefSet()
 
 
-    def with_destination_uri_deves(self, items: list[EcucDestinationUriDef]) -> "EcucDestinationUriDefSetBuilder":
-        """Set destination_uri_deves list attribute.
+    def with_destination_uri_defs(self, items: list[EcucDestinationUriDef]) -> "EcucDestinationUriDefSetBuilder":
+        """Set destination_uri_defs list attribute.
 
         Args:
             items: List of items to set
@@ -120,12 +120,12 @@ class EcucDestinationUriDefSetBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.destination_uri_deves = list(items) if items else []
+        self._obj.destination_uri_defs = list(items) if items else []
         return self
 
 
     def add_destination_uri_def(self, item: EcucDestinationUriDef) -> "EcucDestinationUriDefSetBuilder":
-        """Add a single item to destination_uri_deves list.
+        """Add a single item to destination_uri_defs list.
 
         Args:
             item: Item to add
@@ -133,16 +133,16 @@ class EcucDestinationUriDefSetBuilder(ARElementBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.destination_uri_deves.append(item)
+        self._obj.destination_uri_defs.append(item)
         return self
 
-    def clear_destination_uri_deves(self) -> "EcucDestinationUriDefSetBuilder":
-        """Clear all items from destination_uri_deves list.
+    def clear_destination_uri_defs(self) -> "EcucDestinationUriDefSetBuilder":
+        """Clear all items from destination_uri_defs list.
 
         Returns:
             self for method chaining
         """
-        self._obj.destination_uri_deves = []
+        self._obj.destination_uri_defs = []
         return self
 
 

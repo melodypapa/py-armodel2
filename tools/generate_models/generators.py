@@ -1240,7 +1240,8 @@ def _generate_deserialize_method(
                         ref_tag = f"{type_xml_tag}-REF"
                     elif decorator_name == "xml_element_name":
                         # Parse decorator params: can be single value or multi-level path separated by '/'
-                        # Examples: "V" (no container) or "PROVIDED-ENTRYS" or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
+                        # Examples: "V" (direct child, no container) or "PROVIDED-ENTRYS" (container)
+                        #           or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
                         decorator_params = attr_info.get("decorator_params", xml_tag)
                         if isinstance(decorator_params, str) and "/" in decorator_params:
                             # Multi-level nesting: split on '/' to get all levels
@@ -1250,9 +1251,40 @@ def _generate_deserialize_method(
                             inner_tags = tag_levels[1:-1]  # Intermediate nesting levels (if any)
                         else:
                             # Single parameter: can be container tag OR direct child tag (no container)
-                            # If single value, use as child_tag with no container (direct children)
-                            container_tag = None
-                            child_tag = decorator_params if isinstance(decorator_params, str) else xml_tag
+                            # Detection logic:
+                            # - Known direct child tags (short singular forms): ITEM, ENTRY, V, NAME, TYPE, VALUE, REF
+                            # - If ends with "ES" (e.g., BOXES, ELEMENTS): container tag
+                            # - If ends with "S" but is short (<=4 chars): likely direct child
+                            # - Otherwise: container tag (most common case for lists)
+
+                            single_value = decorator_params if isinstance(decorator_params, str) else xml_tag
+
+                            # Known direct child tags (from AUTOSAR schema)
+                            known_direct_children = {"ITEM", "ENTRY", "V", "VALUE", "NAME", "TYPE", "REF"}
+
+                            if single_value.upper() in known_direct_children:
+                                # Direct child tag, no container
+                                container_tag = None
+                                child_tag = single_value
+                            elif single_value.endswith("ES"):
+                                # Ends with ES (e.g., BOXES, ELEMENTS) -> container tag
+                                container_tag = single_value
+                                child_tag = None
+                            elif single_value.endswith("S"):
+                                # Ends with S (e.g., ITEMS, ENTRYS, REFS)
+                                # Check if it's a known direct child tag that happens to end with S
+                                if len(single_value) <= 4 and single_value.upper() in known_direct_children:
+                                    # Short word ending with S, likely a direct child
+                                    container_tag = None
+                                    child_tag = single_value
+                                else:
+                                    # Longer word ending with S, likely a container
+                                    container_tag = single_value
+                                    child_tag = None
+                            else:
+                                # Doesn't end with S -> direct child tag
+                                container_tag = None
+                                child_tag = single_value
                     else:
                         # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
                         # For reference lists (is_ref=True), the container tag should be singular + -REFS
@@ -3103,7 +3135,8 @@ def _generate_serialize_method(
                         ref_tag = f"{type_xml_tag}-REF"
                     elif decorator_name == "xml_element_name":
                         # Parse decorator params: can be single value or multi-level path separated by '/'
-                        # Examples: "V" (no container) or "PROVIDED-ENTRYS" or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
+                        # Examples: "V" (direct child, no container) or "PROVIDED-ENTRYS" (container)
+                        #           or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
                         decorator_params = attr_info.get("decorator_params", xml_tag)
                         if isinstance(decorator_params, str) and "/" in decorator_params:
                             # Multi-level nesting: split on '/' to get all levels
@@ -3113,9 +3146,41 @@ def _generate_serialize_method(
                             inner_tags = tag_levels[1:-1]  # Intermediate nesting levels (if any)
                         else:
                             # Single parameter: can be container tag OR direct child tag (no container)
-                            # If single value, use as child_tag with no container (direct children)
-                            container_tag = None
-                            child_tag = decorator_params if isinstance(decorator_params, str) else xml_tag
+                            # Detection logic:
+                            # - Known direct child tags (short singular forms): ITEM, ENTRY, V, NAME, TYPE, VALUE, REF
+                            # - If ends with "ES" (e.g., BOXES, ELEMENTS): container tag
+                            # - If ends with "S" but is short (<=4 chars): likely direct child
+                            # - Otherwise: container tag (most common case for lists)
+
+                            single_value = decorator_params if isinstance(decorator_params, str) else xml_tag
+
+                            # Known direct child tags (from AUTOSAR schema)
+                            known_direct_children = {"ITEM", "ENTRY", "V", "VALUE", "NAME", "TYPE", "REF"}
+
+                            if single_value.upper() in known_direct_children:
+                                # Direct child tag, no container
+                                container_tag = None
+                                child_tag = single_value
+                            elif single_value.endswith("ES"):
+                                # Ends with ES (e.g., BOXES, ELEMENTS) -> container tag
+                                container_tag = single_value
+                                child_tag = None
+                            elif single_value.endswith("S"):
+                                # Ends with S (e.g., ITEMS, ENTRYS, REFS)
+                                # Check if it's a known direct child tag that happens to end with S
+                                if len(single_value) <= 4 and single_value.upper() in known_direct_children:
+                                    # Short word ending with S, likely a direct child
+                                    container_tag = None
+                                    child_tag = single_value
+                                else:
+                                    # Longer word ending with S, likely a container
+                                    container_tag = single_value
+                                    child_tag = None
+                            else:
+                                # Doesn't end with S -> direct child tag
+                                container_tag = None
+                                child_tag = single_value
+
                             inner_tags = []
                     else:
                         # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)

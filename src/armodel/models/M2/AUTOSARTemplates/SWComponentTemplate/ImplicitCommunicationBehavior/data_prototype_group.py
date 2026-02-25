@@ -67,13 +67,13 @@ class DataPrototypeGroup(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_prototype_group_group_in_composition_instance_ref (list to container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REFS")
+        # Serialize data_prototype_group_group_in_composition_instance_ref (list to container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
         if self.data_prototype_group_group_in_composition_instance_ref:
-            wrapper = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REFS")
+            wrapper = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
             for item in self.data_prototype_group_group_in_composition_instance_ref:
                 serialized = SerializationHelper.serialize_item(item, "DataPrototypeGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REF")
+                    child_elem = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -116,9 +116,9 @@ class DataPrototypeGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototypeGroup, cls).deserialize(element)
 
-        # Parse data_prototype_group_group_in_composition_instance_ref (list from container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REFS")
+        # Parse data_prototype_group_group_in_composition_instance_ref (list from container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
         obj.data_prototype_group_group_in_composition_instance_ref = []
-        container = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REFS")
+        container = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -161,8 +161,8 @@ class DataPrototypeGroupBuilder(IdentifiableBuilder):
         self._obj: DataPrototypeGroup = DataPrototypeGroup()
 
 
-    def with_data_prototype_group_group_in_composition_instance_reves(self, items: list[DataPrototypeGroup]) -> "DataPrototypeGroupBuilder":
-        """Set data_prototype_group_group_in_composition_instance_reves list attribute.
+    def with_data_prototype_group_group_in_composition_instance_refs(self, items: list[DataPrototypeGroup]) -> "DataPrototypeGroupBuilder":
+        """Set data_prototype_group_group_in_composition_instance_refs list attribute.
 
         Args:
             items: List of items to set
@@ -170,7 +170,7 @@ class DataPrototypeGroupBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.data_prototype_group_group_in_composition_instance_reves = list(items) if items else []
+        self._obj.data_prototype_group_group_in_composition_instance_refs = list(items) if items else []
         return self
 
     def with_implicit_datas(self, items: list[VariableDataPrototype]) -> "DataPrototypeGroupBuilder":
@@ -187,7 +187,7 @@ class DataPrototypeGroupBuilder(IdentifiableBuilder):
 
 
     def add_data_prototype_group_group_in_composition_instance_ref(self, item: DataPrototypeGroup) -> "DataPrototypeGroupBuilder":
-        """Add a single item to data_prototype_group_group_in_composition_instance_reves list.
+        """Add a single item to data_prototype_group_group_in_composition_instance_refs list.
 
         Args:
             item: Item to add
@@ -195,16 +195,16 @@ class DataPrototypeGroupBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.data_prototype_group_group_in_composition_instance_reves.append(item)
+        self._obj.data_prototype_group_group_in_composition_instance_refs.append(item)
         return self
 
-    def clear_data_prototype_group_group_in_composition_instance_reves(self) -> "DataPrototypeGroupBuilder":
-        """Clear all items from data_prototype_group_group_in_composition_instance_reves list.
+    def clear_data_prototype_group_group_in_composition_instance_refs(self) -> "DataPrototypeGroupBuilder":
+        """Clear all items from data_prototype_group_group_in_composition_instance_refs list.
 
         Returns:
             self for method chaining
         """
-        self._obj.data_prototype_group_group_in_composition_instance_reves = []
+        self._obj.data_prototype_group_group_in_composition_instance_refs = []
         return self
 
     def add_implicit_data(self, item: VariableDataPrototype) -> "DataPrototypeGroupBuilder":

@@ -33,11 +33,11 @@ class RteEventInCompositionSeparation(Identifiable):
         """
         return False
 
-    rte_event_instance_reves: list[RTEEvent]
+    rte_event_instance_refs: list[RTEEvent]
     def __init__(self) -> None:
         """Initialize RteEventInCompositionSeparation."""
         super().__init__()
-        self.rte_event_instance_reves: list[RTEEvent] = []
+        self.rte_event_instance_refs: list[RTEEvent] = []
 
     def serialize(self) -> ET.Element:
         """Serialize RteEventInCompositionSeparation to XML element.
@@ -63,10 +63,10 @@ class RteEventInCompositionSeparation(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize rte_event_instance_reves (list to container "RTE-EVENT-INSTANCE-REVES")
-        if self.rte_event_instance_reves:
-            wrapper = ET.Element("RTE-EVENT-INSTANCE-REVES")
-            for item in self.rte_event_instance_reves:
+        # Serialize rte_event_instance_refs (list to container "RTE-EVENT-INSTANCE-REFS")
+        if self.rte_event_instance_refs:
+            wrapper = ET.Element("RTE-EVENT-INSTANCE-REFS")
+            for item in self.rte_event_instance_refs:
                 serialized = SerializationHelper.serialize_item(item, "RTEEvent")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -88,15 +88,15 @@ class RteEventInCompositionSeparation(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RteEventInCompositionSeparation, cls).deserialize(element)
 
-        # Parse rte_event_instance_reves (list from container "RTE-EVENT-INSTANCE-REVES")
-        obj.rte_event_instance_reves = []
-        container = SerializationHelper.find_child_element(element, "RTE-EVENT-INSTANCE-REVES")
+        # Parse rte_event_instance_refs (list from container "RTE-EVENT-INSTANCE-REFS")
+        obj.rte_event_instance_refs = []
+        container = SerializationHelper.find_child_element(element, "RTE-EVENT-INSTANCE-REFS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.rte_event_instance_reves.append(child_value)
+                    obj.rte_event_instance_refs.append(child_value)
 
         return obj
 
@@ -111,8 +111,8 @@ class RteEventInCompositionSeparationBuilder(IdentifiableBuilder):
         self._obj: RteEventInCompositionSeparation = RteEventInCompositionSeparation()
 
 
-    def with_rte_event_instance_reves(self, items: list[RTEEvent]) -> "RteEventInCompositionSeparationBuilder":
-        """Set rte_event_instance_reves list attribute.
+    def with_rte_event_instance_refs(self, items: list[RTEEvent]) -> "RteEventInCompositionSeparationBuilder":
+        """Set rte_event_instance_refs list attribute.
 
         Args:
             items: List of items to set
@@ -120,12 +120,12 @@ class RteEventInCompositionSeparationBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_instance_reves = list(items) if items else []
+        self._obj.rte_event_instance_refs = list(items) if items else []
         return self
 
 
     def add_rte_event_instance_ref(self, item: RTEEvent) -> "RteEventInCompositionSeparationBuilder":
-        """Add a single item to rte_event_instance_reves list.
+        """Add a single item to rte_event_instance_refs list.
 
         Args:
             item: Item to add
@@ -133,16 +133,16 @@ class RteEventInCompositionSeparationBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_instance_reves.append(item)
+        self._obj.rte_event_instance_refs.append(item)
         return self
 
-    def clear_rte_event_instance_reves(self) -> "RteEventInCompositionSeparationBuilder":
-        """Clear all items from rte_event_instance_reves list.
+    def clear_rte_event_instance_refs(self) -> "RteEventInCompositionSeparationBuilder":
+        """Clear all items from rte_event_instance_refs list.
 
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_instance_reves = []
+        self._obj.rte_event_instance_refs = []
         return self
 
 

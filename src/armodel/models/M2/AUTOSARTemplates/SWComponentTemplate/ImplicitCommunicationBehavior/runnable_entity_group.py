@@ -77,13 +77,13 @@ class RunnableEntityGroup(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize runnable_entity_group_group_in_composition_instance_ref (list to container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REFS")
+        # Serialize runnable_entity_group_group_in_composition_instance_ref (list to container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
         if self.runnable_entity_group_group_in_composition_instance_ref:
-            wrapper = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REFS")
+            wrapper = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
             for item in self.runnable_entity_group_group_in_composition_instance_ref:
                 serialized = SerializationHelper.serialize_item(item, "RunnableEntityGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REF")
+                    child_elem = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -119,9 +119,9 @@ class RunnableEntityGroup(Identifiable):
                 if child_value is not None:
                     obj.runnable_entities.append(child_value)
 
-        # Parse runnable_entity_group_group_in_composition_instance_ref (list from container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REFS")
+        # Parse runnable_entity_group_group_in_composition_instance_ref (list from container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
         obj.runnable_entity_group_group_in_composition_instance_ref = []
-        container = SerializationHelper.find_child_element(element, "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REVE-REFS")
+        container = SerializationHelper.find_child_element(element, "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -160,8 +160,8 @@ class RunnableEntityGroupBuilder(IdentifiableBuilder):
         self._obj.runnable_entities = list(items) if items else []
         return self
 
-    def with_runnable_entity_group_group_in_composition_instance_reves(self, items: list[RunnableEntityGroup]) -> "RunnableEntityGroupBuilder":
-        """Set runnable_entity_group_group_in_composition_instance_reves list attribute.
+    def with_runnable_entity_group_group_in_composition_instance_refs(self, items: list[RunnableEntityGroup]) -> "RunnableEntityGroupBuilder":
+        """Set runnable_entity_group_group_in_composition_instance_refs list attribute.
 
         Args:
             items: List of items to set
@@ -169,7 +169,7 @@ class RunnableEntityGroupBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.runnable_entity_group_group_in_composition_instance_reves = list(items) if items else []
+        self._obj.runnable_entity_group_group_in_composition_instance_refs = list(items) if items else []
         return self
 
 
@@ -195,7 +195,7 @@ class RunnableEntityGroupBuilder(IdentifiableBuilder):
         return self
 
     def add_runnable_entity_group_group_in_composition_instance_ref(self, item: RunnableEntityGroup) -> "RunnableEntityGroupBuilder":
-        """Add a single item to runnable_entity_group_group_in_composition_instance_reves list.
+        """Add a single item to runnable_entity_group_group_in_composition_instance_refs list.
 
         Args:
             item: Item to add
@@ -203,16 +203,16 @@ class RunnableEntityGroupBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.runnable_entity_group_group_in_composition_instance_reves.append(item)
+        self._obj.runnable_entity_group_group_in_composition_instance_refs.append(item)
         return self
 
-    def clear_runnable_entity_group_group_in_composition_instance_reves(self) -> "RunnableEntityGroupBuilder":
-        """Clear all items from runnable_entity_group_group_in_composition_instance_reves list.
+    def clear_runnable_entity_group_group_in_composition_instance_refs(self) -> "RunnableEntityGroupBuilder":
+        """Clear all items from runnable_entity_group_group_in_composition_instance_refs list.
 
         Returns:
             self for method chaining
         """
-        self._obj.runnable_entity_group_group_in_composition_instance_reves = []
+        self._obj.runnable_entity_group_group_in_composition_instance_refs = []
         return self
 
 

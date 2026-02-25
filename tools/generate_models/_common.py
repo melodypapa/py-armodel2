@@ -326,9 +326,35 @@ def to_plural(name: str) -> str:
         "package": "packages",
         "variable": "variables",
         "library": "libraries",
+        # Common AUTOSAR abbreviations that should simply add 'S' for pluralization
+        # These abbreviations should NOT follow the 'f' -> 'ves' rule
+        "def": "defs",
+        "ref": "refs",
+        "conf": "confs",
+        "calib": "calibs",
+        "swc": "swcs",
+        "bsw": "bsws",
+        "hmi": "hmis",
+        "spec": "specs",
+        "cfg": "cfgs",
+        "prof": "profs",
+        "buf": "bufs",
+        "brief": "briefs",
+        "chef": "chefs",
     }
     if name in special_cases:
         return special_cases[name]
+
+    # Check if the word ends with a known AUTOSAR abbreviation
+    # This handles compound words like "vendor_specific_module_def" -> "vendor_specific_module_defs"
+    # instead of applying the 'f' -> 'ves' rule which would produce "vendor_specific_module_deves"
+    known_abbreviations = ["def", "ref", "conf", "calib", "swc", "bsw", "hmi", "spec", "cfg", "prof", "buf", "brief", "chef"]
+    for abbr in known_abbreviations:
+        if name.endswith(abbr):
+            # Check if it's an exact match (already handled above) or a suffix
+            if name != abbr:
+                # It's a suffix, pluralize by adding 's'
+                return name + "s"
 
     # Handle 'y' -> 'ies' (entity -> entities, body -> bodies)
     if name.endswith("y"):

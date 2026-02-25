@@ -70,13 +70,13 @@ class Baseline(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize custom_sdg_def_refs (list to container "CUSTOM-SDG-DEVE-REFS")
+        # Serialize custom_sdg_def_refs (list to container "CUSTOM-SDG-DEF-REFS")
         if self.custom_sdg_def_refs:
-            wrapper = ET.Element("CUSTOM-SDG-DEVE-REFS")
+            wrapper = ET.Element("CUSTOM-SDG-DEF-REFS")
             for item in self.custom_sdg_def_refs:
                 serialized = SerializationHelper.serialize_item(item, "SdgDef")
                 if serialized is not None:
-                    child_elem = ET.Element("CUSTOM-SDG-DEVE-REF")
+                    child_elem = ET.Element("CUSTOM-SDG-DEF-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -136,9 +136,9 @@ class Baseline(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Baseline, cls).deserialize(element)
 
-        # Parse custom_sdg_def_refs (list from container "CUSTOM-SDG-DEVE-REFS")
+        # Parse custom_sdg_def_refs (list from container "CUSTOM-SDG-DEF-REFS")
         obj.custom_sdg_def_refs = []
-        container = SerializationHelper.find_child_element(element, "CUSTOM-SDG-DEVE-REFS")
+        container = SerializationHelper.find_child_element(element, "CUSTOM-SDG-DEF-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -191,8 +191,8 @@ class BaselineBuilder(BuilderBase):
         self._obj: Baseline = Baseline()
 
 
-    def with_custom_sdg_deves(self, items: list[SdgDef]) -> "BaselineBuilder":
-        """Set custom_sdg_deves list attribute.
+    def with_custom_sdg_defs(self, items: list[SdgDef]) -> "BaselineBuilder":
+        """Set custom_sdg_defs list attribute.
 
         Args:
             items: List of items to set
@@ -200,7 +200,7 @@ class BaselineBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.custom_sdg_deves = list(items) if items else []
+        self._obj.custom_sdg_defs = list(items) if items else []
         return self
 
     def with_customs(self, items: list[Documentation]) -> "BaselineBuilder":
@@ -229,7 +229,7 @@ class BaselineBuilder(BuilderBase):
 
 
     def add_custom_sdg_def(self, item: SdgDef) -> "BaselineBuilder":
-        """Add a single item to custom_sdg_deves list.
+        """Add a single item to custom_sdg_defs list.
 
         Args:
             item: Item to add
@@ -237,16 +237,16 @@ class BaselineBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.custom_sdg_deves.append(item)
+        self._obj.custom_sdg_defs.append(item)
         return self
 
-    def clear_custom_sdg_deves(self) -> "BaselineBuilder":
-        """Clear all items from custom_sdg_deves list.
+    def clear_custom_sdg_defs(self) -> "BaselineBuilder":
+        """Clear all items from custom_sdg_defs list.
 
         Returns:
             self for method chaining
         """
-        self._obj.custom_sdg_deves = []
+        self._obj.custom_sdg_defs = []
         return self
 
     def add_custom(self, item: Documentation) -> "BaselineBuilder":

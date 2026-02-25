@@ -64,7 +64,7 @@ class NvBlockDescriptor(Identifiable):
     client_server_ports: list[RoleBasedPortAssignment]
     constant_value_refs: list[ARRef]
     data_type_refs: list[ARRef]
-    instantiation_data_deves: list[InstantiationDataDefProps]
+    instantiation_data_defs: list[InstantiationDataDefProps]
     mode_switch_events: list[Any]
     nv_block_data_refs: list[ARRef]
     nv_block_needs: Optional[NvBlockNeeds]
@@ -79,7 +79,7 @@ class NvBlockDescriptor(Identifiable):
         self.client_server_ports: list[RoleBasedPortAssignment] = []
         self.constant_value_refs: list[ARRef] = []
         self.data_type_refs: list[ARRef] = []
-        self.instantiation_data_deves: list[InstantiationDataDefProps] = []
+        self.instantiation_data_defs: list[InstantiationDataDefProps] = []
         self.mode_switch_events: list[Any] = []
         self.nv_block_data_refs: list[ARRef] = []
         self.nv_block_needs: Optional[NvBlockNeeds] = None
@@ -157,10 +157,10 @@ class NvBlockDescriptor(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize instantiation_data_deves (list to container "INSTANTIATION-DATA-DEVES")
-        if self.instantiation_data_deves:
-            wrapper = ET.Element("INSTANTIATION-DATA-DEVES")
-            for item in self.instantiation_data_deves:
+        # Serialize instantiation_data_defs (list to container "INSTANTIATION-DATA-DEFS")
+        if self.instantiation_data_defs:
+            wrapper = ET.Element("INSTANTIATION-DATA-DEFS")
+            for item in self.instantiation_data_defs:
                 serialized = SerializationHelper.serialize_item(item, "InstantiationDataDefProps")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -331,15 +331,15 @@ class NvBlockDescriptor(Identifiable):
                 if child_value is not None:
                     obj.data_type_refs.append(child_value)
 
-        # Parse instantiation_data_deves (list from container "INSTANTIATION-DATA-DEVES")
-        obj.instantiation_data_deves = []
-        container = SerializationHelper.find_child_element(element, "INSTANTIATION-DATA-DEVES")
+        # Parse instantiation_data_defs (list from container "INSTANTIATION-DATA-DEFS")
+        obj.instantiation_data_defs = []
+        container = SerializationHelper.find_child_element(element, "INSTANTIATION-DATA-DEFS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.instantiation_data_deves.append(child_value)
+                    obj.instantiation_data_defs.append(child_value)
 
         # Parse mode_switch_events (list from container "MODE-SWITCH-EVENTS")
         obj.mode_switch_events = []
@@ -456,8 +456,8 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
         self._obj.data_types = list(items) if items else []
         return self
 
-    def with_instantiation_data_deves(self, items: list[InstantiationDataDefProps]) -> "NvBlockDescriptorBuilder":
-        """Set instantiation_data_deves list attribute.
+    def with_instantiation_data_defs(self, items: list[InstantiationDataDefProps]) -> "NvBlockDescriptorBuilder":
+        """Set instantiation_data_defs list attribute.
 
         Args:
             items: List of items to set
@@ -465,7 +465,7 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.instantiation_data_deves = list(items) if items else []
+        self._obj.instantiation_data_defs = list(items) if items else []
         return self
 
     def with_mode_switch_events(self, items: list[any (ModeSwitchEvent)]) -> "NvBlockDescriptorBuilder":
@@ -639,7 +639,7 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
         return self
 
     def add_instantiation_data_def(self, item: InstantiationDataDefProps) -> "NvBlockDescriptorBuilder":
-        """Add a single item to instantiation_data_deves list.
+        """Add a single item to instantiation_data_defs list.
 
         Args:
             item: Item to add
@@ -647,16 +647,16 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.instantiation_data_deves.append(item)
+        self._obj.instantiation_data_defs.append(item)
         return self
 
-    def clear_instantiation_data_deves(self) -> "NvBlockDescriptorBuilder":
-        """Clear all items from instantiation_data_deves list.
+    def clear_instantiation_data_defs(self) -> "NvBlockDescriptorBuilder":
+        """Clear all items from instantiation_data_defs list.
 
         Returns:
             self for method chaining
         """
-        self._obj.instantiation_data_deves = []
+        self._obj.instantiation_data_defs = []
         return self
 
     def add_mode_switch_event(self, item: any (ModeSwitchEvent)) -> "NvBlockDescriptorBuilder":
