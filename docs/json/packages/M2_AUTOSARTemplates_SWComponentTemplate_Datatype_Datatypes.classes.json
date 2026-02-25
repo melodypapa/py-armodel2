@@ -505,7 +505,7 @@
       ],
       "attributes": {
         "element": {
-          "type": "any (ApplicationRecord)",
+          "type": "ApplicationRecordElement",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

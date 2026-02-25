@@ -154,6 +154,7 @@
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "xml_element_name:LIFE-CYCLE-INFOS/LIFE-CYCLE-INFO",
           "note": "This represents one particular life cycle information."
         },
         "usedLifeCycleStateDefinitionGroup": {

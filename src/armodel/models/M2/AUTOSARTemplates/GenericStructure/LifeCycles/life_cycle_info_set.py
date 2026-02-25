@@ -9,6 +9,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_LifeCycles.
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -47,7 +48,7 @@ class LifeCycleInfoSet(ARElement):
     default_lc_state_ref: ARRef
     default_period_begin: Optional[LifeCyclePeriod]
     default_period_end: Optional[LifeCyclePeriod]
-    life_cycle_infoes: list[LifeCycleInfo]
+    _life_cycle_infoes: list[LifeCycleInfo]
     used_life_cycle_state_definition_group_ref: ARRef
     def __init__(self) -> None:
         """Initialize LifeCycleInfoSet."""
@@ -55,8 +56,19 @@ class LifeCycleInfoSet(ARElement):
         self.default_lc_state_ref: ARRef = None
         self.default_period_begin: Optional[LifeCyclePeriod] = None
         self.default_period_end: Optional[LifeCyclePeriod] = None
-        self.life_cycle_infoes: list[LifeCycleInfo] = []
+        self._life_cycle_infoes: list[LifeCycleInfo] = []
         self.used_life_cycle_state_definition_group_ref: ARRef = None
+    @property
+    @xml_element_name("LIFE-CYCLE-INFOS/LIFE-CYCLE-INFO")
+    def life_cycle_infoes(self) -> list[LifeCycleInfo]:
+        """Get life_cycle_infoes with custom XML element name."""
+        return self._life_cycle_infoes
+
+    @life_cycle_infoes.setter
+    def life_cycle_infoes(self, value: list[LifeCycleInfo]) -> None:
+        """Set life_cycle_infoes with custom XML element name."""
+        self._life_cycle_infoes = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize LifeCycleInfoSet to XML element.
@@ -124,9 +136,9 @@ class LifeCycleInfoSet(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize life_cycle_infoes (list to container "LIFE-CYCLE-INFOES")
+        # Serialize life_cycle_infoes (list to container "LIFE-CYCLE-INFOS")
         if self.life_cycle_infoes:
-            wrapper = ET.Element("LIFE-CYCLE-INFOES")
+            wrapper = ET.Element("LIFE-CYCLE-INFOS")
             for item in self.life_cycle_infoes:
                 serialized = SerializationHelper.serialize_item(item, "LifeCycleInfo")
                 if serialized is not None:
@@ -181,9 +193,9 @@ class LifeCycleInfoSet(ARElement):
             default_period_end_value = SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod")
             obj.default_period_end = default_period_end_value
 
-        # Parse life_cycle_infoes (list from container "LIFE-CYCLE-INFOES")
+        # Parse life_cycle_infoes (list from container "LIFE-CYCLE-INFOS")
         obj.life_cycle_infoes = []
-        container = SerializationHelper.find_child_element(element, "LIFE-CYCLE-INFOES")
+        container = SerializationHelper.find_child_element(element, "LIFE-CYCLE-INFOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
