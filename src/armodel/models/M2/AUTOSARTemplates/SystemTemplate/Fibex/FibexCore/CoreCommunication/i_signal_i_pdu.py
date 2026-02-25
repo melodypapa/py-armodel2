@@ -41,15 +41,15 @@ class ISignalIPdu(IPdu):
         """
         return False
 
-    i_pdu_timing: Optional[IPduTiming]
-    i_signal_to_pdu_refs: list[ARRef]
-    unused_bit: Optional[Integer]
+    i_pdu_timing_specification: Optional[IPduTiming]
+    i_signal_to_pdu_mapping_refs: list[ARRef]
+    unused_bit_pattern: Optional[Integer]
     def __init__(self) -> None:
         """Initialize ISignalIPdu."""
         super().__init__()
-        self.i_pdu_timing: Optional[IPduTiming] = None
-        self.i_signal_to_pdu_refs: list[ARRef] = []
-        self.unused_bit: Optional[Integer] = None
+        self.i_pdu_timing_specification: Optional[IPduTiming] = None
+        self.i_signal_to_pdu_mapping_refs: list[ARRef] = []
+        self.unused_bit_pattern: Optional[Integer] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ISignalIPdu to XML element.
@@ -75,12 +75,12 @@ class ISignalIPdu(IPdu):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize i_pdu_timing
-        if self.i_pdu_timing is not None:
-            serialized = SerializationHelper.serialize_item(self.i_pdu_timing, "IPduTiming")
+        # Serialize i_pdu_timing_specification
+        if self.i_pdu_timing_specification is not None:
+            serialized = SerializationHelper.serialize_item(self.i_pdu_timing_specification, "IPduTiming")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-PDU-TIMING")
+                wrapped = ET.Element("I-PDU-TIMING-SPECIFICATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -89,13 +89,13 @@ class ISignalIPdu(IPdu):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_signal_to_pdu_refs (list to container "I-SIGNAL-TO-PDU-REFS")
-        if self.i_signal_to_pdu_refs:
-            wrapper = ET.Element("I-SIGNAL-TO-PDU-REFS")
-            for item in self.i_signal_to_pdu_refs:
+        # Serialize i_signal_to_pdu_mapping_refs (list to container "I-SIGNAL-TO-PDU-MAPPING-REFS")
+        if self.i_signal_to_pdu_mapping_refs:
+            wrapper = ET.Element("I-SIGNAL-TO-PDU-MAPPING-REFS")
+            for item in self.i_signal_to_pdu_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalToIPduMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("I-SIGNAL-TO-PDU-REF")
+                    child_elem = ET.Element("I-SIGNAL-TO-PDU-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -106,12 +106,12 @@ class ISignalIPdu(IPdu):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize unused_bit
-        if self.unused_bit is not None:
-            serialized = SerializationHelper.serialize_item(self.unused_bit, "Integer")
+        # Serialize unused_bit_pattern
+        if self.unused_bit_pattern is not None:
+            serialized = SerializationHelper.serialize_item(self.unused_bit_pattern, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("UNUSED-BIT")
+                wrapped = ET.Element("UNUSED-BIT-PATTERN")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -135,15 +135,15 @@ class ISignalIPdu(IPdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignalIPdu, cls).deserialize(element)
 
-        # Parse i_pdu_timing
-        child = SerializationHelper.find_child_element(element, "I-PDU-TIMING")
+        # Parse i_pdu_timing_specification
+        child = SerializationHelper.find_child_element(element, "I-PDU-TIMING-SPECIFICATION")
         if child is not None:
-            i_pdu_timing_value = SerializationHelper.deserialize_by_tag(child, "IPduTiming")
-            obj.i_pdu_timing = i_pdu_timing_value
+            i_pdu_timing_specification_value = SerializationHelper.deserialize_by_tag(child, "IPduTiming")
+            obj.i_pdu_timing_specification = i_pdu_timing_specification_value
 
-        # Parse i_signal_to_pdu_refs (list from container "I-SIGNAL-TO-PDU-REFS")
-        obj.i_signal_to_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-TO-PDU-REFS")
+        # Parse i_signal_to_pdu_mapping_refs (list from container "I-SIGNAL-TO-PDU-MAPPING-REFS")
+        obj.i_signal_to_pdu_mapping_refs = []
+        container = SerializationHelper.find_child_element(element, "I-SIGNAL-TO-PDU-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -155,13 +155,13 @@ class ISignalIPdu(IPdu):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.i_signal_to_pdu_refs.append(child_value)
+                    obj.i_signal_to_pdu_mapping_refs.append(child_value)
 
-        # Parse unused_bit
-        child = SerializationHelper.find_child_element(element, "UNUSED-BIT")
+        # Parse unused_bit_pattern
+        child = SerializationHelper.find_child_element(element, "UNUSED-BIT-PATTERN")
         if child is not None:
-            unused_bit_value = child.text
-            obj.unused_bit = unused_bit_value
+            unused_bit_pattern_value = child.text
+            obj.unused_bit_pattern = unused_bit_pattern_value
 
         return obj
 
@@ -176,8 +176,8 @@ class ISignalIPduBuilder(IPduBuilder):
         self._obj: ISignalIPdu = ISignalIPdu()
 
 
-    def with_i_pdu_timing(self, value: Optional[IPduTiming]) -> "ISignalIPduBuilder":
-        """Set i_pdu_timing attribute.
+    def with_i_pdu_timing_specification(self, value: Optional[IPduTiming]) -> "ISignalIPduBuilder":
+        """Set i_pdu_timing_specification attribute.
 
         Args:
             value: Value to set
@@ -187,11 +187,11 @@ class ISignalIPduBuilder(IPduBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.i_pdu_timing = value
+        self._obj.i_pdu_timing_specification = value
         return self
 
-    def with_i_signal_to_pdus(self, items: list[ISignalToIPduMapping]) -> "ISignalIPduBuilder":
-        """Set i_signal_to_pdus list attribute.
+    def with_i_signal_to_pdu_mappings(self, items: list[ISignalToIPduMapping]) -> "ISignalIPduBuilder":
+        """Set i_signal_to_pdu_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -199,11 +199,11 @@ class ISignalIPduBuilder(IPduBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.i_signal_to_pdus = list(items) if items else []
+        self._obj.i_signal_to_pdu_mappings = list(items) if items else []
         return self
 
-    def with_unused_bit(self, value: Optional[Integer]) -> "ISignalIPduBuilder":
-        """Set unused_bit attribute.
+    def with_unused_bit_pattern(self, value: Optional[Integer]) -> "ISignalIPduBuilder":
+        """Set unused_bit_pattern attribute.
 
         Args:
             value: Value to set
@@ -213,12 +213,12 @@ class ISignalIPduBuilder(IPduBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.unused_bit = value
+        self._obj.unused_bit_pattern = value
         return self
 
 
-    def add_i_signal_to_pdu(self, item: ISignalToIPduMapping) -> "ISignalIPduBuilder":
-        """Add a single item to i_signal_to_pdus list.
+    def add_i_signal_to_pdu_mapping(self, item: ISignalToIPduMapping) -> "ISignalIPduBuilder":
+        """Add a single item to i_signal_to_pdu_mappings list.
 
         Args:
             item: Item to add
@@ -226,16 +226,16 @@ class ISignalIPduBuilder(IPduBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.i_signal_to_pdus.append(item)
+        self._obj.i_signal_to_pdu_mappings.append(item)
         return self
 
-    def clear_i_signal_to_pdus(self) -> "ISignalIPduBuilder":
-        """Clear all items from i_signal_to_pdus list.
+    def clear_i_signal_to_pdu_mappings(self) -> "ISignalIPduBuilder":
+        """Clear all items from i_signal_to_pdu_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.i_signal_to_pdus = []
+        self._obj.i_signal_to_pdu_mappings = []
         return self
 
 

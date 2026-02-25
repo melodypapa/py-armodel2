@@ -63,7 +63,7 @@
           "type": "HwPinGroup",
           "multiplicity": "*",
           "kind": "aggr",
-          "is_ref": true,
+          "is_ref": false,
           "note": "This aggregation is used to describe the connection a hardware element. Note that hardware no pins but only pingroups. atpVariation"
         },
         "nestedElement": {

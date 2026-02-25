@@ -44,13 +44,13 @@ class HwElement(HwDescriptionEntity):
         return False
 
     hw_element_connections: list[HwElementConnector]
-    hw_pin_group_refs: list[ARRef]
+    hw_pin_groups: list[HwPinGroup]
     nested_element_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize HwElement."""
         super().__init__()
         self.hw_element_connections: list[HwElementConnector] = []
-        self.hw_pin_group_refs: list[ARRef] = []
+        self.hw_pin_groups: list[HwPinGroup] = []
         self.nested_element_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
@@ -87,20 +87,13 @@ class HwElement(HwDescriptionEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize hw_pin_group_refs (list to container "HW-PIN-GROUP-REFS")
-        if self.hw_pin_group_refs:
-            wrapper = ET.Element("HW-PIN-GROUP-REFS")
-            for item in self.hw_pin_group_refs:
+        # Serialize hw_pin_groups (list to container "HW-PIN-GROUPS")
+        if self.hw_pin_groups:
+            wrapper = ET.Element("HW-PIN-GROUPS")
+            for item in self.hw_pin_groups:
                 serialized = SerializationHelper.serialize_item(item, "HwPinGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("HW-PIN-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -146,21 +139,15 @@ class HwElement(HwDescriptionEntity):
                 if child_value is not None:
                     obj.hw_element_connections.append(child_value)
 
-        # Parse hw_pin_group_refs (list from container "HW-PIN-GROUP-REFS")
-        obj.hw_pin_group_refs = []
-        container = SerializationHelper.find_child_element(element, "HW-PIN-GROUP-REFS")
+        # Parse hw_pin_groups (list from container "HW-PIN-GROUPS")
+        obj.hw_pin_groups = []
+        container = SerializationHelper.find_child_element(element, "HW-PIN-GROUPS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.hw_pin_group_refs.append(child_value)
+                    obj.hw_pin_groups.append(child_value)
 
         # Parse nested_element_refs (list from container "NESTED-ELEMENT-REFS")
         obj.nested_element_refs = []

@@ -90,9 +90,12 @@ def get_python_type(
     # Primitive types and enum types are referenced by their string values, not by ARRef
     # Note: iref kind represents instance references which are complex objects, not simple references
     # For iref kind, use the actual class type directly, not wrapped in ARRef
+    # Note: aggr kind represents aggregations that contain objects directly, not references
+    # For aggr kind, use the actual class type directly, not wrapped in ARRef
     if (
         is_ref
         and kind != "iref"
+        and kind != "aggr"
         and not is_primitive_type(type_name, package_data)
         and not is_enum_type(type_name, package_data)
         and type_name != "Any"

@@ -11,6 +11,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCo
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import polymorphic
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
@@ -65,8 +66,8 @@ class ISignal(FibexElement):
         return False
 
     data_transformation_ref: Optional[ARRef]
-    data_type_policy_enum: Optional[DataTypePolicyEnum]
-    init_value: Optional[ValueSpecification]
+    data_type_policy: Optional[DataTypePolicyEnum]
+    _init_value: Optional[ValueSpecification]
     i_signal_props: Optional[ISignalProps]
     i_signal_type: Optional[ISignalTypeEnum]
     length: Optional[UnlimitedInteger]
@@ -78,8 +79,8 @@ class ISignal(FibexElement):
         """Initialize ISignal."""
         super().__init__()
         self.data_transformation_ref: Optional[ARRef] = None
-        self.data_type_policy_enum: Optional[DataTypePolicyEnum] = None
-        self.init_value: Optional[ValueSpecification] = None
+        self.data_type_policy: Optional[DataTypePolicyEnum] = None
+        self._init_value: Optional[ValueSpecification] = None
         self.i_signal_props: Optional[ISignalProps] = None
         self.i_signal_type: Optional[ISignalTypeEnum] = None
         self.length: Optional[UnlimitedInteger] = None
@@ -87,6 +88,17 @@ class ISignal(FibexElement):
         self.system_signal_ref: Optional[ARRef] = None
         self.timeout_substitution_value: Optional[ValueSpecification] = None
         self.transformation_i_signal_props: list[TransformationISignalProps] = []
+    @property
+    @polymorphic({"INIT-VALUE": "ValueSpecification"})
+    def init_value(self) -> Optional[ValueSpecification]:
+        """Get init_value with polymorphic wrapper handling."""
+        return self._init_value
+
+    @init_value.setter
+    def init_value(self, value: Optional[ValueSpecification]) -> None:
+        """Set init_value with polymorphic wrapper handling."""
+        self._init_value = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize ISignal to XML element.
@@ -126,12 +138,12 @@ class ISignal(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize data_type_policy_enum
-        if self.data_type_policy_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.data_type_policy_enum, "DataTypePolicyEnum")
+        # Serialize data_type_policy
+        if self.data_type_policy is not None:
+            serialized = SerializationHelper.serialize_item(self.data_type_policy, "DataTypePolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-TYPE-POLICY-ENUM")
+                wrapped = ET.Element("DATA-TYPE-POLICY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -140,18 +152,13 @@ class ISignal(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize init_value
+        # Serialize init_value (polymorphic wrapper "INIT-VALUE")
         if self.init_value is not None:
             serialized = SerializationHelper.serialize_item(self.init_value, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
+                # For polymorphic types, wrap the serialized element (preserving concrete type)
                 wrapped = ET.Element("INIT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
+                wrapped.append(serialized)
                 elem.append(wrapped)
 
         # Serialize i_signal_props
@@ -269,16 +276,16 @@ class ISignal(FibexElement):
             data_transformation_ref_value = ARRef.deserialize(child)
             obj.data_transformation_ref = data_transformation_ref_value
 
-        # Parse data_type_policy_enum
-        child = SerializationHelper.find_child_element(element, "DATA-TYPE-POLICY-ENUM")
+        # Parse data_type_policy
+        child = SerializationHelper.find_child_element(element, "DATA-TYPE-POLICY")
         if child is not None:
-            data_type_policy_enum_value = DataTypePolicyEnum.deserialize(child)
-            obj.data_type_policy_enum = data_type_policy_enum_value
+            data_type_policy_value = DataTypePolicyEnum.deserialize(child)
+            obj.data_type_policy = data_type_policy_value
 
-        # Parse init_value
-        child = SerializationHelper.find_child_element(element, "INIT-VALUE")
-        if child is not None:
-            init_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
+        # Parse init_value (polymorphic wrapper "INIT-VALUE")
+        wrapper = SerializationHelper.find_child_element(element, "INIT-VALUE")
+        if wrapper is not None:
+            init_value_value = SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
             obj.init_value = init_value_value
 
         # Parse i_signal_props
@@ -354,8 +361,8 @@ class ISignalBuilder(FibexElementBuilder):
         self._obj.data_transformation = value
         return self
 
-    def with_data_type_policy_enum(self, value: Optional[DataTypePolicyEnum]) -> "ISignalBuilder":
-        """Set data_type_policy_enum attribute.
+    def with_data_type_policy(self, value: Optional[DataTypePolicyEnum]) -> "ISignalBuilder":
+        """Set data_type_policy attribute.
 
         Args:
             value: Value to set
@@ -365,7 +372,7 @@ class ISignalBuilder(FibexElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.data_type_policy_enum = value
+        self._obj.data_type_policy = value
         return self
 
     def with_init_value(self, value: Optional[ValueSpecification]) -> "ISignalBuilder":
