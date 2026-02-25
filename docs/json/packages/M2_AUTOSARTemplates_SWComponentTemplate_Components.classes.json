@@ -915,10 +915,10 @@
         }
       ],
       "attributes": {
-        "requiredComs": {
+        "requiredComSpecs": {
           "type": "RPortComSpec",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Required communication attributes, one for each"
         }
@@ -964,10 +964,10 @@
         }
       ],
       "attributes": {
-        "providedComs": {
+        "providedComSpecs": {
           "type": "PPortComSpec",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Provided communication attributes per interface element"
         }

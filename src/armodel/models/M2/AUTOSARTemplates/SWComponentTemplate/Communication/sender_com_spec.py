@@ -7,7 +7,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
@@ -16,6 +16,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import PPortComSpecBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication import (
+    HandleOutOfRangeEnum,
+)
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -24,6 +27,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 )
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.composite_network_representation import (
     CompositeNetworkRepresentation,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.transmission_acknowledgement_request import (
+    TransmissionAcknowledgementRequest,
 )
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.transmission_com_spec_props import (
     TransmissionComSpecProps,
@@ -53,23 +59,23 @@ class SenderComSpec(PPortComSpec, ABC):
         """
         return True
 
-    composite_networks: list[CompositeNetworkRepresentation]
+    composite_network_representations: list[CompositeNetworkRepresentation]
     data_element_ref: Optional[ARRef]
-    handle_out_of_range: Optional[Any]
-    network: Optional[SwDataDefProps]
-    transmission: Optional[Any]
-    transmission_com_spec: Optional[TransmissionComSpecProps]
-    uses_end_to_end: Optional[Boolean]
+    handle_out_of_range: Optional[HandleOutOfRangeEnum]
+    network_representation: Optional[SwDataDefProps]
+    transmission_acknowledge: Optional[TransmissionAcknowledgementRequest]
+    transmission_props: Optional[TransmissionComSpecProps]
+    uses_end_to_end_protection: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize SenderComSpec."""
         super().__init__()
-        self.composite_networks: list[CompositeNetworkRepresentation] = []
+        self.composite_network_representations: list[CompositeNetworkRepresentation] = []
         self.data_element_ref: Optional[ARRef] = None
-        self.handle_out_of_range: Optional[Any] = None
-        self.network: Optional[SwDataDefProps] = None
-        self.transmission: Optional[Any] = None
-        self.transmission_com_spec: Optional[TransmissionComSpecProps] = None
-        self.uses_end_to_end: Optional[Boolean] = None
+        self.handle_out_of_range: Optional[HandleOutOfRangeEnum] = None
+        self.network_representation: Optional[SwDataDefProps] = None
+        self.transmission_acknowledge: Optional[TransmissionAcknowledgementRequest] = None
+        self.transmission_props: Optional[TransmissionComSpecProps] = None
+        self.uses_end_to_end_protection: Optional[Boolean] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SenderComSpec to XML element.
@@ -95,10 +101,10 @@ class SenderComSpec(PPortComSpec, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize composite_networks (list to container "COMPOSITE-NETWORKS")
-        if self.composite_networks:
-            wrapper = ET.Element("COMPOSITE-NETWORKS")
-            for item in self.composite_networks:
+        # Serialize composite_network_representations (list to container "COMPOSITE-NETWORK-REPRESENTATIONS")
+        if self.composite_network_representations:
+            wrapper = ET.Element("COMPOSITE-NETWORK-REPRESENTATIONS")
+            for item in self.composite_network_representations:
                 serialized = SerializationHelper.serialize_item(item, "CompositeNetworkRepresentation")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -121,7 +127,7 @@ class SenderComSpec(PPortComSpec, ABC):
 
         # Serialize handle_out_of_range
         if self.handle_out_of_range is not None:
-            serialized = SerializationHelper.serialize_item(self.handle_out_of_range, "Any")
+            serialized = SerializationHelper.serialize_item(self.handle_out_of_range, "HandleOutOfRangeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HANDLE-OUT-OF-RANGE")
@@ -133,12 +139,12 @@ class SenderComSpec(PPortComSpec, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize network
-        if self.network is not None:
-            serialized = SerializationHelper.serialize_item(self.network, "SwDataDefProps")
+        # Serialize network_representation
+        if self.network_representation is not None:
+            serialized = SerializationHelper.serialize_item(self.network_representation, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("NETWORK")
+                wrapped = ET.Element("NETWORK-REPRESENTATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -147,12 +153,12 @@ class SenderComSpec(PPortComSpec, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transmission
-        if self.transmission is not None:
-            serialized = SerializationHelper.serialize_item(self.transmission, "Any")
+        # Serialize transmission_acknowledge
+        if self.transmission_acknowledge is not None:
+            serialized = SerializationHelper.serialize_item(self.transmission_acknowledge, "TransmissionAcknowledgementRequest")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSMISSION")
+                wrapped = ET.Element("TRANSMISSION-ACKNOWLEDGE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -161,12 +167,12 @@ class SenderComSpec(PPortComSpec, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transmission_com_spec
-        if self.transmission_com_spec is not None:
-            serialized = SerializationHelper.serialize_item(self.transmission_com_spec, "TransmissionComSpecProps")
+        # Serialize transmission_props
+        if self.transmission_props is not None:
+            serialized = SerializationHelper.serialize_item(self.transmission_props, "TransmissionComSpecProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSMISSION-COM-SPEC")
+                wrapped = ET.Element("TRANSMISSION-PROPS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -175,12 +181,12 @@ class SenderComSpec(PPortComSpec, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize uses_end_to_end
-        if self.uses_end_to_end is not None:
-            serialized = SerializationHelper.serialize_item(self.uses_end_to_end, "Boolean")
+        # Serialize uses_end_to_end_protection
+        if self.uses_end_to_end_protection is not None:
+            serialized = SerializationHelper.serialize_item(self.uses_end_to_end_protection, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("USES-END-TO-END")
+                wrapped = ET.Element("USES-END-TO-END-PROTECTION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -204,15 +210,15 @@ class SenderComSpec(PPortComSpec, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderComSpec, cls).deserialize(element)
 
-        # Parse composite_networks (list from container "COMPOSITE-NETWORKS")
-        obj.composite_networks = []
-        container = SerializationHelper.find_child_element(element, "COMPOSITE-NETWORKS")
+        # Parse composite_network_representations (list from container "COMPOSITE-NETWORK-REPRESENTATIONS")
+        obj.composite_network_representations = []
+        container = SerializationHelper.find_child_element(element, "COMPOSITE-NETWORK-REPRESENTATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.composite_networks.append(child_value)
+                    obj.composite_network_representations.append(child_value)
 
         # Parse data_element_ref
         child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
@@ -223,32 +229,32 @@ class SenderComSpec(PPortComSpec, ABC):
         # Parse handle_out_of_range
         child = SerializationHelper.find_child_element(element, "HANDLE-OUT-OF-RANGE")
         if child is not None:
-            handle_out_of_range_value = child.text
+            handle_out_of_range_value = HandleOutOfRangeEnum.deserialize(child)
             obj.handle_out_of_range = handle_out_of_range_value
 
-        # Parse network
-        child = SerializationHelper.find_child_element(element, "NETWORK")
+        # Parse network_representation
+        child = SerializationHelper.find_child_element(element, "NETWORK-REPRESENTATION")
         if child is not None:
-            network_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.network = network_value
+            network_representation_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
+            obj.network_representation = network_representation_value
 
-        # Parse transmission
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION")
+        # Parse transmission_acknowledge
+        child = SerializationHelper.find_child_element(element, "TRANSMISSION-ACKNOWLEDGE")
         if child is not None:
-            transmission_value = child.text
-            obj.transmission = transmission_value
+            transmission_acknowledge_value = SerializationHelper.deserialize_by_tag(child, "TransmissionAcknowledgementRequest")
+            obj.transmission_acknowledge = transmission_acknowledge_value
 
-        # Parse transmission_com_spec
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION-COM-SPEC")
+        # Parse transmission_props
+        child = SerializationHelper.find_child_element(element, "TRANSMISSION-PROPS")
         if child is not None:
-            transmission_com_spec_value = SerializationHelper.deserialize_by_tag(child, "TransmissionComSpecProps")
-            obj.transmission_com_spec = transmission_com_spec_value
+            transmission_props_value = SerializationHelper.deserialize_by_tag(child, "TransmissionComSpecProps")
+            obj.transmission_props = transmission_props_value
 
-        # Parse uses_end_to_end
-        child = SerializationHelper.find_child_element(element, "USES-END-TO-END")
+        # Parse uses_end_to_end_protection
+        child = SerializationHelper.find_child_element(element, "USES-END-TO-END-PROTECTION")
         if child is not None:
-            uses_end_to_end_value = child.text
-            obj.uses_end_to_end = uses_end_to_end_value
+            uses_end_to_end_protection_value = child.text
+            obj.uses_end_to_end_protection = uses_end_to_end_protection_value
 
         return obj
 
@@ -263,8 +269,8 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
         self._obj: SenderComSpec = SenderComSpec()
 
 
-    def with_composite_networks(self, items: list[CompositeNetworkRepresentation]) -> "SenderComSpecBuilder":
-        """Set composite_networks list attribute.
+    def with_composite_network_representations(self, items: list[CompositeNetworkRepresentation]) -> "SenderComSpecBuilder":
+        """Set composite_network_representations list attribute.
 
         Args:
             items: List of items to set
@@ -272,7 +278,7 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.composite_networks = list(items) if items else []
+        self._obj.composite_network_representations = list(items) if items else []
         return self
 
     def with_data_element(self, value: Optional[AutosarDataPrototype]) -> "SenderComSpecBuilder":
@@ -289,7 +295,7 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
         self._obj.data_element = value
         return self
 
-    def with_handle_out_of_range(self, value: Optional[any (HandleOutOfRange)]) -> "SenderComSpecBuilder":
+    def with_handle_out_of_range(self, value: Optional[HandleOutOfRangeEnum]) -> "SenderComSpecBuilder":
         """Set handle_out_of_range attribute.
 
         Args:
@@ -303,8 +309,8 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
         self._obj.handle_out_of_range = value
         return self
 
-    def with_network(self, value: Optional[SwDataDefProps]) -> "SenderComSpecBuilder":
-        """Set network attribute.
+    def with_network_representation(self, value: Optional[SwDataDefProps]) -> "SenderComSpecBuilder":
+        """Set network_representation attribute.
 
         Args:
             value: Value to set
@@ -314,11 +320,11 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.network = value
+        self._obj.network_representation = value
         return self
 
-    def with_transmission(self, value: Optional[any (Transmission)]) -> "SenderComSpecBuilder":
-        """Set transmission attribute.
+    def with_transmission_acknowledge(self, value: Optional[TransmissionAcknowledgementRequest]) -> "SenderComSpecBuilder":
+        """Set transmission_acknowledge attribute.
 
         Args:
             value: Value to set
@@ -328,11 +334,11 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.transmission = value
+        self._obj.transmission_acknowledge = value
         return self
 
-    def with_transmission_com_spec(self, value: Optional[TransmissionComSpecProps]) -> "SenderComSpecBuilder":
-        """Set transmission_com_spec attribute.
+    def with_transmission_props(self, value: Optional[TransmissionComSpecProps]) -> "SenderComSpecBuilder":
+        """Set transmission_props attribute.
 
         Args:
             value: Value to set
@@ -342,11 +348,11 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.transmission_com_spec = value
+        self._obj.transmission_props = value
         return self
 
-    def with_uses_end_to_end(self, value: Optional[Boolean]) -> "SenderComSpecBuilder":
-        """Set uses_end_to_end attribute.
+    def with_uses_end_to_end_protection(self, value: Optional[Boolean]) -> "SenderComSpecBuilder":
+        """Set uses_end_to_end_protection attribute.
 
         Args:
             value: Value to set
@@ -356,12 +362,12 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.uses_end_to_end = value
+        self._obj.uses_end_to_end_protection = value
         return self
 
 
-    def add_composite_network(self, item: CompositeNetworkRepresentation) -> "SenderComSpecBuilder":
-        """Add a single item to composite_networks list.
+    def add_composite_network_representation(self, item: CompositeNetworkRepresentation) -> "SenderComSpecBuilder":
+        """Add a single item to composite_network_representations list.
 
         Args:
             item: Item to add
@@ -369,16 +375,16 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.composite_networks.append(item)
+        self._obj.composite_network_representations.append(item)
         return self
 
-    def clear_composite_networks(self) -> "SenderComSpecBuilder":
-        """Clear all items from composite_networks list.
+    def clear_composite_network_representations(self) -> "SenderComSpecBuilder":
+        """Clear all items from composite_network_representations list.
 
         Returns:
             self for method chaining
         """
-        self._obj.composite_networks = []
+        self._obj.composite_network_representations = []
         return self
 
 

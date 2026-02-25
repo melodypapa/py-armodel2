@@ -124,7 +124,7 @@ class SwDataDefProps(ARObject):
     sw_comparison_variables: list[SwVariableRefProxy]
     sw_data_dependency: Optional[SwDataDependency]
     sw_host_variable: Optional[SwVariableRefProxy]
-    sw_impl_policy_enum: Optional[SwImplPolicyEnum]
+    sw_impl_policy: Optional[SwImplPolicyEnum]
     sw_intended_resolution: Optional[Numerical]
     sw_interpolation_method: Optional[Identifier]
     sw_is_virtual: Optional[Boolean]
@@ -157,7 +157,7 @@ class SwDataDefProps(ARObject):
         self.sw_comparison_variables: list[SwVariableRefProxy] = []
         self.sw_data_dependency: Optional[SwDataDependency] = None
         self.sw_host_variable: Optional[SwVariableRefProxy] = None
-        self.sw_impl_policy_enum: Optional[SwImplPolicyEnum] = None
+        self.sw_impl_policy: Optional[SwImplPolicyEnum] = None
         self.sw_intended_resolution: Optional[Numerical] = None
         self.sw_interpolation_method: Optional[Identifier] = None
         self.sw_is_virtual: Optional[Boolean] = None
@@ -458,11 +458,11 @@ class SwDataDefProps(ARObject):
                     wrapped.append(child)
                 inner_elem.append(wrapped)
 
-        # Serialize sw_impl_policy_enum
-        if self.sw_impl_policy_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_impl_policy_enum, "SwImplPolicyEnum")
+        # Serialize sw_impl_policy
+        if self.sw_impl_policy is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_impl_policy, "SwImplPolicyEnum")
             if serialized is not None:
-                wrapped = ET.Element("SW-IMPL-POLICY-ENUM")
+                wrapped = ET.Element("SW-IMPL-POLICY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -813,11 +813,11 @@ class SwDataDefProps(ARObject):
             sw_host_variable_value = SerializationHelper.deserialize_by_tag(child, "SwVariableRefProxy")
             obj.sw_host_variable = sw_host_variable_value
 
-        # Parse sw_impl_policy_enum
-        child = SerializationHelper.find_child_element(inner_elem, "SW-IMPL-POLICY-ENUM")
+        # Parse sw_impl_policy
+        child = SerializationHelper.find_child_element(inner_elem, "SW-IMPL-POLICY")
         if child is not None:
-            sw_impl_policy_enum_value = SwImplPolicyEnum.deserialize(child)
-            obj.sw_impl_policy_enum = sw_impl_policy_enum_value
+            sw_impl_policy_value = SwImplPolicyEnum.deserialize(child)
+            obj.sw_impl_policy = sw_impl_policy_value
 
         # Parse sw_intended_resolution
         child = SerializationHelper.find_child_element(inner_elem, "SW-INTENDED-RESOLUTION")
@@ -1168,8 +1168,8 @@ class SwDataDefPropsBuilder(BuilderBase):
         self._obj.sw_host_variable = value
         return self
 
-    def with_sw_impl_policy_enum(self, value: Optional[SwImplPolicyEnum]) -> "SwDataDefPropsBuilder":
-        """Set sw_impl_policy_enum attribute.
+    def with_sw_impl_policy(self, value: Optional[SwImplPolicyEnum]) -> "SwDataDefPropsBuilder":
+        """Set sw_impl_policy attribute.
 
         Args:
             value: Value to set
@@ -1179,7 +1179,7 @@ class SwDataDefPropsBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_impl_policy_enum = value
+        self._obj.sw_impl_policy = value
         return self
 
     def with_sw_intended_resolution(self, value: Optional[Numerical]) -> "SwDataDefPropsBuilder":

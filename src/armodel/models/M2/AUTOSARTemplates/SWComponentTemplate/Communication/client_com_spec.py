@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.transformation_com_spec_props import (
+    TransformationComSpecProps,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
@@ -37,15 +40,15 @@ class ClientComSpec(RPortComSpec):
         """
         return False
 
-    end_to_end_call: Optional[TimeValue]
+    end_to_end_call_response_timeout: Optional[TimeValue]
     operation_ref: Optional[ARRef]
-    transformation_coms: list[Any]
+    transformation_com_spec_props: list[TransformationComSpecProps]
     def __init__(self) -> None:
         """Initialize ClientComSpec."""
         super().__init__()
-        self.end_to_end_call: Optional[TimeValue] = None
+        self.end_to_end_call_response_timeout: Optional[TimeValue] = None
         self.operation_ref: Optional[ARRef] = None
-        self.transformation_coms: list[Any] = []
+        self.transformation_com_spec_props: list[TransformationComSpecProps] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ClientComSpec to XML element.
@@ -71,12 +74,12 @@ class ClientComSpec(RPortComSpec):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize end_to_end_call
-        if self.end_to_end_call is not None:
-            serialized = SerializationHelper.serialize_item(self.end_to_end_call, "TimeValue")
+        # Serialize end_to_end_call_response_timeout
+        if self.end_to_end_call_response_timeout is not None:
+            serialized = SerializationHelper.serialize_item(self.end_to_end_call_response_timeout, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("END-TO-END-CALL")
+                wrapped = ET.Element("END-TO-END-CALL-RESPONSE-TIMEOUT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -99,11 +102,11 @@ class ClientComSpec(RPortComSpec):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transformation_coms (list to container "TRANSFORMATION-COMS")
-        if self.transformation_coms:
-            wrapper = ET.Element("TRANSFORMATION-COMS")
-            for item in self.transformation_coms:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize transformation_com_spec_props (list to container "TRANSFORMATION-COM-SPEC-PROPS")
+        if self.transformation_com_spec_props:
+            wrapper = ET.Element("TRANSFORMATION-COM-SPEC-PROPS")
+            for item in self.transformation_com_spec_props:
+                serialized = SerializationHelper.serialize_item(item, "TransformationComSpecProps")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -124,11 +127,11 @@ class ClientComSpec(RPortComSpec):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientComSpec, cls).deserialize(element)
 
-        # Parse end_to_end_call
-        child = SerializationHelper.find_child_element(element, "END-TO-END-CALL")
+        # Parse end_to_end_call_response_timeout
+        child = SerializationHelper.find_child_element(element, "END-TO-END-CALL-RESPONSE-TIMEOUT")
         if child is not None:
-            end_to_end_call_value = child.text
-            obj.end_to_end_call = end_to_end_call_value
+            end_to_end_call_response_timeout_value = child.text
+            obj.end_to_end_call_response_timeout = end_to_end_call_response_timeout_value
 
         # Parse operation_ref
         child = SerializationHelper.find_child_element(element, "OPERATION-REF")
@@ -136,15 +139,15 @@ class ClientComSpec(RPortComSpec):
             operation_ref_value = ARRef.deserialize(child)
             obj.operation_ref = operation_ref_value
 
-        # Parse transformation_coms (list from container "TRANSFORMATION-COMS")
-        obj.transformation_coms = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-COMS")
+        # Parse transformation_com_spec_props (list from container "TRANSFORMATION-COM-SPEC-PROPS")
+        obj.transformation_com_spec_props = []
+        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-COM-SPEC-PROPS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.transformation_coms.append(child_value)
+                    obj.transformation_com_spec_props.append(child_value)
 
         return obj
 
@@ -159,8 +162,8 @@ class ClientComSpecBuilder(RPortComSpecBuilder):
         self._obj: ClientComSpec = ClientComSpec()
 
 
-    def with_end_to_end_call(self, value: Optional[TimeValue]) -> "ClientComSpecBuilder":
-        """Set end_to_end_call attribute.
+    def with_end_to_end_call_response_timeout(self, value: Optional[TimeValue]) -> "ClientComSpecBuilder":
+        """Set end_to_end_call_response_timeout attribute.
 
         Args:
             value: Value to set
@@ -170,7 +173,7 @@ class ClientComSpecBuilder(RPortComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.end_to_end_call = value
+        self._obj.end_to_end_call_response_timeout = value
         return self
 
     def with_operation(self, value: Optional[ClientServerOperation]) -> "ClientComSpecBuilder":
@@ -187,8 +190,8 @@ class ClientComSpecBuilder(RPortComSpecBuilder):
         self._obj.operation = value
         return self
 
-    def with_transformation_coms(self, items: list[any (TransformationCom)]) -> "ClientComSpecBuilder":
-        """Set transformation_coms list attribute.
+    def with_transformation_com_spec_props(self, items: list[TransformationComSpecProps]) -> "ClientComSpecBuilder":
+        """Set transformation_com_spec_props list attribute.
 
         Args:
             items: List of items to set
@@ -196,12 +199,12 @@ class ClientComSpecBuilder(RPortComSpecBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.transformation_coms = list(items) if items else []
+        self._obj.transformation_com_spec_props = list(items) if items else []
         return self
 
 
-    def add_transformation_com(self, item: any (TransformationCom)) -> "ClientComSpecBuilder":
-        """Add a single item to transformation_coms list.
+    def add_transformation_com_spec_prop(self, item: TransformationComSpecProps) -> "ClientComSpecBuilder":
+        """Add a single item to transformation_com_spec_props list.
 
         Args:
             item: Item to add
@@ -209,16 +212,16 @@ class ClientComSpecBuilder(RPortComSpecBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.transformation_coms.append(item)
+        self._obj.transformation_com_spec_props.append(item)
         return self
 
-    def clear_transformation_coms(self) -> "ClientComSpecBuilder":
-        """Clear all items from transformation_coms list.
+    def clear_transformation_com_spec_props(self) -> "ClientComSpecBuilder":
+        """Clear all items from transformation_com_spec_props list.
 
         Returns:
             self for method chaining
         """
-        self._obj.transformation_coms = []
+        self._obj.transformation_com_spec_props = []
         return self
 
 

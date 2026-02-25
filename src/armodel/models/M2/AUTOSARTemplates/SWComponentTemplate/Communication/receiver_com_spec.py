@@ -7,7 +7,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
@@ -16,6 +16,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import RPortComSpecBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication import (
+    HandleOutOfRangeEnum,
+)
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -26,6 +29,23 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.composite_network_representation import (
     CompositeNetworkRepresentation,
 )
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.reception_com_spec_props import (
+    ReceptionComSpecProps,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.transformation_com_spec_props import (
+    TransformationComSpecProps,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.variable_access import (
+    VariableAccess,
+)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
+
+
 from abc import ABC, abstractmethod
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
@@ -43,23 +63,33 @@ class ReceiverComSpec(RPortComSpec, ABC):
         """
         return True
 
-    composite_networks: list[CompositeNetworkRepresentation]
+    composite_network_representations: list[CompositeNetworkRepresentation]
     data_element_ref: Optional[ARRef]
-    handle_out_of_range: Optional[Any]
-    max_delta: Optional[PositiveInteger]
+    handle_out_of_range: Optional[HandleOutOfRangeEnum]
+    handle_out_of_range_status: Optional[HandleOutOfRangeEnum]
+    max_delta_counter_init: Optional[PositiveInteger]
+    max_no_new_or_repeated_data: Optional[PositiveInteger]
+    network_representation: Optional[SwDataDefProps]
+    reception_props: Optional[ReceptionComSpecProps]
+    replace_with: Optional[VariableAccess]
     sync_counter_init: Optional[PositiveInteger]
-    transformation_coms: list[Any]
-    uses_end_to_end: Optional[Boolean]
+    transformation_com_spec_propses: list[TransformationComSpecProps]
+    uses_end_to_end_protection: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize ReceiverComSpec."""
         super().__init__()
-        self.composite_networks: list[CompositeNetworkRepresentation] = []
+        self.composite_network_representations: list[CompositeNetworkRepresentation] = []
         self.data_element_ref: Optional[ARRef] = None
-        self.handle_out_of_range: Optional[Any] = None
-        self.max_delta: Optional[PositiveInteger] = None
+        self.handle_out_of_range: Optional[HandleOutOfRangeEnum] = None
+        self.handle_out_of_range_status: Optional[HandleOutOfRangeEnum] = None
+        self.max_delta_counter_init: Optional[PositiveInteger] = None
+        self.max_no_new_or_repeated_data: Optional[PositiveInteger] = None
+        self.network_representation: Optional[SwDataDefProps] = None
+        self.reception_props: Optional[ReceptionComSpecProps] = None
+        self.replace_with: Optional[VariableAccess] = None
         self.sync_counter_init: Optional[PositiveInteger] = None
-        self.transformation_coms: list[Any] = []
-        self.uses_end_to_end: Optional[Boolean] = None
+        self.transformation_com_spec_propses: list[TransformationComSpecProps] = []
+        self.uses_end_to_end_protection: Optional[Boolean] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ReceiverComSpec to XML element.
@@ -85,10 +115,10 @@ class ReceiverComSpec(RPortComSpec, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize composite_networks (list to container "COMPOSITE-NETWORKS")
-        if self.composite_networks:
-            wrapper = ET.Element("COMPOSITE-NETWORKS")
-            for item in self.composite_networks:
+        # Serialize composite_network_representations (list to container "COMPOSITE-NETWORK-REPRESENTATIONS")
+        if self.composite_network_representations:
+            wrapper = ET.Element("COMPOSITE-NETWORK-REPRESENTATIONS")
+            for item in self.composite_network_representations:
                 serialized = SerializationHelper.serialize_item(item, "CompositeNetworkRepresentation")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -111,7 +141,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
 
         # Serialize handle_out_of_range
         if self.handle_out_of_range is not None:
-            serialized = SerializationHelper.serialize_item(self.handle_out_of_range, "Any")
+            serialized = SerializationHelper.serialize_item(self.handle_out_of_range, "HandleOutOfRangeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HANDLE-OUT-OF-RANGE")
@@ -123,12 +153,82 @@ class ReceiverComSpec(RPortComSpec, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize max_delta
-        if self.max_delta is not None:
-            serialized = SerializationHelper.serialize_item(self.max_delta, "PositiveInteger")
+        # Serialize handle_out_of_range_status
+        if self.handle_out_of_range_status is not None:
+            serialized = SerializationHelper.serialize_item(self.handle_out_of_range_status, "HandleOutOfRangeEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MAX-DELTA")
+                wrapped = ET.Element("HANDLE-OUT-OF-RANGE-STATUS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_delta_counter_init
+        if self.max_delta_counter_init is not None:
+            serialized = SerializationHelper.serialize_item(self.max_delta_counter_init, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-DELTA-COUNTER-INIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_no_new_or_repeated_data
+        if self.max_no_new_or_repeated_data is not None:
+            serialized = SerializationHelper.serialize_item(self.max_no_new_or_repeated_data, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-NO-NEW-OR-REPEATED-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize network_representation
+        if self.network_representation is not None:
+            serialized = SerializationHelper.serialize_item(self.network_representation, "SwDataDefProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NETWORK-REPRESENTATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize reception_props
+        if self.reception_props is not None:
+            serialized = SerializationHelper.serialize_item(self.reception_props, "ReceptionComSpecProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RECEPTION-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize replace_with
+        if self.replace_with is not None:
+            serialized = SerializationHelper.serialize_item(self.replace_with, "VariableAccess")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REPLACE-WITH")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -151,22 +251,22 @@ class ReceiverComSpec(RPortComSpec, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transformation_coms (list to container "TRANSFORMATION-COMS")
-        if self.transformation_coms:
-            wrapper = ET.Element("TRANSFORMATION-COMS")
-            for item in self.transformation_coms:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize transformation_com_spec_propses (list to container "TRANSFORMATION-COM-SPEC-PROPSES")
+        if self.transformation_com_spec_propses:
+            wrapper = ET.Element("TRANSFORMATION-COM-SPEC-PROPSES")
+            for item in self.transformation_com_spec_propses:
+                serialized = SerializationHelper.serialize_item(item, "TransformationComSpecProps")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize uses_end_to_end
-        if self.uses_end_to_end is not None:
-            serialized = SerializationHelper.serialize_item(self.uses_end_to_end, "Boolean")
+        # Serialize uses_end_to_end_protection
+        if self.uses_end_to_end_protection is not None:
+            serialized = SerializationHelper.serialize_item(self.uses_end_to_end_protection, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("USES-END-TO-END")
+                wrapped = ET.Element("USES-END-TO-END-PROTECTION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -190,15 +290,15 @@ class ReceiverComSpec(RPortComSpec, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ReceiverComSpec, cls).deserialize(element)
 
-        # Parse composite_networks (list from container "COMPOSITE-NETWORKS")
-        obj.composite_networks = []
-        container = SerializationHelper.find_child_element(element, "COMPOSITE-NETWORKS")
+        # Parse composite_network_representations (list from container "COMPOSITE-NETWORK-REPRESENTATIONS")
+        obj.composite_network_representations = []
+        container = SerializationHelper.find_child_element(element, "COMPOSITE-NETWORK-REPRESENTATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.composite_networks.append(child_value)
+                    obj.composite_network_representations.append(child_value)
 
         # Parse data_element_ref
         child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
@@ -209,14 +309,44 @@ class ReceiverComSpec(RPortComSpec, ABC):
         # Parse handle_out_of_range
         child = SerializationHelper.find_child_element(element, "HANDLE-OUT-OF-RANGE")
         if child is not None:
-            handle_out_of_range_value = child.text
+            handle_out_of_range_value = HandleOutOfRangeEnum.deserialize(child)
             obj.handle_out_of_range = handle_out_of_range_value
 
-        # Parse max_delta
-        child = SerializationHelper.find_child_element(element, "MAX-DELTA")
+        # Parse handle_out_of_range_status
+        child = SerializationHelper.find_child_element(element, "HANDLE-OUT-OF-RANGE-STATUS")
         if child is not None:
-            max_delta_value = child.text
-            obj.max_delta = max_delta_value
+            handle_out_of_range_status_value = HandleOutOfRangeEnum.deserialize(child)
+            obj.handle_out_of_range_status = handle_out_of_range_status_value
+
+        # Parse max_delta_counter_init
+        child = SerializationHelper.find_child_element(element, "MAX-DELTA-COUNTER-INIT")
+        if child is not None:
+            max_delta_counter_init_value = child.text
+            obj.max_delta_counter_init = max_delta_counter_init_value
+
+        # Parse max_no_new_or_repeated_data
+        child = SerializationHelper.find_child_element(element, "MAX-NO-NEW-OR-REPEATED-DATA")
+        if child is not None:
+            max_no_new_or_repeated_data_value = child.text
+            obj.max_no_new_or_repeated_data = max_no_new_or_repeated_data_value
+
+        # Parse network_representation
+        child = SerializationHelper.find_child_element(element, "NETWORK-REPRESENTATION")
+        if child is not None:
+            network_representation_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
+            obj.network_representation = network_representation_value
+
+        # Parse reception_props
+        child = SerializationHelper.find_child_element(element, "RECEPTION-PROPS")
+        if child is not None:
+            reception_props_value = SerializationHelper.deserialize_by_tag(child, "ReceptionComSpecProps")
+            obj.reception_props = reception_props_value
+
+        # Parse replace_with
+        child = SerializationHelper.find_child_element(element, "REPLACE-WITH")
+        if child is not None:
+            replace_with_value = SerializationHelper.deserialize_by_tag(child, "VariableAccess")
+            obj.replace_with = replace_with_value
 
         # Parse sync_counter_init
         child = SerializationHelper.find_child_element(element, "SYNC-COUNTER-INIT")
@@ -224,21 +354,21 @@ class ReceiverComSpec(RPortComSpec, ABC):
             sync_counter_init_value = child.text
             obj.sync_counter_init = sync_counter_init_value
 
-        # Parse transformation_coms (list from container "TRANSFORMATION-COMS")
-        obj.transformation_coms = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-COMS")
+        # Parse transformation_com_spec_propses (list from container "TRANSFORMATION-COM-SPEC-PROPSES")
+        obj.transformation_com_spec_propses = []
+        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-COM-SPEC-PROPSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.transformation_coms.append(child_value)
+                    obj.transformation_com_spec_propses.append(child_value)
 
-        # Parse uses_end_to_end
-        child = SerializationHelper.find_child_element(element, "USES-END-TO-END")
+        # Parse uses_end_to_end_protection
+        child = SerializationHelper.find_child_element(element, "USES-END-TO-END-PROTECTION")
         if child is not None:
-            uses_end_to_end_value = child.text
-            obj.uses_end_to_end = uses_end_to_end_value
+            uses_end_to_end_protection_value = child.text
+            obj.uses_end_to_end_protection = uses_end_to_end_protection_value
 
         return obj
 
@@ -253,8 +383,8 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
         self._obj: ReceiverComSpec = ReceiverComSpec()
 
 
-    def with_composite_networks(self, items: list[CompositeNetworkRepresentation]) -> "ReceiverComSpecBuilder":
-        """Set composite_networks list attribute.
+    def with_composite_network_representations(self, items: list[CompositeNetworkRepresentation]) -> "ReceiverComSpecBuilder":
+        """Set composite_network_representations list attribute.
 
         Args:
             items: List of items to set
@@ -262,7 +392,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.composite_networks = list(items) if items else []
+        self._obj.composite_network_representations = list(items) if items else []
         return self
 
     def with_data_element(self, value: Optional[AutosarDataPrototype]) -> "ReceiverComSpecBuilder":
@@ -279,7 +409,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
         self._obj.data_element = value
         return self
 
-    def with_handle_out_of_range(self, value: Optional[any (HandleOutOfRange)]) -> "ReceiverComSpecBuilder":
+    def with_handle_out_of_range(self, value: Optional[HandleOutOfRangeEnum]) -> "ReceiverComSpecBuilder":
         """Set handle_out_of_range attribute.
 
         Args:
@@ -293,8 +423,8 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
         self._obj.handle_out_of_range = value
         return self
 
-    def with_max_delta(self, value: Optional[PositiveInteger]) -> "ReceiverComSpecBuilder":
-        """Set max_delta attribute.
+    def with_handle_out_of_range_status(self, value: Optional[HandleOutOfRangeEnum]) -> "ReceiverComSpecBuilder":
+        """Set handle_out_of_range_status attribute.
 
         Args:
             value: Value to set
@@ -304,7 +434,77 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.max_delta = value
+        self._obj.handle_out_of_range_status = value
+        return self
+
+    def with_max_delta_counter_init(self, value: Optional[PositiveInteger]) -> "ReceiverComSpecBuilder":
+        """Set max_delta_counter_init attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.max_delta_counter_init = value
+        return self
+
+    def with_max_no_new_or_repeated_data(self, value: Optional[PositiveInteger]) -> "ReceiverComSpecBuilder":
+        """Set max_no_new_or_repeated_data attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.max_no_new_or_repeated_data = value
+        return self
+
+    def with_network_representation(self, value: Optional[SwDataDefProps]) -> "ReceiverComSpecBuilder":
+        """Set network_representation attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.network_representation = value
+        return self
+
+    def with_reception_props(self, value: Optional[ReceptionComSpecProps]) -> "ReceiverComSpecBuilder":
+        """Set reception_props attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.reception_props = value
+        return self
+
+    def with_replace_with(self, value: Optional[VariableAccess]) -> "ReceiverComSpecBuilder":
+        """Set replace_with attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.replace_with = value
         return self
 
     def with_sync_counter_init(self, value: Optional[PositiveInteger]) -> "ReceiverComSpecBuilder":
@@ -321,8 +521,8 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
         self._obj.sync_counter_init = value
         return self
 
-    def with_transformation_coms(self, items: list[any (TransformationCom)]) -> "ReceiverComSpecBuilder":
-        """Set transformation_coms list attribute.
+    def with_transformation_com_spec_propses(self, items: list[TransformationComSpecProps]) -> "ReceiverComSpecBuilder":
+        """Set transformation_com_spec_propses list attribute.
 
         Args:
             items: List of items to set
@@ -330,11 +530,11 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.transformation_coms = list(items) if items else []
+        self._obj.transformation_com_spec_propses = list(items) if items else []
         return self
 
-    def with_uses_end_to_end(self, value: Optional[Boolean]) -> "ReceiverComSpecBuilder":
-        """Set uses_end_to_end attribute.
+    def with_uses_end_to_end_protection(self, value: Optional[Boolean]) -> "ReceiverComSpecBuilder":
+        """Set uses_end_to_end_protection attribute.
 
         Args:
             value: Value to set
@@ -344,12 +544,12 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.uses_end_to_end = value
+        self._obj.uses_end_to_end_protection = value
         return self
 
 
-    def add_composite_network(self, item: CompositeNetworkRepresentation) -> "ReceiverComSpecBuilder":
-        """Add a single item to composite_networks list.
+    def add_composite_network_representation(self, item: CompositeNetworkRepresentation) -> "ReceiverComSpecBuilder":
+        """Add a single item to composite_network_representations list.
 
         Args:
             item: Item to add
@@ -357,20 +557,20 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.composite_networks.append(item)
+        self._obj.composite_network_representations.append(item)
         return self
 
-    def clear_composite_networks(self) -> "ReceiverComSpecBuilder":
-        """Clear all items from composite_networks list.
+    def clear_composite_network_representations(self) -> "ReceiverComSpecBuilder":
+        """Clear all items from composite_network_representations list.
 
         Returns:
             self for method chaining
         """
-        self._obj.composite_networks = []
+        self._obj.composite_network_representations = []
         return self
 
-    def add_transformation_com(self, item: any (TransformationCom)) -> "ReceiverComSpecBuilder":
-        """Add a single item to transformation_coms list.
+    def add_transformation_com_spec_propse(self, item: TransformationComSpecProps) -> "ReceiverComSpecBuilder":
+        """Add a single item to transformation_com_spec_propses list.
 
         Args:
             item: Item to add
@@ -378,16 +578,16 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.transformation_coms.append(item)
+        self._obj.transformation_com_spec_propses.append(item)
         return self
 
-    def clear_transformation_coms(self) -> "ReceiverComSpecBuilder":
-        """Clear all items from transformation_coms list.
+    def clear_transformation_com_spec_propses(self) -> "ReceiverComSpecBuilder":
+        """Clear all items from transformation_com_spec_propses list.
 
         Returns:
             self for method chaining
         """
-        self._obj.transformation_coms = []
+        self._obj.transformation_com_spec_propses = []
         return self
 
 

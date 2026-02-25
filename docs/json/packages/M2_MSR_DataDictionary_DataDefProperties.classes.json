@@ -288,7 +288,7 @@
           "is_ref": false,
           "note": "Contains a reference to a variable which serves as a a bit variable. Only applicable to bit"
         },
-        "swImplPolicyEnum": {
+        "swImplPolicy": {
           "type": "SwImplPolicyEnum",
           "multiplicity": "0..1",
           "kind": "attribute",

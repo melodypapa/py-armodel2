@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.mode_switched_ack_request import (
+    ModeSwitchedAckRequest,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
@@ -38,16 +41,16 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         """
         return False
 
-    enhanced_mode: Optional[Boolean]
+    enhanced_mode_api: Optional[Boolean]
     mode_group_ref: Optional[ARRef]
-    mode_switched_ack: Optional[Any]
+    mode_switched_ack: Optional[ModeSwitchedAckRequest]
     queue_length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ModeSwitchSenderComSpec."""
         super().__init__()
-        self.enhanced_mode: Optional[Boolean] = None
+        self.enhanced_mode_api: Optional[Boolean] = None
         self.mode_group_ref: Optional[ARRef] = None
-        self.mode_switched_ack: Optional[Any] = None
+        self.mode_switched_ack: Optional[ModeSwitchedAckRequest] = None
         self.queue_length: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -74,12 +77,12 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize enhanced_mode
-        if self.enhanced_mode is not None:
-            serialized = SerializationHelper.serialize_item(self.enhanced_mode, "Boolean")
+        # Serialize enhanced_mode_api
+        if self.enhanced_mode_api is not None:
+            serialized = SerializationHelper.serialize_item(self.enhanced_mode_api, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ENHANCED-MODE")
+                wrapped = ET.Element("ENHANCED-MODE-API")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,7 +107,7 @@ class ModeSwitchSenderComSpec(PPortComSpec):
 
         # Serialize mode_switched_ack
         if self.mode_switched_ack is not None:
-            serialized = SerializationHelper.serialize_item(self.mode_switched_ack, "Any")
+            serialized = SerializationHelper.serialize_item(self.mode_switched_ack, "ModeSwitchedAckRequest")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-SWITCHED-ACK")
@@ -145,11 +148,11 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeSwitchSenderComSpec, cls).deserialize(element)
 
-        # Parse enhanced_mode
-        child = SerializationHelper.find_child_element(element, "ENHANCED-MODE")
+        # Parse enhanced_mode_api
+        child = SerializationHelper.find_child_element(element, "ENHANCED-MODE-API")
         if child is not None:
-            enhanced_mode_value = child.text
-            obj.enhanced_mode = enhanced_mode_value
+            enhanced_mode_api_value = child.text
+            obj.enhanced_mode_api = enhanced_mode_api_value
 
         # Parse mode_group_ref
         child = SerializationHelper.find_child_element(element, "MODE-GROUP-REF")
@@ -160,7 +163,7 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         # Parse mode_switched_ack
         child = SerializationHelper.find_child_element(element, "MODE-SWITCHED-ACK")
         if child is not None:
-            mode_switched_ack_value = child.text
+            mode_switched_ack_value = SerializationHelper.deserialize_by_tag(child, "ModeSwitchedAckRequest")
             obj.mode_switched_ack = mode_switched_ack_value
 
         # Parse queue_length
@@ -182,8 +185,8 @@ class ModeSwitchSenderComSpecBuilder(PPortComSpecBuilder):
         self._obj: ModeSwitchSenderComSpec = ModeSwitchSenderComSpec()
 
 
-    def with_enhanced_mode(self, value: Optional[Boolean]) -> "ModeSwitchSenderComSpecBuilder":
-        """Set enhanced_mode attribute.
+    def with_enhanced_mode_api(self, value: Optional[Boolean]) -> "ModeSwitchSenderComSpecBuilder":
+        """Set enhanced_mode_api attribute.
 
         Args:
             value: Value to set
@@ -193,7 +196,7 @@ class ModeSwitchSenderComSpecBuilder(PPortComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.enhanced_mode = value
+        self._obj.enhanced_mode_api = value
         return self
 
     def with_mode_group(self, value: Optional[ModeDeclarationGroup]) -> "ModeSwitchSenderComSpecBuilder":
@@ -210,7 +213,7 @@ class ModeSwitchSenderComSpecBuilder(PPortComSpecBuilder):
         self._obj.mode_group = value
         return self
 
-    def with_mode_switched_ack(self, value: Optional[any (ModeSwitchedAck)]) -> "ModeSwitchSenderComSpecBuilder":
+    def with_mode_switched_ack(self, value: Optional[ModeSwitchedAckRequest]) -> "ModeSwitchSenderComSpecBuilder":
         """Set mode_switched_ack attribute.
 
         Args:

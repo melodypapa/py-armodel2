@@ -271,3 +271,51 @@ def instance_ref(flatten: bool = False, list_type: str = "single") -> Callable[[
         attr_or_func._list_type = list_type  # type: ignore[union-attr]
         return attr_or_func
     return decorator
+
+
+def polymorphic(mapping: dict[str, str]) -> Callable[[Any], Any]:
+    """Decorator to mark an attribute as polymorphic with wrapper element mapping.
+
+    The polymorphic pattern is used when an XML wrapper element contains a concrete
+    implementation of an abstract base class. The decorator accepts a dictionary
+    mapping wrapper XML tags to base class names.
+
+    For example, value_spec with @polymorphic({"VALUE-SPEC": "ValueSpecification"}):
+    <VALUE-SPEC>
+      <NUMERICAL-VALUE-SPECIFICATION>
+        <SHORT-LABEL>MyValue</SHORT-LABEL>
+        <VALUE>42</VALUE>
+      </NUMERICAL-VALUE-SPECIFICATION>
+    </VALUE-SPEC>
+
+    The deserialization automatically:
+    1. Finds the child element (<NUMERICAL-VALUE-SPECIFICATION>)
+    2. Resolves the concrete class (NumericalValueSpecification)
+    3. Validates it's a subclass of ValueSpecification (from mapping)
+    4. Deserializes using the concrete class
+
+    Usage (single mapping):
+        class ConstantSpecification(ARElement):
+            @polymorphic({"VALUE-SPEC": "ValueSpecification"})
+            value_spec: Optional[ValueSpecification] = None
+
+    Usage (multiple mappings):
+        class CompuMethod(ARObject):
+            @polymorphic({
+                "COMPU-INTERNAL-TO-PHYS": "CompuContent",
+                "COMPU-PHYS-TO-INTERNAL": "CompuContent"
+            })
+            compu_internal_to_phys: Optional[CompuContent] = None
+
+    Args:
+        mapping: Dictionary mapping wrapper XML tags to base class names
+                Example: {"VALUE-SPEC": "ValueSpecification"}
+
+    Returns:
+        Decorator that sets _is_polymorphic and _polymorphic_mapping markers on the attribute
+    """
+    def decorator(attr_or_func: Any) -> Any:
+        attr_or_func._is_polymorphic = True  # type: ignore[union-attr]
+        attr_or_func._polymorphic_mapping = mapping  # type: ignore[union-attr]
+        return attr_or_func
+    return decorator

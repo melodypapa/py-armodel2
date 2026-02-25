@@ -150,6 +150,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "Specifies initial value(s) of the VariableDataPrototype"
         }
       }
@@ -279,10 +280,10 @@
         }
       ],
       "attributes": {
-        "swDataDef": {
+        "swDataDefProps": {
           "type": "SwDataDefProps",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This property allows to specify data definition properties"
         }

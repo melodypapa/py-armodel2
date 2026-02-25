@@ -264,6 +264,17 @@ def generate_class_code(
             decorator_import += "from armodel.serialization.decorators import instance_ref\n"
             decorator_import += "from armodel.serialization.decorators import ref_conditional\n"
 
+        # Check if this class has polymorphic decorators
+        has_polymorphic = False
+        if attribute_types:
+            for attr_name, attr_info in attribute_types.items():
+                decorator_name = attr_info.get("decorator_name")
+                if decorator_name == "polymorphic":
+                    has_polymorphic = True
+                    break
+        if has_polymorphic:
+            decorator_import += "from armodel.serialization.decorators import polymorphic\n"
+
         code = f'''"""{docstring}"""
 
 {future_import}{basic_import}{base_import}{decorator_import}
@@ -653,7 +664,7 @@ class {class_name}(ABC):
             # Get decorator_name if present
             decorator_name = attr_info.get("decorator_name")
 
-            # For xml_attribute, lang_prefix, language_abbr, xml_element_name, ref_conditional, and instance_ref, use private field with property
+            # For xml_attribute, lang_prefix, language_abbr, xml_element_name, ref_conditional, instance_ref, and polymorphic, use private field with property
             if (
                 kind == "xml_attribute"
                 or decorator_name == "xml_attribute"
@@ -662,6 +673,7 @@ class {class_name}(ABC):
                 or decorator_name == "xml_element_name"
                 or decorator_name == "ref_conditional"
                 or decorator_name == "instance_ref"
+                or decorator_name == "polymorphic"
             ):
                 private_name = f"_{python_name}"
                 code += f"    {private_name}: {python_type}\n"
@@ -705,7 +717,7 @@ class {class_name}(ABC):
             # Get decorator_name if present
             decorator_name = attr_info.get("decorator_name")
 
-            # For xml_attribute, lang_prefix, lang_abbr, xml_element_name, ref_conditional, and instance_ref, use private field
+            # For xml_attribute, lang_prefix, lang_abbr, xml_element_name, ref_conditional, instance_ref, and polymorphic, use private field
             if (
                 kind == "xml_attribute"
                 or decorator_name == "xml_attribute"
@@ -714,6 +726,7 @@ class {class_name}(ABC):
                 or decorator_name == "xml_element_name"
                 or decorator_name == "ref_conditional"
                 or decorator_name == "instance_ref"
+                or decorator_name == "polymorphic"
             ):
                 private_name = f"_{python_name}"
                 attr_code = f"        self.{private_name}: {python_type} = {initial_value}\n"
@@ -871,6 +884,35 @@ class {class_name}(ABC):
     @{python_name}.setter
     def {python_name}(self, value: {python_type}) -> None:
         """Set {python_name} instance reference."""
+        self.{private_name} = value
+
+'''
+            elif decorator_name == "polymorphic":
+                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
+                private_name = f"_{python_name}"
+                # Determine Python type for this attribute
+                python_type = get_python_type(attr_type, multiplicity, package_data, is_ref, kind)
+                # Parse the polymorphic mapping from decorator_params
+                # Format: "WRAPPER-TAG=BaseClassName,WRAPPER2-TAG=BaseClassName2"
+                params = attr_info.get("decorator_params", "")
+                mapping_dict = {}
+                if params:
+                    for pair in params.split(","):
+                        if "=" in pair:
+                            wrapper_tag, base_class = pair.split("=", 1)
+                            mapping_dict[wrapper_tag.strip()] = base_class.strip()
+                # Format the dictionary for the decorator
+                mapping_str = "{" + ", ".join([f'"{k}": "{v}"' for k, v in mapping_dict.items()]) + "}"
+                # Generate property with polymorphic decorator
+                code += f'''    @property
+    @polymorphic({mapping_str})
+    def {python_name}(self) -> {python_type}:
+        """Get {python_name} with polymorphic wrapper handling."""
+        return self.{private_name}
+
+    @{python_name}.setter
+    def {python_name}(self, value: {python_type}) -> None:
+        """Set {python_name} with polymorphic wrapper handling."""
         self.{private_name} = value
 
 '''
@@ -1311,7 +1353,37 @@ def _generate_deserialize_method(
 '''
             else:
                 # Single value type
-                code += f'''        # Parse {python_name}
+                # Check if this attribute has the polymorphic decorator
+                if decorator_name == "polymorphic":
+                    # Parse the polymorphic mapping from decorator_params
+                    # Format: "WRAPPER-TAG=BaseClassName,WRAPPER2-TAG=BaseClassName2"
+                    params = attr_info.get("decorator_params", "")
+                    # Use the first mapping (wrapper tag) for finding the element
+                    wrapper_tag = None
+                    base_class = None
+                    if params:
+                        for pair in params.split(","):
+                            if "=" in pair:
+                                wrapper_tag, base_class = pair.split("=", 1)
+                                wrapper_tag = wrapper_tag.strip()
+                                base_class = base_class.strip()
+                                break  # Use first mapping
+                    # If no wrapper_tag specified, use the auto-generated xml_tag
+                    if not wrapper_tag:
+                        wrapper_tag = xml_tag
+                    # Get base class name from mapping or use attr_type as fallback
+                    if not base_class:
+                        base_class = effective_type
+
+                    code += f'''        # Parse {python_name} (polymorphic wrapper "{wrapper_tag}")
+        wrapper = SerializationHelper.find_child_element(element, "{wrapper_tag}")
+        if wrapper is not None:
+            {python_name}_value = SerializationHelper.deserialize_polymorphic(wrapper, "{base_class}")
+            obj.{python_name} = {python_name}_value
+
+'''
+                else:
+                    code += f'''        # Parse {python_name}
         child = SerializationHelper.find_child_element(element, "{xml_tag}")
         if child is not None:
             {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
@@ -3171,7 +3243,35 @@ def _generate_serialize_method(
 '''
             else:
                 # Single value type
-                code += f'''        # Serialize {python_name}
+                # Check if this attribute has the polymorphic decorator
+                if decorator_name == "polymorphic":
+                    # Parse the polymorphic mapping from decorator_params
+                    # Format: "WRAPPER-TAG=BaseClassName,WRAPPER2-TAG=BaseClassName2"
+                    params = attr_info.get("decorator_params", "")
+                    # Use the first mapping (wrapper tag) for serialization
+                    wrapper_tag = None
+                    if params:
+                        for pair in params.split(","):
+                            if "=" in pair:
+                                wrapper_tag, _ = pair.split("=", 1)
+                                wrapper_tag = wrapper_tag.strip()
+                                break  # Use first mapping
+                    # If no wrapper_tag specified, use the auto-generated xml_tag
+                    if not wrapper_tag:
+                        wrapper_tag = xml_tag
+
+                    code += f'''        # Serialize {python_name} (polymorphic wrapper "{wrapper_tag}")
+        if self.{python_name} is not None:
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                # For polymorphic types, wrap the serialized element (preserving concrete type)
+                wrapped = ET.Element("{wrapper_tag}")
+                wrapped.append(serialized)
+                elem.append(wrapped)
+
+'''
+                else:
+                    code += f'''        # Serialize {python_name}
         if self.{python_name} is not None:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:

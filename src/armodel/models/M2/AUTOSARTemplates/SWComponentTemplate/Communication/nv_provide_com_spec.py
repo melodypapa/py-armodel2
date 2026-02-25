@@ -40,14 +40,14 @@ class NvProvideComSpec(PPortComSpec):
         """
         return False
 
-    ram_block_init: Optional[ValueSpecification]
-    rom_block_init: Optional[ValueSpecification]
+    ram_block_init_value: Optional[ValueSpecification]
+    rom_block_init_value: Optional[ValueSpecification]
     variable_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize NvProvideComSpec."""
         super().__init__()
-        self.ram_block_init: Optional[ValueSpecification] = None
-        self.rom_block_init: Optional[ValueSpecification] = None
+        self.ram_block_init_value: Optional[ValueSpecification] = None
+        self.rom_block_init_value: Optional[ValueSpecification] = None
         self.variable_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -74,12 +74,12 @@ class NvProvideComSpec(PPortComSpec):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ram_block_init
-        if self.ram_block_init is not None:
-            serialized = SerializationHelper.serialize_item(self.ram_block_init, "ValueSpecification")
+        # Serialize ram_block_init_value
+        if self.ram_block_init_value is not None:
+            serialized = SerializationHelper.serialize_item(self.ram_block_init_value, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RAM-BLOCK-INIT")
+                wrapped = ET.Element("RAM-BLOCK-INIT-VALUE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -88,12 +88,12 @@ class NvProvideComSpec(PPortComSpec):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rom_block_init
-        if self.rom_block_init is not None:
-            serialized = SerializationHelper.serialize_item(self.rom_block_init, "ValueSpecification")
+        # Serialize rom_block_init_value
+        if self.rom_block_init_value is not None:
+            serialized = SerializationHelper.serialize_item(self.rom_block_init_value, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROM-BLOCK-INIT")
+                wrapped = ET.Element("ROM-BLOCK-INIT-VALUE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -131,17 +131,17 @@ class NvProvideComSpec(PPortComSpec):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NvProvideComSpec, cls).deserialize(element)
 
-        # Parse ram_block_init
-        child = SerializationHelper.find_child_element(element, "RAM-BLOCK-INIT")
+        # Parse ram_block_init_value
+        child = SerializationHelper.find_child_element(element, "RAM-BLOCK-INIT-VALUE")
         if child is not None:
-            ram_block_init_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
-            obj.ram_block_init = ram_block_init_value
+            ram_block_init_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
+            obj.ram_block_init_value = ram_block_init_value_value
 
-        # Parse rom_block_init
-        child = SerializationHelper.find_child_element(element, "ROM-BLOCK-INIT")
+        # Parse rom_block_init_value
+        child = SerializationHelper.find_child_element(element, "ROM-BLOCK-INIT-VALUE")
         if child is not None:
-            rom_block_init_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
-            obj.rom_block_init = rom_block_init_value
+            rom_block_init_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
+            obj.rom_block_init_value = rom_block_init_value_value
 
         # Parse variable_ref
         child = SerializationHelper.find_child_element(element, "VARIABLE-REF")
@@ -162,8 +162,8 @@ class NvProvideComSpecBuilder(PPortComSpecBuilder):
         self._obj: NvProvideComSpec = NvProvideComSpec()
 
 
-    def with_ram_block_init(self, value: Optional[ValueSpecification]) -> "NvProvideComSpecBuilder":
-        """Set ram_block_init attribute.
+    def with_ram_block_init_value(self, value: Optional[ValueSpecification]) -> "NvProvideComSpecBuilder":
+        """Set ram_block_init_value attribute.
 
         Args:
             value: Value to set
@@ -173,11 +173,11 @@ class NvProvideComSpecBuilder(PPortComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.ram_block_init = value
+        self._obj.ram_block_init_value = value
         return self
 
-    def with_rom_block_init(self, value: Optional[ValueSpecification]) -> "NvProvideComSpecBuilder":
-        """Set rom_block_init attribute.
+    def with_rom_block_init_value(self, value: Optional[ValueSpecification]) -> "NvProvideComSpecBuilder":
+        """Set rom_block_init_value attribute.
 
         Args:
             value: Value to set
@@ -187,7 +187,7 @@ class NvProvideComSpecBuilder(PPortComSpecBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.rom_block_init = value
+        self._obj.rom_block_init_value = value
         return self
 
     def with_variable(self, value: Optional[VariableDataPrototype]) -> "NvProvideComSpecBuilder":

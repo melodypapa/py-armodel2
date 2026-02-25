@@ -9,6 +9,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.cl
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import polymorphic
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -37,11 +38,22 @@ class ConstantSpecification(ARElement):
         """
         return False
 
-    value_spec: Optional[ValueSpecification]
+    _value_spec: Optional[ValueSpecification]
     def __init__(self) -> None:
         """Initialize ConstantSpecification."""
         super().__init__()
-        self.value_spec: Optional[ValueSpecification] = None
+        self._value_spec: Optional[ValueSpecification] = None
+    @property
+    @polymorphic({"VALUE-SPEC": "ValueSpecification"})
+    def value_spec(self) -> Optional[ValueSpecification]:
+        """Get value_spec with polymorphic wrapper handling."""
+        return self._value_spec
+
+    @value_spec.setter
+    def value_spec(self, value: Optional[ValueSpecification]) -> None:
+        """Set value_spec with polymorphic wrapper handling."""
+        self._value_spec = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize ConstantSpecification to XML element.
@@ -67,18 +79,13 @@ class ConstantSpecification(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize value_spec
+        # Serialize value_spec (polymorphic wrapper "VALUE-SPEC")
         if self.value_spec is not None:
             serialized = SerializationHelper.serialize_item(self.value_spec, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
+                # For polymorphic types, wrap the serialized element (preserving concrete type)
                 wrapped = ET.Element("VALUE-SPEC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
+                wrapped.append(serialized)
                 elem.append(wrapped)
 
         return elem
@@ -96,10 +103,10 @@ class ConstantSpecification(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConstantSpecification, cls).deserialize(element)
 
-        # Parse value_spec
-        child = SerializationHelper.find_child_element(element, "VALUE-SPEC")
-        if child is not None:
-            value_spec_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
+        # Parse value_spec (polymorphic wrapper "VALUE-SPEC")
+        wrapper = SerializationHelper.find_child_element(element, "VALUE-SPEC")
+        if wrapper is not None:
+            value_spec_value = SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
             obj.value_spec = value_spec_value
 
         return obj

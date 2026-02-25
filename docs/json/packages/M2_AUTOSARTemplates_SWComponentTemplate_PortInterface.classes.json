@@ -347,7 +347,7 @@
         "invalidationPolicyPolicies": {
           "type": "InvalidationPolicy",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "InvalidationPolicy for a particular dataElement"
         },
