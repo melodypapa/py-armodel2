@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
@@ -16,6 +16,9 @@ from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import DescribableBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.transmission_mode_declaration import (
+    TransmissionModeDeclaration,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
@@ -34,12 +37,12 @@ class IPduTiming(Describable):
         return False
 
     minimum_delay: Optional[TimeValue]
-    transmission: Optional[Any]
+    transmission_mode_declaration: Optional[TransmissionModeDeclaration]
     def __init__(self) -> None:
         """Initialize IPduTiming."""
         super().__init__()
         self.minimum_delay: Optional[TimeValue] = None
-        self.transmission: Optional[Any] = None
+        self.transmission_mode_declaration: Optional[TransmissionModeDeclaration] = None
 
     def serialize(self) -> ET.Element:
         """Serialize IPduTiming to XML element.
@@ -79,12 +82,12 @@ class IPduTiming(Describable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transmission
-        if self.transmission is not None:
-            serialized = SerializationHelper.serialize_item(self.transmission, "Any")
+        # Serialize transmission_mode_declaration
+        if self.transmission_mode_declaration is not None:
+            serialized = SerializationHelper.serialize_item(self.transmission_mode_declaration, "TransmissionModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSMISSION")
+                wrapped = ET.Element("TRANSMISSION-MODE-DECLARATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -114,11 +117,11 @@ class IPduTiming(Describable):
             minimum_delay_value = child.text
             obj.minimum_delay = minimum_delay_value
 
-        # Parse transmission
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION")
+        # Parse transmission_mode_declaration
+        child = SerializationHelper.find_child_element(element, "TRANSMISSION-MODE-DECLARATION")
         if child is not None:
-            transmission_value = child.text
-            obj.transmission = transmission_value
+            transmission_mode_declaration_value = SerializationHelper.deserialize_by_tag(child, "TransmissionModeDeclaration")
+            obj.transmission_mode_declaration = transmission_mode_declaration_value
 
         return obj
 
@@ -147,8 +150,8 @@ class IPduTimingBuilder(DescribableBuilder):
         self._obj.minimum_delay = value
         return self
 
-    def with_transmission(self, value: Optional[any (TransmissionMode)]) -> "IPduTimingBuilder":
-        """Set transmission attribute.
+    def with_transmission_mode_declaration(self, value: Optional[TransmissionModeDeclaration]) -> "IPduTimingBuilder":
+        """Set transmission_mode_declaration attribute.
 
         Args:
             value: Value to set
@@ -158,7 +161,7 @@ class IPduTimingBuilder(DescribableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.transmission = value
+        self._obj.transmission_mode_declaration = value
         return self
 
 

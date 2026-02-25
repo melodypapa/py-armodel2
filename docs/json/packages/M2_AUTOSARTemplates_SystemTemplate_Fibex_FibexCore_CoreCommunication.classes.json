@@ -1193,7 +1193,7 @@
           "is_ref": true,
           "note": "Reference to an ISignalGroup that is mapped into the an ISignalToIPduMapping for an ISignal defined, only the UpdateIndicationBitPosition transferProperty is relevant. The startPosition packingByteOrder shall be ignored. contained in the ISignalGroup shall be an IPdu by an own ISignalToIPduMapping. to the ISignal and to the ISignalGroup in are mutually exclusive."
         },
-        "packingByte": {
+        "packingByteOrder": {
           "type": "ByteOrderEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -1207,14 +1207,14 @@
           "is_ref": false,
           "note": "This parameter is necessary to describe the bitposition of within an SignalIPdu. It denotes the least for \"Little Endian\" and the most significant \"Big Endian\" packed signals within the IPdu (see of the packingByteOrder attribute). In bit counting is always set to \"sawtooth\" bit order is set to \"Decreasing\". The bit counting 0 starts with bit 0 (least significant bit). The most in byte 0 is bit 7. that the way the bytes will be actually sent on does not impact this representation: they will seen by the software as a byte array. mapping for the ISignalGroup is defined, this attribute and shall be ignored."
         },
-        "transferPropertyEnum": {
+        "transferProperty": {
           "type": "TransferPropertyEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines how the referenced ISignal contributes to the of the ISignalIPdu. 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
-        "update": {
+        "updateIndicationBitPosition": {
           "type": "UnlimitedInteger",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -1618,8 +1618,8 @@
           "is_ref": false,
           "note": "Minimum Delay in seconds between successive this I-PDU, independent of the"
         },
-        "transmission": {
-          "type": "any (TransmissionMode)",
+        "transmissionModeDeclaration": {
+          "type": "TransmissionModeDeclaration",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

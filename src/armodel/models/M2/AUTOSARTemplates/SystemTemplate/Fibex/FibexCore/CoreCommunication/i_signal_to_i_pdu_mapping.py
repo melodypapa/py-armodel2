@@ -48,19 +48,19 @@ class ISignalToIPduMapping(Identifiable):
 
     i_signal_ref: Optional[ARRef]
     i_signal_group_ref: Optional[ARRef]
-    packing_byte: Optional[ByteOrderEnum]
+    packing_byte_order: Optional[ByteOrderEnum]
     start_position: Optional[UnlimitedInteger]
-    transfer_property_enum: Optional[TransferPropertyEnum]
-    update: Optional[UnlimitedInteger]
+    transfer_property: Optional[TransferPropertyEnum]
+    update_indication_bit_position: Optional[UnlimitedInteger]
     def __init__(self) -> None:
         """Initialize ISignalToIPduMapping."""
         super().__init__()
         self.i_signal_ref: Optional[ARRef] = None
         self.i_signal_group_ref: Optional[ARRef] = None
-        self.packing_byte: Optional[ByteOrderEnum] = None
+        self.packing_byte_order: Optional[ByteOrderEnum] = None
         self.start_position: Optional[UnlimitedInteger] = None
-        self.transfer_property_enum: Optional[TransferPropertyEnum] = None
-        self.update: Optional[UnlimitedInteger] = None
+        self.transfer_property: Optional[TransferPropertyEnum] = None
+        self.update_indication_bit_position: Optional[UnlimitedInteger] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ISignalToIPduMapping to XML element.
@@ -114,12 +114,12 @@ class ISignalToIPduMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize packing_byte
-        if self.packing_byte is not None:
-            serialized = SerializationHelper.serialize_item(self.packing_byte, "ByteOrderEnum")
+        # Serialize packing_byte_order
+        if self.packing_byte_order is not None:
+            serialized = SerializationHelper.serialize_item(self.packing_byte_order, "ByteOrderEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PACKING-BYTE")
+                wrapped = ET.Element("PACKING-BYTE-ORDER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -142,12 +142,12 @@ class ISignalToIPduMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transfer_property_enum
-        if self.transfer_property_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.transfer_property_enum, "TransferPropertyEnum")
+        # Serialize transfer_property
+        if self.transfer_property is not None:
+            serialized = SerializationHelper.serialize_item(self.transfer_property, "TransferPropertyEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSFER-PROPERTY-ENUM")
+                wrapped = ET.Element("TRANSFER-PROPERTY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -156,12 +156,12 @@ class ISignalToIPduMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize update
-        if self.update is not None:
-            serialized = SerializationHelper.serialize_item(self.update, "UnlimitedInteger")
+        # Serialize update_indication_bit_position
+        if self.update_indication_bit_position is not None:
+            serialized = SerializationHelper.serialize_item(self.update_indication_bit_position, "UnlimitedInteger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("UPDATE")
+                wrapped = ET.Element("UPDATE-INDICATION-BIT-POSITION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -197,11 +197,11 @@ class ISignalToIPduMapping(Identifiable):
             i_signal_group_ref_value = ARRef.deserialize(child)
             obj.i_signal_group_ref = i_signal_group_ref_value
 
-        # Parse packing_byte
-        child = SerializationHelper.find_child_element(element, "PACKING-BYTE")
+        # Parse packing_byte_order
+        child = SerializationHelper.find_child_element(element, "PACKING-BYTE-ORDER")
         if child is not None:
-            packing_byte_value = ByteOrderEnum.deserialize(child)
-            obj.packing_byte = packing_byte_value
+            packing_byte_order_value = ByteOrderEnum.deserialize(child)
+            obj.packing_byte_order = packing_byte_order_value
 
         # Parse start_position
         child = SerializationHelper.find_child_element(element, "START-POSITION")
@@ -209,17 +209,17 @@ class ISignalToIPduMapping(Identifiable):
             start_position_value = child.text
             obj.start_position = start_position_value
 
-        # Parse transfer_property_enum
-        child = SerializationHelper.find_child_element(element, "TRANSFER-PROPERTY-ENUM")
+        # Parse transfer_property
+        child = SerializationHelper.find_child_element(element, "TRANSFER-PROPERTY")
         if child is not None:
-            transfer_property_enum_value = TransferPropertyEnum.deserialize(child)
-            obj.transfer_property_enum = transfer_property_enum_value
+            transfer_property_value = TransferPropertyEnum.deserialize(child)
+            obj.transfer_property = transfer_property_value
 
-        # Parse update
-        child = SerializationHelper.find_child_element(element, "UPDATE")
+        # Parse update_indication_bit_position
+        child = SerializationHelper.find_child_element(element, "UPDATE-INDICATION-BIT-POSITION")
         if child is not None:
-            update_value = child.text
-            obj.update = update_value
+            update_indication_bit_position_value = child.text
+            obj.update_indication_bit_position = update_indication_bit_position_value
 
         return obj
 
@@ -262,8 +262,8 @@ class ISignalToIPduMappingBuilder(IdentifiableBuilder):
         self._obj.i_signal_group = value
         return self
 
-    def with_packing_byte(self, value: Optional[ByteOrderEnum]) -> "ISignalToIPduMappingBuilder":
-        """Set packing_byte attribute.
+    def with_packing_byte_order(self, value: Optional[ByteOrderEnum]) -> "ISignalToIPduMappingBuilder":
+        """Set packing_byte_order attribute.
 
         Args:
             value: Value to set
@@ -273,7 +273,7 @@ class ISignalToIPduMappingBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.packing_byte = value
+        self._obj.packing_byte_order = value
         return self
 
     def with_start_position(self, value: Optional[UnlimitedInteger]) -> "ISignalToIPduMappingBuilder":
@@ -290,8 +290,8 @@ class ISignalToIPduMappingBuilder(IdentifiableBuilder):
         self._obj.start_position = value
         return self
 
-    def with_transfer_property_enum(self, value: Optional[TransferPropertyEnum]) -> "ISignalToIPduMappingBuilder":
-        """Set transfer_property_enum attribute.
+    def with_transfer_property(self, value: Optional[TransferPropertyEnum]) -> "ISignalToIPduMappingBuilder":
+        """Set transfer_property attribute.
 
         Args:
             value: Value to set
@@ -301,11 +301,11 @@ class ISignalToIPduMappingBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.transfer_property_enum = value
+        self._obj.transfer_property = value
         return self
 
-    def with_update(self, value: Optional[UnlimitedInteger]) -> "ISignalToIPduMappingBuilder":
-        """Set update attribute.
+    def with_update_indication_bit_position(self, value: Optional[UnlimitedInteger]) -> "ISignalToIPduMappingBuilder":
+        """Set update_indication_bit_position attribute.
 
         Args:
             value: Value to set
@@ -315,7 +315,7 @@ class ISignalToIPduMappingBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.update = value
+        self._obj.update_indication_bit_position = value
         return self
 
 
