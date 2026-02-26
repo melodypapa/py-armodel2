@@ -115,31 +115,40 @@ def generate_import_paths(mapping_json: Dict[str, Any]) -> Dict[str, str]:
 
 def generate_polymorphic_mappings(package_files: List[Path]) -> Dict[str, List[str]]:
     """Generate polymorphic type mappings from package JSON files.
-    
+
     Args:
         package_files: List of package JSON file paths
-        
+
     Returns:
         Dictionary mapping abstract base classes to their concrete implementations
     """
-    
+
     polymorphic_types = {}
-    
+
     for package_file in package_files:
-        with open(package_file, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        
+        try:
+            # Try UTF-8 first, then latin-1 as fallback for non-UTF-8 files
+            try:
+                with open(package_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+            except UnicodeDecodeError:
+                with open(package_file, "r", encoding="latin-1") as f:
+                    data = json.load(f)
+        except Exception as e:
+            print(f"Warning: Failed to load {package_file.name}: {e}")
+            continue
+
         for class_info in data.get("classes", []):
             # Check if this is an abstract base class
             if class_info.get("is_abstract", False):
                 base_class = class_info["name"]
-                
+
                 # Get concrete implementations
                 subclasses = class_info.get("subclasses", [])
-                
+
                 if subclasses:
                     polymorphic_types[base_class] = subclasses
-    
+
     return polymorphic_types
 
 
@@ -229,9 +238,9 @@ def generate_yaml_mappings(
     # Write YAML file
     print(f"Writing {output_yaml_path}...")
     output_yaml_path.parent.mkdir(parents=True, exist_ok=True)
-    
+
     import yaml
-    with open(output_yaml_path, "w") as f:
+    with open(output_yaml_path, "w", encoding="utf-8") as f:
         yaml.dump(yaml_data, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
     
     print(f"Done! Generated YAML file with {len(xml_tag_mappings)} exceptional XML tag mappings")

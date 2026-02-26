@@ -11,8 +11,8 @@ from armodel2.cli.common import EXIT_SUCCESS, EXIT_FILE_NOT_FOUND
 class TestFormatCommand:
     """Unit tests for format command."""
 
-    @patch("armodel.cli.commands.format.ARXMLReader")
-    @patch("armodel.cli.commands.format.ARXMLWriter")
+    @patch("armodel2.cli.commands.format.ARXMLReader")
+    @patch("armodel2.cli.commands.format.ARXMLWriter")
     def test_format_command_success(self, mock_writer_class, mock_reader_class):
         """Test format command with valid file."""
         from argparse import Namespace

@@ -1,6 +1,6 @@
 version: 1.0.0
 generated_from: docs\json\mapping.json
-generated_at: '2026-02-26T14:05:58.985138'
+generated_at: '2026-02-26T14:38:17.125467'
 metadata:
   total_classes: 1937
   total_packages: 637
@@ -2330,7 +2330,7 @@ polymorphic_types:
   - TDEventOccurrenceExpressionFormula
   - Timing
   ARObject:
-  - ¨Call concrete metaclasses¨C
+  - â€“all concrete metaclassesâ€“
   ARElement:
   - AclObjectSet
   - AclOperation
