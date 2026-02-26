@@ -143,10 +143,18 @@ class Sdg(ARObject):
             sdg_caption_value = SerializationHelper.deserialize_by_tag(child, "SdgCaption")
             obj.sdg_caption = sdg_caption_value
 
-        # Parse sdg_contents
-        child = SerializationHelper.find_child_element(element, "SDG-CONTENTS")
-        if child is not None:
-            sdg_contents_value = SerializationHelper.deserialize_by_tag(child, "SdgContents")
+        # Parse sdg_contents (atp_mixed - children appear directly)
+        # Check if element contains expected children for SdgContents
+        has_mixed_children = False
+        child_tags_to_check = ['SD', 'SDF', 'SDG', 'SDX', 'SDXF']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            sdg_contents_value = SerializationHelper.deserialize_by_tag(element, "SdgContents")
             obj.sdg_contents = sdg_contents_value
 
         return obj

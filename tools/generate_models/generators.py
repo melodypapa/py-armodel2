@@ -1461,36 +1461,47 @@ def _generate_deserialize_method(
                 else:
                     # Check if this attribute uses atp_mixed pattern
                     # atp_mixed types parse children directly without looking for wrapper element
-                    # Check if the attribute definition itself has atp_type == "atpMixed"
-                    is_atp_mixed = attr_info.get("atp_type") == "atpMixed"
+                    # Check if the TYPE of this attribute has atp_type == "atpMixed" (not the attribute itself)
+                    is_atp_mixed = False
+                    for pkg_path, pkg_data in package_data.items():
+                        if "classes" in pkg_data:
+                            for cls_def in pkg_data["classes"]:
+                                # Compare case-insensitively (effective_type may be lowercase, class name is PascalCase)
+                                if cls_def["name"].lower() == effective_type.lower():
+                                    if cls_def.get("atp_type") == "atpMixed":
+                                        is_atp_mixed = True
+                                    break
+                        if is_atp_mixed:
+                            break
 
                     if is_atp_mixed:
-                        # For atp_mixed types, create a temporary element containing the mixed content children
-                        # The children appear directly in the parent element without a wrapper
-                        # Need to filter out children that are already parsed as parent class attributes
+                        # For atp_mixed types, check if element contains expected children
+                        # Get the child tags from the atp_mixed content type definition
+                        child_tags_to_check = []
+                        for pkg_path, pkg_data in package_data.items():
+                            if "classes" in pkg_data:
+                                for cls_def in pkg_data["classes"]:
+                                    if cls_def["name"].lower() == effective_type.lower():
+                                        if "attributes" in cls_def:
+                                            for attr_name, attr_data in cls_def["attributes"].items():
+                                                xml_tag = NameConverter.to_xml_tag(attr_name)
+                                                child_tags_to_check.append(xml_tag)
+                                        break
+                                if child_tags_to_check:
+                                    break
+
                         code += f'''        # Parse {python_name} (atp_mixed - children appear directly)
-        # Create a temporary element containing the mixed content children
-        # Need to filter out children that are parent class attributes
-        temp_elem = ET.Element("TEMP")
-        
-        # List of parent class attribute tags to filter out
-        # These are the tags of attributes that are parsed BEFORE this atp_mixed attribute
-        parent_tags = ["SHORT-LABEL", "CATEGORY", "DESC", "SW-GENERIC-AXIS-PARAM-TYPE-REF", 
-                      "SW-RECORD-LAYOUT-COMPONENT", "SW-RECORD-LAYOUT-GROUP-AXIS",
-                      "SW-RECORD-LAYOUT-GROUP-INDEX", "SW-RECORD-LAYOUT-GROUP-STEP",
-                      "SW-RECORD-LAYOUT-GROUP-FROM", "SW-RECORD-LAYOUT-GROUP-TO"]
-        
-        for child in list(element):  # Use list() to avoid modification during iteration
-            tag = SerializationHelper.strip_namespace(child.tag)
-            # Only capture children that are NOT parent class attributes
-            if tag not in parent_tags:
-                # Deep copy the child to avoid removing from original
-                import copy
-                temp_elem.append(copy.deepcopy(child))
-        
-        # Deserialize from the temporary element if we found any children
-        if len(temp_elem) > 0:
-            {python_name}_value = SerializationHelper.deserialize_by_tag(temp_elem, "{effective_type}")
+        # Check if element contains expected children for {effective_type}
+        has_mixed_children = False
+        child_tags_to_check = {child_tags_to_check}
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            {python_name}_value = SerializationHelper.deserialize_by_tag(element, "{effective_type}")
             obj.{python_name} = {python_name}_value
 
 '''

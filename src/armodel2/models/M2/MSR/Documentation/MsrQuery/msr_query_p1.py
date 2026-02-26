@@ -116,10 +116,18 @@ class MsrQueryP1(Paginateable):
             msr_query_props_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryProps")
             obj.msr_query_props = msr_query_props_value
 
-        # Parse msr_query_result
-        child = SerializationHelper.find_child_element(element, "MSR-QUERY-RESULT")
-        if child is not None:
-            msr_query_result_value = SerializationHelper.deserialize_by_tag(child, "TopicContent")
+        # Parse msr_query_result (atp_mixed - children appear directly)
+        # Check if element contains expected children for TopicContent
+        has_mixed_children = False
+        child_tags_to_check = ['BLOCK-LEVEL', 'TABLE', 'TRACEABLE-TABLE']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            msr_query_result_value = SerializationHelper.deserialize_by_tag(element, "TopicContent")
             obj.msr_query_result = msr_query_result_value
 
         return obj

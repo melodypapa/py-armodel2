@@ -127,22 +127,46 @@ class ChapterModel(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ChapterModel, cls).deserialize(element)
 
-        # Parse chapter
-        child = SerializationHelper.find_child_element(element, "CHAPTER")
-        if child is not None:
-            chapter_value = SerializationHelper.deserialize_by_tag(child, "ChapterOrMsrQuery")
+        # Parse chapter (atp_mixed - children appear directly)
+        # Check if element contains expected children for ChapterOrMsrQuery
+        has_mixed_children = False
+        child_tags_to_check = ['CHAPTER', 'MSR-QUERY-CHAPTER']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            chapter_value = SerializationHelper.deserialize_by_tag(element, "ChapterOrMsrQuery")
             obj.chapter = chapter_value
 
-        # Parse chapter_content
-        child = SerializationHelper.find_child_element(element, "CHAPTER-CONTENT")
-        if child is not None:
-            chapter_content_value = SerializationHelper.deserialize_by_tag(child, "ChapterContent")
+        # Parse chapter_content (atp_mixed - children appear directly)
+        # Check if element contains expected children for ChapterContent
+        has_mixed_children = False
+        child_tags_to_check = ['PRMS', 'TOPIC-CONTENT-OR-MSR']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            chapter_content_value = SerializationHelper.deserialize_by_tag(element, "ChapterContent")
             obj.chapter_content = chapter_content_value
 
-        # Parse topic1
-        child = SerializationHelper.find_child_element(element, "TOPIC1")
-        if child is not None:
-            topic1_value = SerializationHelper.deserialize_by_tag(child, "TopicOrMsrQuery")
+        # Parse topic1 (atp_mixed - children appear directly)
+        # Check if element contains expected children for TopicOrMsrQuery
+        has_mixed_children = False
+        child_tags_to_check = ['MSR-QUERY', 'TOPIC1']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            topic1_value = SerializationHelper.deserialize_by_tag(element, "TopicOrMsrQuery")
             obj.topic1 = topic1_value
 
         return obj

@@ -116,10 +116,18 @@ class Topic1(Paginateable):
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
-        # Parse topic_content_or_msr
-        child = SerializationHelper.find_child_element(element, "TOPIC-CONTENT-OR-MSR")
-        if child is not None:
-            topic_content_or_msr_value = SerializationHelper.deserialize_by_tag(child, "TopicContentOrMsrQuery")
+        # Parse topic_content_or_msr (atp_mixed - children appear directly)
+        # Check if element contains expected children for TopicContentOrMsrQuery
+        has_mixed_children = False
+        child_tags_to_check = ['MSR-QUERY-P1', 'TOPIC-CONTENT']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            topic_content_or_msr_value = SerializationHelper.deserialize_by_tag(element, "TopicContentOrMsrQuery")
             obj.topic_content_or_msr = topic_content_or_msr_value
 
         return obj

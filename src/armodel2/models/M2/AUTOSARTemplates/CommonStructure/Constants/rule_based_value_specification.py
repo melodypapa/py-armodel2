@@ -124,10 +124,18 @@ class RuleBasedValueSpecification(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RuleBasedValueSpecification, cls).deserialize(element)
 
-        # Parse arguments
-        child = SerializationHelper.find_child_element(element, "ARGUMENTS")
-        if child is not None:
-            arguments_value = SerializationHelper.deserialize_by_tag(child, "RuleArguments")
+        # Parse arguments (atp_mixed - children appear directly)
+        # Check if element contains expected children for RuleArguments
+        has_mixed_children = False
+        child_tags_to_check = ['V', 'VF', 'VT', 'VTF']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            arguments_value = SerializationHelper.deserialize_by_tag(element, "RuleArguments")
             obj.arguments = arguments_value
 
         # Parse max_size_to_fill
