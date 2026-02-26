@@ -84,8 +84,8 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
                 wrapped = ET.Element("OPERATION-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -98,8 +98,8 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
                 wrapped = ET.Element("TIMEOUT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

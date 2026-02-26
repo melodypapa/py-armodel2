@@ -92,8 +92,8 @@ class SwitchStreamFilterEntry(Identifiable):
                 wrapped = ET.Element("ASYNCHRONOUS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -106,8 +106,8 @@ class SwitchStreamFilterEntry(Identifiable):
                 wrapped = ET.Element("FILTER-PRIORITY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -120,8 +120,8 @@ class SwitchStreamFilterEntry(Identifiable):
                 wrapped = ET.Element("FLOW-METERING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -134,8 +134,8 @@ class SwitchStreamFilterEntry(Identifiable):
                 wrapped = ET.Element("MAX-SDU-SIZE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -148,8 +148,8 @@ class SwitchStreamFilterEntry(Identifiable):
                 wrapped = ET.Element("STREAM-GATE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -162,8 +162,8 @@ class SwitchStreamFilterEntry(Identifiable):
                 wrapped = ET.Element("STREAM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

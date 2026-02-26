@@ -122,8 +122,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("CALC-RAM-BLOCK")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -136,8 +136,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("CHECK-STATIC-BLOCK-ID")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -150,8 +150,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("CYCLIC-WRITING")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -164,8 +164,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("N-DATA-SETS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -178,8 +178,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("N-ROM-BLOCKS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -192,8 +192,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("RAM-BLOCK-STATUS-CONTROL")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -206,8 +206,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("READONLY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -220,8 +220,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("RELIABILITY-RELIABILITY-ENUM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -234,8 +234,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("RESISTANT-TO")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -248,8 +248,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("RESTORE-AT-START")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -262,8 +262,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("SELECT-BLOCK-FOR")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -276,8 +276,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("STORE-AT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -290,8 +290,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("STORE-CYCLIC")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -304,8 +304,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("STORE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -318,8 +318,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("STORE-IMMEDIATE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -332,8 +332,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("STORE-ON-CHANGE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -346,8 +346,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("USE-AUTO")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -360,8 +360,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("USE-CRC-COMP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -374,8 +374,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("WRITE-ONLY-ONCE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -388,8 +388,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("WRITE-VERIFICATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -402,8 +402,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("WRITING")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -416,8 +416,8 @@ class NvBlockNeeds(ServiceNeeds):
                 wrapped = ET.Element("WRITING-PRIORITY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

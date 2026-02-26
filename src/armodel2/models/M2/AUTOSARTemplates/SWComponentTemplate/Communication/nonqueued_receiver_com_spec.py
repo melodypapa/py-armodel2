@@ -100,8 +100,8 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                 wrapped = ET.Element("ALIVE-TIMEOUT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -114,8 +114,8 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                 wrapped = ET.Element("ENABLE-UPDATE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -128,8 +128,8 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                 wrapped = ET.Element("FILTER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -142,8 +142,8 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                 wrapped = ET.Element("HANDLE-DATA-STATUS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -156,8 +156,8 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                 wrapped = ET.Element("HANDLE-NEVER-RECEIVED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -170,8 +170,8 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                 wrapped = ET.Element("HANDLE-TIMEOUT-TYPE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -184,8 +184,8 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                 wrapped = ET.Element("INIT-VALUE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -198,8 +198,8 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                 wrapped = ET.Element("TIMEOUT-SUBSTITUTION-VALUE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

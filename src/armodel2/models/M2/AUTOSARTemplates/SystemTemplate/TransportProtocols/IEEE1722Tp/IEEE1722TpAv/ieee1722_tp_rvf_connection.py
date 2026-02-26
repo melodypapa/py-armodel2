@@ -90,8 +90,8 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("RVF-ACTIVE-PIXELS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -104,8 +104,8 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("RVF-COLOR-SPACE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -118,8 +118,8 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("RVF-EVENT-DEFAULT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -132,8 +132,8 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("RVF-FRAME-RATE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -146,8 +146,8 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("RVF-INTERLACED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -160,8 +160,8 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("RVF-PIXEL-DEPTH")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -174,8 +174,8 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("RVF-PIXEL-FORMAT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -188,8 +188,8 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("RVF-TOTAL-LINES")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

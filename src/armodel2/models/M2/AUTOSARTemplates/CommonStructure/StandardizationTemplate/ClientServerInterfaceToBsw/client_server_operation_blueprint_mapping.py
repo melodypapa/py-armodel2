@@ -70,19 +70,18 @@ class ClientServerOperationBlueprintMapping(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize blueprint
+        # Serialize blueprint (atp_mixed - append children directly)
         if self.blueprint is not None:
             serialized = SerializationHelper.serialize_item(self.blueprint, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BLUEPRINT")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         # Serialize bsw_module_entry_ref
         if self.bsw_module_entry_ref is not None:
@@ -92,8 +91,8 @@ class ClientServerOperationBlueprintMapping(ARObject):
                 wrapped = ET.Element("BSW-MODULE-ENTRY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -106,8 +105,8 @@ class ClientServerOperationBlueprintMapping(ARObject):
                 wrapped = ET.Element("CLIENT-SERVER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

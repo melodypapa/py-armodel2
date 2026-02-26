@@ -71,19 +71,18 @@ class DefItem(Paginateable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize def_
+        # Serialize def_ (atp_mixed - append children directly)
         if self.def_ is not None:
             serialized = SerializationHelper.serialize_item(self.def_, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEF")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         # Serialize help_entry
         if self.help_entry is not None:
@@ -93,8 +92,8 @@ class DefItem(Paginateable):
                 wrapped = ET.Element("HELP-ENTRY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

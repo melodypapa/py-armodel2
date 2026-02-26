@@ -1459,7 +1459,43 @@ def _generate_deserialize_method(
 
 '''
                 else:
-                    code += f'''        # Parse {python_name}
+                    # Check if this attribute uses atp_mixed pattern
+                    # atp_mixed types parse children directly without looking for wrapper element
+                    # Check if the attribute definition itself has atp_type == "atpMixed"
+                    is_atp_mixed = attr_info.get("atp_type") == "atpMixed"
+
+                    if is_atp_mixed:
+                        # For atp_mixed types, create a temporary element containing the mixed content children
+                        # The children appear directly in the parent element without a wrapper
+                        # Need to filter out children that are already parsed as parent class attributes
+                        code += f'''        # Parse {python_name} (atp_mixed - children appear directly)
+        # Create a temporary element containing the mixed content children
+        # Need to filter out children that are parent class attributes
+        temp_elem = ET.Element("TEMP")
+        
+        # List of parent class attribute tags to filter out
+        # These are the tags of attributes that are parsed BEFORE this atp_mixed attribute
+        parent_tags = ["SHORT-LABEL", "CATEGORY", "DESC", "SW-GENERIC-AXIS-PARAM-TYPE-REF", 
+                      "SW-RECORD-LAYOUT-COMPONENT", "SW-RECORD-LAYOUT-GROUP-AXIS",
+                      "SW-RECORD-LAYOUT-GROUP-INDEX", "SW-RECORD-LAYOUT-GROUP-STEP",
+                      "SW-RECORD-LAYOUT-GROUP-FROM", "SW-RECORD-LAYOUT-GROUP-TO"]
+        
+        for child in list(element):  # Use list() to avoid modification during iteration
+            tag = SerializationHelper.strip_namespace(child.tag)
+            # Only capture children that are NOT parent class attributes
+            if tag not in parent_tags:
+                # Deep copy the child to avoid removing from original
+                import copy
+                temp_elem.append(copy.deepcopy(child))
+        
+        # Deserialize from the temporary element if we found any children
+        if len(temp_elem) > 0:
+            {python_name}_value = SerializationHelper.deserialize_by_tag(temp_elem, "{effective_type}")
+            obj.{python_name} = {python_name}_value
+
+'''
+                    else:
+                        code += f'''        # Parse {python_name}
         child = SerializationHelper.find_child_element(element, "{xml_tag}")
         if child is not None:
             {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
@@ -3419,7 +3455,37 @@ def _generate_serialize_method(
 
 '''
                 else:
-                    code += f'''        # Serialize {python_name}
+                    # Check if this attribute type uses atp_mixed pattern
+                    # atp_mixed types append children directly without wrapping
+                    is_atp_mixed = False
+                    for pkg_path, pkg_data in package_data.items():
+                        if "classes" in pkg_data:
+                            for cls_def in pkg_data["classes"]:
+                                # Compare case-insensitively (effective_type may be lowercase, class name is PascalCase)
+                                if cls_def["name"].lower() == effective_type.lower():
+                                    if cls_def.get("atp_type") == "atpMixed":
+                                        is_atp_mixed = True
+                                    break
+                        if is_atp_mixed:
+                            break
+
+                    if is_atp_mixed:
+                        code += f'''        # Serialize {python_name} (atp_mixed - append children directly)
+        if self.{python_name} is not None:
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                # atpMixed type: append children directly without wrapper
+                if hasattr(serialized, 'attrib'):
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
+                for child in serialized:
+                    elem.append(child)
+
+'''
+                    else:
+                        code += f'''        # Serialize {python_name}
         if self.{python_name} is not None:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
@@ -3427,14 +3493,13 @@ def _generate_serialize_method(
                 wrapped = ET.Element("{xml_tag}")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
 '''
-
     code += """        return elem
 
 """

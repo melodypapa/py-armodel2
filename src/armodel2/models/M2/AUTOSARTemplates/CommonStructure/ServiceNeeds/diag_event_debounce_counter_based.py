@@ -83,8 +83,8 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
                 wrapped = ET.Element("COUNTER-BASED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -97,8 +97,8 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
                 wrapped = ET.Element("COUNTER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -111,8 +111,8 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
                 wrapped = ET.Element("COUNTER-FAILED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -125,8 +125,8 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
                 wrapped = ET.Element("COUNTER-JUMP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -139,8 +139,8 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
                 wrapped = ET.Element("COUNTER-JUMP-UP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -153,8 +153,8 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
                 wrapped = ET.Element("COUNTER-PASSED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

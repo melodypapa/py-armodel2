@@ -88,8 +88,8 @@ class EcuResourceEstimation(ARObject):
                 wrapped = ET.Element("BSW-RESOURCE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -102,25 +102,24 @@ class EcuResourceEstimation(ARObject):
                 wrapped = ET.Element("ECU-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize introduction
+        # Serialize introduction (atp_mixed - append children directly)
         if self.introduction is not None:
             serialized = SerializationHelper.serialize_item(self.introduction, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTRODUCTION")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         # Serialize rte_resource
         if self.rte_resource is not None:
@@ -130,8 +129,8 @@ class EcuResourceEstimation(ARObject):
                 wrapped = ET.Element("RTE-RESOURCE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

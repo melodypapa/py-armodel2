@@ -76,8 +76,8 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
                 wrapped = ET.Element("NRC-VALUE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -90,8 +90,8 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
                 wrapped = ET.Element("OP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

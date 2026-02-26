@@ -78,8 +78,8 @@ class AbstractCanCluster(CommunicationCluster, ABC):
                 wrapped = ET.Element("BUS-OFF-RECOVERY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -92,8 +92,8 @@ class AbstractCanCluster(CommunicationCluster, ABC):
                 wrapped = ET.Element("CAN-FD-BAUDRATE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -106,8 +106,8 @@ class AbstractCanCluster(CommunicationCluster, ABC):
                 wrapped = ET.Element("CAN-XL-BAUDRATE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

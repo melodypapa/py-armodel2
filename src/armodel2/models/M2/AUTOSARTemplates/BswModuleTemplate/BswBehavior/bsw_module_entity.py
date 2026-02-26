@@ -176,8 +176,8 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 wrapped = ET.Element("IMPLEMENTED-ENTRY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -224,8 +224,8 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 wrapped = ET.Element("SCHEDULER-NAME-PREFIX-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

@@ -77,8 +77,8 @@ class ROperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
                 wrapped = ET.Element("CONTEXT-R-PORT-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -91,8 +91,8 @@ class ROperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
                 wrapped = ET.Element("TARGET-REQUIRED-OPERATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

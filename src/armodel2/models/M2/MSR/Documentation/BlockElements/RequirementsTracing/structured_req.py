@@ -121,19 +121,18 @@ class StructuredReq(Paginateable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize conflicts
+        # Serialize conflicts (atp_mixed - append children directly)
         if self.conflicts is not None:
             serialized = SerializationHelper.serialize_item(self.conflicts, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONFLICTS")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         # Serialize date
         if self.date is not None:
@@ -143,39 +142,37 @@ class StructuredReq(Paginateable):
                 wrapped = ET.Element("DATE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize dependencies
+        # Serialize dependencies (atp_mixed - append children directly)
         if self.dependencies is not None:
             serialized = SerializationHelper.serialize_item(self.dependencies, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEPENDENCIES")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
-        # Serialize description
+        # Serialize description (atp_mixed - append children directly)
         if self.description is not None:
             serialized = SerializationHelper.serialize_item(self.description, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DESCRIPTION")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         # Serialize importance
         if self.importance is not None:
@@ -185,8 +182,8 @@ class StructuredReq(Paginateable):
                 wrapped = ET.Element("IMPORTANCE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -199,53 +196,50 @@ class StructuredReq(Paginateable):
                 wrapped = ET.Element("ISSUED-BY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rationale
+        # Serialize rationale (atp_mixed - append children directly)
         if self.rationale is not None:
             serialized = SerializationHelper.serialize_item(self.rationale, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RATIONALE")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
-        # Serialize remark
+        # Serialize remark (atp_mixed - append children directly)
         if self.remark is not None:
             serialized = SerializationHelper.serialize_item(self.remark, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REMARK")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
-        # Serialize supporting
+        # Serialize supporting (atp_mixed - append children directly)
         if self.supporting is not None:
             serialized = SerializationHelper.serialize_item(self.supporting, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUPPORTING")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         # Serialize tested_item_refs (list to container "TESTED-ITEM-REFS")
         if self.tested_item_refs:
@@ -272,25 +266,24 @@ class StructuredReq(Paginateable):
                 wrapped = ET.Element("TYPE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize use_case
+        # Serialize use_case (atp_mixed - append children directly)
         if self.use_case is not None:
             serialized = SerializationHelper.serialize_item(self.use_case, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USE-CASE")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         return elem
 

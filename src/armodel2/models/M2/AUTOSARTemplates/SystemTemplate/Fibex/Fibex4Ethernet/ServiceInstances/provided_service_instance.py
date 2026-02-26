@@ -124,8 +124,8 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                 wrapped = ET.Element("AUTO-AVAILABLE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -148,8 +148,8 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                 wrapped = ET.Element("INSTANCE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -162,8 +162,8 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                 wrapped = ET.Element("LOAD-BALANCING")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -176,8 +176,8 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                 wrapped = ET.Element("LOCAL-UNICAST")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -190,8 +190,8 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                 wrapped = ET.Element("MINOR-VERSION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -204,8 +204,8 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                 wrapped = ET.Element("PRIORITY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -252,8 +252,8 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                 wrapped = ET.Element("SD-SERVER-CONFIG")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -266,8 +266,8 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                 wrapped = ET.Element("SD-SERVER-TIMER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -280,8 +280,8 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                 wrapped = ET.Element("SERVICE-IDENTIFIER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

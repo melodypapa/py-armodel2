@@ -100,8 +100,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("ERROR-SIGNALING")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -114,8 +114,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MAX-NUMBER-OF-TIME-QUANTA-PER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -128,8 +128,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MAX-PWM-L")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -142,8 +142,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MAX-PWM-O")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -156,8 +156,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MAX-PWM-S")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -170,8 +170,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MAX-SAMPLE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -184,8 +184,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MAX-SYNC-JUMP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -198,8 +198,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MAX-TRCV-DELAY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -212,8 +212,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MIN-NUMBER-OF-TIME-QUANTA-PER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -226,8 +226,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MIN-PWM-L")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -240,8 +240,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MIN-PWM-O")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -254,8 +254,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MIN-PWM-S")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -268,8 +268,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MIN-SAMPLE-POINT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -282,8 +282,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MIN-SYNC-JUMP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -296,8 +296,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("MIN-TRCV-DELAY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -310,8 +310,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
                 wrapped = ET.Element("TRCV-PWM-MODE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

@@ -69,19 +69,18 @@ class VariationPoint(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize blueprint
+        # Serialize blueprint (atp_mixed - append children directly)
         if self.blueprint is not None:
             serialized = SerializationHelper.serialize_item(self.blueprint, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BLUEPRINT")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         # Serialize sw_syscond
         if self.sw_syscond is not None:
@@ -91,8 +90,8 @@ class VariationPoint(ARObject):
                 wrapped = ET.Element("SW-SYSCOND")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

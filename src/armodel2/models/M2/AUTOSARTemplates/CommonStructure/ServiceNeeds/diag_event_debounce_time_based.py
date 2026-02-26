@@ -77,8 +77,8 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
                 wrapped = ET.Element("TIME-BASED-FDC")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -91,8 +91,8 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
                 wrapped = ET.Element("TIME-FAILED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -105,8 +105,8 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
                 wrapped = ET.Element("TIME-PASSED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

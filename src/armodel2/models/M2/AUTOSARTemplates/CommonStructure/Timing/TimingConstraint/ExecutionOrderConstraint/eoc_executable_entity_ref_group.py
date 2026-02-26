@@ -95,8 +95,8 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
                 wrapped = ET.Element("LET-DATA-EXCHANGE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -126,8 +126,8 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
                 wrapped = ET.Element("MAX-CYCLE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -140,8 +140,8 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
                 wrapped = ET.Element("MAX-CYCLES")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -154,8 +154,8 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
                 wrapped = ET.Element("MAX-SLOTS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -168,8 +168,8 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
                 wrapped = ET.Element("MAX-SLOTS-PER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -216,8 +216,8 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
                 wrapped = ET.Element("TRIGGERING-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

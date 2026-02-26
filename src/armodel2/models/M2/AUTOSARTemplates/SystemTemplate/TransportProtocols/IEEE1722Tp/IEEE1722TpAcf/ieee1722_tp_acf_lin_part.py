@@ -77,8 +77,8 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
                 wrapped = ET.Element("LIN-IDENTIFIER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -91,8 +91,8 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
                 wrapped = ET.Element("SDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

@@ -81,8 +81,8 @@ class ModeDeclarationGroupPrototype(Identifiable):
                 wrapped = ET.Element("SW-CALIBRATION-ACCESS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -95,8 +95,8 @@ class ModeDeclarationGroupPrototype(Identifiable):
                 wrapped = ET.Element("TYPE-TREF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

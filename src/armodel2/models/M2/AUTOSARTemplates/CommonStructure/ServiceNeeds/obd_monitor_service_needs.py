@@ -88,8 +88,8 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
                 wrapped = ET.Element("APPLICATION-DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -102,8 +102,8 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
                 wrapped = ET.Element("EVENT-NEEDS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -116,8 +116,8 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
                 wrapped = ET.Element("UNIT-AND-SCALING-ID")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -130,8 +130,8 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
                 wrapped = ET.Element("UPDATE-KIND")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

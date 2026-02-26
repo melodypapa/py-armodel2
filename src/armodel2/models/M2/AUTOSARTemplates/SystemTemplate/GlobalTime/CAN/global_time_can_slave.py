@@ -73,8 +73,8 @@ class GlobalTimeCanSlave(GlobalTimeSlave):
                 wrapped = ET.Element("CRC-VALIDATED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -87,8 +87,8 @@ class GlobalTimeCanSlave(GlobalTimeSlave):
                 wrapped = ET.Element("SEQUENCE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

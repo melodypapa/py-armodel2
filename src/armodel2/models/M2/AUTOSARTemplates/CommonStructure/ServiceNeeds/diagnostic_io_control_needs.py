@@ -83,8 +83,8 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
                 wrapped = ET.Element("CURRENT-VALUE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -97,8 +97,8 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
                 wrapped = ET.Element("FREEZE-CURRENT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -111,8 +111,8 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
                 wrapped = ET.Element("RESET-TO-DEFAULT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -125,8 +125,8 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
                 wrapped = ET.Element("SHORT-TERM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

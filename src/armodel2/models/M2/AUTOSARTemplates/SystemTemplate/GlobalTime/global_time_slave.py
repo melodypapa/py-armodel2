@@ -87,8 +87,8 @@ class GlobalTimeSlave(Identifiable, ABC):
                 wrapped = ET.Element("COMMUNICATION-CONNECTOR-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -101,8 +101,8 @@ class GlobalTimeSlave(Identifiable, ABC):
                 wrapped = ET.Element("FOLLOW-UP-TIMEOUT-VALUE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -115,8 +115,8 @@ class GlobalTimeSlave(Identifiable, ABC):
                 wrapped = ET.Element("ICV-VERIFICATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -129,8 +129,8 @@ class GlobalTimeSlave(Identifiable, ABC):
                 wrapped = ET.Element("TIME-LEAP-FUTURE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -143,8 +143,8 @@ class GlobalTimeSlave(Identifiable, ABC):
                 wrapped = ET.Element("TIME-LEAP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -157,8 +157,8 @@ class GlobalTimeSlave(Identifiable, ABC):
                 wrapped = ET.Element("TIME-LEAP-PAST")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

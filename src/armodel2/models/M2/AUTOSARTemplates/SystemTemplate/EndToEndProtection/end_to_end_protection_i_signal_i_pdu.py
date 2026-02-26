@@ -79,8 +79,8 @@ class EndToEndProtectionISignalIPdu(ARObject):
                 wrapped = ET.Element("DATA-OFFSET")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -93,8 +93,8 @@ class EndToEndProtectionISignalIPdu(ARObject):
                 wrapped = ET.Element("I-SIGNAL-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -107,8 +107,8 @@ class EndToEndProtectionISignalIPdu(ARObject):
                 wrapped = ET.Element("I-SIGNAL-I-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

@@ -78,8 +78,8 @@ class StreamFilterRuleDataLinkLayer(ARObject):
                 wrapped = ET.Element("DESTINATION-MAC")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -92,8 +92,8 @@ class StreamFilterRuleDataLinkLayer(ARObject):
                 wrapped = ET.Element("ETHER-TYPE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -106,8 +106,8 @@ class StreamFilterRuleDataLinkLayer(ARObject):
                 wrapped = ET.Element("SOURCE-MAC")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -120,8 +120,8 @@ class StreamFilterRuleDataLinkLayer(ARObject):
                 wrapped = ET.Element("VLAN-ID")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -134,8 +134,8 @@ class StreamFilterRuleDataLinkLayer(ARObject):
                 wrapped = ET.Element("VLAN-PRIORITY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

@@ -93,8 +93,8 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
                 wrapped = ET.Element("AGING-REQUIRES")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -107,8 +107,8 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
                 wrapped = ET.Element("CLEAR-DTC")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -121,8 +121,8 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
                 wrapped = ET.Element("DTC-STATUS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -135,8 +135,8 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
                 wrapped = ET.Element("EVENT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -149,8 +149,8 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
                 wrapped = ET.Element("MAX-NUMBER-OF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -163,8 +163,8 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
                 wrapped = ET.Element("MEMORY-ENTRY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -177,8 +177,8 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
                 wrapped = ET.Element("STATUS-BIT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -191,8 +191,8 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
                 wrapped = ET.Element("TYPE-OF-FREEZE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

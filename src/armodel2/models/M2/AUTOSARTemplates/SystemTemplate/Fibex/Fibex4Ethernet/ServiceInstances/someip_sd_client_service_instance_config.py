@@ -78,8 +78,8 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
                 wrapped = ET.Element("INITIAL-FIND-BEHAVIOR")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -92,8 +92,8 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
                 wrapped = ET.Element("PRIORITY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -106,8 +106,8 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
                 wrapped = ET.Element("SERVICE-FIND")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

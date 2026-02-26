@@ -74,8 +74,8 @@ class DiagnosticRequestControlOfOnBoardDevice(DiagnosticServiceInstance):
                 wrapped = ET.Element("REQUEST-CONTROL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -88,8 +88,8 @@ class DiagnosticRequestControlOfOnBoardDevice(DiagnosticServiceInstance):
                 wrapped = ET.Element("TEST-ID-IDENTIFIER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

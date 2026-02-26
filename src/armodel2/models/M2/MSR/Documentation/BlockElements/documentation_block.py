@@ -346,7 +346,10 @@ class DocumentationBlock(ARObject):
                     # Deserialize L-1 as LParagraph
                     lp = LParagraph.deserialize(l1_child)
                     p_value._l1.append(lp)
-            obj.p = p_value
+            # Only set obj.p if there are actual L-1 children
+            # This prevents empty <P></P> elements from being created
+            if len(p_value._l1) > 0:
+                obj.p = p_value
 
         # Parse list
         for child in SerializationHelper.find_all_child_elements(element, "LIST"):
@@ -382,7 +385,10 @@ class DocumentationBlock(ARObject):
                     # Deserialize L-1 as LParagraph
                     lp = LParagraph.deserialize(l1_child)
                     verbatim_value._l1.append(lp)
-            obj.verbatim = verbatim_value
+            # Only set obj.verbatim if there are actual L-1 children
+            # This prevents empty <VERBATIM></VERBATIM> elements from being created
+            if len(verbatim_value._l1) > 0:
+                obj.verbatim = verbatim_value
 
         return obj
 

@@ -92,8 +92,8 @@ class DataPrototypeInSystemInstanceRef(ARObject):
                 wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -140,8 +140,8 @@ class DataPrototypeInSystemInstanceRef(ARObject):
                 wrapped = ET.Element("CONTEXT-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -154,8 +154,8 @@ class DataPrototypeInSystemInstanceRef(ARObject):
                 wrapped = ET.Element("CONTEXT-ROOT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -168,8 +168,8 @@ class DataPrototypeInSystemInstanceRef(ARObject):
                 wrapped = ET.Element("ROOT-DATA-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -182,8 +182,8 @@ class DataPrototypeInSystemInstanceRef(ARObject):
                 wrapped = ET.Element("TARGET-DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

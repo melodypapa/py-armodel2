@@ -119,8 +119,8 @@ class SenderComSpec(PPortComSpec, ABC):
                 wrapped = ET.Element("DATA-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -133,8 +133,8 @@ class SenderComSpec(PPortComSpec, ABC):
                 wrapped = ET.Element("HANDLE-OUT-OF-RANGE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -147,8 +147,8 @@ class SenderComSpec(PPortComSpec, ABC):
                 wrapped = ET.Element("NETWORK-REPRESENTATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -161,8 +161,8 @@ class SenderComSpec(PPortComSpec, ABC):
                 wrapped = ET.Element("TRANSMISSION-ACKNOWLEDGE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -175,8 +175,8 @@ class SenderComSpec(PPortComSpec, ABC):
                 wrapped = ET.Element("TRANSMISSION-PROPS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -189,8 +189,8 @@ class SenderComSpec(PPortComSpec, ABC):
                 wrapped = ET.Element("USES-END-TO-END-PROTECTION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

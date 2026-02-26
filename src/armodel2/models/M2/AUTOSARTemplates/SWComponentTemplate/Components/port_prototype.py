@@ -133,8 +133,8 @@ class PortPrototype(Identifiable, ABC):
                 wrapped = ET.Element("DELEGATED-PORT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

@@ -70,8 +70,8 @@ class PhysicalDimensionMapping(ARObject):
                 wrapped = ET.Element("FIRST-PHYSICAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -84,8 +84,8 @@ class PhysicalDimensionMapping(ARObject):
                 wrapped = ET.Element("SECOND-PHYSICAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

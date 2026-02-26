@@ -84,8 +84,8 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("BASE-FREQUENCY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -98,8 +98,8 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("CRF-PULL-ENUM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -112,8 +112,8 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("CRF-TYPE-ENUM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -126,8 +126,8 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("FRAME-SYNC")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -140,8 +140,8 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("TIMESTAMP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

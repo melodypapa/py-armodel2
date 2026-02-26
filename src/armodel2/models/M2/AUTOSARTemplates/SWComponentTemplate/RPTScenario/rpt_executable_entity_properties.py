@@ -80,8 +80,8 @@ class RptExecutableEntityProperties(ARObject):
                 wrapped = ET.Element("MAX-RPT-EVENT-ID")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -94,8 +94,8 @@ class RptExecutableEntityProperties(ARObject):
                 wrapped = ET.Element("MIN-RPT-EVENT-ID")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -108,8 +108,8 @@ class RptExecutableEntityProperties(ARObject):
                 wrapped = ET.Element("RPT-EXECUTION-CONTROL")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -122,8 +122,8 @@ class RptExecutableEntityProperties(ARObject):
                 wrapped = ET.Element("RPT-SERVICE-POINT-ENUM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

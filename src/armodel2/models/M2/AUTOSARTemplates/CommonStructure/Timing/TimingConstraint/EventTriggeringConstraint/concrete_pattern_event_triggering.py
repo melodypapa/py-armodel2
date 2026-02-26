@@ -87,8 +87,8 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
                 wrapped = ET.Element("PATTERN-JITTER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -101,8 +101,8 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
                 wrapped = ET.Element("PATTERN-LENGTH")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -115,8 +115,8 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
                 wrapped = ET.Element("PATTERN-PERIOD")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

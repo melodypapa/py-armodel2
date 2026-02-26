@@ -87,8 +87,8 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
                 wrapped = ET.Element("COUPLING-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -101,8 +101,8 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
                 wrapped = ET.Element("GLOBAL-TIME-PORT-ROLE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -115,8 +115,8 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
                 wrapped = ET.Element("GLOBAL-TIME-TX-PERIOD")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -129,8 +129,8 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
                 wrapped = ET.Element("PDELAY-LATENCY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -143,8 +143,8 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
                 wrapped = ET.Element("PDELAY-REQUEST")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -157,8 +157,8 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
                 wrapped = ET.Element("PDELAY-RESP-AND")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -171,8 +171,8 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
                 wrapped = ET.Element("PDELAY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

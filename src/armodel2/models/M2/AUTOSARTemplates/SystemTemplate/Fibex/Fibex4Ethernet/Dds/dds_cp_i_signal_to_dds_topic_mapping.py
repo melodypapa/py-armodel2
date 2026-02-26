@@ -73,8 +73,8 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
                 wrapped = ET.Element("DDS-TOPIC-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -87,8 +87,8 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
                 wrapped = ET.Element("I-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

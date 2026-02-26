@@ -94,8 +94,8 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("AAF-AES3-DATA")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -108,8 +108,8 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("AAF-FORMAT-ENUM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -122,8 +122,8 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("AAF-NOMINAL-RATE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -136,8 +136,8 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("AES3-DATA-TYPE-H")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -150,8 +150,8 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("AES3-DATA-TYPE-L")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -164,8 +164,8 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("CHANNELS-PER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -178,8 +178,8 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("EVENT-DEFAULT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -192,8 +192,8 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("PCM-BIT-DEPTH")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -206,8 +206,8 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("SPARSE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -220,8 +220,8 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
                 wrapped = ET.Element("STREAMS-PER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

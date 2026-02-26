@@ -89,8 +89,8 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
                 wrapped = ET.Element("BASE-TYPE-ENCODING")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -103,8 +103,8 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
                 wrapped = ET.Element("BASE-TYPE-SIZE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -117,8 +117,8 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
                 wrapped = ET.Element("BYTE-ORDER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -131,8 +131,8 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
                 wrapped = ET.Element("MEM-ALIGNMENT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -145,8 +145,8 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
                 wrapped = ET.Element("NATIVE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

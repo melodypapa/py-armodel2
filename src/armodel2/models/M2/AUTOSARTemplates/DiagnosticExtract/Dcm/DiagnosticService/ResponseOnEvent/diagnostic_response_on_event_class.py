@@ -81,8 +81,8 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
                 wrapped = ET.Element("MAX-NUMBER-OF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -95,8 +95,8 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
                 wrapped = ET.Element("MAX-NUM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -109,8 +109,8 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
                 wrapped = ET.Element("MAX-SUPPORTED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -123,8 +123,8 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
                 wrapped = ET.Element("RESPONSE-ON")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -137,8 +137,8 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
                 wrapped = ET.Element("STORE-EVENT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

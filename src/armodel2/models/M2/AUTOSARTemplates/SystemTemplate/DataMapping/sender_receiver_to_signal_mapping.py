@@ -109,8 +109,8 @@ class SenderReceiverToSignalMapping(DataMapping):
                 wrapped = ET.Element("SENDER-TO-SIGNAL-TEXT-TABLE-MAPPING")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -123,8 +123,8 @@ class SenderReceiverToSignalMapping(DataMapping):
                 wrapped = ET.Element("SIGNAL-TO-RECEIVER-TEXT-TABLE-MAPPING")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -137,8 +137,8 @@ class SenderReceiverToSignalMapping(DataMapping):
                 wrapped = ET.Element("SYSTEM-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

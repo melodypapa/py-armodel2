@@ -70,8 +70,8 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
                 wrapped = ET.Element("BSW-MODE-GROUP-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -84,8 +84,8 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
                 wrapped = ET.Element("SWC-MODE-GROUP-SWC-INSTANCE-REF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
