@@ -147,18 +147,19 @@ class Entry(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize entry_contents (atp_mixed - append children directly)
+        # Serialize entry_contents
         if self.entry_contents is not None:
             serialized = SerializationHelper.serialize_item(self.entry_contents, "DocumentationBlock")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("ENTRY-CONTENTS")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize morerows
         if self.morerows is not None:

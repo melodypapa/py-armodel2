@@ -90,18 +90,19 @@ class Note(Paginateable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize note_text (atp_mixed - append children directly)
+        # Serialize note_text
         if self.note_text is not None:
             serialized = SerializationHelper.serialize_item(self.note_text, "DocumentationBlock")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("NOTE-TEXT")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize note_type
         if self.note_type is not None:

@@ -136,18 +136,19 @@ class LifeCycleInfo(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize remark (atp_mixed - append children directly)
+        # Serialize remark
         if self.remark is not None:
             serialized = SerializationHelper.serialize_item(self.remark, "DocumentationBlock")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("REMARK")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize use_instead_refs (list to container "USE-INSTEAD-REFS")
         if self.use_instead_refs:
