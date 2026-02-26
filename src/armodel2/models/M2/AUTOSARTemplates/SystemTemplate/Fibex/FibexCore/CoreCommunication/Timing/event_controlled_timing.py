@@ -36,12 +36,12 @@ class EventControlledTiming(Describable):
         """
         return False
 
-    number_of: Optional[Integer]
+    number_of_repetitions: Optional[Integer]
     repetition_period: Optional[TimeRangeType]
     def __init__(self) -> None:
         """Initialize EventControlledTiming."""
         super().__init__()
-        self.number_of: Optional[Integer] = None
+        self.number_of_repetitions: Optional[Integer] = None
         self.repetition_period: Optional[TimeRangeType] = None
 
     def serialize(self) -> ET.Element:
@@ -68,12 +68,12 @@ class EventControlledTiming(Describable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize number_of
-        if self.number_of is not None:
-            serialized = SerializationHelper.serialize_item(self.number_of, "Integer")
+        # Serialize number_of_repetitions
+        if self.number_of_repetitions is not None:
+            serialized = SerializationHelper.serialize_item(self.number_of_repetitions, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("NUMBER-OF")
+                wrapped = ET.Element("NUMBER-OF-REPETITIONS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -111,11 +111,11 @@ class EventControlledTiming(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EventControlledTiming, cls).deserialize(element)
 
-        # Parse number_of
-        child = SerializationHelper.find_child_element(element, "NUMBER-OF")
+        # Parse number_of_repetitions
+        child = SerializationHelper.find_child_element(element, "NUMBER-OF-REPETITIONS")
         if child is not None:
-            number_of_value = child.text
-            obj.number_of = number_of_value
+            number_of_repetitions_value = child.text
+            obj.number_of_repetitions = number_of_repetitions_value
 
         # Parse repetition_period
         child = SerializationHelper.find_child_element(element, "REPETITION-PERIOD")
@@ -136,8 +136,8 @@ class EventControlledTimingBuilder(DescribableBuilder):
         self._obj: EventControlledTiming = EventControlledTiming()
 
 
-    def with_number_of(self, value: Optional[Integer]) -> "EventControlledTimingBuilder":
-        """Set number_of attribute.
+    def with_number_of_repetitions(self, value: Optional[Integer]) -> "EventControlledTimingBuilder":
+        """Set number_of_repetitions attribute.
 
         Args:
             value: Value to set
@@ -147,7 +147,7 @@ class EventControlledTimingBuilder(DescribableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.number_of = value
+        self._obj.number_of_repetitions = value
         return self
 
     def with_repetition_period(self, value: Optional[TimeRangeType]) -> "EventControlledTimingBuilder":

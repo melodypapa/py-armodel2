@@ -39,7 +39,7 @@
         }
       ],
       "attributes": {
-        "dataFilterTypeEnum": {
+        "dataFilterType": {
           "type": "DataFilterTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
