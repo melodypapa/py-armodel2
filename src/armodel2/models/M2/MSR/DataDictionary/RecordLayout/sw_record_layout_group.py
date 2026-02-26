@@ -310,10 +310,18 @@ class SwRecordLayoutGroup(ARObject):
             sw_record_layout_group_to_value = child.text
             obj.sw_record_layout_group_to = sw_record_layout_group_to_value
 
-        # Parse sw_record_layout_group_content_type
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-CONTENT-TYPE")
-        if child is not None:
-            sw_record_layout_group_content_type_value = SerializationHelper.deserialize_by_tag(child, "swRecordLayoutGroupContent")
+        # Parse sw_record_layout_group_content_type (atp_mixed - children appear directly)
+        # Check if element contains expected children for swRecordLayoutGroupContent
+        has_mixed_children = False
+        child_tags_to_check = ['SW-RECORD-LAYOUT', 'SW-RECORD-LAYOUT-GROUP', 'SW-RECORD-LAYOUT-V']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            sw_record_layout_group_content_type_value = SerializationHelper.deserialize_by_tag(element, "swRecordLayoutGroupContent")
             obj.sw_record_layout_group_content_type = sw_record_layout_group_content_type_value
 
         # Parse sw_record_layout_group_index

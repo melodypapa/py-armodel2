@@ -115,10 +115,18 @@ class ValueGroup(ARObject):
             label_value = SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName")
             obj.label = label_value
 
-        # Parse vg_contents
-        child = SerializationHelper.find_child_element(element, "VG-CONTENTS")
-        if child is not None:
-            vg_contents_value = SerializationHelper.deserialize_by_tag(child, "SwValues")
+        # Parse vg_contents (atp_mixed - children appear directly)
+        # Check if element contains expected children for SwValues
+        has_mixed_children = False
+        child_tags_to_check = ['V', 'VF', 'VG', 'VT', 'VTF']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            vg_contents_value = SerializationHelper.deserialize_by_tag(element, "SwValues")
             obj.vg_contents = vg_contents_value
 
         return obj

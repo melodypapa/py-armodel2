@@ -188,10 +188,18 @@ class SwAxisCont(ARObject):
             category_value = CalprmAxisCategoryEnum.deserialize(child)
             obj.category = category_value
 
-        # Parse sw_arraysize_ref
-        child = SerializationHelper.find_child_element(element, "SW-ARRAYSIZE-REF")
-        if child is not None:
-            sw_arraysize_ref_value = ARRef.deserialize(child)
+        # Parse sw_arraysize_ref (atp_mixed - children appear directly)
+        # Check if element contains expected children for ValueList
+        has_mixed_children = False
+        child_tags_to_check = ['V']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            sw_arraysize_ref_value = SerializationHelper.deserialize_by_tag(element, "ValueList")
             obj.sw_arraysize_ref = sw_arraysize_ref_value
 
         # Parse sw_axis_index
@@ -200,10 +208,18 @@ class SwAxisCont(ARObject):
             sw_axis_index_value = child.text
             obj.sw_axis_index = sw_axis_index_value
 
-        # Parse sw_values_phys
-        child = SerializationHelper.find_child_element(element, "SW-VALUES-PHYS")
-        if child is not None:
-            sw_values_phys_value = SerializationHelper.deserialize_by_tag(child, "SwValues")
+        # Parse sw_values_phys (atp_mixed - children appear directly)
+        # Check if element contains expected children for SwValues
+        has_mixed_children = False
+        child_tags_to_check = ['V', 'VF', 'VG', 'VT', 'VTF']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            sw_values_phys_value = SerializationHelper.deserialize_by_tag(element, "SwValues")
             obj.sw_values_phys = sw_values_phys_value
 
         # Parse unit_ref

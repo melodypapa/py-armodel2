@@ -96,10 +96,18 @@ class HwPinGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwPinGroup, cls).deserialize(element)
 
-        # Parse hw_pin_group_content_ref
-        child = SerializationHelper.find_child_element(element, "HW-PIN-GROUP-CONTENT-REF")
-        if child is not None:
-            hw_pin_group_content_ref_value = ARRef.deserialize(child)
+        # Parse hw_pin_group_content_ref (atp_mixed - children appear directly)
+        # Check if element contains expected children for HwPinGroupContent
+        has_mixed_children = False
+        child_tags_to_check = ['HW-PIN', 'HW-PIN-GROUP']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            hw_pin_group_content_ref_value = SerializationHelper.deserialize_by_tag(element, "HwPinGroupContent")
             obj.hw_pin_group_content_ref = hw_pin_group_content_ref_value
 
         return obj

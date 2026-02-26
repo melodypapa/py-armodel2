@@ -173,10 +173,18 @@ class RuleBasedAxisCont(ARObject):
             rule_based_value = child.text
             obj.rule_based = rule_based_value
 
-        # Parse sw_arraysize_ref
-        child = SerializationHelper.find_child_element(element, "SW-ARRAYSIZE-REF")
-        if child is not None:
-            sw_arraysize_ref_value = ARRef.deserialize(child)
+        # Parse sw_arraysize_ref (atp_mixed - children appear directly)
+        # Check if element contains expected children for ValueList
+        has_mixed_children = False
+        child_tags_to_check = ['V']
+        for tag in child_tags_to_check:
+            if SerializationHelper.find_child_element(element, tag) is not None:
+                has_mixed_children = True
+                break
+
+        if has_mixed_children:
+            # Deserialize directly from current element (no wrapper)
+            sw_arraysize_ref_value = SerializationHelper.deserialize_by_tag(element, "ValueList")
             obj.sw_arraysize_ref = sw_arraysize_ref_value
 
         # Parse sw_axis_index
