@@ -2,7 +2,7 @@
 
 import inspect
 import pytest
-from armodel.models.M2 import AUTOSARTemplates
+from armodel2.models.M2 import AUTOSARTemplates
 
 
 class TestGeneratedCodeValidation:

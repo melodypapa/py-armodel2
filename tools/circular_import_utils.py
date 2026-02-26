@@ -244,7 +244,7 @@ def get_class_location(class_name: str, package_data: Dict[str, Dict[str, Any]])
                     # Convert class name to snake_case for filename
                     class_filename = to_snake_case(class_name)
 
-                    file_path = f"src/armodel/models/{python_path}/{class_filename}.py"
+                    file_path = f"src/armodel2/models/{python_path}/{class_filename}.py"
 
                     # Find the import line number
                     # We need to find where this class imports other classes

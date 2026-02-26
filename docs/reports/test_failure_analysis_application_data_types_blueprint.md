@@ -30,7 +30,7 @@ The test timeout (120+ seconds) indicates a severe performance bottleneck in the
 
 ### 1. Per-Element Warning Generation Overhead ⚠️ CRITICAL
 
-**Location:** `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py:680-695`
+**Location:** `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py:680-695`
 
 The `_validate_deserialization()` method is called for every object during deserialization:
 
@@ -73,7 +73,7 @@ The file references `AUTOSAR_00050.xsd` schema (not in supported versions), whic
 
 ### 2. Polymorphic Type Resolution Overhead
 
-**Location:** `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py:350-500`
+**Location:** `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py:350-500`
 
 The `_extract_value_with_children()` method performs expensive operations for every polymorphic type:
 
@@ -109,7 +109,7 @@ With 383 elements and nested structures, this results in **thousands of type res
 
 ### 3. Double XML Conversion Overhead
 
-**Location:** `src/armodel/reader/reader.py:101`
+**Location:** `src/armodel2/reader/reader.py:101`
 
 ```python
 def _populate_autosar(self, autosar: AUTOSAR, root: etree._Element) -> AUTOSAR:
@@ -171,7 +171,7 @@ def _load_file(self, filepath: Union[str, Path]) -> etree._Element:
 Disable validation for this specific test by modifying the test setup:
 
 ```python
-from armodel.core import GlobalSettingsManager
+from armodel2.core import GlobalSettingsManager
 
 class TestApplicationDataTypesBlueprint:
     @pytest.fixture(autouse=True)
@@ -190,7 +190,7 @@ class TestApplicationDataTypesBlueprint:
 
 #### 1. Cache Type Hints
 
-**Location:** `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
+**Location:** `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
 
 ```python
 # Add class-level cache for type hints
@@ -233,7 +233,7 @@ def _validate_deserialization(cls, element: ET.Element, type_hints: dict) -> Non
 
 #### 3. Lazy XML Conversion
 
-**Location:** `src/armodel/reader/reader.py`
+**Location:** `src/armodel2/reader/reader.py`
 
 ```python
 def _populate_autosar(self, autosar: AUTOSAR, root: etree._Element) -> AUTOSAR:
@@ -279,7 +279,7 @@ def load_arxml_streaming(self, autosar: AUTOSAR, filepath: Union[str, Path]):
 
 ### Schema Support 🔧
 
-Add support for AUTOSAR_00050 schema version in `src/armodel/cfg/config.yaml`:
+Add support for AUTOSAR_00050 schema version in `src/armodel2/cfg/config.yaml`:
 
 ```yaml
 versions:
@@ -372,12 +372,12 @@ Each `ApplicationRecordDataType` contains nested `APPLICATION-RECORD-ELEMENT` el
 
 | Component | File | Lines |
 |-----------|------|-------|
-| ARXMLReader | `src/armodel/reader/reader.py` | 1-189 |
-| ARObject.deserialize | `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py` | 530-650 |
-| Validation | `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py` | 680-695 |
-| GlobalSettings | `src/armodel/core/global_settings.py` | 1-98 |
-| SchemaVersionManager | `src/armodel/core/version.py` | 1-169 |
-| ModelFactory | `src/armodel/serialization/model_factory.py` | 1-227 |
+| ARXMLReader | `src/armodel2/reader/reader.py` | 1-189 |
+| ARObject.deserialize | `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py` | 530-650 |
+| Validation | `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py` | 680-695 |
+| GlobalSettings | `src/armodel2/core/global_settings.py` | 1-98 |
+| SchemaVersionManager | `src/armodel2/core/version.py` | 1-169 |
+| ModelFactory | `src/armodel2/serialization/model_factory.py` | 1-227 |
 
 ## Next Steps
 

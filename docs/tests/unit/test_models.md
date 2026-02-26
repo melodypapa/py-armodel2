@@ -67,7 +67,7 @@ Due to the large number of generated classes (1,900+), we use a **stratified tes
 ```python
 def test_ar_object_instantiation():
     """Test that ARObject can be instantiated."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 
     obj = ARObject()
     assert obj is not None
@@ -96,7 +96,7 @@ def test_ar_object_instantiation():
 ```python
 def test_ar_object_serialize():
     """Test that ARObject can be serialized to XML."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
     import xml.etree.ElementTree as ET
 
     obj = ARObject()
@@ -132,7 +132,7 @@ def test_ar_object_serialize():
 ```python
 def test_ar_object_deserialize():
     """Test that ARObject can be deserialized from XML."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
     import xml.etree.ElementTree as ET
 
     namespace = "http://autosar.org/schema/r4.0"
@@ -167,8 +167,8 @@ def test_ar_object_deserialize():
 ```python
 def test_ar_object_xml_members():
     """Test that ARObject has correct XMLMember metadata."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-    from armodel.serialization.metadata import XMLMember
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+    from armodel2.serialization.metadata import XMLMember
 
     assert hasattr(ARObject, '_xml_members')
     assert isinstance(ARObject._xml_members, dict)
@@ -208,7 +208,7 @@ def test_ar_object_xml_members():
 ```python
 def test_autosar_singleton():
     """Test that AUTOSAR is a singleton."""
-    from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+    from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
     obj1 = AUTOSAR()
     obj2 = AUTOSAR()
@@ -236,8 +236,8 @@ def test_autosar_singleton():
 ```python
 def test_autosar_package_management():
     """Test that AUTOSAR can manage packages."""
-    from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
+    from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
         ARPackage,
         ARPackageBuilder,
     )
@@ -272,8 +272,8 @@ def test_autosar_package_management():
 ```python
 def test_autosar_serialize():
     """Test that AUTOSAR can serialize with packages."""
-    from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
+    from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
         ARPackage,
         ARPackageBuilder,
     )
@@ -314,7 +314,7 @@ def test_autosar_serialize():
 ```python
 def test_autosar_get_splitable_elements():
     """Test getting splitable elements."""
-    from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+    from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
     autosar = AUTOSAR()
     splitable = autosar.get_splitable_elements()
@@ -343,7 +343,7 @@ def test_autosar_get_splitable_elements():
 ```python
 def test_ar_package_instantiation():
     """Test that ARPackage can be instantiated."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
         ARPackage,
         ARPackageBuilder,
     )
@@ -376,11 +376,11 @@ def test_ar_package_instantiation():
 ```python
 def test_ar_package_element_management():
     """Test that ARPackage can manage elements."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
         ARPackage,
         ARPackageBuilder,
     )
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
         ARObject,
     )
 
@@ -409,7 +409,7 @@ def test_ar_package_element_management():
 ```python
 def test_sw_base_type_instantiation():
     """Test that SwBaseType can be instantiated."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.PrimitiveTypes.sw_base_type import (
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.PrimitiveTypes.sw_base_type import (
         SwBaseType,
         SwBaseTypeBuilder,
     )
@@ -435,7 +435,7 @@ def test_sw_base_type_instantiation():
 ```python
 def test_implementation_data_type_instantiation():
     """Test that ImplementationDataType can be instantiated."""
-    from armodel.models.M2.AUTOSARTemplates.SwComponentTemplate.Datatype.Datatypes.implementation_data_type import (
+    from armodel2.models.M2.AUTOSARTemplates.SwComponentTemplate.Datatype.Datatypes.implementation_data_type import (
         ImplementationDataType,
         ImplementationDataTypeBuilder,
     )
@@ -460,7 +460,7 @@ def test_implementation_data_type_instantiation():
 ```python
 def test_sw_component_type_instantiation():
     """Test that SwComponentType can be instantiated."""
-    from armodel.models.M2.AUTOSARTemplates.SwComponentTemplate.SwComponentTypes.sw_component_type import (
+    from armodel2.models.M2.AUTOSARTemplates.SwComponentTemplate.SwComponentTypes.sw_component_type import (
         SwComponentType,
         SwComponentTypeBuilder,
     )
@@ -485,7 +485,7 @@ def test_sw_component_type_instantiation():
 ```python
 def test_runnable_entity_instantiation():
     """Test that RunnableEntity can be instantiated."""
-    from armodel.models.M2.AUTOSARTemplates.SwComponentTemplate.SwcInternalBehavior.runnable_entity import (
+    from armodel2.models.M2.AUTOSARTemplates.SwComponentTemplate.SwcInternalBehavior.runnable_entity import (
         RunnableEntity,
         RunnableEntityBuilder,
     )
@@ -510,7 +510,7 @@ def test_runnable_entity_instantiation():
 ```python
 def test_diagnostic_trouble_code_instantiation():
     """Test that DiagnosticTroubleCode can be instantiated."""
-    from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode.diagnostic_trouble_code_uds import (
+    from armodel2.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode.diagnostic_trouble_code_uds import (
         DiagnosticTroubleCodeUDS,
         DiagnosticTroubleCodeUDSBuilder,
     )
@@ -544,7 +544,7 @@ def test_diagnostic_trouble_code_instantiation():
 def test_all_classes_instantiable():
     """Test that all generated classes can be instantiated."""
     import inspect
-    from armodel.models.M2 import AUTOSARTemplates, MSR
+    from armodel2.models.M2 import AUTOSARTemplates, MSR
 
     # Collect all classes from AUTOSARTemplates and MSR
     all_classes = []
@@ -588,7 +588,7 @@ def test_all_classes_instantiable():
 def test_all_classes_have_serialize():
     """Test that all generated classes have serialize method."""
     import inspect
-    from armodel.models.M2 import AUTOSARTemplates
+    from armodel2.models.M2 import AUTOSARTemplates
 
     # Collect all classes
     all_classes = []
@@ -633,7 +633,7 @@ def test_all_classes_have_serialize():
 def test_all_classes_have_deserialize():
     """Test that all generated classes have deserialize method."""
     import inspect
-    from armodel.models.M2 import AUTOSARTemplates
+    from armodel2.models.M2 import AUTOSARTemplates
 
     # Collect all classes
     all_classes = []
@@ -677,7 +677,7 @@ def test_all_classes_have_deserialize():
 def test_all_classes_have_builder():
     """Test that all generated classes have builder class."""
     import inspect
-    from armodel.models.M2 import AUTOSARTemplates
+    from armodel2.models.M2 import AUTOSARTemplates
 
     # Collect all classes
     all_classes = []
@@ -719,7 +719,7 @@ def test_all_classes_have_builder():
 def test_all_classes_have_xml_members():
     """Test that all generated classes have _xml_members metadata."""
     import inspect
-    from armodel.models.M2 import AUTOSARTemplates
+    from armodel2.models.M2 import AUTOSARTemplates
 
     # Collect all classes
     all_classes = []
@@ -763,7 +763,7 @@ def test_all_classes_have_xml_members():
 ```python
 def test_primitive_types_defined():
     """Test that all primitive types are defined."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
         String,
         Integer,
         Float,
@@ -796,10 +796,10 @@ def test_primitive_types_defined():
 ```python
 def test_string_primitive_usage():
     """Test that String primitive can be used."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
         ARObject,
     )
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import String
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import String
 
     obj = ARObject()
     obj.checksum = String("test_checksum")
@@ -823,7 +823,7 @@ def test_string_primitive_usage():
 ```python
 def test_optional_initialization():
     """Test that Optional types initialize to None."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
         ARObject,
     )
 
@@ -848,7 +848,7 @@ def test_optional_initialization():
 ```python
 def test_list_initialization():
     """Test that list types initialize to empty list."""
-    from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+    from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
     autosar = AUTOSAR()
 
@@ -870,9 +870,9 @@ def test_list_initialization():
 ```python
 def test_type_annotations():
     """Test that type annotations are correct."""
-    from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+    from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
     from typing import get_type_hints
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
 
     hints = get_type_hints(AUTOSAR)
 
@@ -896,8 +896,8 @@ def test_type_annotations():
 ```python
 def test_arobject_inheritance():
     """Test that classes inherit from ARObject."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-    from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+    from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
     autosar = AUTOSAR()
     assert isinstance(autosar, ARObject)
@@ -916,8 +916,8 @@ def test_arobject_inheritance():
 ```python
 def test_method_resolution_order():
     """Test that MRO is correct."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
 
     mro = ARPackage.__mro__
     assert ARObject in mro
@@ -936,8 +936,8 @@ def test_method_resolution_order():
 ```python
 def test_xml_member_inheritance():
     """Test that XMLMember metadata is inherited correctly."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-    from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+    from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
     # AUTOSAR should inherit ARObject's _xml_members
     assert 'checksum' in ARObject._xml_members
@@ -966,7 +966,7 @@ def test_xml_member_inheritance():
 ```python
 def test_invalid_xml_deserialization():
     """Test that invalid XML is handled gracefully."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
     import xml.etree.ElementTree as ET
 
     namespace = "http://autosar.org/schema/r4.0"
@@ -993,7 +993,7 @@ def test_invalid_xml_deserialization():
 ```python
 def test_missing_required_attribute():
     """Test behavior when required attribute is missing."""
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Referrable.referrable import Referrable
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Referrable.referrable import Referrable
     import xml.etree.ElementTree as ET
 
     namespace = "http://autosar.org/schema/r4.0"
@@ -1031,7 +1031,7 @@ PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/mode
 
 ### 9.4 Run with Coverage
 ```bash
-PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/models/ --cov=src/armodel/models --cov-report=term
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/models/ --cov=src/armodel2/models --cov-report=term
 ```
 
 ### 9.5 Run Generated Code Validation

@@ -20,8 +20,8 @@ import pytest
 import shlex
 from pathlib import Path
 
-from armodel.reader import ARXMLReader
-from armodel.writer import ARXMLWriter
+from armodel2.reader import ARXMLReader
+from armodel2.writer import ARXMLWriter
 class TestIndividualFiles:
     """Test individual ARXML files with specific assertions.
 
@@ -67,7 +67,7 @@ class TestIndividualFiles:
         original_bytes = arxml_file.read_bytes()
 
         # Round-trip
-        from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+        from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
         AUTOSAR.reset()
         autosar = AUTOSAR()
         reader.load_arxml(str(arxml_file), autosar)

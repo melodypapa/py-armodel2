@@ -3,7 +3,7 @@
 import pytest
 import xml.etree.ElementTree as ET
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
     ARObject,
 )
 
@@ -85,7 +85,7 @@ class TestARObject:
 
     def test_member_to_xml_tag(self):
         """Test the NameConverter for XML tag conversion."""
-        from armodel.serialization.name_converter import NameConverter
+        from armodel2.serialization.name_converter import NameConverter
         assert NameConverter.to_xml_tag("short_name") == "SHORT-NAME"
         assert NameConverter.to_xml_tag("category") == "CATEGORY"
         assert NameConverter.to_xml_tag("ar_packages") == "AR-PACKAGES"

@@ -1,0 +1,672 @@
+"""ReceiverComSpec AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 170)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2047)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
+import xml.etree.ElementTree as ET
+
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
+    RPortComSpec,
+)
+from armodel2.models.M2.builder_base import BuilderBase
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import RPortComSpecBuilder
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication import (
+    HandleOutOfRangeEnum,
+)
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
+    AutosarDataPrototype,
+)
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.composite_network_representation import (
+    CompositeNetworkRepresentation,
+)
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.reception_com_spec_props import (
+    ReceptionComSpecProps,
+)
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.transformation_com_spec_props import (
+    TransformationComSpecProps,
+)
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.variable_access import (
+    VariableAccess,
+)
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
+
+
+from abc import ABC, abstractmethod
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel2.serialization import SerializationHelper
+
+
+class ReceiverComSpec(RPortComSpec, ABC):
+    """AUTOSAR ReceiverComSpec."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
+
+    composite_network_representations: list[CompositeNetworkRepresentation]
+    data_element_ref: Optional[ARRef]
+    handle_out_of_range: Optional[HandleOutOfRangeEnum]
+    handle_out_of_range_status: Optional[HandleOutOfRangeEnum]
+    max_delta_counter_init: Optional[PositiveInteger]
+    max_no_new_or_repeated_data: Optional[PositiveInteger]
+    network_representation: Optional[SwDataDefProps]
+    reception_props: Optional[ReceptionComSpecProps]
+    replace_with: Optional[VariableAccess]
+    sync_counter_init: Optional[PositiveInteger]
+    transformation_com_spec_propses: list[TransformationComSpecProps]
+    uses_end_to_end_protection: Optional[Boolean]
+    def __init__(self) -> None:
+        """Initialize ReceiverComSpec."""
+        super().__init__()
+        self.composite_network_representations: list[CompositeNetworkRepresentation] = []
+        self.data_element_ref: Optional[ARRef] = None
+        self.handle_out_of_range: Optional[HandleOutOfRangeEnum] = None
+        self.handle_out_of_range_status: Optional[HandleOutOfRangeEnum] = None
+        self.max_delta_counter_init: Optional[PositiveInteger] = None
+        self.max_no_new_or_repeated_data: Optional[PositiveInteger] = None
+        self.network_representation: Optional[SwDataDefProps] = None
+        self.reception_props: Optional[ReceptionComSpecProps] = None
+        self.replace_with: Optional[VariableAccess] = None
+        self.sync_counter_init: Optional[PositiveInteger] = None
+        self.transformation_com_spec_propses: list[TransformationComSpecProps] = []
+        self.uses_end_to_end_protection: Optional[Boolean] = None
+
+    def serialize(self) -> ET.Element:
+        """Serialize ReceiverComSpec to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ReceiverComSpec, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize composite_network_representations (list to container "COMPOSITE-NETWORK-REPRESENTATIONS")
+        if self.composite_network_representations:
+            wrapper = ET.Element("COMPOSITE-NETWORK-REPRESENTATIONS")
+            for item in self.composite_network_representations:
+                serialized = SerializationHelper.serialize_item(item, "CompositeNetworkRepresentation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize data_element_ref
+        if self.data_element_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.data_element_ref, "AutosarDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-ELEMENT-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize handle_out_of_range
+        if self.handle_out_of_range is not None:
+            serialized = SerializationHelper.serialize_item(self.handle_out_of_range, "HandleOutOfRangeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HANDLE-OUT-OF-RANGE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize handle_out_of_range_status
+        if self.handle_out_of_range_status is not None:
+            serialized = SerializationHelper.serialize_item(self.handle_out_of_range_status, "HandleOutOfRangeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HANDLE-OUT-OF-RANGE-STATUS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_delta_counter_init
+        if self.max_delta_counter_init is not None:
+            serialized = SerializationHelper.serialize_item(self.max_delta_counter_init, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-DELTA-COUNTER-INIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_no_new_or_repeated_data
+        if self.max_no_new_or_repeated_data is not None:
+            serialized = SerializationHelper.serialize_item(self.max_no_new_or_repeated_data, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-NO-NEW-OR-REPEATED-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize network_representation
+        if self.network_representation is not None:
+            serialized = SerializationHelper.serialize_item(self.network_representation, "SwDataDefProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NETWORK-REPRESENTATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize reception_props
+        if self.reception_props is not None:
+            serialized = SerializationHelper.serialize_item(self.reception_props, "ReceptionComSpecProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RECEPTION-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize replace_with
+        if self.replace_with is not None:
+            serialized = SerializationHelper.serialize_item(self.replace_with, "VariableAccess")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REPLACE-WITH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sync_counter_init
+        if self.sync_counter_init is not None:
+            serialized = SerializationHelper.serialize_item(self.sync_counter_init, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYNC-COUNTER-INIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transformation_com_spec_propses (list to container "TRANSFORMATION-COM-SPEC-PROPSES")
+        if self.transformation_com_spec_propses:
+            wrapper = ET.Element("TRANSFORMATION-COM-SPEC-PROPSES")
+            for item in self.transformation_com_spec_propses:
+                serialized = SerializationHelper.serialize_item(item, "TransformationComSpecProps")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize uses_end_to_end_protection
+        if self.uses_end_to_end_protection is not None:
+            serialized = SerializationHelper.serialize_item(self.uses_end_to_end_protection, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USES-END-TO-END-PROTECTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ReceiverComSpec":
+        """Deserialize XML element to ReceiverComSpec object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ReceiverComSpec object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ReceiverComSpec, cls).deserialize(element)
+
+        # Parse composite_network_representations (list from container "COMPOSITE-NETWORK-REPRESENTATIONS")
+        obj.composite_network_representations = []
+        container = SerializationHelper.find_child_element(element, "COMPOSITE-NETWORK-REPRESENTATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.composite_network_representations.append(child_value)
+
+        # Parse data_element_ref
+        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
+        if child is not None:
+            data_element_ref_value = ARRef.deserialize(child)
+            obj.data_element_ref = data_element_ref_value
+
+        # Parse handle_out_of_range
+        child = SerializationHelper.find_child_element(element, "HANDLE-OUT-OF-RANGE")
+        if child is not None:
+            handle_out_of_range_value = HandleOutOfRangeEnum.deserialize(child)
+            obj.handle_out_of_range = handle_out_of_range_value
+
+        # Parse handle_out_of_range_status
+        child = SerializationHelper.find_child_element(element, "HANDLE-OUT-OF-RANGE-STATUS")
+        if child is not None:
+            handle_out_of_range_status_value = HandleOutOfRangeEnum.deserialize(child)
+            obj.handle_out_of_range_status = handle_out_of_range_status_value
+
+        # Parse max_delta_counter_init
+        child = SerializationHelper.find_child_element(element, "MAX-DELTA-COUNTER-INIT")
+        if child is not None:
+            max_delta_counter_init_value = child.text
+            obj.max_delta_counter_init = max_delta_counter_init_value
+
+        # Parse max_no_new_or_repeated_data
+        child = SerializationHelper.find_child_element(element, "MAX-NO-NEW-OR-REPEATED-DATA")
+        if child is not None:
+            max_no_new_or_repeated_data_value = child.text
+            obj.max_no_new_or_repeated_data = max_no_new_or_repeated_data_value
+
+        # Parse network_representation
+        child = SerializationHelper.find_child_element(element, "NETWORK-REPRESENTATION")
+        if child is not None:
+            network_representation_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
+            obj.network_representation = network_representation_value
+
+        # Parse reception_props
+        child = SerializationHelper.find_child_element(element, "RECEPTION-PROPS")
+        if child is not None:
+            reception_props_value = SerializationHelper.deserialize_by_tag(child, "ReceptionComSpecProps")
+            obj.reception_props = reception_props_value
+
+        # Parse replace_with
+        child = SerializationHelper.find_child_element(element, "REPLACE-WITH")
+        if child is not None:
+            replace_with_value = SerializationHelper.deserialize_by_tag(child, "VariableAccess")
+            obj.replace_with = replace_with_value
+
+        # Parse sync_counter_init
+        child = SerializationHelper.find_child_element(element, "SYNC-COUNTER-INIT")
+        if child is not None:
+            sync_counter_init_value = child.text
+            obj.sync_counter_init = sync_counter_init_value
+
+        # Parse transformation_com_spec_propses (list from container "TRANSFORMATION-COM-SPEC-PROPSES")
+        obj.transformation_com_spec_propses = []
+        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-COM-SPEC-PROPSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.transformation_com_spec_propses.append(child_value)
+
+        # Parse uses_end_to_end_protection
+        child = SerializationHelper.find_child_element(element, "USES-END-TO-END-PROTECTION")
+        if child is not None:
+            uses_end_to_end_protection_value = child.text
+            obj.uses_end_to_end_protection = uses_end_to_end_protection_value
+
+        return obj
+
+
+
+class ReceiverComSpecBuilder(RPortComSpecBuilder):
+    """Builder for ReceiverComSpec with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: ReceiverComSpec = ReceiverComSpec()
+
+
+    def with_composite_network_representations(self, items: list[CompositeNetworkRepresentation]) -> "ReceiverComSpecBuilder":
+        """Set composite_network_representations list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.composite_network_representations = list(items) if items else []
+        return self
+
+    def with_data_element(self, value: Optional[AutosarDataPrototype]) -> "ReceiverComSpecBuilder":
+        """Set data_element attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.data_element = value
+        return self
+
+    def with_handle_out_of_range(self, value: Optional[HandleOutOfRangeEnum]) -> "ReceiverComSpecBuilder":
+        """Set handle_out_of_range attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.handle_out_of_range = value
+        return self
+
+    def with_handle_out_of_range_status(self, value: Optional[HandleOutOfRangeEnum]) -> "ReceiverComSpecBuilder":
+        """Set handle_out_of_range_status attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.handle_out_of_range_status = value
+        return self
+
+    def with_max_delta_counter_init(self, value: Optional[PositiveInteger]) -> "ReceiverComSpecBuilder":
+        """Set max_delta_counter_init attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.max_delta_counter_init = value
+        return self
+
+    def with_max_no_new_or_repeated_data(self, value: Optional[PositiveInteger]) -> "ReceiverComSpecBuilder":
+        """Set max_no_new_or_repeated_data attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.max_no_new_or_repeated_data = value
+        return self
+
+    def with_network_representation(self, value: Optional[SwDataDefProps]) -> "ReceiverComSpecBuilder":
+        """Set network_representation attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.network_representation = value
+        return self
+
+    def with_reception_props(self, value: Optional[ReceptionComSpecProps]) -> "ReceiverComSpecBuilder":
+        """Set reception_props attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.reception_props = value
+        return self
+
+    def with_replace_with(self, value: Optional[VariableAccess]) -> "ReceiverComSpecBuilder":
+        """Set replace_with attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.replace_with = value
+        return self
+
+    def with_sync_counter_init(self, value: Optional[PositiveInteger]) -> "ReceiverComSpecBuilder":
+        """Set sync_counter_init attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sync_counter_init = value
+        return self
+
+    def with_transformation_com_spec_propses(self, items: list[TransformationComSpecProps]) -> "ReceiverComSpecBuilder":
+        """Set transformation_com_spec_propses list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.transformation_com_spec_propses = list(items) if items else []
+        return self
+
+    def with_uses_end_to_end_protection(self, value: Optional[Boolean]) -> "ReceiverComSpecBuilder":
+        """Set uses_end_to_end_protection attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.uses_end_to_end_protection = value
+        return self
+
+
+    def add_composite_network_representation(self, item: CompositeNetworkRepresentation) -> "ReceiverComSpecBuilder":
+        """Add a single item to composite_network_representations list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.composite_network_representations.append(item)
+        return self
+
+    def clear_composite_network_representations(self) -> "ReceiverComSpecBuilder":
+        """Clear all items from composite_network_representations list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.composite_network_representations = []
+        return self
+
+    def add_transformation_com_spec_props(self, item: TransformationComSpecProps) -> "ReceiverComSpecBuilder":
+        """Add a single item to transformation_com_spec_propses list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.transformation_com_spec_propses.append(item)
+        return self
+
+    def clear_transformation_com_spec_propses(self) -> "ReceiverComSpecBuilder":
+        """Clear all items from transformation_com_spec_propses list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.transformation_com_spec_propses = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel2.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> ReceiverComSpec:
+        """Build and return the ReceiverComSpec instance (abstract)."""
+        raise NotImplementedError

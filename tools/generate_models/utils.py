@@ -59,7 +59,7 @@ def create_directory_structure(
                     prim_name = prim["name"]
                     # Convert package path to absolute import path
                     python_path = package_path.replace("::", ".")
-                    module_path = f"armodel.models.{python_path}.{to_snake_case(prim_name)}"
+                    module_path = f"armodel2.models.{python_path}.{to_snake_case(prim_name)}"
                     init_content += f"from {module_path} import (\n    {prim_name},\n)\n"
                     exports.append(prim_name)
                 init_content += "\n"
@@ -76,7 +76,7 @@ def create_directory_structure(
                     class_name = cls["name"]
                     # Convert package path to absolute import path
                     python_path = package_path.replace("::", ".")
-                    module_path = f"armodel.models.{python_path}.{to_snake_case(class_name)}"
+                    module_path = f"armodel2.models.{python_path}.{to_snake_case(class_name)}"
                     init_content += (
                         f"    from {module_path} import (\n        {class_name},\n    )\n"
                     )
@@ -93,7 +93,7 @@ def create_directory_structure(
                     enum_name = enum["name"]
                     # Convert package path to absolute import path
                     python_path = package_path.replace("::", ".")
-                    module_path = f"armodel.models.{python_path}.{to_snake_case(enum_name)}"
+                    module_path = f"armodel2.models.{python_path}.{to_snake_case(enum_name)}"
                     init_content += f"from {module_path} import (\n    {enum_name},\n)\n"
                     exports.append(enum_name)
                 init_content += "\n"

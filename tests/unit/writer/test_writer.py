@@ -2,8 +2,8 @@
 
 import pytest
 
-from armodel.writer import ARXMLWriter
-from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+from armodel2.writer import ARXMLWriter
+from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
 
 class TestARXMLWriter:

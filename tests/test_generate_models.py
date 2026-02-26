@@ -56,7 +56,7 @@ def test_generate_class_code():
     assert "class TestInterface(ARObject):" in code
     assert "def __init__(self)" in code
     # Check that it inherits from ARObject (which has serialize/deserialize)
-    assert "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject" in code
+    assert "from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject" in code
 
 def test_generate_builder_code():
     """Test generating builder class code"""
@@ -98,7 +98,7 @@ def test_generate_builder_code():
     assert "def build(self)" in builder_class_code
     
     # Check that imports include BuilderBase
-    assert "from armodel.models.M2.builder_base import BuilderBase" in builder_imports
+    assert "from armodel2.models.M2.builder_base import BuilderBase" in builder_imports
 
 def test_full_generation(tmp_path):
     """Test full code generation process"""

@@ -175,6 +175,6 @@ If a test fails:
 ## References
 
 - AUTOSAR XML Schema: `demos/xsd/AUTOSAR_00046.xsd`
-- Reader Implementation: `src/armodel/reader/__init__.py`
-- Writer Implementation: `src/armodel/writer/__init__.py`
-- Serialization Framework: `src/armodel/serialization/`
+- Reader Implementation: `src/armodel2/reader/__init__.py`
+- Writer Implementation: `src/armodel2/writer/__init__.py`
+- Serialization Framework: `src/armodel2/serialization/`

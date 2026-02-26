@@ -427,7 +427,7 @@ PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test
 
 ### 4.3 Run with Coverage
 ```bash
-PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test_core/test_version.py --cov=src/armodel/core --cov-report=term
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test_core/test_version.py --cov=src/armodel2/core --cov-report=term
 ```
 
 ---

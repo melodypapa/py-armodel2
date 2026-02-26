@@ -2,8 +2,8 @@
 
 import xml.etree.ElementTree as ET
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel2.serialization import SerializationHelper
 # Note: @xml_element_tag decorator has been removed from the framework
 
 

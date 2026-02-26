@@ -1,0 +1,307 @@
+"""ClientServerInterfaceToBswModuleEntryBlueprintMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 174)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_ClientServerInterfaceToBsw.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
+import xml.etree.ElementTree as ET
+
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel2.models.M2.builder_base import BuilderBase
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import ARElementBuilder
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_interface import (
+    ClientServerInterface,
+)
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions.port_defined_argument_value import (
+    PortDefinedArgumentValue,
+)
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel2.serialization import SerializationHelper
+
+
+class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
+    """AUTOSAR ClientServerInterfaceToBswModuleEntryBlueprintMapping."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
+    client_server_ref: ARRef
+    operation: ClientServerOperation
+    port_defined_arguments: list[PortDefinedArgumentValue]
+    def __init__(self) -> None:
+        """Initialize ClientServerInterfaceToBswModuleEntryBlueprintMapping."""
+        super().__init__()
+        self.client_server_ref: ARRef = None
+        self.operation: ClientServerOperation = None
+        self.port_defined_arguments: list[PortDefinedArgumentValue] = []
+
+    def serialize(self) -> ET.Element:
+        """Serialize ClientServerInterfaceToBswModuleEntryBlueprintMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ClientServerInterfaceToBswModuleEntryBlueprintMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize client_server_ref
+        if self.client_server_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.client_server_ref, "ClientServerInterface")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CLIENT-SERVER-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize operation
+        if self.operation is not None:
+            serialized = SerializationHelper.serialize_item(self.operation, "ClientServerOperation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OPERATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize port_defined_arguments (list to container "PORT-DEFINED-ARGUMENTS")
+        if self.port_defined_arguments:
+            wrapper = ET.Element("PORT-DEFINED-ARGUMENTS")
+            for item in self.port_defined_arguments:
+                serialized = SerializationHelper.serialize_item(item, "PortDefinedArgumentValue")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ClientServerInterfaceToBswModuleEntryBlueprintMapping":
+        """Deserialize XML element to ClientServerInterfaceToBswModuleEntryBlueprintMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ClientServerInterfaceToBswModuleEntryBlueprintMapping object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ClientServerInterfaceToBswModuleEntryBlueprintMapping, cls).deserialize(element)
+
+        # Parse client_server_ref
+        child = SerializationHelper.find_child_element(element, "CLIENT-SERVER-REF")
+        if child is not None:
+            client_server_ref_value = ARRef.deserialize(child)
+            obj.client_server_ref = client_server_ref_value
+
+        # Parse operation
+        child = SerializationHelper.find_child_element(element, "OPERATION")
+        if child is not None:
+            operation_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
+            obj.operation = operation_value
+
+        # Parse port_defined_arguments (list from container "PORT-DEFINED-ARGUMENTS")
+        obj.port_defined_arguments = []
+        container = SerializationHelper.find_child_element(element, "PORT-DEFINED-ARGUMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.port_defined_arguments.append(child_value)
+
+        return obj
+
+
+
+class ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder(ARElementBuilder):
+    """Builder for ClientServerInterfaceToBswModuleEntryBlueprintMapping with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: ClientServerInterfaceToBswModuleEntryBlueprintMapping = ClientServerInterfaceToBswModuleEntryBlueprintMapping()
+
+
+    def with_client_server(self, value: ClientServerInterface) -> "ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder":
+        """Set client_server attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.client_server = value
+        return self
+
+    def with_operation(self, value: ClientServerOperation) -> "ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder":
+        """Set operation attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.operation = value
+        return self
+
+    def with_port_defined_arguments(self, items: list[PortDefinedArgumentValue]) -> "ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder":
+        """Set port_defined_arguments list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.port_defined_arguments = list(items) if items else []
+        return self
+
+
+    def add_port_defined_argument(self, item: PortDefinedArgumentValue) -> "ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder":
+        """Add a single item to port_defined_arguments list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.port_defined_arguments.append(item)
+        return self
+
+    def clear_port_defined_arguments(self) -> "ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder":
+        """Clear all items from port_defined_arguments list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.port_defined_arguments = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel2.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    def build(self) -> ClientServerInterfaceToBswModuleEntryBlueprintMapping:
+        """Build and return the ClientServerInterfaceToBswModuleEntryBlueprintMapping instance with validation."""
+        self._validate_instance()
+        pass
+        return self._obj

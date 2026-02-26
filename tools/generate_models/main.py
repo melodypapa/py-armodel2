@@ -223,8 +223,8 @@ def main() -> None:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("src/armodel/models"),
-        help="Output directory for generated files (default: src/armodel/models/M2)",
+        default=Path("src/armodel2/models"),
+        help="Output directory for generated files (default: src/armodel2/models/M2)",
     )
 
     # Generation options

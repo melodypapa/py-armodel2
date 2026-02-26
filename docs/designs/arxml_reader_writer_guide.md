@@ -128,7 +128,7 @@ This guide provides a comprehensive overview of the ARXML reader and writer func
 
 ### 1. ARObject Base Class
 
-**Location:** `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
+**Location:** `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
 
 The `ARObject` class is the foundation for all AUTOSAR model classes, providing reflection-based serialization.
 
@@ -156,7 +156,7 @@ class ARObject:
 
 ### 2. NameConverter
 
-**Location:** `src/armodel/serialization/name_converter.py`
+**Location:** `src/armodel2/serialization/name_converter.py`
 
 Handles bidirectional name conversion between Python and AUTOSAR XML naming conventions.
 
@@ -197,7 +197,7 @@ class NameConverter:
 
 ### 3. ARXMLReader
 
-**Location:** `src/armodel/reader/reader.py`
+**Location:** `src/armodel2/reader/reader.py`
 
 Handles loading ARXML files and merging multiple files into a single AUTOSAR instance.
 
@@ -209,8 +209,8 @@ Handles loading ARXML files and merging multiple files into a single AUTOSAR ins
 **Usage:**
 
 ```python
-from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
-from armodel.reader import ARXMLReader
+from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+from armodel2.reader import ARXMLReader
 
 # Create AUTOSAR instance
 autosar = AUTOSAR()
@@ -226,7 +226,7 @@ print(f"Total packages: {len(autosar.ar_packages)}")
 
 ### 4. ARXMLWriter
 
-**Location:** `src/armodel/writer/writer.py`
+**Location:** `src/armodel2/writer/writer.py`
 
 Handles serializing AUTOSAR objects and saving to ARXML files.
 
@@ -239,7 +239,7 @@ Handles serializing AUTOSAR objects and saving to ARXML files.
 **Usage:**
 
 ```python
-from armodel.writer import ARXMLWriter
+from armodel2.writer import ARXMLWriter
 
 writer = ARXMLWriter(pretty_print=True, encoding="UTF-8")
 writer.save_arxml(autosar, "output.arxml")
@@ -312,9 +312,9 @@ class AUTOSAR(ARObject):
 #!/usr/bin/env python3
 """Demonstration of ARXML reader and writer."""
 
-from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
-from armodel.reader import ARXMLReader
-from armodel.writer import ARXMLWriter
+from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+from armodel2.reader import ARXMLReader
+from armodel2.writer import ARXMLWriter
 
 # Step 1: Create AUTOSAR instance
 autosar = AUTOSAR()
@@ -367,9 +367,9 @@ Verifying output...
 #!/usr/bin/env python3
 """Demonstration of merging multiple ARXML files."""
 
-from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
-from armodel.reader import ARXMLReader
-from armodel.writer import ARXMLWriter
+from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+from armodel2.reader import ARXMLReader
+from armodel2.writer import ARXMLWriter
 
 # Create AUTOSAR instance
 autosar = AUTOSAR()
@@ -400,9 +400,9 @@ print("✓ Merged output written to merged.arxml")
 #!/usr/bin/env python3
 """Demonstration of XML string conversion."""
 
-from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
-from armodel.reader import ARXMLReader
-from armodel.writer import ARXMLWriter
+from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+from armodel2.reader import ARXMLReader
+from armodel2.writer import ARXMLWriter
 
 # Load file
 autosar = AUTOSAR()
@@ -435,9 +435,9 @@ for line in lines[:5]:
 #!/usr/bin/env python3
 """Demonstration of round-trip serialization."""
 
-from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
-from armodel.reader import ARXMLReader
-from armodel.writer import ARXMLWriter
+from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+from armodel2.reader import ARXMLReader
+from armodel2.writer import ARXMLWriter
 
 # Load original file
 print("Loading original file...")

@@ -2,8 +2,8 @@
 
 import pytest
 import xml.etree.ElementTree as ET
-from armodel.serialization import SerializationHelper
-from armodel.serialization.decorators import polymorphic
+from armodel2.serialization import SerializationHelper
+from armodel2.serialization.decorators import polymorphic
 
 
 class TestHasPolymorphic:

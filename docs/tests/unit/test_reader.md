@@ -43,7 +43,7 @@ This document describes unit tests for the `armodel.reader` module, focusing on 
 ```python
 def test_load_valid_arxml():
     import tempfile
-    from armodel.reader import ARXMLReader
+    from armodel2.reader import ARXMLReader
 
     arxml_content = '''<?xml version="1.0" encoding="UTF-8"?>
 <AUTOSAR xmlns="http://autosar.org/schema/r4.0">
@@ -88,7 +88,7 @@ def test_load_valid_arxml():
 **Test Code**:
 ```python
 def test_file_not_found():
-    from armodel.reader import ARXMLReader
+    from armodel2.reader import ARXMLReader
 
     reader = ARXMLReader()
     try:
@@ -118,7 +118,7 @@ def test_file_not_found():
 ```python
 def test_malformed_xml():
     import tempfile
-    from armodel.reader import ARXMLReader
+    from armodel2.reader import ARXMLReader
     from lxml import etree
 
     malformed_content = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -165,7 +165,7 @@ def test_malformed_xml():
 ```python
 def test_get_schema_version():
     import tempfile
-    from armodel.reader import ARXMLReader
+    from armodel2.reader import ARXMLReader
 
     arxml_content = '''<?xml version="1.0" encoding="UTF-8"?>
 <AUTOSAR xmlns="http://autosar.org/schema/r4.0">
@@ -206,7 +206,7 @@ def test_get_schema_version():
 ```python
 def test_load_with_xsd_validation_valid():
     import tempfile
-    from armodel.reader import ARXMLReader
+    from armodel2.reader import ARXMLReader
 
     arxml_content = '''<?xml version="1.0" encoding="UTF-8"?>
 <AUTOSAR xmlns="http://autosar.org/schema/r4.0">
@@ -247,8 +247,8 @@ def test_load_with_xsd_validation_valid():
 ```python
 def test_dependency_injection():
     from unittest.mock import Mock
-    from armodel.core import SchemaVersionManager
-    from armodel.reader import ARXMLReader
+    from armodel2.core import SchemaVersionManager
+    from armodel2.reader import ARXMLReader
 
     mock_manager = Mock(spec=SchemaVersionManager)
     reader = ARXMLReader(version_manager=mock_manager)
@@ -276,7 +276,7 @@ def test_dependency_injection():
 ```python
 def test_load_with_xsd_validation_invalid():
     import tempfile
-    from armodel.reader import ARXMLReader
+    from armodel2.reader import ARXMLReader
 
     # Invalid ARXML (missing required elements)
     invalid_content = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -322,7 +322,7 @@ PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test
 
 ### 3.3 Run with Coverage
 ```bash
-PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test_reader/test_reader.py --cov=src/armodel/reader --cov-report=term
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test_reader/test_reader.py --cov=src/armodel2/reader --cov-report=term
 ```
 
 ---

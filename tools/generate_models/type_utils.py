@@ -139,14 +139,14 @@ def get_type_import_path(type_name: str, package_data: Dict[str, Dict[str, Any]]
 
                     # Convert package path to Python import path
                     # Package path format: M2::AUTOSARTemplates::...
-                    # Python import path: armodel.models.M2.AUTOSARTemplates...
+                    # Python import path: armodel2.models.M2.AUTOSARTemplates...
                     # Import from the specific class file, not module
                     python_path = class_package_path.replace("::", ".")
 
                     # Return import path in block import format as required by DESIGN_RULE_041
-                    # Format: from armodel.models.M2.MSR.AsamHdo.AdminData.admin_data import (AdminData,)
+                    # Format: from armodel2.models.M2.MSR.AsamHdo.AdminData.admin_data import (AdminData,)
                     class_filename = to_snake_case(type_name)
-                    module_path = f"armodel.models.{python_path}.{class_filename}"
+                    module_path = f"armodel2.models.{python_path}.{class_filename}"
 
                     return f"from {module_path} import (\n    {type_name},\n)"
     return ""

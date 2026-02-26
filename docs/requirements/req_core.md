@@ -110,7 +110,7 @@ The `armodel.core` module provides core utilities for schema version detection a
 
 ### 3.1 Schema Version Configuration
 
-**Location**: `src/armodel/cfg/schemas/config.yaml`
+**Location**: `src/armodel2/cfg/schemas/config.yaml`
 
 **Required Structure**:
 - `default`: Default schema version
@@ -131,7 +131,7 @@ The `armodel.core` module provides core utilities for schema version detection a
 
 ### 4.1 SchemaVersionManager Class
 
-**Location**: `src/armodel/core/version.py`
+**Location**: `src/armodel2/core/version.py`
 
 **Required Public Interface**:
 

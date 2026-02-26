@@ -12,11 +12,11 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+from armodel2.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
     SwDataDefProps,
 )
-from armodel.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import SwBaseType
-from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+from armodel2.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import SwBaseType
+from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
 
 def benchmark_get_type_hints(cls, iterations=1000):

@@ -8,7 +8,7 @@ from ._common import (
     to_snake_case,
     to_autosar_xml_format,
 )
-from armodel.serialization.name_converter import NameConverter
+from armodel2.serialization.name_converter import NameConverter
 from .type_utils import (
     detect_circular_import,
     get_python_type,
@@ -124,7 +124,7 @@ def generate_class_code(
         type_checking_import = "from typing import TYPE_CHECKING, Optional, Union, get_type_hints, get_args, get_origin\n"
         base_import = "import xml.etree.ElementTree as ET\n"
         # Import NameConverter for reflection-based serialization
-        name_converter_import = "from armodel.serialization.name_converter import NameConverter\n"
+        name_converter_import = "from armodel2.serialization.name_converter import NameConverter\n"
         code = f'''"""{docstring}"""
 
 {future_import}{type_checking_import}{base_import}{name_converter_import}
@@ -201,7 +201,7 @@ def generate_class_code(
         # Add xml_attribute import if needed
         decorator_import = ""
         if has_xml_attribute:
-            decorator_import = "from armodel.serialization.decorators import xml_attribute\n"
+            decorator_import = "from armodel2.serialization.decorators import xml_attribute\n"
 
         # Check if this class has xml_element_name decorators
         has_xml_element_name = False
@@ -212,12 +212,12 @@ def generate_class_code(
                     has_xml_element_name = True
                     break
         if has_xml_element_name:
-            decorator_import += "from armodel.serialization.decorators import xml_element_name\n"
+            decorator_import += "from armodel2.serialization.decorators import xml_element_name\n"
 
         # Check if this class uses atpVariation pattern via decorator key
         class_decorator = type_def.get("decorator", None)
         if class_decorator == "atp_variant":
-            decorator_import += "from armodel.serialization.decorators import atp_variant\n"
+            decorator_import += "from armodel2.serialization.decorators import atp_variant\n"
 
         # Check if this class has lang_prefix attributes
         has_lang_prefix = False
@@ -228,7 +228,7 @@ def generate_class_code(
                     has_lang_prefix = True
                     break
         if has_lang_prefix:
-            decorator_import += "from armodel.serialization.decorators import lang_prefix\n"
+            decorator_import += "from armodel2.serialization.decorators import lang_prefix\n"
 
         # Check if this class has lang_abbr decorators
         has_lang_abbr = False
@@ -239,7 +239,7 @@ def generate_class_code(
                     has_lang_abbr = True
                     break
         if has_lang_abbr:
-            decorator_import += "from armodel.serialization.decorators import lang_abbr\n"
+            decorator_import += "from armodel2.serialization.decorators import lang_abbr\n"
 
         # Check if this class has ref_conditional decorators
         has_ref_conditional = False
@@ -250,7 +250,7 @@ def generate_class_code(
                     has_ref_conditional = True
                     break
         if has_ref_conditional:
-            decorator_import += "from armodel.serialization.decorators import ref_conditional\n"
+            decorator_import += "from armodel2.serialization.decorators import ref_conditional\n"
 
         # Check if this class has instance_ref decorators
         has_instance_ref = False
@@ -261,8 +261,8 @@ def generate_class_code(
                     has_instance_ref = True
                     break
         if has_instance_ref:
-            decorator_import += "from armodel.serialization.decorators import instance_ref\n"
-            decorator_import += "from armodel.serialization.decorators import ref_conditional\n"
+            decorator_import += "from armodel2.serialization.decorators import instance_ref\n"
+            decorator_import += "from armodel2.serialization.decorators import ref_conditional\n"
 
         # Check if this class has polymorphic decorators
         has_polymorphic = False
@@ -273,7 +273,7 @@ def generate_class_code(
                     has_polymorphic = True
                     break
         if has_polymorphic:
-            decorator_import += "from armodel.serialization.decorators import polymorphic\n"
+            decorator_import += "from armodel2.serialization.decorators import polymorphic\n"
 
         code = f'''"""{docstring}"""
 
@@ -288,7 +288,7 @@ def generate_class_code(
             code += f"{parent_import}\n"
         else:
             # Fallback to ARObject import
-            code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
+            code += "from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
 
     # Add Builder imports at the top (after all other imports to avoid E402 errors)
     # Deduplicate imports to avoid F811 redefinition errors
@@ -384,7 +384,7 @@ def generate_class_code(
     if attribute_types and any(
         attr_info.get("is_ref", False) for attr_info in attribute_types.values()
     ):
-        code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef\n"
+        code += "from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef\n"
 
     # Add type imports if needed
     # Initialize circular and non-circular import sets outside attribute_types block
@@ -434,7 +434,7 @@ def generate_class_code(
 
             for pkg_path, enum_names in sorted(enums_by_package.items()):
                 python_path = pkg_path.replace("::", ".")
-                code += f"from armodel.models.{python_path} import (\n"
+                code += f"from armodel2.models.{python_path} import (\n"
                 for i, enum in enumerate(sorted(enum_names)):
                     if i == len(enum_names) - 1:
                         code += f"    {enum},\n"
@@ -452,7 +452,7 @@ def generate_class_code(
 
         for pkg_path, prim_names in sorted(primitives_by_package.items()):
             python_path = pkg_path.replace("::", ".")
-            code += f"from armodel.models.{python_path} import (\n"
+            code += f"from armodel2.models.{python_path} import (\n"
             for i, prim in enumerate(sorted(prim_names)):
                 if i == len(prim_names) - 1:
                     code += f"    {prim},\n"
@@ -516,7 +516,7 @@ def generate_class_code(
                 type_package = get_type_package_path(import_type, package_data)
                 if type_package:
                     python_path = type_package.replace("::", ".")
-                    module_path = f"armodel.models.{python_path}.{to_snake_case(import_type)}"
+                    module_path = f"armodel2.models.{python_path}.{to_snake_case(import_type)}"
                     code += f"    from {module_path} import (\n        {import_type},\n    )\n"
             # Add TWO blank lines after TYPE_CHECKING block to ensure two blank lines before class
             # THREE newline characters create TWO blank lines
@@ -531,12 +531,12 @@ def generate_class_code(
     # The generated deserialize method uses SerializationHelper.find_child_element and SerializationHelper.find_all_child_elements
     # Only add if not already added earlier (after parent class import)
     if class_name != "ARObject":
-        ar_object_import = "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
+        ar_object_import = "from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
         if ar_object_import not in code:
             code += ar_object_import
         # Add SerializationHelper import for all classes that use it in serialize/deserialize methods
         # Only add if not already added earlier
-        serialization_helper_import = "from armodel.serialization import SerializationHelper\n"
+        serialization_helper_import = "from armodel2.serialization import SerializationHelper\n"
         if serialization_helper_import not in code:
             code += serialization_helper_import
 
@@ -1572,7 +1572,7 @@ def _generate_value_extraction_code_for_attribute(
     # Handle reference types (ARRef)
     if is_ref:
         # Use ARRef.deserialize() for reference types - need to create a fake element
-        return f"""from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+        return f"""from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
         fake_elem = ET.Element("FAKE")
         fake_elem.text = {attribute_value}
         {value_var} = ARRef.deserialize(fake_elem)"""
@@ -1815,7 +1815,7 @@ def _generate_ar_object_methods() -> str:
 
     @staticmethod
     def _import_class_by_name(class_name: str):
-        """Import a class by name from armodel.models.M2.
+        """Import a class by name from armodel2.models.M2.
 
         Args:
             class_name: Name of the class to import (e.g., "ARPackage")
@@ -1840,9 +1840,9 @@ def _generate_ar_object_methods() -> str:
 
         # Common package paths to search
         search_paths = [
-            f'armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.{class_name}.{class_filename}',
-            f'armodel.models.M2.AUTOSARTemplates.{class_name}.{class_filename}',
-            f'armodel.models.M2.MSR.{class_name}.{class_filename}',
+            f'armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.{class_name}.{class_filename}',
+            f'armodel2.models.M2.AUTOSARTemplates.{class_name}.{class_filename}',
+            f'armodel2.models.M2.MSR.{class_name}.{class_filename}',
         ]
 
         for module_path in search_paths:
@@ -1855,7 +1855,7 @@ def _generate_ar_object_methods() -> str:
 
         # Fallback: try searching through all M2 modules
         try:
-            from armodel.models.M2 import AUTOSARTemplates, MSR
+            from armodel2.models.M2 import AUTOSARTemplates, MSR
 
             # Search in AUTOSARTemplates
             if hasattr(AUTOSARTemplates, '__path__'):
@@ -2390,7 +2390,7 @@ def _generate_validation_helper() -> str:
     def _validate_instance(self) -> None:
         """Validate the built instance based on settings."""
         from typing import get_type_hints
-        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+        from armodel2.core import GlobalSettingsManager, BuilderValidationMode
 
         settings = GlobalSettingsManager()
         mode = settings.builder_validation
@@ -2557,7 +2557,7 @@ def generate_builder_code(
     abc_import = ""  # Always empty - added separately in generate_class_code
 
     # Import BuilderBase
-    builder_base_import = "from armodel.models.M2.builder_base import BuilderBase\n"
+    builder_base_import = "from armodel2.models.M2.builder_base import BuilderBase\n"
 
     # Import parent Builder class if exists
     parent_builder_import = ""
@@ -2566,8 +2566,8 @@ def generate_builder_code(
         parent_import_path = get_type_import_path(parent_class, package_data)
         if parent_import_path:
             # Extract the import path and modify it to import the Builder
-            # Current format: from armodel.models.M2.xxx.some_class import (SomeClass,)
-            # Need: from armodel.models.M2.xxx.some_class import SomeClassBuilder
+            # Current format: from armodel2.models.M2.xxx.some_class import (SomeClass,)
+            # Need: from armodel2.models.M2.xxx.some_class import SomeClassBuilder
             parent_import_path = parent_import_path.replace(
                 f"import (\n    {parent_class},\n)", f"import {parent_class}Builder"
             )
@@ -2668,7 +2668,7 @@ def generate_enum_code(enum_def: Dict[str, Any], json_file_path: str = "") -> st
 
 from __future__ import annotations
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
 class {enum_name}(AREnum):
     """AUTOSAR {enum_name} enumeration.
@@ -2732,7 +2732,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 class ARPrimitive(ARObject):
     """Base class for all AUTOSAR primitive types.
@@ -2826,7 +2826,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 class AREnum(ARObject):
     """Base class for all AUTOSAR enumeration types.
@@ -4127,7 +4127,7 @@ def generate_primitive_code(
     import_statements.append("import xml.etree.ElementTree as ET")
     import_statements.append("")
     import_statements.append(
-        "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive"
+        "from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive"
     )
 
     # Add enum imports
@@ -4137,7 +4137,7 @@ def generate_primitive_code(
         for enum_name in sorted(enum_imports):
             enum_snake_name = to_snake_case(enum_name)
             import_statements.append(
-                f"from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.{enum_snake_name} import ("
+                f"from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.{enum_snake_name} import ("
             )
             import_statements.append(f"    {enum_name},")
             import_statements.append(")")
@@ -4149,7 +4149,7 @@ def generate_primitive_code(
         for prim_name in sorted(primitive_imports):
             prim_snake_name = to_snake_case(prim_name)
             import_statements.append(
-                f"from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.{prim_snake_name} import ("
+                f"from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.{prim_snake_name} import ("
             )
             import_statements.append(f"    {prim_name},")
             import_statements.append(")")

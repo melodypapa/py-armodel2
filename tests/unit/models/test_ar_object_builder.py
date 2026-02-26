@@ -1,7 +1,7 @@
 """Unit tests for ARObjectBuilder."""
 
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
     ARObject,
     ARObjectBuilder,
 )

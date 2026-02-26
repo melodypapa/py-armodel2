@@ -1,0 +1,536 @@
+"""UdpNmCluster AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 687)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_NetworkManagement.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
+import xml.etree.ElementTree as ET
+
+from armodel2.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_cluster import (
+    NmCluster,
+)
+from armodel2.models.M2.builder_base import BuilderBase
+from armodel2.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_cluster import NmClusterBuilder
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+    PositiveInteger,
+    TimeValue,
+)
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel2.serialization import SerializationHelper
+
+
+class UdpNmCluster(NmCluster):
+    """AUTOSAR UdpNmCluster."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
+    nm_cbv_position: Optional[Integer]
+    nm_immediate: Optional[PositiveInteger]
+    nm_message: Optional[TimeValue]
+    nm_msg_cycle: Optional[TimeValue]
+    nm_network: Optional[TimeValue]
+    nm_nid_position: Optional[Integer]
+    nm_remote: Optional[TimeValue]
+    nm_repeat: Optional[TimeValue]
+    nm_wait_bus: Optional[TimeValue]
+    vlan_ref: Optional[Any]
+    def __init__(self) -> None:
+        """Initialize UdpNmCluster."""
+        super().__init__()
+        self.nm_cbv_position: Optional[Integer] = None
+        self.nm_immediate: Optional[PositiveInteger] = None
+        self.nm_message: Optional[TimeValue] = None
+        self.nm_msg_cycle: Optional[TimeValue] = None
+        self.nm_network: Optional[TimeValue] = None
+        self.nm_nid_position: Optional[Integer] = None
+        self.nm_remote: Optional[TimeValue] = None
+        self.nm_repeat: Optional[TimeValue] = None
+        self.nm_wait_bus: Optional[TimeValue] = None
+        self.vlan_ref: Optional[Any] = None
+
+    def serialize(self) -> ET.Element:
+        """Serialize UdpNmCluster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(UdpNmCluster, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize nm_cbv_position
+        if self.nm_cbv_position is not None:
+            serialized = SerializationHelper.serialize_item(self.nm_cbv_position, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-CBV-POSITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_immediate
+        if self.nm_immediate is not None:
+            serialized = SerializationHelper.serialize_item(self.nm_immediate, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-IMMEDIATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_message
+        if self.nm_message is not None:
+            serialized = SerializationHelper.serialize_item(self.nm_message, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-MESSAGE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_msg_cycle
+        if self.nm_msg_cycle is not None:
+            serialized = SerializationHelper.serialize_item(self.nm_msg_cycle, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-MSG-CYCLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_network
+        if self.nm_network is not None:
+            serialized = SerializationHelper.serialize_item(self.nm_network, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-NETWORK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_nid_position
+        if self.nm_nid_position is not None:
+            serialized = SerializationHelper.serialize_item(self.nm_nid_position, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-NID-POSITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_remote
+        if self.nm_remote is not None:
+            serialized = SerializationHelper.serialize_item(self.nm_remote, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-REMOTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_repeat
+        if self.nm_repeat is not None:
+            serialized = SerializationHelper.serialize_item(self.nm_repeat, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-REPEAT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_wait_bus
+        if self.nm_wait_bus is not None:
+            serialized = SerializationHelper.serialize_item(self.nm_wait_bus, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-WAIT-BUS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vlan_ref
+        if self.vlan_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.vlan_ref, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VLAN-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UdpNmCluster":
+        """Deserialize XML element to UdpNmCluster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UdpNmCluster object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(UdpNmCluster, cls).deserialize(element)
+
+        # Parse nm_cbv_position
+        child = SerializationHelper.find_child_element(element, "NM-CBV-POSITION")
+        if child is not None:
+            nm_cbv_position_value = child.text
+            obj.nm_cbv_position = nm_cbv_position_value
+
+        # Parse nm_immediate
+        child = SerializationHelper.find_child_element(element, "NM-IMMEDIATE")
+        if child is not None:
+            nm_immediate_value = child.text
+            obj.nm_immediate = nm_immediate_value
+
+        # Parse nm_message
+        child = SerializationHelper.find_child_element(element, "NM-MESSAGE")
+        if child is not None:
+            nm_message_value = child.text
+            obj.nm_message = nm_message_value
+
+        # Parse nm_msg_cycle
+        child = SerializationHelper.find_child_element(element, "NM-MSG-CYCLE")
+        if child is not None:
+            nm_msg_cycle_value = child.text
+            obj.nm_msg_cycle = nm_msg_cycle_value
+
+        # Parse nm_network
+        child = SerializationHelper.find_child_element(element, "NM-NETWORK")
+        if child is not None:
+            nm_network_value = child.text
+            obj.nm_network = nm_network_value
+
+        # Parse nm_nid_position
+        child = SerializationHelper.find_child_element(element, "NM-NID-POSITION")
+        if child is not None:
+            nm_nid_position_value = child.text
+            obj.nm_nid_position = nm_nid_position_value
+
+        # Parse nm_remote
+        child = SerializationHelper.find_child_element(element, "NM-REMOTE")
+        if child is not None:
+            nm_remote_value = child.text
+            obj.nm_remote = nm_remote_value
+
+        # Parse nm_repeat
+        child = SerializationHelper.find_child_element(element, "NM-REPEAT")
+        if child is not None:
+            nm_repeat_value = child.text
+            obj.nm_repeat = nm_repeat_value
+
+        # Parse nm_wait_bus
+        child = SerializationHelper.find_child_element(element, "NM-WAIT-BUS")
+        if child is not None:
+            nm_wait_bus_value = child.text
+            obj.nm_wait_bus = nm_wait_bus_value
+
+        # Parse vlan_ref
+        child = SerializationHelper.find_child_element(element, "VLAN-REF")
+        if child is not None:
+            vlan_ref_value = ARRef.deserialize(child)
+            obj.vlan_ref = vlan_ref_value
+
+        return obj
+
+
+
+class UdpNmClusterBuilder(NmClusterBuilder):
+    """Builder for UdpNmCluster with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: UdpNmCluster = UdpNmCluster()
+
+
+    def with_nm_cbv_position(self, value: Optional[Integer]) -> "UdpNmClusterBuilder":
+        """Set nm_cbv_position attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_cbv_position = value
+        return self
+
+    def with_nm_immediate(self, value: Optional[PositiveInteger]) -> "UdpNmClusterBuilder":
+        """Set nm_immediate attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_immediate = value
+        return self
+
+    def with_nm_message(self, value: Optional[TimeValue]) -> "UdpNmClusterBuilder":
+        """Set nm_message attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_message = value
+        return self
+
+    def with_nm_msg_cycle(self, value: Optional[TimeValue]) -> "UdpNmClusterBuilder":
+        """Set nm_msg_cycle attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_msg_cycle = value
+        return self
+
+    def with_nm_network(self, value: Optional[TimeValue]) -> "UdpNmClusterBuilder":
+        """Set nm_network attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_network = value
+        return self
+
+    def with_nm_nid_position(self, value: Optional[Integer]) -> "UdpNmClusterBuilder":
+        """Set nm_nid_position attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_nid_position = value
+        return self
+
+    def with_nm_remote(self, value: Optional[TimeValue]) -> "UdpNmClusterBuilder":
+        """Set nm_remote attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_remote = value
+        return self
+
+    def with_nm_repeat(self, value: Optional[TimeValue]) -> "UdpNmClusterBuilder":
+        """Set nm_repeat attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_repeat = value
+        return self
+
+    def with_nm_wait_bus(self, value: Optional[TimeValue]) -> "UdpNmClusterBuilder":
+        """Set nm_wait_bus attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_wait_bus = value
+        return self
+
+    def with_vlan(self, value: Optional[any (EthernetPhysical)]) -> "UdpNmClusterBuilder":
+        """Set vlan attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.vlan = value
+        return self
+
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel2.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    def build(self) -> UdpNmCluster:
+        """Build and return the UdpNmCluster instance with validation."""
+        self._validate_instance()
+        pass
+        return self._obj

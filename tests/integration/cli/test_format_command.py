@@ -31,7 +31,7 @@ def test_format_command_integration():
 
         # Run CLI command
         result = subprocess.run(
-            [sys.executable, "-m", "armodel.cli.main", "format", str(fixture_path), "-o", output_path],
+            [sys.executable, "-m", "armodel2.cli.main", "format", str(fixture_path), "-o", output_path],
             capture_output=True,
             text=True,
             env=env,
@@ -62,7 +62,7 @@ def test_format_command_nonexistent_file():
         [
             sys.executable,
             "-m",
-            "armodel.cli.main",
+            "armodel2.cli.main",
             "format",
             "/nonexistent/file.arxml",
             "-o",

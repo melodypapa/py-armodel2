@@ -22,7 +22,7 @@ The code generation module provides automated generation of AUTOSAR model classe
 
 ### 1.3 Output
 - 1,912 generated Python class files
-- Located in `src/armodel/models/M2/`
+- Located in `src/armodel2/models/M2/`
 
 ---
 
@@ -46,7 +46,7 @@ The code generation module provides automated generation of AUTOSAR model classe
 
 **Required Structure**:
 ```
-src/armodel/models/M2/
+src/armodel2/models/M2/
 ├── AUTOSARTemplates/
 │   ├── autosar.py
 │   ├── AbstractPlatform/

@@ -102,10 +102,10 @@ versions:
 
 ### 3.1 Configuration Files
 
-**Main Config**: `src/armodel/cfg/config.yaml`
+**Main Config**: `src/armodel2/cfg/config.yaml`
 - Entry point for configuration loading
 
-**Schema Config**: `src/armodel/cfg/schemas/config.yaml`
+**Schema Config**: `src/armodel2/cfg/schemas/config.yaml`
 - Schema version mappings
 - Default version setting
 - Namespace URIs
@@ -124,7 +124,7 @@ Required keys:
 
 ### 4.1 ConfigurationManager Class
 
-**Location**: `src/armodel/cfg/schemas/__init__.py`
+**Location**: `src/armodel2/cfg/schemas/__init__.py`
 
 **Required Public Interface**:
 

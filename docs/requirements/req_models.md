@@ -113,13 +113,13 @@ obj = (ClassNameBuilder()
 ---
 
 ### SWR_MODELS_008: Package Structure
-**Description**: Generated classes shall follow AUTOSAR package structure in `src/armodel/models/M2/`.
+**Description**: Generated classes shall follow AUTOSAR package structure in `src/armodel2/models/M2/`.
 
 **Priority**: P0 (Critical)
 
 **Required Structure**:
 ```
-src/armodel/models/M2/
+src/armodel2/models/M2/
 ├── AUTOSARTemplates/
 │   ├── autosar.py
 │   ├── AbstractPlatform/
@@ -179,7 +179,7 @@ Each generated class must include:
 
 ### 4.1 Base Class: ARObject
 
-**Location**: `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ar_object.py`
+**Location**: `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ar_object.py`
 
 **Required Methods**:
 - `serialize() -> ET.Element`

@@ -13,10 +13,10 @@ import xml.etree.ElementTree as ET
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+from armodel2.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
     SwDataDefProps,
 )
-from armodel.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import SwBaseType
+from armodel2.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import SwBaseType
 
 
 def create_test_element(tag_name, attributes=None, children=None):

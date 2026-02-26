@@ -3,11 +3,11 @@
 import pytest
 import xml.etree.ElementTree as ET
 
-from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.internal_constrs import InternalConstrs
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.limit import Limit
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.interval_type_enum import IntervalTypeEnum
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.monotony_enum import MonotonyEnum
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.numerical import Numerical
+from armodel2.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.internal_constrs import InternalConstrs
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.limit import Limit
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.interval_type_enum import IntervalTypeEnum
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.monotony_enum import MonotonyEnum
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.numerical import Numerical
 
 
 class TestInternalConstrsSerialization:

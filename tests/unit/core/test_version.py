@@ -1,7 +1,7 @@
 import pytest
 import xml.etree.cElementTree as ET
 
-from armodel.core import SchemaVersionManager
+from armodel2.core import SchemaVersionManager
 
 
 class TestSchemaVersionManager:

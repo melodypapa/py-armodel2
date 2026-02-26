@@ -78,8 +78,8 @@ Design rules are categorized by their type and scope:
 - **DESIGN_RULE_040**: All import statements must be defined at the beginning of the file
 - **DESIGN_RULE_041**: Use block import statements and define __all__ in __init__.py files
   - Use full absolute imports with block format (multi-line with parentheses)
-  - Block import format for single class: `from armodel.models.M2.AUTOSARTemplates.Package.module import (\n    Class,\n)`
-  - Block import format for multiple classes: `from armodel.models.M2.AUTOSARTemplates.Package.module import (\n    Class1,\n    Class2,\n    Class3,\n)`
+  - Block import format for single class: `from armodel2.models.M2.AUTOSARTemplates.Package.module import (\n    Class,\n)`
+  - Block import format for multiple classes: `from armodel2.models.M2.AUTOSARTemplates.Package.module import (\n    Class1,\n    Class2,\n    Class3,\n)`
   - Avoid wildcard imports (`from module import *`) in production code
   - Prefer explicit imports over `__init__.py` re-exports when possible to clarify dependencies
   - Every `__init__.py` file must define `__all__` to explicitly list public exports
@@ -88,10 +88,10 @@ Design rules are categorized by their type and scope:
   - Example:
     ```python
     # __init__.py
-    from armodel.models.M2.AUTOSARTemplates.Package.some_class import (
+    from armodel2.models.M2.AUTOSARTemplates.Package.some_class import (
         SomeClass,
     )
-    from armodel.models.M2.AUTOSARTemplates.Package.another_class import (
+    from armodel2.models.M2.AUTOSARTemplates.Package.another_class import (
         AnotherClass,
     )
 
@@ -120,10 +120,10 @@ Design rules are categorized by their type and scope:
     from typing import TYPE_CHECKING
     
     if TYPE_CHECKING:
-        from armodel.models.M2.SomeModule import SomeClass
+        from armodel2.models.M2.SomeModule import SomeClass
     
     def _get_some_class():
-        from armodel.models.M2.SomeModule import SomeClass
+        from armodel2.models.M2.SomeModule import SomeClass
         return SomeClass
     
     class MyClass:

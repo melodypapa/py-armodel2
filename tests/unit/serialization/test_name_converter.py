@@ -1,6 +1,6 @@
 """Unit tests for NameConverter."""
 
-from armodel.serialization.name_converter import NameConverter
+from armodel2.serialization.name_converter import NameConverter
 
 
 class TestNameConverter:
