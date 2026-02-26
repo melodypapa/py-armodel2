@@ -27,19 +27,40 @@
         }
       ],
       "attributes": {
-        "modeDriven": {
+        "modeDrivenFalseCondition": {
           "type": "ModeDrivenTransmissionModeCondition",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines the trigger for the Com_SwitchIpduTxMode"
         },
-        "transmission": {
-          "type": "any (TransmissionMode)",
+        "modeDrivenTrueCondition": {
+          "type": "ModeDrivenTransmissionModeCondition",
+          "multiplicity": "*",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Defines the trigger for the Com_SwitchIpduTxMode"
+        },
+        "transmissionModeCondition": {
+          "type": "TransmissionModeCondition",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Timing Specification if the COM Transmission Mode is true. The Transmission Mode Selector is defined to be if at least one Condition evaluates to true."
+        },
+        "transmissionModeFalseTiming": {
+          "type": "TransmissionModeTiming",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Timing Specification if the COM Transmission Mode is false. "
+        },
+        "transmissionModeTrueTiming": {
+          "type": "TransmissionModeTiming",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Timing Specification if the COM Transmission Mode is true."
         }
       }
     },

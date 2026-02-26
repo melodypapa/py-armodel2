@@ -6,12 +6,18 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication_Timing.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.mode_driven_transmission_mode_condition import (
     ModeDrivenTransmissionModeCondition,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.transmission_mode_condition import (
+    TransmissionModeCondition,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.transmission_mode_timing import (
+    TransmissionModeTiming,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
@@ -29,13 +35,19 @@ class TransmissionModeDeclaration(ARObject):
         """
         return False
 
-    mode_drivens: list[ModeDrivenTransmissionModeCondition]
-    transmission: Optional[Any]
+    mode_driven_false_conditions: list[ModeDrivenTransmissionModeCondition]
+    mode_driven_true_conditions: list[ModeDrivenTransmissionModeCondition]
+    transmission_mode_condition: Optional[TransmissionModeCondition]
+    transmission_mode_false_timing: Optional[TransmissionModeTiming]
+    transmission_mode_true_timing: Optional[TransmissionModeTiming]
     def __init__(self) -> None:
         """Initialize TransmissionModeDeclaration."""
         super().__init__()
-        self.mode_drivens: list[ModeDrivenTransmissionModeCondition] = []
-        self.transmission: Optional[Any] = None
+        self.mode_driven_false_conditions: list[ModeDrivenTransmissionModeCondition] = []
+        self.mode_driven_true_conditions: list[ModeDrivenTransmissionModeCondition] = []
+        self.transmission_mode_condition: Optional[TransmissionModeCondition] = None
+        self.transmission_mode_false_timing: Optional[TransmissionModeTiming] = None
+        self.transmission_mode_true_timing: Optional[TransmissionModeTiming] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TransmissionModeDeclaration to XML element.
@@ -61,22 +73,60 @@ class TransmissionModeDeclaration(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize mode_drivens (list to container "MODE-DRIVENS")
-        if self.mode_drivens:
-            wrapper = ET.Element("MODE-DRIVENS")
-            for item in self.mode_drivens:
+        # Serialize mode_driven_false_conditions (list to container "MODE-DRIVEN-FALSE-CONDITIONS")
+        if self.mode_driven_false_conditions:
+            wrapper = ET.Element("MODE-DRIVEN-FALSE-CONDITIONS")
+            for item in self.mode_driven_false_conditions:
                 serialized = SerializationHelper.serialize_item(item, "ModeDrivenTransmissionModeCondition")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize transmission
-        if self.transmission is not None:
-            serialized = SerializationHelper.serialize_item(self.transmission, "Any")
+        # Serialize mode_driven_true_conditions (list to container "MODE-DRIVEN-TRUE-CONDITIONS")
+        if self.mode_driven_true_conditions:
+            wrapper = ET.Element("MODE-DRIVEN-TRUE-CONDITIONS")
+            for item in self.mode_driven_true_conditions:
+                serialized = SerializationHelper.serialize_item(item, "ModeDrivenTransmissionModeCondition")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize transmission_mode_condition
+        if self.transmission_mode_condition is not None:
+            serialized = SerializationHelper.serialize_item(self.transmission_mode_condition, "TransmissionModeCondition")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSMISSION")
+                wrapped = ET.Element("TRANSMISSION-MODE-CONDITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transmission_mode_false_timing
+        if self.transmission_mode_false_timing is not None:
+            serialized = SerializationHelper.serialize_item(self.transmission_mode_false_timing, "TransmissionModeTiming")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSMISSION-MODE-FALSE-TIMING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transmission_mode_true_timing
+        if self.transmission_mode_true_timing is not None:
+            serialized = SerializationHelper.serialize_item(self.transmission_mode_true_timing, "TransmissionModeTiming")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSMISSION-MODE-TRUE-TIMING")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -100,21 +150,43 @@ class TransmissionModeDeclaration(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransmissionModeDeclaration, cls).deserialize(element)
 
-        # Parse mode_drivens (list from container "MODE-DRIVENS")
-        obj.mode_drivens = []
-        container = SerializationHelper.find_child_element(element, "MODE-DRIVENS")
+        # Parse mode_driven_false_conditions (list from container "MODE-DRIVEN-FALSE-CONDITIONS")
+        obj.mode_driven_false_conditions = []
+        container = SerializationHelper.find_child_element(element, "MODE-DRIVEN-FALSE-CONDITIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.mode_drivens.append(child_value)
+                    obj.mode_driven_false_conditions.append(child_value)
 
-        # Parse transmission
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION")
+        # Parse mode_driven_true_conditions (list from container "MODE-DRIVEN-TRUE-CONDITIONS")
+        obj.mode_driven_true_conditions = []
+        container = SerializationHelper.find_child_element(element, "MODE-DRIVEN-TRUE-CONDITIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mode_driven_true_conditions.append(child_value)
+
+        # Parse transmission_mode_condition
+        child = SerializationHelper.find_child_element(element, "TRANSMISSION-MODE-CONDITION")
         if child is not None:
-            transmission_value = child.text
-            obj.transmission = transmission_value
+            transmission_mode_condition_value = SerializationHelper.deserialize_by_tag(child, "TransmissionModeCondition")
+            obj.transmission_mode_condition = transmission_mode_condition_value
+
+        # Parse transmission_mode_false_timing
+        child = SerializationHelper.find_child_element(element, "TRANSMISSION-MODE-FALSE-TIMING")
+        if child is not None:
+            transmission_mode_false_timing_value = SerializationHelper.deserialize_by_tag(child, "TransmissionModeTiming")
+            obj.transmission_mode_false_timing = transmission_mode_false_timing_value
+
+        # Parse transmission_mode_true_timing
+        child = SerializationHelper.find_child_element(element, "TRANSMISSION-MODE-TRUE-TIMING")
+        if child is not None:
+            transmission_mode_true_timing_value = SerializationHelper.deserialize_by_tag(child, "TransmissionModeTiming")
+            obj.transmission_mode_true_timing = transmission_mode_true_timing_value
 
         return obj
 
@@ -129,8 +201,8 @@ class TransmissionModeDeclarationBuilder(BuilderBase):
         self._obj: TransmissionModeDeclaration = TransmissionModeDeclaration()
 
 
-    def with_mode_drivens(self, items: list[ModeDrivenTransmissionModeCondition]) -> "TransmissionModeDeclarationBuilder":
-        """Set mode_drivens list attribute.
+    def with_mode_driven_false_conditions(self, items: list[ModeDrivenTransmissionModeCondition]) -> "TransmissionModeDeclarationBuilder":
+        """Set mode_driven_false_conditions list attribute.
 
         Args:
             items: List of items to set
@@ -138,11 +210,23 @@ class TransmissionModeDeclarationBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.mode_drivens = list(items) if items else []
+        self._obj.mode_driven_false_conditions = list(items) if items else []
         return self
 
-    def with_transmission(self, value: Optional[any (TransmissionMode)]) -> "TransmissionModeDeclarationBuilder":
-        """Set transmission attribute.
+    def with_mode_driven_true_conditions(self, items: list[ModeDrivenTransmissionModeCondition]) -> "TransmissionModeDeclarationBuilder":
+        """Set mode_driven_true_conditions list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mode_driven_true_conditions = list(items) if items else []
+        return self
+
+    def with_transmission_mode_condition(self, value: Optional[TransmissionModeCondition]) -> "TransmissionModeDeclarationBuilder":
+        """Set transmission_mode_condition attribute.
 
         Args:
             value: Value to set
@@ -152,12 +236,40 @@ class TransmissionModeDeclarationBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.transmission = value
+        self._obj.transmission_mode_condition = value
+        return self
+
+    def with_transmission_mode_false_timing(self, value: Optional[TransmissionModeTiming]) -> "TransmissionModeDeclarationBuilder":
+        """Set transmission_mode_false_timing attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.transmission_mode_false_timing = value
+        return self
+
+    def with_transmission_mode_true_timing(self, value: Optional[TransmissionModeTiming]) -> "TransmissionModeDeclarationBuilder":
+        """Set transmission_mode_true_timing attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.transmission_mode_true_timing = value
         return self
 
 
-    def add_mode_driven(self, item: ModeDrivenTransmissionModeCondition) -> "TransmissionModeDeclarationBuilder":
-        """Add a single item to mode_drivens list.
+    def add_mode_driven_false_condition(self, item: ModeDrivenTransmissionModeCondition) -> "TransmissionModeDeclarationBuilder":
+        """Add a single item to mode_driven_false_conditions list.
 
         Args:
             item: Item to add
@@ -165,16 +277,37 @@ class TransmissionModeDeclarationBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.mode_drivens.append(item)
+        self._obj.mode_driven_false_conditions.append(item)
         return self
 
-    def clear_mode_drivens(self) -> "TransmissionModeDeclarationBuilder":
-        """Clear all items from mode_drivens list.
+    def clear_mode_driven_false_conditions(self) -> "TransmissionModeDeclarationBuilder":
+        """Clear all items from mode_driven_false_conditions list.
 
         Returns:
             self for method chaining
         """
-        self._obj.mode_drivens = []
+        self._obj.mode_driven_false_conditions = []
+        return self
+
+    def add_mode_driven_true_condition(self, item: ModeDrivenTransmissionModeCondition) -> "TransmissionModeDeclarationBuilder":
+        """Add a single item to mode_driven_true_conditions list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mode_driven_true_conditions.append(item)
+        return self
+
+    def clear_mode_driven_true_conditions(self) -> "TransmissionModeDeclarationBuilder":
+        """Clear all items from mode_driven_true_conditions list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mode_driven_true_conditions = []
         return self
 
 
