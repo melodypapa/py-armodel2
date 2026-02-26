@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_Chapters.classes.json"""
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import atp_mixed
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.MSR.Documentation.BlockElements.documentation_block import (
@@ -19,6 +20,8 @@ from armodel2.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.table
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
+
+@atp_mixed()
 
 class TopicContent(ARObject):
     """AUTOSAR TopicContent."""
@@ -43,7 +46,7 @@ class TopicContent(ARObject):
         self.traceable_table: Any = None
 
     def serialize(self) -> ET.Element:
-        """Serialize TopicContent to XML element.
+        """Serialize TopicContent to XML element (atp_mixed - no wrapping).
 
         Returns:
             xml.etree.ElementTree.Element representing this object
@@ -55,22 +58,21 @@ class TopicContent(ARObject):
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TopicContent, self).serialize()
 
-        # Copy all attributes from parent element
+        # Copy all attributes from parent element to current element
         elem.attrib.update(parent_elem.attrib)
 
-        # Copy text from parent element
+        # Copy text from parent element to current element
         if parent_elem.text:
             elem.text = parent_elem.text
 
-        # Copy all children from parent element
+        # Copy all children from parent element to current element
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize block_level
+        # Serialize block_level (complex type)
         if self.block_level is not None:
             serialized = SerializationHelper.serialize_item(self.block_level, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("BLOCK-LEVEL")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -80,11 +82,10 @@ class TopicContent(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize table
+        # Serialize table (complex type)
         if self.table is not None:
             serialized = SerializationHelper.serialize_item(self.table, "Table")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("TABLE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -94,11 +95,10 @@ class TopicContent(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize traceable_table
+        # Serialize traceable_table (complex type)
         if self.traceable_table is not None:
             serialized = SerializationHelper.serialize_item(self.traceable_table, "Any")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("TRACEABLE-TABLE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -112,7 +112,7 @@ class TopicContent(ARObject):
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TopicContent":
-        """Deserialize XML element to TopicContent object.
+        """Deserialize XML element to TopicContent object (atp_mixed - no unwrapping).
 
         Args:
             element: XML element to deserialize from
@@ -138,7 +138,7 @@ class TopicContent(ARObject):
         # Parse traceable_table
         child = SerializationHelper.find_child_element(element, "TRACEABLE-TABLE")
         if child is not None:
-            traceable_table_value = child.text
+            traceable_table_value = SerializationHelper.deserialize_by_tag(child, "Any")
             obj.traceable_table = traceable_table_value
 
         return obj

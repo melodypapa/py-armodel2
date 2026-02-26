@@ -90,8 +90,8 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
                 wrapped = ET.Element("DDS-FIELD-REPLY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -104,8 +104,8 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
                 wrapped = ET.Element("DDS-FIELD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -118,8 +118,8 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
                 wrapped = ET.Element("DDS-METHOD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -132,8 +132,8 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
                 wrapped = ET.Element("DDS-SERVICE-QOS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -146,8 +146,8 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
                 wrapped = ET.Element("SERVICE-INSTANCE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -160,8 +160,8 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
                 wrapped = ET.Element("SERVICE-INTERFACE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

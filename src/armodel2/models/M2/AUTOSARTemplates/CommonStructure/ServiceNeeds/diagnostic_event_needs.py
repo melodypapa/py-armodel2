@@ -104,8 +104,8 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
                 wrapped = ET.Element("DIAG-EVENT-DEBOUNCE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -118,8 +118,8 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
                 wrapped = ET.Element("INHIBITING-FID-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -149,8 +149,8 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
                 wrapped = ET.Element("PRESTORED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -163,8 +163,8 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
                 wrapped = ET.Element("USES-MONITOR")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

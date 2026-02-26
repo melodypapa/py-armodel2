@@ -73,47 +73,44 @@ class ChapterModel(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize chapter
+        # Serialize chapter (atp_mixed - append children directly)
         if self.chapter is not None:
             serialized = SerializationHelper.serialize_item(self.chapter, "ChapterOrMsrQuery")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CHAPTER")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
-        # Serialize chapter_content
+        # Serialize chapter_content (atp_mixed - append children directly)
         if self.chapter_content is not None:
             serialized = SerializationHelper.serialize_item(self.chapter_content, "ChapterContent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CHAPTER-CONTENT")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
-        # Serialize topic1
+        # Serialize topic1 (atp_mixed - append children directly)
         if self.topic1 is not None:
             serialized = SerializationHelper.serialize_item(self.topic1, "TopicOrMsrQuery")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TOPIC1")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         return elem
 

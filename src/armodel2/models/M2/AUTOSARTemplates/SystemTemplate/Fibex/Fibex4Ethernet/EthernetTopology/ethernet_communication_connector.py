@@ -85,8 +85,8 @@ class EthernetCommunicationConnector(CommunicationConnector):
                 wrapped = ET.Element("ETH-IP-PROPS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -99,8 +99,8 @@ class EthernetCommunicationConnector(CommunicationConnector):
                 wrapped = ET.Element("MAXIMUM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -113,8 +113,8 @@ class EthernetCommunicationConnector(CommunicationConnector):
                 wrapped = ET.Element("NEIGHBOR-CACHE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -127,8 +127,8 @@ class EthernetCommunicationConnector(CommunicationConnector):
                 wrapped = ET.Element("PATH-MTU")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -141,8 +141,8 @@ class EthernetCommunicationConnector(CommunicationConnector):
                 wrapped = ET.Element("PATH-MTU-TIMEOUT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

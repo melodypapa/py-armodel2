@@ -80,8 +80,8 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
                 wrapped = ET.Element("DERIVATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -94,8 +94,8 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
                 wrapped = ET.Element("SYMBOLIC-NAME")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -108,8 +108,8 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
                 wrapped = ET.Element("WITH-AUTO")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

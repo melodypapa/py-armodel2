@@ -93,25 +93,24 @@ class SwAxisCont(ARObject):
                 wrapped = ET.Element("CATEGORY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_arraysize_ref
+        # Serialize sw_arraysize_ref (atp_mixed - append children directly)
         if self.sw_arraysize_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sw_arraysize_ref, "ValueList")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-ARRAYSIZE-REF")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         # Serialize sw_axis_index
         if self.sw_axis_index is not None:
@@ -121,25 +120,24 @@ class SwAxisCont(ARObject):
                 wrapped = ET.Element("SW-AXIS-INDEX")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_values_phys
+        # Serialize sw_values_phys (atp_mixed - append children directly)
         if self.sw_values_phys is not None:
             serialized = SerializationHelper.serialize_item(self.sw_values_phys, "SwValues")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-VALUES-PHYS")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         # Serialize unit_ref
         if self.unit_ref is not None:
@@ -149,8 +147,8 @@ class SwAxisCont(ARObject):
                 wrapped = ET.Element("UNIT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -163,8 +161,8 @@ class SwAxisCont(ARObject):
                 wrapped = ET.Element("UNIT-DISPLAY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

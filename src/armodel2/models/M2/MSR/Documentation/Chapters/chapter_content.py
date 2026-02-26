@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_Chapters.classes.json"""
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import atp_mixed
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.MSR.Documentation.BlockElements.GerneralParameters.prms import (
@@ -19,6 +20,8 @@ from armodel2.models.M2.MSR.Documentation.Chapters.topic_content_or_msr_query im
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
+
+@atp_mixed()
 
 class ChapterContent(ARObject):
     """AUTOSAR ChapterContent."""
@@ -41,7 +44,7 @@ class ChapterContent(ARObject):
         self.topic_content_or_msr: Optional[TopicContentOrMsrQuery] = None
 
     def serialize(self) -> ET.Element:
-        """Serialize ChapterContent to XML element.
+        """Serialize ChapterContent to XML element (atp_mixed - no wrapping).
 
         Returns:
             xml.etree.ElementTree.Element representing this object
@@ -53,22 +56,21 @@ class ChapterContent(ARObject):
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ChapterContent, self).serialize()
 
-        # Copy all attributes from parent element
+        # Copy all attributes from parent element to current element
         elem.attrib.update(parent_elem.attrib)
 
-        # Copy text from parent element
+        # Copy text from parent element to current element
         if parent_elem.text:
             elem.text = parent_elem.text
 
-        # Copy all children from parent element
+        # Copy all children from parent element to current element
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize prms
+        # Serialize prms (complex type)
         if self.prms is not None:
             serialized = SerializationHelper.serialize_item(self.prms, "Prms")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("PRMS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -78,11 +80,10 @@ class ChapterContent(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize topic_content_or_msr
+        # Serialize topic_content_or_msr (complex type)
         if self.topic_content_or_msr is not None:
             serialized = SerializationHelper.serialize_item(self.topic_content_or_msr, "TopicContentOrMsrQuery")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("TOPIC-CONTENT-OR-MSR")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -96,7 +97,7 @@ class ChapterContent(ARObject):
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ChapterContent":
-        """Deserialize XML element to ChapterContent object.
+        """Deserialize XML element to ChapterContent object (atp_mixed - no unwrapping).
 
         Args:
             element: XML element to deserialize from

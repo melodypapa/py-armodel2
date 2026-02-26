@@ -75,25 +75,24 @@ class ValueGroup(ARObject):
                 wrapped = ET.Element("LABEL")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize vg_contents
+        # Serialize vg_contents (atp_mixed - append children directly)
         if self.vg_contents is not None:
             serialized = SerializationHelper.serialize_item(self.vg_contents, "SwValues")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VG-CONTENTS")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         return elem
 

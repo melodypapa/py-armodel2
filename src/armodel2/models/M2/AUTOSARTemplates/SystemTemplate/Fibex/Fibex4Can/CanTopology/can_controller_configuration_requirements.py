@@ -81,8 +81,8 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
                 wrapped = ET.Element("MAX-NUMBER-OF-TIME-QUANTA-PER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -95,8 +95,8 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
                 wrapped = ET.Element("MAX-SAMPLE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -109,8 +109,8 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
                 wrapped = ET.Element("MAX-SYNC-JUMP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -123,8 +123,8 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
                 wrapped = ET.Element("MIN-NUMBER-OF-TIME-QUANTA-PER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -137,8 +137,8 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
                 wrapped = ET.Element("MIN-SAMPLE-POINT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -151,8 +151,8 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
                 wrapped = ET.Element("MIN-SYNC-JUMP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate.classes.
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import atp_mixed
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
@@ -24,6 +25,8 @@ if TYPE_CHECKING:
 
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
+@atp_mixed()
+
 class HwPinGroupContent(ARObject):
     """AUTOSAR HwPinGroupContent."""
 
@@ -45,7 +48,7 @@ class HwPinGroupContent(ARObject):
         self.hw_pin_group_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
-        """Serialize HwPinGroupContent to XML element.
+        """Serialize HwPinGroupContent to XML element (atp_mixed - no wrapping).
 
         Returns:
             xml.etree.ElementTree.Element representing this object
@@ -57,22 +60,21 @@ class HwPinGroupContent(ARObject):
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(HwPinGroupContent, self).serialize()
 
-        # Copy all attributes from parent element
+        # Copy all attributes from parent element to current element
         elem.attrib.update(parent_elem.attrib)
 
-        # Copy text from parent element
+        # Copy text from parent element to current element
         if parent_elem.text:
             elem.text = parent_elem.text
 
-        # Copy all children from parent element
+        # Copy all children from parent element to current element
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize hw_pin
+        # Serialize hw_pin (complex type)
         if self.hw_pin is not None:
             serialized = SerializationHelper.serialize_item(self.hw_pin, "HwPin")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("HW-PIN")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -82,11 +84,10 @@ class HwPinGroupContent(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize hw_pin_group_ref
+        # Serialize hw_pin_group_ref (reference)
         if self.hw_pin_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.hw_pin_group_ref, "HwPinGroup")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("HW-PIN-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -100,7 +101,7 @@ class HwPinGroupContent(ARObject):
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "HwPinGroupContent":
-        """Deserialize XML element to HwPinGroupContent object.
+        """Deserialize XML element to HwPinGroupContent object (atp_mixed - no unwrapping).
 
         Args:
             element: XML element to deserialize from
@@ -120,7 +121,7 @@ class HwPinGroupContent(ARObject):
         # Parse hw_pin_group_ref
         child = SerializationHelper.find_child_element(element, "HW-PIN-GROUP-REF")
         if child is not None:
-            hw_pin_group_ref_value = ARRef.deserialize(child)
+            hw_pin_group_ref_value = SerializationHelper.deserialize_by_tag(child, "HwPinGroup")
             obj.hw_pin_group_ref = hw_pin_group_ref_value
 
         return obj

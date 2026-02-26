@@ -78,8 +78,8 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
                 wrapped = ET.Element("ASSIGNED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -92,8 +92,8 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
                 wrapped = ET.Element("ASSIGNED-LIN-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

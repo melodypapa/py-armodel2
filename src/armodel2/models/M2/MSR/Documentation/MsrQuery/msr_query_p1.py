@@ -76,25 +76,24 @@ class MsrQueryP1(Paginateable):
                 wrapped = ET.Element("MSR-QUERY-PROPS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize msr_query_result
+        # Serialize msr_query_result (atp_mixed - append children directly)
         if self.msr_query_result is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query_result, "TopicContent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MSR-QUERY-RESULT")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         return elem
 

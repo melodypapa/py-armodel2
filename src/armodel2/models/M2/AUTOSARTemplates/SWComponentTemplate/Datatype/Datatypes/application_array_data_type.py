@@ -78,8 +78,8 @@ class ApplicationArrayDataType(ApplicationCompositeDataType):
                 wrapped = ET.Element("DYNAMIC-ARRAY-SIZE-PROFILE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -92,8 +92,8 @@ class ApplicationArrayDataType(ApplicationCompositeDataType):
                 wrapped = ET.Element("ELEMENT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

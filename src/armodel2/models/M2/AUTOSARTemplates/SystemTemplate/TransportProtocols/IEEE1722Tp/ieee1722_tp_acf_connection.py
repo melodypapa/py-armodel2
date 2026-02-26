@@ -89,8 +89,8 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
                 wrapped = ET.Element("COLLECTION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -103,8 +103,8 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
                 wrapped = ET.Element("MIXED-BUS-TYPE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

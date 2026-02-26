@@ -13,7 +13,12 @@ from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
+    Integer,
     NameToken,
+    NameTokens,
+)
+from armodel2.models.M2.MSR.DataDictionary.RecordLayout import (
+    AxisIndexType,
 )
 from armodel2.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
     MultiLanguageOverviewParagraph,
@@ -21,8 +26,8 @@ from armodel2.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_lang
 from armodel2.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import (
     SwBaseType,
 )
-from armodel2.models.M2.MSR.DataDictionary.Axis.sw_generic_axis_param import (
-    SwGenericAxisParam,
+from armodel2.models.M2.MSR.DataDictionary.Axis.sw_generic_axis_param_type import (
+    SwGenericAxisParamType,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -40,19 +45,25 @@ class SwRecordLayoutV(ARObject):
         """
         return False
 
+    short_label: Optional[Identifier]
     base_type_ref: Optional[ARRef]
     desc: Optional[MultiLanguageOverviewParagraph]
-    short_label: Optional[Identifier]
-    sw_generic_axis_param_ref: Optional[ARRef]
-    sw_record: Optional[NameToken]
+    sw_generic_axis_param_type_ref: Optional[ARRef]
+    sw_record_layout_v_axis: Optional[AxisIndexType]
+    sw_record_layout_v_fix_value: Optional[Integer]
+    sw_record_layout_v_index: Optional[NameTokens]
+    sw_record_layout_v_prop: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize SwRecordLayoutV."""
         super().__init__()
+        self.short_label: Optional[Identifier] = None
         self.base_type_ref: Optional[ARRef] = None
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
-        self.short_label: Optional[Identifier] = None
-        self.sw_generic_axis_param_ref: Optional[ARRef] = None
-        self.sw_record: Optional[NameToken] = None
+        self.sw_generic_axis_param_type_ref: Optional[ARRef] = None
+        self.sw_record_layout_v_axis: Optional[AxisIndexType] = None
+        self.sw_record_layout_v_fix_value: Optional[Integer] = None
+        self.sw_record_layout_v_index: Optional[NameTokens] = None
+        self.sw_record_layout_v_prop: Optional[NameToken] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwRecordLayoutV to XML element.
@@ -78,6 +89,20 @@ class SwRecordLayoutV(ARObject):
         for child in parent_elem:
             elem.append(child)
 
+        # Serialize short_label
+        if self.short_label is not None:
+            serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHORT-LABEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
         # Serialize base_type_ref
         if self.base_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.base_type_ref, "SwBaseType")
@@ -86,8 +111,8 @@ class SwRecordLayoutV(ARObject):
                 wrapped = ET.Element("BASE-TYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -100,50 +125,78 @@ class SwRecordLayoutV(ARObject):
                 wrapped = ET.Element("DESC")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize short_label
-        if self.short_label is not None:
-            serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
+        # Serialize sw_generic_axis_param_type_ref
+        if self.sw_generic_axis_param_type_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_generic_axis_param_type_ref, "SwGenericAxisParamType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
+                wrapped = ET.Element("SW-GENERIC-AXIS-PARAM-TYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_generic_axis_param_ref
-        if self.sw_generic_axis_param_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_generic_axis_param_ref, "SwGenericAxisParam")
+        # Serialize sw_record_layout_v_axis
+        if self.sw_record_layout_v_axis is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_record_layout_v_axis, "AxisIndexType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-GENERIC-AXIS-PARAM-REF")
+                wrapped = ET.Element("SW-RECORD-LAYOUT-V-AXIS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_record
-        if self.sw_record is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_record, "NameToken")
+        # Serialize sw_record_layout_v_fix_value
+        if self.sw_record_layout_v_fix_value is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_record_layout_v_fix_value, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD")
+                wrapped = ET.Element("SW-RECORD-LAYOUT-V-FIX-VALUE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_record_layout_v_index
+        if self.sw_record_layout_v_index is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_record_layout_v_index, "NameTokens")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-RECORD-LAYOUT-V-INDEX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_record_layout_v_prop
+        if self.sw_record_layout_v_prop is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_record_layout_v_prop, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-RECORD-LAYOUT-V-PROP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -163,6 +216,12 @@ class SwRecordLayoutV(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwRecordLayoutV, cls).deserialize(element)
 
+        # Parse short_label
+        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
+            obj.short_label = short_label_value
+
         # Parse base_type_ref
         child = SerializationHelper.find_child_element(element, "BASE-TYPE-REF")
         if child is not None:
@@ -175,23 +234,35 @@ class SwRecordLayoutV(ARObject):
             desc_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
             obj.desc = desc_value
 
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
+        # Parse sw_generic_axis_param_type_ref
+        child = SerializationHelper.find_child_element(element, "SW-GENERIC-AXIS-PARAM-TYPE-REF")
         if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
+            sw_generic_axis_param_type_ref_value = ARRef.deserialize(child)
+            obj.sw_generic_axis_param_type_ref = sw_generic_axis_param_type_ref_value
 
-        # Parse sw_generic_axis_param_ref
-        child = SerializationHelper.find_child_element(element, "SW-GENERIC-AXIS-PARAM-REF")
+        # Parse sw_record_layout_v_axis
+        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-V-AXIS")
         if child is not None:
-            sw_generic_axis_param_ref_value = ARRef.deserialize(child)
-            obj.sw_generic_axis_param_ref = sw_generic_axis_param_ref_value
+            sw_record_layout_v_axis_value = child.text
+            obj.sw_record_layout_v_axis = sw_record_layout_v_axis_value
 
-        # Parse sw_record
-        child = SerializationHelper.find_child_element(element, "SW-RECORD")
+        # Parse sw_record_layout_v_fix_value
+        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-V-FIX-VALUE")
         if child is not None:
-            sw_record_value = child.text
-            obj.sw_record = sw_record_value
+            sw_record_layout_v_fix_value_value = child.text
+            obj.sw_record_layout_v_fix_value = sw_record_layout_v_fix_value_value
+
+        # Parse sw_record_layout_v_index
+        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-V-INDEX")
+        if child is not None:
+            sw_record_layout_v_index_value = child.text
+            obj.sw_record_layout_v_index = sw_record_layout_v_index_value
+
+        # Parse sw_record_layout_v_prop
+        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-V-PROP")
+        if child is not None:
+            sw_record_layout_v_prop_value = child.text
+            obj.sw_record_layout_v_prop = sw_record_layout_v_prop_value
 
         return obj
 
@@ -205,6 +276,20 @@ class SwRecordLayoutVBuilder(BuilderBase):
         super().__init__()
         self._obj: SwRecordLayoutV = SwRecordLayoutV()
 
+
+    def with_short_label(self, value: Optional[Identifier]) -> "SwRecordLayoutVBuilder":
+        """Set short_label attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.short_label = value
+        return self
 
     def with_base_type(self, value: Optional[SwBaseType]) -> "SwRecordLayoutVBuilder":
         """Set base_type attribute.
@@ -234,8 +319,8 @@ class SwRecordLayoutVBuilder(BuilderBase):
         self._obj.desc = value
         return self
 
-    def with_short_label(self, value: Optional[Identifier]) -> "SwRecordLayoutVBuilder":
-        """Set short_label attribute.
+    def with_sw_generic_axis_param_type(self, value: Optional[SwGenericAxisParamType]) -> "SwRecordLayoutVBuilder":
+        """Set sw_generic_axis_param_type attribute.
 
         Args:
             value: Value to set
@@ -245,11 +330,11 @@ class SwRecordLayoutVBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.short_label = value
+        self._obj.sw_generic_axis_param_type = value
         return self
 
-    def with_sw_generic_axis_param(self, value: Optional[SwGenericAxisParam]) -> "SwRecordLayoutVBuilder":
-        """Set sw_generic_axis_param attribute.
+    def with_sw_record_layout_v_axis(self, value: Optional[AxisIndexType]) -> "SwRecordLayoutVBuilder":
+        """Set sw_record_layout_v_axis attribute.
 
         Args:
             value: Value to set
@@ -259,11 +344,11 @@ class SwRecordLayoutVBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_generic_axis_param = value
+        self._obj.sw_record_layout_v_axis = value
         return self
 
-    def with_sw_record(self, value: Optional[NameToken]) -> "SwRecordLayoutVBuilder":
-        """Set sw_record attribute.
+    def with_sw_record_layout_v_fix_value(self, value: Optional[Integer]) -> "SwRecordLayoutVBuilder":
+        """Set sw_record_layout_v_fix_value attribute.
 
         Args:
             value: Value to set
@@ -273,7 +358,35 @@ class SwRecordLayoutVBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_record = value
+        self._obj.sw_record_layout_v_fix_value = value
+        return self
+
+    def with_sw_record_layout_v_index(self, value: Optional[NameTokens]) -> "SwRecordLayoutVBuilder":
+        """Set sw_record_layout_v_index attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_record_layout_v_index = value
+        return self
+
+    def with_sw_record_layout_v_prop(self, value: Optional[NameToken]) -> "SwRecordLayoutVBuilder":
+        """Set sw_record_layout_v_prop attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_record_layout_v_prop = value
         return self
 
 

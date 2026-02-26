@@ -95,8 +95,8 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
                 wrapped = ET.Element("DATA-IDENTIFIER-IDENTIFIER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -109,8 +109,8 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
                 wrapped = ET.Element("FREEZE-CURRENT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -123,8 +123,8 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
                 wrapped = ET.Element("IO-CONTROL-CLASS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -137,8 +137,8 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
                 wrapped = ET.Element("RESET-TO-DEFAULT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -151,8 +151,8 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
                 wrapped = ET.Element("SHORT-TERM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

@@ -19,6 +19,7 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 )
 from armodel2.models.M2.MSR.DataDictionary.RecordLayout import (
     AsamRecordLayoutSemantics,
+    AxisIndexType,
     RecordLayoutIteratorPoint,
 )
 from armodel2.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
@@ -48,12 +49,12 @@ class SwRecordLayoutGroup(ARObject):
     short_label: Optional[Identifier]
     sw_generic_axis_param_type_ref: Optional[ARRef]
     sw_record_layout_component: Optional[Identifier]
-    sw_record_layout_group_axis: Optional[AxisIndexType ]
+    sw_record_layout_group_axis: Optional[AxisIndexType]
+    sw_record_layout_group_from: Optional[RecordLayoutIteratorPoint]
+    sw_record_layout_group_to: Optional[RecordLayoutIteratorPoint]
     sw_record_layout_group_content_type: Optional[swRecordLayoutGroupContent]
     sw_record_layout_group_index: Optional[NameToken]
     sw_record_layout_group_step: Optional[Integer]
-    sw_record_layout_group_from: Optional[RecordLayoutIteratorPoint]
-    sw_record_layout_group_to: Optional[RecordLayoutIteratorPoint]
     def __init__(self) -> None:
         """Initialize SwRecordLayoutGroup."""
         super().__init__()
@@ -62,12 +63,12 @@ class SwRecordLayoutGroup(ARObject):
         self.short_label: Optional[Identifier] = None
         self.sw_generic_axis_param_type_ref: Optional[ARRef] = None
         self.sw_record_layout_component: Optional[Identifier] = None
-        self.sw_record_layout_group_axis: Optional[AxisIndexType ] = None
+        self.sw_record_layout_group_axis: Optional[AxisIndexType] = None
+        self.sw_record_layout_group_from: Optional[RecordLayoutIteratorPoint] = None
+        self.sw_record_layout_group_to: Optional[RecordLayoutIteratorPoint] = None
         self.sw_record_layout_group_content_type: Optional[swRecordLayoutGroupContent] = None
         self.sw_record_layout_group_index: Optional[NameToken] = None
         self.sw_record_layout_group_step: Optional[Integer] = None
-        self.sw_record_layout_group_from: Optional[RecordLayoutIteratorPoint] = None
-        self.sw_record_layout_group_to: Optional[RecordLayoutIteratorPoint] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwRecordLayoutGroup to XML element.
@@ -101,8 +102,8 @@ class SwRecordLayoutGroup(ARObject):
                 wrapped = ET.Element("CATEGORY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -115,8 +116,8 @@ class SwRecordLayoutGroup(ARObject):
                 wrapped = ET.Element("DESC")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -129,8 +130,8 @@ class SwRecordLayoutGroup(ARObject):
                 wrapped = ET.Element("SHORT-LABEL")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -143,8 +144,8 @@ class SwRecordLayoutGroup(ARObject):
                 wrapped = ET.Element("SW-GENERIC-AXIS-PARAM-TYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -157,64 +158,22 @@ class SwRecordLayoutGroup(ARObject):
                 wrapped = ET.Element("SW-RECORD-LAYOUT-COMPONENT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
 
         # Serialize sw_record_layout_group_axis
         if self.sw_record_layout_group_axis is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_record_layout_group_axis, "AxisIndexType ")
+            serialized = SerializationHelper.serialize_item(self.sw_record_layout_group_axis, "AxisIndexType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-RECORD-LAYOUT-GROUP-AXIS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize sw_record_layout_group_content_type
-        if self.sw_record_layout_group_content_type is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_record_layout_group_content_type, "swRecordLayoutGroupContent")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD-LAYOUT-GROUP-CONTENT-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize sw_record_layout_group_index
-        if self.sw_record_layout_group_index is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_record_layout_group_index, "NameToken")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD-LAYOUT-GROUP-INDEX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize sw_record_layout_group_step
-        if self.sw_record_layout_group_step is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_record_layout_group_step, "Integer")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD-LAYOUT-GROUP-STEP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -227,8 +186,8 @@ class SwRecordLayoutGroup(ARObject):
                 wrapped = ET.Element("SW-RECORD-LAYOUT-GROUP-FROM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -241,8 +200,49 @@ class SwRecordLayoutGroup(ARObject):
                 wrapped = ET.Element("SW-RECORD-LAYOUT-GROUP-TO")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_record_layout_group_content_type (atp_mixed - append children directly)
+        if self.sw_record_layout_group_content_type is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_record_layout_group_content_type, "swRecordLayoutGroupContent")
+            if serialized is not None:
+                # atpMixed type: append children directly without wrapper
+                if hasattr(serialized, 'attrib'):
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
+                for child in serialized:
+                    elem.append(child)
+
+        # Serialize sw_record_layout_group_index
+        if self.sw_record_layout_group_index is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_record_layout_group_index, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-RECORD-LAYOUT-GROUP-INDEX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_record_layout_group_step
+        if self.sw_record_layout_group_step is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_record_layout_group_step, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-RECORD-LAYOUT-GROUP-STEP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -295,8 +295,20 @@ class SwRecordLayoutGroup(ARObject):
         # Parse sw_record_layout_group_axis
         child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-AXIS")
         if child is not None:
-            sw_record_layout_group_axis_value = SerializationHelper.deserialize_by_tag(child, "AxisIndexType ")
+            sw_record_layout_group_axis_value = child.text
             obj.sw_record_layout_group_axis = sw_record_layout_group_axis_value
+
+        # Parse sw_record_layout_group_from
+        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-FROM")
+        if child is not None:
+            sw_record_layout_group_from_value = child.text
+            obj.sw_record_layout_group_from = sw_record_layout_group_from_value
+
+        # Parse sw_record_layout_group_to
+        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-TO")
+        if child is not None:
+            sw_record_layout_group_to_value = child.text
+            obj.sw_record_layout_group_to = sw_record_layout_group_to_value
 
         # Parse sw_record_layout_group_content_type
         child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-CONTENT-TYPE")
@@ -315,18 +327,6 @@ class SwRecordLayoutGroup(ARObject):
         if child is not None:
             sw_record_layout_group_step_value = child.text
             obj.sw_record_layout_group_step = sw_record_layout_group_step_value
-
-        # Parse sw_record_layout_group_from
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-FROM")
-        if child is not None:
-            sw_record_layout_group_from_value = child.text
-            obj.sw_record_layout_group_from = sw_record_layout_group_from_value
-
-        # Parse sw_record_layout_group_to
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-TO")
-        if child is not None:
-            sw_record_layout_group_to_value = child.text
-            obj.sw_record_layout_group_to = sw_record_layout_group_to_value
 
         return obj
 
@@ -411,7 +411,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
         self._obj.sw_record_layout_component = value
         return self
 
-    def with_sw_record_layout_group_axis(self, value: Optional[AxisIndexType ]) -> "SwRecordLayoutGroupBuilder":
+    def with_sw_record_layout_group_axis(self, value: Optional[AxisIndexType]) -> "SwRecordLayoutGroupBuilder":
         """Set sw_record_layout_group_axis attribute.
 
         Args:
@@ -423,6 +423,34 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
         self._obj.sw_record_layout_group_axis = value
+        return self
+
+    def with_sw_record_layout_group_from(self, value: Optional[RecordLayoutIteratorPoint]) -> "SwRecordLayoutGroupBuilder":
+        """Set sw_record_layout_group_from attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_record_layout_group_from = value
+        return self
+
+    def with_sw_record_layout_group_to(self, value: Optional[RecordLayoutIteratorPoint]) -> "SwRecordLayoutGroupBuilder":
+        """Set sw_record_layout_group_to attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_record_layout_group_to = value
         return self
 
     def with_sw_record_layout_group_content_type(self, value: Optional[swRecordLayoutGroupContent]) -> "SwRecordLayoutGroupBuilder":
@@ -465,34 +493,6 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
         self._obj.sw_record_layout_group_step = value
-        return self
-
-    def with_sw_record_layout_group_from(self, value: Optional[RecordLayoutIteratorPoint]) -> "SwRecordLayoutGroupBuilder":
-        """Set sw_record_layout_group_from attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_record_layout_group_from = value
-        return self
-
-    def with_sw_record_layout_group_to(self, value: Optional[RecordLayoutIteratorPoint]) -> "SwRecordLayoutGroupBuilder":
-        """Set sw_record_layout_group_to attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_record_layout_group_to = value
         return self
 
 

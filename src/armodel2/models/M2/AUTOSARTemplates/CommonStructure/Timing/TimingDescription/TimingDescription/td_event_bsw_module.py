@@ -74,8 +74,8 @@ class TDEventBswModule(TDEventBsw):
                 wrapped = ET.Element("BSW-MODULE-ENTRY-ENTRY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -88,8 +88,8 @@ class TDEventBswModule(TDEventBsw):
                 wrapped = ET.Element("TD-EVENT-BSW")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

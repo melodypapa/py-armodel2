@@ -76,8 +76,8 @@ class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
                 wrapped = ET.Element("BASE-FREQUENCY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -90,8 +90,8 @@ class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
                 wrapped = ET.Element("FRAME-SYNC-ENABLED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -104,8 +104,8 @@ class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
                 wrapped = ET.Element("TIMESTAMP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

@@ -106,8 +106,8 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
                 wrapped = ET.Element("AGING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -120,8 +120,8 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
                 wrapped = ET.Element("DIAGNOSTIC-MEMORY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -168,8 +168,8 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
                 wrapped = ET.Element("IMMEDIATE-NV")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -182,8 +182,8 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
                 wrapped = ET.Element("LEGISLATED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -196,8 +196,8 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
                 wrapped = ET.Element("MAX-NUMBER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -210,8 +210,8 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
                 wrapped = ET.Element("PRIORITY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -224,8 +224,8 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
                 wrapped = ET.Element("SIGNIFICANCE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
@@ -238,8 +238,8 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
                 wrapped = ET.Element("SNAPSHOT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)

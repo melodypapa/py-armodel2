@@ -11,6 +11,7 @@ JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import atp_mixed
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
@@ -19,6 +20,8 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
+
+@atp_mixed()
 
 class ValueList(ARObject):
     """AUTOSAR ValueList."""
@@ -39,7 +42,7 @@ class ValueList(ARObject):
         self.v: Optional[Numerical] = None
 
     def serialize(self) -> ET.Element:
-        """Serialize ValueList to XML element.
+        """Serialize ValueList to XML element (atp_mixed - no wrapping).
 
         Returns:
             xml.etree.ElementTree.Element representing this object
@@ -51,36 +54,28 @@ class ValueList(ARObject):
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ValueList, self).serialize()
 
-        # Copy all attributes from parent element
+        # Copy all attributes from parent element to current element
         elem.attrib.update(parent_elem.attrib)
 
-        # Copy text from parent element
+        # Copy text from parent element to current element
         if parent_elem.text:
             elem.text = parent_elem.text
 
-        # Copy all children from parent element
+        # Copy all children from parent element to current element
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize v
+        # Serialize v (primitive)
         if self.v is not None:
-            serialized = SerializationHelper.serialize_item(self.v, "Numerical")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("V")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+            child = ET.Element("V")
+            child.text = str(self.v)
+            elem.append(child)
 
         return elem
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ValueList":
-        """Deserialize XML element to ValueList object.
+        """Deserialize XML element to ValueList object (atp_mixed - no unwrapping).
 
         Args:
             element: XML element to deserialize from
@@ -94,7 +89,7 @@ class ValueList(ARObject):
         # Parse v
         child = SerializationHelper.find_child_element(element, "V")
         if child is not None:
-            v_value = child.text
+            v_value = SerializationHelper.deserialize_by_tag(child, "Numerical")
             obj.v = v_value
 
         return obj

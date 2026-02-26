@@ -74,6 +74,13 @@
         }
       ],
       "attributes": {
+        "shortLabel": {
+          "type": "Identifier",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies a name which can be used e.g."
+        },
         "baseType": {
           "type": "SwBaseType",
           "multiplicity": "0..1",
@@ -88,21 +95,35 @@
           "is_ref": false,
           "note": "This aggregation allows for a brief description about the record layout value which can help to identify In-depth documentation should be added to the the surrounding record layout."
         },
-        "shortLabel": {
-          "type": "Identifier",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "This attribute specifies a name which can be used e.g."
-        },
-        "swGenericAxisParam": {
-          "type": "SwGenericAxisParam",
+        "swGenericAxisParamType": {
+          "type": "SwGenericAxisParamType",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
           "note": "This association supports the case that a value from a generic axis definition shall be stored. This value is a particular generic axis parameter type. 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
-        "swRecord": {
+        "swRecordLayoutVAxis": {
+          "type": "AxisIndexType",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute gives the index of the axis of which values that are stored in the record. swRecordVIndex refers to the symbolic names of the iterators for which the axis value shall be stored in the record."
+        },
+        "swRecordLayoutVFixValue": {
+          "type": "Integer",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the filler character for the record layout, in the form of hex digits. It is also used to specify the fix value for e.g. FIXRIGHTDIFF."
+        },
+        "swRecordLayoutVIndex": { 
+          "type": "NameTokens",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The symbolic value for iteration, or the symbolic values separated by whitespaces, refer to the symbolic values given in swRecordLayoutGroupIndex .."
+        },
+        "swRecordLayoutVProp": {
           "type": "NameToken",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -180,7 +201,21 @@
           "note": "This attribute specifies the end point for the iteration. Negative values are also possible, i.e. the value -4 counts the fourth value from the end. If this property is not iteration ends at \"-1\" which is the last element."
         },
         "swRecordLayoutGroupAxis": {
-          "type": "AxisIndexType ",
+          "type": "AxisIndexType",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the end point for the iteration. Negative values are also possible, i.e. the value -4 counts the fourth value from the end. If this property is not iteration ends at \"-1\" which is the last element."
+        },
+        "swRecordLayoutGroupFrom": {
+          "type": "RecordLayoutIteratorPoint",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the end point for the iteration. Negative values are also possible, i.e. the value -4 counts the fourth value from the end. If this property is not iteration ends at \"-1\" which is the last element."
+        },
+        "swRecordLayoutGroupTo": {
+          "type": "RecordLayoutIteratorPoint",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -202,20 +237,6 @@
         },
         "swRecordLayoutGroupStep": {
           "type": "Integer",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "This attribute specifies the end point for the iteration. Negative values are also possible, i.e. the value -4 counts the fourth value from the end. If this property is not iteration ends at \"-1\" which is the last element."
-        },
-        "swRecordLayoutGroupFrom": {
-          "type": "RecordLayoutIteratorPoint",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "This attribute specifies the end point for the iteration. Negative values are also possible, i.e. the value -4 counts the fourth value from the end. If this property is not iteration ends at \"-1\" which is the last element."
-        },
-        "swRecordLayoutGroupTo": {
-          "type": "RecordLayoutIteratorPoint",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -250,17 +271,24 @@
         }
       ],
       "attributes": {
-        "swRecord": {
-          "type": "SwRecordLayoutGroup",
+        "swRecordLayout": {
+          "type": "SwRecordLayout",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
           "note": "This aggregation provides support for nested iterations. example, if a map is to be handled, then we might nested SwRecordLayoutGroups, one for the one for the y-axis. The inner iteration runs"
         },
+        "swRecordLayoutGroup": {
+          "type": "SwRecordLayoutGroup",
+          "multiplicity": "0..1",
+          "kind": "aggr",
+          "is_ref": false,
+          "note": "This aggregation provides support for nested iterations. example, if a map is to be handled, then we might nested SwRecordLayoutGroups, one for the one for the y-axis. The inner iteration runs"
+        },
         "swRecordLayoutV": {
           "type": "SwRecordLayoutV",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Particular Value specification for this record layout group. xml.sequenceOffset=120"
         }

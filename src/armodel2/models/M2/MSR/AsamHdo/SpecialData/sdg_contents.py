@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_AsamHdo_SpecialData.classes.json"""
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import atp_mixed
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
@@ -30,6 +31,8 @@ if TYPE_CHECKING:
 
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
+@atp_mixed()
+
 class SdgContents(ARObject):
     """AUTOSAR SdgContents."""
 
@@ -57,7 +60,7 @@ class SdgContents(ARObject):
         self.sdxf_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
-        """Serialize SdgContents to XML element.
+        """Serialize SdgContents to XML element (atp_mixed - no wrapping).
 
         Returns:
             xml.etree.ElementTree.Element representing this object
@@ -69,22 +72,21 @@ class SdgContents(ARObject):
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SdgContents, self).serialize()
 
-        # Copy all attributes from parent element
+        # Copy all attributes from parent element to current element
         elem.attrib.update(parent_elem.attrib)
 
-        # Copy text from parent element
+        # Copy text from parent element to current element
         if parent_elem.text:
             elem.text = parent_elem.text
 
-        # Copy all children from parent element
+        # Copy all children from parent element to current element
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sd
+        # Serialize sd (complex type)
         if self.sd is not None:
             serialized = SerializationHelper.serialize_item(self.sd, "Sd")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("SD")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -94,11 +96,10 @@ class SdgContents(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sdf
+        # Serialize sdf (complex type)
         if self.sdf is not None:
             serialized = SerializationHelper.serialize_item(self.sdf, "Sdf")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("SDF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -108,11 +109,10 @@ class SdgContents(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sdg
+        # Serialize sdg (complex type)
         if self.sdg is not None:
             serialized = SerializationHelper.serialize_item(self.sdg, "Sdg")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("SDG")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -122,11 +122,10 @@ class SdgContents(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sdx_ref
+        # Serialize sdx_ref (reference)
         if self.sdx_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sdx_ref, "Referrable")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("SDX-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -136,11 +135,10 @@ class SdgContents(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sdxf_ref
+        # Serialize sdxf_ref (reference)
         if self.sdxf_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sdxf_ref, "Referrable")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("SDXF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -154,7 +152,7 @@ class SdgContents(ARObject):
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SdgContents":
-        """Deserialize XML element to SdgContents object.
+        """Deserialize XML element to SdgContents object (atp_mixed - no unwrapping).
 
         Args:
             element: XML element to deserialize from
@@ -186,13 +184,13 @@ class SdgContents(ARObject):
         # Parse sdx_ref
         child = SerializationHelper.find_child_element(element, "SDX-REF")
         if child is not None:
-            sdx_ref_value = ARRef.deserialize(child)
+            sdx_ref_value = SerializationHelper.deserialize_by_tag(child, "Referrable")
             obj.sdx_ref = sdx_ref_value
 
         # Parse sdxf_ref
         child = SerializationHelper.find_child_element(element, "SDXF-REF")
         if child is not None:
-            sdxf_ref_value = ARRef.deserialize(child)
+            sdxf_ref_value = SerializationHelper.deserialize_by_tag(child, "Referrable")
             obj.sdxf_ref = sdxf_ref_value
 
         return obj

@@ -80,6 +80,32 @@ def atp_variant() -> Callable[[Any], Any]:
     return decorator
 
 
+def atp_mixed() -> Callable[[Any], Any]:
+    """Decorator to mark a class as using AUTOSAR atpMixed pattern.
+
+    Classes with atpMixed are container classes that can hold multiple
+    different child types. Children are serialized directly without wrapping.
+
+    Usage:
+        @atp_mixed()
+        class SwRecordLayoutGroupContent(ARObject):
+            sw_record_layout_ref: Optional[ARRef] = None
+            sw_record_layout_group: Optional[SwRecordLayoutGroup] = None
+            sw_record_layout_v: Optional[SwRecordLayoutV] = None
+
+    The ARObject serialization framework automatically:
+    1. Serializes all children directly (no wrapping)
+    2. Deserializes children by matching XML tags
+
+    Returns:
+        Decorator that sets _atp_mixed flag on the class
+    """
+    def decorator(cls: Any) -> Any:
+        cls._atp_mixed = True  # type: ignore[union-attr]
+        return cls
+    return decorator
+
+
 def lang_prefix(xml_tag: str) -> Callable[[Any], Any]:
     """Decorator to mark an attribute as using the lang_prefix pattern.
 
