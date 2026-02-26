@@ -68,18 +68,19 @@ class SwAxisType(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sw_generic_axis (atp_mixed - append children directly)
+        # Serialize sw_generic_axis
         if self.sw_generic_axis is not None:
             serialized = SerializationHelper.serialize_item(self.sw_generic_axis, "DocumentationBlock")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-GENERIC-AXIS")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize sw_generic_axis_params (list to container "SW-GENERIC-AXIS-PARAMS")
         if self.sw_generic_axis_params:

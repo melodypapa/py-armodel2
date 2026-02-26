@@ -90,7 +90,6 @@ class TestIndividualFiles:
         )
 
     # Primary test - enabled first
-    @pytest.mark.xfail(reason="Binary comparison fails: 5,667 bytes difference")
     def test_application_data_type_blueprint_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -128,7 +127,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail(reason="Binary comparison fails: 3,864 bytes difference")
     def test_application_data_type_lifecycle_standard_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -248,7 +246,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail(reason="Binary comparison test currently failing")
     def test_compu_method_blueprint_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -266,7 +263,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail(reason="Binary comparison test currently failing")
     def test_compu_method_lifecycle_standard_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -301,7 +297,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail(reason="Binary comparison test currently failing")
     def test_data_constr_lifecycle_standard_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -336,7 +331,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail(reason="Binary comparison test currently failing")
     def test_keyword_lifecycle_standard_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -388,7 +382,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail(reason="Binary comparison test currently failing")
     def test_port_interface_blueprint_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -406,7 +399,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail(reason="Binary comparison test currently failing")
     def test_port_interface_lifecycle_standard_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -424,7 +416,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail(reason="Binary comparison test currently failing")
     def test_port_prototype_blueprint_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -442,7 +433,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail(reason="Binary comparison test currently failing")
     def test_port_prototype_blueprint_lifecycle_standard_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -477,7 +467,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail(reason="Binary comparison test currently failing")
     def test_unit_lifecycle_standard_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -495,7 +484,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail(reason="Binary comparison test currently failing")
     def test_unit_standard_binary_comparison(
         self,
         reader: ARXMLReader,

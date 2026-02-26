@@ -81,18 +81,19 @@ class MsrQueryP2(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize msr_query_result (atp_mixed - append children directly)
+        # Serialize msr_query_result
         if self.msr_query_result is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query_result, "DocumentationBlock")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("MSR-QUERY-RESULT")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         return elem
 

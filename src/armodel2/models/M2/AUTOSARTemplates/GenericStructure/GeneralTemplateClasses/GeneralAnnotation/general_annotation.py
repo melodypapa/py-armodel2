@@ -85,18 +85,19 @@ class GeneralAnnotation(ARObject, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize annotation_text (atp_mixed - append children directly)
+        # Serialize annotation_text
         if self.annotation_text is not None:
             serialized = SerializationHelper.serialize_item(self.annotation_text, "DocumentationBlock")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("ANNOTATION-TEXT")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize label
         if self.label is not None:
