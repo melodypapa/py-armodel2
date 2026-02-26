@@ -149,7 +149,7 @@ The `armodel.reader` module provides ARXML file reading functionality, convertin
 
 ### 4.1 ARXMLReader Class
 
-**Location**: `src/armodel/reader/__init__.py`
+**Location**: `src/armodel2/reader/__init__.py`
 
 **Required Public Interface**:
 

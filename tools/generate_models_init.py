@@ -2,7 +2,7 @@
 """Generate armodel/models/__init__.py with all model class exports.
 
 This tool scans the models directory and generates a comprehensive __init__.py
-that exports all model classes for convenient import from armodel.models.
+that exports all model classes for convenient import from armodel2.models.
 """
 
 import os
@@ -12,7 +12,7 @@ from typing import Dict, List, Tuple
 
 # Project root
 PROJECT_ROOT = Path(__file__).parent.parent
-MODELS_DIR = PROJECT_ROOT / "src" / "armodel" / "models"
+MODELS_DIR = PROJECT_ROOT / "src" / "armodel2" / "models"
 TARGET_FILE = MODELS_DIR / "__init__.py"
 
 
@@ -67,11 +67,11 @@ def extract_classes_from_file(file_path: Path) -> List[Tuple[str, str]]:
 
 
 def get_import_path(file_path: Path, models_dir: Path) -> str:
-    """Get the import path for a file relative to armodel.models."""
+    """Get the import path for a file relative to armodel2.models."""
     relative_path = file_path.relative_to(models_dir)
     # Convert path to module path (e.g., M2/Package/file.py -> M2.Package.file)
     module_path = str(relative_path.with_suffix("")).replace(os.sep, ".")
-    return f"armodel.models.{module_path}"
+    return f"armodel2.models.{module_path}"
 
 
 def generate_init_file(classes: Dict[str, str], builders: Dict[str, str]) -> str:
@@ -80,7 +80,7 @@ def generate_init_file(classes: Dict[str, str], builders: Dict[str, str]) -> str
         '"""py-armodel2 models package.',
         '',
         'This package exports all AUTOSAR model classes for convenient import.',
-        'All model classes can be imported directly from armodel.models.',
+        'All model classes can be imported directly from armodel2.models.',
         '',
         'Example:',
         '    from armodel.models import AUTOSAR, ARPackage, SwBaseType',
@@ -90,9 +90,9 @@ def generate_init_file(classes: Dict[str, str], builders: Dict[str, str]) -> str
 
     # Special handling for manually maintained classes
     manual_classes = {
-        "AUTOSAR": ("armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar", True),
-        "ARObject": ("armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object", True),
-        "ARRef": ("armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref", False),
+        "AUTOSAR": ("armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar", True),
+        "ARObject": ("armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object", True),
+        "ARRef": ("armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref", False),
     }
 
     # Add manual classes first

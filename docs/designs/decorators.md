@@ -4,7 +4,7 @@
 
 Decorators in py-armodel2 provide a declarative way to handle edge cases in XML serialization that cannot be automatically handled by the reflection-based framework. They are used sparingly - only when the XML structure differs from the default behavior of the `ARObject.serialize()` and `ARObject.deserialize()` methods.
 
-**Location**: `src/armodel/serialization/decorators.py`
+**Location**: `src/armodel2/serialization/decorators.py`
 
 **Key Principles**:
 - **Minimal usage**: 95% of classes need no decorators
@@ -39,7 +39,7 @@ Mark a property/attribute to be serialized as an **XML attribute** instead of a 
 #### Syntax
 
 ```python
-from armodel.serialization.decorators import xml_attribute
+from armodel2.serialization.decorators import xml_attribute
 
 # Basic usage (auto-generated XML attribute name)
 class AUTOSAR(ARObject):
@@ -121,7 +121,7 @@ Mark a class as using the AUTOSAR **atpVariation** pattern, which wraps all clas
 #### Syntax
 
 ```python
-from armodel.serialization.decorators import atp_variant
+from armodel2.serialization.decorators import atp_variant
 
 @atp_variant()
 class SwDataDefProps(ARObject):
@@ -180,7 +180,7 @@ Mark an attribute as using the **language-specific L-N** naming pattern for mult
 #### Syntax
 
 ```python
-from armodel.serialization.decorators import lang_prefix
+from armodel2.serialization.decorators import lang_prefix
 
 class MultiLanguagePlainText(ARObject):
     def __init__(self) -> None:
@@ -236,7 +236,7 @@ Mark an attribute as a language abbreviation XML attribute with exact control ov
 #### Syntax
 
 ```python
-from armodel.serialization.decorators import lang_abbr
+from armodel2.serialization.decorators import lang_abbr
 
 class LanguageSpecific(ARObject):
     def __init__(self) -> None:
@@ -288,7 +288,7 @@ Mark an attribute as using the AUTOSAR **-REF-CONDITIONAL** pattern for referenc
 #### Syntax
 
 ```python
-from armodel.serialization.decorators import ref_conditional
+from armodel2.serialization.decorators import ref_conditional
 
 class System(ARElement):
     def __init__(self) -> None:
@@ -439,7 +439,7 @@ Specify a custom XML element name for attributes when the auto-generated name di
 
 **Single parameter** (override container tag):
 ```python
-from armodel.serialization.decorators import xml_element_name
+from armodel2.serialization.decorators import xml_element_name
 
 class BswModuleDescription(ARElement):
     @xml_element_name("PROVIDED-ENTRYS")
@@ -451,7 +451,7 @@ class BswModuleDescription(ARElement):
 
 **Multi-level path** (nested containers):
 ```python
-from armodel.serialization.decorators import xml_element_name
+from armodel2.serialization.decorators import xml_element_name
 
 class ExecutableEntity(ARObject):
     _can_enter_refs: list[ARRef] = []
@@ -538,7 +538,7 @@ Mark an attribute as an **instance reference (iref)**. Instance references are w
 
 **Flattened structure** (AssemblySwConnector):
 ```python
-from armodel.serialization.decorators import instance_ref
+from armodel2.serialization.decorators import instance_ref
 
 class AssemblySwConnector(SwConnector):
     def __init__(self) -> None:
@@ -570,7 +570,7 @@ class AssemblySwConnector(SwConnector):
 
 **Non-flattened structure** (DelegationSwConnector):
 ```python
-from armodel.serialization.decorators import instance_ref
+from armodel2.serialization.decorators import instance_ref
 
 class DelegationSwConnector(SwConnector):
     def __init__(self) -> None:
@@ -983,7 +983,7 @@ Given this JSON configuration:
 The code generator generates:
 
 ```python
-from armodel.serialization.decorators import ref_conditional
+from armodel2.serialization.decorators import ref_conditional
 
 class System(ARElement):
     def __init__(self) -> None:
@@ -1236,8 +1236,8 @@ def test_xml_element_name():
 
 ## References
 
-- **Implementation**: `src/armodel/serialization/decorators.py`
-- **Base class**: `src/armodel/models/M2/.../ArObject/ar_object.py`
+- **Implementation**: `src/armodel2/serialization/decorators.py`
+- **Base class**: `src/armodel2/models/M2/.../ArObject/ar_object.py`
 - **Serialization framework**: `docs/designs/serialization.md`
 - **Design rules**: `docs/designs/design_rules.md`
 - **Model design**: `docs/designs/model_design.md`

@@ -2,7 +2,7 @@ import pytest
 import warnings
 import xml.etree.ElementTree as ET
 
-from armodel.core import GlobalSettingsManager
+from armodel2.core import GlobalSettingsManager
 
 
 class TestGlobalSettingsManager:
@@ -71,8 +71,8 @@ class TestGlobalSettingsValidation:
     def test_warn_on_unrecognized_elements(self):
         """Test warn_on_unrecognized emits warning for unrecognized elements."""
         import xml.etree.ElementTree as ET
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-        from armodel.serialization import SerializationHelper
+        from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+        from armodel2.serialization import SerializationHelper
 
         # Create a simple test class with custom deserialize
         class TestClass(ARObject):
@@ -123,8 +123,8 @@ class TestGlobalSettingsValidation:
 
     def test_strict_validation_raises_error(self):
         """Test strict_validation raises ValueError for unrecognized elements."""
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-        from armodel.serialization import SerializationHelper
+        from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+        from armodel2.serialization import SerializationHelper
 
         # Create a simple test class with custom deserialize
         class TestClass(ARObject):
@@ -169,8 +169,8 @@ class TestGlobalSettingsValidation:
     def test_no_warning_when_disabled(self):
         """Test no warning when warn_on_unrecognized is False."""
         import xml.etree.ElementTree as ET
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-        from armodel.serialization import SerializationHelper
+        from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+        from armodel2.serialization import SerializationHelper
 
         # Create a simple test class with custom deserialize
         class TestClass(ARObject):

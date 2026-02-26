@@ -2,9 +2,9 @@
 
 import pytest
 from pathlib import Path
-from armodel.models import AUTOSAR, ConstantSpecification
-from armodel.reader import ARXMLReader
-from armodel.writer import ARXMLWriter
+from armodel2.models import AUTOSAR, ConstantSpecification
+from armodel2.reader import ARXMLReader
+from armodel2.writer import ARXMLWriter
 
 
 class TestPolymorphicDeserialization:

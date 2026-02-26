@@ -2,7 +2,7 @@
 
 ## Overview
 
-The AUTOSAR model layer (`src/armodel/models/`) provides a complete Python implementation of the AUTOSAR meta-model, supporting reading, writing, and manipulation of ARXML files across multiple AUTOSAR schema versions.
+The AUTOSAR model layer (`src/armodel2/models/`) provides a complete Python implementation of the AUTOSAR meta-model, supporting reading, writing, and manipulation of ARXML files across multiple AUTOSAR schema versions.
 
 ### Key Statistics
 
@@ -19,7 +19,7 @@ The AUTOSAR model layer (`src/armodel/models/`) provides a complete Python imple
 ### Directory Structure
 
 ```
-src/armodel/models/
+src/armodel2/models/
 └── M2/                              # AUTOSAR M2 model definitions
     ├── AUTOSARTemplates/            # AUTOSAR standard templates (1,998 files)
     │   ├── AbstractPlatform/        # Abstract platform definitions
@@ -73,9 +73,9 @@ ARObject (root base class)
 └── ...
 ```
 
-**ARObject Location**: `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
+**ARObject Location**: `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
 
-**AUTOSAR Root Element**: `src/armodel/models/M2/AUTOSARTemplates/AutosarTopLevelStructure/autosar.py`
+**AUTOSAR Root Element**: `src/armodel2/models/M2/AUTOSARTemplates/AutosarTopLevelStructure/autosar.py`
 
 ## Class Design Patterns
 
@@ -161,7 +161,7 @@ data_type = (
 
 **Configuration:**
 ```python
-from armodel.core import GlobalSettingsManager, BuilderValidationMode
+from armodel2.core import GlobalSettingsManager, BuilderValidationMode
 
 settings = GlobalSettingsManager()
 settings.builder_validation = BuilderValidationMode.STRICT  # or LENIENT, DISABLED
@@ -338,7 +338,7 @@ The framework automatically:
 Use decorators only when XML structure doesn't match default behavior:
 
 ```python
-from armodel.serialization.decorators import xml_attribute
+from armodel2.serialization.decorators import xml_attribute
 
 class AUTOSAR(ARObject):
     def __init__(self) -> None:
@@ -361,7 +361,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from armodel.models.M2.SomeModule import SomeClass
+    from armodel2.models.M2.SomeModule import SomeClass
 
 class MyClass(ARObject):
     related: Optional[SomeClass] = None  # Type hint works, no runtime import

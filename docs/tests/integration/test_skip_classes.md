@@ -221,5 +221,5 @@ PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/integrati
 
 - Skip Classes Config: `tools/skip_classes.yaml`
 - Code Generator: `tools/generate_models.py`
-- ARObject Implementation: `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
-- AREnum Implementation: `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes/ar_enum.py`
+- ARObject Implementation: `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
+- AREnum Implementation: `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes/ar_enum.py`

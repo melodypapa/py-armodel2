@@ -5,7 +5,7 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 
-from armodel.cli.common import EXIT_SUCCESS, EXIT_FILE_NOT_FOUND
+from armodel2.cli.common import EXIT_SUCCESS, EXIT_FILE_NOT_FOUND
 
 
 class TestFormatCommand:
@@ -44,7 +44,7 @@ class TestFormatCommand:
                 quiet=False,
             )
 
-            from armodel.cli.commands.format import format_command
+            from armodel2.cli.commands.format import format_command
 
             result = format_command(args)
 
@@ -77,7 +77,7 @@ class TestFormatCommand:
             quiet=False,
         )
 
-        from armodel.cli.commands.format import format_command
+        from armodel2.cli.commands.format import format_command
 
         result = format_command(args)
 

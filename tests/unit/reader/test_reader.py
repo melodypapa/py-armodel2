@@ -1,6 +1,6 @@
 import pytest
 
-from armodel.reader import ARXMLReader
+from armodel2.reader import ARXMLReader
 
 
 class TestARXMLReader:

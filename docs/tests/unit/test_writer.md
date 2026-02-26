@@ -46,8 +46,8 @@ def test_save_autosar_to_file():
     import tempfile
     import os
     from pathlib import Path
-    from armodel.writer import ARXMLWriter
-    from armodel.models.M2.AUTOSARTemplates.autosar import AUTOSAR
+    from armodel2.writer import ARXMLWriter
+    from armodel2.models.M2.AUTOSARTemplates.autosar import AUTOSAR
 
     autosar = AUTOSAR()
 
@@ -87,8 +87,8 @@ def test_save_autosar_to_file():
 ```python
 def test_serialize_to_xml():
     import xml.etree.ElementTree as ET
-    from armodel.writer import ARXMLWriter
-    from armodel.models.M2.AUTOSARTemplates.autosar import AUTOSAR
+    from armodel2.writer import ARXMLWriter
+    from armodel2.models.M2.AUTOSARTemplates.autosar import AUTOSAR
 
     autosar = AUTOSAR()
     writer = ARXMLWriter()
@@ -120,8 +120,8 @@ def test_serialize_to_xml():
 def test_pretty_print():
     import tempfile
     import os
-    from armodel.writer import ARXMLWriter
-    from armodel.models.M2.AUTOSARTemplates.autosar import AUTOSAR
+    from armodel2.writer import ARXMLWriter
+    from armodel2.models.M2.AUTOSARTemplates.autosar import AUTOSAR
 
     autosar = AUTOSAR()
 
@@ -158,8 +158,8 @@ def test_pretty_print():
 def test_custom_encoding():
     import tempfile
     import os
-    from armodel.writer import ARXMLWriter
-    from armodel.models.M2.AUTOSARTemplates.autosar import AUTOSAR
+    from armodel2.writer import ARXMLWriter
+    from armodel2.models.M2.AUTOSARTemplates.autosar import AUTOSAR
 
     autosar = AUTOSAR()
 
@@ -198,8 +198,8 @@ def test_auto_create_directories():
     import tempfile
     import os
     from pathlib import Path
-    from armodel.writer import ARXMLWriter
-    from armodel.models.M2.AUTOSARTemplates.autosar import AUTOSAR
+    from armodel2.writer import ARXMLWriter
+    from armodel2.models.M2.AUTOSARTemplates.autosar import AUTOSAR
 
     autosar = AUTOSAR()
 
@@ -233,8 +233,8 @@ def test_auto_create_directories():
 **Test Code**:
 ```python
 def test_to_string():
-    from armodel.writer import ARXMLWriter
-    from armodel.models.M2.AUTOSARTemplates.autosar import AUTOSAR
+    from armodel2.writer import ARXMLWriter
+    from armodel2.models.M2.AUTOSARTemplates.autosar import AUTOSAR
 
     autosar = AUTOSAR()
 
@@ -265,7 +265,7 @@ def test_to_string():
 **Test Code**:
 ```python
 def test_configure():
-    from armodel.writer import ARXMLWriter
+    from armodel2.writer import ARXMLWriter
 
     writer = ARXMLWriter(pretty_print=True, encoding="UTF-8")
 
@@ -296,8 +296,8 @@ def test_configure():
 ```python
 def test_dependency_injection():
     from unittest.mock import Mock
-    from armodel.core import SchemaVersionManager
-    from armodel.writer import ARXMLWriter
+    from armodel2.core import SchemaVersionManager
+    from armodel2.writer import ARXMLWriter
 
     mock_manager = Mock(spec=SchemaVersionManager)
     writer = ARXMLWriter(version_manager=mock_manager)
@@ -326,8 +326,8 @@ def test_dependency_injection():
 def test_no_pretty_print():
     import tempfile
     import os
-    from armodel.writer import ARXMLWriter
-    from armodel.models.M2.AUTOSARTemplates.autosar import AUTOSAR
+    from armodel2.writer import ARXMLWriter
+    from armodel2.models.M2.AUTOSARTemplates.autosar import AUTOSAR
 
     autosar = AUTOSAR()
 
@@ -363,7 +363,7 @@ PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test
 
 ### 3.3 Run with Coverage
 ```bash
-PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test_writer/test_writer.py --cov=src/armodel/writer --cov-report=term
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test_writer/test_writer.py --cov=src/armodel2/writer --cov-report=term
 ```
 
 ---

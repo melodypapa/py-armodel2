@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Convenient Imports:** All model classes can be imported directly from `armodel.models`:
 ```python
-from armodel.models import AUTOSAR, ARPackage, SwBaseType, ImplementationDataType
+from armodel2.models import AUTOSAR, ARPackage, SwBaseType, ImplementationDataType
 ```
 
 **Key Architecture:**
@@ -73,7 +73,7 @@ mypy src/
 
 ### Code Generation
 
-All AUTOSAR model classes in `src/armodel/models/M2/` are generated from mapping data in `docs/json/`:
+All AUTOSAR model classes in `src/armodel2/models/M2/` are generated from mapping data in `docs/json/`:
 
 **Generator**: `python -m tools.generate_models` (module in `tools/generate_models/`)
 
@@ -91,7 +91,7 @@ All AUTOSAR model classes in `src/armodel/models/M2/` are generated from mapping
 
 **⚠️ CRITICAL RULE: NEVER Edit Generated Code Directly**
 
-If you find bugs, issues, or needed improvements in files under `src/armodel/models/M2/`:
+If you find bugs, issues, or needed improvements in files under `src/armodel2/models/M2/`:
 - **DO NOT** edit the generated files directly - your changes will be lost on next regeneration
 - **DO** fix the issue in `tools/generate_models/` (the generator)
 - **THEN** regenerate by running: `python -m tools.generate_models --members`
@@ -120,7 +120,7 @@ If you find bugs, issues, or needed improvements in files under `src/armodel/mod
 The `GlobalSettingsManager` singleton manages application-wide settings:
 
 ```python
-from armodel.core import GlobalSettingsManager, BuilderValidationMode
+from armodel2.core import GlobalSettingsManager, BuilderValidationMode
 
 settings = GlobalSettingsManager()
 
@@ -225,7 +225,7 @@ def provider_iref(self) -> PPortInCompositionInstanceRef:
 # Result: <PROVIDER-IREF><CONTEXT-COMPONENT-REF>...</CONTEXT-COMPONENT-REF>...
 ```
 
-**Decorator Implementation**: All decorators are in `src/armodel/serialization/decorators.py`
+**Decorator Implementation**: All decorators are in `src/armodel2/serialization/decorators.py`
 
 ### Fluent API Builder Pattern
 
@@ -283,7 +283,7 @@ data_type = (
 
 **Builder Validation Configuration:**
 ```python
-from armodel.core import GlobalSettingsManager, BuilderValidationMode
+from armodel2.core import GlobalSettingsManager, BuilderValidationMode
 
 settings = GlobalSettingsManager()
 settings.builder_validation = BuilderValidationMode.STRICT  # or LENIENT, DISABLED
@@ -294,9 +294,9 @@ settings.builder_validation = BuilderValidationMode.STRICT  # or LENIENT, DISABL
 Infrastructure modules use class-based design (not module-based functions):
 
 **Singletons** (shared state, thread-safe with double-checked locking):
-- `AUTOSAR` (`src/armodel/models/M2/AUTOSARTemplates/autosar.py`) - Root AUTOSAR element with `clear()` and `reset()` methods
-- `SchemaVersionManager` (`src/armodel/core/version.py`) - Schema version detection and config
-- `GlobalSettingsManager` (`src/armodel/core/settings.py`) - Application-wide settings (strict_validation, warn_on_unrecognized, builder_validation)
+- `AUTOSAR` (`src/armodel2/models/M2/AUTOSARTemplates/autosar.py`) - Root AUTOSAR element with `clear()` and `reset()` methods
+- `SchemaVersionManager` (`src/armodel2/core/version.py`) - Schema version detection and config
+- `GlobalSettingsManager` (`src/armodel2/core/settings.py`) - Application-wide settings (strict_validation, warn_on_unrecognized, builder_validation)
 
 **Singleton Pattern:**
 ```python
@@ -328,9 +328,9 @@ class SomeManager:
 ```
 
 **Dependency Injection** (testable):
-- `ARXMLReader` (`src/armodel/reader/__init__.py`) - ARXML file loading and parsing
-- `ARXMLWriter` (`src/armodel/writer/__init__.py`) - ARXML serialization and file saving
-- `ConfigurationManager` (`src/armodel/cfg/schemas/__init__.py`) - Configuration loading with caching
+- `ARXMLReader` (`src/armodel2/reader/__init__.py`) - ARXML file loading and parsing
+- `ARXMLWriter` (`src/armodel2/writer/__init__.py`) - ARXML serialization and file saving
+- `ConfigurationManager` (`src/armodel2/cfg/schemas/__init__.py`) - Configuration loading with caching
 
 ### Model Class Hierarchy
 
@@ -348,7 +348,7 @@ ARObject
 
 ### Schema Version Support
 
-Multiple AUTOSAR versions supported via `src/armodel/cfg/schemas/config.yaml`:
+Multiple AUTOSAR versions supported via `src/armodel2/cfg/schemas/config.yaml`:
 
 | Version | Namespace                                    | XSD                          |
 |---------|----------------------------------------------|------------------------------|
@@ -371,7 +371,7 @@ from __future__ import annotations  # Must be first import
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from armodel.models.M2.SomeModule import SomeClass
+    from armodel2.models.M2.SomeModule import SomeClass
 
 class MyClass(ARObject):
     related: Optional[SomeClass] = None  # Type hint works, no runtime import
@@ -437,9 +437,9 @@ ref = ARRef(dest="SW-ADDR-METHOD", value="/Package/Element", base="DataTypes")
 
 **Singleton Usage:**
 ```python
-from armodel.models import AUTOSAR
-from armodel.reader import ARXMLReader
-from armodel.writer import ARXMLWriter
+from armodel2.models import AUTOSAR
+from armodel2.reader import ARXMLReader
+from armodel2.writer import ARXMLWriter
 
 # Get singleton instance
 autosar = AUTOSAR()
@@ -466,7 +466,7 @@ MyPy runs in **strict mode** (`strict = true`) with overrides for generated file
 
 ```toml
 [[tool.mypy.overrides]]
-module = "armodel.models.M2.*"
+module = "armodel2.models.M2.*"
 disallow_untyped_defs = false
 disallow_untyped_calls = false
 ignore_errors = true
@@ -479,16 +479,16 @@ Generated model files are excluded from strict requirements.
 ### Format ARXML Files (CLI)
 ```bash
 # Basic formatting
-armodel format input.arxml -o output.arxml
+armodel2 format input.arxml -o output.arxml
 
 # With validation
-armodel format input.arxml -o output.arxml --strict
+armodel2 format input.arxml -o output.arxml --strict
 
 # Verbose output for debugging
-armodel format input.arxml -o output.arxml -v
+armodel2 format input.arxml -o output.arxml -v
 
 # Quiet mode (suppress output)
-armodel format input.arxml -o output.arxml -q
+armodel2 format input.arxml -o output.arxml -q
 ```
 
 **CLI Exit Codes**:
@@ -500,7 +500,7 @@ armodel format input.arxml -o output.arxml -q
 
 ### Read ARXML file
 ```python
-from armodel.reader import ARXMLReader
+from armodel2.reader import ARXMLReader
 
 reader = ARXMLReader()
 autosar = reader.load_arxml('path/to/file.arxml')
@@ -510,7 +510,7 @@ autosar = reader.load_arxml('path/to/file.arxml', validate=True)
 
 ### Write ARXML file
 ```python
-from armodel.writer import ARXMLWriter
+from armodel2.writer import ARXMLWriter
 
 writer = ARXMLWriter(pretty_print=True, encoding="UTF-8")
 writer.save_arxml(autosar, 'path/to/output.arxml')
@@ -518,7 +518,7 @@ writer.save_arxml(autosar, 'path/to/output.arxml')
 
 ### Detect schema version
 ```python
-from armodel.reader import ARXMLReader
+from armodel2.reader import ARXMLReader
 
 reader = ARXMLReader()
 version = reader.get_schema_version('path/to/file.arxml')
@@ -526,7 +526,7 @@ version = reader.get_schema_version('path/to/file.arxml')
 
 ### Create AUTOSAR objects
 ```python
-from armodel.models import AUTOSAR, ARPackage, ARPackageBuilder
+from armodel2.models import AUTOSAR, ARPackage, ARPackageBuilder
 
 # Using singleton
 autosar = AUTOSAR()
@@ -548,7 +548,7 @@ When you modify `tools/generate_models/` or the mapping JSON files, regenerate a
 python -m tools.generate_models --members
 ```
 
-**Remember**: Never manually edit generated files in `src/armodel/models/M2/` (except those in `tools/skip_classes.yaml`). Always fix the generator and regenerate.
+**Remember**: Never manually edit generated files in `src/armodel2/models/M2/` (except those in `tools/skip_classes.yaml`). Always fix the generator and regenerate.
 
 Then verify:
 ```bash
@@ -560,7 +560,7 @@ PYTHONPATH=./src python -m pytest
 ## Project Structure
 
 ```
-src/armodel/
+src/armodel2/
 ├── cfg/                 # Configuration (ConfigurationManager class)
 ├── core/                # Core utilities (SchemaVersionManager, GlobalSettingsManager)
 ├── models/M2/           # Generated AUTOSAR classes (~2,200 files)
@@ -569,7 +569,7 @@ src/armodel/
 ├── reader/              # ARXML reading (ARXMLReader class)
 ├── writer/              # ARXML writing (ARXMLWriter class)
 ├── serialization/       # Serialization framework (decorators, name_converter, serialization_helper, model_factory)
-├── cli/                 # CLI (armodel format command)
+├── cli/                 # CLI (armodel2 format command)
 └── utils/               # Utilities (not yet implemented)
 
 tests/
@@ -617,8 +617,8 @@ Key rules from `docs/designs/design_rules.md`:
 - **Serialization**: `docs/designs/serialization.md` - Reflection-based serialization framework documentation
 - **Skip Classes**: `tools/skip_classes.yaml` - List of manually maintained classes excluded from code generation
 - **Generator README**: `tools/generate_models/README.md` - Code generator usage and options
-- **SerializationHelper**: `src/armodel/serialization/serialization_helper.py` - Utility methods for serialization (20+ helper functions)
-- **Decorators**: `src/armodel/serialization/decorators.py` - XML serialization decorators (@xml_attribute, @atp_variant, @lang_prefix, @lang_abbr, @xml_element_name, @ref_conditional, @instance_ref)
+- **SerializationHelper**: `src/armodel2/serialization/serialization_helper.py` - Utility methods for serialization (20+ helper functions)
+- **Decorators**: `src/armodel2/serialization/decorators.py` - XML serialization decorators (@xml_attribute, @atp_variant, @lang_prefix, @lang_abbr, @xml_element_name, @ref_conditional, @instance_ref)
 
 ## Recent Improvements (2025-2026)
 

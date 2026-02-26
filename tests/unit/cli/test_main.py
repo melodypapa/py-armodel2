@@ -12,7 +12,7 @@ class TestCLIMain:
         with patch("sys.argv", ["armodel", "--help"]):
             # Should show help and exit
             with pytest.raises(SystemExit) as exc_info:
-                from armodel.cli.main import main
+                from armodel2.cli.main import main
 
                 main()
             # Help exits with code 0
@@ -23,7 +23,7 @@ class TestCLIMain:
         with patch("sys.argv", ["armodel", "--version"]):
             # Should show version and exit
             with pytest.raises(SystemExit) as exc_info:
-                from armodel.cli.main import main
+                from armodel2.cli.main import main
 
                 main()
             # Version exits with code 0

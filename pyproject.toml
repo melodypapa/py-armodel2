@@ -35,7 +35,7 @@ dev = [
 ]
 
 [project.scripts]
-armodel = "armodel.cli.main:main"
+armodel2 = "armodel2.cli.main:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -52,19 +52,19 @@ strict = true
 
 # Exclude generated model files from strict checking
 [[tool.mypy.overrides]]
-module = "armodel.models.M2.*"
+module = "armodel2.models.M2.*"
 disallow_untyped_defs = false
 disallow_untyped_calls = false
 ignore_errors = true
 
 # Also exclude MSR documentation models which have generated type issues
 [[tool.mypy.overrides]]
-module = "armodel.models.M2.MSR.*"
+module = "armodel2.models.M2.MSR.*"
 ignore_errors = true
 
 # Ignore unused-ignore in decorators (dynamic attributes)
 [[tool.mypy.overrides]]
-module = "armodel.serialization.decorators"
+module = "armodel2.serialization.decorators"
 warn_unused_ignores = false
 
 [tool.ruff]
@@ -72,6 +72,6 @@ line-length = 100
 target-version = "py39"
 
 [tool.ruff.lint.per-file-ignores]
-"src/armodel/models/__init__.py" = ["F401"]
-"src/armodel/models/M2/*" = ["F401", "F821", "E741"]
-"src/armodel/models/M2/**/*" = ["F401", "F821", "E741"]
+"src/armodel2/models/__init__.py" = ["F401"]
+"src/armodel2/models/M2/*" = ["F401", "F821", "E741"]
+"src/armodel2/models/M2/**/*" = ["F401", "F821", "E741"]

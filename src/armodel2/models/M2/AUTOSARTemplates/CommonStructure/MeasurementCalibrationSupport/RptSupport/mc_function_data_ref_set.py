@@ -1,0 +1,317 @@
+"""McFunctionDataRefSet AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 187)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 455)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport_RptSupport.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
+import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import atp_variant
+
+from armodel2.models.M2.builder_base import BuilderBase
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
+    FlatInstanceDescriptor,
+)
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_instance import (
+    McDataInstance,
+)
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel2.serialization import SerializationHelper
+
+
+@atp_variant()
+
+class McFunctionDataRefSet(ARObject):
+    """AUTOSAR McFunctionDataRefSet."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
+    flat_map_entry_refs: list[ARRef]
+    mc_data_instance_refs: list[ARRef]
+    def __init__(self) -> None:
+        """Initialize McFunctionDataRefSet."""
+        super().__init__()
+        self.flat_map_entry_refs: list[ARRef] = []
+        self.mc_data_instance_refs: list[ARRef] = []
+
+    def serialize(self) -> ET.Element:
+        """Serialize McFunctionDataRefSet to XML element with atp_variant wrapper.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(McFunctionDataRefSet, self).serialize()
+
+        # Copy all attributes from parent element to outer element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element to outer element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Create inner element to hold attributes before wrapping
+        inner_elem = ET.Element("INNER")
+
+        # Copy parent's children: metadata to outer element, others to inner element
+        metadata_tags = {'SHORT-NAME', 'LONG-NAME', 'DESC', 'ADMIN-DATA'}
+        for child in parent_elem:
+            tag = SerializationHelper.strip_namespace(child.tag)
+            if tag in metadata_tags:
+                # Metadata elements stay outside the atp_variant wrapper
+                elem.append(child)
+            else:
+                # Other elements go inside the atp_variant wrapper
+                inner_elem.append(child)
+
+        # Serialize flat_map_entry_refs (list)
+        for item in self.flat_map_entry_refs:
+            serialized = SerializationHelper.serialize_item(item, "FlatInstanceDescriptor")
+            if serialized is not None:
+                wrapped = ET.Element("FLAT-MAP-ENTRY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize mc_data_instance_refs (list)
+        for item in self.mc_data_instance_refs:
+            serialized = SerializationHelper.serialize_item(item, "McDataInstance")
+            if serialized is not None:
+                wrapped = ET.Element("MC-DATA-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
+        wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "McFunctionDataRefSet")
+        elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "McFunctionDataRefSet":
+        """Deserialize XML element to McFunctionDataRefSet object with atp_variant unwrapping.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized McFunctionDataRefSet object
+        """
+        # Unwrap atp_variant VARIANTS/CONDITIONAL structure
+        inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "McFunctionDataRefSet")
+        if inner_elem is None:
+            # No wrapper structure found, create instance with default values
+            obj = cls.__new__(cls)
+            obj.__init__()
+            return obj
+
+        # Temporarily copy children from inner element to outer element
+        # so parent's deserialize can find inherited attributes
+        for child in list(inner_elem):
+            element.append(child)
+
+        # Call parent's deserialize with outer element (now contains parent's children)
+        obj = super(McFunctionDataRefSet, cls).deserialize(element)
+
+        # Clean up: remove the temporarily copied children from outer element
+        # (they are now in obj, so we don't need them in element anymore)
+        for child in list(inner_elem):
+            element.remove(child)
+
+        # Parse flat_map_entry_refs (list)
+        obj.flat_map_entry_refs = []
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "FLAT-MAP-ENTRY"):
+            flat_map_entry_refs_value = ARRef.deserialize(child)
+            obj.flat_map_entry_refs.append(flat_map_entry_refs_value)
+
+        # Parse mc_data_instance_refs (list)
+        obj.mc_data_instance_refs = []
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "MC-DATA-INSTANCE"):
+            mc_data_instance_refs_value = ARRef.deserialize(child)
+            obj.mc_data_instance_refs.append(mc_data_instance_refs_value)
+
+        return obj
+
+
+
+class McFunctionDataRefSetBuilder(BuilderBase):
+    """Builder for McFunctionDataRefSet with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: McFunctionDataRefSet = McFunctionDataRefSet()
+
+
+    def with_flat_map_entries(self, items: list[FlatInstanceDescriptor]) -> "McFunctionDataRefSetBuilder":
+        """Set flat_map_entries list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.flat_map_entries = list(items) if items else []
+        return self
+
+    def with_mc_data_instances(self, items: list[McDataInstance]) -> "McFunctionDataRefSetBuilder":
+        """Set mc_data_instances list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mc_data_instances = list(items) if items else []
+        return self
+
+
+    def add_flat_map_entry(self, item: FlatInstanceDescriptor) -> "McFunctionDataRefSetBuilder":
+        """Add a single item to flat_map_entries list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.flat_map_entries.append(item)
+        return self
+
+    def clear_flat_map_entries(self) -> "McFunctionDataRefSetBuilder":
+        """Clear all items from flat_map_entries list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.flat_map_entries = []
+        return self
+
+    def add_mc_data_instance(self, item: McDataInstance) -> "McFunctionDataRefSetBuilder":
+        """Add a single item to mc_data_instances list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mc_data_instances.append(item)
+        return self
+
+    def clear_mc_data_instances(self) -> "McFunctionDataRefSetBuilder":
+        """Clear all items from mc_data_instances list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mc_data_instances = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel2.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    def build(self) -> McFunctionDataRefSet:
+        """Build and return the McFunctionDataRefSet instance with validation."""
+        self._validate_instance()
+        pass
+        return self._obj

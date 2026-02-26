@@ -58,11 +58,11 @@ py-armodel2 uses a **reflection-based serialization framework** that automatical
 
 ### File Locations
 
-- **Base class**: `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
-- **Primitive types**: `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes/ar_primitive.py`
-- **Enum types**: `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes/ar_enum.py`
-- **Decorators**: `src/armodel/serialization/decorators.py`
-- **Name converter**: `src/armodel/serialization/name_converter.py`
+- **Base class**: `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
+- **Primitive types**: `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes/ar_primitive.py`
+- **Enum types**: `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes/ar_enum.py`
+- **Decorators**: `src/armodel2/serialization/decorators.py`
+- **Name converter**: `src/armodel2/serialization/name_converter.py`
 
 ## Decorators
 
@@ -81,13 +81,13 @@ py-armodel2 provides decorators for handling edge cases in XML serialization. Th
 - Decorator detection and processing mechanisms
 - Testing guidelines and troubleshooting
 
-**Location**: `src/armodel/serialization/decorators.py`
+**Location**: `src/armodel2/serialization/decorators.py`
 
 ## Name Conversion
 
 ### NameConverter Utility
 
-**Location**: `src/armodel/serialization/name_converter.py`
+**Location**: `src/armodel2/serialization/name_converter.py`
 
 ### Python → XML Conversion
 
@@ -196,7 +196,7 @@ Type hints drive deserialization behavior:
 95% of classes don't need any decorators:
 
 ```python
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 class ARPackage(ARObject):
     short_name: Optional[str] = None
@@ -218,8 +218,8 @@ class ARPackage(ARObject):
 Some primitive types have additional attributes beyond just a value:
 
 ```python
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.interval_type_enum import IntervalTypeEnum
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.interval_type_enum import IntervalTypeEnum
 
 class Limit(ARPrimitive):
     """Primitive type with value and interval_type attribute."""
@@ -242,7 +242,7 @@ class Limit(ARPrimitive):
 ### Pattern 2: XML Attribute
 
 ```python
-from armodel.serialization.decorators import xml_attribute
+from armodel2.serialization.decorators import xml_attribute
 
 class ImplementationDataType(ARObject):
     def __init__(self) -> None:
@@ -267,7 +267,7 @@ class ImplementationDataType(ARObject):
 ### Pattern 3: XML Attribute with Nested Objects
 
 ```python
-from armodel.serialization.decorators import xml_attribute
+from armodel2.serialization.decorators import xml_attribute
 
 class AUTOSAR(ARObject):
     def __init__(self) -> None:
@@ -302,7 +302,7 @@ from __future__ import annotations  # Must be first import
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from armodel.models.M2.SomeModule import SomeClass
+    from armodel2.models.M2.SomeModule import SomeClass
 
 class MyClass(ARObject):
     related: Optional[SomeClass] = None  # Type hint works, no runtime import
@@ -366,11 +366,11 @@ class MyClass(ARObject):
 ```python
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
-from armodel.serialization.decorators import xml_attribute
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel2.serialization.decorators import xml_attribute
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 if TYPE_CHECKING:
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
+    from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
 
 class ARPackage(ARObject):
     short_name: Optional[str] = None
@@ -477,8 +477,8 @@ def test_round_trip():
 
 ## References
 
-- **Base class implementation**: `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
-- **Decorator implementations**: `src/armodel/serialization/decorators.py`
-- **Name converter**: `src/armodel/serialization/name_converter.py`
+- **Base class implementation**: `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
+- **Decorator implementations**: `src/armodel2/serialization/decorators.py`
+- **Name converter**: `src/armodel2/serialization/name_converter.py`
 - **Design document**: `docs/plans/2026-02-17-reflection-based-serialization-design.md`
 - **Design rules**: `docs/designs/design_rules.md`

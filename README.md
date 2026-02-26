@@ -22,9 +22,9 @@ pip install -e ".[dev]"
 ### Python API
 
 ```python
-from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
-from armodel.reader import ARXMLReader
-from armodel.writer import ARXMLWriter
+from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+from armodel2.reader import ARXMLReader
+from armodel2.writer import ARXMLWriter
 
 # Load ARXML files
 autosar = AUTOSAR()
@@ -43,20 +43,20 @@ writer.save_arxml(autosar, "output.arxml")
 
 ```bash
 # Format ARXML files
-armodel format input.arxml -o output.arxml
+armodel2 format input.arxml -o output.arxml
 
 # Strict validation mode
-armodel format input.arxml -o output.arxml --strict
+armodel2 format input.arxml -o output.arxml --strict
 
 # Verbose output for debugging
-armodel format input.arxml -o output.arxml -v
+armodel2 format input.arxml -o output.arxml -v
 ```
 
 ## Project Structure
 
 ```
 py-armodel2/
-├── src/armodel/           # Source code
+├── src/armodel2/           # Source code
 │   ├── cfg/              # Configuration files
 │   ├── core/             # Core utilities (version detection, validation)
 │   ├── models/           # Generated AUTOSAR model classes (2,200+)
@@ -96,7 +96,7 @@ ruff format src/ tools/
 mypy src/
 
 # Regenerate model classes
-python -m tools.generate_models docs/json/mapping.json docs/json/hierarchy.json src/armodel/models/M2 --members --classes --enums --primitives
+python -m tools.generate_models docs/json/mapping.json docs/json/hierarchy.json src/armodel2/models/M2 --members --classes --enums --primitives
 ```
 
 ## Architecture
@@ -127,7 +127,7 @@ class ARObject:
 
 All AUTOSAR model classes are generated from schema mappings:
 
-- Generated classes placed in `src/armodel/models/M2/`
+- Generated classes placed in `src/armodel2/models/M2/`
 - Each class includes `serialize()`, `deserialize()`, and Builder
 - Follows AUTOSAR package structure exactly
 - **Exception**: `AUTOSAR` and `ARObject` are manually maintained
@@ -142,7 +142,7 @@ All AUTOSAR model classes are generated from schema mappings:
 
 ## CLI Reference
 
-### `armodel format` - Format ARXML Files
+### `armodel2 format` - Format ARXML Files
 
 | Argument | Description |
 |----------|-------------|

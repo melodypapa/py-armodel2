@@ -1,7 +1,7 @@
 """Unit tests for ModelFactory."""
 
 import pytest
-from armodel.serialization.model_factory import ModelFactory
+from armodel2.serialization.model_factory import ModelFactory
 
 
 class TestModelFactory:

@@ -2,7 +2,7 @@
 
 import xml.etree.ElementTree as ET
 
-from armodel.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import SwBaseType
+from armodel2.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import SwBaseType
 
 
 class TestSwBaseType:

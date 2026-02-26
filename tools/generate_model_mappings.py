@@ -61,8 +61,8 @@ def package_to_import_path(package_path: str, class_name: str) -> str:
     class_filename = to_snake_case(class_name)
     
     # Build full module path
-    module_path = f"armodel.models.{python_path}.{class_filename}"
-    
+    module_path = f"armodel2.models.{python_path}.{class_filename}"
+
     return module_path
 
 
@@ -75,7 +75,7 @@ def generate_xml_tag_mappings(mapping_json: Dict[str, Any]) -> Dict[str, str]:
     Returns:
         Dictionary mapping XML tags to class names
     """
-    from armodel.serialization.name_converter import NameConverter
+    from armodel2.serialization.name_converter import NameConverter
     
     mappings = {}
     
@@ -126,7 +126,7 @@ def generate_polymorphic_mappings(package_files: List[Path]) -> Dict[str, List[s
     polymorphic_types = {}
     
     for package_file in package_files:
-        with open(package_file, "r") as f:
+        with open(package_file, "r", encoding="utf-8") as f:
             data = json.load(f)
         
         for class_info in data.get("classes", []):
@@ -247,7 +247,7 @@ def main() -> None:
     # Define paths
     mapping_json_path = project_root / "docs" / "json" / "mapping.json"
     packages_dir = project_root / "docs" / "json" / "packages"
-    output_yaml_path = project_root / "src" / "armodel" / "cfg" / "model_mappings.yaml"
+    output_yaml_path = project_root / "src" / "armodel2" / "cfg" / "model_mappings.yaml"
     
     # Validate paths
     if not mapping_json_path.exists():

@@ -55,7 +55,7 @@ The `NameConverter.to_xml_tag("l4")` returns `"L4"` instead of `"L-4"`. The AUTO
 - `MultiLanguagePlainText` - `l10` attribute
 - Other language-specific element classes
 
-**Location**: `/Users/ray/Workspace/py-armodel2/src/armodel/serialization/name_converter.py`
+**Location**: `/Users/ray/Workspace/py-armodel2/src/armodel2/serialization/name_converter.py`
 
 ---
 
@@ -68,7 +68,7 @@ The `ARXMLReader._populate_autosar()` method only copies the `ar_packages` attri
 
 **Current Implementation:**
 ```python
-# Location: src/armodel/reader/reader.py:89-98
+# Location: src/armodel2/reader/reader.py:89-98
 if hasattr(loaded_autosar, 'ar_packages') and loaded_autosar.ar_packages:
     if not hasattr(autosar, 'ar_packages'):
         autosar.ar_packages = []
@@ -106,7 +106,7 @@ The `ARObject.serialize()` method hardcodes the XSD schema location to `AUTOSAR_
 
 **Current Implementation:**
 ```python
-# Location: src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py:61
+# Location: src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py:61
 if self.__class__.__name__ == 'AUTOSAR':
     elem.set("xmlns", "http://autosar.org/schema/r4.0")
     elem.set("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
@@ -218,7 +218,7 @@ def to_xml_tag(name: str) -> str:
 ```
 
 **Files to modify:**
-- `/Users/ray/Workspace/py-armodel2/src/armodel/serialization/name_converter.py`
+- `/Users/ray/Workspace/py-armodel2/src/armodel2/serialization/name_converter.py`
 
 ---
 
@@ -255,7 +255,7 @@ def _populate_autosar(self, autosar: AUTOSAR, root: ET.Element) -> AUTOSAR:
 ```
 
 **Files to modify:**
-- `/Users/ray/Workspace/py-armodel2/src/armodel/reader/reader.py`
+- `/Users/ray/Workspace/py-armodel2/src/armodel2/reader/reader.py`
 
 ---
 
@@ -275,7 +275,7 @@ def _populate_autosar(self, autosar: AUTOSAR, root: ET.Element) -> AUTOSAR:
 
 **Step 1: Add attribute to AUTOSAR class**
 ```python
-# src/armodel/models/M2/AUTOSARTemplates/AutosarTopLevelStructure/autosar.py
+# src/armodel2/models/M2/AUTOSARTemplates/AutosarTopLevelStructure/autosar.py
 class AUTOSAR(ARObject):
     schema_location: Optional[str] = None
     admin_data: Optional[AdminData]
@@ -295,7 +295,7 @@ if self.__class__.__name__ == 'AUTOSAR':
 
 **Step 3: Use during serialization**
 ```python
-# src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py
+# src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py
 if self.__class__.__name__ == 'AUTOSAR':
     elem.set("xmlns", "http://autosar.org/schema/r4.0")
     elem.set("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
@@ -309,8 +309,8 @@ if self.__class__.__name__ == 'AUTOSAR':
 ```
 
 **Files to modify:**
-- `/Users/ray/Workspace/py-armodel2/src/armodel/models/M2/AUTOSARTemplates/AutosarTopLevelStructure/autosar.py`
-- `/Users/ray/Workspace/py-armodel2/src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
+- `/Users/ray/Workspace/py-armodel2/src/armodel2/models/M2/AUTOSARTemplates/AutosarTopLevelStructure/autosar.py`
+- `/Users/ray/Workspace/py-armodel2/src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
 
 ---
 
@@ -330,7 +330,7 @@ if self.__class__.__name__ == 'AUTOSAR':
 python tools/generate_models.py \
   docs/json/mapping.json \
   docs/json/hierarchy.json \
-  src/armodel/models/M2 \
+  src/armodel2/models/M2 \
   --members --classes --enums --primitives
 ```
 
@@ -362,20 +362,20 @@ python tools/generate_models.py \
 ## Key Files to Modify
 
 ### Core Infrastructure
-1. **`src/armodel/serialization/name_converter.py`**
+1. **`src/armodel2/serialization/name_converter.py`**
    - Add special handling for language-specific elements (l1, l2, l3, l4, l5, l10)
    - Update `to_xml_tag()` and `to_python_name()` methods
 
-2. **`src/armodel/reader/reader.py`**
+2. **`src/armodel2/reader/reader.py`**
    - Modify `_populate_autosar()` to copy all attributes
    - Handle list attributes (extend) vs non-list attributes (replace)
 
-3. **`src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`**
+3. **`src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`**
    - Update `serialize()` to use dynamic schema location
    - Add schema location extraction in `deserialize()`
 
 ### Model Classes
-4. **`src/armodel/models/M2/AUTOSARTemplates/AutosarTopLevelStructure/autosar.py`**
+4. **`src/armodel2/models/M2/AUTOSARTemplates/AutosarTopLevelStructure/autosar.py`**
    - Add `schema_location` attribute
 
 5. **Generated language-specific classes** (after regeneration)
@@ -518,8 +518,8 @@ None of the recommended fixes should impact performance:
 - **Test File**: `tests/integration/test_binary_comparison.py`
 - **Test Documentation**: `docs/tests/integration/test_binary_comparison.md` (to be created)
 - **Serialization Design**: `docs/designs/serialization.md`
-- **Name Converter**: `src/armodel/serialization/name_converter.py`
-- **Schema Config**: `src/armodel/cfg/schemas/config.yaml`
+- **Name Converter**: `src/armodel2/serialization/name_converter.py`
+- **Schema Config**: `src/armodel2/cfg/schemas/config.yaml`
 
 ---
 

@@ -24,8 +24,8 @@ import pytest
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-from armodel.reader import ARXMLReader
-from armodel.writer import ARXMLWriter
+from armodel2.reader import ARXMLReader
+from armodel2.writer import ARXMLWriter
 
 
 class TestCompuMethodClasses:
@@ -68,7 +68,7 @@ class TestCompuMethodClasses:
         - COMPU-PHYS-TO-INTERNAL wrapper is handled
         - CompuContent and CompuConst deserialize correctly
         """
-        from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+        from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         AUTOSAR().clear()
         autosar = AUTOSAR()
@@ -100,7 +100,7 @@ class TestCompuMethodClasses:
         - COMPU-PHYS-TO-INTERNAL wrapper element created
         - Compu children serialized correctly
         """
-        from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+        from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         # Load original
         AUTOSAR.reset()
@@ -145,7 +145,7 @@ class TestCompuMethodClasses:
             pkg: ARPackage to search
             methods_list: List to append found CompuMethods to
         """
-        from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_method import CompuMethod
+        from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_method import CompuMethod
 
         if hasattr(pkg, 'elements') and pkg.elements:
             for elem in pkg.elements:
@@ -191,7 +191,7 @@ class TestLanguageSpecificClasses:
         - MultiLanguagePlainText objects deserialize
         - Language attribute is handled correctly
         """
-        from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+        from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         autosar = AUTOSAR()
         reader.load_arxml(str(application_datatype_file), autosar)
@@ -216,7 +216,7 @@ class TestLanguageSpecificClasses:
         - Language attribute preserved
         - Text content preserved
         """
-        from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+        from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         # Load original
         autosar_orig = AUTOSAR()
@@ -263,7 +263,7 @@ class TestARPackageClass:
         - long_name is preserved
         - Language-specific elements in long_name work
         """
-        from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+        from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         # Test with multiple ARXML files
         test_files = [
@@ -300,8 +300,8 @@ class TestARPackageClass:
         - short_name included
         - long_name handled correctly
         """
-        from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
-        from armodel.writer import ARXMLWriter
+        from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+        from armodel2.writer import ARXMLWriter
 
         arxml_file = Path("demos/validated/AUTOSAR_Datatypes.arxml")
         if not arxml_file.exists():
@@ -344,7 +344,7 @@ class TestArgumentDirectionEnum:
         - INOUT enum value exists
         - OUT enum value exists
         """
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.argument_direction_enum import ArgumentDirectionEnum
+        from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.argument_direction_enum import ArgumentDirectionEnum
 
         # Check enum values exist
         assert hasattr(ArgumentDirectionEnum, 'IN'), "Missing IN enum value"
@@ -371,7 +371,7 @@ class TestArgumentDirectionEnum:
         - Enum deserializes from XML
         - Case sensitivity handled correctly
         """
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.argument_direction_enum import ArgumentDirectionEnum
+        from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.argument_direction_enum import ArgumentDirectionEnum
 
         # Create enum instance
         enum_in = ArgumentDirectionEnum(ArgumentDirectionEnum.IN)
@@ -414,7 +414,7 @@ class TestARRefClass:
         - DEST attribute is handled
         - Reference can be serialized
         """
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+        from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
         # Create ARRef
         ar_ref = ARRef()
@@ -448,7 +448,7 @@ class TestBaseTypeClass:
         - BaseType hierarchy works
         - Base type attributes preserved
         """
-        from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+        from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         # Use file with base types
         arxml_file = Path("demos/validated/AUTOSAR_MOD_AISpecification_BaseTypes_Standard.arxml")
@@ -459,7 +459,7 @@ class TestBaseTypeClass:
         reader.load_arxml(str(arxml_file), autosar)
 
         # Find SwBaseType objects (recursively search nested packages)
-        from armodel.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import SwBaseType
+        from armodel2.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import SwBaseType
 
         base_types = []
         def find_in_packages(packages):
@@ -504,7 +504,7 @@ class TestSwDataDefPropsClass:
         - SW-DATA-DEF-PROPS-CONDITIONAL wrapper handled
         - Properties preserved correctly
         """
-        from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+        from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         # Test with application data types (likely to have SwDataDefProps)
         arxml_file = Path("demos/validated/AUTOSAR_MOD_AISpecification_ApplicationDataType_Blueprint.arxml")
@@ -546,7 +546,7 @@ class TestARObjectClass:
         - _find_all_child_elements() works
         - _strip_namespace() works
         """
-        from armodel.serialization import SerializationHelper
+        from armodel2.serialization import SerializationHelper
 
         # Create test element
         parent = ET.Element("PARENT")
@@ -586,7 +586,7 @@ class TestARObjectClass:
         - Child class then handles its own attributes
         - No duplicate attribute processing
         """
-        from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+        from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         arxml_file = Path("demos/validated/AUTOSAR_Datatypes.arxml")
         if not arxml_file.exists():

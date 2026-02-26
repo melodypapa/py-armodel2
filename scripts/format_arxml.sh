@@ -14,7 +14,7 @@
 #   4. Show summary of successful/failed files
 #
 # For verbose error output on failed files, run:
-#   armodel format demos/arxml/<filename> -o data/arxml/<filename> -v
+#   armodel2 format demos/arxml/<filename> -o data/arxml/<filename> -v
 
 set -e
 
@@ -151,21 +151,21 @@ for i in "${!FILES_TO_FORMAT[@]}"; do
 
     echo "[$((i+1))/$total_files] Formatting: $basename"
 
-    # Run armodel format command
+    # Run armodel2 format command
     if [ "$VERBOSE" = true ]; then
         # With verbose output
-        if armodel format "$input_file" -o "$output_file" --encoding "$ENCODING" 2>&1; then
+        if armodel2 format "$input_file" -o "$output_file" --encoding "$ENCODING" 2>&1; then
             echo "      ✓ Success"
             success_count=$((success_count + 1))
         else
             echo "      ✗ Failed"
             failed_count=$((failed_count + 1))
             failed_files+=("$basename")
-            failed_errors+=("$(armodel format "$input_file" -o "$output_file" --encoding "$ENCODING" -v 2>&1 | head -5)")
+            failed_errors+=("$(armodel2 format "$input_file" -o "$output_file" --encoding "$ENCODING" -v 2>&1 | head -5)")
         fi
     else
         # Quiet mode
-        if armodel format "$input_file" -o "$output_file" --encoding "$ENCODING" --quiet 2>/dev/null; then
+        if armodel2 format "$input_file" -o "$output_file" --encoding "$ENCODING" --quiet 2>/dev/null; then
             echo "      ✓ Success"
             success_count=$((success_count + 1))
         else
@@ -197,7 +197,7 @@ if [ $failed_count -gt 0 ]; then
     echo "To debug individual files:"
     for i in "${!failed_files[@]}"; do
         filename="${failed_files[$i]}"
-        echo "  armodel format demos/arxml/$filename -o data/output.arxml --encoding $ENCODING -v"
+        echo "  armodel2 format demos/arxml/$filename -o data/output.arxml --encoding $ENCODING -v"
     done
 fi
 

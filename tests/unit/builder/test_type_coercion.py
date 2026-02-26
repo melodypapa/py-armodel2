@@ -2,8 +2,8 @@
 
 import pytest
 
-from armodel.models import ImplementationDataTypeBuilder
-from armodel.core import GlobalSettingsManager
+from armodel2.models import ImplementationDataTypeBuilder
+from armodel2.core import GlobalSettingsManager
 
 
 class TestTypeCoercion:

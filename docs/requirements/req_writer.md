@@ -151,7 +151,7 @@ The `armodel.writer` module provides ARXML file writing functionality, convertin
 
 ### 4.1 ARXMLWriter Class
 
-**Location**: `src/armodel/writer/__init__.py`
+**Location**: `src/armodel2/writer/__init__.py`
 
 **Required Public Interface**:
 
