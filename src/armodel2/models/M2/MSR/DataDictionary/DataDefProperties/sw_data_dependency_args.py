@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import atp_mixed
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
@@ -20,6 +21,8 @@ from armodel2.models.M2.MSR.DataDictionary.DatadictionaryProxies.sw_variable_ref
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
+
+@atp_mixed()
 
 class SwDataDependencyArgs(ARObject):
     """AUTOSAR SwDataDependencyArgs."""
@@ -42,7 +45,7 @@ class SwDataDependencyArgs(ARObject):
         self.sw_variable_ref_proxy_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
-        """Serialize SwDataDependencyArgs to XML element.
+        """Serialize SwDataDependencyArgs to XML element (atp_mixed - no wrapping).
 
         Returns:
             xml.etree.ElementTree.Element representing this object
@@ -54,22 +57,21 @@ class SwDataDependencyArgs(ARObject):
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwDataDependencyArgs, self).serialize()
 
-        # Copy all attributes from parent element
+        # Copy all attributes from parent element to current element
         elem.attrib.update(parent_elem.attrib)
 
-        # Copy text from parent element
+        # Copy text from parent element to current element
         if parent_elem.text:
             elem.text = parent_elem.text
 
-        # Copy all children from parent element
+        # Copy all children from parent element to current element
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sw_calprm_ref_proxy_ref
+        # Serialize sw_calprm_ref_proxy_ref (reference)
         if self.sw_calprm_ref_proxy_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sw_calprm_ref_proxy_ref, "SwCalprmRefProxy")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("SW-CALPRM-REF-PROXY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -79,11 +81,10 @@ class SwDataDependencyArgs(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_variable_ref_proxy_ref
+        # Serialize sw_variable_ref_proxy_ref (reference)
         if self.sw_variable_ref_proxy_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sw_variable_ref_proxy_ref, "SwVariableRefProxy")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("SW-VARIABLE-REF-PROXY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -97,7 +98,7 @@ class SwDataDependencyArgs(ARObject):
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwDataDependencyArgs":
-        """Deserialize XML element to SwDataDependencyArgs object.
+        """Deserialize XML element to SwDataDependencyArgs object (atp_mixed - no unwrapping).
 
         Args:
             element: XML element to deserialize from
@@ -111,13 +112,13 @@ class SwDataDependencyArgs(ARObject):
         # Parse sw_calprm_ref_proxy_ref
         child = SerializationHelper.find_child_element(element, "SW-CALPRM-REF-PROXY-REF")
         if child is not None:
-            sw_calprm_ref_proxy_ref_value = ARRef.deserialize(child)
+            sw_calprm_ref_proxy_ref_value = SerializationHelper.deserialize_by_tag(child, "SwCalprmRefProxy")
             obj.sw_calprm_ref_proxy_ref = sw_calprm_ref_proxy_ref_value
 
         # Parse sw_variable_ref_proxy_ref
         child = SerializationHelper.find_child_element(element, "SW-VARIABLE-REF-PROXY-REF")
         if child is not None:
-            sw_variable_ref_proxy_ref_value = ARRef.deserialize(child)
+            sw_variable_ref_proxy_ref_value = SerializationHelper.deserialize_by_tag(child, "SwVariableRefProxy")
             obj.sw_variable_ref_proxy_ref = sw_variable_ref_proxy_ref_value
 
         return obj

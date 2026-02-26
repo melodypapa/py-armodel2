@@ -250,17 +250,24 @@
         }
       ],
       "attributes": {
-        "swRecord": {
-          "type": "SwRecordLayoutGroup",
+        "swRecordLayout": {
+          "type": "SwRecordLayout",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
           "note": "This aggregation provides support for nested iterations. example, if a map is to be handled, then we might nested SwRecordLayoutGroups, one for the one for the y-axis. The inner iteration runs"
         },
+        "swRecordLayoutGroup": {
+          "type": "SwRecordLayoutGroup",
+          "multiplicity": "0..1",
+          "kind": "aggr",
+          "is_ref": false,
+          "note": "This aggregation provides support for nested iterations. example, if a map is to be handled, then we might nested SwRecordLayoutGroups, one for the one for the y-axis. The inner iteration runs"
+        },
         "swRecordLayoutV": {
           "type": "SwRecordLayoutV",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Particular Value specification for this record layout group. xml.sequenceOffset=120"
         }

@@ -177,19 +177,17 @@ class SwRecordLayoutGroup(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_record_layout_group_content_type
+        # Serialize sw_record_layout_group_content_type (atpMixed - append children directly)
         if self.sw_record_layout_group_content_type is not None:
             serialized = SerializationHelper.serialize_item(self.sw_record_layout_group_content_type, "swRecordLayoutGroupContent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD-LAYOUT-GROUP-CONTENT-TYPE")
+                # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                    elem.attrib.update(serialized.attrib)
+                if serialized.text:
+                    elem.text = serialized.text
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         # Serialize sw_record_layout_group_index
         if self.sw_record_layout_group_index is not None:
@@ -295,13 +293,23 @@ class SwRecordLayoutGroup(ARObject):
         # Parse sw_record_layout_group_axis
         child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-AXIS")
         if child is not None:
-            sw_record_layout_group_axis_value = SerializationHelper.deserialize_by_tag(child, "AxisIndexType ")
+            sw_record_layout_group_axis_value = SerializationHelper.deserialize_by_tag(child, "AxisIndexType")
             obj.sw_record_layout_group_axis = sw_record_layout_group_axis_value
 
-        # Parse sw_record_layout_group_content_type
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-CONTENT-TYPE")
-        if child is not None:
-            sw_record_layout_group_content_type_value = SerializationHelper.deserialize_by_tag(child, "swRecordLayoutGroupContent")
+        # Parse sw_record_layout_group_content_type (atpMixed - children appear directly)
+        # Create a temporary element containing the mixed content children
+        # The children are SW-RECORD-LAYOUT-REF, SW-RECORD-LAYOUT-V, SW-RECORD-LAYOUT-GROUP
+        temp_elem = ET.Element("TEMP")
+        for child in list(element):  # Use list() to avoid modification during iteration
+            tag = SerializationHelper.strip_namespace(child.tag)
+            if tag in ("SW-RECORD-LAYOUT-REF", "SW-RECORD-LAYOUT-V", "SW-RECORD-LAYOUT-GROUP"):
+                # Deep copy the child to avoid removing from original
+                import copy
+                temp_elem.append(copy.deepcopy(child))
+        
+        # Deserialize from the temporary element if we found any children
+        if len(temp_elem) > 0:
+            sw_record_layout_group_content_type_value = SerializationHelper.deserialize_by_tag(temp_elem, "SwRecordLayoutGroupContent")
             obj.sw_record_layout_group_content_type = sw_record_layout_group_content_type_value
 
         # Parse sw_record_layout_group_index

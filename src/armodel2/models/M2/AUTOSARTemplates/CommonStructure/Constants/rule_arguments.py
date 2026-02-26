@@ -9,6 +9,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.cl
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import atp_mixed
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
@@ -21,6 +22,8 @@ from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.numerical_or_
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
+
+@atp_mixed()
 
 class RuleArguments(ARObject):
     """AUTOSAR RuleArguments."""
@@ -47,7 +50,7 @@ class RuleArguments(ARObject):
         self.vtf: Optional[NumericalOrText] = None
 
     def serialize(self) -> ET.Element:
-        """Serialize RuleArguments to XML element.
+        """Serialize RuleArguments to XML element (atp_mixed - no wrapping).
 
         Returns:
             xml.etree.ElementTree.Element representing this object
@@ -59,64 +62,39 @@ class RuleArguments(ARObject):
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RuleArguments, self).serialize()
 
-        # Copy all attributes from parent element
+        # Copy all attributes from parent element to current element
         elem.attrib.update(parent_elem.attrib)
 
-        # Copy text from parent element
+        # Copy text from parent element to current element
         if parent_elem.text:
             elem.text = parent_elem.text
 
-        # Copy all children from parent element
+        # Copy all children from parent element to current element
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize v
+        # Serialize v (primitive)
         if self.v is not None:
-            serialized = SerializationHelper.serialize_item(self.v, "Numerical")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("V")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+            child = ET.Element("V")
+            child.text = str(self.v)
+            elem.append(child)
 
-        # Serialize vf
+        # Serialize vf (primitive)
         if self.vf is not None:
-            serialized = SerializationHelper.serialize_item(self.vf, "Numerical")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+            child = ET.Element("VF")
+            child.text = str(self.vf)
+            elem.append(child)
 
-        # Serialize vt
+        # Serialize vt (primitive)
         if self.vt is not None:
-            serialized = SerializationHelper.serialize_item(self.vt, "VerbatimString")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+            child = ET.Element("VT")
+            child.text = str(self.vt)
+            elem.append(child)
 
-        # Serialize vtf
+        # Serialize vtf (complex type)
         if self.vtf is not None:
             serialized = SerializationHelper.serialize_item(self.vtf, "NumericalOrText")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("VTF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -130,7 +108,7 @@ class RuleArguments(ARObject):
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RuleArguments":
-        """Deserialize XML element to RuleArguments object.
+        """Deserialize XML element to RuleArguments object (atp_mixed - no unwrapping).
 
         Args:
             element: XML element to deserialize from
@@ -144,13 +122,13 @@ class RuleArguments(ARObject):
         # Parse v
         child = SerializationHelper.find_child_element(element, "V")
         if child is not None:
-            v_value = child.text
+            v_value = SerializationHelper.deserialize_by_tag(child, "Numerical")
             obj.v = v_value
 
         # Parse vf
         child = SerializationHelper.find_child_element(element, "VF")
         if child is not None:
-            vf_value = child.text
+            vf_value = SerializationHelper.deserialize_by_tag(child, "Numerical")
             obj.vf = vf_value
 
         # Parse vt

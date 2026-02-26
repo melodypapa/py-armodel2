@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_Chapters.classes.json"""
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import atp_mixed
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.MSR.Documentation.MsrQuery.msr_query_topic1 import (
@@ -19,6 +20,8 @@ from armodel2.models.M2.MSR.Documentation.Chapters.topic1 import (
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
+
+@atp_mixed()
 
 class TopicOrMsrQuery(ARObject):
     """AUTOSAR TopicOrMsrQuery."""
@@ -41,7 +44,7 @@ class TopicOrMsrQuery(ARObject):
         self.topic1: Topic1 = None
 
     def serialize(self) -> ET.Element:
-        """Serialize TopicOrMsrQuery to XML element.
+        """Serialize TopicOrMsrQuery to XML element (atp_mixed - no wrapping).
 
         Returns:
             xml.etree.ElementTree.Element representing this object
@@ -53,22 +56,21 @@ class TopicOrMsrQuery(ARObject):
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TopicOrMsrQuery, self).serialize()
 
-        # Copy all attributes from parent element
+        # Copy all attributes from parent element to current element
         elem.attrib.update(parent_elem.attrib)
 
-        # Copy text from parent element
+        # Copy text from parent element to current element
         if parent_elem.text:
             elem.text = parent_elem.text
 
-        # Copy all children from parent element
+        # Copy all children from parent element to current element
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize msr_query
+        # Serialize msr_query (complex type)
         if self.msr_query is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query, "MsrQueryTopic1")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("MSR-QUERY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -78,11 +80,10 @@ class TopicOrMsrQuery(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize topic1
+        # Serialize topic1 (complex type)
         if self.topic1 is not None:
             serialized = SerializationHelper.serialize_item(self.topic1, "Topic1")
             if serialized is not None:
-                # Wrap with correct tag
                 wrapped = ET.Element("TOPIC1")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -96,7 +97,7 @@ class TopicOrMsrQuery(ARObject):
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TopicOrMsrQuery":
-        """Deserialize XML element to TopicOrMsrQuery object.
+        """Deserialize XML element to TopicOrMsrQuery object (atp_mixed - no unwrapping).
 
         Args:
             element: XML element to deserialize from

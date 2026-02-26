@@ -571,7 +571,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail
     def test_sw_record_demo_binary_comparison(
         self,
         reader: ARXMLReader,
