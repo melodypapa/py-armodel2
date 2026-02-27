@@ -10,6 +10,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communic
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import polymorphic
 
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.receiver_com_spec import (
     ReceiverComSpec,
@@ -54,7 +55,7 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
     handle_data_status: Optional[Boolean]
     handle_never_received: Optional[Boolean]
     handle_timeout_type: Optional[HandleTimeoutEnum]
-    init_value: Optional[ValueSpecification]
+    _init_value: Optional[ValueSpecification]
     timeout_substitution_value: Optional[ValueSpecification]
     def __init__(self) -> None:
         """Initialize NonqueuedReceiverComSpec."""
@@ -65,8 +66,19 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         self.handle_data_status: Optional[Boolean] = None
         self.handle_never_received: Optional[Boolean] = None
         self.handle_timeout_type: Optional[HandleTimeoutEnum] = None
-        self.init_value: Optional[ValueSpecification] = None
+        self._init_value: Optional[ValueSpecification] = None
         self.timeout_substitution_value: Optional[ValueSpecification] = None
+    @property
+    @polymorphic({"INIT-VALUE": "ValueSpecification"})
+    def init_value(self) -> Optional[ValueSpecification]:
+        """Get init_value with polymorphic wrapper handling."""
+        return self._init_value
+
+    @init_value.setter
+    def init_value(self, value: Optional[ValueSpecification]) -> None:
+        """Set init_value with polymorphic wrapper handling."""
+        self._init_value = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize NonqueuedReceiverComSpec to XML element.
@@ -176,18 +188,13 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize init_value
+        # Serialize init_value (polymorphic wrapper "INIT-VALUE")
         if self.init_value is not None:
             serialized = SerializationHelper.serialize_item(self.init_value, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
+                # For polymorphic types, wrap the serialized element (preserving concrete type)
                 wrapped = ET.Element("INIT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
+                wrapped.append(serialized)
                 elem.append(wrapped)
 
         # Serialize timeout_substitution_value
@@ -255,10 +262,10 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
             handle_timeout_type_value = HandleTimeoutEnum.deserialize(child)
             obj.handle_timeout_type = handle_timeout_type_value
 
-        # Parse init_value
-        child = SerializationHelper.find_child_element(element, "INIT-VALUE")
-        if child is not None:
-            init_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
+        # Parse init_value (polymorphic wrapper "INIT-VALUE")
+        wrapper = SerializationHelper.find_child_element(element, "INIT-VALUE")
+        if wrapper is not None:
+            init_value_value = SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
             obj.init_value = init_value_value
 
         # Parse timeout_substitution_value

@@ -20,8 +20,8 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PerInstanceMemory.per_instance_memory import (
-    PerInstanceMemory,
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcImplementation.per_instance_memory_size import (
+    PerInstanceMemorySize,
 )
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.swc_internal_behavior import (
     SwcInternalBehavior,
@@ -43,14 +43,14 @@ class SwcImplementation(Implementation):
         return False
 
     behavior_ref: Optional[ARRef]
-    per_instance_memories: list[PerInstanceMemory]
-    required: Optional[String]
+    per_instance_memory_sizes: list[PerInstanceMemorySize]
+    required_rte_vendor: Optional[String]
     def __init__(self) -> None:
         """Initialize SwcImplementation."""
         super().__init__()
         self.behavior_ref: Optional[ARRef] = None
-        self.per_instance_memories: list[PerInstanceMemory] = []
-        self.required: Optional[String] = None
+        self.per_instance_memory_sizes: list[PerInstanceMemorySize] = []
+        self.required_rte_vendor: Optional[String] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwcImplementation to XML element.
@@ -90,22 +90,22 @@ class SwcImplementation(Implementation):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize per_instance_memories (list to container "PER-INSTANCE-MEMORIES")
-        if self.per_instance_memories:
-            wrapper = ET.Element("PER-INSTANCE-MEMORIES")
-            for item in self.per_instance_memories:
-                serialized = SerializationHelper.serialize_item(item, "PerInstanceMemory")
+        # Serialize per_instance_memory_sizes (list to container "PER-INSTANCE-MEMORY-SIZES")
+        if self.per_instance_memory_sizes:
+            wrapper = ET.Element("PER-INSTANCE-MEMORY-SIZES")
+            for item in self.per_instance_memory_sizes:
+                serialized = SerializationHelper.serialize_item(item, "PerInstanceMemorySize")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize required
-        if self.required is not None:
-            serialized = SerializationHelper.serialize_item(self.required, "String")
+        # Serialize required_rte_vendor
+        if self.required_rte_vendor is not None:
+            serialized = SerializationHelper.serialize_item(self.required_rte_vendor, "String")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUIRED")
+                wrapped = ET.Element("REQUIRED-RTE-VENDOR")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -135,21 +135,21 @@ class SwcImplementation(Implementation):
             behavior_ref_value = ARRef.deserialize(child)
             obj.behavior_ref = behavior_ref_value
 
-        # Parse per_instance_memories (list from container "PER-INSTANCE-MEMORIES")
-        obj.per_instance_memories = []
-        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORIES")
+        # Parse per_instance_memory_sizes (list from container "PER-INSTANCE-MEMORY-SIZES")
+        obj.per_instance_memory_sizes = []
+        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORY-SIZES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.per_instance_memories.append(child_value)
+                    obj.per_instance_memory_sizes.append(child_value)
 
-        # Parse required
-        child = SerializationHelper.find_child_element(element, "REQUIRED")
+        # Parse required_rte_vendor
+        child = SerializationHelper.find_child_element(element, "REQUIRED-RTE-VENDOR")
         if child is not None:
-            required_value = child.text
-            obj.required = required_value
+            required_rte_vendor_value = child.text
+            obj.required_rte_vendor = required_rte_vendor_value
 
         return obj
 
@@ -178,8 +178,8 @@ class SwcImplementationBuilder(ImplementationBuilder):
         self._obj.behavior = value
         return self
 
-    def with_per_instance_memories(self, items: list[PerInstanceMemory]) -> "SwcImplementationBuilder":
-        """Set per_instance_memories list attribute.
+    def with_per_instance_memory_sizes(self, items: list[PerInstanceMemorySize]) -> "SwcImplementationBuilder":
+        """Set per_instance_memory_sizes list attribute.
 
         Args:
             items: List of items to set
@@ -187,11 +187,11 @@ class SwcImplementationBuilder(ImplementationBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.per_instance_memories = list(items) if items else []
+        self._obj.per_instance_memory_sizes = list(items) if items else []
         return self
 
-    def with_required(self, value: Optional[String]) -> "SwcImplementationBuilder":
-        """Set required attribute.
+    def with_required_rte_vendor(self, value: Optional[String]) -> "SwcImplementationBuilder":
+        """Set required_rte_vendor attribute.
 
         Args:
             value: Value to set
@@ -201,12 +201,12 @@ class SwcImplementationBuilder(ImplementationBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.required = value
+        self._obj.required_rte_vendor = value
         return self
 
 
-    def add_per_instance_memory(self, item: PerInstanceMemory) -> "SwcImplementationBuilder":
-        """Add a single item to per_instance_memories list.
+    def add_per_instance_memory_size(self, item: PerInstanceMemorySize) -> "SwcImplementationBuilder":
+        """Add a single item to per_instance_memory_sizes list.
 
         Args:
             item: Item to add
@@ -214,16 +214,16 @@ class SwcImplementationBuilder(ImplementationBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.per_instance_memories.append(item)
+        self._obj.per_instance_memory_sizes.append(item)
         return self
 
-    def clear_per_instance_memories(self) -> "SwcImplementationBuilder":
-        """Clear all items from per_instance_memories list.
+    def clear_per_instance_memory_sizes(self) -> "SwcImplementationBuilder":
+        """Clear all items from per_instance_memory_sizes list.
 
         Returns:
             self for method chaining
         """
-        self._obj.per_instance_memories = []
+        self._obj.per_instance_memory_sizes = []
         return self
 
 

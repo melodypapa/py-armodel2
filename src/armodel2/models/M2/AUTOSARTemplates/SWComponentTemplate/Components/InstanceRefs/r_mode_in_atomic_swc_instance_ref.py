@@ -11,22 +11,25 @@ import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
-    AbstractRequiredPortPrototype,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
-    AtomicSwComponentType,
-)
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
 )
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
+        AbstractRequiredPortPrototype,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
+        AtomicSwComponentType,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class RModeInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR RModeInAtomicSwcInstanceRef."""
 
@@ -40,15 +43,15 @@ class RModeInAtomicSwcInstanceRef(ARObject):
         return False
 
     base_ref: Optional[ARRef]
-    context_mode_group_prototype_ref: Optional[ARRef]
-    context_port_prototype_ref: Optional[ARRef]
+    context_port_ref: Optional[ARRef]
+    context_mode_declaration_group_prototype_ref: Optional[ARRef]
     target_mode_declaration_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RModeInAtomicSwcInstanceRef."""
         super().__init__()
         self.base_ref: Optional[ARRef] = None
-        self.context_mode_group_prototype_ref: Optional[ARRef] = None
-        self.context_port_prototype_ref: Optional[ARRef] = None
+        self.context_port_ref: Optional[ARRef] = None
+        self.context_mode_declaration_group_prototype_ref: Optional[ARRef] = None
         self.target_mode_declaration_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -89,12 +92,12 @@ class RModeInAtomicSwcInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_mode_group_prototype_ref
-        if self.context_mode_group_prototype_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.context_mode_group_prototype_ref, "ModeDeclarationGroup")
+        # Serialize context_port_ref
+        if self.context_port_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.context_port_ref, "AbstractRequiredPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-MODE-GROUP-PROTOTYPE-REF")
+                wrapped = ET.Element("CONTEXT-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -103,12 +106,12 @@ class RModeInAtomicSwcInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_port_prototype_ref
-        if self.context_port_prototype_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.context_port_prototype_ref, "AbstractRequiredPortPrototype")
+        # Serialize context_mode_declaration_group_prototype_ref
+        if self.context_mode_declaration_group_prototype_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.context_mode_declaration_group_prototype_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-PORT-PROTOTYPE-REF")
+                wrapped = ET.Element("CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -152,17 +155,17 @@ class RModeInAtomicSwcInstanceRef(ARObject):
             base_ref_value = ARRef.deserialize(child)
             obj.base_ref = base_ref_value
 
-        # Parse context_mode_group_prototype_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-MODE-GROUP-PROTOTYPE-REF")
+        # Parse context_port_ref
+        child = SerializationHelper.find_child_element(element, "CONTEXT-PORT-REF")
         if child is not None:
-            context_mode_group_prototype_ref_value = ARRef.deserialize(child)
-            obj.context_mode_group_prototype_ref = context_mode_group_prototype_ref_value
+            context_port_ref_value = ARRef.deserialize(child)
+            obj.context_port_ref = context_port_ref_value
 
-        # Parse context_port_prototype_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-PORT-PROTOTYPE-REF")
+        # Parse context_mode_declaration_group_prototype_ref
+        child = SerializationHelper.find_child_element(element, "CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF")
         if child is not None:
-            context_port_prototype_ref_value = ARRef.deserialize(child)
-            obj.context_port_prototype_ref = context_port_prototype_ref_value
+            context_mode_declaration_group_prototype_ref_value = ARRef.deserialize(child)
+            obj.context_mode_declaration_group_prototype_ref = context_mode_declaration_group_prototype_ref_value
 
         # Parse target_mode_declaration_ref
         child = SerializationHelper.find_child_element(element, "TARGET-MODE-DECLARATION-REF")
@@ -197,8 +200,8 @@ class RModeInAtomicSwcInstanceRefBuilder(BuilderBase):
         self._obj.base = value
         return self
 
-    def with_context_mode_group_prototype(self, value: Optional[ModeDeclarationGroup]) -> "RModeInAtomicSwcInstanceRefBuilder":
-        """Set context_mode_group_prototype attribute.
+    def with_context_port(self, value: Optional[AbstractRequiredPortPrototype]) -> "RModeInAtomicSwcInstanceRefBuilder":
+        """Set context_port attribute.
 
         Args:
             value: Value to set
@@ -208,11 +211,11 @@ class RModeInAtomicSwcInstanceRefBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.context_mode_group_prototype = value
+        self._obj.context_port = value
         return self
 
-    def with_context_port_prototype(self, value: Optional[AbstractRequiredPortPrototype]) -> "RModeInAtomicSwcInstanceRefBuilder":
-        """Set context_port_prototype attribute.
+    def with_context_mode_declaration_group_prototype(self, value: Optional[ModeDeclarationGroup]) -> "RModeInAtomicSwcInstanceRefBuilder":
+        """Set context_mode_declaration_group_prototype attribute.
 
         Args:
             value: Value to set
@@ -222,7 +225,7 @@ class RModeInAtomicSwcInstanceRefBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.context_port_prototype = value
+        self._obj.context_mode_declaration_group_prototype = value
         return self
 
     def with_target_mode_declaration(self, value: Optional[ModeDeclaration]) -> "RModeInAtomicSwcInstanceRefBuilder":

@@ -17,16 +17,19 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import ARElementBuilder
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.data_type_map import (
-    DataTypeMap,
-)
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_request_type_map import (
-    ModeRequestTypeMap,
-)
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.data_type_map import (
+        DataTypeMap,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_request_type_map import (
+        ModeRequestTypeMap,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class DataTypeMappingSet(ARElement):
     """AUTOSAR DataTypeMappingSet."""
 

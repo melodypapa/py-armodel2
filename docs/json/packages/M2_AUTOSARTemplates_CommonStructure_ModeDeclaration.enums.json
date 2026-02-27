@@ -47,9 +47,19 @@
       ],
       "literals": [
         {
-          "name": "onEntryonExitonTransition",
+          "name": "onEntry",
+          "index": 0,
+          "description": "On entering the referred mode"
+        },
+        {
+          "name": "onExit",
+          "index": 1,
+          "description": "On exiting the referred mode."
+        },
+        {
+          "name": "onTransition",
           "index": 2,
-          "description": "On entering the referred mode.<br>Tags: atp.EnumerationLiteralIndex=2"
+          "description": "On transition of the 1st referred mode to the 2nd referred mode."
         }
       ]
     }

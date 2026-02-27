@@ -43,11 +43,12 @@
         }
       ],
       "attributes": {
-        "operationInstanceRef": {
-          "type": "ClientServerOperation",
+        "operation": {
+          "type": "POperationInAtomicSwcInstanceRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "iref",
+          "is_ref": true,
+          "decorator": "instance_ref:flatten=True",
           "note": "by: POperationInAtomicSwc"
         }
       }
@@ -139,11 +140,12 @@
         }
       ],
       "attributes": {
-        "disabledModeInstanceRef": {
-          "type": "ModeDeclaration",
+        "disabledMode": {
+          "type": "RModeInAtomicSwcInstanceRef",
           "multiplicity": "*",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "iref",
+          "is_ref": true,
+          "decorator": "instance_ref:flatten=True,list_type=multi",
           "note": "disabled by: RModeInAtomicSwc"
         },
         "startOnEvent": {
@@ -477,6 +479,7 @@
     },
     {
       "name": "SwcModeSwitchEvent",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -516,6 +519,14 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "note": "Specifies if the event is raised on entering or exiting a or is raised on the transition between two ModeDeclaration 0..2 iref The referenced mode or the transition between two this SwcModeSwitchEvent. by: RModeInAtomicSwc"
+        },
+        "mode": {
+          "type": "RModeInAtomicSwcInstanceRef",
+          "multiplicity": "0..1",
+          "kind": "iref",
+          "is_ref": true,
+          "decorator": "instance_ref:flatten=True,list_type=multi",
           "note": "Specifies if the event is raised on entering or exiting a or is raised on the transition between two ModeDeclaration 0..2 iref The referenced mode or the transition between two this SwcModeSwitchEvent. by: RModeInAtomicSwc"
         }
       }

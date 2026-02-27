@@ -14,7 +14,12 @@ if TYPE_CHECKING:
         SwcExclusiveAreaPolicy,
     )
 
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.handle_termination_and_restart_enum import (
+    HandleTerminationAndRestartEnum,
+)
+
 __all__ = [
+    "HandleTerminationAndRestartEnum",
     "RunnableEntity",
     "SwcExclusiveAreaPolicy",
     "SwcInternalBehavior",

@@ -22,22 +22,22 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttribut
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Float,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.argument_data_prototype import (
-    ArgumentDataPrototype,
-)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
-    VariableDataPrototype,
-)
 
 if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.argument_data_prototype import (
+        ArgumentDataPrototype,
+    )
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
         PortPrototype,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+        VariableDataPrototype,
     )
 
 

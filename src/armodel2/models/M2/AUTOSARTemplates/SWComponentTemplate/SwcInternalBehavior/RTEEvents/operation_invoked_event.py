@@ -9,14 +9,17 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInter
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import instance_ref
+from armodel2.serialization.decorators import ref_conditional
 
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import RTEEventBuilder
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
-    ClientServerOperation,
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.p_operation_in_atomic_swc_instance_ref import (
+    POperationInAtomicSwcInstanceRef,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -34,11 +37,22 @@ class OperationInvokedEvent(RTEEvent):
         """
         return False
 
-    operation_instance_ref: Optional[ClientServerOperation]
+    _operation_iref: Optional[POperationInAtomicSwcInstanceRef]
     def __init__(self) -> None:
         """Initialize OperationInvokedEvent."""
         super().__init__()
-        self.operation_instance_ref: Optional[ClientServerOperation] = None
+        self._operation_iref: Optional[POperationInAtomicSwcInstanceRef] = None
+    @property
+    @instance_ref(flatten=True)
+    def operation_iref(self) -> Optional[POperationInAtomicSwcInstanceRef]:
+        """Get operation_iref instance reference."""
+        return self._operation_iref
+
+    @operation_iref.setter
+    def operation_iref(self, value: Optional[POperationInAtomicSwcInstanceRef]) -> None:
+        """Set operation_iref instance reference."""
+        self._operation_iref = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize OperationInvokedEvent to XML element.
@@ -64,19 +78,16 @@ class OperationInvokedEvent(RTEEvent):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize operation_instance_ref
-        if self.operation_instance_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.operation_instance_ref, "ClientServerOperation")
+        # Serialize operation_iref (instance reference with wrapper "OPERATION-IREF")
+        if self.operation_iref is not None:
+            serialized = SerializationHelper.serialize_item(self.operation_iref, "POperationInAtomicSwcInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OPERATION-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("OPERATION-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         return elem
 
@@ -93,11 +104,12 @@ class OperationInvokedEvent(RTEEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(OperationInvokedEvent, cls).deserialize(element)
 
-        # Parse operation_instance_ref
-        child = SerializationHelper.find_child_element(element, "OPERATION-INSTANCE-REF")
-        if child is not None:
-            operation_instance_ref_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
-            obj.operation_instance_ref = operation_instance_ref_value
+        # Parse operation_iref (instance reference from wrapper "OPERATION-IREF")
+        wrapper = SerializationHelper.find_child_element(element, "OPERATION-IREF")
+        if wrapper is not None:
+            # Deserialize wrapper element directly as the type (flattened structure)
+            operation_iref_value = SerializationHelper.deserialize_by_tag(wrapper, "POperationInAtomicSwcInstanceRef")
+            obj.operation_iref = operation_iref_value
 
         return obj
 
@@ -112,8 +124,8 @@ class OperationInvokedEventBuilder(RTEEventBuilder):
         self._obj: OperationInvokedEvent = OperationInvokedEvent()
 
 
-    def with_operation_instance_ref(self, value: Optional[ClientServerOperation]) -> "OperationInvokedEventBuilder":
-        """Set operation_instance_ref attribute.
+    def with_operation(self, value: Optional[POperationInAtomicSwcInstanceRef]) -> "OperationInvokedEventBuilder":
+        """Set operation attribute.
 
         Args:
             value: Value to set
@@ -123,7 +135,7 @@ class OperationInvokedEventBuilder(RTEEventBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.operation_instance_ref = value
+        self._obj.operation = value
         return self
 
 

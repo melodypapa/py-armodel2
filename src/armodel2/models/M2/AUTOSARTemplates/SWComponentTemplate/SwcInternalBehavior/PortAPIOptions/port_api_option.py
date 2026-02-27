@@ -12,25 +12,29 @@ import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions import (
+    DataTransformationErrorHandlingEnum,
+    DataTransformationStatusForwardingEnum,
+)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
-)
-from armodel2.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_transformation import (
-    DataTransformation,
 )
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions.port_defined_argument_value import (
     PortDefinedArgumentValue,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
-    PortPrototype,
-)
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions.swc_supported_feature import (
     SwcSupportedFeature,
 )
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+        PortPrototype,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class PortAPIOption(ARObject):
     """AUTOSAR PortAPIOption."""
 
@@ -43,23 +47,23 @@ class PortAPIOption(ARObject):
         """
         return False
 
-    enable_take: Optional[Boolean]
-    error_handling: Optional[DataTransformation]
+    enable_take_address: Optional[Boolean]
+    error_handling: Optional[DataTransformationErrorHandlingEnum]
     indirect_api: Optional[Boolean]
     port_ref: Optional[ARRef]
     port_arg_values: list[PortDefinedArgumentValue]
-    supporteds: list[SwcSupportedFeature]
-    transformer: Optional[DataTransformation]
+    supported_features: list[SwcSupportedFeature]
+    transformer_status_forwarding: Optional[DataTransformationStatusForwardingEnum]
     def __init__(self) -> None:
         """Initialize PortAPIOption."""
         super().__init__()
-        self.enable_take: Optional[Boolean] = None
-        self.error_handling: Optional[DataTransformation] = None
+        self.enable_take_address: Optional[Boolean] = None
+        self.error_handling: Optional[DataTransformationErrorHandlingEnum] = None
         self.indirect_api: Optional[Boolean] = None
         self.port_ref: Optional[ARRef] = None
         self.port_arg_values: list[PortDefinedArgumentValue] = []
-        self.supporteds: list[SwcSupportedFeature] = []
-        self.transformer: Optional[DataTransformation] = None
+        self.supported_features: list[SwcSupportedFeature] = []
+        self.transformer_status_forwarding: Optional[DataTransformationStatusForwardingEnum] = None
 
     def serialize(self) -> ET.Element:
         """Serialize PortAPIOption to XML element.
@@ -85,12 +89,12 @@ class PortAPIOption(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize enable_take
-        if self.enable_take is not None:
-            serialized = SerializationHelper.serialize_item(self.enable_take, "Boolean")
+        # Serialize enable_take_address
+        if self.enable_take_address is not None:
+            serialized = SerializationHelper.serialize_item(self.enable_take_address, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ENABLE-TAKE")
+                wrapped = ET.Element("ENABLE-TAKE-ADDRESS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -101,7 +105,7 @@ class PortAPIOption(ARObject):
 
         # Serialize error_handling
         if self.error_handling is not None:
-            serialized = SerializationHelper.serialize_item(self.error_handling, "DataTransformation")
+            serialized = SerializationHelper.serialize_item(self.error_handling, "DataTransformationErrorHandlingEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ERROR-HANDLING")
@@ -151,22 +155,22 @@ class PortAPIOption(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize supporteds (list to container "SUPPORTEDS")
-        if self.supporteds:
-            wrapper = ET.Element("SUPPORTEDS")
-            for item in self.supporteds:
+        # Serialize supported_features (list to container "SUPPORTED-FEATURES")
+        if self.supported_features:
+            wrapper = ET.Element("SUPPORTED-FEATURES")
+            for item in self.supported_features:
                 serialized = SerializationHelper.serialize_item(item, "SwcSupportedFeature")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize transformer
-        if self.transformer is not None:
-            serialized = SerializationHelper.serialize_item(self.transformer, "DataTransformation")
+        # Serialize transformer_status_forwarding
+        if self.transformer_status_forwarding is not None:
+            serialized = SerializationHelper.serialize_item(self.transformer_status_forwarding, "DataTransformationStatusForwardingEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSFORMER")
+                wrapped = ET.Element("TRANSFORMER-STATUS-FORWARDING")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -190,16 +194,16 @@ class PortAPIOption(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortAPIOption, cls).deserialize(element)
 
-        # Parse enable_take
-        child = SerializationHelper.find_child_element(element, "ENABLE-TAKE")
+        # Parse enable_take_address
+        child = SerializationHelper.find_child_element(element, "ENABLE-TAKE-ADDRESS")
         if child is not None:
-            enable_take_value = child.text
-            obj.enable_take = enable_take_value
+            enable_take_address_value = child.text
+            obj.enable_take_address = enable_take_address_value
 
         # Parse error_handling
         child = SerializationHelper.find_child_element(element, "ERROR-HANDLING")
         if child is not None:
-            error_handling_value = SerializationHelper.deserialize_by_tag(child, "DataTransformation")
+            error_handling_value = DataTransformationErrorHandlingEnum.deserialize(child)
             obj.error_handling = error_handling_value
 
         # Parse indirect_api
@@ -224,21 +228,21 @@ class PortAPIOption(ARObject):
                 if child_value is not None:
                     obj.port_arg_values.append(child_value)
 
-        # Parse supporteds (list from container "SUPPORTEDS")
-        obj.supporteds = []
-        container = SerializationHelper.find_child_element(element, "SUPPORTEDS")
+        # Parse supported_features (list from container "SUPPORTED-FEATURES")
+        obj.supported_features = []
+        container = SerializationHelper.find_child_element(element, "SUPPORTED-FEATURES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.supporteds.append(child_value)
+                    obj.supported_features.append(child_value)
 
-        # Parse transformer
-        child = SerializationHelper.find_child_element(element, "TRANSFORMER")
+        # Parse transformer_status_forwarding
+        child = SerializationHelper.find_child_element(element, "TRANSFORMER-STATUS-FORWARDING")
         if child is not None:
-            transformer_value = SerializationHelper.deserialize_by_tag(child, "DataTransformation")
-            obj.transformer = transformer_value
+            transformer_status_forwarding_value = DataTransformationStatusForwardingEnum.deserialize(child)
+            obj.transformer_status_forwarding = transformer_status_forwarding_value
 
         return obj
 
@@ -253,8 +257,8 @@ class PortAPIOptionBuilder(BuilderBase):
         self._obj: PortAPIOption = PortAPIOption()
 
 
-    def with_enable_take(self, value: Optional[Boolean]) -> "PortAPIOptionBuilder":
-        """Set enable_take attribute.
+    def with_enable_take_address(self, value: Optional[Boolean]) -> "PortAPIOptionBuilder":
+        """Set enable_take_address attribute.
 
         Args:
             value: Value to set
@@ -264,10 +268,10 @@ class PortAPIOptionBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.enable_take = value
+        self._obj.enable_take_address = value
         return self
 
-    def with_error_handling(self, value: Optional[DataTransformation]) -> "PortAPIOptionBuilder":
+    def with_error_handling(self, value: Optional[DataTransformationErrorHandlingEnum]) -> "PortAPIOptionBuilder":
         """Set error_handling attribute.
 
         Args:
@@ -321,8 +325,8 @@ class PortAPIOptionBuilder(BuilderBase):
         self._obj.port_arg_values = list(items) if items else []
         return self
 
-    def with_supporteds(self, items: list[SwcSupportedFeature]) -> "PortAPIOptionBuilder":
-        """Set supporteds list attribute.
+    def with_supported_features(self, items: list[SwcSupportedFeature]) -> "PortAPIOptionBuilder":
+        """Set supported_features list attribute.
 
         Args:
             items: List of items to set
@@ -330,11 +334,11 @@ class PortAPIOptionBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.supporteds = list(items) if items else []
+        self._obj.supported_features = list(items) if items else []
         return self
 
-    def with_transformer(self, value: Optional[DataTransformation]) -> "PortAPIOptionBuilder":
-        """Set transformer attribute.
+    def with_transformer_status_forwarding(self, value: Optional[DataTransformationStatusForwardingEnum]) -> "PortAPIOptionBuilder":
+        """Set transformer_status_forwarding attribute.
 
         Args:
             value: Value to set
@@ -344,7 +348,7 @@ class PortAPIOptionBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.transformer = value
+        self._obj.transformer_status_forwarding = value
         return self
 
 
@@ -369,8 +373,8 @@ class PortAPIOptionBuilder(BuilderBase):
         self._obj.port_arg_values = []
         return self
 
-    def add_supported(self, item: SwcSupportedFeature) -> "PortAPIOptionBuilder":
-        """Add a single item to supporteds list.
+    def add_supported_feature(self, item: SwcSupportedFeature) -> "PortAPIOptionBuilder":
+        """Add a single item to supported_features list.
 
         Args:
             item: Item to add
@@ -378,16 +382,16 @@ class PortAPIOptionBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.supporteds.append(item)
+        self._obj.supported_features.append(item)
         return self
 
-    def clear_supporteds(self) -> "PortAPIOptionBuilder":
-        """Clear all items from supporteds list.
+    def clear_supported_features(self) -> "PortAPIOptionBuilder":
+        """Clear all items from supported_features list.
 
         Returns:
             self for method chaining
         """
-        self._obj.supporteds = []
+        self._obj.supported_features = []
         return self
 
 

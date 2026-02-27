@@ -21,6 +21,7 @@ xml_tag_mappings:
   V2X-DATA-MANAGER-NEEDS: V2xDataManagerNeeds
   VT: CompuConstTextContent
   BSW-MODULE-ENTRY-REF-CONDITIONAL: BswModuleClientServerEntry
+  PORT-API-OPTION: PortAPIOption
 class_import_paths:
   BswModuleDescription: armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description
   ModeInBswModuleDescriptionInstanceRef: armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.InstanceRefs.mode_in_bsw_module_description_instance_ref

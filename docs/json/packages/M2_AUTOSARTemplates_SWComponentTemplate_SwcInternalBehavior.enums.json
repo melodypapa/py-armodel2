@@ -1,0 +1,35 @@
+{
+  "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior",
+  "enumerations": [
+    {
+      "name": "HandleTerminationAndRestartEnum",
+      "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior",
+      "note": "Controls the behavior of an AtomicSwComponentType with respect to stop and restart.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
+          "page_number": 354,
+          "autosar_standard": "Classic Platform",
+          "standard_release": "4.2.0"
+        }
+      ],
+      "literals": [
+        {
+          "name": "canBeTerminated",
+          "index": 0,
+          "description": "Supports termination."
+        },
+        {
+          "name": "canBeTerminatedAndRestarted",
+          "index": 1,
+          "description": "Supports termination and restarting."
+        },
+        {
+          "name": "noSupport",
+          "index": 2,
+          "description": "Stop and restart is not supported at all."
+        }
+      ]
+    }
+  ]
+}

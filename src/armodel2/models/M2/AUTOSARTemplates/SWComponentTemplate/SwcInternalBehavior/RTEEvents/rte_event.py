@@ -11,6 +11,8 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInter
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import instance_ref
+from armodel2.serialization.decorators import ref_conditional
 
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.abstract_event import (
     AbstractEvent,
@@ -18,11 +20,11 @@ from armodel2.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.abstra
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.abstract_event import AbstractEventBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
-    ModeDeclaration,
-)
 
 if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.r_mode_in_atomic_swc_instance_ref import (
+        RModeInAtomicSwcInstanceRef,
+    )
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
         RunnableEntity,
     )
@@ -46,13 +48,24 @@ class RTEEvent(AbstractEvent, ABC):
         """
         return True
 
-    disabled_mode_instance_refs: list[ModeDeclaration]
+    _disabled_mode_irefs: list[RModeInAtomicSwcInstanceRef]
     start_on_event_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RTEEvent."""
         super().__init__()
-        self.disabled_mode_instance_refs: list[ModeDeclaration] = []
+        self._disabled_mode_irefs: list[RModeInAtomicSwcInstanceRef] = []
         self.start_on_event_ref: Optional[ARRef] = None
+    @property
+    @instance_ref(flatten=True, list_type='multi')
+    def disabled_mode_irefs(self) -> list[RModeInAtomicSwcInstanceRef]:
+        """Get disabled_mode_irefs instance reference."""
+        return self._disabled_mode_irefs
+
+    @disabled_mode_irefs.setter
+    def disabled_mode_irefs(self, value: list[RModeInAtomicSwcInstanceRef]) -> None:
+        """Set disabled_mode_irefs instance reference."""
+        self._disabled_mode_irefs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize RTEEvent to XML element.
@@ -78,15 +91,19 @@ class RTEEvent(AbstractEvent, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize disabled_mode_instance_refs (list to container "DISABLED-MODE-INSTANCE-REFS")
-        if self.disabled_mode_instance_refs:
-            wrapper = ET.Element("DISABLED-MODE-INSTANCE-REFS")
-            for item in self.disabled_mode_instance_refs:
-                serialized = SerializationHelper.serialize_item(item, "ModeDeclaration")
+        # Serialize disabled_mode_irefs (list of instance references with multi-wrapper pattern)
+        if self.disabled_mode_irefs:
+            irefs_container = ET.Element("DISABLED-MODE-IREFS")
+            for item in self.disabled_mode_irefs:
+                serialized = SerializationHelper.serialize_item(item, "RModeInAtomicSwcInstanceRef")
                 if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+                    # Wrap each item in its own IREF wrapper
+                    iref_wrapper = ET.Element("DISABLED-MODE-IREF")
+                    # Flatten: append children of serialized element directly to iref wrapper
+                    for child in serialized:
+                        iref_wrapper.append(child)
+                    irefs_container.append(iref_wrapper)
+            elem.append(irefs_container)
 
         # Serialize start_on_event_ref
         if self.start_on_event_ref is not None:
@@ -117,15 +134,16 @@ class RTEEvent(AbstractEvent, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RTEEvent, cls).deserialize(element)
 
-        # Parse disabled_mode_instance_refs (list from container "DISABLED-MODE-INSTANCE-REFS")
-        obj.disabled_mode_instance_refs = []
-        container = SerializationHelper.find_child_element(element, "DISABLED-MODE-INSTANCE-REFS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.disabled_mode_instance_refs.append(child_value)
+        # Parse disabled_mode_irefs (multi-wrapper list from "DISABLED-MODE-IREFS")
+        obj.disabled_mode_irefs = []
+        irefs_container = SerializationHelper.find_child_element(element, "DISABLED-MODE-IREFS")
+        if irefs_container is not None:
+            for iref_wrapper in irefs_container:
+                if SerializationHelper.strip_namespace(iref_wrapper.tag) == "DISABLED-MODE-IREF":
+                    # Deserialize each iref wrapper as the type (flattened structure)
+                    child_value = SerializationHelper.deserialize_by_tag(iref_wrapper, "RModeInAtomicSwcInstanceRef")
+                    if child_value is not None:
+                        obj.disabled_mode_irefs.append(child_value)
 
         # Parse start_on_event_ref
         child = SerializationHelper.find_child_element(element, "START-ON-EVENT-REF")
@@ -146,8 +164,8 @@ class RTEEventBuilder(AbstractEventBuilder):
         self._obj: RTEEvent = RTEEvent()
 
 
-    def with_disabled_mode_instance_refs(self, items: list[ModeDeclaration]) -> "RTEEventBuilder":
-        """Set disabled_mode_instance_refs list attribute.
+    def with_disabled_modes(self, items: list[RModeInAtomicSwcInstanceRef]) -> "RTEEventBuilder":
+        """Set disabled_modes list attribute.
 
         Args:
             items: List of items to set
@@ -155,7 +173,7 @@ class RTEEventBuilder(AbstractEventBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.disabled_mode_instance_refs = list(items) if items else []
+        self._obj.disabled_modes = list(items) if items else []
         return self
 
     def with_start_on_event(self, value: Optional[RunnableEntity]) -> "RTEEventBuilder":
@@ -173,8 +191,8 @@ class RTEEventBuilder(AbstractEventBuilder):
         return self
 
 
-    def add_disabled_mode_instance_ref(self, item: ModeDeclaration) -> "RTEEventBuilder":
-        """Add a single item to disabled_mode_instance_refs list.
+    def add_disabled_mode(self, item: RModeInAtomicSwcInstanceRef) -> "RTEEventBuilder":
+        """Add a single item to disabled_modes list.
 
         Args:
             item: Item to add
@@ -182,16 +200,16 @@ class RTEEventBuilder(AbstractEventBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.disabled_mode_instance_refs.append(item)
+        self._obj.disabled_modes.append(item)
         return self
 
-    def clear_disabled_mode_instance_refs(self) -> "RTEEventBuilder":
-        """Clear all items from disabled_mode_instance_refs list.
+    def clear_disabled_modes(self) -> "RTEEventBuilder":
+        """Clear all items from disabled_modes list.
 
         Returns:
             self for method chaining
         """
-        self._obj.disabled_mode_instance_refs = []
+        self._obj.disabled_modes = []
         return self
 
 

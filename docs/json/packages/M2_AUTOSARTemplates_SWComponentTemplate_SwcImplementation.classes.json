@@ -53,14 +53,14 @@
           "is_ref": true,
           "note": "The internal behavior implemented by this 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "perInstanceMemory": {
-          "type": "PerInstanceMemory",
+        "perInstanceMemorySize": {
+          "type": "PerInstanceMemorySize",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Allows a definition of the size of the per-instance memory for this implementation. The aggregation of PerInstance subject to variability with the purpose to in the software components different algorithms in the requiring different number of memory this case PerInstanceMemory. atpVariation"
         },
-        "required": {
+        "requiredRTEVendor": {
           "type": "String",
           "multiplicity": "0..1",
           "kind": "attribute",
