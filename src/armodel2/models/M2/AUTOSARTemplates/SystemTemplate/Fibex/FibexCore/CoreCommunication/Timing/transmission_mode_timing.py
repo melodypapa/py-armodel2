@@ -33,12 +33,12 @@ class TransmissionModeTiming(ARObject):
         return False
 
     cyclic_timing: Optional[CyclicTiming]
-    event_controlled_timing_timing: Optional[EventControlledTiming]
+    event_controlled_timing: Optional[EventControlledTiming]
     def __init__(self) -> None:
         """Initialize TransmissionModeTiming."""
         super().__init__()
         self.cyclic_timing: Optional[CyclicTiming] = None
-        self.event_controlled_timing_timing: Optional[EventControlledTiming] = None
+        self.event_controlled_timing: Optional[EventControlledTiming] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TransmissionModeTiming to XML element.
@@ -78,12 +78,12 @@ class TransmissionModeTiming(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize event_controlled_timing_timing
-        if self.event_controlled_timing_timing is not None:
-            serialized = SerializationHelper.serialize_item(self.event_controlled_timing_timing, "EventControlledTiming")
+        # Serialize event_controlled_timing
+        if self.event_controlled_timing is not None:
+            serialized = SerializationHelper.serialize_item(self.event_controlled_timing, "EventControlledTiming")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EVENT-CONTROLLED-TIMING-TIMING")
+                wrapped = ET.Element("EVENT-CONTROLLED-TIMING")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -113,11 +113,11 @@ class TransmissionModeTiming(ARObject):
             cyclic_timing_value = SerializationHelper.deserialize_by_tag(child, "CyclicTiming")
             obj.cyclic_timing = cyclic_timing_value
 
-        # Parse event_controlled_timing_timing
-        child = SerializationHelper.find_child_element(element, "EVENT-CONTROLLED-TIMING-TIMING")
+        # Parse event_controlled_timing
+        child = SerializationHelper.find_child_element(element, "EVENT-CONTROLLED-TIMING")
         if child is not None:
-            event_controlled_timing_timing_value = SerializationHelper.deserialize_by_tag(child, "EventControlledTiming")
-            obj.event_controlled_timing_timing = event_controlled_timing_timing_value
+            event_controlled_timing_value = SerializationHelper.deserialize_by_tag(child, "EventControlledTiming")
+            obj.event_controlled_timing = event_controlled_timing_value
 
         return obj
 
@@ -146,8 +146,8 @@ class TransmissionModeTimingBuilder(BuilderBase):
         self._obj.cyclic_timing = value
         return self
 
-    def with_event_controlled_timing_timing(self, value: Optional[EventControlledTiming]) -> "TransmissionModeTimingBuilder":
-        """Set event_controlled_timing_timing attribute.
+    def with_event_controlled_timing(self, value: Optional[EventControlledTiming]) -> "TransmissionModeTimingBuilder":
+        """Set event_controlled_timing attribute.
 
         Args:
             value: Value to set
@@ -157,7 +157,7 @@ class TransmissionModeTimingBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.event_controlled_timing_timing = value
+        self._obj.event_controlled_timing = value
         return self
 
 

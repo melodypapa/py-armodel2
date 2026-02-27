@@ -34,7 +34,7 @@ class DataFilter(ARObject):
         """
         return False
 
-    data_filter_type_enum: Optional[DataFilterTypeEnum]
+    data_filter_type: Optional[DataFilterTypeEnum]
     mask: Optional[UnlimitedInteger]
     max: Optional[UnlimitedInteger]
     min: Optional[UnlimitedInteger]
@@ -44,7 +44,7 @@ class DataFilter(ARObject):
     def __init__(self) -> None:
         """Initialize DataFilter."""
         super().__init__()
-        self.data_filter_type_enum: Optional[DataFilterTypeEnum] = None
+        self.data_filter_type: Optional[DataFilterTypeEnum] = None
         self.mask: Optional[UnlimitedInteger] = None
         self.max: Optional[UnlimitedInteger] = None
         self.min: Optional[UnlimitedInteger] = None
@@ -76,12 +76,12 @@ class DataFilter(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_filter_type_enum
-        if self.data_filter_type_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.data_filter_type_enum, "DataFilterTypeEnum")
+        # Serialize data_filter_type
+        if self.data_filter_type is not None:
+            serialized = SerializationHelper.serialize_item(self.data_filter_type, "DataFilterTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-FILTER-TYPE-ENUM")
+                wrapped = ET.Element("DATA-FILTER-TYPE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -189,11 +189,11 @@ class DataFilter(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataFilter, cls).deserialize(element)
 
-        # Parse data_filter_type_enum
-        child = SerializationHelper.find_child_element(element, "DATA-FILTER-TYPE-ENUM")
+        # Parse data_filter_type
+        child = SerializationHelper.find_child_element(element, "DATA-FILTER-TYPE")
         if child is not None:
-            data_filter_type_enum_value = DataFilterTypeEnum.deserialize(child)
-            obj.data_filter_type_enum = data_filter_type_enum_value
+            data_filter_type_value = DataFilterTypeEnum.deserialize(child)
+            obj.data_filter_type = data_filter_type_value
 
         # Parse mask
         child = SerializationHelper.find_child_element(element, "MASK")
@@ -244,8 +244,8 @@ class DataFilterBuilder(BuilderBase):
         self._obj: DataFilter = DataFilter()
 
 
-    def with_data_filter_type_enum(self, value: Optional[DataFilterTypeEnum]) -> "DataFilterBuilder":
-        """Set data_filter_type_enum attribute.
+    def with_data_filter_type(self, value: Optional[DataFilterTypeEnum]) -> "DataFilterBuilder":
+        """Set data_filter_type attribute.
 
         Args:
             value: Value to set
@@ -255,7 +255,7 @@ class DataFilterBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.data_filter_type_enum = value
+        self._obj.data_filter_type = value
         return self
 
     def with_mask(self, value: Optional[UnlimitedInteger]) -> "DataFilterBuilder":

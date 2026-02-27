@@ -43,7 +43,7 @@
         },
         "transmissionModeCondition": {
           "type": "TransmissionModeCondition",
-          "multiplicity": "0..1",
+          "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Timing Specification if the COM Transmission Mode is true. The Transmission Mode Selector is defined to be if at least one Condition evaluates to true."
@@ -176,7 +176,7 @@
           "is_ref": false,
           "note": "Periodic Transmission Mode."
         },
-        "eventControlledTimingTiming": {
+        "eventControlledTiming": {
           "type": "EventControlledTiming",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -255,7 +255,7 @@
         }
       ],
       "attributes": {
-        "numberOf": {
+        "numberOfRepetitions": {
           "type": "Integer",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -299,8 +299,8 @@
         }
       ],
       "attributes": {
-        "toleranceTolerance": {
-          "type": "TimeRangeType",
+        "tolerance": {
+          "type": "TimeRangeTypeTolerance",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

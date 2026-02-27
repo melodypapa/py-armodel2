@@ -29,12 +29,12 @@ class TimeRangeType(ARObject):
         """
         return False
 
-    tolerance_tolerance: Optional[TimeRangeType]
+    tolerance: Optional[TimeRangeTypeTolerance]
     value: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize TimeRangeType."""
         super().__init__()
-        self.tolerance_tolerance: Optional[TimeRangeType] = None
+        self.tolerance: Optional[TimeRangeTypeTolerance] = None
         self.value: Optional[TimeValue] = None
 
     def serialize(self) -> ET.Element:
@@ -61,12 +61,12 @@ class TimeRangeType(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize tolerance_tolerance
-        if self.tolerance_tolerance is not None:
-            serialized = SerializationHelper.serialize_item(self.tolerance_tolerance, "TimeRangeType")
+        # Serialize tolerance
+        if self.tolerance is not None:
+            serialized = SerializationHelper.serialize_item(self.tolerance, "TimeRangeTypeTolerance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TOLERANCE-TOLERANCE")
+                wrapped = ET.Element("TOLERANCE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -104,11 +104,11 @@ class TimeRangeType(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimeRangeType, cls).deserialize(element)
 
-        # Parse tolerance_tolerance
-        child = SerializationHelper.find_child_element(element, "TOLERANCE-TOLERANCE")
+        # Parse tolerance
+        child = SerializationHelper.find_child_element(element, "TOLERANCE")
         if child is not None:
-            tolerance_tolerance_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeType")
-            obj.tolerance_tolerance = tolerance_tolerance_value
+            tolerance_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeTypeTolerance")
+            obj.tolerance = tolerance_value
 
         # Parse value
         child = SerializationHelper.find_child_element(element, "VALUE")
@@ -129,8 +129,8 @@ class TimeRangeTypeBuilder(BuilderBase):
         self._obj: TimeRangeType = TimeRangeType()
 
 
-    def with_tolerance_tolerance(self, value: Optional[TimeRangeType]) -> "TimeRangeTypeBuilder":
-        """Set tolerance_tolerance attribute.
+    def with_tolerance(self, value: Optional[TimeRangeTypeTolerance]) -> "TimeRangeTypeBuilder":
+        """Set tolerance attribute.
 
         Args:
             value: Value to set
@@ -140,7 +140,7 @@ class TimeRangeTypeBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.tolerance_tolerance = value
+        self._obj.tolerance = value
         return self
 
     def with_value(self, value: Optional[TimeValue]) -> "TimeRangeTypeBuilder":

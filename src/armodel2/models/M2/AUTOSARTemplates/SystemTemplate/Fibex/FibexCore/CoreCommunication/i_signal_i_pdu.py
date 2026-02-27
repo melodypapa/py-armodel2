@@ -15,7 +15,6 @@ from armodel2.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreComm
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import IPduBuilder
-from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -41,14 +40,14 @@ class ISignalIPdu(IPdu):
         """
         return False
 
-    i_pdu_timing_specification: Optional[IPduTiming]
-    i_signal_to_pdu_mapping_refs: list[ARRef]
+    i_pdu_timing_specifications: list[IPduTiming]
+    i_signal_to_pdu_mappings: list[ISignalToIPduMapping]
     unused_bit_pattern: Optional[Integer]
     def __init__(self) -> None:
         """Initialize ISignalIPdu."""
         super().__init__()
-        self.i_pdu_timing_specification: Optional[IPduTiming] = None
-        self.i_signal_to_pdu_mapping_refs: list[ARRef] = []
+        self.i_pdu_timing_specifications: list[IPduTiming] = []
+        self.i_signal_to_pdu_mappings: list[ISignalToIPduMapping] = []
         self.unused_bit_pattern: Optional[Integer] = None
 
     def serialize(self) -> ET.Element:
@@ -75,34 +74,23 @@ class ISignalIPdu(IPdu):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize i_pdu_timing_specification
-        if self.i_pdu_timing_specification is not None:
-            serialized = SerializationHelper.serialize_item(self.i_pdu_timing_specification, "IPduTiming")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-PDU-TIMING-SPECIFICATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+        # Serialize i_pdu_timing_specifications (list to container "I-PDU-TIMING-SPECIFICATIONS")
+        if self.i_pdu_timing_specifications:
+            wrapper = ET.Element("I-PDU-TIMING-SPECIFICATIONS")
+            for item in self.i_pdu_timing_specifications:
+                serialized = SerializationHelper.serialize_item(item, "IPduTiming")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
 
-        # Serialize i_signal_to_pdu_mapping_refs (list to container "I-SIGNAL-TO-PDU-MAPPING-REFS")
-        if self.i_signal_to_pdu_mapping_refs:
-            wrapper = ET.Element("I-SIGNAL-TO-PDU-MAPPING-REFS")
-            for item in self.i_signal_to_pdu_mapping_refs:
+        # Serialize i_signal_to_pdu_mappings (list to container "I-SIGNAL-TO-PDU-MAPPINGS")
+        if self.i_signal_to_pdu_mappings:
+            wrapper = ET.Element("I-SIGNAL-TO-PDU-MAPPINGS")
+            for item in self.i_signal_to_pdu_mappings:
                 serialized = SerializationHelper.serialize_item(item, "ISignalToIPduMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("I-SIGNAL-TO-PDU-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -135,27 +123,25 @@ class ISignalIPdu(IPdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignalIPdu, cls).deserialize(element)
 
-        # Parse i_pdu_timing_specification
-        child = SerializationHelper.find_child_element(element, "I-PDU-TIMING-SPECIFICATION")
-        if child is not None:
-            i_pdu_timing_specification_value = SerializationHelper.deserialize_by_tag(child, "IPduTiming")
-            obj.i_pdu_timing_specification = i_pdu_timing_specification_value
-
-        # Parse i_signal_to_pdu_mapping_refs (list from container "I-SIGNAL-TO-PDU-MAPPING-REFS")
-        obj.i_signal_to_pdu_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-TO-PDU-MAPPING-REFS")
+        # Parse i_pdu_timing_specifications (list from container "I-PDU-TIMING-SPECIFICATIONS")
+        obj.i_pdu_timing_specifications = []
+        container = SerializationHelper.find_child_element(element, "I-PDU-TIMING-SPECIFICATIONS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.i_signal_to_pdu_mapping_refs.append(child_value)
+                    obj.i_pdu_timing_specifications.append(child_value)
+
+        # Parse i_signal_to_pdu_mappings (list from container "I-SIGNAL-TO-PDU-MAPPINGS")
+        obj.i_signal_to_pdu_mappings = []
+        container = SerializationHelper.find_child_element(element, "I-SIGNAL-TO-PDU-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.i_signal_to_pdu_mappings.append(child_value)
 
         # Parse unused_bit_pattern
         child = SerializationHelper.find_child_element(element, "UNUSED-BIT-PATTERN")
@@ -176,18 +162,16 @@ class ISignalIPduBuilder(IPduBuilder):
         self._obj: ISignalIPdu = ISignalIPdu()
 
 
-    def with_i_pdu_timing_specification(self, value: Optional[IPduTiming]) -> "ISignalIPduBuilder":
-        """Set i_pdu_timing_specification attribute.
+    def with_i_pdu_timing_specifications(self, items: list[IPduTiming]) -> "ISignalIPduBuilder":
+        """Set i_pdu_timing_specifications list attribute.
 
         Args:
-            value: Value to set
+            items: List of items to set
 
         Returns:
             self for method chaining
         """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.i_pdu_timing_specification = value
+        self._obj.i_pdu_timing_specifications = list(items) if items else []
         return self
 
     def with_i_signal_to_pdu_mappings(self, items: list[ISignalToIPduMapping]) -> "ISignalIPduBuilder":
@@ -216,6 +200,27 @@ class ISignalIPduBuilder(IPduBuilder):
         self._obj.unused_bit_pattern = value
         return self
 
+
+    def add_i_pdu_timing_specification(self, item: IPduTiming) -> "ISignalIPduBuilder":
+        """Add a single item to i_pdu_timing_specifications list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.i_pdu_timing_specifications.append(item)
+        return self
+
+    def clear_i_pdu_timing_specifications(self) -> "ISignalIPduBuilder":
+        """Clear all items from i_pdu_timing_specifications list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.i_pdu_timing_specifications = []
+        return self
 
     def add_i_signal_to_pdu_mapping(self, item: ISignalToIPduMapping) -> "ISignalIPduBuilder":
         """Add a single item to i_signal_to_pdu_mappings list.

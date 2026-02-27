@@ -886,16 +886,16 @@
       "attributes": {
         "iPduTimingSpecification": {
           "type": "IPduTiming",
-          "multiplicity": "0..1",
-          "kind": "attribute",
+          "multiplicity": "*",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Timing specification for Com IPdus (Transmission"
         },
         "iSignalToPduMapping": {
           "type": "ISignalToIPduMapping",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Definition of SignalToIPduMappings included in the Signal content of a PDU can be variable. atpVariation"
         },
         "unusedBitPattern": {
