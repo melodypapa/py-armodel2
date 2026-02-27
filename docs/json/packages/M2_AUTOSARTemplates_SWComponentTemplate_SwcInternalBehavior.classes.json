@@ -280,6 +280,13 @@
           "is_ref": false,
           "note": "Implement state message semantics for establishing among runnables of the same The aggregation of explicitInterRunnable subject to variability with the purpose to in the software components different algorithms in the requiring different number of memory atpVariation"
         },
+        "handleTerminationAndRestart": {
+          "type": "HandleTerminationAndRestartEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute controls the behavior with respect to stopping and restarting."
+        },
         "implicitInterRunnableVariable": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",

@@ -23,21 +23,26 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification_mapping_set import (
     ConstantSpecificationMappingSet,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.data_type_mapping_set import (
-    DataTypeMappingSet,
-)
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area import (
     ExclusiveArea,
 )
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area_nesting_order import (
     ExclusiveAreaNestingOrder,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
-    ParameterDataPrototype,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
-    VariableDataPrototype,
-)
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.data_type_mapping_set import (
+        DataTypeMappingSet,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
+        ParameterDataPrototype,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+        VariableDataPrototype,
+    )
+
+
+
 from abc import ABC, abstractmethod
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -55,7 +60,7 @@ class InternalBehavior(Identifiable, ABC):
         """
         return True
 
-    constant_memoris: list[ParameterDataPrototype]
+    constant_memories: list[ParameterDataPrototype]
     constant_value_mapping_refs: list[ARRef]
     data_type_mapping_refs: list[ARRef]
     exclusive_areas: list[ExclusiveArea]
@@ -64,7 +69,7 @@ class InternalBehavior(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize InternalBehavior."""
         super().__init__()
-        self.constant_memoris: list[ParameterDataPrototype] = []
+        self.constant_memories: list[ParameterDataPrototype] = []
         self.constant_value_mapping_refs: list[ARRef] = []
         self.data_type_mapping_refs: list[ARRef] = []
         self.exclusive_areas: list[ExclusiveArea] = []
@@ -95,10 +100,10 @@ class InternalBehavior(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize constant_memoris (list to container "CONSTANT-MEMORIS")
-        if self.constant_memoris:
-            wrapper = ET.Element("CONSTANT-MEMORIS")
-            for item in self.constant_memoris:
+        # Serialize constant_memories (list to container "CONSTANT-MEMORIES")
+        if self.constant_memories:
+            wrapper = ET.Element("CONSTANT-MEMORIES")
+            for item in self.constant_memories:
                 serialized = SerializationHelper.serialize_item(item, "ParameterDataPrototype")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -184,15 +189,15 @@ class InternalBehavior(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InternalBehavior, cls).deserialize(element)
 
-        # Parse constant_memoris (list from container "CONSTANT-MEMORIS")
-        obj.constant_memoris = []
-        container = SerializationHelper.find_child_element(element, "CONSTANT-MEMORIS")
+        # Parse constant_memories (list from container "CONSTANT-MEMORIES")
+        obj.constant_memories = []
+        container = SerializationHelper.find_child_element(element, "CONSTANT-MEMORIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.constant_memoris.append(child_value)
+                    obj.constant_memories.append(child_value)
 
         # Parse constant_value_mapping_refs (list from container "CONSTANT-VALUE-MAPPING-REFS")
         obj.constant_value_mapping_refs = []
@@ -269,8 +274,8 @@ class InternalBehaviorBuilder(IdentifiableBuilder):
         self._obj: InternalBehavior = InternalBehavior()
 
 
-    def with_constant_memoris(self, items: list[ParameterDataPrototype]) -> "InternalBehaviorBuilder":
-        """Set constant_memoris list attribute.
+    def with_constant_memories(self, items: list[ParameterDataPrototype]) -> "InternalBehaviorBuilder":
+        """Set constant_memories list attribute.
 
         Args:
             items: List of items to set
@@ -278,7 +283,7 @@ class InternalBehaviorBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.constant_memoris = list(items) if items else []
+        self._obj.constant_memories = list(items) if items else []
         return self
 
     def with_constant_value_mappings(self, items: list[ConstantSpecificationMappingSet]) -> "InternalBehaviorBuilder":
@@ -342,8 +347,8 @@ class InternalBehaviorBuilder(IdentifiableBuilder):
         return self
 
 
-    def add_constant_memori(self, item: ParameterDataPrototype) -> "InternalBehaviorBuilder":
-        """Add a single item to constant_memoris list.
+    def add_constant_memory(self, item: ParameterDataPrototype) -> "InternalBehaviorBuilder":
+        """Add a single item to constant_memories list.
 
         Args:
             item: Item to add
@@ -351,16 +356,16 @@ class InternalBehaviorBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.constant_memoris.append(item)
+        self._obj.constant_memories.append(item)
         return self
 
-    def clear_constant_memoris(self) -> "InternalBehaviorBuilder":
-        """Clear all items from constant_memoris list.
+    def clear_constant_memories(self) -> "InternalBehaviorBuilder":
+        """Clear all items from constant_memories list.
 
         Returns:
             self for method chaining
         """
-        self._obj.constant_memoris = []
+        self._obj.constant_memories = []
         return self
 
     def add_constant_value_mapping(self, item: ConstantSpecificationMappingSet) -> "InternalBehaviorBuilder":

@@ -87,7 +87,7 @@
         }
       ],
       "attributes": {
-        "enableTake": {
+        "enableTakeAddress": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -95,7 +95,7 @@
           "note": "If set to true, the software-component is able to use the"
         },
         "errorHandling": {
-          "type": "DataTransformation",
+          "type": "DataTransformationErrorHandlingEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -122,15 +122,15 @@
           "is_ref": false,
           "note": "An argument value defined by this port."
         },
-        "supported": {
+        "supportedFeature": {
           "type": "SwcSupportedFeature",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This collection specifies which features are supported by RunnableEntitys which access a PortPrototype that it this PortAPIOption."
         },
-        "transformer": {
-          "type": "DataTransformation",
+        "transformerStatusForwarding": {
+          "type": "DataTransformationStatusForwardingEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

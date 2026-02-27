@@ -16,13 +16,16 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
-    PortPrototype,
-)
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+        PortPrototype,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class PortGroup(Identifiable):
     """AUTOSAR PortGroup."""
 

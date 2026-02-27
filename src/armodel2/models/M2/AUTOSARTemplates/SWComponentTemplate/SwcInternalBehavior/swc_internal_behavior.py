@@ -19,49 +19,55 @@ from armodel2.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.intern
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.internal_behavior import InternalBehaviorBuilder
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior import (
+    HandleTerminationAndRestartEnum,
+)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.IncludedDataTypes.included_data_type_set import (
-    IncludedDataTypeSet,
 )
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ModeDeclarationGroup.included_mode_declaration_group_set import (
     IncludedModeDeclarationGroupSet,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.InstantiationDataDefProps.instantiation_data_def_props import (
-    InstantiationDataDefProps,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
-    ParameterDataPrototype,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PerInstanceMemory.per_instance_memory import (
-    PerInstanceMemory,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions.port_api_option import (
-    PortAPIOption,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
-    RTEEvent,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
-    RunnableEntity,
-)
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.swc_exclusive_area_policy import (
     SwcExclusiveAreaPolicy,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServiceMapping.swc_service_dependency import (
-    SwcServiceDependency,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
-    VariableDataPrototype,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.VariantHandling.variation_point_proxy import (
-    VariationPointProxy,
-)
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.IncludedDataTypes.included_data_type_set import (
+        IncludedDataTypeSet,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.InstantiationDataDefProps.instantiation_data_def_props import (
+        InstantiationDataDefProps,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
+        ParameterDataPrototype,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PerInstanceMemory.per_instance_memory import (
+        PerInstanceMemory,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions.port_api_option import (
+        PortAPIOption,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+        RTEEvent,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
+        RunnableEntity,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServiceMapping.swc_service_dependency import (
+        SwcServiceDependency,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+        VariableDataPrototype,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.VariantHandling.variation_point_proxy import (
+        VariationPointProxy,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class SwcInternalBehavior(InternalBehavior):
     """AUTOSAR SwcInternalBehavior."""
 
@@ -78,6 +84,7 @@ class SwcInternalBehavior(InternalBehavior):
     events: list[RTEEvent]
     exclusive_area_policies: list[SwcExclusiveAreaPolicy]
     explicit_inter_runnable_variables: list[VariableDataPrototype]
+    handle_termination_and_restart: Optional[HandleTerminationAndRestartEnum]
     implicit_inter_runnable_variables: list[VariableDataPrototype]
     included_data_type_sets: list[IncludedDataTypeSet]
     included_mode_declaration_group_sets: list[IncludedModeDeclarationGroupSet]
@@ -97,6 +104,7 @@ class SwcInternalBehavior(InternalBehavior):
         self.events: list[RTEEvent] = []
         self.exclusive_area_policies: list[SwcExclusiveAreaPolicy] = []
         self.explicit_inter_runnable_variables: list[VariableDataPrototype] = []
+        self.handle_termination_and_restart: Optional[HandleTerminationAndRestartEnum] = None
         self.implicit_inter_runnable_variables: list[VariableDataPrototype] = []
         self.included_data_type_sets: list[IncludedDataTypeSet] = []
         self.included_mode_declaration_group_sets: list[IncludedModeDeclarationGroupSet] = []
@@ -173,6 +181,20 @@ class SwcInternalBehavior(InternalBehavior):
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
+
+        # Serialize handle_termination_and_restart
+        if self.handle_termination_and_restart is not None:
+            serialized = SerializationHelper.serialize_item(self.handle_termination_and_restart, "HandleTerminationAndRestartEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HANDLE-TERMINATION-AND-RESTART")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize implicit_inter_runnable_variables (list to container "IMPLICIT-INTER-RUNNABLE-VARIABLES")
         if self.implicit_inter_runnable_variables:
@@ -353,6 +375,12 @@ class SwcInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.explicit_inter_runnable_variables.append(child_value)
 
+        # Parse handle_termination_and_restart
+        child = SerializationHelper.find_child_element(element, "HANDLE-TERMINATION-AND-RESTART")
+        if child is not None:
+            handle_termination_and_restart_value = HandleTerminationAndRestartEnum.deserialize(child)
+            obj.handle_termination_and_restart = handle_termination_and_restart_value
+
         # Parse implicit_inter_runnable_variables (list from container "IMPLICIT-INTER-RUNNABLE-VARIABLES")
         obj.implicit_inter_runnable_variables = []
         container = SerializationHelper.find_child_element(element, "IMPLICIT-INTER-RUNNABLE-VARIABLES")
@@ -528,6 +556,20 @@ class SwcInternalBehaviorBuilder(InternalBehaviorBuilder):
             self for method chaining
         """
         self._obj.explicit_inter_runnable_variables = list(items) if items else []
+        return self
+
+    def with_handle_termination_and_restart(self, value: Optional[HandleTerminationAndRestartEnum]) -> "SwcInternalBehaviorBuilder":
+        """Set handle_termination_and_restart attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.handle_termination_and_restart = value
         return self
 
     def with_implicit_inter_runnable_variables(self, items: list[VariableDataPrototype]) -> "SwcInternalBehaviorBuilder":

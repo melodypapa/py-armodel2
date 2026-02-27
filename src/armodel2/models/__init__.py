@@ -1151,6 +1151,7 @@ from armodel2.models.M2.MSR.Documentation.BlockElements.Figure.graphic_notation_
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.handle_invalid_enum import HandleInvalidEnum
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.handle_out_of_range_enum import HandleOutOfRangeEnum
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.handle_out_of_range_status_enum import HandleOutOfRangeStatusEnum
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.handle_termination_and_restart_enum import HandleTerminationAndRestartEnum
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.handle_timeout_enum import HandleTimeoutEnum
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.hardware_configuration import (HardwareConfiguration, HardwareConfigurationBuilder)
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.hardware_test_needs import (HardwareTestNeeds, HardwareTestNeedsBuilder)
@@ -3820,6 +3821,7 @@ __all__ = [
     "HandleInvalidEnum"
     "HandleOutOfRangeEnum"
     "HandleOutOfRangeStatusEnum"
+    "HandleTerminationAndRestartEnum"
     "HandleTimeoutEnum"
     "HardwareConfiguration"
     "HardwareConfigurationBuilder"

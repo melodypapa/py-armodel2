@@ -37,12 +37,12 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         """
         return False
 
-    context_p_port_prototype_ref: Optional[ARRef]
+    context_p_port_ref: Optional[ARRef]
     target_mode_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize PModeGroupInAtomicSwcInstanceRef."""
         super().__init__()
-        self.context_p_port_prototype_ref: Optional[ARRef] = None
+        self.context_p_port_ref: Optional[ARRef] = None
         self.target_mode_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -69,12 +69,12 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize context_p_port_prototype_ref
-        if self.context_p_port_prototype_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.context_p_port_prototype_ref, "AbstractProvidedPortPrototype")
+        # Serialize context_p_port_ref
+        if self.context_p_port_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.context_p_port_ref, "AbstractProvidedPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-P-PORT-PROTOTYPE-REF")
+                wrapped = ET.Element("CONTEXT-P-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -112,11 +112,11 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PModeGroupInAtomicSwcInstanceRef, cls).deserialize(element)
 
-        # Parse context_p_port_prototype_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-P-PORT-PROTOTYPE-REF")
+        # Parse context_p_port_ref
+        child = SerializationHelper.find_child_element(element, "CONTEXT-P-PORT-REF")
         if child is not None:
-            context_p_port_prototype_ref_value = ARRef.deserialize(child)
-            obj.context_p_port_prototype_ref = context_p_port_prototype_ref_value
+            context_p_port_ref_value = ARRef.deserialize(child)
+            obj.context_p_port_ref = context_p_port_ref_value
 
         # Parse target_mode_ref
         child = SerializationHelper.find_child_element(element, "TARGET-MODE-REF")
@@ -137,8 +137,8 @@ class PModeGroupInAtomicSwcInstanceRefBuilder(ModeGroupInAtomicSwcInstanceRefBui
         self._obj: PModeGroupInAtomicSwcInstanceRef = PModeGroupInAtomicSwcInstanceRef()
 
 
-    def with_context_p_port_prototype(self, value: Optional[AbstractProvidedPortPrototype]) -> "PModeGroupInAtomicSwcInstanceRefBuilder":
-        """Set context_p_port_prototype attribute.
+    def with_context_p_port(self, value: Optional[AbstractProvidedPortPrototype]) -> "PModeGroupInAtomicSwcInstanceRefBuilder":
+        """Set context_p_port attribute.
 
         Args:
             value: Value to set
@@ -148,7 +148,7 @@ class PModeGroupInAtomicSwcInstanceRefBuilder(ModeGroupInAtomicSwcInstanceRefBui
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.context_p_port_prototype = value
+        self._obj.context_p_port = value
         return self
 
     def with_target_mode(self, value: Optional[ModeDeclarationGroup]) -> "PModeGroupInAtomicSwcInstanceRefBuilder":

@@ -4,6 +4,14 @@
 class NameConverter:
     """Convert between Python snake_case and AUTOSAR UPPER-CASE-WITH-HYPHENS naming."""
 
+    # Common acronyms that should stay together in XML tags
+    _ACRONYMS = {
+        'API', 'CPU', 'OS', 'ID', 'XML', 'HTTP', 'HTTPS', 'FTP',
+        'SWC', 'TP', 'CAN', 'LIN', 'FLEX', 'ETH', 'V2X', 'MSR',
+        'ASN', 'XSD', 'URI', 'UUID', 'BSW', 'RTE', 'DCM'
+    }
+    """Convert between Python snake_case and AUTOSAR UPPER-CASE-WITH-HYPHENS naming."""
+
     @staticmethod
     def to_xml_tag(name: str) -> str:
         """Convert Python attribute or class name to XML tag name.
@@ -76,6 +84,29 @@ class NameConverter:
         elif len(words) >= 2 and words[0] == "AR" and words[1][0].isupper():
             # AR is already combined, keep it separate
             pass
+
+        # Combine consecutive single-letter uppercase words into known acronyms
+        i = 0
+        while i < len(words):
+            # Check if current word is a single uppercase letter
+            if len(words[i]) == 1 and words[i].isupper():
+                # Look ahead to see if we can form a known acronym
+                acronym_end = i
+                potential_acronym = words[i]
+                j = i + 1
+                while j < len(words) and len(words[j]) == 1 and words[j].isupper():
+                    potential_acronym += words[j]
+                    if potential_acronym in NameConverter._ACRONYMS:
+                        acronym_end = j
+                    j += 1
+
+                # If we found a known acronym longer than 1 letter, combine the words
+                if acronym_end > i:
+                    words[i] = potential_acronym[:acronym_end - i + 1]
+                    # Remove the intermediate words
+                    for _ in range(acronym_end - i):
+                        words.pop(i + 1)
+            i += 1
 
         # Join with hyphens and convert to uppercase
         return '-'.join(words).upper()

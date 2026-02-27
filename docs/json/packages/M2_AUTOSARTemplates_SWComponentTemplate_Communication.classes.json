@@ -305,6 +305,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "Initial value to be used in case the sending component is initialized. If the sender also specifies an initial the receiver’s value will be used."
         },
         "timeoutSubstitutionValue": {
@@ -981,6 +982,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "The initial value applicable for the corresponding"
         },
         "parameter": {
@@ -1025,6 +1027,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "The initial value applicable for the corresponding"
         },
         "parameter": {
@@ -1069,6 +1072,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "The initial value owned by the NvComSpec"
         },
         "variable": {

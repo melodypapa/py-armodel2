@@ -20,12 +20,17 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_compo
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import SwComponentTypeBuilder
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.swc_internal_behavior import (
-    SwcInternalBehavior,
-)
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.symbol_props import (
     SymbolProps,
 )
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.swc_internal_behavior import (
+        SwcInternalBehavior,
+    )
+
+
+
 from abc import ABC, abstractmethod
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -43,12 +48,12 @@ class AtomicSwComponentType(SwComponentType, ABC):
         """
         return True
 
-    internal_behavior: Optional[SwcInternalBehavior]
+    internal_behaviors: list[SwcInternalBehavior]
     symbol_props: Optional[SymbolProps]
     def __init__(self) -> None:
         """Initialize AtomicSwComponentType."""
         super().__init__()
-        self.internal_behavior: Optional[SwcInternalBehavior] = None
+        self.internal_behaviors: list[SwcInternalBehavior] = []
         self.symbol_props: Optional[SymbolProps] = None
 
     def serialize(self) -> ET.Element:
@@ -75,19 +80,15 @@ class AtomicSwComponentType(SwComponentType, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize internal_behavior
-        if self.internal_behavior is not None:
-            serialized = SerializationHelper.serialize_item(self.internal_behavior, "SwcInternalBehavior")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTERNAL-BEHAVIOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+        # Serialize internal_behaviors (list to container "INTERNAL-BEHAVIORS")
+        if self.internal_behaviors:
+            wrapper = ET.Element("INTERNAL-BEHAVIORS")
+            for item in self.internal_behaviors:
+                serialized = SerializationHelper.serialize_item(item, "SwcInternalBehavior")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
 
         # Serialize symbol_props
         if self.symbol_props is not None:
@@ -118,11 +119,15 @@ class AtomicSwComponentType(SwComponentType, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AtomicSwComponentType, cls).deserialize(element)
 
-        # Parse internal_behavior
-        child = SerializationHelper.find_child_element(element, "INTERNAL-BEHAVIOR")
-        if child is not None:
-            internal_behavior_value = SerializationHelper.deserialize_by_tag(child, "SwcInternalBehavior")
-            obj.internal_behavior = internal_behavior_value
+        # Parse internal_behaviors (list from container "INTERNAL-BEHAVIORS")
+        obj.internal_behaviors = []
+        container = SerializationHelper.find_child_element(element, "INTERNAL-BEHAVIORS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.internal_behaviors.append(child_value)
 
         # Parse symbol_props
         child = SerializationHelper.find_child_element(element, "SYMBOL-PROPS")
@@ -143,18 +148,16 @@ class AtomicSwComponentTypeBuilder(SwComponentTypeBuilder):
         self._obj: AtomicSwComponentType = AtomicSwComponentType()
 
 
-    def with_internal_behavior(self, value: Optional[SwcInternalBehavior]) -> "AtomicSwComponentTypeBuilder":
-        """Set internal_behavior attribute.
+    def with_internal_behaviors(self, items: list[SwcInternalBehavior]) -> "AtomicSwComponentTypeBuilder":
+        """Set internal_behaviors list attribute.
 
         Args:
-            value: Value to set
+            items: List of items to set
 
         Returns:
             self for method chaining
         """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.internal_behavior = value
+        self._obj.internal_behaviors = list(items) if items else []
         return self
 
     def with_symbol_props(self, value: Optional[SymbolProps]) -> "AtomicSwComponentTypeBuilder":
@@ -171,6 +174,27 @@ class AtomicSwComponentTypeBuilder(SwComponentTypeBuilder):
         self._obj.symbol_props = value
         return self
 
+
+    def add_internal_behavior(self, item: SwcInternalBehavior) -> "AtomicSwComponentTypeBuilder":
+        """Add a single item to internal_behaviors list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.internal_behaviors.append(item)
+        return self
+
+    def clear_internal_behaviors(self) -> "AtomicSwComponentTypeBuilder":
+        """Clear all items from internal_behaviors list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.internal_behaviors = []
+        return self
 
 
 

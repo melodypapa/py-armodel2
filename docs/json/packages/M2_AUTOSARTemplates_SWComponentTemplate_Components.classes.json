@@ -93,7 +93,7 @@
       "attributes": {
         "internalBehavior": {
           "type": "SwcInternalBehavior",
-          "multiplicity": "0..1",
+          "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The SwcInternalBehaviors owned by an AtomicSw be located in a different physical file. aggregation is <<atpSplitable>>. atpVariation"

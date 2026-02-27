@@ -16,19 +16,22 @@ from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_de
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_dependency import ServiceDependencyBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
-    PortGroup,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServiceMapping.role_based_port_assignment import (
-    RoleBasedPortAssignment,
-)
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
 )
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
+        PortGroup,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServiceMapping.role_based_port_assignment import (
+        RoleBasedPortAssignment,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class SwcServiceDependency(ServiceDependency):
     """AUTOSAR SwcServiceDependency."""
 

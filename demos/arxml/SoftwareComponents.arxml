@@ -937,7 +937,6 @@
                 </MEMORY-SECTIONS>
               </RESOURCE-CONSUMPTION>
               <SW-VERSION>1.0.0</SW-VERSION>
-              <USED-CODE-GENERATOR></USED-CODE-GENERATOR>
               <VENDOR-ID>1</VENDOR-ID>
               <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/DemoApplication/SwComponentTypes/SWC_CyclicCounter/IB_SWC_CyclicCounter</BEHAVIOR-REF>
             </SWC-IMPLEMENTATION>
@@ -970,7 +969,6 @@
                 </MEMORY-SECTIONS>
               </RESOURCE-CONSUMPTION>
               <SW-VERSION>1.0.0</SW-VERSION>
-              <USED-CODE-GENERATOR></USED-CODE-GENERATOR>
               <VENDOR-ID>1</VENDOR-ID>
               <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/DemoApplication/SwComponentTypes/SWC_IoHwAbs/IB_SWC_IoHwAbs</BEHAVIOR-REF>
             </SWC-IMPLEMENTATION>
@@ -998,7 +996,6 @@
                 </MEMORY-SECTIONS>
               </RESOURCE-CONSUMPTION>
               <SW-VERSION>1.0.0</SW-VERSION>
-              <USED-CODE-GENERATOR></USED-CODE-GENERATOR>
               <VENDOR-ID>1</VENDOR-ID>
               <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/DemoApplication/SwComponentTypes/SWC_ModifyEcho/IB_SWC_ModifyEcho</BEHAVIOR-REF>
             </SWC-IMPLEMENTATION>

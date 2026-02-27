@@ -37,12 +37,12 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
         """
         return False
 
-    context_r_port_prototype_ref: Optional[ARRef]
+    context_r_port_ref: Optional[ARRef]
     target_trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RTriggerInAtomicSwcInstanceRef."""
         super().__init__()
-        self.context_r_port_prototype_ref: Optional[ARRef] = None
+        self.context_r_port_ref: Optional[ARRef] = None
         self.target_trigger_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -69,12 +69,12 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize context_r_port_prototype_ref
-        if self.context_r_port_prototype_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.context_r_port_prototype_ref, "AbstractRequiredPortPrototype")
+        # Serialize context_r_port_ref
+        if self.context_r_port_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.context_r_port_ref, "AbstractRequiredPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-R-PORT-PROTOTYPE-REF")
+                wrapped = ET.Element("CONTEXT-R-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -112,11 +112,11 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RTriggerInAtomicSwcInstanceRef, cls).deserialize(element)
 
-        # Parse context_r_port_prototype_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-R-PORT-PROTOTYPE-REF")
+        # Parse context_r_port_ref
+        child = SerializationHelper.find_child_element(element, "CONTEXT-R-PORT-REF")
         if child is not None:
-            context_r_port_prototype_ref_value = ARRef.deserialize(child)
-            obj.context_r_port_prototype_ref = context_r_port_prototype_ref_value
+            context_r_port_ref_value = ARRef.deserialize(child)
+            obj.context_r_port_ref = context_r_port_ref_value
 
         # Parse target_trigger_ref
         child = SerializationHelper.find_child_element(element, "TARGET-TRIGGER-REF")
@@ -137,8 +137,8 @@ class RTriggerInAtomicSwcInstanceRefBuilder(TriggerInAtomicSwcInstanceRefBuilder
         self._obj: RTriggerInAtomicSwcInstanceRef = RTriggerInAtomicSwcInstanceRef()
 
 
-    def with_context_r_port_prototype(self, value: Optional[AbstractRequiredPortPrototype]) -> "RTriggerInAtomicSwcInstanceRefBuilder":
-        """Set context_r_port_prototype attribute.
+    def with_context_r_port(self, value: Optional[AbstractRequiredPortPrototype]) -> "RTriggerInAtomicSwcInstanceRefBuilder":
+        """Set context_r_port attribute.
 
         Args:
             value: Value to set
@@ -148,7 +148,7 @@ class RTriggerInAtomicSwcInstanceRefBuilder(TriggerInAtomicSwcInstanceRefBuilder
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.context_r_port_prototype = value
+        self._obj.context_r_port = value
         return self
 
     def with_target_trigger(self, value: Optional[Trigger]) -> "RTriggerInAtomicSwcInstanceRefBuilder":

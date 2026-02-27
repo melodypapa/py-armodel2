@@ -84,7 +84,7 @@
         }
       ],
       "attributes": {
-        "contextRPortPrototype": {
+        "contextRPort": {
           "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
@@ -136,19 +136,19 @@
           "is_ref": true,
           "note": "Stereotypes: atpDerived xml.sequenceOffset=10"
         },
-        "contextModeGroupPrototype": {
-          "type": "ModeDeclarationGroup",
-          "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
-          "note": "Tags: xml.sequenceOffset=30"
-        },
-        "contextPortPrototype": {
+        "contextPort": {
           "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=20"
+        },
+        "contextModeDeclarationGroupPrototype": {
+          "type": "ModeDeclarationGroup",
+          "multiplicity": "0..1",
+          "kind": "ref",
+          "is_ref": true,
+          "note": "Tags: xml.sequenceOffset=30"
         },
         "targetModeDeclaration": {
           "type": "ModeDeclaration",
@@ -295,7 +295,7 @@
         }
       ],
       "attributes": {
-        "contextRPortPrototype": {
+        "contextRPort": {
           "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
@@ -341,7 +341,7 @@
         }
       ],
       "attributes": {
-        "contextPPortPrototype": {
+        "contextPPort": {
           "type": "AbstractProvidedPortPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
@@ -441,7 +441,7 @@
         }
       ],
       "attributes": {
-        "contextRPortPrototype": {
+        "contextRPort": {
           "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
@@ -487,7 +487,7 @@
         }
       ],
       "attributes": {
-        "contextPPortPrototype": {
+        "contextPPort": {
           "type": "AbstractProvidedPortPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
@@ -532,7 +532,7 @@
         }
       ],
       "attributes": {
-        "contextRPortPrototype": {
+        "contextRPort": {
           "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
@@ -580,7 +580,7 @@
         }
       ],
       "attributes": {
-        "contextPPortPrototype": {
+        "contextPPort": {
           "type": "AbstractProvidedPortPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
