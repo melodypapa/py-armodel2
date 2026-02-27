@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticComControl",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::CommunicationControl",
       "is_abstract": false,
       "atp_type": null,
@@ -53,6 +54,7 @@
     },
     {
       "name": "DiagnosticComControlSpecificChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::CommunicationControl",
       "is_abstract": false,
       "atp_type": null,
@@ -102,6 +104,7 @@
     },
     {
       "name": "DiagnosticComControlClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::CommunicationControl",
       "is_abstract": false,
       "atp_type": null,
@@ -166,6 +169,7 @@
     },
     {
       "name": "DiagnosticComControlSubNodeChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::CommunicationControl",
       "is_abstract": false,
       "atp_type": null,

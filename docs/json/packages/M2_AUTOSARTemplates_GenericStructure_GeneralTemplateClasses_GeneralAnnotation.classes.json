@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "GeneralAnnotation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::GeneralAnnotation",
       "is_abstract": true,
       "atp_type": null,

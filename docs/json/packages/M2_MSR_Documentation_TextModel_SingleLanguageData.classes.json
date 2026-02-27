@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SingleLanguageUnitNames",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::SingleLanguageData",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -33,6 +34,7 @@
     },
     {
       "name": "SingleLanguageLongName",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::SingleLanguageData",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -62,6 +64,7 @@
     },
     {
       "name": "SlOverviewParagraph",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::SingleLanguageData",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -90,6 +93,7 @@
     },
     {
       "name": "SlParagraph",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::SingleLanguageData",
       "is_abstract": false,
       "atp_type": "atpMixedString",

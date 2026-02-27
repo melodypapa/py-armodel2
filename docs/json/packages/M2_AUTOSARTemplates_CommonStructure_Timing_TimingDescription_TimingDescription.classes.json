@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "TDEventVfb",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": true,
       "atp_type": null,
@@ -49,6 +50,7 @@
     },
     {
       "name": "TDEventVfbReference",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -90,6 +92,7 @@
     },
     {
       "name": "TDEventVfbPort",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": true,
       "atp_type": null,
@@ -161,6 +164,7 @@
     },
     {
       "name": "TDEventVariableDataPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -210,6 +214,7 @@
     },
     {
       "name": "TDEventOperation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -259,6 +264,7 @@
     },
     {
       "name": "TDEventModeDeclaration",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -322,6 +328,7 @@
     },
     {
       "name": "TDEventTrigger",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -371,6 +378,7 @@
     },
     {
       "name": "TDEventSwc",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": true,
       "atp_type": null,
@@ -417,6 +425,7 @@
     },
     {
       "name": "TDEventSwcInternalBehavior",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -472,6 +481,7 @@
     },
     {
       "name": "TDEventSwcInternalBehaviorReference",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -513,6 +523,7 @@
     },
     {
       "name": "TDEventCom",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": true,
       "atp_type": null,
@@ -565,6 +576,7 @@
     },
     {
       "name": "TDEventISignal",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -620,6 +632,7 @@
     },
     {
       "name": "TDEventIPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -675,6 +688,7 @@
     },
     {
       "name": "TDEventFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -730,6 +744,7 @@
     },
     {
       "name": "TDEventFrameEthernet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -792,6 +807,7 @@
     },
     {
       "name": "TDHeaderIdRange",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -834,6 +850,7 @@
     },
     {
       "name": "TDEventCycleStart",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": true,
       "atp_type": null,
@@ -881,6 +898,7 @@
     },
     {
       "name": "TDEventFrClusterCycleStart",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -923,6 +941,7 @@
     },
     {
       "name": "TDEventTTCanCycleStart",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -965,6 +984,7 @@
     },
     {
       "name": "TDEventBswInternalBehavior",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -1012,6 +1032,7 @@
     },
     {
       "name": "TDEventBswModule",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -1060,6 +1081,7 @@
     },
     {
       "name": "TDEventBswModeDeclaration",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -1122,6 +1144,7 @@
     },
     {
       "name": "TDEventComplex",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -1154,6 +1177,7 @@
     },
     {
       "name": "TDEventSLLETPort",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -1195,6 +1219,7 @@
     },
     {
       "name": "TDEventOccurrenceExpression",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -1251,6 +1276,7 @@
     },
     {
       "name": "TDEventOccurrenceExpressionFormula",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -1308,6 +1334,7 @@
     },
     {
       "name": "AutosarVariableInstance",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -1347,6 +1374,7 @@
     },
     {
       "name": "AutosarOperationArgumentInstance",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -1386,6 +1414,7 @@
     },
     {
       "name": "TDEventBsw",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": true,
       "atp_type": null,
@@ -1432,6 +1461,7 @@
     },
     {
       "name": "TDEventSLLET",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "is_abstract": true,
       "atp_type": null,

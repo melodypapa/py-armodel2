@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "IPv6ExtHeaderFilterSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::IPv6HeaderFilterList",
       "is_abstract": false,
       "atp_type": null,
@@ -44,6 +45,7 @@
     },
     {
       "name": "IPv6ExtHeaderFilterList",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::IPv6HeaderFilterList",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticConditionGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticConditionGroup",
       "is_abstract": true,
       "atp_type": null,
@@ -43,6 +44,7 @@
     },
     {
       "name": "DiagnosticEnableConditionGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticConditionGroup",
       "is_abstract": false,
       "atp_type": null,
@@ -86,6 +88,7 @@
     },
     {
       "name": "DiagnosticStorageConditionGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticConditionGroup",
       "is_abstract": false,
       "atp_type": null,

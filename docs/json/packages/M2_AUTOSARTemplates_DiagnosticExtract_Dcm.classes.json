@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticAccessPermission",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm",
       "is_abstract": false,
       "atp_type": null,
@@ -66,6 +67,7 @@
     },
     {
       "name": "DiagnosticSession",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm",
       "is_abstract": false,
       "atp_type": null,
@@ -129,6 +131,7 @@
     },
     {
       "name": "DiagnosticSecurityLevel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm",
       "is_abstract": false,
       "atp_type": null,
@@ -199,6 +202,7 @@
     },
     {
       "name": "DiagnosticAuthRoleProxy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm",
       "is_abstract": false,
       "atp_type": null,
@@ -234,6 +238,7 @@
     },
     {
       "name": "DiagnosticAuthRole",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm",
       "is_abstract": false,
       "atp_type": null,

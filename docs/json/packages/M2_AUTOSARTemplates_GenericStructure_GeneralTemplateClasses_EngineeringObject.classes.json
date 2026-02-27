@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "AutosarEngineeringObject",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::EngineeringObject",
       "is_abstract": false,
       "atp_type": null,
@@ -46,6 +47,7 @@
     },
     {
       "name": "EngineeringObject",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::EngineeringObject",
       "is_abstract": true,
       "atp_type": null,

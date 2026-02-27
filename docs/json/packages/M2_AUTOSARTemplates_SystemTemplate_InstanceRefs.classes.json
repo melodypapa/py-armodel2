@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ComponentInSystemInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -67,6 +68,7 @@
     },
     {
       "name": "OperationInSystemInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -128,6 +130,7 @@
     },
     {
       "name": "VariableDataPrototypeInSystemInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -200,6 +203,7 @@
     },
     {
       "name": "TriggerInSystemInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -259,6 +263,7 @@
     },
     {
       "name": "PortGroupInSystemInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,

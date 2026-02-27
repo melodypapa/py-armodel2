@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "TransmissionModeDeclaration",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication::Timing",
       "is_abstract": false,
       "atp_type": null,
@@ -66,6 +67,7 @@
     },
     {
       "name": "TransmissionModeCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication::Timing",
       "is_abstract": false,
       "atp_type": null,
@@ -108,6 +110,7 @@
     },
     {
       "name": "ModeDrivenTransmissionModeCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication::Timing",
       "is_abstract": false,
       "atp_type": null,
@@ -144,6 +147,7 @@
     },
     {
       "name": "TransmissionModeTiming",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication::Timing",
       "is_abstract": false,
       "atp_type": null,
@@ -187,6 +191,7 @@
     },
     {
       "name": "CyclicTiming",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication::Timing",
       "is_abstract": false,
       "atp_type": null,
@@ -230,6 +235,7 @@
     },
     {
       "name": "EventControlledTiming",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication::Timing",
       "is_abstract": false,
       "atp_type": null,
@@ -273,6 +279,7 @@
     },
     {
       "name": "TimeRangeType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication::Timing",
       "is_abstract": false,
       "atp_type": null,
@@ -317,6 +324,7 @@
     },
     {
       "name": "RelativeTolerance",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication::Timing",
       "is_abstract": false,
       "atp_type": null,
@@ -353,6 +361,7 @@
     },
     {
       "name": "AbsoluteTolerance",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication::Timing",
       "is_abstract": false,
       "atp_type": null,
@@ -389,6 +398,7 @@
     },
     {
       "name": "TriggerIPduSendCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication::Timing",
       "is_abstract": false,
       "atp_type": null,

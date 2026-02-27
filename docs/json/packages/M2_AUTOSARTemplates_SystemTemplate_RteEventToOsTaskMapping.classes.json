@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "OsTaskProxy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::RteEventToOsTaskMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -58,6 +59,7 @@
     },
     {
       "name": "AppOsTaskProxyToEcuTaskProxyMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::RteEventToOsTaskMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -110,6 +112,7 @@
     },
     {
       "name": "RteEventInCompositionToOsTaskProxyMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::RteEventToOsTaskMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -162,6 +165,7 @@
     },
     {
       "name": "RteEventInCompositionSeparation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::RteEventToOsTaskMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -200,6 +204,7 @@
     },
     {
       "name": "RteEventInSystemToOsTaskProxyMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::RteEventToOsTaskMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -252,6 +257,7 @@
     },
     {
       "name": "RteEventInSystemSeparation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::RteEventToOsTaskMapping",
       "is_abstract": false,
       "atp_type": null,

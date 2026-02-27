@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ARObject",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ArObject",
       "is_abstract": true,
       "atp_type": null,
@@ -393,7 +394,7 @@
         "BlueprintMapping"
       ],
       "subclasses": [
-        "\u2013all concrete metaclasses\u2013"
+        "–all concrete metaclasses–"
       ],
       "aggregated_by": [],
       "implements": [],
@@ -413,7 +414,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Checksum calculated by the user\u2019s tool environment for"
+          "note": "Checksum calculated by the user’s tool environment for"
         },
         "timestamp": {
           "type": "DateTime",
@@ -421,7 +422,7 @@
           "kind": "aggr",
           "decorator": "xml_attribute:T",
           "is_ref": false,
-          "note": "Timestamp calculated by the user\u2019s tool environment for"
+          "note": "Timestamp calculated by the user’s tool environment for"
         }
       }
     }

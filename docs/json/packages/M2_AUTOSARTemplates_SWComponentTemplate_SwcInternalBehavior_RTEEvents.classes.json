@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "OperationInvokedEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -55,6 +56,7 @@
     },
     {
       "name": "RTEEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": true,
       "atp_type": null,
@@ -159,6 +161,7 @@
     },
     {
       "name": "TimingEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -217,6 +220,7 @@
     },
     {
       "name": "AsynchronousServerCallReturnsEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -262,6 +266,7 @@
     },
     {
       "name": "DataSendCompletedEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -307,6 +312,7 @@
     },
     {
       "name": "DataWriteCompletedEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -352,6 +358,7 @@
     },
     {
       "name": "DataReceivedEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -397,6 +404,7 @@
     },
     {
       "name": "DataReceiveErrorEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -442,6 +450,7 @@
     },
     {
       "name": "BackgroundEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -533,6 +542,7 @@
     },
     {
       "name": "ModeSwitchedAckEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -578,6 +588,7 @@
     },
     {
       "name": "ExternalTriggerOccurredEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -623,6 +634,7 @@
     },
     {
       "name": "InternalTriggerOccurredEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -668,6 +680,7 @@
     },
     {
       "name": "InitEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -705,6 +718,7 @@
     },
     {
       "name": "TransformerHardErrorEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -757,6 +771,7 @@
     },
     {
       "name": "OsTaskExecutionEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -794,6 +809,7 @@
     },
     {
       "name": "WaitPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -839,6 +855,7 @@
     },
     {
       "name": "SwcModeManagerErrorEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,

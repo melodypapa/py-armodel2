@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ExecutionOrderConstraint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::ExecutionOrderConstraint",
       "is_abstract": false,
       "atp_type": null,
@@ -79,6 +80,7 @@
     },
     {
       "name": "EOCExecutableEntityRefAbstract",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::ExecutionOrderConstraint",
       "is_abstract": true,
       "atp_type": null,
@@ -125,6 +127,7 @@
     },
     {
       "name": "EOCExecutableEntityRefGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::ExecutionOrderConstraint",
       "is_abstract": false,
       "atp_type": null,
@@ -220,6 +223,7 @@
     },
     {
       "name": "EOCExecutableEntityRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::ExecutionOrderConstraint",
       "is_abstract": false,
       "atp_type": null,
@@ -280,6 +284,7 @@
     },
     {
       "name": "EOCEventRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::ExecutionOrderConstraint",
       "is_abstract": false,
       "atp_type": null,

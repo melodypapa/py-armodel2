@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "GlobalTimeDomain",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime",
       "is_abstract": false,
       "atp_type": null,
@@ -123,6 +124,7 @@
     },
     {
       "name": "AbstractGlobalTimeDomainProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime",
       "is_abstract": true,
       "atp_type": null,
@@ -158,6 +160,7 @@
     },
     {
       "name": "NetworkSegmentIdentification",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime",
       "is_abstract": false,
       "atp_type": null,
@@ -193,6 +196,7 @@
     },
     {
       "name": "GlobalTimeMaster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime",
       "is_abstract": true,
       "atp_type": null,
@@ -269,6 +273,7 @@
     },
     {
       "name": "GlobalTimeSlave",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime",
       "is_abstract": true,
       "atp_type": null,
@@ -353,6 +358,7 @@
     },
     {
       "name": "GlobalTimeGateway",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime",
       "is_abstract": false,
       "atp_type": null,
@@ -405,6 +411,7 @@
     },
     {
       "name": "GlobalTimeCorrectionProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime",
       "is_abstract": false,
       "atp_type": null,

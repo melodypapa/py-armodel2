@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "BswInternalBehavior",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -218,6 +219,7 @@
     },
     {
       "name": "BswModuleEntity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": true,
       "atp_type": null,
@@ -333,6 +335,7 @@
     },
     {
       "name": "BswCalledEntity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -371,6 +374,7 @@
     },
     {
       "name": "BswSchedulableEntity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -409,6 +413,7 @@
     },
     {
       "name": "BswInterruptEntity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -462,6 +467,7 @@
     },
     {
       "name": "BswModuleCallPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": true,
       "atp_type": null,
@@ -508,6 +514,7 @@
     },
     {
       "name": "BswDirectCallPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -552,6 +559,7 @@
     },
     {
       "name": "BswSynchronousServerCallPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -596,6 +604,7 @@
     },
     {
       "name": "BswAsynchronousServerCallPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -633,6 +642,7 @@
     },
     {
       "name": "BswAsynchronousServerCallResultPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -670,6 +680,7 @@
     },
     {
       "name": "BswVariableAccess",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -714,6 +725,7 @@
     },
     {
       "name": "BswExclusiveAreaPolicy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -757,6 +769,7 @@
     },
     {
       "name": "BswSchedulerNamePrefix",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -786,6 +799,7 @@
     },
     {
       "name": "BswEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": true,
       "atp_type": null,
@@ -853,6 +867,7 @@
     },
     {
       "name": "BswScheduleEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": true,
       "atp_type": null,
@@ -907,6 +922,7 @@
     },
     {
       "name": "BswInterruptEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -939,6 +955,7 @@
     },
     {
       "name": "BswTimingEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -986,6 +1003,7 @@
     },
     {
       "name": "BswBackgroundEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1019,6 +1037,7 @@
     },
     {
       "name": "BswOsTaskExecutionEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1052,6 +1071,7 @@
     },
     {
       "name": "BswInternalTriggeringPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1090,6 +1110,7 @@
     },
     {
       "name": "BswInternalTriggerOccurredEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1131,6 +1152,7 @@
     },
     {
       "name": "BswExternalTriggerOccurredEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1172,6 +1194,7 @@
     },
     {
       "name": "BswModeSwitchEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1213,6 +1236,7 @@
     },
     {
       "name": "BswModeSwitchedAckEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1254,6 +1278,7 @@
     },
     {
       "name": "BswModeManagerErrorEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1295,6 +1320,7 @@
     },
     {
       "name": "BswOperationInvokedEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1335,6 +1361,7 @@
     },
     {
       "name": "BswAsynchronousServerCallReturnsEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1376,6 +1403,7 @@
     },
     {
       "name": "BswDataReceivedEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1417,6 +1445,7 @@
     },
     {
       "name": "BswTriggerDirectImplementation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1466,6 +1495,7 @@
     },
     {
       "name": "BswModeSenderPolicy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1522,6 +1552,7 @@
     },
     {
       "name": "BswModeSwitchAckRequest",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1557,6 +1588,7 @@
     },
     {
       "name": "BswModeReceiverPolicy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1606,6 +1638,7 @@
     },
     {
       "name": "BswDataReceptionPolicy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": true,
       "atp_type": null,
@@ -1646,6 +1679,7 @@
     },
     {
       "name": "BswQueuedDataReceptionPolicy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1683,6 +1717,7 @@
     },
     {
       "name": "BswDistinguishedPartition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1711,6 +1746,7 @@
     },
     {
       "name": "BswServiceDependency",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1780,6 +1816,7 @@
     },
     {
       "name": "RoleBasedBswModuleEntryAssignment",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Describable",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::Identifiable",
       "is_abstract": true,
       "atp_type": null,
@@ -946,6 +947,7 @@
     },
     {
       "name": "SingleLanguageReferrable",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::Identifiable",
       "is_abstract": true,
       "atp_type": null,
@@ -990,6 +992,7 @@
     },
     {
       "name": "ShortNameFragment",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::Identifiable",
       "is_abstract": false,
       "atp_type": null,

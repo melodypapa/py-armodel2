@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "GeneralPurposeConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GeneralPurposeConnection",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "AbstractEthernetFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetFrame",
       "is_abstract": true,
       "atp_type": null,
@@ -45,6 +46,7 @@
     },
     {
       "name": "EthernetFrameTriggering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetFrame",
       "is_abstract": false,
       "atp_type": null,
@@ -76,6 +78,7 @@
     },
     {
       "name": "GenericEthernetFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetFrame",
       "is_abstract": false,
       "atp_type": null,
@@ -111,6 +114,7 @@
     },
     {
       "name": "UserDefinedEthernetFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetFrame",
       "is_abstract": false,
       "atp_type": null,
@@ -146,6 +150,7 @@
     },
     {
       "name": "Ieee1722TpEthernetFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetFrame",
       "is_abstract": false,
       "atp_type": null,

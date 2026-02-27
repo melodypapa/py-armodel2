@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "CryptoKeySlot",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::AdaptivePlatform::PlatformModuleDeployment::CryptoDeployment",
       "is_abstract": false,
       "atp_type": null,

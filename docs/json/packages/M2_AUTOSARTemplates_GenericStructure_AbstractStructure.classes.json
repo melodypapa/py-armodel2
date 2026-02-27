@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "AtpInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::AbstractStructure",
       "is_abstract": true,
       "atp_type": null,
@@ -111,6 +112,7 @@
     },
     {
       "name": "AtpClassifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::AbstractStructure",
       "is_abstract": true,
       "atp_type": null,
@@ -150,6 +152,7 @@
     },
     {
       "name": "AtpFeature",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::AbstractStructure",
       "is_abstract": true,
       "atp_type": null,
@@ -183,6 +186,7 @@
     },
     {
       "name": "AtpPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::AbstractStructure",
       "is_abstract": true,
       "atp_type": null,
@@ -229,6 +233,7 @@
     },
     {
       "name": "AtpStructureElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::AbstractStructure",
       "is_abstract": true,
       "atp_type": null,
@@ -292,6 +297,7 @@
     },
     {
       "name": "AtpType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::AbstractStructure",
       "is_abstract": true,
       "atp_type": null,

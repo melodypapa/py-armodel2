@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ClientServerOperationBlueprintMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::ClientServerInterfaceToBsw",
       "is_abstract": false,
       "atp_type": null,
@@ -52,6 +53,7 @@
     },
     {
       "name": "ClientServerInterfaceToBswModuleEntryBlueprintMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::ClientServerInterfaceToBsw",
       "is_abstract": false,
       "atp_type": null,

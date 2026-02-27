@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "TtcanAbsolutelyScheduledTiming",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ttcan::TtcanCommunication",
       "is_abstract": false,
       "atp_type": null,

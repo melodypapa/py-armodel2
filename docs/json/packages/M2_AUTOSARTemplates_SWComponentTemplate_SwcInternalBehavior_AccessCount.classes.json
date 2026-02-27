@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "AccessCountSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::AccessCount",
       "is_abstract": false,
       "atp_type": null,
@@ -45,6 +46,7 @@
     },
     {
       "name": "AccessCount",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::AccessCount",
       "is_abstract": false,
       "atp_type": null,
@@ -87,6 +89,7 @@
     },
     {
       "name": "AbstractAccessPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::AccessCount",
       "is_abstract": true,
       "atp_type": null,

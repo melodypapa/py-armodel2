@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "AtpBlueprint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::AbstractBlueprintStructure",
       "is_abstract": true,
       "atp_type": null,
@@ -89,6 +90,7 @@
     },
     {
       "name": "AtpBlueprintable",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::AbstractBlueprintStructure",
       "is_abstract": true,
       "atp_type": null,
@@ -160,6 +162,7 @@
     },
     {
       "name": "AtpBlueprintMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::AbstractBlueprintStructure",
       "is_abstract": true,
       "atp_type": null,
@@ -204,6 +207,7 @@
     },
     {
       "name": "BlueprintPolicy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::AbstractBlueprintStructure",
       "is_abstract": true,
       "atp_type": null,
@@ -246,6 +250,7 @@
     },
     {
       "name": "BlueprintPolicyList",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::AbstractBlueprintStructure",
       "is_abstract": false,
       "atp_type": null,
@@ -290,6 +295,7 @@
     },
     {
       "name": "BlueprintPolicyNotModifiable",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::AbstractBlueprintStructure",
       "is_abstract": false,
       "atp_type": null,
@@ -318,6 +324,7 @@
     },
     {
       "name": "BlueprintPolicySingle",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::AbstractBlueprintStructure",
       "is_abstract": false,
       "atp_type": null,

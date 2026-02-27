@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "EcucModuleDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -89,6 +90,7 @@
     },
     {
       "name": "EcucDefinitionCollection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -139,6 +141,7 @@
     },
     {
       "name": "EcucContainerDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -228,6 +231,7 @@
     },
     {
       "name": "EcucParamConfContainerDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -287,6 +291,7 @@
     },
     {
       "name": "EcucChoiceContainerDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -331,6 +336,7 @@
     },
     {
       "name": "EcucDefinitionElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -418,6 +424,7 @@
     },
     {
       "name": "EcucCommonAttributes",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -491,6 +498,7 @@
     },
     {
       "name": "EcucAbstractConfigurationClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -537,6 +545,7 @@
     },
     {
       "name": "EcucValueConfigurationClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -565,6 +574,7 @@
     },
     {
       "name": "EcucMultiplicityConfigurationClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -594,6 +604,7 @@
     },
     {
       "name": "EcucParameterDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -670,6 +681,7 @@
     },
     {
       "name": "EcucBooleanParamDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -720,6 +732,7 @@
     },
     {
       "name": "EcucIntegerParamDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -784,6 +797,7 @@
     },
     {
       "name": "EcucFloatParamDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -848,6 +862,7 @@
     },
     {
       "name": "EcucAbstractStringParamDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": true,
       "atp_type": "atpVariation",
@@ -924,6 +939,7 @@
     },
     {
       "name": "EcucStringParamDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -962,6 +978,7 @@
     },
     {
       "name": "EcucMultilineStringParamDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -1000,6 +1017,7 @@
     },
     {
       "name": "EcucLinkerSymbolDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -1038,6 +1056,7 @@
     },
     {
       "name": "EcucFunctionNameDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -1076,6 +1095,7 @@
     },
     {
       "name": "EcucEnumerationParamDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1133,6 +1153,7 @@
     },
     {
       "name": "EcucEnumerationLiteralDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1178,6 +1199,7 @@
     },
     {
       "name": "EcucAddInfoParamDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1214,6 +1236,7 @@
     },
     {
       "name": "EcucAbstractReferenceDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -1263,6 +1286,7 @@
     },
     {
       "name": "EcucAbstractInternalReferenceDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -1315,6 +1339,7 @@
     },
     {
       "name": "EcucAbstractExternalReferenceDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -1357,6 +1382,7 @@
     },
     {
       "name": "EcucReferenceDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1414,6 +1440,7 @@
     },
     {
       "name": "EcucChoiceReferenceDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1465,6 +1492,7 @@
     },
     {
       "name": "EcucForeignReferenceDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1510,6 +1538,7 @@
     },
     {
       "name": "EcucInstanceReferenceDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1562,6 +1591,7 @@
     },
     {
       "name": "EcucUriReferenceDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1613,6 +1643,7 @@
     },
     {
       "name": "EcucDestinationUriDefSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1657,6 +1688,7 @@
     },
     {
       "name": "EcucDestinationUriDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1695,6 +1727,7 @@
     },
     {
       "name": "EcucDestinationUriPolicy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1751,6 +1784,7 @@
     },
     {
       "name": "EcucDerivationSpecification",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1800,6 +1834,7 @@
     },
     {
       "name": "EcucParameterDerivationFormula",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -1836,6 +1871,7 @@
     },
     {
       "name": "EcucQuery",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1876,6 +1912,7 @@
     },
     {
       "name": "EcucQueryExpression",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -1911,6 +1948,7 @@
     },
     {
       "name": "EcucConditionSpecification",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1961,6 +1999,7 @@
     },
     {
       "name": "EcucConditionFormula",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -1998,6 +2037,7 @@
     },
     {
       "name": "EcucValidationCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "is_abstract": false,
       "atp_type": null,

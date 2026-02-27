@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "RoleBasedDataTypeAssignment",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServiceMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -51,6 +52,7 @@
     },
     {
       "name": "RoleBasedPortAssignment",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServiceMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -112,6 +114,7 @@
     },
     {
       "name": "SwcServiceDependency",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServiceMapping",
       "is_abstract": false,
       "atp_type": null,

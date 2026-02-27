@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ModeDeclarationGroupPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ModeDeclaration",
       "is_abstract": false,
       "atp_type": null,
@@ -82,6 +83,7 @@
     },
     {
       "name": "ModeDeclarationGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ModeDeclaration",
       "is_abstract": false,
       "atp_type": null,
@@ -189,6 +191,7 @@
     },
     {
       "name": "ModeDeclaration",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ModeDeclaration",
       "is_abstract": false,
       "atp_type": null,
@@ -256,6 +259,7 @@
     },
     {
       "name": "ModeTransition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ModeDeclaration",
       "is_abstract": false,
       "atp_type": null,
@@ -312,6 +316,7 @@
     },
     {
       "name": "ModeErrorBehavior",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ModeDeclaration",
       "is_abstract": false,
       "atp_type": null,
@@ -361,6 +366,7 @@
     },
     {
       "name": "ModeRequestTypeMap",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ModeDeclaration",
       "is_abstract": false,
       "atp_type": null,
@@ -409,6 +415,7 @@
     },
     {
       "name": "ModeDeclarationGroupPrototypeMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ModeDeclaration",
       "is_abstract": false,
       "atp_type": null,

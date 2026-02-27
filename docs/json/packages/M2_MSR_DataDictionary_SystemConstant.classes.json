@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SwSystemconst",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::SystemConstant",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "is_abstract": false,
       "atp_type": null,
@@ -101,6 +102,7 @@
     },
     {
       "name": "DiagnosticConnectedIndicator",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "is_abstract": false,
       "atp_type": null,
@@ -160,6 +162,7 @@
     },
     {
       "name": "DiagnosticIumpr",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "is_abstract": false,
       "atp_type": null,
@@ -209,6 +212,7 @@
     },
     {
       "name": "DiagnosticIumprGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "is_abstract": false,
       "atp_type": null,
@@ -258,6 +262,7 @@
     },
     {
       "name": "DiagnosticIumprGroupIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "is_abstract": false,
       "atp_type": null,
@@ -293,6 +298,7 @@
     },
     {
       "name": "DiagnosticIumprDenominatorGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "is_abstract": false,
       "atp_type": null,
@@ -335,6 +341,7 @@
     },
     {
       "name": "DiagnosticAbstractAliasEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "is_abstract": true,
       "atp_type": null,
@@ -375,6 +382,7 @@
     },
     {
       "name": "DiagnosticFimAliasEventMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "is_abstract": false,
       "atp_type": null,

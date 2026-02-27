@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "MsrQueryP1",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::MsrQuery",
       "is_abstract": false,
       "atp_type": null,
@@ -47,6 +48,7 @@
     },
     {
       "name": "MsrQueryTopic1",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::MsrQuery",
       "is_abstract": false,
       "atp_type": null,
@@ -91,6 +93,7 @@
     },
     {
       "name": "MsrQueryChapter",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::MsrQuery",
       "is_abstract": false,
       "atp_type": null,
@@ -135,6 +138,7 @@
     },
     {
       "name": "MsrQueryProps",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::MsrQuery",
       "is_abstract": false,
       "atp_type": null,
@@ -187,6 +191,7 @@
     },
     {
       "name": "MsrQueryArg",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::MsrQuery",
       "is_abstract": false,
       "atp_type": null,
@@ -229,6 +234,7 @@
     },
     {
       "name": "MsrQueryResultChapter",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::MsrQuery",
       "is_abstract": false,
       "atp_type": null,
@@ -264,6 +270,7 @@
     },
     {
       "name": "MsrQueryResultTopic1",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::MsrQuery",
       "is_abstract": false,
       "atp_type": null,
@@ -291,6 +298,7 @@
     },
     {
       "name": "MsrQueryP2",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::MsrQuery",
       "is_abstract": false,
       "atp_type": null,

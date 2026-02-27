@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "HwAttributeValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate::HwElementCategory",
       "is_abstract": false,
       "atp_type": null,
@@ -59,6 +60,7 @@
     },
     {
       "name": "HwType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate::HwElementCategory",
       "is_abstract": false,
       "atp_type": null,
@@ -99,6 +101,7 @@
     },
     {
       "name": "HwCategory",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate::HwElementCategory",
       "is_abstract": false,
       "atp_type": null,
@@ -142,6 +145,7 @@
     },
     {
       "name": "HwAttributeDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate::HwElementCategory",
       "is_abstract": false,
       "atp_type": null,
@@ -194,6 +198,7 @@
     },
     {
       "name": "HwAttributeLiteralDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate::HwElementCategory",
       "is_abstract": false,
       "atp_type": null,

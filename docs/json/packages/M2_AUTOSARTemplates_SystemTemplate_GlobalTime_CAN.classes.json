@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "GlobalTimeCanMaster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::CAN",
       "is_abstract": false,
       "atp_type": null,
@@ -49,6 +50,7 @@
     },
     {
       "name": "GlobalTimeCanSlave",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::CAN",
       "is_abstract": false,
       "atp_type": null,
@@ -95,6 +97,7 @@
     },
     {
       "name": "CanGlobalTimeDomainProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::CAN",
       "is_abstract": false,
       "atp_type": null,

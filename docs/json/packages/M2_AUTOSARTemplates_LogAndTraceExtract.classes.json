@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DltArgument",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::LogAndTraceExtract",
       "is_abstract": false,
       "atp_type": null,
@@ -83,6 +84,7 @@
     },
     {
       "name": "DltApplication",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::LogAndTraceExtract",
       "is_abstract": false,
       "atp_type": null,
@@ -141,6 +143,7 @@
     },
     {
       "name": "DltContext",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::LogAndTraceExtract",
       "is_abstract": false,
       "atp_type": null,
@@ -204,6 +207,7 @@
     },
     {
       "name": "DltEcu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::LogAndTraceExtract",
       "is_abstract": false,
       "atp_type": null,
@@ -260,6 +264,7 @@
     },
     {
       "name": "DltMessage",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::LogAndTraceExtract",
       "is_abstract": false,
       "atp_type": null,
@@ -339,6 +344,7 @@
     },
     {
       "name": "LogAndTraceMessageCollectionSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::LogAndTraceExtract",
       "is_abstract": false,
       "atp_type": null,
@@ -382,6 +388,7 @@
     },
     {
       "name": "PrivacyLevel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::LogAndTraceExtract",
       "is_abstract": false,
       "atp_type": null,

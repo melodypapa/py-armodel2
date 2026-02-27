@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DdsCpISignalToDdsTopicMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -45,6 +46,7 @@
     },
     {
       "name": "DdsCpServiceInstance",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": true,
       "atp_type": null,
@@ -125,6 +127,7 @@
     },
     {
       "name": "DdsCpProvidedServiceInstance",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -186,6 +189,7 @@
     },
     {
       "name": "DdsCpConsumedServiceInstance",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -247,6 +251,7 @@
     },
     {
       "name": "DdsCpServiceInstanceEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -297,6 +302,7 @@
     },
     {
       "name": "DdsCpServiceInstanceOperation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -333,6 +339,7 @@
     },
     {
       "name": "DdsCpConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -381,6 +388,7 @@
     },
     {
       "name": "DdsCpDomain",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -433,6 +441,7 @@
     },
     {
       "name": "DdsCpTopic",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -478,6 +487,7 @@
     },
     {
       "name": "DdsCpPartition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -516,6 +526,7 @@
     },
     {
       "name": "DdsCpQosProfile",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -631,6 +642,7 @@
     },
     {
       "name": "DdsTopicData",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -666,6 +678,7 @@
     },
     {
       "name": "DdsDurability",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -701,6 +714,7 @@
     },
     {
       "name": "DdsDurabilityService",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -736,6 +750,7 @@
     },
     {
       "name": "DdsDeadline",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -771,6 +786,7 @@
     },
     {
       "name": "DdsLatencyBudget",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -806,6 +822,7 @@
     },
     {
       "name": "DdsOwnership",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -841,6 +858,7 @@
     },
     {
       "name": "DdsOwnershipStrength",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -876,6 +894,7 @@
     },
     {
       "name": "DdsLiveliness",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -918,6 +937,7 @@
     },
     {
       "name": "DdsReliability",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -960,6 +980,7 @@
     },
     {
       "name": "DdsTransportPriority",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -995,6 +1016,7 @@
     },
     {
       "name": "DdsLifespan",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -1030,6 +1052,7 @@
     },
     {
       "name": "DdsDestinationOrder",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -1065,6 +1088,7 @@
     },
     {
       "name": "DdsHistory",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,
@@ -1107,6 +1131,7 @@
     },
     {
       "name": "DdsResourceLimits",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "is_abstract": false,
       "atp_type": null,

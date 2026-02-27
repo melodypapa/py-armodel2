@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "TDLETZoneClock",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingClock",
       "is_abstract": false,
       "atp_type": null,
@@ -49,6 +50,7 @@
     },
     {
       "name": "TimingClock",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingClock",
       "is_abstract": true,
       "atp_type": null,
@@ -92,6 +94,7 @@
     },
     {
       "name": "TimingClockSyncAccuracy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingClock",
       "is_abstract": false,
       "atp_type": null,

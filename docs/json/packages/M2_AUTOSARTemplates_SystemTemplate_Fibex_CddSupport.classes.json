@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "UserDefinedCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::CddSupport",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -41,6 +42,7 @@
     },
     {
       "name": "UserDefinedPhysicalChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::CddSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -72,6 +74,7 @@
     },
     {
       "name": "UserDefinedCommunicationConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::CddSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -104,6 +107,7 @@
     },
     {
       "name": "UserDefinedCommunicationController",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::CddSupport",
       "is_abstract": false,
       "atp_type": "atpVariation",

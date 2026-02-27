@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "EndToEndProtectionISignalIPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::EndToEndProtection",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ECUMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::ECUResourceMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -62,6 +63,7 @@
     },
     {
       "name": "CommunicationControllerMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::ECUResourceMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -104,6 +106,7 @@
     },
     {
       "name": "HwPortMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::ECUResourceMapping",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "BlueprintMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::BlueprintDedicated::Generic",
       "is_abstract": false,
       "atp_type": null,

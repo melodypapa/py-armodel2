@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DataFilter",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Filter",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "AnyInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::AnyInstanceRef",
       "is_abstract": false,
       "atp_type": null,

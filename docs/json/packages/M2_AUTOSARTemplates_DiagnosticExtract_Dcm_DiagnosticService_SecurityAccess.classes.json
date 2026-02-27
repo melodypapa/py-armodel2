@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticSecurityAccess",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::SecurityAccess",
       "is_abstract": false,
       "atp_type": null,
@@ -67,6 +68,7 @@
     },
     {
       "name": "DiagnosticSecurityAccessClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::SecurityAccess",
       "is_abstract": false,
       "atp_type": null,

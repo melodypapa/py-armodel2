@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticRequestOnBoardMonitoringTestResults",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::ObdService::Mode_0x06_RequestOnBoard",
       "is_abstract": false,
       "atp_type": null,
@@ -53,6 +54,7 @@
     },
     {
       "name": "DiagnosticRequestOnBoardMonitoringTestResultsClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::ObdService::Mode_0x06_RequestOnBoard",
       "is_abstract": false,
       "atp_type": null,

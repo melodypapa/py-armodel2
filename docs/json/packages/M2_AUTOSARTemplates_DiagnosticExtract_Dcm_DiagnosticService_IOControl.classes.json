@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticIOControl",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::IOControl",
       "is_abstract": false,
       "atp_type": null,
@@ -81,6 +82,7 @@
     },
     {
       "name": "DiagnosticIoControlClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::IOControl",
       "is_abstract": false,
       "atp_type": null,
@@ -116,6 +118,7 @@
     },
     {
       "name": "DiagnosticControlEnableMaskBit",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::IOControl",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ResourceConsumption",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption",
       "is_abstract": false,
       "atp_type": null,
@@ -91,6 +92,7 @@
     },
     {
       "name": "HardwareConfiguration",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption",
       "is_abstract": false,
       "atp_type": null,
@@ -142,6 +144,7 @@
     },
     {
       "name": "SoftwareContext",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption",
       "is_abstract": false,
       "atp_type": null,

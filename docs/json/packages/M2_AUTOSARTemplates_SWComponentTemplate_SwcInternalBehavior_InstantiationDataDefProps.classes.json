@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "InstantiationDataDefProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::InstantiationDataDefProps",
       "is_abstract": false,
       "atp_type": null,

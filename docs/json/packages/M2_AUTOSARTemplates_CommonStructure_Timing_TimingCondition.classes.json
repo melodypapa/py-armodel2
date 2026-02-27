@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "TimingCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingCondition",
       "is_abstract": false,
       "atp_type": null,
@@ -41,6 +42,7 @@
     },
     {
       "name": "TimingConditionFormula",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingCondition",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -105,6 +107,7 @@
     },
     {
       "name": "TimingExtensionResource",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingCondition",
       "is_abstract": false,
       "atp_type": null,
@@ -157,6 +160,7 @@
     },
     {
       "name": "TimingModeInstance",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingCondition",
       "is_abstract": false,
       "atp_type": null,
@@ -196,6 +200,7 @@
     },
     {
       "name": "ModeInBswInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingCondition",
       "is_abstract": false,
       "atp_type": null,
@@ -246,6 +251,7 @@
     },
     {
       "name": "ModeInSwcInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingCondition",
       "is_abstract": false,
       "atp_type": null,

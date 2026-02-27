@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "LLongName",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::LanguageDataModel",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -46,6 +47,7 @@
     },
     {
       "name": "WhitespaceControlled",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::LanguageDataModel",
       "is_abstract": true,
       "atp_type": null,
@@ -82,6 +84,7 @@
     },
     {
       "name": "LVerbatim",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::LanguageDataModel",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -112,6 +115,7 @@
     },
     {
       "name": "LOverviewParagraph",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::LanguageDataModel",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -150,6 +154,7 @@
     },
     {
       "name": "LParagraph",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::LanguageDataModel",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -179,6 +184,7 @@
     },
     {
       "name": "LPlainText",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::LanguageDataModel",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -209,6 +215,7 @@
     },
     {
       "name": "LanguageSpecific",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::LanguageDataModel",
       "is_abstract": true,
       "atp_type": null,

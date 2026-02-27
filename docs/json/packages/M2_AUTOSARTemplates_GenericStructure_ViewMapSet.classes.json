@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ViewMap",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::ViewMapSet",
       "is_abstract": false,
       "atp_type": null,
@@ -61,6 +62,7 @@
     },
     {
       "name": "ViewMapSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::ViewMapSet",
       "is_abstract": false,
       "atp_type": null,

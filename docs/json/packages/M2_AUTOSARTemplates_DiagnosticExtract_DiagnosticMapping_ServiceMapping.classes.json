@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticServiceDataMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::ServiceMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -68,6 +69,7 @@
     },
     {
       "name": "DiagnosticParameterElementAccess",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::ServiceMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -111,6 +113,7 @@
     },
     {
       "name": "DiagnosticServiceMappingDiagTarget",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::ServiceMapping",
       "is_abstract": true,
       "atp_type": null,
@@ -140,6 +143,7 @@
     },
     {
       "name": "DiagnosticServiceSwMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::ServiceMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -233,6 +237,7 @@
     },
     {
       "name": "BswServiceDependencyIdent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::ServiceMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -269,6 +274,7 @@
     },
     {
       "name": "DiagnosticSecurityEventReportingModeMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::ServiceMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -319,6 +325,7 @@
     },
     {
       "name": "DiagnosticDemProvidedDataMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::ServiceMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -369,6 +376,7 @@
     },
     {
       "name": "DiagnosticFimFunctionMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::ServiceMapping",
       "is_abstract": false,
       "atp_type": null,

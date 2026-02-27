@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SwPointerTargetProps",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": null,
@@ -70,6 +71,7 @@
     },
     {
       "name": "SwDataDefProps",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -377,6 +379,7 @@
     },
     {
       "name": "SwTextProps",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": null,
@@ -451,6 +454,7 @@
     },
     {
       "name": "ValueList",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": "atpMixed",
@@ -508,6 +512,7 @@
     },
     {
       "name": "SwBitRepresentation",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": null,
@@ -550,6 +555,7 @@
     },
     {
       "name": "SwDataDependency",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": null,
@@ -585,6 +591,7 @@
     },
     {
       "name": "SwDataDependencyArgs",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": "atpMixed",

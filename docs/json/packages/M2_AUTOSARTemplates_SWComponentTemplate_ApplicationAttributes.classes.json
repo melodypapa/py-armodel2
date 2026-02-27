@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SenderReceiverAnnotation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "is_abstract": true,
       "atp_type": null,
@@ -66,6 +67,7 @@
     },
     {
       "name": "SenderAnnotation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "is_abstract": false,
       "atp_type": null,
@@ -82,7 +84,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Annotation of a sender port, specifying properties of data elements that don\u2019t affect communication or generation of the RTE.",
+      "note": "Annotation of a sender port, specifying properties of data elements that don’t affect communication or generation of the RTE.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
@@ -95,6 +97,7 @@
     },
     {
       "name": "ReceiverAnnotation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "is_abstract": false,
       "atp_type": null,
@@ -111,7 +114,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Annotation of a receiver port, specifying properties of data elements that don\u2019t affect communication or generation of the RTE. The given attributes are requirements on the required data.",
+      "note": "Annotation of a receiver port, specifying properties of data elements that don’t affect communication or generation of the RTE. The given attributes are requirements on the required data.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
@@ -132,6 +135,7 @@
     },
     {
       "name": "ClientServerAnnotation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "is_abstract": false,
       "atp_type": null,
@@ -168,6 +172,7 @@
     },
     {
       "name": "IoHwAbstractionServerAnnotation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "is_abstract": false,
       "atp_type": null,
@@ -253,6 +258,7 @@
     },
     {
       "name": "ParameterPortAnnotation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "is_abstract": false,
       "atp_type": null,
@@ -289,6 +295,7 @@
     },
     {
       "name": "ModePortAnnotation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "is_abstract": false,
       "atp_type": null,
@@ -325,6 +332,7 @@
     },
     {
       "name": "TriggerPortAnnotation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "is_abstract": false,
       "atp_type": null,
@@ -361,6 +369,7 @@
     },
     {
       "name": "NvDataPortAnnotation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "is_abstract": false,
       "atp_type": null,
@@ -397,6 +406,7 @@
     },
     {
       "name": "DelegatedPortAnnotation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "is_abstract": false,
       "atp_type": null,

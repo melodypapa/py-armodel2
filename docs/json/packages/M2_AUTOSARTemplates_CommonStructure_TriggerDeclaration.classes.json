@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Trigger",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::TriggerDeclaration",
       "is_abstract": false,
       "atp_type": null,
@@ -74,6 +75,7 @@
     },
     {
       "name": "TriggerMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::TriggerDeclaration",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ApplicationDataType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": true,
       "atp_type": null,
@@ -79,6 +80,7 @@
     },
     {
       "name": "AutosarDataType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": true,
       "atp_type": null,
@@ -153,6 +155,7 @@
     },
     {
       "name": "DataTypeMappingSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": false,
       "atp_type": null,
@@ -222,6 +225,7 @@
     },
     {
       "name": "ApplicationPrimitiveDataType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": false,
       "atp_type": null,
@@ -280,6 +284,7 @@
     },
     {
       "name": "DataTypeMap",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": false,
       "atp_type": null,
@@ -328,6 +333,7 @@
     },
     {
       "name": "ApplicationCompositeDataType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": true,
       "atp_type": null,
@@ -386,6 +392,7 @@
     },
     {
       "name": "ApplicationArrayDataType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": false,
       "atp_type": null,
@@ -454,6 +461,7 @@
     },
     {
       "name": "ApplicationRecordDataType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": false,
       "atp_type": null,

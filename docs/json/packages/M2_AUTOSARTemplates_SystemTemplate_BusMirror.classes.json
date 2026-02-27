@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "BusMirrorChannelMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::BusMirror",
       "is_abstract": true,
       "atp_type": null,
@@ -75,6 +76,7 @@
     },
     {
       "name": "BusMirrorChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::BusMirror",
       "is_abstract": false,
       "atp_type": null,
@@ -118,6 +120,7 @@
     },
     {
       "name": "BusMirrorChannelMappingCan",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::BusMirror",
       "is_abstract": false,
       "atp_type": null,
@@ -188,6 +191,7 @@
     },
     {
       "name": "BusMirrorCanIdRangeMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::BusMirror",
       "is_abstract": false,
       "atp_type": null,
@@ -237,6 +241,7 @@
     },
     {
       "name": "BusMirrorCanIdToCanIdMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::BusMirror",
       "is_abstract": false,
       "atp_type": null,
@@ -279,6 +284,7 @@
     },
     {
       "name": "BusMirrorLinPidToCanIdMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::BusMirror",
       "is_abstract": false,
       "atp_type": null,
@@ -321,6 +327,7 @@
     },
     {
       "name": "BusMirrorChannelMappingFlexray",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::BusMirror",
       "is_abstract": false,
       "atp_type": null,
@@ -363,6 +370,7 @@
     },
     {
       "name": "BusMirrorChannelMappingIp",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::BusMirror",
       "is_abstract": false,
       "atp_type": null,
@@ -405,6 +413,7 @@
     },
     {
       "name": "BusMirrorChannelMappingUserDefined",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::BusMirror",
       "is_abstract": false,
       "atp_type": null,

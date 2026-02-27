@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "MemorySection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::MemorySectionUsage",
       "is_abstract": false,
       "atp_type": null,
@@ -95,6 +96,7 @@
     },
     {
       "name": "SectionNamePrefix",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::MemorySectionUsage",
       "is_abstract": false,
       "atp_type": null,

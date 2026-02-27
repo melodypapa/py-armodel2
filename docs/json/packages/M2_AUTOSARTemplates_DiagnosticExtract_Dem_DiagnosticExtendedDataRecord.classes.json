@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticExtendedDataRecord",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticExtendedDataRecord",
       "is_abstract": false,
       "atp_type": null,

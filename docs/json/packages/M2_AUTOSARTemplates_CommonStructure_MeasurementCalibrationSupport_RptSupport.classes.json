@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "McFunctionDataRefSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport::RptSupport",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -56,6 +57,7 @@
     },
     {
       "name": "RptSupportData",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport::RptSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -105,6 +107,7 @@
     },
     {
       "name": "RptSwPrototypingAccess",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport::RptSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -161,6 +164,7 @@
     },
     {
       "name": "RptComponent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport::RptSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -213,6 +217,7 @@
     },
     {
       "name": "RptExecutableEntity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport::RptSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -272,6 +277,7 @@
     },
     {
       "name": "RptExecutableEntityEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport::RptSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -345,6 +351,7 @@
     },
     {
       "name": "RptExecutionContext",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport::RptSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -375,6 +382,7 @@
     },
     {
       "name": "RptServicePoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport::RptSupport",
       "is_abstract": false,
       "atp_type": null,

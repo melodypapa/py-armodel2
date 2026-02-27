@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "UserDefinedGlobalTimeMaster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::UserDefined",
       "is_abstract": false,
       "atp_type": null,
@@ -34,6 +35,7 @@
     },
     {
       "name": "UserDefinedGlobalTimeSlave",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::UserDefined",
       "is_abstract": false,
       "atp_type": null,

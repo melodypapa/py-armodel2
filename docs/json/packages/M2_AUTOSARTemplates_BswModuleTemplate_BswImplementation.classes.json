@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "BswImplementation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswImplementation",
       "is_abstract": false,
       "atp_type": null,

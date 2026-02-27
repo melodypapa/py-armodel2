@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "RunnableEntity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -189,6 +190,7 @@
     },
     {
       "name": "SwcInternalBehavior",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -375,6 +377,7 @@
     },
     {
       "name": "SwcExclusiveAreaPolicy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior",
       "is_abstract": false,
       "atp_type": null,

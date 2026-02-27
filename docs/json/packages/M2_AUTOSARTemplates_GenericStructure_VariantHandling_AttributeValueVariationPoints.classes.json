@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "NumericalValueVariationPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -40,6 +41,7 @@
     },
     {
       "name": "AttributeValueVariationPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": true,
       "atp_type": "atpMixedString",
@@ -119,6 +121,7 @@
     },
     {
       "name": "AbstractNumericalVariationPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": true,
       "atp_type": "atpMixedString",
@@ -158,6 +161,7 @@
     },
     {
       "name": "BooleanValueVariationPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -188,6 +192,7 @@
     },
     {
       "name": "FloatValueVariationPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -218,6 +223,7 @@
     },
     {
       "name": "IntegerValueVariationPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -248,6 +254,7 @@
     },
     {
       "name": "LimitValueVariationPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -287,6 +294,7 @@
     },
     {
       "name": "PositiveIntegerValueVariationPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -317,6 +325,7 @@
     },
     {
       "name": "UnlimitedIntegerValueVariationPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -347,6 +356,7 @@
     },
     {
       "name": "TimeValueValueVariationPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -377,6 +387,7 @@
     },
     {
       "name": "AbstractEnumerationValueVariationPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": true,
       "atp_type": "atpMixedString",
@@ -422,6 +433,7 @@
     },
     {
       "name": "EnumerationMappingEntry",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": false,
       "atp_type": null,
@@ -464,6 +476,7 @@
     },
     {
       "name": "EnumerationMappingTable",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling::AttributeValueVariationPoints",
       "is_abstract": false,
       "atp_type": null,

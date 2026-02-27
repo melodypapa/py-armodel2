@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "InnerDataPrototypeGroupInCompositionInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ImplicitCommunicationBehavior::InstanceRef",
       "is_abstract": false,
       "atp_type": null,
@@ -54,6 +55,7 @@
     },
     {
       "name": "InnerRunnableEntityGroupInCompositionInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ImplicitCommunicationBehavior::InstanceRef",
       "is_abstract": false,
       "atp_type": null,
@@ -105,6 +107,7 @@
     },
     {
       "name": "RunnableEntityInCompositionInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ImplicitCommunicationBehavior::InstanceRef",
       "is_abstract": false,
       "atp_type": null,
@@ -156,6 +159,7 @@
     },
     {
       "name": "VariableDataPrototypeInCompositionInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ImplicitCommunicationBehavior::InstanceRef",
       "is_abstract": false,
       "atp_type": null,

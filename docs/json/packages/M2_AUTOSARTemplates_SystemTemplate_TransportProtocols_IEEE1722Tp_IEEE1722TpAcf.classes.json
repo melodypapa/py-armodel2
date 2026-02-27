@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "IEEE1722TpAcfBus",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAcf",
       "is_abstract": true,
       "atp_type": null,
@@ -54,6 +55,7 @@
     },
     {
       "name": "IEEE1722TpAcfBusPart",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAcf",
       "is_abstract": true,
       "atp_type": null,
@@ -98,6 +100,7 @@
     },
     {
       "name": "IEEE1722TpAcfCan",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAcf",
       "is_abstract": false,
       "atp_type": null,
@@ -137,6 +140,7 @@
     },
     {
       "name": "IEEE1722TpAcfCanPart",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAcf",
       "is_abstract": false,
       "atp_type": null,
@@ -204,6 +208,7 @@
     },
     {
       "name": "IEEE1722TpAcfLin",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAcf",
       "is_abstract": false,
       "atp_type": null,
@@ -257,6 +262,7 @@
     },
     {
       "name": "IEEE1722TpAcfLinPart",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAcf",
       "is_abstract": false,
       "atp_type": null,

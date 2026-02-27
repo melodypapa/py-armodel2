@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticFreezeFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticFreezeFrame",
       "is_abstract": false,
       "atp_type": null,

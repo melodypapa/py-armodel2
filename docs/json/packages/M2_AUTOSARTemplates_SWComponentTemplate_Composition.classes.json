@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "CompositionSwComponentType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition",
       "is_abstract": false,
       "atp_type": null,
@@ -121,6 +122,7 @@
     },
     {
       "name": "SwComponentPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition",
       "is_abstract": false,
       "atp_type": null,
@@ -211,6 +213,7 @@
     },
     {
       "name": "AssemblySwConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition",
       "is_abstract": false,
       "atp_type": null,
@@ -282,6 +285,7 @@
     },
     {
       "name": "SwConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition",
       "is_abstract": true,
       "atp_type": null,
@@ -345,6 +349,7 @@
     },
     {
       "name": "DelegationSwConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition",
       "is_abstract": false,
       "atp_type": null,
@@ -403,6 +408,7 @@
     },
     {
       "name": "PassThroughSwConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition",
       "is_abstract": false,
       "atp_type": null,
@@ -460,6 +466,7 @@
     },
     {
       "name": "InstantiationTimingEventProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition",
       "is_abstract": false,
       "atp_type": null,
@@ -496,6 +503,7 @@
     },
     {
       "name": "InstantiationRTEEventProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition",
       "is_abstract": true,
       "atp_type": null,

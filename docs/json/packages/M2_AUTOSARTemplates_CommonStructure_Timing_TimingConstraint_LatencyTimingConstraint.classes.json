@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "LatencyTimingConstraint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::LatencyTimingConstraint",
       "is_abstract": false,
       "atp_type": null,

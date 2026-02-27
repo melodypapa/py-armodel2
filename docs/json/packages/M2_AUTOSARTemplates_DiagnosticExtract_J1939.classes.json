@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticJ1939Spn",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::J1939",
       "is_abstract": false,
       "atp_type": null,
@@ -45,6 +46,7 @@
     },
     {
       "name": "DiagnosticJ1939FreezeFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::J1939",
       "is_abstract": false,
       "atp_type": null,
@@ -87,6 +89,7 @@
     },
     {
       "name": "DiagnosticJ1939ExpandedFreezeFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::J1939",
       "is_abstract": false,
       "atp_type": null,
@@ -129,6 +132,7 @@
     },
     {
       "name": "DiagnosticJ1939Node",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::J1939",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticDynamicallyDefineDataIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::DynamicallyDefineDataIdentifier",
       "is_abstract": false,
       "atp_type": null,
@@ -60,6 +61,7 @@
     },
     {
       "name": "DiagnosticDynamicallyDefineDataIdentifierClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::DynamicallyDefineDataIdentifier",
       "is_abstract": false,
       "atp_type": null,

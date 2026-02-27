@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ExecutionTimeConstraint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::ExecutionTimeConstraint",
       "is_abstract": false,
       "atp_type": null,

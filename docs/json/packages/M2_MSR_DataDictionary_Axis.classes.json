@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SwAxisIndividual",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::Axis",
       "is_abstract": false,
       "atp_type": null,
@@ -88,6 +89,7 @@
     },
     {
       "name": "SwAxisGeneric",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::Axis",
       "is_abstract": false,
       "atp_type": null,
@@ -130,6 +132,7 @@
     },
     {
       "name": "SwAxisType",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::Axis",
       "is_abstract": false,
       "atp_type": null,
@@ -178,6 +181,7 @@
     },
     {
       "name": "SwGenericAxisParam",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::Axis",
       "is_abstract": false,
       "atp_type": null,
@@ -213,6 +217,7 @@
     },
     {
       "name": "SwGenericAxisParamType",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::Axis",
       "is_abstract": false,
       "atp_type": null,
@@ -251,6 +256,7 @@
     },
     {
       "name": "SwAxisGrouped",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::Axis",
       "is_abstract": false,
       "atp_type": null,

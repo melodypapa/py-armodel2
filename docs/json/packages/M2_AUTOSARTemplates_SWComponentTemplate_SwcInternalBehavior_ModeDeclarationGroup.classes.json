@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ModeAccessPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ModeDeclarationGroup",
       "is_abstract": false,
       "atp_type": null,
@@ -51,6 +52,7 @@
     },
     {
       "name": "ModeSwitchPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ModeDeclarationGroup",
       "is_abstract": false,
       "atp_type": null,
@@ -101,6 +103,7 @@
     },
     {
       "name": "IncludedModeDeclarationGroupSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ModeDeclarationGroup",
       "is_abstract": false,
       "atp_type": null,

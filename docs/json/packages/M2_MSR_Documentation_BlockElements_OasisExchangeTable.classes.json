@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Table",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::OasisExchangeTable",
       "is_abstract": false,
       "atp_type": null,
@@ -97,6 +98,7 @@
     },
     {
       "name": "Tgroup",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::OasisExchangeTable",
       "is_abstract": false,
       "atp_type": null,
@@ -181,6 +183,7 @@
     },
     {
       "name": "Tbody",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::OasisExchangeTable",
       "is_abstract": false,
       "atp_type": null,
@@ -218,6 +221,7 @@
     },
     {
       "name": "Row",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::OasisExchangeTable",
       "is_abstract": false,
       "atp_type": null,
@@ -262,6 +266,7 @@
     },
     {
       "name": "Entry",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::OasisExchangeTable",
       "is_abstract": false,
       "atp_type": null,
@@ -374,6 +379,7 @@
     },
     {
       "name": "Colspec",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::OasisExchangeTable",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "AbstractValueRestriction",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ModelRestrictionTypes",
       "is_abstract": true,
       "atp_type": null,
@@ -74,6 +75,7 @@
     },
     {
       "name": "AbstractVariationRestriction",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ModelRestrictionTypes",
       "is_abstract": true,
       "atp_type": null,
@@ -124,6 +126,7 @@
     },
     {
       "name": "AbstractMultiplicityRestriction",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ModelRestrictionTypes",
       "is_abstract": true,
       "atp_type": null,

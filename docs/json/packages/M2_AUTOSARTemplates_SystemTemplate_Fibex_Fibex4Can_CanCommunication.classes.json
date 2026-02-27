@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "CanFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -37,6 +38,7 @@
     },
     {
       "name": "CanFrameTriggering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -139,6 +141,7 @@
     },
     {
       "name": "RxIdentifierRange",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -183,6 +186,7 @@
     },
     {
       "name": "CanXlFrameTriggeringProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanCommunication",
       "is_abstract": false,
       "atp_type": null,

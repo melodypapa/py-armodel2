@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DataPrototypeInSenderReceiverInterfaceInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer::InstanceRef",
       "is_abstract": false,
       "atp_type": null,
@@ -62,6 +63,7 @@
     },
     {
       "name": "DataPrototypeInClientServerInterfaceInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer::InstanceRef",
       "is_abstract": false,
       "atp_type": null,
@@ -122,6 +124,7 @@
     },
     {
       "name": "ImplementationDataTypeElementInPortInterfaceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer::InstanceRef",
       "is_abstract": false,
       "atp_type": null,
@@ -173,6 +176,7 @@
     },
     {
       "name": "DataPrototypeInPortInterfaceInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer::InstanceRef",
       "is_abstract": true,
       "atp_type": null,

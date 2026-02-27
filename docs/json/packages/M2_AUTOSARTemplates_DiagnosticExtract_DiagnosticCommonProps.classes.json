@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticCommonProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticCommonProps",
       "is_abstract": false,
       "atp_type": "atpVariation",

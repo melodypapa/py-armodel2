@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Collection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ElementCollection",
       "is_abstract": false,
       "atp_type": null,
@@ -100,6 +101,7 @@
     },
     {
       "name": "CollectableElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ElementCollection",
       "is_abstract": true,
       "atp_type": null,

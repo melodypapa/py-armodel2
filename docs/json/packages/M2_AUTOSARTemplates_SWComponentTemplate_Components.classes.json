@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "AtomicSwComponentType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": true,
       "atp_type": null,
@@ -109,6 +110,7 @@
     },
     {
       "name": "ComplexDeviceDriverSwComponentType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -175,6 +177,7 @@
     },
     {
       "name": "EcuAbstractionSwComponentType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -241,6 +244,7 @@
     },
     {
       "name": "PRPortPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -305,6 +309,7 @@
     },
     {
       "name": "PortPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": true,
       "atp_type": null,
@@ -481,6 +486,7 @@
     },
     {
       "name": "ServiceSwComponentType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -539,6 +545,7 @@
     },
     {
       "name": "ApplicationSwComponentType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -603,6 +610,7 @@
     },
     {
       "name": "PPortPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -672,6 +680,7 @@
     },
     {
       "name": "SwComponentType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": true,
       "atp_type": null,
@@ -797,6 +806,7 @@
     },
     {
       "name": "ParameterSwComponentType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -864,6 +874,7 @@
     },
     {
       "name": "AbstractRequiredPortPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": true,
       "atp_type": null,
@@ -926,6 +937,7 @@
     },
     {
       "name": "AbstractProvidedPortPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": true,
       "atp_type": null,
@@ -975,6 +987,7 @@
     },
     {
       "name": "RPortPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -1051,6 +1064,7 @@
     },
     {
       "name": "PortGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -1107,6 +1121,7 @@
     },
     {
       "name": "SymbolProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -1154,6 +1169,7 @@
     },
     {
       "name": "SensorActuatorSwComponentType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -1214,6 +1230,7 @@
     },
     {
       "name": "ServiceProxySwComponentType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -1260,6 +1277,7 @@
     },
     {
       "name": "NvBlockSwComponentType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,

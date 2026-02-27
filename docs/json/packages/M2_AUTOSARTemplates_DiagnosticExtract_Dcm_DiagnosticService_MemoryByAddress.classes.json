@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticMemoryByAddress",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": true,
       "atp_type": null,
@@ -46,6 +47,7 @@
     },
     {
       "name": "DiagnosticMemoryAddressableRangeAccess",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": true,
       "atp_type": null,
@@ -100,6 +102,7 @@
     },
     {
       "name": "DiagnosticMemoryIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,
@@ -163,6 +166,7 @@
     },
     {
       "name": "DiagnosticWriteMemoryByAddress",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,
@@ -208,6 +212,7 @@
     },
     {
       "name": "DiagnosticWriteMemoryByAddressClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,
@@ -243,6 +248,7 @@
     },
     {
       "name": "DiagnosticReadMemoryByAddress",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,
@@ -288,6 +294,7 @@
     },
     {
       "name": "DiagnosticReadMemoryByAddressClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,
@@ -323,6 +330,7 @@
     },
     {
       "name": "DiagnosticTransferExit",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,
@@ -367,6 +375,7 @@
     },
     {
       "name": "DiagnosticTransferExitClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,
@@ -402,6 +411,7 @@
     },
     {
       "name": "DiagnosticDataTransfer",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,
@@ -446,6 +456,7 @@
     },
     {
       "name": "DiagnosticDataTransferClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,
@@ -481,6 +492,7 @@
     },
     {
       "name": "DiagnosticRequestDownload",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,
@@ -526,6 +538,7 @@
     },
     {
       "name": "DiagnosticRequestDownloadClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,
@@ -561,6 +574,7 @@
     },
     {
       "name": "DiagnosticRequestUpload",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,
@@ -606,6 +620,7 @@
     },
     {
       "name": "DiagnosticRequestUploadClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::MemoryByAddress",
       "is_abstract": false,
       "atp_type": null,

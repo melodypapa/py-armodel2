@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "LifeCycleStateDefinitionGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::LifeCycles",
       "is_abstract": false,
       "atp_type": null,
@@ -53,6 +54,7 @@
     },
     {
       "name": "LifeCycleState",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::LifeCycles",
       "is_abstract": false,
       "atp_type": null,
@@ -92,6 +94,7 @@
     },
     {
       "name": "LifeCycleInfoSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::LifeCycles",
       "is_abstract": false,
       "atp_type": null,
@@ -168,6 +171,7 @@
     },
     {
       "name": "LifeCyclePeriod",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::LifeCycles",
       "is_abstract": false,
       "atp_type": null,
@@ -220,6 +224,7 @@
     },
     {
       "name": "LifeCycleInfo",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::LifeCycles",
       "is_abstract": false,
       "atp_type": null,

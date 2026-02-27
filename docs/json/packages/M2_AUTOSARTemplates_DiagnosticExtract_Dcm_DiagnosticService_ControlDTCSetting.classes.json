@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticControlDTCSetting",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::ControlDTCSetting",
       "is_abstract": false,
       "atp_type": null,
@@ -46,6 +47,7 @@
     },
     {
       "name": "DiagnosticControlDTCSettingClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::ControlDTCSetting",
       "is_abstract": false,
       "atp_type": null,

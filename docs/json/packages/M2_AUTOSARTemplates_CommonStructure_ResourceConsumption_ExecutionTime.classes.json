@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ExecutionTime",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::ExecutionTime",
       "is_abstract": true,
       "atp_type": null,
@@ -99,6 +100,7 @@
     },
     {
       "name": "MemorySectionLocation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::ExecutionTime",
       "is_abstract": false,
       "atp_type": null,
@@ -141,6 +143,7 @@
     },
     {
       "name": "AnalyzedExecutionTime",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::ExecutionTime",
       "is_abstract": false,
       "atp_type": null,
@@ -187,6 +190,7 @@
     },
     {
       "name": "MeasuredExecutionTime",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::ExecutionTime",
       "is_abstract": false,
       "atp_type": null,
@@ -240,6 +244,7 @@
     },
     {
       "name": "SimulatedExecutionTime",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::ExecutionTime",
       "is_abstract": false,
       "atp_type": null,
@@ -293,6 +298,7 @@
     },
     {
       "name": "RoughEstimateOfExecutionTime",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::ExecutionTime",
       "is_abstract": false,
       "atp_type": null,

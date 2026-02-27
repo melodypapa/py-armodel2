@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "EndToEndDescription",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::EndToEndProtection",
       "is_abstract": false,
       "atp_type": null,
@@ -86,6 +87,7 @@
     },
     {
       "name": "EndToEndProtectionSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::EndToEndProtection",
       "is_abstract": false,
       "atp_type": null,
@@ -133,6 +135,7 @@
     },
     {
       "name": "EndToEndProtection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::EndToEndProtection",
       "is_abstract": false,
       "atp_type": null,
@@ -177,6 +180,7 @@
     },
     {
       "name": "EndToEndProtectionVariablePrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::EndToEndProtection",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "VariableInAtomicSwcInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": true,
       "atp_type": null,
@@ -56,6 +57,7 @@
     },
     {
       "name": "RVariableInAtomicSwcInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -102,6 +104,7 @@
     },
     {
       "name": "RModeInAtomicSwcInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -161,6 +164,7 @@
     },
     {
       "name": "InnerPortGroupInCompositionInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -212,6 +216,7 @@
     },
     {
       "name": "TriggerInAtomicSwcInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": true,
       "atp_type": null,
@@ -267,6 +272,7 @@
     },
     {
       "name": "RTriggerInAtomicSwcInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -313,6 +319,7 @@
     },
     {
       "name": "PTriggerInAtomicSwcTypeInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -359,6 +366,7 @@
     },
     {
       "name": "OperationInAtomicSwcInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": true,
       "atp_type": null,
@@ -414,6 +422,7 @@
     },
     {
       "name": "ROperationInAtomicSwcInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -459,6 +468,7 @@
     },
     {
       "name": "POperationInAtomicSwcInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -505,6 +515,7 @@
     },
     {
       "name": "RModeGroupInAtomicSWCInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -550,6 +561,7 @@
     },
     {
       "name": "PModeGroupInAtomicSwcInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -598,6 +610,7 @@
     },
     {
       "name": "ModeGroupInAtomicSwcInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": true,
       "atp_type": null,

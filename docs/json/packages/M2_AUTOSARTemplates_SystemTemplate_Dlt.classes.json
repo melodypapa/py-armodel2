@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DltConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Dlt",
       "is_abstract": false,
       "atp_type": null,
@@ -59,6 +60,7 @@
     },
     {
       "name": "DltLogChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Dlt",
       "is_abstract": false,
       "atp_type": null,

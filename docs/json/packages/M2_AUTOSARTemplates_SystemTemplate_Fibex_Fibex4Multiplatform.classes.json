@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Gateway",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Multiplatform",
       "is_abstract": false,
       "atp_type": null,
@@ -65,6 +66,7 @@
     },
     {
       "name": "FrameMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Multiplatform",
       "is_abstract": false,
       "atp_type": null,
@@ -114,6 +116,7 @@
     },
     {
       "name": "IPduMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Multiplatform",
       "is_abstract": false,
       "atp_type": null,
@@ -177,6 +180,7 @@
     },
     {
       "name": "TargetIPduRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Multiplatform",
       "is_abstract": false,
       "atp_type": null,
@@ -219,6 +223,7 @@
     },
     {
       "name": "PduMappingDefaultValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Multiplatform",
       "is_abstract": false,
       "atp_type": null,
@@ -254,6 +259,7 @@
     },
     {
       "name": "DefaultValueElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Multiplatform",
       "is_abstract": false,
       "atp_type": null,
@@ -296,6 +302,7 @@
     },
     {
       "name": "ISignalMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Multiplatform",
       "is_abstract": false,
       "atp_type": null,

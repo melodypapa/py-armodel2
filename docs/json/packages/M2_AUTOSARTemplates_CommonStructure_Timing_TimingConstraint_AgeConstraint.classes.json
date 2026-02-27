@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "AgeConstraint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::AgeConstraint",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SpecificationScope",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchange",
       "is_abstract": false,
       "atp_type": null,
@@ -38,6 +39,7 @@
     },
     {
       "name": "SpecificationDocumentScope",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchange",
       "is_abstract": false,
       "atp_type": null,
@@ -85,6 +87,7 @@
     },
     {
       "name": "DocumentElementScope",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchange",
       "is_abstract": false,
       "atp_type": null,

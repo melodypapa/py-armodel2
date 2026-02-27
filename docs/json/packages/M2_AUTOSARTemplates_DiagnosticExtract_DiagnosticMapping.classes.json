@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticTroubleCodeUdsToTroubleCodeObdMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -53,6 +54,7 @@
     },
     {
       "name": "DiagnosticMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": true,
       "atp_type": null,
@@ -150,6 +152,7 @@
     },
     {
       "name": "DiagnosticSwMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": true,
       "atp_type": null,
@@ -203,6 +206,7 @@
     },
     {
       "name": "DiagnosticAuthTransmitCertificateMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -253,6 +257,7 @@
     },
     {
       "name": "DiagnosticEventToTroubleCodeUdsMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -303,6 +308,7 @@
     },
     {
       "name": "DiagnosticEventToOperationCycleMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -353,6 +359,7 @@
     },
     {
       "name": "DiagnosticEventToDebounceAlgorithmMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -403,6 +410,7 @@
     },
     {
       "name": "DiagnosticEventToEnableConditionGroupMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -453,6 +461,7 @@
     },
     {
       "name": "DiagnosticEventToStorageConditionGroupMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -503,6 +512,7 @@
     },
     {
       "name": "DiagnosticEventPortMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -568,6 +578,7 @@
     },
     {
       "name": "DiagnosticOperationCyclePortMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -626,6 +637,7 @@
     },
     {
       "name": "DiagnosticEnableConditionPortMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -684,6 +696,7 @@
     },
     {
       "name": "DiagnosticStorageConditionPortMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -742,6 +755,7 @@
     },
     {
       "name": "DiagnosticMasterToSlaveEventMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -792,6 +806,7 @@
     },
     {
       "name": "DiagnosticEventToSecurityEventMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -842,6 +857,7 @@
     },
     {
       "name": "DiagnosticIumprToFunctionIdentifierMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -892,6 +908,7 @@
     },
     {
       "name": "DiagnosticSecureCodingMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping",
       "is_abstract": false,
       "atp_type": null,

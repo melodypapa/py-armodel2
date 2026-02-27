@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ParameterDataPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::DataPrototypes",
       "is_abstract": false,
       "atp_type": null,
@@ -71,6 +72,7 @@
     },
     {
       "name": "VariableDataPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::DataPrototypes",
       "is_abstract": false,
       "atp_type": null,
@@ -158,6 +160,7 @@
     },
     {
       "name": "AutosarDataPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::DataPrototypes",
       "is_abstract": true,
       "atp_type": null,
@@ -227,6 +230,7 @@
     },
     {
       "name": "DataPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::DataPrototypes",
       "is_abstract": true,
       "atp_type": null,
@@ -292,6 +296,7 @@
     },
     {
       "name": "ApplicationArrayElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::DataPrototypes",
       "is_abstract": false,
       "atp_type": null,
@@ -363,6 +368,7 @@
     },
     {
       "name": "ApplicationRecordElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::DataPrototypes",
       "is_abstract": false,
       "atp_type": null,
@@ -419,6 +425,7 @@
     },
     {
       "name": "ApplicationCompositeElementDataPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::DataPrototypes",
       "is_abstract": true,
       "atp_type": null,

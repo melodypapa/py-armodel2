@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "PPortComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": true,
       "atp_type": null,
@@ -48,6 +49,7 @@
     },
     {
       "name": "RPortComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": true,
       "atp_type": null,
@@ -93,6 +95,7 @@
     },
     {
       "name": "ReceiverComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": true,
       "atp_type": null,
@@ -219,6 +222,7 @@
     },
     {
       "name": "NonqueuedReceiverComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -319,6 +323,7 @@
     },
     {
       "name": "QueuedReceiverComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -357,6 +362,7 @@
     },
     {
       "name": "ReceptionComSpecProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -399,6 +405,7 @@
     },
     {
       "name": "SenderComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": true,
       "atp_type": null,
@@ -490,6 +497,7 @@
     },
     {
       "name": "QueuedSenderComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -520,6 +528,7 @@
     },
     {
       "name": "NonqueuedSenderComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -572,6 +581,7 @@
     },
     {
       "name": "TransmissionComSpecProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -627,6 +637,7 @@
     },
     {
       "name": "TransmissionAcknowledgementRequest",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -662,6 +673,7 @@
     },
     {
       "name": "CompositeNetworkRepresentation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -705,6 +717,7 @@
     },
     {
       "name": "ClientComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -756,6 +769,7 @@
     },
     {
       "name": "ServerComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -807,6 +821,7 @@
     },
     {
       "name": "ModeSwitchSenderComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -865,6 +880,7 @@
     },
     {
       "name": "ModeSwitchedAckRequest",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -900,6 +916,7 @@
     },
     {
       "name": "ModeSwitchReceiverComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -951,6 +968,7 @@
     },
     {
       "name": "ParameterProvideComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -996,6 +1014,7 @@
     },
     {
       "name": "ParameterRequireComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -1041,6 +1060,7 @@
     },
     {
       "name": "NvRequireComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -1086,6 +1106,7 @@
     },
     {
       "name": "NvProvideComSpec",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -1137,6 +1158,7 @@
     },
     {
       "name": "TransformationComSpecProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": true,
       "atp_type": null,
@@ -1178,6 +1200,7 @@
     },
     {
       "name": "UserDefinedTransformationComSpecProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,

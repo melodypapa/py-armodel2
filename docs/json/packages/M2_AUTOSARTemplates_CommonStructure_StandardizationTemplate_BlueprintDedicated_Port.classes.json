@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "PortPrototypeBlueprint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::BlueprintDedicated::Port",
       "is_abstract": false,
       "atp_type": null,
@@ -84,6 +85,7 @@
     },
     {
       "name": "PortPrototypeBlueprintInitValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::BlueprintDedicated::Port",
       "is_abstract": false,
       "atp_type": null,

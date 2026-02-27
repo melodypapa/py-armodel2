@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "StackUsage",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::StackUsage",
       "is_abstract": true,
       "atp_type": null,
@@ -76,6 +77,7 @@
     },
     {
       "name": "WorstCaseStackUsage",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::StackUsage",
       "is_abstract": false,
       "atp_type": null,
@@ -115,6 +117,7 @@
     },
     {
       "name": "MeasuredStackUsage",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::StackUsage",
       "is_abstract": false,
       "atp_type": null,
@@ -175,6 +178,7 @@
     },
     {
       "name": "RoughEstimateStackUsage",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::StackUsage",
       "is_abstract": false,
       "atp_type": null,

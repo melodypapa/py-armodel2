@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ArgumentDataPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -84,6 +85,7 @@
     },
     {
       "name": "ClientServerInterface",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -162,6 +164,7 @@
     },
     {
       "name": "ClientServerOperation",
+      "maturity": "Reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -270,6 +273,7 @@
     },
     {
       "name": "SenderReceiverInterface",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -362,6 +366,7 @@
     },
     {
       "name": "DataInterface",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": true,
       "atp_type": null,
@@ -415,6 +420,7 @@
     },
     {
       "name": "NvDataInterface",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -481,6 +487,7 @@
     },
     {
       "name": "PortInterface",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": true,
       "atp_type": null,
@@ -575,6 +582,7 @@
     },
     {
       "name": "ParameterInterface",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -629,6 +637,7 @@
     },
     {
       "name": "InvalidationPolicy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -671,6 +680,7 @@
     },
     {
       "name": "MetaDataItem",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -719,6 +729,7 @@
     },
     {
       "name": "MetaDataItemSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -767,6 +778,7 @@
     },
     {
       "name": "ApplicationError",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -811,6 +823,7 @@
     },
     {
       "name": "TriggerInterface",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -864,6 +877,7 @@
     },
     {
       "name": "ModeSwitchInterface",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -917,6 +931,7 @@
     },
     {
       "name": "PortInterfaceMappingSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -967,6 +982,7 @@
     },
     {
       "name": "PortInterfaceMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": true,
       "atp_type": null,
@@ -1022,6 +1038,7 @@
     },
     {
       "name": "VariableAndParameterInterfaceMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1070,6 +1087,7 @@
     },
     {
       "name": "DataPrototypeMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1147,6 +1165,7 @@
     },
     {
       "name": "ClientServerInterfaceMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1196,6 +1215,7 @@
     },
     {
       "name": "ClientServerOperationMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1252,6 +1272,7 @@
     },
     {
       "name": "ClientServerApplicationErrorMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1294,6 +1315,7 @@
     },
     {
       "name": "ModeInterfaceMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1336,6 +1358,7 @@
     },
     {
       "name": "ModeDeclarationMappingSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1380,6 +1403,7 @@
     },
     {
       "name": "ModeDeclarationMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1430,6 +1454,7 @@
     },
     {
       "name": "TriggerInterfaceMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1472,6 +1497,7 @@
     },
     {
       "name": "SubElementMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1521,6 +1547,7 @@
     },
     {
       "name": "SubElementRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": true,
       "atp_type": null,
@@ -1555,6 +1582,7 @@
     },
     {
       "name": "ImplementationDataTypeSubElementRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1599,6 +1627,7 @@
     },
     {
       "name": "ApplicationCompositeDataTypeSubElementRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1636,6 +1665,7 @@
     },
     {
       "name": "TextTableMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -1705,6 +1735,7 @@
     },
     {
       "name": "TextTableValuePair",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
