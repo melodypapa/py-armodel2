@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SwcImplementation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcImplementation",
       "is_abstract": false,
       "atp_type": null,
@@ -71,6 +72,7 @@
     },
     {
       "name": "PerInstanceMemorySize",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcImplementation",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DoIpConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::DoIP",
       "is_abstract": false,
       "atp_type": null,
@@ -45,6 +46,7 @@
     },
     {
       "name": "DoIpInterface",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::DoIP",
       "is_abstract": false,
       "atp_type": null,
@@ -167,6 +169,7 @@
     },
     {
       "name": "DoIpRoutingActivation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::DoIP",
       "is_abstract": false,
       "atp_type": null,
@@ -205,6 +208,7 @@
     },
     {
       "name": "AbstractDoIpLogicAddressProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::DoIP",
       "is_abstract": true,
       "atp_type": null,
@@ -241,6 +245,7 @@
     },
     {
       "name": "DoIpLogicTargetAddressProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::DoIP",
       "is_abstract": false,
       "atp_type": null,
@@ -272,6 +277,7 @@
     },
     {
       "name": "DoIpLogicTesterAddressProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::DoIP",
       "is_abstract": false,
       "atp_type": null,

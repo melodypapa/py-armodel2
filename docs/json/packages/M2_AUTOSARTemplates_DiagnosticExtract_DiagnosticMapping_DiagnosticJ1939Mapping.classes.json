@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticJ1939SpnMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::DiagnosticJ1939Mapping",
       "is_abstract": false,
       "atp_type": null,
@@ -60,6 +61,7 @@
     },
     {
       "name": "DiagnosticJ1939SwMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::DiagnosticJ1939Mapping",
       "is_abstract": false,
       "atp_type": null,
@@ -111,6 +113,7 @@
     },
     {
       "name": "DiagnosticEventToTroubleCodeJ1939Mapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::DiagnosticJ1939Mapping",
       "is_abstract": false,
       "atp_type": null,

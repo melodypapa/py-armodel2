@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticRequestEmissionRelatedDTC",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::ObdService::Mode_0x03_0x07_RequestEmission",
       "is_abstract": false,
       "atp_type": null,
@@ -46,6 +47,7 @@
     },
     {
       "name": "DiagnosticRequestEmissionRelatedDTCClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::ObdService::Mode_0x03_0x07_RequestEmission",
       "is_abstract": false,
       "atp_type": null,

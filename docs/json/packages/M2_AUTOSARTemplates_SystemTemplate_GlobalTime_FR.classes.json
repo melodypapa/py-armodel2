@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "GlobalTimeFrMaster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::FR",
       "is_abstract": false,
       "atp_type": null,
@@ -42,6 +43,7 @@
     },
     {
       "name": "GlobalTimeFrSlave",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::FR",
       "is_abstract": false,
       "atp_type": null,
@@ -88,6 +90,7 @@
     },
     {
       "name": "FrGlobalTimeDomainProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::FR",
       "is_abstract": false,
       "atp_type": null,

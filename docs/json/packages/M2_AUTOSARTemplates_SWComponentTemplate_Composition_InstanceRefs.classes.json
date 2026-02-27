@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ComponentInCompositionInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -65,6 +66,7 @@
     },
     {
       "name": "PortInCompositionTypeInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition::InstanceRefs",
       "is_abstract": true,
       "atp_type": null,
@@ -122,6 +124,7 @@
     },
     {
       "name": "PPortInCompositionInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -168,6 +171,7 @@
     },
     {
       "name": "RPortInCompositionInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -221,6 +225,7 @@
     },
     {
       "name": "InstanceEventInCompositionInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,

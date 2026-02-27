@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticRoutineControl",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::RoutineControl",
       "is_abstract": false,
       "atp_type": null,
@@ -53,6 +54,7 @@
     },
     {
       "name": "DiagnosticRoutineControlClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::RoutineControl",
       "is_abstract": false,
       "atp_type": null,

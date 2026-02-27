@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ValueRestrictionWithSeverity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -32,6 +33,7 @@
     },
     {
       "name": "MultiplicityRestrictionWithSeverity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -62,6 +64,7 @@
     },
     {
       "name": "VariationRestrictionWithSeverity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -92,6 +95,7 @@
     },
     {
       "name": "DataFormatElementScope",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": true,
       "atp_type": null,
@@ -131,6 +135,7 @@
     },
     {
       "name": "AbstractClassTailoring",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": true,
       "atp_type": null,
@@ -166,6 +171,7 @@
     },
     {
       "name": "AbstractCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": true,
       "atp_type": null,
@@ -201,6 +207,7 @@
     },
     {
       "name": "AggregationCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -240,6 +247,7 @@
     },
     {
       "name": "AttributeCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": true,
       "atp_type": null,
@@ -278,6 +286,7 @@
     },
     {
       "name": "ClassTailoring",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": true,
       "atp_type": null,
@@ -332,6 +341,7 @@
     },
     {
       "name": "ClassContentConditional",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -391,6 +401,7 @@
     },
     {
       "name": "ConcreteClassTailoring",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -436,6 +447,7 @@
     },
     {
       "name": "InvertCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -473,6 +485,7 @@
     },
     {
       "name": "PrimitiveAttributeCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -513,6 +526,7 @@
     },
     {
       "name": "ReferenceCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -552,6 +566,7 @@
     },
     {
       "name": "TextualCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -589,6 +604,7 @@
     },
     {
       "name": "AttributeTailoring",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": true,
       "atp_type": null,
@@ -646,6 +662,7 @@
     },
     {
       "name": "PrimitiveAttributeTailoring",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -704,6 +721,7 @@
     },
     {
       "name": "AggregationTailoring",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -747,6 +765,7 @@
     },
     {
       "name": "ReferenceTailoring",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -797,6 +816,7 @@
     },
     {
       "name": "ConstraintTailoring",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -841,6 +861,7 @@
     },
     {
       "name": "SdgTailoring",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -884,6 +905,7 @@
     },
     {
       "name": "DataFormatTailoring",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,
@@ -926,6 +948,7 @@
     },
     {
       "name": "UnresolvedReferenceRestrictionWithSeverity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "is_abstract": false,
       "atp_type": null,

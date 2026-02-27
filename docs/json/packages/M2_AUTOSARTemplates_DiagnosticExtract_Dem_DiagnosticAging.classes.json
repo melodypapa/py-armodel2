@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticAging",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticAging",
       "is_abstract": false,
       "atp_type": null,

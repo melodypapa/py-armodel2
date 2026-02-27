@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "J1939NmNode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -55,6 +56,7 @@
     },
     {
       "name": "NmConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -113,6 +115,7 @@
     },
     {
       "name": "NmCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": true,
       "atp_type": null,
@@ -210,6 +213,7 @@
     },
     {
       "name": "NmEcu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -311,6 +315,7 @@
     },
     {
       "name": "BusspecificNmEcu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": true,
       "atp_type": null,
@@ -348,6 +353,7 @@
     },
     {
       "name": "NmCoordinator",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -404,6 +410,7 @@
     },
     {
       "name": "NmNode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": true,
       "atp_type": null,
@@ -501,6 +508,7 @@
     },
     {
       "name": "NmClusterCoupling",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": true,
       "atp_type": null,
@@ -536,6 +544,7 @@
     },
     {
       "name": "FlexrayNmCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -617,6 +626,7 @@
     },
     {
       "name": "FlexrayNmEcu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -660,6 +670,7 @@
     },
     {
       "name": "FlexrayNmClusterCoupling",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -703,6 +714,7 @@
     },
     {
       "name": "FlexrayNmNode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -734,6 +746,7 @@
     },
     {
       "name": "CanNmCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -850,6 +863,7 @@
     },
     {
       "name": "CanNmEcu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -878,6 +892,7 @@
     },
     {
       "name": "CanNmClusterCoupling",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -928,6 +943,7 @@
     },
     {
       "name": "CanNmNode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -988,6 +1004,7 @@
     },
     {
       "name": "UdpNmCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -1090,6 +1107,7 @@
     },
     {
       "name": "UdpNmEcu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -1118,6 +1136,7 @@
     },
     {
       "name": "UdpNmClusterCoupling",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -1161,6 +1180,7 @@
     },
     {
       "name": "UdpNmNode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -1207,6 +1227,7 @@
     },
     {
       "name": "J1939NmCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -1253,6 +1274,7 @@
     },
     {
       "name": "J1939NodeName",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,
@@ -1344,6 +1366,7 @@
     },
     {
       "name": "J1939NmEcu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "is_abstract": false,
       "atp_type": null,

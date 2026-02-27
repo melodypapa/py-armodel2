@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ExternalTriggeringPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::Trigger",
       "is_abstract": false,
       "atp_type": null,
@@ -51,6 +52,7 @@
     },
     {
       "name": "InternalTriggeringPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::Trigger",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "AutosarParameterRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements",
       "is_abstract": false,
       "atp_type": null,
@@ -54,6 +55,7 @@
     },
     {
       "name": "AutosarVariableRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements",
       "is_abstract": false,
       "atp_type": null,
@@ -109,6 +111,7 @@
     },
     {
       "name": "ParameterAccess",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements",
       "is_abstract": false,
       "atp_type": null,
@@ -166,6 +169,7 @@
     },
     {
       "name": "VariableAccess",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements",
       "is_abstract": false,
       "atp_type": null,
@@ -242,6 +246,7 @@
     },
     {
       "name": "ArVariableInImplementationDataInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements",
       "is_abstract": false,
       "atp_type": null,
@@ -299,6 +304,7 @@
     },
     {
       "name": "ArParameterInImplementationDataInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements",
       "is_abstract": false,
       "atp_type": null,

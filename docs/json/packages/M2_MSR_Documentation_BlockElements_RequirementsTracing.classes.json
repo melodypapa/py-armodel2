@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "StructuredReq",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::RequirementsTracing",
       "is_abstract": false,
       "atp_type": null,
@@ -145,6 +146,7 @@
     },
     {
       "name": "TraceableText",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::RequirementsTracing",
       "is_abstract": false,
       "atp_type": null,
@@ -197,6 +199,7 @@
     },
     {
       "name": "Traceable",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::RequirementsTracing",
       "is_abstract": true,
       "atp_type": null,

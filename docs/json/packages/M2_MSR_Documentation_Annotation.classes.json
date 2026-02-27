@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Annotation",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::Annotation",
       "is_abstract": false,
       "atp_type": null,

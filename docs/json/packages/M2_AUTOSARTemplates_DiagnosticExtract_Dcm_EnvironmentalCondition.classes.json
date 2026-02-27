@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticEnvironmentalCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::EnvironmentalCondition",
       "is_abstract": false,
       "atp_type": null,
@@ -52,6 +53,7 @@
     },
     {
       "name": "DiagnosticEnvConditionFormula",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::EnvironmentalCondition",
       "is_abstract": false,
       "atp_type": null,
@@ -96,6 +98,7 @@
     },
     {
       "name": "DiagnosticEnvConditionFormulaPart",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::EnvironmentalCondition",
       "is_abstract": true,
       "atp_type": null,
@@ -129,6 +132,7 @@
     },
     {
       "name": "DiagnosticEnvCompareCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::EnvironmentalCondition",
       "is_abstract": true,
       "atp_type": null,
@@ -173,6 +177,7 @@
     },
     {
       "name": "DiagnosticEnvDataCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::EnvironmentalCondition",
       "is_abstract": false,
       "atp_type": null,
@@ -217,6 +222,7 @@
     },
     {
       "name": "DiagnosticEnvDataElementCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::EnvironmentalCondition",
       "is_abstract": false,
       "atp_type": null,
@@ -268,6 +274,7 @@
     },
     {
       "name": "DiagnosticEnvModeCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::EnvironmentalCondition",
       "is_abstract": false,
       "atp_type": null,
@@ -305,6 +312,7 @@
     },
     {
       "name": "DiagnosticEnvModeElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::EnvironmentalCondition",
       "is_abstract": true,
       "atp_type": null,
@@ -339,6 +347,7 @@
     },
     {
       "name": "DiagnosticEnvSwcModeElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::EnvironmentalCondition",
       "is_abstract": false,
       "atp_type": null,
@@ -376,6 +385,7 @@
     },
     {
       "name": "DiagnosticEnvBswModeElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::EnvironmentalCondition",
       "is_abstract": false,
       "atp_type": null,

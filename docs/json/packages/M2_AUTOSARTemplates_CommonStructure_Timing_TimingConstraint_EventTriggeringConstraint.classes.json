@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "EventTriggeringConstraint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::EventTriggeringConstraint",
       "is_abstract": true,
       "atp_type": null,
@@ -56,6 +57,7 @@
     },
     {
       "name": "PeriodicEventTriggering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::EventTriggeringConstraint",
       "is_abstract": false,
       "atp_type": null,
@@ -112,6 +114,7 @@
     },
     {
       "name": "SporadicEventTriggering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::EventTriggeringConstraint",
       "is_abstract": false,
       "atp_type": null,
@@ -175,6 +178,7 @@
     },
     {
       "name": "ConcretePatternEventTriggering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::EventTriggeringConstraint",
       "is_abstract": false,
       "atp_type": null,
@@ -238,6 +242,7 @@
     },
     {
       "name": "BurstPatternEventTriggering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::EventTriggeringConstraint",
       "is_abstract": false,
       "atp_type": null,
@@ -315,6 +320,7 @@
     },
     {
       "name": "ArbitraryEventTriggering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::EventTriggeringConstraint",
       "is_abstract": false,
       "atp_type": null,
@@ -371,6 +377,7 @@
     },
     {
       "name": "ConfidenceInterval",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::EventTriggeringConstraint",
       "is_abstract": false,
       "atp_type": null,

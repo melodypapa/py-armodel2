@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "BswModuleEntry",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "is_abstract": false,
       "atp_type": null,
@@ -141,6 +142,7 @@
     },
     {
       "name": "BswModuleDependency",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "is_abstract": false,
       "atp_type": null,
@@ -186,6 +188,7 @@
     },
     {
       "name": "BswEntryRelationshipSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "is_abstract": false,
       "atp_type": null,
@@ -236,6 +239,7 @@
     },
     {
       "name": "BswEntryRelationship",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "is_abstract": false,
       "atp_type": null,
@@ -291,6 +295,7 @@
     },
     {
       "name": "BswModuleClientServerEntry",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "is_abstract": false,
       "atp_type": null,

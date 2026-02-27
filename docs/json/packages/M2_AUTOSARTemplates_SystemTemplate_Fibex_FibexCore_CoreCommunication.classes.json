@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ISignal",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -129,6 +130,7 @@
     },
     {
       "name": "ISignalIPduGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -197,6 +199,7 @@
     },
     {
       "name": "J1939DcmIPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -256,6 +259,7 @@
     },
     {
       "name": "SystemSignal",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -316,6 +320,7 @@
     },
     {
       "name": "Frame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": true,
       "atp_type": null,
@@ -386,6 +391,7 @@
     },
     {
       "name": "FrameTriggering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": true,
       "atp_type": null,
@@ -460,6 +466,7 @@
     },
     {
       "name": "NPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -504,6 +511,7 @@
     },
     {
       "name": "NmPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -576,6 +584,7 @@
     },
     {
       "name": "Pdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": true,
       "atp_type": null,
@@ -643,6 +652,7 @@
     },
     {
       "name": "PduTriggering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -721,6 +731,7 @@
     },
     {
       "name": "UserDefinedPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -772,6 +783,7 @@
     },
     {
       "name": "ISignalGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -843,6 +855,7 @@
     },
     {
       "name": "ISignalIPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -909,6 +922,7 @@
     },
     {
       "name": "FramePort",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -940,6 +954,7 @@
     },
     {
       "name": "IPduPort",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1000,6 +1015,7 @@
     },
     {
       "name": "ISignalPort",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1068,6 +1084,7 @@
     },
     {
       "name": "ISignalProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1103,6 +1120,7 @@
     },
     {
       "name": "SystemSignalGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1151,6 +1169,7 @@
     },
     {
       "name": "ISignalToIPduMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1225,6 +1244,7 @@
     },
     {
       "name": "ISignalTriggering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1283,6 +1303,7 @@
     },
     {
       "name": "IPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": true,
       "atp_type": null,
@@ -1354,6 +1375,7 @@
     },
     {
       "name": "DcmIPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1400,6 +1422,7 @@
     },
     {
       "name": "GeneralPurposePdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1437,6 +1460,7 @@
     },
     {
       "name": "GeneralPurposeIPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1481,6 +1505,7 @@
     },
     {
       "name": "UserDefinedIPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1527,6 +1552,7 @@
     },
     {
       "name": "PduToFrameMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": "atpPrototype",
@@ -1586,6 +1612,7 @@
     },
     {
       "name": "IPduTiming",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1629,6 +1656,7 @@
     },
     {
       "name": "PdurIPduGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1677,6 +1705,7 @@
     },
     {
       "name": "ContainerIPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1786,6 +1815,7 @@
     },
     {
       "name": "ContainedIPduProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1878,6 +1908,7 @@
     },
     {
       "name": "SecuredIPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1966,6 +1997,7 @@
     },
     {
       "name": "SecureCommunicationProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -2043,6 +2075,7 @@
     },
     {
       "name": "SecureCommunicationPropsSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -2091,6 +2124,7 @@
     },
     {
       "name": "SecureCommunicationFreshnessProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -2143,6 +2177,7 @@
     },
     {
       "name": "SecureCommunicationAuthenticationProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -2181,6 +2216,7 @@
     },
     {
       "name": "MultiplexedIPdu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -2241,6 +2277,7 @@
     },
     {
       "name": "StaticPart",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -2277,6 +2314,7 @@
     },
     {
       "name": "DynamicPart",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -2313,6 +2351,7 @@
     },
     {
       "name": "DynamicPartAlternative",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -2362,6 +2401,7 @@
     },
     {
       "name": "MultiplexedPart",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": true,
       "atp_type": null,
@@ -2401,6 +2441,7 @@
     },
     {
       "name": "SegmentPosition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "is_abstract": false,
       "atp_type": null,

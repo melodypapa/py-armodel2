@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "BswModuleDescription",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswOverview",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "CalibrationParameterValueSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::MeasurementAndCalibration::CalibrationParameter",
       "is_abstract": false,
       "atp_type": null,
@@ -44,6 +45,7 @@
     },
     {
       "name": "CalibrationParameterValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::MeasurementAndCalibration::CalibrationParameter",
       "is_abstract": false,
       "atp_type": null,

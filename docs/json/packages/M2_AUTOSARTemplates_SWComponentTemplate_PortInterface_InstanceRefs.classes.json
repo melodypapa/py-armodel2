@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ApplicationCompositeElementInPortInterfaceInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "FormulaExpression",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::FormulaLanguage",
       "is_abstract": true,
       "atp_type": "atpMixedString",

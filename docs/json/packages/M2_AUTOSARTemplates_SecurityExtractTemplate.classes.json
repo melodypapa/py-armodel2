@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SecurityEventContextProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -82,6 +83,7 @@
     },
     {
       "name": "SecurityEventDefinition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -139,6 +141,7 @@
     },
     {
       "name": "IdsDesign",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -182,6 +185,7 @@
     },
     {
       "name": "SecurityEventFilterChain",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -247,6 +251,7 @@
     },
     {
       "name": "AbstractSecurityEventFilter",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -285,6 +290,7 @@
     },
     {
       "name": "SecurityEventStateFilter",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -324,6 +330,7 @@
     },
     {
       "name": "SecurityEventOneEveryNFilter",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -363,6 +370,7 @@
     },
     {
       "name": "SecurityEventAggregationFilter",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -409,6 +417,7 @@
     },
     {
       "name": "SecurityEventThresholdFilter",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -455,6 +464,7 @@
     },
     {
       "name": "IdsmRateLimitation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -501,6 +511,7 @@
     },
     {
       "name": "IdsmTrafficLimitation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -547,6 +558,7 @@
     },
     {
       "name": "SecurityEventContextMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -616,6 +628,7 @@
     },
     {
       "name": "SecurityEventContextMappingBswModule",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -662,6 +675,7 @@
     },
     {
       "name": "SecurityEventContextMappingFunctionalCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -708,6 +722,7 @@
     },
     {
       "name": "SecurityEventContextMappingCommConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -754,6 +769,7 @@
     },
     {
       "name": "SecurityEventContextMappingApplication",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -800,6 +816,7 @@
     },
     {
       "name": "IdsmInstance",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -893,6 +910,7 @@
     },
     {
       "name": "BlockState",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -923,6 +941,7 @@
     },
     {
       "name": "IdsCommonElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -970,6 +989,7 @@
     },
     {
       "name": "IdsMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -1010,6 +1030,7 @@
     },
     {
       "name": "IdsmProperties",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1061,6 +1082,7 @@
     },
     {
       "name": "IdsmSignatureSupportAp",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1103,6 +1125,7 @@
     },
     {
       "name": "IdsmSignatureSupportCp",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -1145,6 +1168,7 @@
     },
     {
       "name": "SecurityEventContextData",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "is_abstract": false,
       "atp_type": null,

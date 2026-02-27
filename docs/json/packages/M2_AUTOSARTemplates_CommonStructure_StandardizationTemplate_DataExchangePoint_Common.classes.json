@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SpecElementReference",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Common",
       "is_abstract": true,
       "atp_type": null,
@@ -47,6 +48,7 @@
     },
     {
       "name": "SpecElementScope",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Common",
       "is_abstract": true,
       "atp_type": null,
@@ -90,6 +92,7 @@
     },
     {
       "name": "RestrictionWithSeverity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Common",
       "is_abstract": true,
       "atp_type": null,
@@ -137,6 +140,7 @@
     },
     {
       "name": "DataFormatElementReference",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Common",
       "is_abstract": true,
       "atp_type": null,

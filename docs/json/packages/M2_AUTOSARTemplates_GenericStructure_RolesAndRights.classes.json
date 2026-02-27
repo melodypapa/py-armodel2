@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "AclPermission",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::RolesAndRights",
       "is_abstract": false,
       "atp_type": null,
@@ -81,6 +82,7 @@
     },
     {
       "name": "AclObjectSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::RolesAndRights",
       "is_abstract": false,
       "atp_type": null,
@@ -159,6 +161,7 @@
     },
     {
       "name": "AtpDefinition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::RolesAndRights",
       "is_abstract": true,
       "atp_type": null,
@@ -190,6 +193,7 @@
     },
     {
       "name": "AclOperation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::RolesAndRights",
       "is_abstract": false,
       "atp_type": null,
@@ -240,6 +244,7 @@
     },
     {
       "name": "AclRole",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::RolesAndRights",
       "is_abstract": false,
       "atp_type": null,

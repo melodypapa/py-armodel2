@@ -85,9 +85,9 @@ class AclObjectSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize acl_object_clas_refs (list to container "ACL-OBJECT-CLAS-REFS")
+        # Serialize acl_object_clas_refs (list to container "ACL-OBJECT-CLASS-REFS")
         if self.acl_object_clas_refs:
-            wrapper = ET.Element("ACL-OBJECT-CLAS-REFS")
+            wrapper = ET.Element("ACL-OBJECT-CLASS-REFS")
             for item in self.acl_object_clas_refs:
                 serialized = SerializationHelper.serialize_item(item, "ReferrableSubtypesEnum")
                 if serialized is not None:
@@ -172,9 +172,9 @@ class AclObjectSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AclObjectSet, cls).deserialize(element)
 
-        # Parse acl_object_clas_refs (list from container "ACL-OBJECT-CLAS-REFS")
+        # Parse acl_object_clas_refs (list from container "ACL-OBJECT-CLASS-REFS")
         obj.acl_object_clas_refs = []
-        container = SerializationHelper.find_child_element(element, "ACL-OBJECT-CLAS-REFS")
+        container = SerializationHelper.find_child_element(element, "ACL-OBJECT-CLASS-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

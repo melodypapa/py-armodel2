@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SwcToEcuMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "is_abstract": false,
       "atp_type": null,
@@ -63,6 +64,7 @@
     },
     {
       "name": "SwcToImplMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "is_abstract": false,
       "atp_type": null,
@@ -101,6 +103,7 @@
     },
     {
       "name": "SwcToApplicationPartitionMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "is_abstract": false,
       "atp_type": null,
@@ -148,6 +151,7 @@
     },
     {
       "name": "ApplicationPartition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "is_abstract": false,
       "atp_type": null,
@@ -181,6 +185,7 @@
     },
     {
       "name": "ApplicationPartitionToEcuPartitionMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "is_abstract": false,
       "atp_type": null,
@@ -226,6 +231,7 @@
     },
     {
       "name": "EcuPartition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "is_abstract": false,
       "atp_type": null,
@@ -264,6 +270,7 @@
     },
     {
       "name": "MappingConstraint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "is_abstract": true,
       "atp_type": null,
@@ -305,6 +312,7 @@
     },
     {
       "name": "ComponentClustering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "is_abstract": false,
       "atp_type": null,
@@ -348,6 +356,7 @@
     },
     {
       "name": "ComponentSeparation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "is_abstract": false,
       "atp_type": null,
@@ -384,6 +393,7 @@
     },
     {
       "name": "J1939ControllerApplicationToJ1939NmNodeMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "is_abstract": false,
       "atp_type": null,
@@ -426,6 +436,7 @@
     },
     {
       "name": "J1939ControllerApplication",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "is_abstract": false,
       "atp_type": null,
@@ -474,6 +485,7 @@
     },
     {
       "name": "EcuResourceEstimation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "is_abstract": false,
       "atp_type": null,

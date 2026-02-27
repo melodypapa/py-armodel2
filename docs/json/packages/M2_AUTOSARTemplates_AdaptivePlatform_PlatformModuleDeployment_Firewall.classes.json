@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "StateDependentFirewall",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::AdaptivePlatform::PlatformModuleDeployment::Firewall",
       "is_abstract": false,
       "atp_type": null,
@@ -60,6 +61,7 @@
     },
     {
       "name": "FirewallRuleProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::AdaptivePlatform::PlatformModuleDeployment::Firewall",
       "is_abstract": false,
       "atp_type": null,
@@ -109,6 +111,7 @@
     },
     {
       "name": "FirewallRule",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::AdaptivePlatform::PlatformModuleDeployment::Firewall",
       "is_abstract": false,
       "atp_type": null,

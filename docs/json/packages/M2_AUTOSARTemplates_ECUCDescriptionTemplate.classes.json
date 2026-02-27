@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "EcucModuleConfigurationValues",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCDescriptionTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -91,6 +92,7 @@
     },
     {
       "name": "EcucValueCollection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCDescriptionTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -151,6 +153,7 @@
     },
     {
       "name": "EcucIndexableValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCDescriptionTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -191,6 +194,7 @@
     },
     {
       "name": "EcucContainerValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCDescriptionTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -270,6 +274,7 @@
     },
     {
       "name": "EcucParameterValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCDescriptionTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -340,6 +345,7 @@
     },
     {
       "name": "EcucTextualParamValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCDescriptionTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -389,6 +395,7 @@
     },
     {
       "name": "EcucNumericalParamValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCDescriptionTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -438,6 +445,7 @@
     },
     {
       "name": "EcucAddInfoParamValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCDescriptionTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -475,6 +483,7 @@
     },
     {
       "name": "EcucAbstractReferenceValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCDescriptionTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -531,6 +540,7 @@
     },
     {
       "name": "EcucReferenceValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCDescriptionTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -574,6 +584,7 @@
     },
     {
       "name": "EcucInstanceReferenceValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCDescriptionTemplate",
       "is_abstract": false,
       "atp_type": null,

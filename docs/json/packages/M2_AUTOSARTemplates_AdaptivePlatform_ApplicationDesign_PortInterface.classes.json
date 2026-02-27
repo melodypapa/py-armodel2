@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Field",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::AdaptivePlatform::ApplicationDesign::PortInterface",
       "is_abstract": false,
       "atp_type": null,

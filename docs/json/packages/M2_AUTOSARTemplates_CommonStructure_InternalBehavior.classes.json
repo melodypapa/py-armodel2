@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "InternalBehavior",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::InternalBehavior",
       "is_abstract": true,
       "atp_type": null,
@@ -116,6 +117,7 @@
     },
     {
       "name": "ExecutableEntity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::InternalBehavior",
       "is_abstract": true,
       "atp_type": null,
@@ -219,6 +221,7 @@
     },
     {
       "name": "ExclusiveArea",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::InternalBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -255,6 +258,7 @@
     },
     {
       "name": "ExclusiveAreaNestingOrder",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::InternalBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -297,6 +301,7 @@
     },
     {
       "name": "ExecutableEntityActivationReason",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::InternalBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -340,6 +345,7 @@
     },
     {
       "name": "AbstractEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::InternalBehavior",
       "is_abstract": true,
       "atp_type": null,

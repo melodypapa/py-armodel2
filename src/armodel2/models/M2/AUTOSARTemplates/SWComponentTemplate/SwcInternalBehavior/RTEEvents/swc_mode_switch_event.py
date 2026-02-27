@@ -40,22 +40,22 @@ class SwcModeSwitchEvent(RTEEvent):
         return False
 
     activation: Optional[ModeActivationKind]
-    _mode_iref: Optional[RModeInAtomicSwcInstanceRef]
+    _mode_irefs: list[RModeInAtomicSwcInstanceRef]
     def __init__(self) -> None:
         """Initialize SwcModeSwitchEvent."""
         super().__init__()
         self.activation: Optional[ModeActivationKind] = None
-        self._mode_iref: Optional[RModeInAtomicSwcInstanceRef] = None
+        self._mode_irefs: list[RModeInAtomicSwcInstanceRef] = []
     @property
     @instance_ref(flatten=True, list_type='multi')
-    def mode_iref(self) -> Optional[RModeInAtomicSwcInstanceRef]:
-        """Get mode_iref instance reference."""
-        return self._mode_iref
+    def mode_irefs(self) -> list[RModeInAtomicSwcInstanceRef]:
+        """Get mode_irefs instance reference."""
+        return self._mode_irefs
 
-    @mode_iref.setter
-    def mode_iref(self, value: Optional[RModeInAtomicSwcInstanceRef]) -> None:
-        """Set mode_iref instance reference."""
-        self._mode_iref = value
+    @mode_irefs.setter
+    def mode_irefs(self, value: list[RModeInAtomicSwcInstanceRef]) -> None:
+        """Set mode_irefs instance reference."""
+        self._mode_irefs = value
 
 
     def serialize(self) -> ET.Element:
@@ -96,16 +96,19 @@ class SwcModeSwitchEvent(RTEEvent):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mode_iref (instance reference with wrapper "MODE-IREF")
-        if self.mode_iref is not None:
-            serialized = SerializationHelper.serialize_item(self.mode_iref, "RModeInAtomicSwcInstanceRef")
-            if serialized is not None:
-                # Wrap in IREF wrapper element
-                iref_wrapper = ET.Element("MODE-IREF")
-                # Flatten: append children of serialized element directly to iref wrapper
-                for child in serialized:
-                    iref_wrapper.append(child)
-                elem.append(iref_wrapper)
+        # Serialize mode_irefs (list of instance references with multi-wrapper pattern)
+        if self.mode_irefs:
+            irefs_container = ET.Element("MODE-IREFS")
+            for item in self.mode_irefs:
+                serialized = SerializationHelper.serialize_item(item, "RModeInAtomicSwcInstanceRef")
+                if serialized is not None:
+                    # Wrap each item in its own IREF wrapper
+                    iref_wrapper = ET.Element("MODE-IREF")
+                    # Flatten: append children of serialized element directly to iref wrapper
+                    for child in serialized:
+                        iref_wrapper.append(child)
+                    irefs_container.append(iref_wrapper)
+            elem.append(irefs_container)
 
         return elem
 
@@ -128,12 +131,16 @@ class SwcModeSwitchEvent(RTEEvent):
             activation_value = ModeActivationKind.deserialize(child)
             obj.activation = activation_value
 
-        # Parse mode_iref (instance reference from wrapper "MODE-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "MODE-IREF")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            mode_iref_value = SerializationHelper.deserialize_by_tag(wrapper, "RModeInAtomicSwcInstanceRef")
-            obj.mode_iref = mode_iref_value
+        # Parse mode_irefs (multi-wrapper list from "MODE-IREFS")
+        obj.mode_irefs = []
+        irefs_container = SerializationHelper.find_child_element(element, "MODE-IREFS")
+        if irefs_container is not None:
+            for iref_wrapper in irefs_container:
+                if SerializationHelper.strip_namespace(iref_wrapper.tag) == "MODE-IREF":
+                    # Deserialize each iref wrapper as the type (flattened structure)
+                    child_value = SerializationHelper.deserialize_by_tag(iref_wrapper, "RModeInAtomicSwcInstanceRef")
+                    if child_value is not None:
+                        obj.mode_irefs.append(child_value)
 
         return obj
 
@@ -162,20 +169,39 @@ class SwcModeSwitchEventBuilder(RTEEventBuilder):
         self._obj.activation = value
         return self
 
-    def with_mode(self, value: Optional[RModeInAtomicSwcInstanceRef]) -> "SwcModeSwitchEventBuilder":
-        """Set mode attribute.
+    def with_modes(self, items: list[RModeInAtomicSwcInstanceRef]) -> "SwcModeSwitchEventBuilder":
+        """Set modes list attribute.
 
         Args:
-            value: Value to set
+            items: List of items to set
 
         Returns:
             self for method chaining
         """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.mode = value
+        self._obj.modes = list(items) if items else []
         return self
 
+
+    def add_mode(self, item: RModeInAtomicSwcInstanceRef) -> "SwcModeSwitchEventBuilder":
+        """Add a single item to modes list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.modes.append(item)
+        return self
+
+    def clear_modes(self) -> "SwcModeSwitchEventBuilder":
+        """Clear all items from modes list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.modes = []
+        return self
 
 
 

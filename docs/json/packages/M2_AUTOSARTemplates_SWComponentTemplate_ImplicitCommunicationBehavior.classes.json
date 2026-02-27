@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ConsistencyNeeds",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ImplicitCommunicationBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -72,6 +73,7 @@
     },
     {
       "name": "RunnableEntityGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ImplicitCommunicationBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -129,6 +131,7 @@
     },
     {
       "name": "DataPrototypeGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ImplicitCommunicationBehavior",
       "is_abstract": false,
       "atp_type": null,

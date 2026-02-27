@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticDebounceAlgorithmProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticDebouncingAlgorithm",
       "is_abstract": false,
       "atp_type": null,

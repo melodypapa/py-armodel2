@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "MultiLanguageOverviewParagraph",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::MultilanguageData",
       "is_abstract": false,
       "atp_type": null,
@@ -68,6 +69,7 @@
     },
     {
       "name": "MultilanguageLongName",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::MultilanguageData",
       "is_abstract": false,
       "atp_type": null,
@@ -121,6 +123,7 @@
     },
     {
       "name": "MultiLanguageParagraph",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::MultilanguageData",
       "is_abstract": false,
       "atp_type": null,
@@ -166,6 +169,7 @@
     },
     {
       "name": "MultiLanguageVerbatim",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::MultilanguageData",
       "is_abstract": false,
       "atp_type": null,
@@ -235,6 +239,7 @@
     },
     {
       "name": "MultiLanguagePlainText",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::MultilanguageData",
       "is_abstract": false,
       "atp_type": null,

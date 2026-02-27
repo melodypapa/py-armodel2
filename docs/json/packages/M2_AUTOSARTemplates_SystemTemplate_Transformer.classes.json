@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DataTransformation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -61,6 +62,7 @@
     },
     {
       "name": "TransformationTechnology",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -147,6 +149,7 @@
     },
     {
       "name": "BufferProperties",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -195,6 +198,7 @@
     },
     {
       "name": "TransformationDescription",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": true,
       "atp_type": null,
@@ -237,6 +241,7 @@
     },
     {
       "name": "EndToEndTransformationComSpecProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -351,6 +356,7 @@
     },
     {
       "name": "E2EProfileCompatibilityProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -400,6 +406,7 @@
     },
     {
       "name": "EndToEndTransformationDescription",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -562,6 +569,7 @@
     },
     {
       "name": "DataTransformationSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -610,6 +618,7 @@
     },
     {
       "name": "UserDefinedTransformationDescription",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -639,6 +648,7 @@
     },
     {
       "name": "TransformationISignalProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": true,
       "atp_type": "atpVariation",
@@ -694,6 +704,7 @@
     },
     {
       "name": "SOMEIPTransformationDescription",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -745,6 +756,7 @@
     },
     {
       "name": "SOMEIPTransformationISignalProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -840,6 +852,7 @@
     },
     {
       "name": "TransformationPropsSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -883,6 +896,7 @@
     },
     {
       "name": "TransformationProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": true,
       "atp_type": null,
@@ -919,6 +933,7 @@
     },
     {
       "name": "SOMEIPTransformationProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -986,6 +1001,7 @@
     },
     {
       "name": "DataPrototypeTransformationProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -1035,6 +1051,7 @@
     },
     {
       "name": "DataPrototypeReference",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": true,
       "atp_type": null,
@@ -1077,6 +1094,7 @@
     },
     {
       "name": "DataPrototypeInPortInterfaceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -1114,6 +1132,7 @@
     },
     {
       "name": "EndToEndTransformationISignalProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -1174,6 +1193,7 @@
     },
     {
       "name": "UserDefinedTransformationISignalProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -1205,6 +1225,7 @@
     },
     {
       "name": "UserDefinedTransformationProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -1236,6 +1257,7 @@
     },
     {
       "name": "TlvDataIdDefinitionSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,
@@ -1279,6 +1301,7 @@
     },
     {
       "name": "TlvDataIdDefinition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SwcBswMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::SwcBswMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -89,6 +90,7 @@
     },
     {
       "name": "SwcBswRunnableMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::SwcBswMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -131,6 +133,7 @@
     },
     {
       "name": "SwcBswSynchronizedModeGroupPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::SwcBswMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -173,6 +176,7 @@
     },
     {
       "name": "SwcBswSynchronizedTrigger",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::SwcBswMapping",
       "is_abstract": false,
       "atp_type": null,

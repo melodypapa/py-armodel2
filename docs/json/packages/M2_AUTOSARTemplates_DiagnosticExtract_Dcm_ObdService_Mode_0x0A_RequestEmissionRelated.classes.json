@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticRequestEmissionRelatedDTCPermanentStatus",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::ObdService::Mode_0x0A_RequestEmissionRelated",
       "is_abstract": false,
       "atp_type": null,
@@ -46,6 +47,7 @@
     },
     {
       "name": "DiagnosticRequestEmissionRelatedDTCPermanentStatusClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::ObdService::Mode_0x0A_RequestEmissionRelated",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SwAddrMethod",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::AuxillaryObjects",
       "is_abstract": false,
       "atp_type": null,

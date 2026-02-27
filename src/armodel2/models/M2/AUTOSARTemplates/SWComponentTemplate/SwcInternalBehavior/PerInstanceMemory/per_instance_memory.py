@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInter
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import polymorphic
 
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -40,17 +41,28 @@ class PerInstanceMemory(Identifiable):
         """
         return False
 
-    init_value: Optional[String]
-    sw_data_def: Optional[SwDataDefProps]
+    _init_value: Optional[String]
+    sw_data_def_props: Optional[SwDataDefProps]
     type: Optional[CIdentifier]
     type_definition: Optional[String]
     def __init__(self) -> None:
         """Initialize PerInstanceMemory."""
         super().__init__()
-        self.init_value: Optional[String] = None
-        self.sw_data_def: Optional[SwDataDefProps] = None
+        self._init_value: Optional[String] = None
+        self.sw_data_def_props: Optional[SwDataDefProps] = None
         self.type: Optional[CIdentifier] = None
         self.type_definition: Optional[String] = None
+    @property
+    @polymorphic({"INIT-VALUE": "ValueSpecification"})
+    def init_value(self) -> Optional[String]:
+        """Get init_value with polymorphic wrapper handling."""
+        return self._init_value
+
+    @init_value.setter
+    def init_value(self, value: Optional[String]) -> None:
+        """Set init_value with polymorphic wrapper handling."""
+        self._init_value = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize PerInstanceMemory to XML element.
@@ -76,26 +88,21 @@ class PerInstanceMemory(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize init_value
+        # Serialize init_value (polymorphic wrapper "INIT-VALUE")
         if self.init_value is not None:
             serialized = SerializationHelper.serialize_item(self.init_value, "String")
             if serialized is not None:
-                # Wrap with correct tag
+                # For polymorphic types, wrap the serialized element (preserving concrete type)
                 wrapped = ET.Element("INIT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
+                wrapped.append(serialized)
                 elem.append(wrapped)
 
-        # Serialize sw_data_def
-        if self.sw_data_def is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
+        # Serialize sw_data_def_props
+        if self.sw_data_def_props is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_data_def_props, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-DATA-DEF")
+                wrapped = ET.Element("SW-DATA-DEF-PROPS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -147,17 +154,17 @@ class PerInstanceMemory(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PerInstanceMemory, cls).deserialize(element)
 
-        # Parse init_value
-        child = SerializationHelper.find_child_element(element, "INIT-VALUE")
-        if child is not None:
-            init_value_value = child.text
+        # Parse init_value (polymorphic wrapper "INIT-VALUE")
+        wrapper = SerializationHelper.find_child_element(element, "INIT-VALUE")
+        if wrapper is not None:
+            init_value_value = SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
             obj.init_value = init_value_value
 
-        # Parse sw_data_def
-        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
+        # Parse sw_data_def_props
+        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF-PROPS")
         if child is not None:
-            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.sw_data_def = sw_data_def_value
+            sw_data_def_props_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
+            obj.sw_data_def_props = sw_data_def_props_value
 
         # Parse type
         child = SerializationHelper.find_child_element(element, "TYPE")
@@ -198,8 +205,8 @@ class PerInstanceMemoryBuilder(IdentifiableBuilder):
         self._obj.init_value = value
         return self
 
-    def with_sw_data_def(self, value: Optional[SwDataDefProps]) -> "PerInstanceMemoryBuilder":
-        """Set sw_data_def attribute.
+    def with_sw_data_def_props(self, value: Optional[SwDataDefProps]) -> "PerInstanceMemoryBuilder":
+        """Set sw_data_def_props attribute.
 
         Args:
             value: Value to set
@@ -209,7 +216,7 @@ class PerInstanceMemoryBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_data_def = value
+        self._obj.sw_data_def_props = value
         return self
 
     def with_type(self, value: Optional[CIdentifier]) -> "PerInstanceMemoryBuilder":

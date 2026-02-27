@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Prms",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::GerneralParameters",
       "is_abstract": false,
       "atp_type": null,

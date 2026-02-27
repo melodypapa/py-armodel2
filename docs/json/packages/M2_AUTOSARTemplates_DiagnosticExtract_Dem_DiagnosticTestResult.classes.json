@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticTestResult",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTestResult",
       "is_abstract": false,
       "atp_type": null,
@@ -72,6 +73,7 @@
     },
     {
       "name": "DiagnosticTestIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTestResult",
       "is_abstract": false,
       "atp_type": null,
@@ -114,6 +116,7 @@
     },
     {
       "name": "DiagnosticMeasurementIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTestResult",
       "is_abstract": false,
       "atp_type": null,

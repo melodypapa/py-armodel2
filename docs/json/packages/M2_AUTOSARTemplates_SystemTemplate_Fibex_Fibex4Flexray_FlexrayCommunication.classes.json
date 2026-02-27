@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "FlexrayFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Flexray::FlexrayCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -37,6 +38,7 @@
     },
     {
       "name": "FlexrayFrameTriggering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Flexray::FlexrayCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -97,6 +99,7 @@
     },
     {
       "name": "FlexrayAbsolutelyScheduledTiming",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Flexray::FlexrayCommunication",
       "is_abstract": false,
       "atp_type": null,

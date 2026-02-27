@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticMemoryDestination",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticMemoryDestination",
       "is_abstract": true,
       "atp_type": null,
@@ -100,6 +101,7 @@
     },
     {
       "name": "DiagnosticMemoryDestinationPrimary",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticMemoryDestination",
       "is_abstract": false,
       "atp_type": null,
@@ -143,6 +145,7 @@
     },
     {
       "name": "DiagnosticMemoryDestinationUserDefined",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticMemoryDestination",
       "is_abstract": false,
       "atp_type": null,

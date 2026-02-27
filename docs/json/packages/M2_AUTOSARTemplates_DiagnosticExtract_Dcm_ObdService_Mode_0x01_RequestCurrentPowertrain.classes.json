@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticRequestCurrentPowertrainData",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::ObdService::Mode_0x01_RequestCurrentPowertrain",
       "is_abstract": false,
       "atp_type": null,
@@ -53,6 +54,7 @@
     },
     {
       "name": "DiagnosticRequestCurrentPowertrainDataClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::ObdService::Mode_0x01_RequestCurrentPowertrain",
       "is_abstract": false,
       "atp_type": null,

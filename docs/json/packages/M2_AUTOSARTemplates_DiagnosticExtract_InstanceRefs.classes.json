@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DataPrototypeInSystemInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -83,6 +84,7 @@
     },
     {
       "name": "SwcServiceDependencyInSystemInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -139,6 +141,7 @@
     },
     {
       "name": "PModeInSystemInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "CpSoftwareClusterBinaryManifestDescriptor",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster::BinaryManifest",
       "is_abstract": false,
       "atp_type": null,
@@ -79,6 +80,7 @@
     },
     {
       "name": "BinaryManifestProvideResource",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster::BinaryManifest",
       "is_abstract": false,
       "atp_type": null,
@@ -125,6 +127,7 @@
     },
     {
       "name": "BinaryManifestResource",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster::BinaryManifest",
       "is_abstract": true,
       "atp_type": null,
@@ -181,6 +184,7 @@
     },
     {
       "name": "BinaryManifestRequireResource",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster::BinaryManifest",
       "is_abstract": false,
       "atp_type": null,
@@ -220,6 +224,7 @@
     },
     {
       "name": "BinaryManifestResourceDefinition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster::BinaryManifest",
       "is_abstract": false,
       "atp_type": null,
@@ -258,6 +263,7 @@
     },
     {
       "name": "BinaryManifestItem",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster::BinaryManifest",
       "is_abstract": false,
       "atp_type": null,
@@ -319,6 +325,7 @@
     },
     {
       "name": "BinaryManifestItemDefinition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster::BinaryManifest",
       "is_abstract": false,
       "atp_type": null,
@@ -372,6 +379,7 @@
     },
     {
       "name": "BinaryManifestAddressableObject",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster::BinaryManifest",
       "is_abstract": true,
       "atp_type": null,
@@ -421,6 +429,7 @@
     },
     {
       "name": "BinaryManifestItemValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster::BinaryManifest",
       "is_abstract": true,
       "atp_type": null,
@@ -455,6 +464,7 @@
     },
     {
       "name": "BinaryManifestItemNumericalValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster::BinaryManifest",
       "is_abstract": false,
       "atp_type": null,
@@ -492,6 +502,7 @@
     },
     {
       "name": "BinaryManifestItemPointerValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster::BinaryManifest",
       "is_abstract": false,
       "atp_type": null,
@@ -536,6 +547,7 @@
     },
     {
       "name": "BinaryManifestMetaDataField",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster::BinaryManifest",
       "is_abstract": false,
       "atp_type": null,

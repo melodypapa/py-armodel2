@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticRequestPowertrainFreezeFrameData",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::ObdService::Mode_0x02_RequestPowertrainFreeze",
       "is_abstract": false,
       "atp_type": null,
@@ -53,6 +54,7 @@
     },
     {
       "name": "DiagnosticRequestPowertrainFreezeFrameDataClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::ObdService::Mode_0x02_RequestPowertrainFreeze",
       "is_abstract": false,
       "atp_type": null,
@@ -88,6 +90,7 @@
     },
     {
       "name": "DiagnosticPowertrainFreezeFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::ObdService::Mode_0x02_RequestPowertrainFreeze",
       "is_abstract": false,
       "atp_type": null,

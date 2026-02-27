@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticReadDataByIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::DataByIdentifier",
       "is_abstract": false,
       "atp_type": null,
@@ -47,6 +48,7 @@
     },
     {
       "name": "DiagnosticWriteDataByIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::DataByIdentifier",
       "is_abstract": false,
       "atp_type": null,
@@ -91,6 +93,7 @@
     },
     {
       "name": "DiagnosticWriteDataByIdentifierClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::DataByIdentifier",
       "is_abstract": false,
       "atp_type": null,
@@ -126,6 +129,7 @@
     },
     {
       "name": "DiagnosticDataByIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::DataByIdentifier",
       "is_abstract": true,
       "atp_type": null,
@@ -177,6 +181,7 @@
     },
     {
       "name": "DiagnosticReadDataByIdentifierClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::DataByIdentifier",
       "is_abstract": false,
       "atp_type": null,
@@ -220,6 +225,7 @@
     },
     {
       "name": "DiagnosticReadScalingDataByIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::DataByIdentifier",
       "is_abstract": false,
       "atp_type": null,
@@ -264,6 +270,7 @@
     },
     {
       "name": "DiagnosticReadScalingDataByIdentifierClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::DataByIdentifier",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticCommonElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": true,
       "atp_type": null,
@@ -127,6 +128,7 @@
     },
     {
       "name": "DiagnosticDataIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -191,6 +193,7 @@
     },
     {
       "name": "DiagnosticDynamicDataIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -226,6 +229,7 @@
     },
     {
       "name": "DiagnosticAbstractDataIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": true,
       "atp_type": null,
@@ -274,6 +278,7 @@
     },
     {
       "name": "DiagnosticParameter",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -326,6 +331,7 @@
     },
     {
       "name": "DiagnosticParameterElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -374,6 +380,7 @@
     },
     {
       "name": "DiagnosticParameterIdent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -419,6 +426,7 @@
     },
     {
       "name": "DiagnosticAbstractParameter",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": true,
       "atp_type": null,
@@ -471,6 +479,7 @@
     },
     {
       "name": "DiagnosticDataElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -537,6 +546,7 @@
     },
     {
       "name": "DiagnosticRoutineSubfunction",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": true,
       "atp_type": null,
@@ -581,6 +591,7 @@
     },
     {
       "name": "DiagnosticRoutine",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -651,6 +662,7 @@
     },
     {
       "name": "DiagnosticStartRoutine",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -697,6 +709,7 @@
     },
     {
       "name": "DiagnosticStopRoutine",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -743,6 +756,7 @@
     },
     {
       "name": "DiagnosticRequestRoutineResults",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -789,6 +803,7 @@
     },
     {
       "name": "DiagnosticParameterIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -852,6 +867,7 @@
     },
     {
       "name": "DiagnosticParameterSupportInfo",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -887,6 +903,7 @@
     },
     {
       "name": "DiagnosticSupportInfoByte",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -930,6 +947,7 @@
     },
     {
       "name": "DiagnosticInfoType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,

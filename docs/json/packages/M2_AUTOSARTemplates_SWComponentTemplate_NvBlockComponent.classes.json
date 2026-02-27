@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "NvBlockDescriptor",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::NvBlockComponent",
       "is_abstract": false,
       "atp_type": null,
@@ -123,6 +124,7 @@
     },
     {
       "name": "ModeSwitchEventTriggeredActivity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::NvBlockComponent",
       "is_abstract": false,
       "atp_type": null,
@@ -165,6 +167,7 @@
     },
     {
       "name": "NvBlockDataMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::NvBlockComponent",
       "is_abstract": false,
       "atp_type": null,
@@ -229,6 +232,7 @@
     },
     {
       "name": "BulkNvDataDescriptor",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::NvBlockComponent",
       "is_abstract": false,
       "atp_type": null,

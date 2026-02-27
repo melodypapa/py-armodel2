@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SdgDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef",
       "is_abstract": false,
       "atp_type": null,
@@ -50,6 +51,7 @@
     },
     {
       "name": "SdgElementWithGid",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef",
       "is_abstract": true,
       "atp_type": null,
@@ -93,6 +95,7 @@
     },
     {
       "name": "SdgClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef",
       "is_abstract": false,
       "atp_type": null,
@@ -159,6 +162,7 @@
     },
     {
       "name": "SdgAttribute",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef",
       "is_abstract": true,
       "atp_type": null,
@@ -197,6 +201,7 @@
     },
     {
       "name": "SdgAbstractPrimitiveAttribute",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef",
       "is_abstract": true,
       "atp_type": null,
@@ -237,6 +242,7 @@
     },
     {
       "name": "SdgPrimitiveAttribute",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef",
       "is_abstract": false,
       "atp_type": null,
@@ -272,6 +278,7 @@
     },
     {
       "name": "SdgPrimitiveAttributeWithVariation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef",
       "is_abstract": false,
       "atp_type": null,
@@ -308,6 +315,7 @@
     },
     {
       "name": "SdgAggregationWithVariation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef",
       "is_abstract": false,
       "atp_type": null,
@@ -350,6 +358,7 @@
     },
     {
       "name": "SdgReference",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef",
       "is_abstract": false,
       "atp_type": null,
@@ -390,6 +399,7 @@
     },
     {
       "name": "SdgAbstractForeignReference",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef",
       "is_abstract": true,
       "atp_type": null,
@@ -437,6 +447,7 @@
     },
     {
       "name": "SdgForeignReference",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef",
       "is_abstract": false,
       "atp_type": null,
@@ -471,6 +482,7 @@
     },
     {
       "name": "SdgForeignReferenceWithVariation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef",
       "is_abstract": false,
       "atp_type": null,

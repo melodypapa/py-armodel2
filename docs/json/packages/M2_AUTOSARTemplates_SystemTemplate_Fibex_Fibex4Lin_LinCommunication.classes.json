@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "LinErrorResponse",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -39,6 +40,7 @@
     },
     {
       "name": "LinFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": true,
       "atp_type": null,
@@ -81,6 +83,7 @@
     },
     {
       "name": "LinFrameTriggering",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -127,6 +130,7 @@
     },
     {
       "name": "LinUnconditionalFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -162,6 +166,7 @@
     },
     {
       "name": "LinSporadicFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -205,6 +210,7 @@
     },
     {
       "name": "LinEventTriggeredFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -255,6 +261,7 @@
     },
     {
       "name": "LinScheduleTable",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -307,6 +314,7 @@
     },
     {
       "name": "ScheduleTableEntry",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": true,
       "atp_type": null,
@@ -364,6 +372,7 @@
     },
     {
       "name": "ApplicationEntry",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -400,6 +409,7 @@
     },
     {
       "name": "FreeFormatEntry",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": true,
       "atp_type": null,
@@ -432,6 +442,7 @@
     },
     {
       "name": "LinConfigurationEntry",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": true,
       "atp_type": null,
@@ -491,6 +502,7 @@
     },
     {
       "name": "AssignFrameId",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -528,6 +540,7 @@
     },
     {
       "name": "UnassignFrameId",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -565,6 +578,7 @@
     },
     {
       "name": "AssignFrameIdRange",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -609,6 +623,7 @@
     },
     {
       "name": "FramePid",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -651,6 +666,7 @@
     },
     {
       "name": "AssignNad",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -688,6 +704,7 @@
     },
     {
       "name": "ConditionalChangeNad",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -753,6 +770,7 @@
     },
     {
       "name": "SaveConfigurationEntry",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -782,6 +800,7 @@
     },
     {
       "name": "DataDumpEntry",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -819,6 +838,7 @@
     },
     {
       "name": "FreeFormat",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "is_abstract": false,
       "atp_type": null,

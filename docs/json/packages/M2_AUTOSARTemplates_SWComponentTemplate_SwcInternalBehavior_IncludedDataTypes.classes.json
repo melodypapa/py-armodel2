@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "IncludedDataTypeSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::IncludedDataTypes",
       "is_abstract": false,
       "atp_type": null,

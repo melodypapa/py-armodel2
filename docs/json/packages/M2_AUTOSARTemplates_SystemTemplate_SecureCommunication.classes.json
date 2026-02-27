@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "CryptoServiceCertificate",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -80,6 +81,7 @@
     },
     {
       "name": "MacSecProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -136,6 +138,7 @@
     },
     {
       "name": "MacSecLocalKayProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -206,6 +209,7 @@
     },
     {
       "name": "MacSecGlobalKayProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -256,6 +260,7 @@
     },
     {
       "name": "MacSecParticipantSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -306,6 +311,7 @@
     },
     {
       "name": "MacSecKayParticipant",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -358,6 +364,7 @@
     },
     {
       "name": "MacSecCryptoAlgoConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -414,6 +421,7 @@
     },
     {
       "name": "MacSecCipherSuiteConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -449,6 +457,7 @@
     },
     {
       "name": "CryptoServiceMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": true,
       "atp_type": null,
@@ -485,6 +494,7 @@
     },
     {
       "name": "SecOcCryptoServiceMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -538,6 +548,7 @@
     },
     {
       "name": "CryptoServicePrimitive",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -601,6 +612,7 @@
     },
     {
       "name": "CryptoServiceKey",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -678,6 +690,7 @@
     },
     {
       "name": "CryptoServiceQueue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -719,6 +732,7 @@
     },
     {
       "name": "TlsCryptoServiceMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -779,6 +793,7 @@
     },
     {
       "name": "TlsCryptoCipherSuite",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -902,6 +917,7 @@
     },
     {
       "name": "TlsPskIdentity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -951,6 +967,7 @@
     },
     {
       "name": "TlsCryptoCipherSuiteProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -989,6 +1006,7 @@
     },
     {
       "name": "CryptoEllipticCurveProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1030,6 +1048,7 @@
     },
     {
       "name": "CryptoSignatureScheme",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1071,6 +1090,7 @@
     },
     {
       "name": "IPSecConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1113,6 +1133,7 @@
     },
     {
       "name": "IPSecRule",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,
@@ -1242,6 +1263,7 @@
     },
     {
       "name": "IPSecConfigProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "is_abstract": false,
       "atp_type": null,

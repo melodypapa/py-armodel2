@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SwServiceArg",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::ServiceProcessTask",
       "is_abstract": false,
       "atp_type": null,

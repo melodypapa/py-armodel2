@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "PlatformModuleEthernetEndpointConfiguration",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::AdaptivePlatform::PlatformModuleDeployment::AdaptiveModule",
       "is_abstract": false,
       "atp_type": null,

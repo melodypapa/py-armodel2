@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticClearDiagnosticInformation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::ClearDiagnosticInfo",
       "is_abstract": false,
       "atp_type": null,
@@ -46,6 +47,7 @@
     },
     {
       "name": "DiagnosticClearDiagnosticInformationClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::ClearDiagnosticInfo",
       "is_abstract": false,
       "atp_type": null,

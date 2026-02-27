@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "PostBuildVariantCriterion",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "is_abstract": false,
       "atp_type": null,
@@ -64,6 +65,7 @@
     },
     {
       "name": "PostBuildVariantCriterionValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "is_abstract": false,
       "atp_type": null,
@@ -125,6 +127,7 @@
     },
     {
       "name": "PredefinedVariant",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "is_abstract": false,
       "atp_type": null,
@@ -192,6 +195,7 @@
     },
     {
       "name": "SwSystemconstantValueSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "is_abstract": false,
       "atp_type": null,
@@ -263,6 +267,7 @@
     },
     {
       "name": "VariationPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "is_abstract": false,
       "atp_type": null,
@@ -333,6 +338,7 @@
     },
     {
       "name": "ConditionByFormula",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -389,6 +395,7 @@
     },
     {
       "name": "PostBuildVariantCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "is_abstract": false,
       "atp_type": null,
@@ -444,6 +451,7 @@
     },
     {
       "name": "PostBuildVariantCriterionValueSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "is_abstract": false,
       "atp_type": null,
@@ -497,6 +505,7 @@
     },
     {
       "name": "SwSystemconstDependentFormula",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "is_abstract": true,
       "atp_type": "atpMixedString",
@@ -555,6 +564,7 @@
     },
     {
       "name": "SwSystemconstValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "is_abstract": false,
       "atp_type": null,
@@ -616,6 +626,7 @@
     },
     {
       "name": "EvaluatedVariantSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Area",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::Figure",
       "is_abstract": false,
       "atp_type": null,
@@ -185,6 +186,7 @@
     },
     {
       "name": "Graphic",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::Figure",
       "is_abstract": false,
       "atp_type": null,
@@ -320,6 +322,7 @@
     },
     {
       "name": "Map",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::Figure",
       "is_abstract": false,
       "atp_type": null,
@@ -446,6 +449,7 @@
     },
     {
       "name": "MlFigure",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::Figure",
       "is_abstract": false,
       "atp_type": null,
@@ -519,6 +523,7 @@
     },
     {
       "name": "LGraphic",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::Figure",
       "is_abstract": false,
       "atp_type": null,

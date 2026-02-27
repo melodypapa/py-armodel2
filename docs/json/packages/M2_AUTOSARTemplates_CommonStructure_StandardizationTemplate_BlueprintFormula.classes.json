@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "BlueprintFormula",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::BlueprintFormula",
       "is_abstract": false,
       "atp_type": "atpMixedString",

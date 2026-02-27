@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "TimingDescriptionEventChain",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription",
       "is_abstract": false,
       "atp_type": null,
@@ -63,6 +64,7 @@
     },
     {
       "name": "TimingDescription",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription",
       "is_abstract": true,
       "atp_type": null,
@@ -99,6 +101,7 @@
     },
     {
       "name": "TimingDescriptionEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription",
       "is_abstract": true,
       "atp_type": null,

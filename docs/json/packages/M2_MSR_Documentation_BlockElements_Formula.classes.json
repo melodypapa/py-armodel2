@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "MlFormula",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::Formula",
       "is_abstract": false,
       "atp_type": null,

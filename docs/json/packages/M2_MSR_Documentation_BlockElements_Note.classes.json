@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Note",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::Note",
       "is_abstract": false,
       "atp_type": null,

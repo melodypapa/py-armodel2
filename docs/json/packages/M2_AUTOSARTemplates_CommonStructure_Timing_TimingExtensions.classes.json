@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "VfbTiming",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingExtensions",
       "is_abstract": false,
       "atp_type": null,
@@ -54,6 +55,7 @@
     },
     {
       "name": "SwcTiming",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingExtensions",
       "is_abstract": false,
       "atp_type": null,
@@ -96,6 +98,7 @@
     },
     {
       "name": "SystemTiming",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingExtensions",
       "is_abstract": false,
       "atp_type": null,
@@ -138,6 +141,7 @@
     },
     {
       "name": "BswModuleTiming",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingExtensions",
       "is_abstract": false,
       "atp_type": null,
@@ -180,6 +184,7 @@
     },
     {
       "name": "BswCompositionTiming",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingExtensions",
       "is_abstract": false,
       "atp_type": null,
@@ -222,6 +227,7 @@
     },
     {
       "name": "EcuTiming",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingExtensions",
       "is_abstract": false,
       "atp_type": null,
@@ -264,6 +270,7 @@
     },
     {
       "name": "TimingExtension",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingExtensions",
       "is_abstract": true,
       "atp_type": null,

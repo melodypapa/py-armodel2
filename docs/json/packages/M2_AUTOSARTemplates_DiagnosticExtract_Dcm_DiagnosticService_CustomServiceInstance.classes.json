@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticCustomServiceInstance",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::CustomServiceInstance",
       "is_abstract": false,
       "atp_type": null,

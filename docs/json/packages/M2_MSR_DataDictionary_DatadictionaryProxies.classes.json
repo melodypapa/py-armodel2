@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SwCalprmRefProxy",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::DatadictionaryProxies",
       "is_abstract": false,
       "atp_type": null,
@@ -46,6 +47,7 @@
     },
     {
       "name": "SwVariableRefProxy",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::DatadictionaryProxies",
       "is_abstract": false,
       "atp_type": null,

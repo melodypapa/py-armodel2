@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ConsistencyNeedsBlueprintSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::Blueprint",
       "is_abstract": false,
       "atp_type": null,

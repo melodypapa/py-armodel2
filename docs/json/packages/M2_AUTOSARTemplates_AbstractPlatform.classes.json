@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ApplicationInterface",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::AbstractPlatform",
       "is_abstract": false,
       "atp_type": null,
@@ -64,6 +65,7 @@
     },
     {
       "name": "ApplicationDeferredDataType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::AbstractPlatform",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "TDCpSoftwareClusterMappingSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingCpSoftwareCluster",
       "is_abstract": false,
       "atp_type": null,
@@ -44,6 +45,7 @@
     },
     {
       "name": "TDCpSoftwareClusterMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingCpSoftwareCluster",
       "is_abstract": false,
       "atp_type": null,
@@ -96,6 +98,7 @@
     },
     {
       "name": "TDCpSoftwareClusterResourceMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingCpSoftwareCluster",
       "is_abstract": false,
       "atp_type": null,

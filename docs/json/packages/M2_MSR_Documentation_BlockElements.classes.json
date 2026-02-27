@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DocumentationBlock",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements",
       "is_abstract": false,
       "atp_type": null,
@@ -163,6 +164,7 @@
     },
     {
       "name": "Caption",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements",
       "is_abstract": false,
       "atp_type": null,

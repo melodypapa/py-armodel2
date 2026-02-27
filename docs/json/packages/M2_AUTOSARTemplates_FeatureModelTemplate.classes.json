@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "FMFeatureModel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -57,6 +58,7 @@
     },
     {
       "name": "FMFeature",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -139,6 +141,7 @@
     },
     {
       "name": "FMAttributeDef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -191,6 +194,7 @@
     },
     {
       "name": "FMFeatureDecomposition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -247,6 +251,7 @@
     },
     {
       "name": "FMFeatureRestriction",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -285,6 +290,7 @@
     },
     {
       "name": "FMFeatureRelation",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -330,6 +336,7 @@
     },
     {
       "name": "FMFeatureSelection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -368,6 +375,7 @@
     },
     {
       "name": "FMAttributeValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -410,6 +418,7 @@
     },
     {
       "name": "FMFeatureSelectionSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -465,6 +474,7 @@
     },
     {
       "name": "FMFeatureMap",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -506,6 +516,7 @@
     },
     {
       "name": "FMFeatureMapElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -565,6 +576,7 @@
     },
     {
       "name": "FMFeatureMapCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -603,6 +615,7 @@
     },
     {
       "name": "FMFeatureMapAssertion",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -641,6 +654,7 @@
     },
     {
       "name": "FMFormulaByFeaturesAndAttributes",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": true,
       "atp_type": "atpMixedString",
@@ -684,6 +698,7 @@
     },
     {
       "name": "FMConditionByFeaturesAndAttributes",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -715,6 +730,7 @@
     },
     {
       "name": "FMFormulaByFeaturesAndSwSystemconsts",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": true,
       "atp_type": "atpMixedString",
@@ -752,6 +768,7 @@
     },
     {
       "name": "FMConditionByFeaturesAndSwSystemconsts",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "is_abstract": false,
       "atp_type": "atpMixedString",

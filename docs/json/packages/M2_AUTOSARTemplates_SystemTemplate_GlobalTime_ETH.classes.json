@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "GlobalTimeEthMaster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::ETH",
       "is_abstract": false,
       "atp_type": null,
@@ -56,6 +57,7 @@
     },
     {
       "name": "EthTSynSubTlvConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::ETH",
       "is_abstract": false,
       "atp_type": null,
@@ -112,6 +114,7 @@
     },
     {
       "name": "GlobalTimeEthSlave",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::ETH",
       "is_abstract": false,
       "atp_type": null,
@@ -151,6 +154,7 @@
     },
     {
       "name": "EthGlobalTimeDomainProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::ETH",
       "is_abstract": false,
       "atp_type": null,
@@ -222,6 +226,7 @@
     },
     {
       "name": "EthTSynCrcFlags",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::ETH",
       "is_abstract": false,
       "atp_type": null,
@@ -292,6 +297,7 @@
     },
     {
       "name": "EthGlobalTimeManagedCouplingPort",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::ETH",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DoIpTpConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -52,6 +53,7 @@
     },
     {
       "name": "DoIpLogicAddress",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -98,6 +100,7 @@
     },
     {
       "name": "TpConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": true,
       "atp_type": null,
@@ -159,6 +162,7 @@
     },
     {
       "name": "TpAddress",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -200,6 +204,7 @@
     },
     {
       "name": "FlexrayTpConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -270,6 +275,7 @@
     },
     {
       "name": "FlexrayTpConnectionControl",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -385,6 +391,7 @@
     },
     {
       "name": "FlexrayTpConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -477,6 +484,7 @@
     },
     {
       "name": "FlexrayTpPduPool",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -515,6 +523,7 @@
     },
     {
       "name": "FlexrayTpNode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -560,6 +569,7 @@
     },
     {
       "name": "FlexrayTpEcu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -616,6 +626,7 @@
     },
     {
       "name": "FlexrayArTpConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -672,6 +683,7 @@
     },
     {
       "name": "FlexrayArTpChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -833,6 +845,7 @@
     },
     {
       "name": "FlexrayArTpNode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -878,6 +891,7 @@
     },
     {
       "name": "FlexrayArTpConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -949,6 +963,7 @@
     },
     {
       "name": "CanTpConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1019,6 +1034,7 @@
     },
     {
       "name": "CanTpChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1057,6 +1073,7 @@
     },
     {
       "name": "CanTpConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1198,6 +1215,7 @@
     },
     {
       "name": "CanTpAddress",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1236,6 +1254,7 @@
     },
     {
       "name": "CanTpEcu",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1278,6 +1297,7 @@
     },
     {
       "name": "CanTpNode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1351,6 +1371,7 @@
     },
     {
       "name": "LinTpConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1407,6 +1428,7 @@
     },
     {
       "name": "LinTpNode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1480,6 +1502,7 @@
     },
     {
       "name": "LinTpConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1572,6 +1595,7 @@
     },
     {
       "name": "EthTpConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1614,6 +1638,7 @@
     },
     {
       "name": "EthTpConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1650,6 +1675,7 @@
     },
     {
       "name": "SomeipTpConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1699,6 +1725,7 @@
     },
     {
       "name": "SomeipTpConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1748,6 +1775,7 @@
     },
     {
       "name": "SomeipTpChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1800,6 +1828,7 @@
     },
     {
       "name": "J1939TpConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1856,6 +1885,7 @@
     },
     {
       "name": "J1939TpConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -1969,6 +1999,7 @@
     },
     {
       "name": "J1939TpPg",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,
@@ -2025,6 +2056,7 @@
     },
     {
       "name": "J1939TpNode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "is_abstract": false,
       "atp_type": null,

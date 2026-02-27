@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticFimAliasEvent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Fim",
       "is_abstract": false,
       "atp_type": null,
@@ -38,6 +39,7 @@
     },
     {
       "name": "DiagnosticFunctionIdentifier",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Fim",
       "is_abstract": false,
       "atp_type": null,
@@ -72,6 +74,7 @@
     },
     {
       "name": "DiagnosticFunctionIdentifierInhibit",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Fim",
       "is_abstract": false,
       "atp_type": null,
@@ -128,6 +131,7 @@
     },
     {
       "name": "DiagnosticFunctionInhibitSource",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Fim",
       "is_abstract": false,
       "atp_type": null,
@@ -173,6 +177,7 @@
     },
     {
       "name": "DiagnosticFimEventGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Fim",
       "is_abstract": false,
       "atp_type": null,
@@ -215,6 +220,7 @@
     },
     {
       "name": "DiagnosticFimAliasEventGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Fim",
       "is_abstract": false,
       "atp_type": null,

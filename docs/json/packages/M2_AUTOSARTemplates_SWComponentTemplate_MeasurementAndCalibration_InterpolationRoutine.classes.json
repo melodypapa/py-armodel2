@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "InterpolationRoutineMappingSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::MeasurementAndCalibration::InterpolationRoutine",
       "is_abstract": false,
       "atp_type": null,
@@ -50,6 +51,7 @@
     },
     {
       "name": "InterpolationRoutineMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::MeasurementAndCalibration::InterpolationRoutine",
       "is_abstract": false,
       "atp_type": null,
@@ -98,6 +100,7 @@
     },
     {
       "name": "InterpolationRoutine",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::MeasurementAndCalibration::InterpolationRoutine",
       "is_abstract": false,
       "atp_type": null,

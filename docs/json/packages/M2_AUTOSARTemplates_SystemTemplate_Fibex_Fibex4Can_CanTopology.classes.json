@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "J1939Cluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -70,6 +71,7 @@
     },
     {
       "name": "AbstractCanCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": true,
       "atp_type": "atpVariation",
@@ -133,6 +135,7 @@
     },
     {
       "name": "CanCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -172,6 +175,7 @@
     },
     {
       "name": "CanClusterBusOffRecovery",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -235,6 +239,7 @@
     },
     {
       "name": "CanCommunicationController",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -269,6 +274,7 @@
     },
     {
       "name": "AbstractCanCommunicationController",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": true,
       "atp_type": "atpVariation",
@@ -312,6 +318,7 @@
     },
     {
       "name": "AbstractCanCommunicationControllerAttributes",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": true,
       "atp_type": null,
@@ -360,6 +367,7 @@
     },
     {
       "name": "CanControllerConfiguration",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -418,6 +426,7 @@
     },
     {
       "name": "CanControllerConfigurationRequirements",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -489,6 +498,7 @@
     },
     {
       "name": "CanControllerFdConfiguration",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -567,6 +577,7 @@
     },
     {
       "name": "CanControllerFdConfigurationRequirements",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -665,6 +676,7 @@
     },
     {
       "name": "CanControllerXlConfiguration",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -764,6 +776,7 @@
     },
     {
       "name": "CanControllerXlConfigurationRequirements",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -905,6 +918,7 @@
     },
     {
       "name": "AbstractCanPhysicalChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": true,
       "atp_type": null,
@@ -942,6 +956,7 @@
     },
     {
       "name": "CanPhysicalChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -974,6 +989,7 @@
     },
     {
       "name": "AbstractCanCommunicationConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": true,
       "atp_type": null,
@@ -1012,6 +1028,7 @@
     },
     {
       "name": "CanCommunicationConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": null,

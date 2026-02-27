@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "TagWithOptionalValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::TagWithOptionalValue",
       "is_abstract": false,
       "atp_type": null,

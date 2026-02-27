@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "BlueprintGenerator",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::BlueprintGenerator",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticCondition",
       "is_abstract": true,
       "atp_type": null,
@@ -45,12 +46,14 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "Defines the initial status for enable or disable of"
         }
       }
     },
     {
       "name": "DiagnosticEnableCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticCondition",
       "is_abstract": false,
       "atp_type": null,
@@ -86,6 +89,7 @@
     },
     {
       "name": "DiagnosticStorageCondition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticCondition",
       "is_abstract": false,
       "atp_type": null,

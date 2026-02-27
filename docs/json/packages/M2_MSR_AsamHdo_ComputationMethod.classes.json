@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "CompuMethod",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,
@@ -104,6 +105,7 @@
     },
     {
       "name": "CompuGenericMath",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -140,6 +142,7 @@
     },
     {
       "name": "Compu",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,
@@ -183,6 +186,7 @@
     },
     {
       "name": "CompuContent",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": true,
       "atp_type": null,
@@ -214,6 +218,7 @@
     },
     {
       "name": "CompuScale",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,
@@ -317,6 +322,7 @@
     },
     {
       "name": "CompuScales",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,
@@ -353,6 +359,7 @@
     },
     {
       "name": "CompuScaleContents",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": true,
       "atp_type": null,
@@ -386,6 +393,7 @@
     },
     {
       "name": "CompuConstTextContent",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,
@@ -428,6 +436,7 @@
     },
     {
       "name": "CompuConstNumericContent",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,
@@ -464,6 +473,7 @@
     },
     {
       "name": "CompuRationalCoeffs",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,
@@ -506,6 +516,7 @@
     },
     {
       "name": "CompuConst",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,
@@ -543,6 +554,7 @@
     },
     {
       "name": "CompuConstContent",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": true,
       "atp_type": null,
@@ -578,6 +590,7 @@
     },
     {
       "name": "CompuScaleRationalFormula",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,
@@ -614,6 +627,7 @@
     },
     {
       "name": "CompuScaleConstantContents",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,
@@ -650,6 +664,7 @@
     },
     {
       "name": "CompuNominatorDenominator",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,
@@ -687,6 +702,7 @@
     },
     {
       "name": "CompuConstFormulaContent",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,

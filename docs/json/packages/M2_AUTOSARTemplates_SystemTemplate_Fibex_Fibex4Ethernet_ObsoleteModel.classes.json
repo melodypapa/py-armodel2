@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SoAdRoutingGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::ObsoleteModel",
       "is_abstract": false,
       "atp_type": null,
@@ -44,6 +45,7 @@
     },
     {
       "name": "SocketConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::ObsoleteModel",
       "is_abstract": false,
       "atp_type": null,

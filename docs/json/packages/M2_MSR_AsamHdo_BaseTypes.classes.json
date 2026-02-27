@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SwBaseType",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::BaseTypes",
       "is_abstract": false,
       "atp_type": null,
@@ -70,6 +71,7 @@
     },
     {
       "name": "BaseType",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::BaseTypes",
       "is_abstract": true,
       "atp_type": null,
@@ -127,6 +129,7 @@
     },
     {
       "name": "BaseTypeDirectDefinition",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::BaseTypes",
       "is_abstract": false,
       "atp_type": null,
@@ -209,6 +212,7 @@
     },
     {
       "name": "BaseTypeDefinition",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::BaseTypes",
       "is_abstract": true,
       "atp_type": null,

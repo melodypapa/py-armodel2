@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "MixedContentForLongName",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextModel",
       "is_abstract": true,
       "atp_type": "atpMixedString",
@@ -67,6 +68,7 @@
     },
     {
       "name": "MixedContentForParagraph",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextModel",
       "is_abstract": true,
       "atp_type": "atpMixedString",
@@ -187,6 +189,7 @@
     },
     {
       "name": "MixedContentForOverviewParagraph",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextModel",
       "is_abstract": true,
       "atp_type": "atpMixedString",
@@ -286,6 +289,7 @@
     },
     {
       "name": "MixedContentForVerbatim",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextModel",
       "is_abstract": true,
       "atp_type": "atpMixedString",
@@ -330,7 +334,7 @@
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This represents a technical term in verbatim. Note that it\u2019s"
+          "note": "This represents a technical term in verbatim. Note that it’s"
         },
         "xref": {
           "type": "Xref",
@@ -343,6 +347,7 @@
     },
     {
       "name": "MixedContentForPlainText",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextModel",
       "is_abstract": true,
       "atp_type": "atpMixedString",
@@ -371,6 +376,7 @@
     },
     {
       "name": "MixedContentForUnitNames",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextModel",
       "is_abstract": true,
       "atp_type": "atpMixedString",
@@ -385,7 +391,7 @@
       "aggregated_by": [],
       "implements": [],
       "implemented_by": [],
-      "note": "This is the text model for items with subscript and superscripts such as measurement unit designations. It is intended, that such models can easily be transcribed to a plain text model either by using appropriate characters or by transcribing like m\u02c62.",
+      "note": "This is the text model for items with subscript and superscripts such as measurement unit designations. It is intended, that such models can easily be transcribed to a plain text model either by using appropriate characters or by transcribing like mˆ2.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",

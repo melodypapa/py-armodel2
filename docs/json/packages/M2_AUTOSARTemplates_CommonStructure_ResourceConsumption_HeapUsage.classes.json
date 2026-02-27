@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "HeapUsage",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::HeapUsage",
       "is_abstract": true,
       "atp_type": null,
@@ -69,6 +70,7 @@
     },
     {
       "name": "WorstCaseHeapUsage",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::HeapUsage",
       "is_abstract": false,
       "atp_type": null,
@@ -108,6 +110,7 @@
     },
     {
       "name": "MeasuredHeapUsage",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::HeapUsage",
       "is_abstract": false,
       "atp_type": null,
@@ -168,6 +171,7 @@
     },
     {
       "name": "RoughEstimateHeapUsage",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::HeapUsage",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "TimingConstraint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint",
       "is_abstract": true,
       "atp_type": null,

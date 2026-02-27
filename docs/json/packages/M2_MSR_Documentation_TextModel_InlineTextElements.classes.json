@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Br",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
       "is_abstract": false,
       "atp_type": null,
@@ -32,6 +33,7 @@
     },
     {
       "name": "EmphasisText",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -104,6 +106,7 @@
     },
     {
       "name": "IndexEntry",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
       "is_abstract": false,
       "atp_type": "atpMixedString",
@@ -148,6 +151,7 @@
     },
     {
       "name": "Std",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
       "is_abstract": false,
       "atp_type": null,
@@ -213,6 +217,7 @@
     },
     {
       "name": "Tt",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
       "is_abstract": false,
       "atp_type": null,
@@ -266,6 +271,7 @@
     },
     {
       "name": "Xdoc",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
       "is_abstract": false,
       "atp_type": null,
@@ -338,6 +344,7 @@
     },
     {
       "name": "Xfile",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
       "is_abstract": false,
       "atp_type": null,
@@ -389,6 +396,7 @@
     },
     {
       "name": "Xref",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
       "is_abstract": false,
       "atp_type": null,
@@ -469,7 +477,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Indicates if the Number of the referenced resource shall be shown. Default is \"SHOW\u2013NUMBER\""
+          "note": "Indicates if the Number of the referenced resource shall be shown. Default is \"SHOW–NUMBER\""
         },
         "showResourcePage": {
           "type": "ShowResourcePageEnum",
@@ -496,6 +504,7 @@
     },
     {
       "name": "XrefTarget",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
       "is_abstract": false,
       "atp_type": null,

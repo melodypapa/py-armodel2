@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SwCalprmAxisSet",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::CalibrationParameter",
       "is_abstract": false,
       "atp_type": null,
@@ -38,6 +39,7 @@
     },
     {
       "name": "SwCalprmAxis",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::CalibrationParameter",
       "is_abstract": false,
       "atp_type": null,
@@ -101,6 +103,7 @@
     },
     {
       "name": "SwCalprmAxisTypeProps",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::CalibrationParameter",
       "is_abstract": true,
       "atp_type": null,

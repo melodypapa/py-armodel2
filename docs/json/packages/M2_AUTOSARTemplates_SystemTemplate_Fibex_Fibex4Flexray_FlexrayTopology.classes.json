@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "FlexrayCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Flexray::FlexrayTopology",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -273,6 +274,7 @@
     },
     {
       "name": "FlexrayCommunicationController",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Flexray::FlexrayTopology",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -509,6 +511,7 @@
     },
     {
       "name": "FlexrayFifoConfiguration",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Flexray::FlexrayTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -593,6 +596,7 @@
     },
     {
       "name": "FlexrayFifoRange",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Flexray::FlexrayTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -635,6 +639,7 @@
     },
     {
       "name": "FlexrayCommunicationConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Flexray::FlexrayTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -682,6 +687,7 @@
     },
     {
       "name": "FlexrayPhysicalChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Flexray::FlexrayTopology",
       "is_abstract": false,
       "atp_type": null,

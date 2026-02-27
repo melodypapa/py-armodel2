@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "HwElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -77,6 +78,7 @@
     },
     {
       "name": "HwDescriptionEntity",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate",
       "is_abstract": true,
       "atp_type": null,
@@ -140,6 +142,7 @@
     },
     {
       "name": "HwPinGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -186,6 +189,7 @@
     },
     {
       "name": "HwPinGroupContent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate",
       "is_abstract": false,
       "atp_type": "atpMixed",
@@ -228,6 +232,7 @@
     },
     {
       "name": "HwPin",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -281,6 +286,7 @@
     },
     {
       "name": "HwElementConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -331,6 +337,7 @@
     },
     {
       "name": "HwPinGroupConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -374,6 +381,7 @@
     },
     {
       "name": "HwPinConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate",
       "is_abstract": false,
       "atp_type": null,

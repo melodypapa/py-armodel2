@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Chapter",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::Chapters",
       "is_abstract": false,
       "atp_type": null,
@@ -66,6 +67,7 @@
     },
     {
       "name": "ChapterModel",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::Chapters",
       "is_abstract": false,
       "atp_type": null,
@@ -122,6 +124,7 @@
     },
     {
       "name": "ChapterContent",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::Chapters",
       "is_abstract": false,
       "atp_type": "atpMixed",
@@ -164,6 +167,7 @@
     },
     {
       "name": "PredefinedChapter",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::Chapters",
       "is_abstract": false,
       "atp_type": null,
@@ -199,6 +203,7 @@
     },
     {
       "name": "Topic1",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::Chapters",
       "is_abstract": false,
       "atp_type": null,
@@ -247,6 +252,7 @@
     },
     {
       "name": "TopicContentOrMsrQuery",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::Chapters",
       "is_abstract": false,
       "atp_type": "atpMixed",
@@ -290,6 +296,7 @@
     },
     {
       "name": "TopicOrMsrQuery",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::Chapters",
       "is_abstract": false,
       "atp_type": "atpMixed",
@@ -332,6 +339,7 @@
     },
     {
       "name": "ChapterOrMsrQuery",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::Chapters",
       "is_abstract": false,
       "atp_type": "atpMixed",
@@ -374,6 +382,7 @@
     },
     {
       "name": "TopicContent",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::Chapters",
       "is_abstract": false,
       "atp_type": "atpMixed",

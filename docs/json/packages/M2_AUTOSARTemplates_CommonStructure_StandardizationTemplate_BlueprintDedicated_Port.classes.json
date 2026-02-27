@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "PortPrototypeBlueprint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::BlueprintDedicated::Port",
       "is_abstract": false,
       "atp_type": null,
@@ -56,6 +57,7 @@
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "This specifies the init values for the dataElements in the PortPrototypeBlueprint."
         },
         "interface": {
@@ -83,6 +85,7 @@
     },
     {
       "name": "PortPrototypeBlueprintInitValue",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::BlueprintDedicated::Port",
       "is_abstract": false,
       "atp_type": null,

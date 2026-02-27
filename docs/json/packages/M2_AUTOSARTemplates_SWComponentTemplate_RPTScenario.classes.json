@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "RptImplPolicy",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::RPTScenario",
       "is_abstract": false,
       "atp_type": null,
@@ -54,6 +55,7 @@
     },
     {
       "name": "RptExecutableEntityProperties",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::RPTScenario",
       "is_abstract": false,
       "atp_type": null,
@@ -117,6 +119,7 @@
     },
     {
       "name": "RapidPrototypingScenario",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::RPTScenario",
       "is_abstract": false,
       "atp_type": null,
@@ -185,6 +188,7 @@
     },
     {
       "name": "IdentCaption",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::RPTScenario",
       "is_abstract": true,
       "atp_type": null,
@@ -235,6 +239,7 @@
     },
     {
       "name": "RptContainer",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::RPTScenario",
       "is_abstract": false,
       "atp_type": null,
@@ -316,6 +321,7 @@
     },
     {
       "name": "RptHook",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::RPTScenario",
       "is_abstract": false,
       "atp_type": null,
@@ -372,6 +378,7 @@
     },
     {
       "name": "ModeAccessPointIdent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::RPTScenario",
       "is_abstract": false,
       "atp_type": null,
@@ -409,6 +416,7 @@
     },
     {
       "name": "ExternalTriggeringPointIdent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::RPTScenario",
       "is_abstract": false,
       "atp_type": null,
@@ -446,6 +454,7 @@
     },
     {
       "name": "RptProfile",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::RPTScenario",
       "is_abstract": false,
       "atp_type": null,

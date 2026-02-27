@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SignalServiceTranslationProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::SignalServiceTranslation",
       "is_abstract": false,
       "atp_type": null,
@@ -81,6 +82,7 @@
     },
     {
       "name": "SignalServiceTranslationPropsSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::SignalServiceTranslation",
       "is_abstract": false,
       "atp_type": null,
@@ -124,6 +126,7 @@
     },
     {
       "name": "SignalServiceTranslationEventProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::SignalServiceTranslation",
       "is_abstract": false,
       "atp_type": null,
@@ -183,6 +186,7 @@
     },
     {
       "name": "SignalServiceTranslationElementProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::SignalServiceTranslation",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "CommunicationCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "is_abstract": true,
       "atp_type": "atpVariation",
@@ -87,6 +88,7 @@
     },
     {
       "name": "EcuInstance",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -321,6 +323,7 @@
     },
     {
       "name": "PhysicalChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "is_abstract": true,
       "atp_type": null,
@@ -411,6 +414,7 @@
     },
     {
       "name": "ClientIdRange",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -453,6 +457,7 @@
     },
     {
       "name": "CommunicationController",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "is_abstract": true,
       "atp_type": "atpVariation",
@@ -498,6 +503,7 @@
     },
     {
       "name": "CommunicationConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "is_abstract": true,
       "atp_type": null,
@@ -590,6 +596,7 @@
     },
     {
       "name": "CommConnectorPort",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "is_abstract": true,
       "atp_type": null,
@@ -636,6 +643,7 @@
     },
     {
       "name": "CommunicationCycle",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "is_abstract": true,
       "atp_type": null,
@@ -670,6 +678,7 @@
     },
     {
       "name": "CycleCounter",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -707,6 +716,7 @@
     },
     {
       "name": "CycleRepetition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "is_abstract": false,
       "atp_type": null,

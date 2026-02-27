@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticInhibitSourceEventMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::FimMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -60,6 +61,7 @@
     },
     {
       "name": "DiagnosticFimAliasEventGroupMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::FimMapping",
       "is_abstract": false,
       "atp_type": null,

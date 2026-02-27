@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticOperationCycle",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticOperationCycle",
       "is_abstract": false,
       "atp_type": null,

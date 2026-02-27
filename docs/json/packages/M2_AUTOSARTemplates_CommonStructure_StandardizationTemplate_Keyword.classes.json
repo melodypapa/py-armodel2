@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Keyword",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::Keyword",
       "is_abstract": false,
       "atp_type": null,
@@ -54,6 +55,7 @@
     },
     {
       "name": "KeywordSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::Keyword",
       "is_abstract": false,
       "atp_type": null,

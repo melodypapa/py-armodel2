@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "McGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::McGroups",
       "is_abstract": false,
       "atp_type": null,
@@ -71,6 +72,7 @@
     },
     {
       "name": "McGroupDataRefSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::McGroups",
       "is_abstract": false,
       "atp_type": "atpVariation",

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ImplementationDataType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ImplementationDataTypes",
       "is_abstract": false,
       "atp_type": null,
@@ -121,6 +122,7 @@
     },
     {
       "name": "ImplementationDataTypeElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ImplementationDataTypes",
       "is_abstract": false,
       "atp_type": null,
@@ -219,6 +221,7 @@
     },
     {
       "name": "AbstractImplementationDataType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ImplementationDataTypes",
       "is_abstract": true,
       "atp_type": null,
@@ -268,6 +271,7 @@
     },
     {
       "name": "AbstractImplementationDataTypeElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ImplementationDataTypes",
       "is_abstract": true,
       "atp_type": null,

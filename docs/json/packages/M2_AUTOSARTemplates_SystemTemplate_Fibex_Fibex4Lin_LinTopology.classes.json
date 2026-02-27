@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "LinCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinTopology",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -41,6 +42,7 @@
     },
     {
       "name": "LinCommunicationController",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinTopology",
       "is_abstract": true,
       "atp_type": "atpVariation",
@@ -84,6 +86,7 @@
     },
     {
       "name": "LinMaster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinTopology",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -140,6 +143,7 @@
     },
     {
       "name": "LinSlaveConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -238,6 +242,7 @@
     },
     {
       "name": "LinSlaveConfigIdent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -266,6 +271,7 @@
     },
     {
       "name": "LinSlave",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinTopology",
       "is_abstract": false,
       "atp_type": "atpVariation",
@@ -357,6 +363,7 @@
     },
     {
       "name": "LinCommunicationConnector",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -418,6 +425,7 @@
     },
     {
       "name": "LinConfigurableFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -461,6 +469,7 @@
     },
     {
       "name": "LinOrderedConfigurableFrame",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinTopology",
       "is_abstract": false,
       "atp_type": null,
@@ -504,6 +513,7 @@
     },
     {
       "name": "LinPhysicalChannel",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinTopology",
       "is_abstract": false,
       "atp_type": null,

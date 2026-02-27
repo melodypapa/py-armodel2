@@ -61,9 +61,9 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize grouped_alia_refs (list to container "GROUPED-ALIA-REFS")
+        # Serialize grouped_alia_refs (list to container "GROUPED-ALIAS-REFS")
         if self.grouped_alia_refs:
-            wrapper = ET.Element("GROUPED-ALIA-REFS")
+            wrapper = ET.Element("GROUPED-ALIAS-REFS")
             for item in self.grouped_alia_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -93,9 +93,9 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticFimAliasEventGroup, cls).deserialize(element)
 
-        # Parse grouped_alia_refs (list from container "GROUPED-ALIA-REFS")
+        # Parse grouped_alia_refs (list from container "GROUPED-ALIAS-REFS")
         obj.grouped_alia_refs = []
-        container = SerializationHelper.find_child_element(element, "GROUPED-ALIA-REFS")
+        container = SerializationHelper.find_child_element(element, "GROUPED-ALIAS-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

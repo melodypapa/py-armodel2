@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::DiagnosticConnection",
       "is_abstract": false,
       "atp_type": null,
@@ -78,6 +79,7 @@
     },
     {
       "name": "TpConnectionIdent",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::DiagnosticConnection",
       "is_abstract": false,
       "atp_type": null,
@@ -112,6 +114,7 @@
     },
     {
       "name": "DoIpTpConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::DiagnosticConnection",
       "is_abstract": false,
       "atp_type": null,
@@ -162,6 +165,7 @@
     },
     {
       "name": "TpConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::DiagnosticConnection",
       "is_abstract": true,
       "atp_type": null,

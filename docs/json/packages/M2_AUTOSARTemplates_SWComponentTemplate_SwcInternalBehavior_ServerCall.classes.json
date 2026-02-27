@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "AsynchronousServerCallResultPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServerCall",
       "is_abstract": false,
       "atp_type": null,
@@ -53,6 +54,7 @@
     },
     {
       "name": "ServerCallPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServerCall",
       "is_abstract": true,
       "atp_type": null,
@@ -122,6 +124,7 @@
     },
     {
       "name": "SynchronousServerCallPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServerCall",
       "is_abstract": false,
       "atp_type": null,
@@ -173,6 +176,7 @@
     },
     {
       "name": "AsynchronousServerCallPoint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServerCall",
       "is_abstract": false,
       "atp_type": null,

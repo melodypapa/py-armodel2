@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticContributionSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticContribution",
       "is_abstract": false,
       "atp_type": null,
@@ -58,6 +59,7 @@
     },
     {
       "name": "DiagnosticProtocol",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticContribution",
       "is_abstract": false,
       "atp_type": null,
@@ -128,6 +130,7 @@
     },
     {
       "name": "DiagnosticServiceTable",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticContribution",
       "is_abstract": false,
       "atp_type": null,
@@ -191,6 +194,7 @@
     },
     {
       "name": "DiagnosticEcuInstanceProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticContribution",
       "is_abstract": false,
       "atp_type": null,

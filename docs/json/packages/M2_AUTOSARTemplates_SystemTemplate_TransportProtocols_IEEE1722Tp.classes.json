@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "IEEE1722TpConfig",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp",
       "is_abstract": false,
       "atp_type": null,
@@ -45,6 +46,7 @@
     },
     {
       "name": "IEEE1722TpConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp",
       "is_abstract": true,
       "atp_type": null,
@@ -127,6 +129,7 @@
     },
     {
       "name": "IEEE1722TpAvConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp",
       "is_abstract": true,
       "atp_type": null,
@@ -186,6 +189,7 @@
     },
     {
       "name": "IEEE1722TpAcfConnection",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp",
       "is_abstract": false,
       "atp_type": null,

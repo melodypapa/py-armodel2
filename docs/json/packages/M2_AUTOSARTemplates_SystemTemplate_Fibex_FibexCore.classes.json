@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "FibexElement",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore",
       "is_abstract": true,
       "atp_type": null,

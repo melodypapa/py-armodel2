@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "McSupportData",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -72,6 +73,7 @@
     },
     {
       "name": "McDataInstance",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -195,6 +197,7 @@
     },
     {
       "name": "McSwEmulationMethodSupport",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -258,6 +261,7 @@
     },
     {
       "name": "McParameterElementGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -307,6 +311,7 @@
     },
     {
       "name": "ImplementationElementInParameterInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -349,6 +354,7 @@
     },
     {
       "name": "McFunction",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -425,6 +431,7 @@
     },
     {
       "name": "McDataAccessDetails",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -467,6 +474,7 @@
     },
     {
       "name": "RoleBasedMcDataAssignment",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,

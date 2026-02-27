@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticTroubleCodeUds",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "is_abstract": false,
       "atp_type": null,
@@ -95,6 +96,7 @@
     },
     {
       "name": "DiagnosticTroubleCodeObd",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "is_abstract": false,
       "atp_type": null,
@@ -159,6 +161,7 @@
     },
     {
       "name": "EventObdReadinessGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "is_abstract": false,
       "atp_type": null,
@@ -195,6 +198,7 @@
     },
     {
       "name": "DiagnosticTroubleCode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "is_abstract": true,
       "atp_type": null,
@@ -237,6 +241,7 @@
     },
     {
       "name": "DiagnosticTroubleCodeGroup",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "is_abstract": false,
       "atp_type": null,
@@ -286,6 +291,7 @@
     },
     {
       "name": "DiagnosticTroubleCodeProps",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "is_abstract": false,
       "atp_type": null,
@@ -391,6 +397,7 @@
     },
     {
       "name": "DiagnosticDataIdentifierSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "is_abstract": false,
       "atp_type": null,
@@ -433,6 +440,7 @@
     },
     {
       "name": "DiagnosticTroubleCodeJ1939",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "is_abstract": false,
       "atp_type": null,

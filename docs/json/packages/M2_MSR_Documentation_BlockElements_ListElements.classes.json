@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ARList",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::ListElements",
       "is_abstract": false,
       "atp_type": null,
@@ -49,6 +50,7 @@
     },
     {
       "name": "Item",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::ListElements",
       "is_abstract": false,
       "atp_type": null,
@@ -86,6 +88,7 @@
     },
     {
       "name": "LabeledList",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::ListElements",
       "is_abstract": false,
       "atp_type": null,
@@ -130,6 +133,7 @@
     },
     {
       "name": "LabeledItem",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::ListElements",
       "is_abstract": false,
       "atp_type": null,
@@ -181,6 +185,7 @@
     },
     {
       "name": "IndentSample",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::ListElements",
       "is_abstract": false,
       "atp_type": null,
@@ -223,6 +228,7 @@
     },
     {
       "name": "DefList",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::ListElements",
       "is_abstract": false,
       "atp_type": null,
@@ -260,6 +266,7 @@
     },
     {
       "name": "DefItem",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::ListElements",
       "is_abstract": false,
       "atp_type": null,

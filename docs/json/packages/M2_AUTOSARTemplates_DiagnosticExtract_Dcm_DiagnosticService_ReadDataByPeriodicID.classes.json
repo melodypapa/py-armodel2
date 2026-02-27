@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "DiagnosticReadDataByPeriodicID",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::ReadDataByPeriodicID",
       "is_abstract": false,
       "atp_type": null,
@@ -46,6 +47,7 @@
     },
     {
       "name": "DiagnosticReadDataByPeriodicIDClass",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::ReadDataByPeriodicID",
       "is_abstract": false,
       "atp_type": null,
@@ -103,6 +105,7 @@
     },
     {
       "name": "DiagnosticPeriodicRate",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::ReadDataByPeriodicID",
       "is_abstract": false,
       "atp_type": null,

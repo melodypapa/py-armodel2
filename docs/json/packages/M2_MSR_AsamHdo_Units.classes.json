@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "Unit",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::Units",
       "is_abstract": false,
       "atp_type": null,
@@ -83,6 +84,7 @@
     },
     {
       "name": "UnitGroup",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::Units",
       "is_abstract": false,
       "atp_type": null,
@@ -130,6 +132,7 @@
     },
     {
       "name": "PhysicalDimension",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::Units",
       "is_abstract": false,
       "atp_type": null,
@@ -213,6 +216,7 @@
     },
     {
       "name": "PhysicalDimensionMapping",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::Units",
       "is_abstract": false,
       "atp_type": null,
@@ -255,6 +259,7 @@
     },
     {
       "name": "PhysicalDimensionMappingSet",
+      "maturity": "draft",
       "package": "M2::MSR::AsamHdo::Units",
       "is_abstract": false,
       "atp_type": null,

@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "System",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -172,6 +173,7 @@
     },
     {
       "name": "RootSwCompositionPrototype",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -246,6 +248,7 @@
     },
     {
       "name": "ClientIdDefinitionSet",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -287,6 +290,7 @@
     },
     {
       "name": "ClientIdDefinition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -332,6 +336,7 @@
     },
     {
       "name": "SystemMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -531,6 +536,7 @@
     },
     {
       "name": "ComManagementMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -576,6 +582,7 @@
     },
     {
       "name": "J1939SharedAddressCluster",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate",
       "is_abstract": false,
       "atp_type": null,
@@ -614,6 +621,7 @@
     },
     {
       "name": "PortElementToCommunicationResourceMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate",
       "is_abstract": false,
       "atp_type": null,

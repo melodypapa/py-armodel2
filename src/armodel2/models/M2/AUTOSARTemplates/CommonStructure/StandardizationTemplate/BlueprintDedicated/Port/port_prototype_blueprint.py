@@ -10,6 +10,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Standardizat
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import polymorphic
 
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -42,17 +43,28 @@ class PortPrototypeBlueprint(ARElement):
         """
         return False
 
-    init_value_refs: list[ARRef]
+    _init_value_refs: list[ARRef]
     interface_ref: ARRef
     provided_coms: list[PPortComSpec]
     required_coms: list[RPortComSpec]
     def __init__(self) -> None:
         """Initialize PortPrototypeBlueprint."""
         super().__init__()
-        self.init_value_refs: list[ARRef] = []
+        self._init_value_refs: list[ARRef] = []
         self.interface_ref: ARRef = None
         self.provided_coms: list[PPortComSpec] = []
         self.required_coms: list[RPortComSpec] = []
+    @property
+    @polymorphic({"INIT-VALUE": "ValueSpecification"})
+    def init_value_refs(self) -> list[ARRef]:
+        """Get init_value_refs with polymorphic wrapper handling."""
+        return self._init_value_refs
+
+    @init_value_refs.setter
+    def init_value_refs(self, value: list[ARRef]) -> None:
+        """Set init_value_refs with polymorphic wrapper handling."""
+        self._init_value_refs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize PortPrototypeBlueprint to XML element.

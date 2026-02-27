@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "ParameterInAtomicSWCTypeInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -68,6 +69,7 @@
     },
     {
       "name": "VariableInAtomicSWCTypeInstanceRef",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,

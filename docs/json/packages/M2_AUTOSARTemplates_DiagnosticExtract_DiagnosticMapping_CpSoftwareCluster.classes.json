@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "CpSwClusterToDiagEventMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::CpSoftwareCluster",
       "is_abstract": false,
       "atp_type": null,
@@ -53,6 +54,7 @@
     },
     {
       "name": "CpSwClusterResourceToDiagDataElemMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::CpSoftwareCluster",
       "is_abstract": false,
       "atp_type": null,
@@ -103,6 +105,7 @@
     },
     {
       "name": "CpSwClusterToDiagRoutineSubfunctionMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::CpSoftwareCluster",
       "is_abstract": false,
       "atp_type": null,
@@ -153,6 +156,7 @@
     },
     {
       "name": "CpSwClusterResourceToDiagFunctionIdMapping",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::CpSoftwareCluster",
       "is_abstract": false,
       "atp_type": null,

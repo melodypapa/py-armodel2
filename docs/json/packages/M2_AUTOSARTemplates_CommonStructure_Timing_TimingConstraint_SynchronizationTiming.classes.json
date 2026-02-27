@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "SynchronizationTimingConstraint",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::SynchronizationTiming",
       "is_abstract": false,
       "atp_type": null,
