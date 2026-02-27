@@ -65,9 +65,9 @@ class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize destination_refs (list to container "DESTINATIONS")
+        # Serialize destination_refs (list to container "DESTINATION-REFS")
         if self.destination_refs:
-            wrapper = ET.Element("DESTINATIONS")
+            wrapper = ET.Element("DESTINATION-REFS")
             for item in self.destination_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucContainerDef")
                 if serialized is not None:
@@ -97,9 +97,9 @@ class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucChoiceReferenceDef, cls).deserialize(element)
 
-        # Parse destination_refs (list from container "DESTINATIONS")
+        # Parse destination_refs (list from container "DESTINATION-REFS")
         obj.destination_refs = []
-        container = SerializationHelper.find_child_element(element, "DESTINATIONS")
+        container = SerializationHelper.find_child_element(element, "DESTINATION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

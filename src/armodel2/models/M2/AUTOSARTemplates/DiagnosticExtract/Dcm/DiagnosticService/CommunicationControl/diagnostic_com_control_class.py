@@ -73,9 +73,9 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize all_channel_refs (list to container "ALL-CHANNELSS")
+        # Serialize all_channel_refs (list to container "ALL-CHANNELS-REFS")
         if self.all_channel_refs:
-            wrapper = ET.Element("ALL-CHANNELSS")
+            wrapper = ET.Element("ALL-CHANNELS-REFS")
             for item in self.all_channel_refs:
                 serialized = SerializationHelper.serialize_item(item, "CommunicationCluster")
                 if serialized is not None:
@@ -90,9 +90,9 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize all_physical_refs (list to container "ALL-PHYSICALS")
+        # Serialize all_physical_refs (list to container "ALL-PHYSICAL-REFS")
         if self.all_physical_refs:
-            wrapper = ET.Element("ALL-PHYSICALS")
+            wrapper = ET.Element("ALL-PHYSICAL-REFS")
             for item in self.all_physical_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -142,9 +142,9 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticComControlClass, cls).deserialize(element)
 
-        # Parse all_channel_refs (list from container "ALL-CHANNELSS")
+        # Parse all_channel_refs (list from container "ALL-CHANNELS-REFS")
         obj.all_channel_refs = []
-        container = SerializationHelper.find_child_element(element, "ALL-CHANNELSS")
+        container = SerializationHelper.find_child_element(element, "ALL-CHANNELS-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -158,9 +158,9 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
                 if child_value is not None:
                     obj.all_channel_refs.append(child_value)
 
-        # Parse all_physical_refs (list from container "ALL-PHYSICALS")
+        # Parse all_physical_refs (list from container "ALL-PHYSICAL-REFS")
         obj.all_physical_refs = []
-        container = SerializationHelper.find_child_element(element, "ALL-PHYSICALS")
+        container = SerializationHelper.find_child_element(element, "ALL-PHYSICAL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

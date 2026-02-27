@@ -188,9 +188,9 @@ class SocketAddress(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize multicast_refs (list to container "MULTICASTS")
+        # Serialize multicast_refs (list to container "MULTICAST-REFS")
         if self.multicast_refs:
-            wrapper = ET.Element("MULTICASTS")
+            wrapper = ET.Element("MULTICAST-REFS")
             for item in self.multicast_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -308,9 +308,9 @@ class SocketAddress(Identifiable):
             flow_label_value = child.text
             obj.flow_label = flow_label_value
 
-        # Parse multicast_refs (list from container "MULTICASTS")
+        # Parse multicast_refs (list from container "MULTICAST-REFS")
         obj.multicast_refs = []
-        container = SerializationHelper.find_child_element(element, "MULTICASTS")
+        container = SerializationHelper.find_child_element(element, "MULTICAST-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

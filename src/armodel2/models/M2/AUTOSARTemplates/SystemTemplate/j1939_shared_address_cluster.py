@@ -64,9 +64,9 @@ class J1939SharedAddressCluster(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize participating_refs (list to container "PARTICIPATINGS")
+        # Serialize participating_refs (list to container "PARTICIPATING-REFS")
         if self.participating_refs:
-            wrapper = ET.Element("PARTICIPATINGS")
+            wrapper = ET.Element("PARTICIPATING-REFS")
             for item in self.participating_refs:
                 serialized = SerializationHelper.serialize_item(item, "J1939Cluster")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class J1939SharedAddressCluster(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939SharedAddressCluster, cls).deserialize(element)
 
-        # Parse participating_refs (list from container "PARTICIPATINGS")
+        # Parse participating_refs (list from container "PARTICIPATING-REFS")
         obj.participating_refs = []
-        container = SerializationHelper.find_child_element(element, "PARTICIPATINGS")
+        container = SerializationHelper.find_child_element(element, "PARTICIPATING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

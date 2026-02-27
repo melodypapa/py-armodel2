@@ -65,9 +65,9 @@ class VariableAndParameterInterfaceMapping(PortInterfaceMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_mapping_refs (list to container "DATA-MAPPINGS")
+        # Serialize data_mapping_refs (list to container "DATA-MAPPING-REFS")
         if self.data_mapping_refs:
-            wrapper = ET.Element("DATA-MAPPINGS")
+            wrapper = ET.Element("DATA-MAPPING-REFS")
             for item in self.data_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataPrototypeMapping")
                 if serialized is not None:
@@ -97,9 +97,9 @@ class VariableAndParameterInterfaceMapping(PortInterfaceMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(VariableAndParameterInterfaceMapping, cls).deserialize(element)
 
-        # Parse data_mapping_refs (list from container "DATA-MAPPINGS")
+        # Parse data_mapping_refs (list from container "DATA-MAPPING-REFS")
         obj.data_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-MAPPINGS")
+        container = SerializationHelper.find_child_element(element, "DATA-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

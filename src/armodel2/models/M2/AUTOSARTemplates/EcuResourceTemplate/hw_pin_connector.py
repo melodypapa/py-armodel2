@@ -64,9 +64,9 @@ class HwPinConnector(Describable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize hw_pin_refs (list to container "HW-PINS")
+        # Serialize hw_pin_refs (list to container "HW-PIN-REFS")
         if self.hw_pin_refs:
-            wrapper = ET.Element("HW-PINS")
+            wrapper = ET.Element("HW-PIN-REFS")
             for item in self.hw_pin_refs:
                 serialized = SerializationHelper.serialize_item(item, "HwPin")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class HwPinConnector(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwPinConnector, cls).deserialize(element)
 
-        # Parse hw_pin_refs (list from container "HW-PINS")
+        # Parse hw_pin_refs (list from container "HW-PIN-REFS")
         obj.hw_pin_refs = []
-        container = SerializationHelper.find_child_element(element, "HW-PINS")
+        container = SerializationHelper.find_child_element(element, "HW-PIN-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -64,9 +64,9 @@ class GeneralPurposeConnection(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize pdu_triggering_refs (list to container "PDU-TRIGGERINGS")
+        # Serialize pdu_triggering_refs (list to container "PDU-TRIGGERING-REFS")
         if self.pdu_triggering_refs:
-            wrapper = ET.Element("PDU-TRIGGERINGS")
+            wrapper = ET.Element("PDU-TRIGGERING-REFS")
             for item in self.pdu_triggering_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class GeneralPurposeConnection(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GeneralPurposeConnection, cls).deserialize(element)
 
-        # Parse pdu_triggering_refs (list from container "PDU-TRIGGERINGS")
+        # Parse pdu_triggering_refs (list from container "PDU-TRIGGERING-REFS")
         obj.pdu_triggering_refs = []
-        container = SerializationHelper.find_child_element(element, "PDU-TRIGGERINGS")
+        container = SerializationHelper.find_child_element(element, "PDU-TRIGGERING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

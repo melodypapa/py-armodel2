@@ -69,9 +69,9 @@ class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ecu_instance_refs (list to container "ECU-INSTANCES")
+        # Serialize ecu_instance_refs (list to container "ECU-INSTANCE-REFS")
         if self.ecu_instance_refs:
-            wrapper = ET.Element("ECU-INSTANCES")
+            wrapper = ET.Element("ECU-INSTANCE-REFS")
             for item in self.ecu_instance_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcuInstance")
                 if serialized is not None:
@@ -115,9 +115,9 @@ class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEcuInstanceProps, cls).deserialize(element)
 
-        # Parse ecu_instance_refs (list from container "ECU-INSTANCES")
+        # Parse ecu_instance_refs (list from container "ECU-INSTANCE-REFS")
         obj.ecu_instance_refs = []
-        container = SerializationHelper.find_child_element(element, "ECU-INSTANCES")
+        container = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

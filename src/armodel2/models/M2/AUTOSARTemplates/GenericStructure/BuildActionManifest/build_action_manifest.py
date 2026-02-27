@@ -85,9 +85,9 @@ class BuildActionManifest(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize dynamic_action_refs (list to container "DYNAMIC-ACTIONS")
+        # Serialize dynamic_action_refs (list to container "DYNAMIC-ACTION-REFS")
         if self.dynamic_action_refs:
-            wrapper = ET.Element("DYNAMIC-ACTIONS")
+            wrapper = ET.Element("DYNAMIC-ACTION-REFS")
             for item in self.dynamic_action_refs:
                 serialized = SerializationHelper.serialize_item(item, "BuildAction")
                 if serialized is not None:
@@ -102,9 +102,9 @@ class BuildActionManifest(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize start_action_refs (list to container "START-ACTIONS")
+        # Serialize start_action_refs (list to container "START-ACTION-REFS")
         if self.start_action_refs:
-            wrapper = ET.Element("START-ACTIONS")
+            wrapper = ET.Element("START-ACTION-REFS")
             for item in self.start_action_refs:
                 serialized = SerializationHelper.serialize_item(item, "BuildAction")
                 if serialized is not None:
@@ -119,9 +119,9 @@ class BuildActionManifest(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize tear_down_action_refs (list to container "TEAR-DOWN-ACTIONS")
+        # Serialize tear_down_action_refs (list to container "TEAR-DOWN-ACTION-REFS")
         if self.tear_down_action_refs:
-            wrapper = ET.Element("TEAR-DOWN-ACTIONS")
+            wrapper = ET.Element("TEAR-DOWN-ACTION-REFS")
             for item in self.tear_down_action_refs:
                 serialized = SerializationHelper.serialize_item(item, "BuildAction")
                 if serialized is not None:
@@ -161,9 +161,9 @@ class BuildActionManifest(ARElement):
                 if child_value is not None:
                     obj.build_actions.append(child_value)
 
-        # Parse dynamic_action_refs (list from container "DYNAMIC-ACTIONS")
+        # Parse dynamic_action_refs (list from container "DYNAMIC-ACTION-REFS")
         obj.dynamic_action_refs = []
-        container = SerializationHelper.find_child_element(element, "DYNAMIC-ACTIONS")
+        container = SerializationHelper.find_child_element(element, "DYNAMIC-ACTION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -177,9 +177,9 @@ class BuildActionManifest(ARElement):
                 if child_value is not None:
                     obj.dynamic_action_refs.append(child_value)
 
-        # Parse start_action_refs (list from container "START-ACTIONS")
+        # Parse start_action_refs (list from container "START-ACTION-REFS")
         obj.start_action_refs = []
-        container = SerializationHelper.find_child_element(element, "START-ACTIONS")
+        container = SerializationHelper.find_child_element(element, "START-ACTION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -193,9 +193,9 @@ class BuildActionManifest(ARElement):
                 if child_value is not None:
                     obj.start_action_refs.append(child_value)
 
-        # Parse tear_down_action_refs (list from container "TEAR-DOWN-ACTIONS")
+        # Parse tear_down_action_refs (list from container "TEAR-DOWN-ACTION-REFS")
         obj.tear_down_action_refs = []
-        container = SerializationHelper.find_child_element(element, "TEAR-DOWN-ACTIONS")
+        container = SerializationHelper.find_child_element(element, "TEAR-DOWN-ACTION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

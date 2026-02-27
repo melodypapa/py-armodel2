@@ -79,9 +79,9 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize multiplicities (list to container "MULTIPLICITYS")
+        # Serialize multiplicities (list to container "MULTIPLICITIES")
         if self.multiplicities:
-            wrapper = ET.Element("MULTIPLICITYS")
+            wrapper = ET.Element("MULTIPLICITIES")
             for item in self.multiplicities:
                 serialized = SerializationHelper.serialize_item(item, "EcucMultiplicityConfigurationClass")
                 if serialized is not None:
@@ -156,9 +156,9 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucCommonAttributes, cls).deserialize(element)
 
-        # Parse multiplicities (list from container "MULTIPLICITYS")
+        # Parse multiplicities (list from container "MULTIPLICITIES")
         obj.multiplicities = []
-        container = SerializationHelper.find_child_element(element, "MULTIPLICITYS")
+        container = SerializationHelper.find_child_element(element, "MULTIPLICITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

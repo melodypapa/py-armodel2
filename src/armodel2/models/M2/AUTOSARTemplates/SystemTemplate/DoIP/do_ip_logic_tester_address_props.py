@@ -64,9 +64,9 @@ class DoIpLogicTesterAddressProps(AbstractDoIpLogicAddressProps):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize do_ip_tester_refs (list to container "DO-IP-TESTERS")
+        # Serialize do_ip_tester_refs (list to container "DO-IP-TESTER-REFS")
         if self.do_ip_tester_refs:
-            wrapper = ET.Element("DO-IP-TESTERS")
+            wrapper = ET.Element("DO-IP-TESTER-REFS")
             for item in self.do_ip_tester_refs:
                 serialized = SerializationHelper.serialize_item(item, "DoIpRoutingActivation")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class DoIpLogicTesterAddressProps(AbstractDoIpLogicAddressProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpLogicTesterAddressProps, cls).deserialize(element)
 
-        # Parse do_ip_tester_refs (list from container "DO-IP-TESTERS")
+        # Parse do_ip_tester_refs (list from container "DO-IP-TESTER-REFS")
         obj.do_ip_tester_refs = []
-        container = SerializationHelper.find_child_element(element, "DO-IP-TESTERS")
+        container = SerializationHelper.find_child_element(element, "DO-IP-TESTER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -83,9 +83,9 @@ class BulkNvDataDescriptor(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize nv_block_data_refs (list to container "NV-BLOCK-DATAS")
+        # Serialize nv_block_data_refs (list to container "NV-BLOCK-DATA-REFS")
         if self.nv_block_data_refs:
-            wrapper = ET.Element("NV-BLOCK-DATAS")
+            wrapper = ET.Element("NV-BLOCK-DATA-REFS")
             for item in self.nv_block_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "NvBlockDataMapping")
                 if serialized is not None:
@@ -121,9 +121,9 @@ class BulkNvDataDescriptor(Identifiable):
             bulk_nv_block_ref_value = ARRef.deserialize(child)
             obj.bulk_nv_block_ref = bulk_nv_block_ref_value
 
-        # Parse nv_block_data_refs (list from container "NV-BLOCK-DATAS")
+        # Parse nv_block_data_refs (list from container "NV-BLOCK-DATA-REFS")
         obj.nv_block_data_refs = []
-        container = SerializationHelper.find_child_element(element, "NV-BLOCK-DATAS")
+        container = SerializationHelper.find_child_element(element, "NV-BLOCK-DATA-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

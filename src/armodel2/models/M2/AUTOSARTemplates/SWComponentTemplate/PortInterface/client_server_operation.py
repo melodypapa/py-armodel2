@@ -108,9 +108,9 @@ class ClientServerOperation(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize possible_error_refs (list to container "POSSIBLE-ERRORS")
+        # Serialize possible_error_refs (list to container "POSSIBLE-ERROR-REFS")
         if self.possible_error_refs:
-            wrapper = ET.Element("POSSIBLE-ERRORS")
+            wrapper = ET.Element("POSSIBLE-ERROR-REFS")
             for item in self.possible_error_refs:
                 serialized = SerializationHelper.serialize_item(item, "ApplicationError")
                 if serialized is not None:
@@ -156,9 +156,9 @@ class ClientServerOperation(Identifiable):
             diag_arg_integrity_value = child.text
             obj.diag_arg_integrity = diag_arg_integrity_value
 
-        # Parse possible_error_refs (list from container "POSSIBLE-ERRORS")
+        # Parse possible_error_refs (list from container "POSSIBLE-ERROR-REFS")
         obj.possible_error_refs = []
-        container = SerializationHelper.find_child_element(element, "POSSIBLE-ERRORS")
+        container = SerializationHelper.find_child_element(element, "POSSIBLE-ERROR-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -64,9 +64,9 @@ class SecurityEventStateFilter(AbstractSecurityEventFilter):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize block_if_state_refs (list to container "BLOCK-IF-STATES")
+        # Serialize block_if_state_refs (list to container "BLOCK-IF-STATE-REFS")
         if self.block_if_state_refs:
-            wrapper = ET.Element("BLOCK-IF-STATES")
+            wrapper = ET.Element("BLOCK-IF-STATE-REFS")
             for item in self.block_if_state_refs:
                 serialized = SerializationHelper.serialize_item(item, "BlockState")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class SecurityEventStateFilter(AbstractSecurityEventFilter):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventStateFilter, cls).deserialize(element)
 
-        # Parse block_if_state_refs (list from container "BLOCK-IF-STATES")
+        # Parse block_if_state_refs (list from container "BLOCK-IF-STATE-REFS")
         obj.block_if_state_refs = []
-        container = SerializationHelper.find_child_element(element, "BLOCK-IF-STATES")
+        container = SerializationHelper.find_child_element(element, "BLOCK-IF-STATE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

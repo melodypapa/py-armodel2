@@ -83,9 +83,9 @@ class PduActivationRoutingGroup(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_pdu_identifier_refs (list to container "I-PDU-IDENTIFIERS")
+        # Serialize i_pdu_identifier_refs (list to container "I-PDU-IDENTIFIER-REFS")
         if self.i_pdu_identifier_refs:
-            wrapper = ET.Element("I-PDU-IDENTIFIERS")
+            wrapper = ET.Element("I-PDU-IDENTIFIER-REFS")
             for item in self.i_pdu_identifier_refs:
                 serialized = SerializationHelper.serialize_item(item, "SoConIPduIdentifier")
                 if serialized is not None:
@@ -121,9 +121,9 @@ class PduActivationRoutingGroup(Identifiable):
             event_group_ref_value = ARRef.deserialize(child)
             obj.event_group_ref = event_group_ref_value
 
-        # Parse i_pdu_identifier_refs (list from container "I-PDU-IDENTIFIERS")
+        # Parse i_pdu_identifier_refs (list from container "I-PDU-IDENTIFIER-REFS")
         obj.i_pdu_identifier_refs = []
-        container = SerializationHelper.find_child_element(element, "I-PDU-IDENTIFIERS")
+        container = SerializationHelper.find_child_element(element, "I-PDU-IDENTIFIER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

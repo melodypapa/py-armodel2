@@ -102,9 +102,9 @@ class AclPermission(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize acl_object_set_refs (list to container "ACL-OBJECT-SETS")
+        # Serialize acl_object_set_refs (list to container "ACL-OBJECT-SET-REFS")
         if self.acl_object_set_refs:
-            wrapper = ET.Element("ACL-OBJECT-SETS")
+            wrapper = ET.Element("ACL-OBJECT-SET-REFS")
             for item in self.acl_object_set_refs:
                 serialized = SerializationHelper.serialize_item(item, "AclObjectSet")
                 if serialized is not None:
@@ -119,9 +119,9 @@ class AclPermission(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize acl_operation_refs (list to container "ACL-OPERATIONS")
+        # Serialize acl_operation_refs (list to container "ACL-OPERATION-REFS")
         if self.acl_operation_refs:
-            wrapper = ET.Element("ACL-OPERATIONS")
+            wrapper = ET.Element("ACL-OPERATION-REFS")
             for item in self.acl_operation_refs:
                 serialized = SerializationHelper.serialize_item(item, "AclOperation")
                 if serialized is not None:
@@ -136,9 +136,9 @@ class AclPermission(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize acl_role_refs (list to container "ACL-ROLES")
+        # Serialize acl_role_refs (list to container "ACL-ROLE-REFS")
         if self.acl_role_refs:
-            wrapper = ET.Element("ACL-ROLES")
+            wrapper = ET.Element("ACL-ROLE-REFS")
             for item in self.acl_role_refs:
                 serialized = SerializationHelper.serialize_item(item, "AclRole")
                 if serialized is not None:
@@ -192,9 +192,9 @@ class AclPermission(ARElement):
                 if child_value is not None:
                     obj.acl_contexts.append(child_value)
 
-        # Parse acl_object_set_refs (list from container "ACL-OBJECT-SETS")
+        # Parse acl_object_set_refs (list from container "ACL-OBJECT-SET-REFS")
         obj.acl_object_set_refs = []
-        container = SerializationHelper.find_child_element(element, "ACL-OBJECT-SETS")
+        container = SerializationHelper.find_child_element(element, "ACL-OBJECT-SET-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -208,9 +208,9 @@ class AclPermission(ARElement):
                 if child_value is not None:
                     obj.acl_object_set_refs.append(child_value)
 
-        # Parse acl_operation_refs (list from container "ACL-OPERATIONS")
+        # Parse acl_operation_refs (list from container "ACL-OPERATION-REFS")
         obj.acl_operation_refs = []
-        container = SerializationHelper.find_child_element(element, "ACL-OPERATIONS")
+        container = SerializationHelper.find_child_element(element, "ACL-OPERATION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -224,9 +224,9 @@ class AclPermission(ARElement):
                 if child_value is not None:
                     obj.acl_operation_refs.append(child_value)
 
-        # Parse acl_role_refs (list from container "ACL-ROLES")
+        # Parse acl_role_refs (list from container "ACL-ROLE-REFS")
         obj.acl_role_refs = []
-        container = SerializationHelper.find_child_element(element, "ACL-ROLES")
+        container = SerializationHelper.find_child_element(element, "ACL-ROLE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

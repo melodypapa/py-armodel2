@@ -69,9 +69,9 @@ class CpSoftwareClusterResourcePool(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ecu_scope_refs (list to container "ECU-SCOPES")
+        # Serialize ecu_scope_refs (list to container "ECU-SCOPE-REFS")
         if self.ecu_scope_refs:
-            wrapper = ET.Element("ECU-SCOPES")
+            wrapper = ET.Element("ECU-SCOPE-REFS")
             for item in self.ecu_scope_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcuInstance")
                 if serialized is not None:
@@ -111,9 +111,9 @@ class CpSoftwareClusterResourcePool(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterResourcePool, cls).deserialize(element)
 
-        # Parse ecu_scope_refs (list from container "ECU-SCOPES")
+        # Parse ecu_scope_refs (list from container "ECU-SCOPE-REFS")
         obj.ecu_scope_refs = []
-        container = SerializationHelper.find_child_element(element, "ECU-SCOPES")
+        container = SerializationHelper.find_child_element(element, "ECU-SCOPE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -136,9 +136,9 @@ class PhysicalChannel(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize managed_physical_channel_refs (list to container "MANAGED-PHYSICAL-CHANNELS")
+        # Serialize managed_physical_channel_refs (list to container "MANAGED-PHYSICAL-CHANNEL-REFS")
         if self.managed_physical_channel_refs:
-            wrapper = ET.Element("MANAGED-PHYSICAL-CHANNELS")
+            wrapper = ET.Element("MANAGED-PHYSICAL-CHANNEL-REFS")
             for item in self.managed_physical_channel_refs:
                 serialized = SerializationHelper.serialize_item(item, "PhysicalChannel")
                 if serialized is not None:
@@ -214,9 +214,9 @@ class PhysicalChannel(Identifiable, ABC):
                 if child_value is not None:
                     obj.i_signal_triggerings.append(child_value)
 
-        # Parse managed_physical_channel_refs (list from container "MANAGED-PHYSICAL-CHANNELS")
+        # Parse managed_physical_channel_refs (list from container "MANAGED-PHYSICAL-CHANNEL-REFS")
         obj.managed_physical_channel_refs = []
-        container = SerializationHelper.find_child_element(element, "MANAGED-PHYSICAL-CHANNELS")
+        container = SerializationHelper.find_child_element(element, "MANAGED-PHYSICAL-CHANNEL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

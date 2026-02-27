@@ -98,9 +98,9 @@ class DataPrototypeInSystemInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_refs (list to container "CONTEXTS")
+        # Serialize context_refs (list to container "CONTEXT-REFS")
         if self.context_refs:
-            wrapper = ET.Element("CONTEXTS")
+            wrapper = ET.Element("CONTEXT-REFS")
             for item in self.context_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -115,9 +115,9 @@ class DataPrototypeInSystemInstanceRef(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize context_data_refs (list to container "CONTEXT-DATAS")
+        # Serialize context_data_refs (list to container "CONTEXT-DATA-REFS")
         if self.context_data_refs:
-            wrapper = ET.Element("CONTEXT-DATAS")
+            wrapper = ET.Element("CONTEXT-DATA-REFS")
             for item in self.context_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -209,9 +209,9 @@ class DataPrototypeInSystemInstanceRef(ARObject):
             base_ref_value = ARRef.deserialize(child)
             obj.base_ref = base_ref_value
 
-        # Parse context_refs (list from container "CONTEXTS")
+        # Parse context_refs (list from container "CONTEXT-REFS")
         obj.context_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXTS")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -225,9 +225,9 @@ class DataPrototypeInSystemInstanceRef(ARObject):
                 if child_value is not None:
                     obj.context_refs.append(child_value)
 
-        # Parse context_data_refs (list from container "CONTEXT-DATAS")
+        # Parse context_data_refs (list from container "CONTEXT-DATA-REFS")
         obj.context_data_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-DATAS")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-DATA-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

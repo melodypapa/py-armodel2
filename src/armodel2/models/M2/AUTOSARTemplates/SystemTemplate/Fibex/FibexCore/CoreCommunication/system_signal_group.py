@@ -66,9 +66,9 @@ class SystemSignalGroup(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize system_signal_refs (list to container "SYSTEM-SIGNALS")
+        # Serialize system_signal_refs (list to container "SYSTEM-SIGNAL-REFS")
         if self.system_signal_refs:
-            wrapper = ET.Element("SYSTEM-SIGNALS")
+            wrapper = ET.Element("SYSTEM-SIGNAL-REFS")
             for item in self.system_signal_refs:
                 serialized = SerializationHelper.serialize_item(item, "SystemSignal")
                 if serialized is not None:
@@ -112,9 +112,9 @@ class SystemSignalGroup(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SystemSignalGroup, cls).deserialize(element)
 
-        # Parse system_signal_refs (list from container "SYSTEM-SIGNALS")
+        # Parse system_signal_refs (list from container "SYSTEM-SIGNAL-REFS")
         obj.system_signal_refs = []
-        container = SerializationHelper.find_child_element(element, "SYSTEM-SIGNALS")
+        container = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

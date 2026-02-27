@@ -181,9 +181,9 @@ class CouplingPort(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mac_multicast_group_refs (list to container "MAC-MULTICAST-GROUPS")
+        # Serialize mac_multicast_group_refs (list to container "MAC-MULTICAST-GROUP-REFS")
         if self.mac_multicast_group_refs:
-            wrapper = ET.Element("MAC-MULTICAST-GROUPS")
+            wrapper = ET.Element("MAC-MULTICAST-GROUP-REFS")
             for item in self.mac_multicast_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "MacMulticastGroup")
                 if serialized is not None:
@@ -198,9 +198,9 @@ class CouplingPort(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mac_sec_propses (list to container "MAC-SEC-PROPSS")
+        # Serialize mac_sec_propses (list to container "MAC-SEC-PROPSES")
         if self.mac_sec_propses:
-            wrapper = ET.Element("MAC-SEC-PROPSS")
+            wrapper = ET.Element("MAC-SEC-PROPSES")
             for item in self.mac_sec_propses:
                 serialized = SerializationHelper.serialize_item(item, "MacSecProps")
                 if serialized is not None:
@@ -236,9 +236,9 @@ class CouplingPort(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize pnc_mapping_ident_refs (list to container "PNC-MAPPING-IDENTS")
+        # Serialize pnc_mapping_ident_refs (list to container "PNC-MAPPING-IDENT-REFS")
         if self.pnc_mapping_ident_refs:
-            wrapper = ET.Element("PNC-MAPPING-IDENTS")
+            wrapper = ET.Element("PNC-MAPPING-IDENT-REFS")
             for item in self.pnc_mapping_ident_refs:
                 serialized = SerializationHelper.serialize_item(item, "PncMappingIdent")
                 if serialized is not None:
@@ -350,9 +350,9 @@ class CouplingPort(Identifiable):
             mac_layer_type_enum_value = EthernetMacLayerTypeEnum.deserialize(child)
             obj.mac_layer_type_enum = mac_layer_type_enum_value
 
-        # Parse mac_multicast_group_refs (list from container "MAC-MULTICAST-GROUPS")
+        # Parse mac_multicast_group_refs (list from container "MAC-MULTICAST-GROUP-REFS")
         obj.mac_multicast_group_refs = []
-        container = SerializationHelper.find_child_element(element, "MAC-MULTICAST-GROUPS")
+        container = SerializationHelper.find_child_element(element, "MAC-MULTICAST-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -366,9 +366,9 @@ class CouplingPort(Identifiable):
                 if child_value is not None:
                     obj.mac_multicast_group_refs.append(child_value)
 
-        # Parse mac_sec_propses (list from container "MAC-SEC-PROPSS")
+        # Parse mac_sec_propses (list from container "MAC-SEC-PROPSES")
         obj.mac_sec_propses = []
-        container = SerializationHelper.find_child_element(element, "MAC-SEC-PROPSS")
+        container = SerializationHelper.find_child_element(element, "MAC-SEC-PROPSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -388,9 +388,9 @@ class CouplingPort(Identifiable):
             plca_props_value = SerializationHelper.deserialize_by_tag(child, "PlcaProps")
             obj.plca_props = plca_props_value
 
-        # Parse pnc_mapping_ident_refs (list from container "PNC-MAPPING-IDENTS")
+        # Parse pnc_mapping_ident_refs (list from container "PNC-MAPPING-IDENT-REFS")
         obj.pnc_mapping_ident_refs = []
-        container = SerializationHelper.find_child_element(element, "PNC-MAPPING-IDENTS")
+        container = SerializationHelper.find_child_element(element, "PNC-MAPPING-IDENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

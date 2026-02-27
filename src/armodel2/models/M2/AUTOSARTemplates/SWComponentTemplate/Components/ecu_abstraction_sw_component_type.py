@@ -67,9 +67,9 @@ class EcuAbstractionSwComponentType(AtomicSwComponentType):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize hardware_refs (list to container "HARDWARES")
+        # Serialize hardware_refs (list to container "HARDWARE-REFS")
         if self.hardware_refs:
-            wrapper = ET.Element("HARDWARES")
+            wrapper = ET.Element("HARDWARE-REFS")
             for item in self.hardware_refs:
                 serialized = SerializationHelper.serialize_item(item, "HwDescriptionEntity")
                 if serialized is not None:
@@ -99,9 +99,9 @@ class EcuAbstractionSwComponentType(AtomicSwComponentType):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcuAbstractionSwComponentType, cls).deserialize(element)
 
-        # Parse hardware_refs (list from container "HARDWARES")
+        # Parse hardware_refs (list from container "HARDWARE-REFS")
         obj.hardware_refs = []
-        container = SerializationHelper.find_child_element(element, "HARDWARES")
+        container = SerializationHelper.find_child_element(element, "HARDWARE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

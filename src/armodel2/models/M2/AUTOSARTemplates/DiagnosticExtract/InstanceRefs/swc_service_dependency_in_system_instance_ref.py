@@ -78,9 +78,9 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_sw_prototype_refs (list to container "CONTEXT-SW-PROTOTYPES")
+        # Serialize context_sw_prototype_refs (list to container "CONTEXT-SW-PROTOTYPE-REFS")
         if self.context_sw_prototype_refs:
-            wrapper = ET.Element("CONTEXT-SW-PROTOTYPES")
+            wrapper = ET.Element("CONTEXT-SW-PROTOTYPE-REFS")
             for item in self.context_sw_prototype_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -130,9 +130,9 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
             context_root_sw_ref_value = ARRef.deserialize(child)
             obj.context_root_sw_ref = context_root_sw_ref_value
 
-        # Parse context_sw_prototype_refs (list from container "CONTEXT-SW-PROTOTYPES")
+        # Parse context_sw_prototype_refs (list from container "CONTEXT-SW-PROTOTYPE-REFS")
         obj.context_sw_prototype_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-SW-PROTOTYPES")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-SW-PROTOTYPE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

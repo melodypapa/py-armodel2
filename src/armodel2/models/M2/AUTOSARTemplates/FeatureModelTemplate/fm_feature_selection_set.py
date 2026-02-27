@@ -71,9 +71,9 @@ class FMFeatureSelectionSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize feature_model_refs (list to container "FEATURE-MODELS")
+        # Serialize feature_model_refs (list to container "FEATURE-MODEL-REFS")
         if self.feature_model_refs:
-            wrapper = ET.Element("FEATURE-MODELS")
+            wrapper = ET.Element("FEATURE-MODEL-REFS")
             for item in self.feature_model_refs:
                 serialized = SerializationHelper.serialize_item(item, "FMFeatureModel")
                 if serialized is not None:
@@ -88,9 +88,9 @@ class FMFeatureSelectionSet(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize include_refs (list to container "INCLUDES")
+        # Serialize include_refs (list to container "INCLUDE-REFS")
         if self.include_refs:
-            wrapper = ET.Element("INCLUDES")
+            wrapper = ET.Element("INCLUDE-REFS")
             for item in self.include_refs:
                 serialized = SerializationHelper.serialize_item(item, "FMFeatureSelectionSet")
                 if serialized is not None:
@@ -130,9 +130,9 @@ class FMFeatureSelectionSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeatureSelectionSet, cls).deserialize(element)
 
-        # Parse feature_model_refs (list from container "FEATURE-MODELS")
+        # Parse feature_model_refs (list from container "FEATURE-MODEL-REFS")
         obj.feature_model_refs = []
-        container = SerializationHelper.find_child_element(element, "FEATURE-MODELS")
+        container = SerializationHelper.find_child_element(element, "FEATURE-MODEL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -146,9 +146,9 @@ class FMFeatureSelectionSet(ARElement):
                 if child_value is not None:
                     obj.feature_model_refs.append(child_value)
 
-        # Parse include_refs (list from container "INCLUDES")
+        # Parse include_refs (list from container "INCLUDE-REFS")
         obj.include_refs = []
-        container = SerializationHelper.find_child_element(element, "INCLUDES")
+        container = SerializationHelper.find_child_element(element, "INCLUDE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -101,9 +101,9 @@ class RptContainer(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize explicit_rpt_refs (list to container "EXPLICIT-RPTS")
+        # Serialize explicit_rpt_refs (list to container "EXPLICIT-RPT-REFS")
         if self.explicit_rpt_refs:
-            wrapper = ET.Element("EXPLICIT-RPTS")
+            wrapper = ET.Element("EXPLICIT-RPT-REFS")
             for item in self.explicit_rpt_refs:
                 serialized = SerializationHelper.serialize_item(item, "RptProfile")
                 if serialized is not None:
@@ -209,9 +209,9 @@ class RptContainer(Identifiable):
                 if child_value is not None:
                     obj.by_pass_points.append(child_value)
 
-        # Parse explicit_rpt_refs (list from container "EXPLICIT-RPTS")
+        # Parse explicit_rpt_refs (list from container "EXPLICIT-RPT-REFS")
         obj.explicit_rpt_refs = []
-        container = SerializationHelper.find_child_element(element, "EXPLICIT-RPTS")
+        container = SerializationHelper.find_child_element(element, "EXPLICIT-RPT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -62,9 +62,9 @@ class DiagnosticParameterElementAccess(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize context_element_refs (list to container "CONTEXT-ELEMENTS")
+        # Serialize context_element_refs (list to container "CONTEXT-ELEMENT-REFS")
         if self.context_element_refs:
-            wrapper = ET.Element("CONTEXT-ELEMENTS")
+            wrapper = ET.Element("CONTEXT-ELEMENT-REFS")
             for item in self.context_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticParameter")
                 if serialized is not None:
@@ -108,9 +108,9 @@ class DiagnosticParameterElementAccess(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticParameterElementAccess, cls).deserialize(element)
 
-        # Parse context_element_refs (list from container "CONTEXT-ELEMENTS")
+        # Parse context_element_refs (list from container "CONTEXT-ELEMENT-REFS")
         obj.context_element_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-ELEMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

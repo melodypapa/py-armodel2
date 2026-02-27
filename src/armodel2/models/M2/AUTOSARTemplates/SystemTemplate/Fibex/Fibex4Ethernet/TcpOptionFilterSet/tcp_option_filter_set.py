@@ -64,9 +64,9 @@ class TcpOptionFilterSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize tcp_option_filter_list_refs (list to container "TCP-OPTION-FILTER-LISTS")
+        # Serialize tcp_option_filter_list_refs (list to container "TCP-OPTION-FILTER-LIST-REFS")
         if self.tcp_option_filter_list_refs:
-            wrapper = ET.Element("TCP-OPTION-FILTER-LISTS")
+            wrapper = ET.Element("TCP-OPTION-FILTER-LIST-REFS")
             for item in self.tcp_option_filter_list_refs:
                 serialized = SerializationHelper.serialize_item(item, "TcpOptionFilterList")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class TcpOptionFilterSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TcpOptionFilterSet, cls).deserialize(element)
 
-        # Parse tcp_option_filter_list_refs (list from container "TCP-OPTION-FILTER-LISTS")
+        # Parse tcp_option_filter_list_refs (list from container "TCP-OPTION-FILTER-LIST-REFS")
         obj.tcp_option_filter_list_refs = []
-        container = SerializationHelper.find_child_element(element, "TCP-OPTION-FILTER-LISTS")
+        container = SerializationHelper.find_child_element(element, "TCP-OPTION-FILTER-LIST-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

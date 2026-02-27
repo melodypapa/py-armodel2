@@ -63,9 +63,9 @@ class TransformationPropsSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize transformation_props_propses (list to container "TRANSFORMATION-PROPS-PROPSS")
+        # Serialize transformation_props_propses (list to container "TRANSFORMATION-PROPS-PROPSES")
         if self.transformation_props_propses:
-            wrapper = ET.Element("TRANSFORMATION-PROPS-PROPSS")
+            wrapper = ET.Element("TRANSFORMATION-PROPS-PROPSES")
             for item in self.transformation_props_propses:
                 serialized = SerializationHelper.serialize_item(item, "TransformationProps")
                 if serialized is not None:
@@ -88,9 +88,9 @@ class TransformationPropsSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransformationPropsSet, cls).deserialize(element)
 
-        # Parse transformation_props_propses (list from container "TRANSFORMATION-PROPS-PROPSS")
+        # Parse transformation_props_propses (list from container "TRANSFORMATION-PROPS-PROPSES")
         obj.transformation_props_propses = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-PROPS-PROPSS")
+        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-PROPS-PROPSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

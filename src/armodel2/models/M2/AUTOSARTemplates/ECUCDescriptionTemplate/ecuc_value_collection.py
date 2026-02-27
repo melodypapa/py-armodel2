@@ -68,9 +68,9 @@ class EcucValueCollection(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ecuc_value_refs (list to container "ECUC-VALUES")
+        # Serialize ecuc_value_refs (list to container "ECUC-VALUE-REFS")
         if self.ecuc_value_refs:
-            wrapper = ET.Element("ECUC-VALUES")
+            wrapper = ET.Element("ECUC-VALUE-REFS")
             for item in self.ecuc_value_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -114,9 +114,9 @@ class EcucValueCollection(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucValueCollection, cls).deserialize(element)
 
-        # Parse ecuc_value_refs (list from container "ECUC-VALUES")
+        # Parse ecuc_value_refs (list from container "ECUC-VALUE-REFS")
         obj.ecuc_value_refs = []
-        container = SerializationHelper.find_child_element(element, "ECUC-VALUES")
+        container = SerializationHelper.find_child_element(element, "ECUC-VALUE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

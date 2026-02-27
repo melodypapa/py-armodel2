@@ -93,9 +93,9 @@ class EventHandler(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize consumed_event_group_refs (list to container "CONSUMED-EVENT-GROUPS")
+        # Serialize consumed_event_group_refs (list to container "CONSUMED-EVENT-GROUP-REFS")
         if self.consumed_event_group_refs:
-            wrapper = ET.Element("CONSUMED-EVENT-GROUPS")
+            wrapper = ET.Element("CONSUMED-EVENT-GROUP-REFS")
             for item in self.consumed_event_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConsumedEventGroup")
                 if serialized is not None:
@@ -162,9 +162,9 @@ class EventHandler(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize routing_group_refs (list to container "ROUTING-GROUPS")
+        # Serialize routing_group_refs (list to container "ROUTING-GROUP-REFS")
         if self.routing_group_refs:
-            wrapper = ET.Element("ROUTING-GROUPS")
+            wrapper = ET.Element("ROUTING-GROUP-REFS")
             for item in self.routing_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "SoAdRoutingGroup")
                 if serialized is not None:
@@ -222,9 +222,9 @@ class EventHandler(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EventHandler, cls).deserialize(element)
 
-        # Parse consumed_event_group_refs (list from container "CONSUMED-EVENT-GROUPS")
+        # Parse consumed_event_group_refs (list from container "CONSUMED-EVENT-GROUP-REFS")
         obj.consumed_event_group_refs = []
-        container = SerializationHelper.find_child_element(element, "CONSUMED-EVENT-GROUPS")
+        container = SerializationHelper.find_child_element(element, "CONSUMED-EVENT-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -266,9 +266,9 @@ class EventHandler(Identifiable):
                 if child_value is not None:
                     obj.pdu_activation_routings.append(child_value)
 
-        # Parse routing_group_refs (list from container "ROUTING-GROUPS")
+        # Parse routing_group_refs (list from container "ROUTING-GROUP-REFS")
         obj.routing_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ROUTING-GROUPS")
+        container = SerializationHelper.find_child_element(element, "ROUTING-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

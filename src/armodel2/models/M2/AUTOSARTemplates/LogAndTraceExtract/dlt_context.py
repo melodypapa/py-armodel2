@@ -100,9 +100,9 @@ class DltContext(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize dlt_message_refs (list to container "DLT-MESSAGES")
+        # Serialize dlt_message_refs (list to container "DLT-MESSAGE-REFS")
         if self.dlt_message_refs:
-            wrapper = ET.Element("DLT-MESSAGES")
+            wrapper = ET.Element("DLT-MESSAGE-REFS")
             for item in self.dlt_message_refs:
                 serialized = SerializationHelper.serialize_item(item, "DltMessage")
                 if serialized is not None:
@@ -144,9 +144,9 @@ class DltContext(ARElement):
             context_id_value = child.text
             obj.context_id = context_id_value
 
-        # Parse dlt_message_refs (list from container "DLT-MESSAGES")
+        # Parse dlt_message_refs (list from container "DLT-MESSAGE-REFS")
         obj.dlt_message_refs = []
-        container = SerializationHelper.find_child_element(element, "DLT-MESSAGES")
+        container = SerializationHelper.find_child_element(element, "DLT-MESSAGE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

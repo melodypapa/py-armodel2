@@ -99,9 +99,9 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize allowed_service_refs (list to container "ALLOWED-SERVICES")
+        # Serialize allowed_service_refs (list to container "ALLOWED-SERVICE-REFS")
         if self.allowed_service_refs:
-            wrapper = ET.Element("ALLOWED-SERVICES")
+            wrapper = ET.Element("ALLOWED-SERVICE-REFS")
             for item in self.allowed_service_refs:
                 serialized = SerializationHelper.serialize_item(item, "NetworkEndpoint")
                 if serialized is not None:
@@ -210,9 +210,9 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize remote_multicast_refs (list to container "REMOTE-MULTICASTS")
+        # Serialize remote_multicast_refs (list to container "REMOTE-MULTICAST-REFS")
         if self.remote_multicast_refs:
-            wrapper = ET.Element("REMOTE-MULTICASTS")
+            wrapper = ET.Element("REMOTE-MULTICAST-REFS")
             for item in self.remote_multicast_refs:
                 serialized = SerializationHelper.serialize_item(item, "ApplicationEndpoint")
                 if serialized is not None:
@@ -227,9 +227,9 @@ class ProvidedServiceInstance(AbstractServiceInstance):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize remote_unicast_refs (list to container "REMOTE-UNICASTS")
+        # Serialize remote_unicast_refs (list to container "REMOTE-UNICAST-REFS")
         if self.remote_unicast_refs:
-            wrapper = ET.Element("REMOTE-UNICASTS")
+            wrapper = ET.Element("REMOTE-UNICAST-REFS")
             for item in self.remote_unicast_refs:
                 serialized = SerializationHelper.serialize_item(item, "ApplicationEndpoint")
                 if serialized is not None:
@@ -301,9 +301,9 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ProvidedServiceInstance, cls).deserialize(element)
 
-        # Parse allowed_service_refs (list from container "ALLOWED-SERVICES")
+        # Parse allowed_service_refs (list from container "ALLOWED-SERVICE-REFS")
         obj.allowed_service_refs = []
-        container = SerializationHelper.find_child_element(element, "ALLOWED-SERVICES")
+        container = SerializationHelper.find_child_element(element, "ALLOWED-SERVICE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -363,9 +363,9 @@ class ProvidedServiceInstance(AbstractServiceInstance):
             priority_value = child.text
             obj.priority = priority_value
 
-        # Parse remote_multicast_refs (list from container "REMOTE-MULTICASTS")
+        # Parse remote_multicast_refs (list from container "REMOTE-MULTICAST-REFS")
         obj.remote_multicast_refs = []
-        container = SerializationHelper.find_child_element(element, "REMOTE-MULTICASTS")
+        container = SerializationHelper.find_child_element(element, "REMOTE-MULTICAST-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -379,9 +379,9 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                 if child_value is not None:
                     obj.remote_multicast_refs.append(child_value)
 
-        # Parse remote_unicast_refs (list from container "REMOTE-UNICASTS")
+        # Parse remote_unicast_refs (list from container "REMOTE-UNICAST-REFS")
         obj.remote_unicast_refs = []
-        container = SerializationHelper.find_child_element(element, "REMOTE-UNICASTS")
+        container = SerializationHelper.find_child_element(element, "REMOTE-UNICAST-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

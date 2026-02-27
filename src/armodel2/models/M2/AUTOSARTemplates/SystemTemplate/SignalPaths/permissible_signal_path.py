@@ -81,9 +81,9 @@ class PermissibleSignalPath(SignalPathConstraint):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize physical_channel_refs (list to container "PHYSICAL-CHANNELS")
+        # Serialize physical_channel_refs (list to container "PHYSICAL-CHANNEL-REFS")
         if self.physical_channel_refs:
-            wrapper = ET.Element("PHYSICAL-CHANNELS")
+            wrapper = ET.Element("PHYSICAL-CHANNEL-REFS")
             for item in self.physical_channel_refs:
                 serialized = SerializationHelper.serialize_item(item, "PhysicalChannel")
                 if serialized is not None:
@@ -133,9 +133,9 @@ class PermissibleSignalPath(SignalPathConstraint):
                 if child_value is not None:
                     obj.operations.append(child_value)
 
-        # Parse physical_channel_refs (list from container "PHYSICAL-CHANNELS")
+        # Parse physical_channel_refs (list from container "PHYSICAL-CHANNEL-REFS")
         obj.physical_channel_refs = []
-        container = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNELS")
+        container = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNEL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

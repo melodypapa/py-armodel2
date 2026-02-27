@@ -81,9 +81,9 @@ class InstanceEventInCompositionInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_prototype_refs (list to container "CONTEXT-PROTOTYPES")
+        # Serialize context_prototype_refs (list to container "CONTEXT-PROTOTYPE-REFS")
         if self.context_prototype_refs:
-            wrapper = ET.Element("CONTEXT-PROTOTYPES")
+            wrapper = ET.Element("CONTEXT-PROTOTYPE-REFS")
             for item in self.context_prototype_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -133,9 +133,9 @@ class InstanceEventInCompositionInstanceRef(ARObject):
             base_ref_value = ARRef.deserialize(child)
             obj.base_ref = base_ref_value
 
-        # Parse context_prototype_refs (list from container "CONTEXT-PROTOTYPES")
+        # Parse context_prototype_refs (list from container "CONTEXT-PROTOTYPE-REFS")
         obj.context_prototype_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-PROTOTYPES")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-PROTOTYPE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -109,9 +109,9 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize allowed_service_refs (list to container "ALLOWED-SERVICES")
+        # Serialize allowed_service_refs (list to container "ALLOWED-SERVICE-REFS")
         if self.allowed_service_refs:
-            wrapper = ET.Element("ALLOWED-SERVICES")
+            wrapper = ET.Element("ALLOWED-SERVICE-REFS")
             for item in self.allowed_service_refs:
                 serialized = SerializationHelper.serialize_item(item, "NetworkEndpoint")
                 if serialized is not None:
@@ -150,9 +150,9 @@ class ConsumedServiceInstance(AbstractServiceInstance):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize consumed_event_group_refs (list to container "CONSUMED-EVENT-GROUPS")
+        # Serialize consumed_event_group_refs (list to container "CONSUMED-EVENT-GROUP-REFS")
         if self.consumed_event_group_refs:
-            wrapper = ET.Element("CONSUMED-EVENT-GROUPS")
+            wrapper = ET.Element("CONSUMED-EVENT-GROUP-REFS")
             for item in self.consumed_event_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConsumedEventGroup")
                 if serialized is not None:
@@ -322,9 +322,9 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConsumedServiceInstance, cls).deserialize(element)
 
-        # Parse allowed_service_refs (list from container "ALLOWED-SERVICES")
+        # Parse allowed_service_refs (list from container "ALLOWED-SERVICE-REFS")
         obj.allowed_service_refs = []
-        container = SerializationHelper.find_child_element(element, "ALLOWED-SERVICES")
+        container = SerializationHelper.find_child_element(element, "ALLOWED-SERVICE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -354,9 +354,9 @@ class ConsumedServiceInstance(AbstractServiceInstance):
                 if child_value is not None:
                     obj.blocklisteds.append(child_value)
 
-        # Parse consumed_event_group_refs (list from container "CONSUMED-EVENT-GROUPS")
+        # Parse consumed_event_group_refs (list from container "CONSUMED-EVENT-GROUP-REFS")
         obj.consumed_event_group_refs = []
-        container = SerializationHelper.find_child_element(element, "CONSUMED-EVENT-GROUPS")
+        container = SerializationHelper.find_child_element(element, "CONSUMED-EVENT-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

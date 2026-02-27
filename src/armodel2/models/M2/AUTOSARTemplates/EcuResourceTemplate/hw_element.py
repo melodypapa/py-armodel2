@@ -97,9 +97,9 @@ class HwElement(HwDescriptionEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize nested_element_refs (list to container "NESTED-ELEMENTS")
+        # Serialize nested_element_refs (list to container "NESTED-ELEMENT-REFS")
         if self.nested_element_refs:
-            wrapper = ET.Element("NESTED-ELEMENTS")
+            wrapper = ET.Element("NESTED-ELEMENT-REFS")
             for item in self.nested_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "HwElement")
                 if serialized is not None:
@@ -149,9 +149,9 @@ class HwElement(HwDescriptionEntity):
                 if child_value is not None:
                     obj.hw_pin_groups.append(child_value)
 
-        # Parse nested_element_refs (list from container "NESTED-ELEMENTS")
+        # Parse nested_element_refs (list from container "NESTED-ELEMENT-REFS")
         obj.nested_element_refs = []
-        container = SerializationHelper.find_child_element(element, "NESTED-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "NESTED-ELEMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -65,9 +65,9 @@ class BlueprintMappingSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize blueprint_map_refs (list to container "BLUEPRINT-MAPS")
+        # Serialize blueprint_map_refs (list to container "BLUEPRINT-MAP-REFS")
         if self.blueprint_map_refs:
-            wrapper = ET.Element("BLUEPRINT-MAPS")
+            wrapper = ET.Element("BLUEPRINT-MAP-REFS")
             for item in self.blueprint_map_refs:
                 serialized = SerializationHelper.serialize_item(item, "AtpBlueprintMapping")
                 if serialized is not None:
@@ -97,9 +97,9 @@ class BlueprintMappingSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BlueprintMappingSet, cls).deserialize(element)
 
-        # Parse blueprint_map_refs (list from container "BLUEPRINT-MAPS")
+        # Parse blueprint_map_refs (list from container "BLUEPRINT-MAP-REFS")
         obj.blueprint_map_refs = []
-        container = SerializationHelper.find_child_element(element, "BLUEPRINT-MAPS")
+        container = SerializationHelper.find_child_element(element, "BLUEPRINT-MAP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

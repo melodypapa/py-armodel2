@@ -69,9 +69,9 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize dtc_refs (list to container "DTCS")
+        # Serialize dtc_refs (list to container "DTC-REFS")
         if self.dtc_refs:
-            wrapper = ET.Element("DTCS")
+            wrapper = ET.Element("DTC-REFS")
             for item in self.dtc_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticTroubleCode")
                 if serialized is not None:
@@ -115,9 +115,9 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTroubleCodeGroup, cls).deserialize(element)
 
-        # Parse dtc_refs (list from container "DTCS")
+        # Parse dtc_refs (list from container "DTC-REFS")
         obj.dtc_refs = []
-        container = SerializationHelper.find_child_element(element, "DTCS")
+        container = SerializationHelper.find_child_element(element, "DTC-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

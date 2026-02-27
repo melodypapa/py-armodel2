@@ -90,9 +90,9 @@ class PortPrototypeBlueprint(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize init_value_refs (list to container "INIT-VALUES")
+        # Serialize init_value_refs (list to container "INIT-VALUE-REFS")
         if self.init_value_refs:
-            wrapper = ET.Element("INIT-VALUES")
+            wrapper = ET.Element("INIT-VALUE-REFS")
             for item in self.init_value_refs:
                 serialized = SerializationHelper.serialize_item(item, "PortPrototypeBlueprint")
                 if serialized is not None:
@@ -156,9 +156,9 @@ class PortPrototypeBlueprint(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortPrototypeBlueprint, cls).deserialize(element)
 
-        # Parse init_value_refs (list from container "INIT-VALUES")
+        # Parse init_value_refs (list from container "INIT-VALUE-REFS")
         obj.init_value_refs = []
-        container = SerializationHelper.find_child_element(element, "INIT-VALUES")
+        container = SerializationHelper.find_child_element(element, "INIT-VALUE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

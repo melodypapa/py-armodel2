@@ -91,9 +91,9 @@ class HwDescriptionEntity(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize hw_category_refs (list to container "HW-CATEGORYS")
+        # Serialize hw_category_refs (list to container "HW-CATEGORY-REFS")
         if self.hw_category_refs:
-            wrapper = ET.Element("HW-CATEGORYS")
+            wrapper = ET.Element("HW-CATEGORY-REFS")
             for item in self.hw_category_refs:
                 serialized = SerializationHelper.serialize_item(item, "HwCategory")
                 if serialized is not None:
@@ -147,9 +147,9 @@ class HwDescriptionEntity(Identifiable, ABC):
                 if child_value is not None:
                     obj.hw_attribute_values.append(child_value)
 
-        # Parse hw_category_refs (list from container "HW-CATEGORYS")
+        # Parse hw_category_refs (list from container "HW-CATEGORY-REFS")
         obj.hw_category_refs = []
-        container = SerializationHelper.find_child_element(element, "HW-CATEGORYS")
+        container = SerializationHelper.find_child_element(element, "HW-CATEGORY-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

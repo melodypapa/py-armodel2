@@ -83,9 +83,9 @@ class EvaluatedVariantSet(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize evaluated_refs (list to container "EVALUATEDS")
+        # Serialize evaluated_refs (list to container "EVALUATED-REFS")
         if self.evaluated_refs:
-            wrapper = ET.Element("EVALUATEDS")
+            wrapper = ET.Element("EVALUATED-REFS")
             for item in self.evaluated_refs:
                 serialized = SerializationHelper.serialize_item(item, "PredefinedVariant")
                 if serialized is not None:
@@ -121,9 +121,9 @@ class EvaluatedVariantSet(ARElement):
             approval_status_value = child.text
             obj.approval_status = approval_status_value
 
-        # Parse evaluated_refs (list from container "EVALUATEDS")
+        # Parse evaluated_refs (list from container "EVALUATED-REFS")
         obj.evaluated_refs = []
-        container = SerializationHelper.find_child_element(element, "EVALUATEDS")
+        container = SerializationHelper.find_child_element(element, "EVALUATED-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

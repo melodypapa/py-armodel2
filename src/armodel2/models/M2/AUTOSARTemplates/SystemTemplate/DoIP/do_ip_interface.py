@@ -130,9 +130,9 @@ class DoIpInterface(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize doip_connection_refs (list to container "DOIP-CONNECTIONS")
+        # Serialize doip_connection_refs (list to container "DOIP-CONNECTION-REFS")
         if self.doip_connection_refs:
-            wrapper = ET.Element("DOIP-CONNECTIONS")
+            wrapper = ET.Element("DOIP-CONNECTION-REFS")
             for item in self.doip_connection_refs:
                 serialized = SerializationHelper.serialize_item(item, "SocketConnection")
                 if serialized is not None:
@@ -227,9 +227,9 @@ class DoIpInterface(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize socket_refs (list to container "SOCKETS")
+        # Serialize socket_refs (list to container "SOCKET-REFS")
         if self.socket_refs:
-            wrapper = ET.Element("SOCKETS")
+            wrapper = ET.Element("SOCKET-REFS")
             for item in self.socket_refs:
                 serialized = SerializationHelper.serialize_item(item, "StaticSocketConnection")
                 if serialized is not None:
@@ -313,9 +313,9 @@ class DoIpInterface(Identifiable):
             doip_channel_ref_value = ARRef.deserialize(child)
             obj.doip_channel_ref = doip_channel_ref_value
 
-        # Parse doip_connection_refs (list from container "DOIP-CONNECTIONS")
+        # Parse doip_connection_refs (list from container "DOIP-CONNECTION-REFS")
         obj.doip_connection_refs = []
-        container = SerializationHelper.find_child_element(element, "DOIP-CONNECTIONS")
+        container = SerializationHelper.find_child_element(element, "DOIP-CONNECTION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -369,9 +369,9 @@ class DoIpInterface(Identifiable):
             max_tester_value = child.text
             obj.max_tester = max_tester_value
 
-        # Parse socket_refs (list from container "SOCKETS")
+        # Parse socket_refs (list from container "SOCKET-REFS")
         obj.socket_refs = []
-        container = SerializationHelper.find_child_element(element, "SOCKETS")
+        container = SerializationHelper.find_child_element(element, "SOCKET-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

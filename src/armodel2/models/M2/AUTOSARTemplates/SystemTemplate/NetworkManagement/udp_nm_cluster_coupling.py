@@ -69,9 +69,9 @@ class UdpNmClusterCoupling(NmClusterCoupling):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize coupled_cluster_refs (list to container "COUPLED-CLUSTERS")
+        # Serialize coupled_cluster_refs (list to container "COUPLED-CLUSTER-REFS")
         if self.coupled_cluster_refs:
-            wrapper = ET.Element("COUPLED-CLUSTERS")
+            wrapper = ET.Element("COUPLED-CLUSTER-REFS")
             for item in self.coupled_cluster_refs:
                 serialized = SerializationHelper.serialize_item(item, "UdpNmCluster")
                 if serialized is not None:
@@ -115,9 +115,9 @@ class UdpNmClusterCoupling(NmClusterCoupling):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(UdpNmClusterCoupling, cls).deserialize(element)
 
-        # Parse coupled_cluster_refs (list from container "COUPLED-CLUSTERS")
+        # Parse coupled_cluster_refs (list from container "COUPLED-CLUSTER-REFS")
         obj.coupled_cluster_refs = []
-        container = SerializationHelper.find_child_element(element, "COUPLED-CLUSTERS")
+        container = SerializationHelper.find_child_element(element, "COUPLED-CLUSTER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

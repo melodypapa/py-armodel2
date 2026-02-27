@@ -100,9 +100,9 @@ class EcucContainerValue(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize reference_value_refs (list to container "REFERENCE-VALUES")
+        # Serialize reference_value_refs (list to container "REFERENCE-VALUE-REFS")
         if self.reference_value_refs:
-            wrapper = ET.Element("REFERENCE-VALUES")
+            wrapper = ET.Element("REFERENCE-VALUE-REFS")
             for item in self.reference_value_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -158,9 +158,9 @@ class EcucContainerValue(Identifiable):
                 if child_value is not None:
                     obj.parameter_values.append(child_value)
 
-        # Parse reference_value_refs (list from container "REFERENCE-VALUES")
+        # Parse reference_value_refs (list from container "REFERENCE-VALUE-REFS")
         obj.reference_value_refs = []
-        container = SerializationHelper.find_child_element(element, "REFERENCE-VALUES")
+        container = SerializationHelper.find_child_element(element, "REFERENCE-VALUE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

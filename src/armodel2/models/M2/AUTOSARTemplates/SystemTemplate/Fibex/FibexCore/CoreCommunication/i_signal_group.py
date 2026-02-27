@@ -91,9 +91,9 @@ class ISignalGroup(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_signal_refs (list to container "I-SIGNALS")
+        # Serialize i_signal_refs (list to container "I-SIGNAL-REFS")
         if self.i_signal_refs:
-            wrapper = ET.Element("I-SIGNALS")
+            wrapper = ET.Element("I-SIGNAL-REFS")
             for item in self.i_signal_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignal")
                 if serialized is not None:
@@ -153,9 +153,9 @@ class ISignalGroup(FibexElement):
             com_based_ref_value = ARRef.deserialize(child)
             obj.com_based_ref = com_based_ref_value
 
-        # Parse i_signal_refs (list from container "I-SIGNALS")
+        # Parse i_signal_refs (list from container "I-SIGNAL-REFS")
         obj.i_signal_refs = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNALS")
+        container = SerializationHelper.find_child_element(element, "I-SIGNAL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

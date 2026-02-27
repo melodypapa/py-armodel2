@@ -60,9 +60,9 @@ class SwcToSwcSignal(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_element_refs (list to container "DATA-ELEMENTS")
+        # Serialize data_element_refs (list to container "DATA-ELEMENT-REFS")
         if self.data_element_refs:
-            wrapper = ET.Element("DATA-ELEMENTS")
+            wrapper = ET.Element("DATA-ELEMENT-REFS")
             for item in self.data_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
@@ -92,9 +92,9 @@ class SwcToSwcSignal(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcToSwcSignal, cls).deserialize(element)
 
-        # Parse data_element_refs (list from container "DATA-ELEMENTS")
+        # Parse data_element_refs (list from container "DATA-ELEMENT-REFS")
         obj.data_element_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

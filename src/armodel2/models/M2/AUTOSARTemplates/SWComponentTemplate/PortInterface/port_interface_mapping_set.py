@@ -65,9 +65,9 @@ class PortInterfaceMappingSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize port_interface_refs (list to container "PORT-INTERFACES")
+        # Serialize port_interface_refs (list to container "PORT-INTERFACE-REFS")
         if self.port_interface_refs:
-            wrapper = ET.Element("PORT-INTERFACES")
+            wrapper = ET.Element("PORT-INTERFACE-REFS")
             for item in self.port_interface_refs:
                 serialized = SerializationHelper.serialize_item(item, "PortInterfaceMapping")
                 if serialized is not None:
@@ -97,9 +97,9 @@ class PortInterfaceMappingSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortInterfaceMappingSet, cls).deserialize(element)
 
-        # Parse port_interface_refs (list from container "PORT-INTERFACES")
+        # Parse port_interface_refs (list from container "PORT-INTERFACE-REFS")
         obj.port_interface_refs = []
-        container = SerializationHelper.find_child_element(element, "PORT-INTERFACES")
+        container = SerializationHelper.find_child_element(element, "PORT-INTERFACE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

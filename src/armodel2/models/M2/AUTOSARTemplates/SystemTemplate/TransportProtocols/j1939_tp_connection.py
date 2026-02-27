@@ -208,9 +208,9 @@ class J1939TpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize receiver_refs (list to container "RECEIVERS")
+        # Serialize receiver_refs (list to container "RECEIVER-REFS")
         if self.receiver_refs:
-            wrapper = ET.Element("RECEIVERS")
+            wrapper = ET.Element("RECEIVER-REFS")
             for item in self.receiver_refs:
                 serialized = SerializationHelper.serialize_item(item, "J1939TpNode")
                 if serialized is not None:
@@ -326,9 +326,9 @@ class J1939TpConnection(TpConnection):
             max_exp_bs_value = child.text
             obj.max_exp_bs = max_exp_bs_value
 
-        # Parse receiver_refs (list from container "RECEIVERS")
+        # Parse receiver_refs (list from container "RECEIVER-REFS")
         obj.receiver_refs = []
-        container = SerializationHelper.find_child_element(element, "RECEIVERS")
+        container = SerializationHelper.find_child_element(element, "RECEIVER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

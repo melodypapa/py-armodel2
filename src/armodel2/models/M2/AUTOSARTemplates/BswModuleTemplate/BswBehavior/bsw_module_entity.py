@@ -104,9 +104,9 @@ class BswModuleEntity(ExecutableEntity, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize accessed_mode_group_refs (list to container "ACCESSED-MODE-GROUPS")
+        # Serialize accessed_mode_group_refs (list to container "ACCESSED-MODE-GROUP-REFS")
         if self.accessed_mode_group_refs:
-            wrapper = ET.Element("ACCESSED-MODE-GROUPS")
+            wrapper = ET.Element("ACCESSED-MODE-GROUP-REFS")
             for item in self.accessed_mode_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
@@ -121,9 +121,9 @@ class BswModuleEntity(ExecutableEntity, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize activation_point_refs (list to container "ACTIVATION-POINTS")
+        # Serialize activation_point_refs (list to container "ACTIVATION-POINT-REFS")
         if self.activation_point_refs:
-            wrapper = ET.Element("ACTIVATION-POINTS")
+            wrapper = ET.Element("ACTIVATION-POINT-REFS")
             for item in self.activation_point_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswInternalTriggeringPoint")
                 if serialized is not None:
@@ -182,9 +182,9 @@ class BswModuleEntity(ExecutableEntity, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize issued_trigger_refs (list to container "ISSUED-TRIGGERS")
+        # Serialize issued_trigger_refs (list to container "ISSUED-TRIGGER-REFS")
         if self.issued_trigger_refs:
-            wrapper = ET.Element("ISSUED-TRIGGERS")
+            wrapper = ET.Element("ISSUED-TRIGGER-REFS")
             for item in self.issued_trigger_refs:
                 serialized = SerializationHelper.serialize_item(item, "Trigger")
                 if serialized is not None:
@@ -199,9 +199,9 @@ class BswModuleEntity(ExecutableEntity, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize managed_mode_group_refs (list to container "MANAGED-MODE-GROUPS")
+        # Serialize managed_mode_group_refs (list to container "MANAGED-MODE-GROUP-REFS")
         if self.managed_mode_group_refs:
-            wrapper = ET.Element("MANAGED-MODE-GROUPS")
+            wrapper = ET.Element("MANAGED-MODE-GROUP-REFS")
             for item in self.managed_mode_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroupPrototype")
                 if serialized is not None:
@@ -245,9 +245,9 @@ class BswModuleEntity(ExecutableEntity, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleEntity, cls).deserialize(element)
 
-        # Parse accessed_mode_group_refs (list from container "ACCESSED-MODE-GROUPS")
+        # Parse accessed_mode_group_refs (list from container "ACCESSED-MODE-GROUP-REFS")
         obj.accessed_mode_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ACCESSED-MODE-GROUPS")
+        container = SerializationHelper.find_child_element(element, "ACCESSED-MODE-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -261,9 +261,9 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 if child_value is not None:
                     obj.accessed_mode_group_refs.append(child_value)
 
-        # Parse activation_point_refs (list from container "ACTIVATION-POINTS")
+        # Parse activation_point_refs (list from container "ACTIVATION-POINT-REFS")
         obj.activation_point_refs = []
-        container = SerializationHelper.find_child_element(element, "ACTIVATION-POINTS")
+        container = SerializationHelper.find_child_element(element, "ACTIVATION-POINT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -313,9 +313,9 @@ class BswModuleEntity(ExecutableEntity, ABC):
             implemented_entry_ref_value = ARRef.deserialize(child)
             obj.implemented_entry_ref = implemented_entry_ref_value
 
-        # Parse issued_trigger_refs (list from container "ISSUED-TRIGGERS")
+        # Parse issued_trigger_refs (list from container "ISSUED-TRIGGER-REFS")
         obj.issued_trigger_refs = []
-        container = SerializationHelper.find_child_element(element, "ISSUED-TRIGGERS")
+        container = SerializationHelper.find_child_element(element, "ISSUED-TRIGGER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -329,9 +329,9 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 if child_value is not None:
                     obj.issued_trigger_refs.append(child_value)
 
-        # Parse managed_mode_group_refs (list from container "MANAGED-MODE-GROUPS")
+        # Parse managed_mode_group_refs (list from container "MANAGED-MODE-GROUP-REFS")
         obj.managed_mode_group_refs = []
-        container = SerializationHelper.find_child_element(element, "MANAGED-MODE-GROUPS")
+        container = SerializationHelper.find_child_element(element, "MANAGED-MODE-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

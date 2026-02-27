@@ -69,9 +69,9 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize auth_role_refs (list to container "AUTH-ROLES")
+        # Serialize auth_role_refs (list to container "AUTH-ROLE-REFS")
         if self.auth_role_refs:
-            wrapper = ET.Element("AUTH-ROLES")
+            wrapper = ET.Element("AUTH-ROLE-REFS")
             for item in self.auth_role_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticAuthRole")
                 if serialized is not None:
@@ -115,9 +115,9 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMemoryDestinationUserDefined, cls).deserialize(element)
 
-        # Parse auth_role_refs (list from container "AUTH-ROLES")
+        # Parse auth_role_refs (list from container "AUTH-ROLE-REFS")
         obj.auth_role_refs = []
-        container = SerializationHelper.find_child_element(element, "AUTH-ROLES")
+        container = SerializationHelper.find_child_element(element, "AUTH-ROLE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

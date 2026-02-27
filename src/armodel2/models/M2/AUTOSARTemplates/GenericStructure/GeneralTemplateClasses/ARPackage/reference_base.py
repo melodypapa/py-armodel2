@@ -150,9 +150,9 @@ class ReferenceBase(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize global_element_refs (list to container "GLOBAL-ELEMENTS")
+        # Serialize global_element_refs (list to container "GLOBAL-ELEMENT-REFS")
         if self.global_element_refs:
-            wrapper = ET.Element("GLOBAL-ELEMENTS")
+            wrapper = ET.Element("GLOBAL-ELEMENT-REFS")
             for item in self.global_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "ReferrableSubtypesEnum")
                 if serialized is not None:
@@ -167,9 +167,9 @@ class ReferenceBase(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize global_in_package_refs (list to container "GLOBAL-IN-PACKAGES")
+        # Serialize global_in_package_refs (list to container "GLOBAL-IN-PACKAGE-REFS")
         if self.global_in_package_refs:
-            wrapper = ET.Element("GLOBAL-IN-PACKAGES")
+            wrapper = ET.Element("GLOBAL-IN-PACKAGE-REFS")
             for item in self.global_in_package_refs:
                 serialized = SerializationHelper.serialize_item(item, "ARPackage")
                 if serialized is not None:
@@ -229,9 +229,9 @@ class ReferenceBase(ARObject):
             package_ref_value = ARRef.deserialize(child)
             obj.package_ref = package_ref_value
 
-        # Parse global_element_refs (list from container "GLOBAL-ELEMENTS")
+        # Parse global_element_refs (list from container "GLOBAL-ELEMENT-REFS")
         obj.global_element_refs = []
-        container = SerializationHelper.find_child_element(element, "GLOBAL-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "GLOBAL-ELEMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -245,9 +245,9 @@ class ReferenceBase(ARObject):
                 if child_value is not None:
                     obj.global_element_refs.append(child_value)
 
-        # Parse global_in_package_refs (list from container "GLOBAL-IN-PACKAGES")
+        # Parse global_in_package_refs (list from container "GLOBAL-IN-PACKAGE-REFS")
         obj.global_in_package_refs = []
-        container = SerializationHelper.find_child_element(element, "GLOBAL-IN-PACKAGES")
+        container = SerializationHelper.find_child_element(element, "GLOBAL-IN-PACKAGE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

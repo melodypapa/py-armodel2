@@ -64,9 +64,9 @@ class DiagnosticDataIdentifierSet(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_identifier_refs (list to container "DATA-IDENTIFIERS")
+        # Serialize data_identifier_refs (list to container "DATA-IDENTIFIER-REFS")
         if self.data_identifier_refs:
-            wrapper = ET.Element("DATA-IDENTIFIERS")
+            wrapper = ET.Element("DATA-IDENTIFIER-REFS")
             for item in self.data_identifier_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticDataIdentifier")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class DiagnosticDataIdentifierSet(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDataIdentifierSet, cls).deserialize(element)
 
-        # Parse data_identifier_refs (list from container "DATA-IDENTIFIERS")
+        # Parse data_identifier_refs (list from container "DATA-IDENTIFIER-REFS")
         obj.data_identifier_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-IDENTIFIERS")
+        container = SerializationHelper.find_child_element(element, "DATA-IDENTIFIER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

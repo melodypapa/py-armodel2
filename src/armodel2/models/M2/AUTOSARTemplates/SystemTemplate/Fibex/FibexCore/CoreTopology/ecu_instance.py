@@ -157,9 +157,9 @@ class EcuInstance(FibexElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize associated_com_i_pdu_group_refs (list to container "ASSOCIATED-COM-I-PDU-GROUPS")
+        # Serialize associated_com_i_pdu_group_refs (list to container "ASSOCIATED-COM-I-PDU-GROUP-REFS")
         if self.associated_com_i_pdu_group_refs:
-            wrapper = ET.Element("ASSOCIATED-COM-I-PDU-GROUPS")
+            wrapper = ET.Element("ASSOCIATED-COM-I-PDU-GROUP-REFS")
             for item in self.associated_com_i_pdu_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
@@ -174,9 +174,9 @@ class EcuInstance(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize associated_consumed_provided_service_instance_group_refs (list to container "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUPS")
+        # Serialize associated_consumed_provided_service_instance_group_refs (list to container "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REFS")
         if self.associated_consumed_provided_service_instance_group_refs:
-            wrapper = ET.Element("ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUPS")
+            wrapper = ET.Element("ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REFS")
             for item in self.associated_consumed_provided_service_instance_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConsumedProvidedServiceInstanceGroup")
                 if serialized is not None:
@@ -191,9 +191,9 @@ class EcuInstance(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize associated_pdur_i_pdu_group_refs (list to container "ASSOCIATED-PDUR-I-PDU-GROUPS")
+        # Serialize associated_pdur_i_pdu_group_refs (list to container "ASSOCIATED-PDUR-I-PDU-GROUP-REFS")
         if self.associated_pdur_i_pdu_group_refs:
-            wrapper = ET.Element("ASSOCIATED-PDUR-I-PDU-GROUPS")
+            wrapper = ET.Element("ASSOCIATED-PDUR-I-PDU-GROUP-REFS")
             for item in self.associated_pdur_i_pdu_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "PdurIPduGroup")
                 if serialized is not None:
@@ -340,9 +340,9 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecu_task_proxy_refs (list to container "ECU-TASK-PROXYS")
+        # Serialize ecu_task_proxy_refs (list to container "ECU-TASK-PROXY-REFS")
         if self.ecu_task_proxy_refs:
-            wrapper = ET.Element("ECU-TASK-PROXYS")
+            wrapper = ET.Element("ECU-TASK-PROXY-REFS")
             for item in self.ecu_task_proxy_refs:
                 serialized = SerializationHelper.serialize_item(item, "OsTaskProxy")
                 if serialized is not None:
@@ -371,9 +371,9 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize firewall_rule_refs (list to container "FIREWALL-RULES")
+        # Serialize firewall_rule_refs (list to container "FIREWALL-RULE-REFS")
         if self.firewall_rule_refs:
-            wrapper = ET.Element("FIREWALL-RULES")
+            wrapper = ET.Element("FIREWALL-RULE-REFS")
             for item in self.firewall_rule_refs:
                 serialized = SerializationHelper.serialize_item(item, "StateDependentFirewall")
                 if serialized is not None:
@@ -539,9 +539,9 @@ class EcuInstance(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcuInstance, cls).deserialize(element)
 
-        # Parse associated_com_i_pdu_group_refs (list from container "ASSOCIATED-COM-I-PDU-GROUPS")
+        # Parse associated_com_i_pdu_group_refs (list from container "ASSOCIATED-COM-I-PDU-GROUP-REFS")
         obj.associated_com_i_pdu_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ASSOCIATED-COM-I-PDU-GROUPS")
+        container = SerializationHelper.find_child_element(element, "ASSOCIATED-COM-I-PDU-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -555,9 +555,9 @@ class EcuInstance(FibexElement):
                 if child_value is not None:
                     obj.associated_com_i_pdu_group_refs.append(child_value)
 
-        # Parse associated_consumed_provided_service_instance_group_refs (list from container "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUPS")
+        # Parse associated_consumed_provided_service_instance_group_refs (list from container "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REFS")
         obj.associated_consumed_provided_service_instance_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUPS")
+        container = SerializationHelper.find_child_element(element, "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -571,9 +571,9 @@ class EcuInstance(FibexElement):
                 if child_value is not None:
                     obj.associated_consumed_provided_service_instance_group_refs.append(child_value)
 
-        # Parse associated_pdur_i_pdu_group_refs (list from container "ASSOCIATED-PDUR-I-PDU-GROUPS")
+        # Parse associated_pdur_i_pdu_group_refs (list from container "ASSOCIATED-PDUR-I-PDU-GROUP-REFS")
         obj.associated_pdur_i_pdu_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ASSOCIATED-PDUR-I-PDU-GROUPS")
+        container = SerializationHelper.find_child_element(element, "ASSOCIATED-PDUR-I-PDU-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -655,9 +655,9 @@ class EcuInstance(FibexElement):
             do_ip_config_value = SerializationHelper.deserialize_by_tag(child, "DoIpConfig")
             obj.do_ip_config = do_ip_config_value
 
-        # Parse ecu_task_proxy_refs (list from container "ECU-TASK-PROXYS")
+        # Parse ecu_task_proxy_refs (list from container "ECU-TASK-PROXY-REFS")
         obj.ecu_task_proxy_refs = []
-        container = SerializationHelper.find_child_element(element, "ECU-TASK-PROXYS")
+        container = SerializationHelper.find_child_element(element, "ECU-TASK-PROXY-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -677,9 +677,9 @@ class EcuInstance(FibexElement):
             eth_switch_port_group_derivation_value = child.text
             obj.eth_switch_port_group_derivation = eth_switch_port_group_derivation_value
 
-        # Parse firewall_rule_refs (list from container "FIREWALL-RULES")
+        # Parse firewall_rule_refs (list from container "FIREWALL-RULE-REFS")
         obj.firewall_rule_refs = []
-        container = SerializationHelper.find_child_element(element, "FIREWALL-RULES")
+        container = SerializationHelper.find_child_element(element, "FIREWALL-RULE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

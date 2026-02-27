@@ -94,9 +94,9 @@ class DltLogChannel(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize application_refs (list to container "APPLICATIONS")
+        # Serialize application_refs (list to container "APPLICATION-REFS")
         if self.application_refs:
-            wrapper = ET.Element("APPLICATIONS")
+            wrapper = ET.Element("APPLICATION-REFS")
             for item in self.application_refs:
                 serialized = SerializationHelper.serialize_item(item, "DltContext")
                 if serialized is not None:
@@ -125,9 +125,9 @@ class DltLogChannel(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize dlt_message_refs (list to container "DLT-MESSAGES")
+        # Serialize dlt_message_refs (list to container "DLT-MESSAGE-REFS")
         if self.dlt_message_refs:
-            wrapper = ET.Element("DLT-MESSAGES")
+            wrapper = ET.Element("DLT-MESSAGE-REFS")
             for item in self.dlt_message_refs:
                 serialized = SerializationHelper.serialize_item(item, "DltMessage")
                 if serialized is not None:
@@ -241,9 +241,9 @@ class DltLogChannel(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DltLogChannel, cls).deserialize(element)
 
-        # Parse application_refs (list from container "APPLICATIONS")
+        # Parse application_refs (list from container "APPLICATION-REFS")
         obj.application_refs = []
-        container = SerializationHelper.find_child_element(element, "APPLICATIONS")
+        container = SerializationHelper.find_child_element(element, "APPLICATION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -263,9 +263,9 @@ class DltLogChannel(Identifiable):
             default_trace_value = DltDefaultTraceStateEnum.deserialize(child)
             obj.default_trace = default_trace_value
 
-        # Parse dlt_message_refs (list from container "DLT-MESSAGES")
+        # Parse dlt_message_refs (list from container "DLT-MESSAGE-REFS")
         obj.dlt_message_refs = []
-        container = SerializationHelper.find_child_element(element, "DLT-MESSAGES")
+        container = SerializationHelper.find_child_element(element, "DLT-MESSAGE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

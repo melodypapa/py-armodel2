@@ -74,9 +74,9 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sending_node_refs (list to container "SENDING-NODES")
+        # Serialize sending_node_refs (list to container "SENDING-NODE-REFS")
         if self.sending_node_refs:
-            wrapper = ET.Element("SENDING-NODES")
+            wrapper = ET.Element("SENDING-NODE-REFS")
             for item in self.sending_node_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticJ1939Node")
                 if serialized is not None:
@@ -134,9 +134,9 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticJ1939SpnMapping, cls).deserialize(element)
 
-        # Parse sending_node_refs (list from container "SENDING-NODES")
+        # Parse sending_node_refs (list from container "SENDING-NODE-REFS")
         obj.sending_node_refs = []
-        container = SerializationHelper.find_child_element(element, "SENDING-NODES")
+        container = SerializationHelper.find_child_element(element, "SENDING-NODE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

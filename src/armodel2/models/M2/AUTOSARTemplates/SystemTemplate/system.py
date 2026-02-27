@@ -137,9 +137,9 @@ class System(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize client_id_definition_set_refs (list to container "CLIENT-ID-DEFINITION-SETS")
+        # Serialize client_id_definition_set_refs (list to container "CLIENT-ID-DEFINITION-SET-REFS")
         if self.client_id_definition_set_refs:
-            wrapper = ET.Element("CLIENT-ID-DEFINITION-SETS")
+            wrapper = ET.Element("CLIENT-ID-DEFINITION-SET-REFS")
             for item in self.client_id_definition_set_refs:
                 serialized = SerializationHelper.serialize_item(item, "ClientIdDefinitionSet")
                 if serialized is not None:
@@ -202,9 +202,9 @@ class System(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize interpolation_routine_mapping_set_refs (list to container "INTERPOLATION-ROUTINE-MAPPING-SETS")
+        # Serialize interpolation_routine_mapping_set_refs (list to container "INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
         if self.interpolation_routine_mapping_set_refs:
-            wrapper = ET.Element("INTERPOLATION-ROUTINE-MAPPING-SETS")
+            wrapper = ET.Element("INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
             for item in self.interpolation_routine_mapping_set_refs:
                 serialized = SerializationHelper.serialize_item(item, "InterpolationRoutineMappingSet")
                 if serialized is not None:
@@ -277,9 +277,9 @@ class System(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sw_cluster_refs (list to container "SW-CLUSTERS")
+        # Serialize sw_cluster_refs (list to container "SW-CLUSTER-REFS")
         if self.sw_cluster_refs:
-            wrapper = ET.Element("SW-CLUSTERS")
+            wrapper = ET.Element("SW-CLUSTER-REFS")
             for item in self.sw_cluster_refs:
                 serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
@@ -333,9 +333,9 @@ class System(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(System, cls).deserialize(element)
 
-        # Parse client_id_definition_set_refs (list from container "CLIENT-ID-DEFINITION-SETS")
+        # Parse client_id_definition_set_refs (list from container "CLIENT-ID-DEFINITION-SET-REFS")
         obj.client_id_definition_set_refs = []
-        container = SerializationHelper.find_child_element(element, "CLIENT-ID-DEFINITION-SETS")
+        container = SerializationHelper.find_child_element(element, "CLIENT-ID-DEFINITION-SET-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -377,9 +377,9 @@ class System(ARElement):
                 if child_value is not None:
                     obj.fibex_element_refs.append(child_value)
 
-        # Parse interpolation_routine_mapping_set_refs (list from container "INTERPOLATION-ROUTINE-MAPPING-SETS")
+        # Parse interpolation_routine_mapping_set_refs (list from container "INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
         obj.interpolation_routine_mapping_set_refs = []
-        container = SerializationHelper.find_child_element(element, "INTERPOLATION-ROUTINE-MAPPING-SETS")
+        container = SerializationHelper.find_child_element(element, "INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -435,9 +435,9 @@ class System(ARElement):
                 if child_value is not None:
                     obj.root_software_compositions.append(child_value)
 
-        # Parse sw_cluster_refs (list from container "SW-CLUSTERS")
+        # Parse sw_cluster_refs (list from container "SW-CLUSTER-REFS")
         obj.sw_cluster_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-CLUSTERS")
+        container = SerializationHelper.find_child_element(element, "SW-CLUSTER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

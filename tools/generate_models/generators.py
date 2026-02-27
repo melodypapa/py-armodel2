@@ -1320,16 +1320,16 @@ def _generate_deserialize_method(
                         container_tag = xml_tag
                         child_tag = None
                         if is_ref:
-                            # For reference lists, container is attr_name + S (e.g., HW-CATEGORY-REF → HW-CATEGORY-REFS)
+                            # For reference lists, container is SINGULAR-NAME + "-REF" + "S" (e.g., POSSIBLE-ERROR-REFS)
                             # Convert attr_name to AUTOSAR XML format (UPPER-CASE-WITH-HYPHENS)
                             singular_xml_tag = NameConverter.to_xml_tag(attr_name)
-                            container_tag = f"{singular_xml_tag}S"
+                            container_tag = f"{singular_xml_tag}-REFS"
                         else:
-                            # For non-reference lists, container is attr_name + S
-                            # e.g., perInstanceMemory → PER-INSTANCE-MEMORY → PER-INSTANCE-MEMORYS
-                            # Convert attr_name to AUTOSAR XML format (UPPER-CASE-WITH-HYPHENS)
-                            singular_xml_tag = NameConverter.to_xml_tag(attr_name)
-                            container_tag = f"{singular_xml_tag}S"
+                            # For non-reference lists, container is PLURAL-NAME
+                            # Use python_name (already pluralized) to handle irregular plurals like entity → entities
+                            # e.g., entity → entities → ENTITIES, perInstanceMemory → perInstanceMemorys → PER-INSTANCE-MEMORYS
+                            plural_xml_tag = NameConverter.to_xml_tag(python_name)
+                            container_tag = plural_xml_tag
 
                     # Handle no container case (direct children)
                     if container_tag is None:
@@ -3278,16 +3278,16 @@ def _generate_serialize_method(
                         child_tag = None
                         inner_tags = []
                         if is_ref:
-                            # For reference lists, container is attr_name + S (e.g., HW-CATEGORY-REF → HW-CATEGORY-REFS)
+                            # For reference lists, container is SINGULAR-NAME + "-REF" + "S" (e.g., POSSIBLE-ERROR-REFS)
                             # Convert attr_name to AUTOSAR XML format (UPPER-CASE-WITH-HYPHENS)
                             singular_xml_tag = NameConverter.to_xml_tag(attr_name)
-                            container_tag = f"{singular_xml_tag}S"
+                            container_tag = f"{singular_xml_tag}-REFS"
                         else:
-                            # For non-reference lists, container is attr_name + S
-                            # e.g., perInstanceMemory → PER-INSTANCE-MEMORY → PER-INSTANCE-MEMORYS
-                            # Convert attr_name to AUTOSAR XML format (UPPER-CASE-WITH-HYPHENS)
-                            singular_xml_tag = NameConverter.to_xml_tag(attr_name)
-                            container_tag = f"{singular_xml_tag}S"
+                            # For non-reference lists, container is PLURAL-NAME
+                            # Use python_name (already pluralized) to handle irregular plurals like entity → entities
+                            # e.g., entity → entities → ENTITIES, perInstanceMemory → perInstanceMemorys → PER-INSTANCE-MEMORYS
+                            plural_xml_tag = NameConverter.to_xml_tag(python_name)
+                            container_tag = plural_xml_tag
 
                     # Handle no container case (direct children)
                     if container_tag is None:

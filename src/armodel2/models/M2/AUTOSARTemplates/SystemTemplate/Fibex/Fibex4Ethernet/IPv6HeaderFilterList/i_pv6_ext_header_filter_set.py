@@ -64,9 +64,9 @@ class IPv6ExtHeaderFilterSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ext_header_filter_refs (list to container "EXT-HEADER-FILTERS")
+        # Serialize ext_header_filter_refs (list to container "EXT-HEADER-FILTER-REFS")
         if self.ext_header_filter_refs:
-            wrapper = ET.Element("EXT-HEADER-FILTERS")
+            wrapper = ET.Element("EXT-HEADER-FILTER-REFS")
             for item in self.ext_header_filter_refs:
                 serialized = SerializationHelper.serialize_item(item, "IPv6ExtHeaderFilterList")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class IPv6ExtHeaderFilterSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IPv6ExtHeaderFilterSet, cls).deserialize(element)
 
-        # Parse ext_header_filter_refs (list from container "EXT-HEADER-FILTERS")
+        # Parse ext_header_filter_refs (list from container "EXT-HEADER-FILTER-REFS")
         obj.ext_header_filter_refs = []
-        container = SerializationHelper.find_child_element(element, "EXT-HEADER-FILTERS")
+        container = SerializationHelper.find_child_element(element, "EXT-HEADER-FILTER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

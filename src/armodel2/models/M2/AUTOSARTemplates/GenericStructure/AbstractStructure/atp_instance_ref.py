@@ -89,9 +89,9 @@ class AtpInstanceRef(ARObject, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize atp_context_refs (list to container "ATP-CONTEXTS")
+        # Serialize atp_context_refs (list to container "ATP-CONTEXT-REFS")
         if self.atp_context_refs:
-            wrapper = ET.Element("ATP-CONTEXTS")
+            wrapper = ET.Element("ATP-CONTEXT-REFS")
             for item in self.atp_context_refs:
                 serialized = SerializationHelper.serialize_item(item, "AtpPrototype")
                 if serialized is not None:
@@ -141,9 +141,9 @@ class AtpInstanceRef(ARObject, ABC):
             atp_base_ref_value = ARRef.deserialize(child)
             obj.atp_base_ref = atp_base_ref_value
 
-        # Parse atp_context_refs (list from container "ATP-CONTEXTS")
+        # Parse atp_context_refs (list from container "ATP-CONTEXT-REFS")
         obj.atp_context_refs = []
-        container = SerializationHelper.find_child_element(element, "ATP-CONTEXTS")
+        container = SerializationHelper.find_child_element(element, "ATP-CONTEXT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

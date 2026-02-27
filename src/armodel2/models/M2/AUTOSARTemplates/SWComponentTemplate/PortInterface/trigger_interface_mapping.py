@@ -64,9 +64,9 @@ class TriggerInterfaceMapping(PortInterfaceMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize trigger_mapping_refs (list to container "TRIGGER-MAPPINGS")
+        # Serialize trigger_mapping_refs (list to container "TRIGGER-MAPPING-REFS")
         if self.trigger_mapping_refs:
-            wrapper = ET.Element("TRIGGER-MAPPINGS")
+            wrapper = ET.Element("TRIGGER-MAPPING-REFS")
             for item in self.trigger_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "TriggerMapping")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class TriggerInterfaceMapping(PortInterfaceMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TriggerInterfaceMapping, cls).deserialize(element)
 
-        # Parse trigger_mapping_refs (list from container "TRIGGER-MAPPINGS")
+        # Parse trigger_mapping_refs (list from container "TRIGGER-MAPPING-REFS")
         obj.trigger_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "TRIGGER-MAPPINGS")
+        container = SerializationHelper.find_child_element(element, "TRIGGER-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

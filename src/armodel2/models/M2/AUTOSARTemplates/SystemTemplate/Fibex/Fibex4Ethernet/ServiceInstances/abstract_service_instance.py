@@ -80,9 +80,9 @@ class AbstractServiceInstance(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize capabilities (list to container "CAPABILITYS")
+        # Serialize capabilities (list to container "CAPABILITIES")
         if self.capabilities:
-            wrapper = ET.Element("CAPABILITYS")
+            wrapper = ET.Element("CAPABILITIES")
             for item in self.capabilities:
                 serialized = SerializationHelper.serialize_item(item, "TagWithOptionalValue")
                 if serialized is not None:
@@ -118,9 +118,9 @@ class AbstractServiceInstance(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize routing_group_refs (list to container "ROUTING-GROUPS")
+        # Serialize routing_group_refs (list to container "ROUTING-GROUP-REFS")
         if self.routing_group_refs:
-            wrapper = ET.Element("ROUTING-GROUPS")
+            wrapper = ET.Element("ROUTING-GROUP-REFS")
             for item in self.routing_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "SoAdRoutingGroup")
                 if serialized is not None:
@@ -150,9 +150,9 @@ class AbstractServiceInstance(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractServiceInstance, cls).deserialize(element)
 
-        # Parse capabilities (list from container "CAPABILITYS")
+        # Parse capabilities (list from container "CAPABILITIES")
         obj.capabilities = []
-        container = SerializationHelper.find_child_element(element, "CAPABILITYS")
+        container = SerializationHelper.find_child_element(element, "CAPABILITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -172,9 +172,9 @@ class AbstractServiceInstance(Identifiable, ABC):
             method_value = SerializationHelper.deserialize_by_tag(child, "PduActivationRoutingGroup")
             obj.method = method_value
 
-        # Parse routing_group_refs (list from container "ROUTING-GROUPS")
+        # Parse routing_group_refs (list from container "ROUTING-GROUP-REFS")
         obj.routing_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ROUTING-GROUPS")
+        container = SerializationHelper.find_child_element(element, "ROUTING-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

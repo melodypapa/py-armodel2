@@ -136,9 +136,9 @@ class ConsumedEventGroup(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize event_multicast_refs (list to container "EVENT-MULTICASTS")
+        # Serialize event_multicast_refs (list to container "EVENT-MULTICAST-REFS")
         if self.event_multicast_refs:
-            wrapper = ET.Element("EVENT-MULTICASTS")
+            wrapper = ET.Element("EVENT-MULTICAST-REFS")
             for item in self.event_multicast_refs:
                 serialized = SerializationHelper.serialize_item(item, "ApplicationEndpoint")
                 if serialized is not None:
@@ -177,9 +177,9 @@ class ConsumedEventGroup(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize routing_group_refs (list to container "ROUTING-GROUPS")
+        # Serialize routing_group_refs (list to container "ROUTING-GROUP-REFS")
         if self.routing_group_refs:
-            wrapper = ET.Element("ROUTING-GROUPS")
+            wrapper = ET.Element("ROUTING-GROUP-REFS")
             for item in self.routing_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "SoAdRoutingGroup")
                 if serialized is not None:
@@ -255,9 +255,9 @@ class ConsumedEventGroup(Identifiable):
             event_group_value = child.text
             obj.event_group = event_group_value
 
-        # Parse event_multicast_refs (list from container "EVENT-MULTICASTS")
+        # Parse event_multicast_refs (list from container "EVENT-MULTICAST-REFS")
         obj.event_multicast_refs = []
-        container = SerializationHelper.find_child_element(element, "EVENT-MULTICASTS")
+        container = SerializationHelper.find_child_element(element, "EVENT-MULTICAST-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -287,9 +287,9 @@ class ConsumedEventGroup(Identifiable):
             priority_value = child.text
             obj.priority = priority_value
 
-        # Parse routing_group_refs (list from container "ROUTING-GROUPS")
+        # Parse routing_group_refs (list from container "ROUTING-GROUP-REFS")
         obj.routing_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ROUTING-GROUPS")
+        container = SerializationHelper.find_child_element(element, "ROUTING-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

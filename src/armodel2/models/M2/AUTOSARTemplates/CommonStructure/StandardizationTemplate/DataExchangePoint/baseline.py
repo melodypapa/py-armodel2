@@ -70,9 +70,9 @@ class Baseline(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize custom_sdg_def_refs (list to container "CUSTOM-SDG-DEFS")
+        # Serialize custom_sdg_def_refs (list to container "CUSTOM-SDG-DEF-REFS")
         if self.custom_sdg_def_refs:
-            wrapper = ET.Element("CUSTOM-SDG-DEFS")
+            wrapper = ET.Element("CUSTOM-SDG-DEF-REFS")
             for item in self.custom_sdg_def_refs:
                 serialized = SerializationHelper.serialize_item(item, "SdgDef")
                 if serialized is not None:
@@ -87,9 +87,9 @@ class Baseline(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize custom_refs (list to container "CUSTOMS")
+        # Serialize custom_refs (list to container "CUSTOM-REFS")
         if self.custom_refs:
-            wrapper = ET.Element("CUSTOMS")
+            wrapper = ET.Element("CUSTOM-REFS")
             for item in self.custom_refs:
                 serialized = SerializationHelper.serialize_item(item, "Documentation")
                 if serialized is not None:
@@ -136,9 +136,9 @@ class Baseline(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Baseline, cls).deserialize(element)
 
-        # Parse custom_sdg_def_refs (list from container "CUSTOM-SDG-DEFS")
+        # Parse custom_sdg_def_refs (list from container "CUSTOM-SDG-DEF-REFS")
         obj.custom_sdg_def_refs = []
-        container = SerializationHelper.find_child_element(element, "CUSTOM-SDG-DEFS")
+        container = SerializationHelper.find_child_element(element, "CUSTOM-SDG-DEF-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -152,9 +152,9 @@ class Baseline(ARObject):
                 if child_value is not None:
                     obj.custom_sdg_def_refs.append(child_value)
 
-        # Parse custom_refs (list from container "CUSTOMS")
+        # Parse custom_refs (list from container "CUSTOM-REFS")
         obj.custom_refs = []
-        container = SerializationHelper.find_child_element(element, "CUSTOMS")
+        container = SerializationHelper.find_child_element(element, "CUSTOM-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

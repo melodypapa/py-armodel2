@@ -65,9 +65,9 @@ class ExclusiveAreaNestingOrder(Referrable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize exclusive_area_refs (list to container "EXCLUSIVE-AREAS")
+        # Serialize exclusive_area_refs (list to container "EXCLUSIVE-AREA-REFS")
         if self.exclusive_area_refs:
-            wrapper = ET.Element("EXCLUSIVE-AREAS")
+            wrapper = ET.Element("EXCLUSIVE-AREA-REFS")
             for item in self.exclusive_area_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExclusiveArea")
                 if serialized is not None:
@@ -97,9 +97,9 @@ class ExclusiveAreaNestingOrder(Referrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ExclusiveAreaNestingOrder, cls).deserialize(element)
 
-        # Parse exclusive_area_refs (list from container "EXCLUSIVE-AREAS")
+        # Parse exclusive_area_refs (list from container "EXCLUSIVE-AREA-REFS")
         obj.exclusive_area_refs = []
-        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREAS")
+        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

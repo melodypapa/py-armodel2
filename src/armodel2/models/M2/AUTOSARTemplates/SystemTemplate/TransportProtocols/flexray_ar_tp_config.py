@@ -73,9 +73,9 @@ class FlexrayArTpConfig(TpConfig):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize tp_addresses (list to container "TP-ADDRESSS")
+        # Serialize tp_addresses (list to container "TP-ADDRESSES")
         if self.tp_addresses:
-            wrapper = ET.Element("TP-ADDRESSS")
+            wrapper = ET.Element("TP-ADDRESSES")
             for item in self.tp_addresses:
                 serialized = SerializationHelper.serialize_item(item, "TpAddress")
                 if serialized is not None:
@@ -118,9 +118,9 @@ class FlexrayArTpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayArTpConfig, cls).deserialize(element)
 
-        # Parse tp_addresses (list from container "TP-ADDRESSS")
+        # Parse tp_addresses (list from container "TP-ADDRESSES")
         obj.tp_addresses = []
-        container = SerializationHelper.find_child_element(element, "TP-ADDRESSS")
+        container = SerializationHelper.find_child_element(element, "TP-ADDRESSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

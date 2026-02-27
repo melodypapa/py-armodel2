@@ -64,9 +64,9 @@ class LinSporadicFrame(LinFrame):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize substituted_refs (list to container "SUBSTITUTEDS")
+        # Serialize substituted_refs (list to container "SUBSTITUTED-REFS")
         if self.substituted_refs:
-            wrapper = ET.Element("SUBSTITUTEDS")
+            wrapper = ET.Element("SUBSTITUTED-REFS")
             for item in self.substituted_refs:
                 serialized = SerializationHelper.serialize_item(item, "LinUnconditionalFrame")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class LinSporadicFrame(LinFrame):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinSporadicFrame, cls).deserialize(element)
 
-        # Parse substituted_refs (list from container "SUBSTITUTEDS")
+        # Parse substituted_refs (list from container "SUBSTITUTED-REFS")
         obj.substituted_refs = []
-        container = SerializationHelper.find_child_element(element, "SUBSTITUTEDS")
+        container = SerializationHelper.find_child_element(element, "SUBSTITUTED-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

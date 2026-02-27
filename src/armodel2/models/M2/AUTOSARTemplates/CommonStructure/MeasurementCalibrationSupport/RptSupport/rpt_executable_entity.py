@@ -72,9 +72,9 @@ class RptExecutableEntity(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize rpt_executable_entities (list to container "RPT-EXECUTABLE-ENTITYS")
+        # Serialize rpt_executable_entities (list to container "RPT-EXECUTABLE-ENTITIES")
         if self.rpt_executable_entities:
-            wrapper = ET.Element("RPT-EXECUTABLE-ENTITYS")
+            wrapper = ET.Element("RPT-EXECUTABLE-ENTITIES")
             for item in self.rpt_executable_entities:
                 serialized = SerializationHelper.serialize_item(item, "RptExecutableEntity")
                 if serialized is not None:
@@ -131,9 +131,9 @@ class RptExecutableEntity(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptExecutableEntity, cls).deserialize(element)
 
-        # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITYS")
+        # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITIES")
         obj.rpt_executable_entities = []
-        container = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITYS")
+        container = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

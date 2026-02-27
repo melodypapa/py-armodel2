@@ -76,9 +76,9 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostic_refs (list to container "DIAGNOSTICS")
+        # Serialize diagnostic_refs (list to container "DIAGNOSTIC-REFS")
         if self.diagnostic_refs:
-            wrapper = ET.Element("DIAGNOSTICS")
+            wrapper = ET.Element("DIAGNOSTIC-REFS")
             for item in self.diagnostic_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticConnection")
                 if serialized is not None:
@@ -121,9 +121,9 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize service_instance_refs (list to container "SERVICE-INSTANCES")
+        # Serialize service_instance_refs (list to container "SERVICE-INSTANCE-REFS")
         if self.service_instance_refs:
-            wrapper = ET.Element("SERVICE-INSTANCES")
+            wrapper = ET.Element("SERVICE-INSTANCE-REFS")
             for item in self.service_instance_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -153,9 +153,9 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticServiceTable, cls).deserialize(element)
 
-        # Parse diagnostic_refs (list from container "DIAGNOSTICS")
+        # Parse diagnostic_refs (list from container "DIAGNOSTIC-REFS")
         obj.diagnostic_refs = []
-        container = SerializationHelper.find_child_element(element, "DIAGNOSTICS")
+        container = SerializationHelper.find_child_element(element, "DIAGNOSTIC-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -181,9 +181,9 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
             protocol_kind_value = child.text
             obj.protocol_kind = protocol_kind_value
 
-        # Parse service_instance_refs (list from container "SERVICE-INSTANCES")
+        # Parse service_instance_refs (list from container "SERVICE-INSTANCE-REFS")
         obj.service_instance_refs = []
-        container = SerializationHelper.find_child_element(element, "SERVICE-INSTANCES")
+        container = SerializationHelper.find_child_element(element, "SERVICE-INSTANCE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

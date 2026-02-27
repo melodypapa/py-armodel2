@@ -84,9 +84,9 @@ class BswServiceDependency(ServiceDependency):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize assigned_entries (list to container "ASSIGNED-ENTRYS")
+        # Serialize assigned_entries (list to container "ASSIGNED-ENTRIES")
         if self.assigned_entries:
-            wrapper = ET.Element("ASSIGNED-ENTRYS")
+            wrapper = ET.Element("ASSIGNED-ENTRIES")
             for item in self.assigned_entries:
                 serialized = SerializationHelper.serialize_item(item, "RoleBasedBswModuleEntryAssignment")
                 if serialized is not None:
@@ -147,9 +147,9 @@ class BswServiceDependency(ServiceDependency):
                 if child_value is not None:
                     obj.assigned_datas.append(child_value)
 
-        # Parse assigned_entries (list from container "ASSIGNED-ENTRYS")
+        # Parse assigned_entries (list from container "ASSIGNED-ENTRIES")
         obj.assigned_entries = []
-        container = SerializationHelper.find_child_element(element, "ASSIGNED-ENTRYS")
+        container = SerializationHelper.find_child_element(element, "ASSIGNED-ENTRIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

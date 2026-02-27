@@ -81,9 +81,9 @@ class RunnableEntityInCompositionInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_sw_refs (list to container "CONTEXT-SWS")
+        # Serialize context_sw_refs (list to container "CONTEXT-SW-REFS")
         if self.context_sw_refs:
-            wrapper = ET.Element("CONTEXT-SWS")
+            wrapper = ET.Element("CONTEXT-SW-REFS")
             for item in self.context_sw_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -133,9 +133,9 @@ class RunnableEntityInCompositionInstanceRef(ARObject):
             base_ref_value = ARRef.deserialize(child)
             obj.base_ref = base_ref_value
 
-        # Parse context_sw_refs (list from container "CONTEXT-SWS")
+        # Parse context_sw_refs (list from container "CONTEXT-SW-REFS")
         obj.context_sw_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-SWS")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-SW-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

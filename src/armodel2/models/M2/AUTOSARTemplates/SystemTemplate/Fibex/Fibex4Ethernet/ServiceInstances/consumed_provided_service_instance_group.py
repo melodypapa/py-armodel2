@@ -63,9 +63,9 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize consumed_service_refs (list to container "CONSUMED-SERVICES")
+        # Serialize consumed_service_refs (list to container "CONSUMED-SERVICE-REFS")
         if self.consumed_service_refs:
-            wrapper = ET.Element("CONSUMED-SERVICES")
+            wrapper = ET.Element("CONSUMED-SERVICE-REFS")
             for item in self.consumed_service_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -80,9 +80,9 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize provided_service_refs (list to container "PROVIDED-SERVICES")
+        # Serialize provided_service_refs (list to container "PROVIDED-SERVICE-REFS")
         if self.provided_service_refs:
-            wrapper = ET.Element("PROVIDED-SERVICES")
+            wrapper = ET.Element("PROVIDED-SERVICE-REFS")
             for item in self.provided_service_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -112,9 +112,9 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConsumedProvidedServiceInstanceGroup, cls).deserialize(element)
 
-        # Parse consumed_service_refs (list from container "CONSUMED-SERVICES")
+        # Parse consumed_service_refs (list from container "CONSUMED-SERVICE-REFS")
         obj.consumed_service_refs = []
-        container = SerializationHelper.find_child_element(element, "CONSUMED-SERVICES")
+        container = SerializationHelper.find_child_element(element, "CONSUMED-SERVICE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -128,9 +128,9 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
                 if child_value is not None:
                     obj.consumed_service_refs.append(child_value)
 
-        # Parse provided_service_refs (list from container "PROVIDED-SERVICES")
+        # Parse provided_service_refs (list from container "PROVIDED-SERVICE-REFS")
         obj.provided_service_refs = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-SERVICES")
+        container = SerializationHelper.find_child_element(element, "PROVIDED-SERVICE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

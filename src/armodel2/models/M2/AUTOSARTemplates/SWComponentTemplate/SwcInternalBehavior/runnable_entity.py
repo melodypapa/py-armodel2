@@ -173,9 +173,9 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_receives (list to container "DATA-RECEIFS")
+        # Serialize data_receives (list to container "DATA-RECEIVES")
         if self.data_receives:
-            wrapper = ET.Element("DATA-RECEIFS")
+            wrapper = ET.Element("DATA-RECEIVES")
             for item in self.data_receives:
                 serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
@@ -203,9 +203,9 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize external_refs (list to container "EXTERNALS")
+        # Serialize external_refs (list to container "EXTERNAL-REFS")
         if self.external_refs:
-            wrapper = ET.Element("EXTERNALS")
+            wrapper = ET.Element("EXTERNAL-REFS")
             for item in self.external_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExternalTriggeringPoint")
                 if serialized is not None:
@@ -220,9 +220,9 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize internal_refs (list to container "INTERNALS")
+        # Serialize internal_refs (list to container "INTERNAL-REFS")
         if self.internal_refs:
-            wrapper = ET.Element("INTERNALS")
+            wrapper = ET.Element("INTERNAL-REFS")
             for item in self.internal_refs:
                 serialized = SerializationHelper.serialize_item(item, "InternalTriggeringPoint")
                 if serialized is not None:
@@ -257,9 +257,9 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize parameter_accesses (list to container "PARAMETER-ACCESSS")
+        # Serialize parameter_accesses (list to container "PARAMETER-ACCESSES")
         if self.parameter_accesses:
-            wrapper = ET.Element("PARAMETER-ACCESSS")
+            wrapper = ET.Element("PARAMETER-ACCESSES")
             for item in self.parameter_accesses:
                 serialized = SerializationHelper.serialize_item(item, "ParameterAccess")
                 if serialized is not None:
@@ -372,9 +372,9 @@ class RunnableEntity(ExecutableEntity):
                 if child_value is not None:
                     obj.data_reads.append(child_value)
 
-        # Parse data_receives (list from container "DATA-RECEIFS")
+        # Parse data_receives (list from container "DATA-RECEIVES")
         obj.data_receives = []
-        container = SerializationHelper.find_child_element(element, "DATA-RECEIFS")
+        container = SerializationHelper.find_child_element(element, "DATA-RECEIVES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -402,9 +402,9 @@ class RunnableEntity(ExecutableEntity):
                 if child_value is not None:
                     obj.data_writes.append(child_value)
 
-        # Parse external_refs (list from container "EXTERNALS")
+        # Parse external_refs (list from container "EXTERNAL-REFS")
         obj.external_refs = []
-        container = SerializationHelper.find_child_element(element, "EXTERNALS")
+        container = SerializationHelper.find_child_element(element, "EXTERNAL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -418,9 +418,9 @@ class RunnableEntity(ExecutableEntity):
                 if child_value is not None:
                     obj.external_refs.append(child_value)
 
-        # Parse internal_refs (list from container "INTERNALS")
+        # Parse internal_refs (list from container "INTERNAL-REFS")
         obj.internal_refs = []
-        container = SerializationHelper.find_child_element(element, "INTERNALS")
+        container = SerializationHelper.find_child_element(element, "INTERNAL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -454,9 +454,9 @@ class RunnableEntity(ExecutableEntity):
                 if child_value is not None:
                     obj.mode_switch_points.append(child_value)
 
-        # Parse parameter_accesses (list from container "PARAMETER-ACCESSS")
+        # Parse parameter_accesses (list from container "PARAMETER-ACCESSES")
         obj.parameter_accesses = []
-        container = SerializationHelper.find_child_element(element, "PARAMETER-ACCESSS")
+        container = SerializationHelper.find_child_element(element, "PARAMETER-ACCESSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

@@ -75,9 +75,9 @@ class ParameterSwComponentType(SwComponentType):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize constant_refs (list to container "CONSTANTS")
+        # Serialize constant_refs (list to container "CONSTANT-REFS")
         if self.constant_refs:
-            wrapper = ET.Element("CONSTANTS")
+            wrapper = ET.Element("CONSTANT-REFS")
             for item in self.constant_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConstantSpecification")
                 if serialized is not None:
@@ -92,9 +92,9 @@ class ParameterSwComponentType(SwComponentType):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_type_refs (list to container "DATA-TYPES")
+        # Serialize data_type_refs (list to container "DATA-TYPE-REFS")
         if self.data_type_refs:
-            wrapper = ET.Element("DATA-TYPES")
+            wrapper = ET.Element("DATA-TYPE-REFS")
             for item in self.data_type_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
@@ -134,9 +134,9 @@ class ParameterSwComponentType(SwComponentType):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ParameterSwComponentType, cls).deserialize(element)
 
-        # Parse constant_refs (list from container "CONSTANTS")
+        # Parse constant_refs (list from container "CONSTANT-REFS")
         obj.constant_refs = []
-        container = SerializationHelper.find_child_element(element, "CONSTANTS")
+        container = SerializationHelper.find_child_element(element, "CONSTANT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -150,9 +150,9 @@ class ParameterSwComponentType(SwComponentType):
                 if child_value is not None:
                     obj.constant_refs.append(child_value)
 
-        # Parse data_type_refs (list from container "DATA-TYPES")
+        # Parse data_type_refs (list from container "DATA-TYPE-REFS")
         obj.data_type_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-TYPES")
+        container = SerializationHelper.find_child_element(element, "DATA-TYPE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

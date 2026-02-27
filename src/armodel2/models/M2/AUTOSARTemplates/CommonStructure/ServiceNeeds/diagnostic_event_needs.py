@@ -79,9 +79,9 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize deferring_fid_refs (list to container "DEFERRING-FIDS")
+        # Serialize deferring_fid_refs (list to container "DEFERRING-FID-REFS")
         if self.deferring_fid_refs:
-            wrapper = ET.Element("DEFERRING-FIDS")
+            wrapper = ET.Element("DEFERRING-FID-REFS")
             for item in self.deferring_fid_refs:
                 serialized = SerializationHelper.serialize_item(item, "FunctionInhibitionNeeds")
                 if serialized is not None:
@@ -124,9 +124,9 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize inhibiting_refs (list to container "INHIBITINGS")
+        # Serialize inhibiting_refs (list to container "INHIBITING-REFS")
         if self.inhibiting_refs:
-            wrapper = ET.Element("INHIBITINGS")
+            wrapper = ET.Element("INHIBITING-REFS")
             for item in self.inhibiting_refs:
                 serialized = SerializationHelper.serialize_item(item, "FunctionInhibitionNeeds")
                 if serialized is not None:
@@ -184,9 +184,9 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventNeeds, cls).deserialize(element)
 
-        # Parse deferring_fid_refs (list from container "DEFERRING-FIDS")
+        # Parse deferring_fid_refs (list from container "DEFERRING-FID-REFS")
         obj.deferring_fid_refs = []
-        container = SerializationHelper.find_child_element(element, "DEFERRING-FIDS")
+        container = SerializationHelper.find_child_element(element, "DEFERRING-FID-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -212,9 +212,9 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
             inhibiting_fid_ref_value = ARRef.deserialize(child)
             obj.inhibiting_fid_ref = inhibiting_fid_ref_value
 
-        # Parse inhibiting_refs (list from container "INHIBITINGS")
+        # Parse inhibiting_refs (list from container "INHIBITING-REFS")
         obj.inhibiting_refs = []
-        container = SerializationHelper.find_child_element(element, "INHIBITINGS")
+        container = SerializationHelper.find_child_element(element, "INHIBITING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

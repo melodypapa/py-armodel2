@@ -64,9 +64,9 @@ class BswCompositionTiming(TimingExtension):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize implementation_refs (list to container "IMPLEMENTATIONS")
+        # Serialize implementation_refs (list to container "IMPLEMENTATION-REFS")
         if self.implementation_refs:
-            wrapper = ET.Element("IMPLEMENTATIONS")
+            wrapper = ET.Element("IMPLEMENTATION-REFS")
             for item in self.implementation_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswImplementation")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class BswCompositionTiming(TimingExtension):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswCompositionTiming, cls).deserialize(element)
 
-        # Parse implementation_refs (list from container "IMPLEMENTATIONS")
+        # Parse implementation_refs (list from container "IMPLEMENTATION-REFS")
         obj.implementation_refs = []
-        container = SerializationHelper.find_child_element(element, "IMPLEMENTATIONS")
+        container = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

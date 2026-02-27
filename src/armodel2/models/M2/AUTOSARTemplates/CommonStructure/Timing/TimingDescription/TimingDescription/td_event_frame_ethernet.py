@@ -114,9 +114,9 @@ class TDEventFrameEthernet(TDEventCom):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize td_pdu_triggering_refs (list to container "TD-PDU-TRIGGERINGS")
+        # Serialize td_pdu_triggering_refs (list to container "TD-PDU-TRIGGERING-REFS")
         if self.td_pdu_triggering_refs:
-            wrapper = ET.Element("TD-PDU-TRIGGERINGS")
+            wrapper = ET.Element("TD-PDU-TRIGGERING-REFS")
             for item in self.td_pdu_triggering_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
@@ -168,9 +168,9 @@ class TDEventFrameEthernet(TDEventCom):
                 if child_value is not None:
                     obj.td_header_id_filters.append(child_value)
 
-        # Parse td_pdu_triggering_refs (list from container "TD-PDU-TRIGGERINGS")
+        # Parse td_pdu_triggering_refs (list from container "TD-PDU-TRIGGERING-REFS")
         obj.td_pdu_triggering_refs = []
-        container = SerializationHelper.find_child_element(element, "TD-PDU-TRIGGERINGS")
+        container = SerializationHelper.find_child_element(element, "TD-PDU-TRIGGERING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

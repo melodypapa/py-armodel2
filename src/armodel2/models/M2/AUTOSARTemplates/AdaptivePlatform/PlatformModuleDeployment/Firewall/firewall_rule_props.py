@@ -78,9 +78,9 @@ class FirewallRuleProps(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize matching_egress_rule_refs (list to container "MATCHING-EGRESS-RULES")
+        # Serialize matching_egress_rule_refs (list to container "MATCHING-EGRESS-RULE-REFS")
         if self.matching_egress_rule_refs:
-            wrapper = ET.Element("MATCHING-EGRESS-RULES")
+            wrapper = ET.Element("MATCHING-EGRESS-RULE-REFS")
             for item in self.matching_egress_rule_refs:
                 serialized = SerializationHelper.serialize_item(item, "FirewallRule")
                 if serialized is not None:
@@ -95,9 +95,9 @@ class FirewallRuleProps(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize matching_ingress_rule_refs (list to container "MATCHING-INGRESS-RULES")
+        # Serialize matching_ingress_rule_refs (list to container "MATCHING-INGRESS-RULE-REFS")
         if self.matching_ingress_rule_refs:
-            wrapper = ET.Element("MATCHING-INGRESS-RULES")
+            wrapper = ET.Element("MATCHING-INGRESS-RULE-REFS")
             for item in self.matching_ingress_rule_refs:
                 serialized = SerializationHelper.serialize_item(item, "FirewallRule")
                 if serialized is not None:
@@ -133,9 +133,9 @@ class FirewallRuleProps(ARObject):
             action_value = SerializationHelper.deserialize_by_tag(child, "FirewallActionEnum")
             obj.action = action_value
 
-        # Parse matching_egress_rule_refs (list from container "MATCHING-EGRESS-RULES")
+        # Parse matching_egress_rule_refs (list from container "MATCHING-EGRESS-RULE-REFS")
         obj.matching_egress_rule_refs = []
-        container = SerializationHelper.find_child_element(element, "MATCHING-EGRESS-RULES")
+        container = SerializationHelper.find_child_element(element, "MATCHING-EGRESS-RULE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -149,9 +149,9 @@ class FirewallRuleProps(ARObject):
                 if child_value is not None:
                     obj.matching_egress_rule_refs.append(child_value)
 
-        # Parse matching_ingress_rule_refs (list from container "MATCHING-INGRESS-RULES")
+        # Parse matching_ingress_rule_refs (list from container "MATCHING-INGRESS-RULE-REFS")
         obj.matching_ingress_rule_refs = []
-        container = SerializationHelper.find_child_element(element, "MATCHING-INGRESS-RULES")
+        container = SerializationHelper.find_child_element(element, "MATCHING-INGRESS-RULE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

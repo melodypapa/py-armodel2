@@ -100,9 +100,9 @@ class DataTransformation(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transformer_refs (list to container "TRANSFORMERS")
+        # Serialize transformer_refs (list to container "TRANSFORMER-REFS")
         if self.transformer_refs:
-            wrapper = ET.Element("TRANSFORMERS")
+            wrapper = ET.Element("TRANSFORMER-REFS")
             for item in self.transformer_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -144,9 +144,9 @@ class DataTransformation(Identifiable):
             execute_despite_value = child.text
             obj.execute_despite = execute_despite_value
 
-        # Parse transformer_refs (list from container "TRANSFORMERS")
+        # Parse transformer_refs (list from container "TRANSFORMER-REFS")
         obj.transformer_refs = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMERS")
+        container = SerializationHelper.find_child_element(element, "TRANSFORMER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

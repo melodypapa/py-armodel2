@@ -64,9 +64,9 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize comm_connector_refs (list to container "COMM-CONNECTORS")
+        # Serialize comm_connector_refs (list to container "COMM-CONNECTOR-REFS")
         if self.comm_connector_refs:
-            wrapper = ET.Element("COMM-CONNECTORS")
+            wrapper = ET.Element("COMM-CONNECTOR-REFS")
             for item in self.comm_connector_refs:
                 serialized = SerializationHelper.serialize_item(item, "CommunicationConnector")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventContextMappingCommConnector, cls).deserialize(element)
 
-        # Parse comm_connector_refs (list from container "COMM-CONNECTORS")
+        # Parse comm_connector_refs (list from container "COMM-CONNECTOR-REFS")
         obj.comm_connector_refs = []
-        container = SerializationHelper.find_child_element(element, "COMM-CONNECTORS")
+        container = SerializationHelper.find_child_element(element, "COMM-CONNECTOR-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

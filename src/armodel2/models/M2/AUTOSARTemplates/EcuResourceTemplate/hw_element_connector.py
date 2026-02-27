@@ -77,9 +77,9 @@ class HwElementConnector(Describable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize hw_element_refs (list to container "HW-ELEMENTS")
+        # Serialize hw_element_refs (list to container "HW-ELEMENT-REFS")
         if self.hw_element_refs:
-            wrapper = ET.Element("HW-ELEMENTS")
+            wrapper = ET.Element("HW-ELEMENT-REFS")
             for item in self.hw_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "HwElement")
                 if serialized is not None:
@@ -104,9 +104,9 @@ class HwElementConnector(Describable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize hw_pin_group_refs (list to container "HW-PIN-GROUPS")
+        # Serialize hw_pin_group_refs (list to container "HW-PIN-GROUP-REFS")
         if self.hw_pin_group_refs:
-            wrapper = ET.Element("HW-PIN-GROUPS")
+            wrapper = ET.Element("HW-PIN-GROUP-REFS")
             for item in self.hw_pin_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "HwPinGroupConnector")
                 if serialized is not None:
@@ -136,9 +136,9 @@ class HwElementConnector(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwElementConnector, cls).deserialize(element)
 
-        # Parse hw_element_refs (list from container "HW-ELEMENTS")
+        # Parse hw_element_refs (list from container "HW-ELEMENT-REFS")
         obj.hw_element_refs = []
-        container = SerializationHelper.find_child_element(element, "HW-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "HW-ELEMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -162,9 +162,9 @@ class HwElementConnector(Describable):
                 if child_value is not None:
                     obj.hw_pins.append(child_value)
 
-        # Parse hw_pin_group_refs (list from container "HW-PIN-GROUPS")
+        # Parse hw_pin_group_refs (list from container "HW-PIN-GROUP-REFS")
         obj.hw_pin_group_refs = []
-        container = SerializationHelper.find_child_element(element, "HW-PIN-GROUPS")
+        container = SerializationHelper.find_child_element(element, "HW-PIN-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

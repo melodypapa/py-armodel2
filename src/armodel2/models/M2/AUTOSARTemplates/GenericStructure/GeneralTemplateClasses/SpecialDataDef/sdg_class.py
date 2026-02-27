@@ -116,9 +116,9 @@ class SdgClass(SdgElementWithGid):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sdg_constraint_refs (list to container "SDG-CONSTRAINTS")
+        # Serialize sdg_constraint_refs (list to container "SDG-CONSTRAINT-REFS")
         if self.sdg_constraint_refs:
-            wrapper = ET.Element("SDG-CONSTRAINTS")
+            wrapper = ET.Element("SDG-CONSTRAINT-REFS")
             for item in self.sdg_constraint_refs:
                 serialized = SerializationHelper.serialize_item(item, "TraceableText")
                 if serialized is not None:
@@ -170,9 +170,9 @@ class SdgClass(SdgElementWithGid):
             extends_meta_value = child.text
             obj.extends_meta = extends_meta_value
 
-        # Parse sdg_constraint_refs (list from container "SDG-CONSTRAINTS")
+        # Parse sdg_constraint_refs (list from container "SDG-CONSTRAINT-REFS")
         obj.sdg_constraint_refs = []
-        container = SerializationHelper.find_child_element(element, "SDG-CONSTRAINTS")
+        container = SerializationHelper.find_child_element(element, "SDG-CONSTRAINT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

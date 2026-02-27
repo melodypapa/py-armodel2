@@ -84,9 +84,9 @@ class FMFeatureDecomposition(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize feature_refs (list to container "FEATURES")
+        # Serialize feature_refs (list to container "FEATURE-REFS")
         if self.feature_refs:
-            wrapper = ET.Element("FEATURES")
+            wrapper = ET.Element("FEATURE-REFS")
             for item in self.feature_refs:
                 serialized = SerializationHelper.serialize_item(item, "FMFeature")
                 if serialized is not None:
@@ -150,9 +150,9 @@ class FMFeatureDecomposition(ARObject):
             category_value = child.text
             obj.category = category_value
 
-        # Parse feature_refs (list from container "FEATURES")
+        # Parse feature_refs (list from container "FEATURE-REFS")
         obj.feature_refs = []
-        container = SerializationHelper.find_child_element(element, "FEATURES")
+        container = SerializationHelper.find_child_element(element, "FEATURE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

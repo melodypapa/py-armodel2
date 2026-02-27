@@ -115,9 +115,9 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize successor_refs (list to container "SUCCESSORS")
+        # Serialize successor_refs (list to container "SUCCESSOR-REFS")
         if self.successor_refs:
-            wrapper = ET.Element("SUCCESSORS")
+            wrapper = ET.Element("SUCCESSOR-REFS")
             for item in self.successor_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -165,9 +165,9 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
             executable_entity_ref_value = ARRef.deserialize(child)
             obj.executable_entity_ref = executable_entity_ref_value
 
-        # Parse successor_refs (list from container "SUCCESSORS")
+        # Parse successor_refs (list from container "SUCCESSOR-REFS")
         obj.successor_refs = []
-        container = SerializationHelper.find_child_element(element, "SUCCESSORS")
+        container = SerializationHelper.find_child_element(element, "SUCCESSOR-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

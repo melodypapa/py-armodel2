@@ -83,9 +83,9 @@ class SwitchStreamIdentification(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize egress_port_refs (list to container "EGRESS-PORTS")
+        # Serialize egress_port_refs (list to container "EGRESS-PORT-REFS")
         if self.egress_port_refs:
-            wrapper = ET.Element("EGRESS-PORTS")
+            wrapper = ET.Element("EGRESS-PORT-REFS")
             for item in self.egress_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "CouplingPort")
                 if serialized is not None:
@@ -156,9 +156,9 @@ class SwitchStreamIdentification(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ingress_port_refs (list to container "INGRESS-PORTS")
+        # Serialize ingress_port_refs (list to container "INGRESS-PORT-REFS")
         if self.ingress_port_refs:
-            wrapper = ET.Element("INGRESS-PORTS")
+            wrapper = ET.Element("INGRESS-PORT-REFS")
             for item in self.ingress_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "CouplingPort")
                 if serialized is not None:
@@ -202,9 +202,9 @@ class SwitchStreamIdentification(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwitchStreamIdentification, cls).deserialize(element)
 
-        # Parse egress_port_refs (list from container "EGRESS-PORTS")
+        # Parse egress_port_refs (list from container "EGRESS-PORT-REFS")
         obj.egress_port_refs = []
-        container = SerializationHelper.find_child_element(element, "EGRESS-PORTS")
+        container = SerializationHelper.find_child_element(element, "EGRESS-PORT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -242,9 +242,9 @@ class SwitchStreamIdentification(Identifiable):
             filter_action_vlan_value = child.text
             obj.filter_action_vlan = filter_action_vlan_value
 
-        # Parse ingress_port_refs (list from container "INGRESS-PORTS")
+        # Parse ingress_port_refs (list from container "INGRESS-PORT-REFS")
         obj.ingress_port_refs = []
-        container = SerializationHelper.find_child_element(element, "INGRESS-PORTS")
+        container = SerializationHelper.find_child_element(element, "INGRESS-PORT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

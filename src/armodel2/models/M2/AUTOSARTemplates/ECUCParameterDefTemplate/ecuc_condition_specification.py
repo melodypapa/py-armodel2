@@ -83,9 +83,9 @@ class EcucConditionSpecification(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecuc_queries (list to container "ECUC-QUERYS")
+        # Serialize ecuc_queries (list to container "ECUC-QUERIES")
         if self.ecuc_queries:
-            wrapper = ET.Element("ECUC-QUERYS")
+            wrapper = ET.Element("ECUC-QUERIES")
             for item in self.ecuc_queries:
                 serialized = SerializationHelper.serialize_item(item, "EcucQuery")
                 if serialized is not None:
@@ -128,9 +128,9 @@ class EcucConditionSpecification(ARObject):
             condition_value = SerializationHelper.deserialize_by_tag(child, "EcucConditionFormula")
             obj.condition = condition_value
 
-        # Parse ecuc_queries (list from container "ECUC-QUERYS")
+        # Parse ecuc_queries (list from container "ECUC-QUERIES")
         obj.ecuc_queries = []
-        container = SerializationHelper.find_child_element(element, "ECUC-QUERYS")
+        container = SerializationHelper.find_child_element(element, "ECUC-QUERIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

@@ -78,9 +78,9 @@ class DataTransformationSet(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize transformation_technologies (list to container "TRANSFORMATION-TECHNOLOGYS")
+        # Serialize transformation_technologies (list to container "TRANSFORMATION-TECHNOLOGIES")
         if self.transformation_technologies:
-            wrapper = ET.Element("TRANSFORMATION-TECHNOLOGYS")
+            wrapper = ET.Element("TRANSFORMATION-TECHNOLOGIES")
             for item in self.transformation_technologies:
                 serialized = SerializationHelper.serialize_item(item, "TransformationTechnology")
                 if serialized is not None:
@@ -113,9 +113,9 @@ class DataTransformationSet(ARElement):
                 if child_value is not None:
                     obj.datas.append(child_value)
 
-        # Parse transformation_technologies (list from container "TRANSFORMATION-TECHNOLOGYS")
+        # Parse transformation_technologies (list from container "TRANSFORMATION-TECHNOLOGIES")
         obj.transformation_technologies = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-TECHNOLOGYS")
+        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-TECHNOLOGIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

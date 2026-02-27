@@ -73,9 +73,9 @@ class FlexrayFrameTriggering(FrameTriggering):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize absolutelies (list to container "ABSOLUTELYS")
+        # Serialize absolutelies (list to container "ABSOLUTELIES")
         if self.absolutelies:
-            wrapper = ET.Element("ABSOLUTELYS")
+            wrapper = ET.Element("ABSOLUTELIES")
             for item in self.absolutelies:
                 serialized = SerializationHelper.serialize_item(item, "FlexrayAbsolutelyScheduledTiming")
                 if serialized is not None:
@@ -140,9 +140,9 @@ class FlexrayFrameTriggering(FrameTriggering):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayFrameTriggering, cls).deserialize(element)
 
-        # Parse absolutelies (list from container "ABSOLUTELYS")
+        # Parse absolutelies (list from container "ABSOLUTELIES")
         obj.absolutelies = []
-        container = SerializationHelper.find_child_element(element, "ABSOLUTELYS")
+        container = SerializationHelper.find_child_element(element, "ABSOLUTELIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

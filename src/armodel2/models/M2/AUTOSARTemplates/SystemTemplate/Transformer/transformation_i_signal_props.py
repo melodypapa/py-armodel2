@@ -82,9 +82,9 @@ class TransformationISignalProps(ARObject, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize data_prototype_refs (list to container "DATA-PROTOTYPES")
+        # Serialize data_prototype_refs (list to container "DATA-PROTOTYPE-REFS")
         if self.data_prototype_refs:
-            wrapper = ET.Element("DATA-PROTOTYPES")
+            wrapper = ET.Element("DATA-PROTOTYPE-REFS")
             for item in self.data_prototype_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataPrototype")
                 if serialized is not None:
@@ -134,9 +134,9 @@ class TransformationISignalProps(ARObject, ABC):
             cs_error_reaction_value = CSTransformerErrorReactionEnum.deserialize(child)
             obj.cs_error_reaction = cs_error_reaction_value
 
-        # Parse data_prototype_refs (list from container "DATA-PROTOTYPES")
+        # Parse data_prototype_refs (list from container "DATA-PROTOTYPE-REFS")
         obj.data_prototype_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-PROTOTYPES")
+        container = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

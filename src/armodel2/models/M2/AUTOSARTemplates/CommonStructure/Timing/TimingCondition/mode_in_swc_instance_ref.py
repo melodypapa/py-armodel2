@@ -91,9 +91,9 @@ class ModeInSwcInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_refs (list to container "CONTEXTS")
+        # Serialize context_refs (list to container "CONTEXT-REFS")
         if self.context_refs:
-            wrapper = ET.Element("CONTEXTS")
+            wrapper = ET.Element("CONTEXT-REFS")
             for item in self.context_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -171,9 +171,9 @@ class ModeInSwcInstanceRef(ARObject):
             base_ref_value = ARRef.deserialize(child)
             obj.base_ref = base_ref_value
 
-        # Parse context_refs (list from container "CONTEXTS")
+        # Parse context_refs (list from container "CONTEXT-REFS")
         obj.context_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXTS")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -64,9 +64,9 @@ class IdsDesign(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize element_refs (list to container "ELEMENTS")
+        # Serialize element_refs (list to container "ELEMENT-REFS")
         if self.element_refs:
-            wrapper = ET.Element("ELEMENTS")
+            wrapper = ET.Element("ELEMENT-REFS")
             for item in self.element_refs:
                 serialized = SerializationHelper.serialize_item(item, "IdsCommonElement")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class IdsDesign(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IdsDesign, cls).deserialize(element)
 
-        # Parse element_refs (list from container "ELEMENTS")
+        # Parse element_refs (list from container "ELEMENT-REFS")
         obj.element_refs = []
-        container = SerializationHelper.find_child_element(element, "ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "ELEMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

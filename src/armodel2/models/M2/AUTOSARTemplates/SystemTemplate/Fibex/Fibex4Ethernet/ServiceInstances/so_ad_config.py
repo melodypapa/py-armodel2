@@ -74,9 +74,9 @@ class SoAdConfig(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize socket_addresses (list to container "SOCKET-ADDRESSS")
+        # Serialize socket_addresses (list to container "SOCKET-ADDRESSES")
         if self.socket_addresses:
-            wrapper = ET.Element("SOCKET-ADDRESSS")
+            wrapper = ET.Element("SOCKET-ADDRESSES")
             for item in self.socket_addresses:
                 serialized = SerializationHelper.serialize_item(item, "SocketAddress")
                 if serialized is not None:
@@ -109,9 +109,9 @@ class SoAdConfig(ARObject):
                 if child_value is not None:
                     obj.connections.append(child_value)
 
-        # Parse socket_addresses (list from container "SOCKET-ADDRESSS")
+        # Parse socket_addresses (list from container "SOCKET-ADDRESSES")
         obj.socket_addresses = []
-        container = SerializationHelper.find_child_element(element, "SOCKET-ADDRESSS")
+        container = SerializationHelper.find_child_element(element, "SOCKET-ADDRESSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

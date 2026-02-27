@@ -134,9 +134,9 @@ class ExecutableEntity(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize exclusive_area_nesting_order_refs (list to container "EXCLUSIVE-AREA-NESTING-ORDERS")
+        # Serialize exclusive_area_nesting_order_refs (list to container "EXCLUSIVE-AREA-NESTING-ORDER-REFS")
         if self.exclusive_area_nesting_order_refs:
-            wrapper = ET.Element("EXCLUSIVE-AREA-NESTING-ORDERS")
+            wrapper = ET.Element("EXCLUSIVE-AREA-NESTING-ORDER-REFS")
             for item in self.exclusive_area_nesting_order_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExclusiveAreaNestingOrder")
                 if serialized is not None:
@@ -179,9 +179,9 @@ class ExecutableEntity(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize runs_inside_refs (list to container "RUNS-INSIDES")
+        # Serialize runs_inside_refs (list to container "RUNS-INSIDE-REFS")
         if self.runs_inside_refs:
-            wrapper = ET.Element("RUNS-INSIDES")
+            wrapper = ET.Element("RUNS-INSIDE-REFS")
             for item in self.runs_inside_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExclusiveArea")
                 if serialized is not None:
@@ -251,9 +251,9 @@ class ExecutableEntity(Identifiable, ABC):
                 if child_value is not None:
                     obj.can_enter_refs.append(child_value)
 
-        # Parse exclusive_area_nesting_order_refs (list from container "EXCLUSIVE-AREA-NESTING-ORDERS")
+        # Parse exclusive_area_nesting_order_refs (list from container "EXCLUSIVE-AREA-NESTING-ORDER-REFS")
         obj.exclusive_area_nesting_order_refs = []
-        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-NESTING-ORDERS")
+        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-NESTING-ORDER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -279,9 +279,9 @@ class ExecutableEntity(Identifiable, ABC):
             reentrancy_level_value = ReentrancyLevelEnum.deserialize(child)
             obj.reentrancy_level = reentrancy_level_value
 
-        # Parse runs_inside_refs (list from container "RUNS-INSIDES")
+        # Parse runs_inside_refs (list from container "RUNS-INSIDE-REFS")
         obj.runs_inside_refs = []
-        container = SerializationHelper.find_child_element(element, "RUNS-INSIDES")
+        container = SerializationHelper.find_child_element(element, "RUNS-INSIDE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

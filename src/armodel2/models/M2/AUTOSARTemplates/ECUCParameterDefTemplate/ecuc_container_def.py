@@ -82,9 +82,9 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize destination_uri_refs (list to container "DESTINATION-URIS")
+        # Serialize destination_uri_refs (list to container "DESTINATION-URI-REFS")
         if self.destination_uri_refs:
-            wrapper = ET.Element("DESTINATION-URIS")
+            wrapper = ET.Element("DESTINATION-URI-REFS")
             for item in self.destination_uri_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucDestinationUriDef")
                 if serialized is not None:
@@ -99,9 +99,9 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize multiplicities (list to container "MULTIPLICITYS")
+        # Serialize multiplicities (list to container "MULTIPLICITIES")
         if self.multiplicities:
-            wrapper = ET.Element("MULTIPLICITYS")
+            wrapper = ET.Element("MULTIPLICITIES")
             for item in self.multiplicities:
                 serialized = SerializationHelper.serialize_item(item, "EcucMultiplicityConfigurationClass")
                 if serialized is not None:
@@ -166,9 +166,9 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucContainerDef, cls).deserialize(element)
 
-        # Parse destination_uri_refs (list from container "DESTINATION-URIS")
+        # Parse destination_uri_refs (list from container "DESTINATION-URI-REFS")
         obj.destination_uri_refs = []
-        container = SerializationHelper.find_child_element(element, "DESTINATION-URIS")
+        container = SerializationHelper.find_child_element(element, "DESTINATION-URI-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -182,9 +182,9 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
                 if child_value is not None:
                     obj.destination_uri_refs.append(child_value)
 
-        # Parse multiplicities (list from container "MULTIPLICITYS")
+        # Parse multiplicities (list from container "MULTIPLICITIES")
         obj.multiplicities = []
-        container = SerializationHelper.find_child_element(element, "MULTIPLICITYS")
+        container = SerializationHelper.find_child_element(element, "MULTIPLICITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

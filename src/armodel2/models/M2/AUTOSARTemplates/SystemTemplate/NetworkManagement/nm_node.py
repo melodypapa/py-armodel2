@@ -179,9 +179,9 @@ class NmNode(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rx_nm_pdu_refs (list to container "RX-NM-PDUS")
+        # Serialize rx_nm_pdu_refs (list to container "RX-NM-PDU-REFS")
         if self.rx_nm_pdu_refs:
-            wrapper = ET.Element("RX-NM-PDUS")
+            wrapper = ET.Element("RX-NM-PDU-REFS")
             for item in self.rx_nm_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "NmPdu")
                 if serialized is not None:
@@ -196,9 +196,9 @@ class NmNode(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize tx_nm_pdu_refs (list to container "TX-NM-PDUS")
+        # Serialize tx_nm_pdu_refs (list to container "TX-NM-PDU-REFS")
         if self.tx_nm_pdu_refs:
-            wrapper = ET.Element("TX-NM-PDUS")
+            wrapper = ET.Element("TX-NM-PDU-REFS")
             for item in self.tx_nm_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "NmPdu")
                 if serialized is not None:
@@ -264,9 +264,9 @@ class NmNode(Identifiable, ABC):
             nm_passive_value = child.text
             obj.nm_passive = nm_passive_value
 
-        # Parse rx_nm_pdu_refs (list from container "RX-NM-PDUS")
+        # Parse rx_nm_pdu_refs (list from container "RX-NM-PDU-REFS")
         obj.rx_nm_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "RX-NM-PDUS")
+        container = SerializationHelper.find_child_element(element, "RX-NM-PDU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -280,9 +280,9 @@ class NmNode(Identifiable, ABC):
                 if child_value is not None:
                     obj.rx_nm_pdu_refs.append(child_value)
 
-        # Parse tx_nm_pdu_refs (list from container "TX-NM-PDUS")
+        # Parse tx_nm_pdu_refs (list from container "TX-NM-PDU-REFS")
         obj.tx_nm_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "TX-NM-PDUS")
+        container = SerializationHelper.find_child_element(element, "TX-NM-PDU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

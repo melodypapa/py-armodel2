@@ -85,9 +85,9 @@ class StateDependentFirewall(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize firewall_rule_propses (list to container "FIREWALL-RULE-PROPSS")
+        # Serialize firewall_rule_propses (list to container "FIREWALL-RULE-PROPSES")
         if self.firewall_rule_propses:
-            wrapper = ET.Element("FIREWALL-RULE-PROPSS")
+            wrapper = ET.Element("FIREWALL-RULE-PROPSES")
             for item in self.firewall_rule_propses:
                 serialized = SerializationHelper.serialize_item(item, "FirewallRuleProps")
                 if serialized is not None:
@@ -95,9 +95,9 @@ class StateDependentFirewall(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize firewall_state_refs (list to container "FIREWALL-STATES")
+        # Serialize firewall_state_refs (list to container "FIREWALL-STATE-REFS")
         if self.firewall_state_refs:
-            wrapper = ET.Element("FIREWALL-STATES")
+            wrapper = ET.Element("FIREWALL-STATE-REFS")
             for item in self.firewall_state_refs:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclaration")
                 if serialized is not None:
@@ -133,9 +133,9 @@ class StateDependentFirewall(ARElement):
             default_action_value = SerializationHelper.deserialize_by_tag(child, "FirewallActionEnum")
             obj.default_action = default_action_value
 
-        # Parse firewall_rule_propses (list from container "FIREWALL-RULE-PROPSS")
+        # Parse firewall_rule_propses (list from container "FIREWALL-RULE-PROPSES")
         obj.firewall_rule_propses = []
-        container = SerializationHelper.find_child_element(element, "FIREWALL-RULE-PROPSS")
+        container = SerializationHelper.find_child_element(element, "FIREWALL-RULE-PROPSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -143,9 +143,9 @@ class StateDependentFirewall(ARElement):
                 if child_value is not None:
                     obj.firewall_rule_propses.append(child_value)
 
-        # Parse firewall_state_refs (list from container "FIREWALL-STATES")
+        # Parse firewall_state_refs (list from container "FIREWALL-STATE-REFS")
         obj.firewall_state_refs = []
-        container = SerializationHelper.find_child_element(element, "FIREWALL-STATES")
+        container = SerializationHelper.find_child_element(element, "FIREWALL-STATE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

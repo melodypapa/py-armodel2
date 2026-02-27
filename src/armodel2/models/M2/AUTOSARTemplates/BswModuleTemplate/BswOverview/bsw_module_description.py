@@ -145,9 +145,9 @@ class BswModuleDescription(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize bsw_modules_dependencies (list to container "BSW-MODULES-DEPENDENCYS")
+        # Serialize bsw_modules_dependencies (list to container "BSW-MODULES-DEPENDENCIES")
         if self.bsw_modules_dependencies:
-            wrapper = ET.Element("BSW-MODULES-DEPENDENCYS")
+            wrapper = ET.Element("BSW-MODULES-DEPENDENCIES")
             for item in self.bsw_modules_dependencies:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleDependency")
                 if serialized is not None:
@@ -169,9 +169,9 @@ class BswModuleDescription(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize expected_entry_refs (list to container "EXPECTED-ENTRYS")
+        # Serialize expected_entry_refs (list to container "EXPECTED-ENTRY-REFS")
         if self.expected_entry_refs:
-            wrapper = ET.Element("EXPECTED-ENTRYS")
+            wrapper = ET.Element("EXPECTED-ENTRY-REFS")
             for item in self.expected_entry_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
@@ -186,9 +186,9 @@ class BswModuleDescription(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize implemented_entry_refs (list to container "IMPLEMENTED-ENTRYS")
+        # Serialize implemented_entry_refs (list to container "IMPLEMENTED-ENTRY-REFS")
         if self.implemented_entry_refs:
-            wrapper = ET.Element("IMPLEMENTED-ENTRYS")
+            wrapper = ET.Element("IMPLEMENTED-ENTRY-REFS")
             for item in self.implemented_entry_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
@@ -322,9 +322,9 @@ class BswModuleDescription(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleDescription, cls).deserialize(element)
 
-        # Parse bsw_modules_dependencies (list from container "BSW-MODULES-DEPENDENCYS")
+        # Parse bsw_modules_dependencies (list from container "BSW-MODULES-DEPENDENCIES")
         obj.bsw_modules_dependencies = []
-        container = SerializationHelper.find_child_element(element, "BSW-MODULES-DEPENDENCYS")
+        container = SerializationHelper.find_child_element(element, "BSW-MODULES-DEPENDENCIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -338,9 +338,9 @@ class BswModuleDescription(ARElement):
             bsw_module_documentation_value = SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation")
             obj.bsw_module_documentation = bsw_module_documentation_value
 
-        # Parse expected_entry_refs (list from container "EXPECTED-ENTRYS")
+        # Parse expected_entry_refs (list from container "EXPECTED-ENTRY-REFS")
         obj.expected_entry_refs = []
-        container = SerializationHelper.find_child_element(element, "EXPECTED-ENTRYS")
+        container = SerializationHelper.find_child_element(element, "EXPECTED-ENTRY-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -354,9 +354,9 @@ class BswModuleDescription(ARElement):
                 if child_value is not None:
                     obj.expected_entry_refs.append(child_value)
 
-        # Parse implemented_entry_refs (list from container "IMPLEMENTED-ENTRYS")
+        # Parse implemented_entry_refs (list from container "IMPLEMENTED-ENTRY-REFS")
         obj.implemented_entry_refs = []
-        container = SerializationHelper.find_child_element(element, "IMPLEMENTED-ENTRYS")
+        container = SerializationHelper.find_child_element(element, "IMPLEMENTED-ENTRY-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

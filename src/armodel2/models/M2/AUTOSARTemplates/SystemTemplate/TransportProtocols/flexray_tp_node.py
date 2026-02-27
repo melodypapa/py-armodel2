@@ -66,9 +66,9 @@ class FlexrayTpNode(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize connector_refs (list to container "CONNECTORS")
+        # Serialize connector_refs (list to container "CONNECTOR-REFS")
         if self.connector_refs:
-            wrapper = ET.Element("CONNECTORS")
+            wrapper = ET.Element("CONNECTOR-REFS")
             for item in self.connector_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -112,9 +112,9 @@ class FlexrayTpNode(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayTpNode, cls).deserialize(element)
 
-        # Parse connector_refs (list from container "CONNECTORS")
+        # Parse connector_refs (list from container "CONNECTOR-REFS")
         obj.connector_refs = []
-        container = SerializationHelper.find_child_element(element, "CONNECTORS")
+        container = SerializationHelper.find_child_element(element, "CONNECTOR-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

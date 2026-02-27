@@ -59,9 +59,9 @@ class SwCalprmAxisSet(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sw_calprm_axises (list to container "SW-CALPRM-AXISS")
+        # Serialize sw_calprm_axises (list to container "SW-CALPRM-AXISES")
         if self.sw_calprm_axises:
-            wrapper = ET.Element("SW-CALPRM-AXISS")
+            wrapper = ET.Element("SW-CALPRM-AXISES")
             for item in self.sw_calprm_axises:
                 serialized = SerializationHelper.serialize_item(item, "SwCalprmAxis")
                 if serialized is not None:
@@ -84,9 +84,9 @@ class SwCalprmAxisSet(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwCalprmAxisSet, cls).deserialize(element)
 
-        # Parse sw_calprm_axises (list from container "SW-CALPRM-AXISS")
+        # Parse sw_calprm_axises (list from container "SW-CALPRM-AXISES")
         obj.sw_calprm_axises = []
-        container = SerializationHelper.find_child_element(element, "SW-CALPRM-AXISS")
+        container = SerializationHelper.find_child_element(element, "SW-CALPRM-AXISES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

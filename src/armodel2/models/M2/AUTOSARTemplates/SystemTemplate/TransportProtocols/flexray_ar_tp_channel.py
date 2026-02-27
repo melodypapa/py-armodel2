@@ -263,9 +263,9 @@ class FlexrayArTpChannel(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize n_pdu_refs (list to container "N-PDUS")
+        # Serialize n_pdu_refs (list to container "N-PDU-REFS")
         if self.n_pdu_refs:
-            wrapper = ET.Element("N-PDUS")
+            wrapper = ET.Element("N-PDU-REFS")
             for item in self.n_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "NPdu")
                 if serialized is not None:
@@ -455,9 +455,9 @@ class FlexrayArTpChannel(ARObject):
             multicast_value = child.text
             obj.multicast = multicast_value
 
-        # Parse n_pdu_refs (list from container "N-PDUS")
+        # Parse n_pdu_refs (list from container "N-PDU-REFS")
         obj.n_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "N-PDUS")
+        container = SerializationHelper.find_child_element(element, "N-PDU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

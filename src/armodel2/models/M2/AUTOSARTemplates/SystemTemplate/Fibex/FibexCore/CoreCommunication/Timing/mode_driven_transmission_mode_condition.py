@@ -60,9 +60,9 @@ class ModeDrivenTransmissionModeCondition(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize mode_refs (list to container "MODES")
+        # Serialize mode_refs (list to container "MODE-REFS")
         if self.mode_refs:
-            wrapper = ET.Element("MODES")
+            wrapper = ET.Element("MODE-REFS")
             for item in self.mode_refs:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclaration")
                 if serialized is not None:
@@ -92,9 +92,9 @@ class ModeDrivenTransmissionModeCondition(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeDrivenTransmissionModeCondition, cls).deserialize(element)
 
-        # Parse mode_refs (list from container "MODES")
+        # Parse mode_refs (list from container "MODE-REFS")
         obj.mode_refs = []
-        container = SerializationHelper.find_child_element(element, "MODES")
+        container = SerializationHelper.find_child_element(element, "MODE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -142,9 +142,9 @@ class SwcInternalBehavior(InternalBehavior):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ar_typed_per_instance_memories (list to container "AR-TYPED-PER-INSTANCE-MEMORYS")
+        # Serialize ar_typed_per_instance_memories (list to container "AR-TYPED-PER-INSTANCE-MEMORIES")
         if self.ar_typed_per_instance_memories:
-            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORYS")
+            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORIES")
             for item in self.ar_typed_per_instance_memories:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
@@ -162,9 +162,9 @@ class SwcInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize exclusive_area_policies (list to container "EXCLUSIVE-AREA-POLICYS")
+        # Serialize exclusive_area_policies (list to container "EXCLUSIVE-AREA-POLICIES")
         if self.exclusive_area_policies:
-            wrapper = ET.Element("EXCLUSIVE-AREA-POLICYS")
+            wrapper = ET.Element("EXCLUSIVE-AREA-POLICIES")
             for item in self.exclusive_area_policies:
                 serialized = SerializationHelper.serialize_item(item, "SwcExclusiveAreaPolicy")
                 if serialized is not None:
@@ -236,9 +236,9 @@ class SwcInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize per_instance_memories (list to container "PER-INSTANCE-MEMORYS")
+        # Serialize per_instance_memories (list to container "PER-INSTANCE-MEMORIES")
         if self.per_instance_memories:
-            wrapper = ET.Element("PER-INSTANCE-MEMORYS")
+            wrapper = ET.Element("PER-INSTANCE-MEMORIES")
             for item in self.per_instance_memories:
                 serialized = SerializationHelper.serialize_item(item, "PerInstanceMemory")
                 if serialized is not None:
@@ -276,9 +276,9 @@ class SwcInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize service_dependencies (list to container "SERVICE-DEPENDENCYS")
+        # Serialize service_dependencies (list to container "SERVICE-DEPENDENCIES")
         if self.service_dependencies:
-            wrapper = ET.Element("SERVICE-DEPENDENCYS")
+            wrapper = ET.Element("SERVICE-DEPENDENCIES")
             for item in self.service_dependencies:
                 serialized = SerializationHelper.serialize_item(item, "SwcServiceDependency")
                 if serialized is not None:
@@ -310,9 +310,9 @@ class SwcInternalBehavior(InternalBehavior):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXYS")
+        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXIES")
         if self.variation_point_proxies:
-            wrapper = ET.Element("VARIATION-POINT-PROXYS")
+            wrapper = ET.Element("VARIATION-POINT-PROXIES")
             for item in self.variation_point_proxies:
                 serialized = SerializationHelper.serialize_item(item, "VariationPointProxy")
                 if serialized is not None:
@@ -335,9 +335,9 @@ class SwcInternalBehavior(InternalBehavior):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcInternalBehavior, cls).deserialize(element)
 
-        # Parse ar_typed_per_instance_memories (list from container "AR-TYPED-PER-INSTANCE-MEMORYS")
+        # Parse ar_typed_per_instance_memories (list from container "AR-TYPED-PER-INSTANCE-MEMORIES")
         obj.ar_typed_per_instance_memories = []
-        container = SerializationHelper.find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORYS")
+        container = SerializationHelper.find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -355,9 +355,9 @@ class SwcInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.events.append(child_value)
 
-        # Parse exclusive_area_policies (list from container "EXCLUSIVE-AREA-POLICYS")
+        # Parse exclusive_area_policies (list from container "EXCLUSIVE-AREA-POLICIES")
         obj.exclusive_area_policies = []
-        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-POLICYS")
+        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-POLICIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -421,9 +421,9 @@ class SwcInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.instantiation_data_def_props.append(child_value)
 
-        # Parse per_instance_memories (list from container "PER-INSTANCE-MEMORYS")
+        # Parse per_instance_memories (list from container "PER-INSTANCE-MEMORIES")
         obj.per_instance_memories = []
-        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORYS")
+        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -461,9 +461,9 @@ class SwcInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.runnables.append(child_value)
 
-        # Parse service_dependencies (list from container "SERVICE-DEPENDENCYS")
+        # Parse service_dependencies (list from container "SERVICE-DEPENDENCIES")
         obj.service_dependencies = []
-        container = SerializationHelper.find_child_element(element, "SERVICE-DEPENDENCYS")
+        container = SerializationHelper.find_child_element(element, "SERVICE-DEPENDENCIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -487,9 +487,9 @@ class SwcInternalBehavior(InternalBehavior):
             support_multiple_instantiations_value = child.text
             obj.support_multiple_instantiations = support_multiple_instantiations_value
 
-        # Parse variation_point_proxies (list from container "VARIATION-POINT-PROXYS")
+        # Parse variation_point_proxies (list from container "VARIATION-POINT-PROXIES")
         obj.variation_point_proxies = []
-        container = SerializationHelper.find_child_element(element, "VARIATION-POINT-PROXYS")
+        container = SerializationHelper.find_child_element(element, "VARIATION-POINT-PROXIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

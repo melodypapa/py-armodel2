@@ -91,9 +91,9 @@ class ResourceConsumption(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize access_count_set_refs (list to container "ACCESS-COUNT-SETS")
+        # Serialize access_count_set_refs (list to container "ACCESS-COUNT-SET-REFS")
         if self.access_count_set_refs:
-            wrapper = ET.Element("ACCESS-COUNT-SETS")
+            wrapper = ET.Element("ACCESS-COUNT-SET-REFS")
             for item in self.access_count_set_refs:
                 serialized = SerializationHelper.serialize_item(item, "AccessCountSet")
                 if serialized is not None:
@@ -138,9 +138,9 @@ class ResourceConsumption(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize section_name_prefixes (list to container "SECTION-NAME-PREFIXS")
+        # Serialize section_name_prefixes (list to container "SECTION-NAME-PREFIXES")
         if self.section_name_prefixes:
-            wrapper = ET.Element("SECTION-NAME-PREFIXS")
+            wrapper = ET.Element("SECTION-NAME-PREFIXES")
             for item in self.section_name_prefixes:
                 serialized = SerializationHelper.serialize_item(item, "SectionNamePrefix")
                 if serialized is not None:
@@ -173,9 +173,9 @@ class ResourceConsumption(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ResourceConsumption, cls).deserialize(element)
 
-        # Parse access_count_set_refs (list from container "ACCESS-COUNT-SETS")
+        # Parse access_count_set_refs (list from container "ACCESS-COUNT-SET-REFS")
         obj.access_count_set_refs = []
-        container = SerializationHelper.find_child_element(element, "ACCESS-COUNT-SETS")
+        container = SerializationHelper.find_child_element(element, "ACCESS-COUNT-SET-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -219,9 +219,9 @@ class ResourceConsumption(Identifiable):
                 if child_value is not None:
                     obj.memory_sections.append(child_value)
 
-        # Parse section_name_prefixes (list from container "SECTION-NAME-PREFIXS")
+        # Parse section_name_prefixes (list from container "SECTION-NAME-PREFIXES")
         obj.section_name_prefixes = []
-        container = SerializationHelper.find_child_element(element, "SECTION-NAME-PREFIXS")
+        container = SerializationHelper.find_child_element(element, "SECTION-NAME-PREFIXES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

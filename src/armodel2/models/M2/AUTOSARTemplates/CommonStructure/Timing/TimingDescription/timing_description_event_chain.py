@@ -101,9 +101,9 @@ class TimingDescriptionEventChain(TimingDescription):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize segment_refs (list to container "SEGMENTS")
+        # Serialize segment_refs (list to container "SEGMENT-REFS")
         if self.segment_refs:
-            wrapper = ET.Element("SEGMENTS")
+            wrapper = ET.Element("SEGMENT-REFS")
             for item in self.segment_refs:
                 serialized = SerializationHelper.serialize_item(item, "TimingDescriptionEvent")
                 if serialized is not None:
@@ -159,9 +159,9 @@ class TimingDescriptionEventChain(TimingDescription):
             response_ref_value = ARRef.deserialize(child)
             obj.response_ref = response_ref_value
 
-        # Parse segment_refs (list from container "SEGMENTS")
+        # Parse segment_refs (list from container "SEGMENT-REFS")
         obj.segment_refs = []
-        container = SerializationHelper.find_child_element(element, "SEGMENTS")
+        container = SerializationHelper.find_child_element(element, "SEGMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

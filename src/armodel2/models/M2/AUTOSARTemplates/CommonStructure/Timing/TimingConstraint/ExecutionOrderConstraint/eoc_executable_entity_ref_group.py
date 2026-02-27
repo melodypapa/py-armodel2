@@ -101,9 +101,9 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize let_interval_refs (list to container "LET-INTERVALS")
+        # Serialize let_interval_refs (list to container "LET-INTERVAL-REFS")
         if self.let_interval_refs:
-            wrapper = ET.Element("LET-INTERVALS")
+            wrapper = ET.Element("LET-INTERVAL-REFS")
             for item in self.let_interval_refs:
                 serialized = SerializationHelper.serialize_item(item, "TimingDescriptionEvent")
                 if serialized is not None:
@@ -174,9 +174,9 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize nested_element_refs (list to container "NESTED-ELEMENTS")
+        # Serialize nested_element_refs (list to container "NESTED-ELEMENT-REFS")
         if self.nested_element_refs:
-            wrapper = ET.Element("NESTED-ELEMENTS")
+            wrapper = ET.Element("NESTED-ELEMENT-REFS")
             for item in self.nested_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -191,9 +191,9 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize successor_refs (list to container "SUCCESSORS")
+        # Serialize successor_refs (list to container "SUCCESSOR-REFS")
         if self.successor_refs:
-            wrapper = ET.Element("SUCCESSORS")
+            wrapper = ET.Element("SUCCESSOR-REFS")
             for item in self.successor_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -243,9 +243,9 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
             let_data_exchange_value = LetDataExchangeParadigmEnum.deserialize(child)
             obj.let_data_exchange = let_data_exchange_value
 
-        # Parse let_interval_refs (list from container "LET-INTERVALS")
+        # Parse let_interval_refs (list from container "LET-INTERVAL-REFS")
         obj.let_interval_refs = []
-        container = SerializationHelper.find_child_element(element, "LET-INTERVALS")
+        container = SerializationHelper.find_child_element(element, "LET-INTERVAL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -283,9 +283,9 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
             max_slots_per_value = child.text
             obj.max_slots_per = max_slots_per_value
 
-        # Parse nested_element_refs (list from container "NESTED-ELEMENTS")
+        # Parse nested_element_refs (list from container "NESTED-ELEMENT-REFS")
         obj.nested_element_refs = []
-        container = SerializationHelper.find_child_element(element, "NESTED-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "NESTED-ELEMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -299,9 +299,9 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
                 if child_value is not None:
                     obj.nested_element_refs.append(child_value)
 
-        # Parse successor_refs (list from container "SUCCESSORS")
+        # Parse successor_refs (list from container "SUCCESSOR-REFS")
         obj.successor_refs = []
-        container = SerializationHelper.find_child_element(element, "SUCCESSORS")
+        container = SerializationHelper.find_child_element(element, "SUCCESSOR-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -93,9 +93,9 @@ class SynchronizationTimingConstraint(TimingConstraint):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize scope_refs (list to container "SCOPES")
+        # Serialize scope_refs (list to container "SCOPE-REFS")
         if self.scope_refs:
-            wrapper = ET.Element("SCOPES")
+            wrapper = ET.Element("SCOPE-REFS")
             for item in self.scope_refs:
                 serialized = SerializationHelper.serialize_item(item, "TimingDescriptionEvent")
                 if serialized is not None:
@@ -110,9 +110,9 @@ class SynchronizationTimingConstraint(TimingConstraint):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize scope_event_refs (list to container "SCOPE-EVENTS")
+        # Serialize scope_event_refs (list to container "SCOPE-EVENT-REFS")
         if self.scope_event_refs:
-            wrapper = ET.Element("SCOPE-EVENTS")
+            wrapper = ET.Element("SCOPE-EVENT-REFS")
             for item in self.scope_event_refs:
                 serialized = SerializationHelper.serialize_item(item, "TimingDescriptionEvent")
                 if serialized is not None:
@@ -176,9 +176,9 @@ class SynchronizationTimingConstraint(TimingConstraint):
             event_value = EventOccurrenceKindEnum.deserialize(child)
             obj.event = event_value
 
-        # Parse scope_refs (list from container "SCOPES")
+        # Parse scope_refs (list from container "SCOPE-REFS")
         obj.scope_refs = []
-        container = SerializationHelper.find_child_element(element, "SCOPES")
+        container = SerializationHelper.find_child_element(element, "SCOPE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -192,9 +192,9 @@ class SynchronizationTimingConstraint(TimingConstraint):
                 if child_value is not None:
                     obj.scope_refs.append(child_value)
 
-        # Parse scope_event_refs (list from container "SCOPE-EVENTS")
+        # Parse scope_event_refs (list from container "SCOPE-EVENT-REFS")
         obj.scope_event_refs = []
-        container = SerializationHelper.find_child_element(element, "SCOPE-EVENTS")
+        container = SerializationHelper.find_child_element(element, "SCOPE-EVENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

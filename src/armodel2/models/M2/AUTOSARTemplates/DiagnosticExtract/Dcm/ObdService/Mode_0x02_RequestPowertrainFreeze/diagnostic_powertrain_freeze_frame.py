@@ -64,9 +64,9 @@ class DiagnosticPowertrainFreezeFrame(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize pid_refs (list to container "PIDS")
+        # Serialize pid_refs (list to container "PID-REFS")
         if self.pid_refs:
-            wrapper = ET.Element("PIDS")
+            wrapper = ET.Element("PID-REFS")
             for item in self.pid_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticParameter")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class DiagnosticPowertrainFreezeFrame(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticPowertrainFreezeFrame, cls).deserialize(element)
 
-        # Parse pid_refs (list from container "PIDS")
+        # Parse pid_refs (list from container "PID-REFS")
         obj.pid_refs = []
-        container = SerializationHelper.find_child_element(element, "PIDS")
+        container = SerializationHelper.find_child_element(element, "PID-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

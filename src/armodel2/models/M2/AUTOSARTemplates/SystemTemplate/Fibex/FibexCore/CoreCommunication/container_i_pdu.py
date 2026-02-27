@@ -94,9 +94,9 @@ class ContainerIPdu(IPdu):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize contained_i_pdu_propses (list to container "CONTAINED-I-PDU-PROPSS")
+        # Serialize contained_i_pdu_propses (list to container "CONTAINED-I-PDU-PROPSES")
         if self.contained_i_pdu_propses:
-            wrapper = ET.Element("CONTAINED-I-PDU-PROPSS")
+            wrapper = ET.Element("CONTAINED-I-PDU-PROPSES")
             for item in self.contained_i_pdu_propses:
                 serialized = SerializationHelper.serialize_item(item, "ContainedIPduProps")
                 if serialized is not None:
@@ -104,9 +104,9 @@ class ContainerIPdu(IPdu):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize contained_pdu_refs (list to container "CONTAINED-PDUS")
+        # Serialize contained_pdu_refs (list to container "CONTAINED-PDU-REFS")
         if self.contained_pdu_refs:
-            wrapper = ET.Element("CONTAINED-PDUS")
+            wrapper = ET.Element("CONTAINED-PDU-REFS")
             for item in self.contained_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
@@ -248,9 +248,9 @@ class ContainerIPdu(IPdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ContainerIPdu, cls).deserialize(element)
 
-        # Parse contained_i_pdu_propses (list from container "CONTAINED-I-PDU-PROPSS")
+        # Parse contained_i_pdu_propses (list from container "CONTAINED-I-PDU-PROPSES")
         obj.contained_i_pdu_propses = []
-        container = SerializationHelper.find_child_element(element, "CONTAINED-I-PDU-PROPSS")
+        container = SerializationHelper.find_child_element(element, "CONTAINED-I-PDU-PROPSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -258,9 +258,9 @@ class ContainerIPdu(IPdu):
                 if child_value is not None:
                     obj.contained_i_pdu_propses.append(child_value)
 
-        # Parse contained_pdu_refs (list from container "CONTAINED-PDUS")
+        # Parse contained_pdu_refs (list from container "CONTAINED-PDU-REFS")
         obj.contained_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTAINED-PDUS")
+        container = SerializationHelper.find_child_element(element, "CONTAINED-PDU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

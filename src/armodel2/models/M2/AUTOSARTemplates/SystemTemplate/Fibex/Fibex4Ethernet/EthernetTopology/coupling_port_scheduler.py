@@ -80,9 +80,9 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize predecessor_refs (list to container "PREDECESSORS")
+        # Serialize predecessor_refs (list to container "PREDECESSOR-REFS")
         if self.predecessor_refs:
-            wrapper = ET.Element("PREDECESSORS")
+            wrapper = ET.Element("PREDECESSOR-REFS")
             for item in self.predecessor_refs:
                 serialized = SerializationHelper.serialize_item(item, "CouplingPortStructuralElement")
                 if serialized is not None:
@@ -118,9 +118,9 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
             port_scheduler_scheduler_enum_value = EthernetCouplingPortSchedulerEnum.deserialize(child)
             obj.port_scheduler_scheduler_enum = port_scheduler_scheduler_enum_value
 
-        # Parse predecessor_refs (list from container "PREDECESSORS")
+        # Parse predecessor_refs (list from container "PREDECESSOR-REFS")
         obj.predecessor_refs = []
-        container = SerializationHelper.find_child_element(element, "PREDECESSORS")
+        container = SerializationHelper.find_child_element(element, "PREDECESSOR-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
