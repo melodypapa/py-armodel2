@@ -62,9 +62,9 @@ class AclOperation(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize implied_refs (list to container "IMPLIED-REFS")
+        # Serialize implied_refs (list to container "IMPLIEDS")
         if self.implied_refs:
-            wrapper = ET.Element("IMPLIED-REFS")
+            wrapper = ET.Element("IMPLIEDS")
             for item in self.implied_refs:
                 serialized = SerializationHelper.serialize_item(item, "AclOperation")
                 if serialized is not None:
@@ -94,9 +94,9 @@ class AclOperation(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AclOperation, cls).deserialize(element)
 
-        # Parse implied_refs (list from container "IMPLIED-REFS")
+        # Parse implied_refs (list from container "IMPLIEDS")
         obj.implied_refs = []
-        container = SerializationHelper.find_child_element(element, "IMPLIED-REFS")
+        container = SerializationHelper.find_child_element(element, "IMPLIEDS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

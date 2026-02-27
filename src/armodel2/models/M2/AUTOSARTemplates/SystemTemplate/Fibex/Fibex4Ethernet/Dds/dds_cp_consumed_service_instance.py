@@ -73,9 +73,9 @@ class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize consumed_ddses (list to container "CONSUMED-DDSES")
+        # Serialize consumed_ddses (list to container "CONSUMED-DDSS")
         if self.consumed_ddses:
-            wrapper = ET.Element("CONSUMED-DDSES")
+            wrapper = ET.Element("CONSUMED-DDSS")
             for item in self.consumed_ddses:
                 serialized = SerializationHelper.serialize_item(item, "DdsCpServiceInstance")
                 if serialized is not None:
@@ -140,9 +140,9 @@ class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpConsumedServiceInstance, cls).deserialize(element)
 
-        # Parse consumed_ddses (list from container "CONSUMED-DDSES")
+        # Parse consumed_ddses (list from container "CONSUMED-DDSS")
         obj.consumed_ddses = []
-        container = SerializationHelper.find_child_element(element, "CONSUMED-DDSES")
+        container = SerializationHelper.find_child_element(element, "CONSUMED-DDSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

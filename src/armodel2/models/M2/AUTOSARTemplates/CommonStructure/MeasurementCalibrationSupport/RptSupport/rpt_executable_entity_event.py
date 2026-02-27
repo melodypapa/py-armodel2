@@ -89,9 +89,9 @@ class RptExecutableEntityEvent(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize execution_refs (list to container "EXECUTION-REFS")
+        # Serialize execution_refs (list to container "EXECUTIONS")
         if self.execution_refs:
-            wrapper = ET.Element("EXECUTION-REFS")
+            wrapper = ET.Element("EXECUTIONS")
             for item in self.execution_refs:
                 serialized = SerializationHelper.serialize_item(item, "RptExecutionContext")
                 if serialized is not None:
@@ -158,9 +158,9 @@ class RptExecutableEntityEvent(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rpt_service_point_refs (list to container "RPT-SERVICE-POINT-REFS")
+        # Serialize rpt_service_point_refs (list to container "RPT-SERVICE-POINTS")
         if self.rpt_service_point_refs:
-            wrapper = ET.Element("RPT-SERVICE-POINT-REFS")
+            wrapper = ET.Element("RPT-SERVICE-POINTS")
             for item in self.rpt_service_point_refs:
                 serialized = SerializationHelper.serialize_item(item, "RptServicePoint")
                 if serialized is not None:
@@ -190,9 +190,9 @@ class RptExecutableEntityEvent(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptExecutableEntityEvent, cls).deserialize(element)
 
-        # Parse execution_refs (list from container "EXECUTION-REFS")
+        # Parse execution_refs (list from container "EXECUTIONS")
         obj.execution_refs = []
-        container = SerializationHelper.find_child_element(element, "EXECUTION-REFS")
+        container = SerializationHelper.find_child_element(element, "EXECUTIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -234,9 +234,9 @@ class RptExecutableEntityEvent(Identifiable):
             rpt_impl_policy_value = SerializationHelper.deserialize_by_tag(child, "RptImplPolicy")
             obj.rpt_impl_policy = rpt_impl_policy_value
 
-        # Parse rpt_service_point_refs (list from container "RPT-SERVICE-POINT-REFS")
+        # Parse rpt_service_point_refs (list from container "RPT-SERVICE-POINTS")
         obj.rpt_service_point_refs = []
-        container = SerializationHelper.find_child_element(element, "RPT-SERVICE-POINT-REFS")
+        container = SerializationHelper.find_child_element(element, "RPT-SERVICE-POINTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

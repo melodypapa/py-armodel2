@@ -64,6 +64,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "Specifies initial value(s) of the ParameterDataPrototype"
         }
       }

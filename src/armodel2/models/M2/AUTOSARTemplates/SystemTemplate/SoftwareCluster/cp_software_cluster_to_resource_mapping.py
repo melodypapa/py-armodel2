@@ -82,9 +82,9 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize requester_refs (list to container "REQUESTER-REFS")
+        # Serialize requester_refs (list to container "REQUESTERS")
         if self.requester_refs:
-            wrapper = ET.Element("REQUESTER-REFS")
+            wrapper = ET.Element("REQUESTERS")
             for item in self.requester_refs:
                 serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
@@ -134,9 +134,9 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
             provider_ref_value = ARRef.deserialize(child)
             obj.provider_ref = provider_ref_value
 
-        # Parse requester_refs (list from container "REQUESTER-REFS")
+        # Parse requester_refs (list from container "REQUESTERS")
         obj.requester_refs = []
-        container = SerializationHelper.find_child_element(element, "REQUESTER-REFS")
+        container = SerializationHelper.find_child_element(element, "REQUESTERS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

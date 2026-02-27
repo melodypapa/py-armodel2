@@ -83,9 +83,9 @@ class LinEventTriggeredFrame(LinFrame):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize lin_unconditional_frame_refs (list to container "LIN-UNCONDITIONAL-FRAME-REFS")
+        # Serialize lin_unconditional_frame_refs (list to container "LIN-UNCONDITIONAL-FRAMES")
         if self.lin_unconditional_frame_refs:
-            wrapper = ET.Element("LIN-UNCONDITIONAL-FRAME-REFS")
+            wrapper = ET.Element("LIN-UNCONDITIONAL-FRAMES")
             for item in self.lin_unconditional_frame_refs:
                 serialized = SerializationHelper.serialize_item(item, "LinUnconditionalFrame")
                 if serialized is not None:
@@ -121,9 +121,9 @@ class LinEventTriggeredFrame(LinFrame):
             collision_schedule_ref_value = ARRef.deserialize(child)
             obj.collision_schedule_ref = collision_schedule_ref_value
 
-        # Parse lin_unconditional_frame_refs (list from container "LIN-UNCONDITIONAL-FRAME-REFS")
+        # Parse lin_unconditional_frame_refs (list from container "LIN-UNCONDITIONAL-FRAMES")
         obj.lin_unconditional_frame_refs = []
-        container = SerializationHelper.find_child_element(element, "LIN-UNCONDITIONAL-FRAME-REFS")
+        container = SerializationHelper.find_child_element(element, "LIN-UNCONDITIONAL-FRAMES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

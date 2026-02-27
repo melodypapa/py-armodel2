@@ -152,9 +152,9 @@ class ExecutionTime(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize included_library_refs (list to container "INCLUDED-LIBRARY-REFS")
+        # Serialize included_library_refs (list to container "INCLUDED-LIBRARYS")
         if self.included_library_refs:
-            wrapper = ET.Element("INCLUDED-LIBRARY-REFS")
+            wrapper = ET.Element("INCLUDED-LIBRARYS")
             for item in self.included_library_refs:
                 serialized = SerializationHelper.serialize_item(item, "DependencyOnArtifact")
                 if serialized is not None:
@@ -232,9 +232,9 @@ class ExecutionTime(Identifiable, ABC):
             hw_element_ref_value = ARRef.deserialize(child)
             obj.hw_element_ref = hw_element_ref_value
 
-        # Parse included_library_refs (list from container "INCLUDED-LIBRARY-REFS")
+        # Parse included_library_refs (list from container "INCLUDED-LIBRARYS")
         obj.included_library_refs = []
-        container = SerializationHelper.find_child_element(element, "INCLUDED-LIBRARY-REFS")
+        container = SerializationHelper.find_child_element(element, "INCLUDED-LIBRARYS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

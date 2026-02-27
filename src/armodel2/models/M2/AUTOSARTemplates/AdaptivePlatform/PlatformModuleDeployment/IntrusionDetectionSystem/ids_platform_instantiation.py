@@ -67,9 +67,9 @@ class IdsPlatformInstantiation(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize network_refs (list to container "NETWORK-REFS")
+        # Serialize network_refs (list to container "NETWORKS")
         if self.network_refs:
-            wrapper = ET.Element("NETWORK-REFS")
+            wrapper = ET.Element("NETWORKS")
             for item in self.network_refs:
                 serialized = SerializationHelper.serialize_item(item, "PlatformModuleEthernetEndpointConfiguration")
                 if serialized is not None:
@@ -113,9 +113,9 @@ class IdsPlatformInstantiation(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IdsPlatformInstantiation, cls).deserialize(element)
 
-        # Parse network_refs (list from container "NETWORK-REFS")
+        # Parse network_refs (list from container "NETWORKS")
         obj.network_refs = []
-        container = SerializationHelper.find_child_element(element, "NETWORK-REFS")
+        container = SerializationHelper.find_child_element(element, "NETWORKS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

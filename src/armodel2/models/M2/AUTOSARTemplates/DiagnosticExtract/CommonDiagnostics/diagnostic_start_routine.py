@@ -75,9 +75,9 @@ class DiagnosticStartRoutine(DiagnosticRoutineSubfunction):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize responses (list to container "RESPONSES")
+        # Serialize responses (list to container "RESPONSS")
         if self.responses:
-            wrapper = ET.Element("RESPONSES")
+            wrapper = ET.Element("RESPONSS")
             for item in self.responses:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticParameter")
                 if serialized is not None:
@@ -110,9 +110,9 @@ class DiagnosticStartRoutine(DiagnosticRoutineSubfunction):
                 if child_value is not None:
                     obj.requests.append(child_value)
 
-        # Parse responses (list from container "RESPONSES")
+        # Parse responses (list from container "RESPONSS")
         obj.responses = []
-        container = SerializationHelper.find_child_element(element, "RESPONSES")
+        container = SerializationHelper.find_child_element(element, "RESPONSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

@@ -122,9 +122,9 @@ class MacSecLocalKayProps(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mka_participant_refs (list to container "MKA-PARTICIPANT-REFS")
+        # Serialize mka_participant_refs (list to container "MKA-PARTICIPANTS")
         if self.mka_participant_refs:
-            wrapper = ET.Element("MKA-PARTICIPANT-REFS")
+            wrapper = ET.Element("MKA-PARTICIPANTS")
             for item in self.mka_participant_refs:
                 serialized = SerializationHelper.serialize_item(item, "MacSecKayParticipant")
                 if serialized is not None:
@@ -200,9 +200,9 @@ class MacSecLocalKayProps(ARObject):
             key_server_value = child.text
             obj.key_server = key_server_value
 
-        # Parse mka_participant_refs (list from container "MKA-PARTICIPANT-REFS")
+        # Parse mka_participant_refs (list from container "MKA-PARTICIPANTS")
         obj.mka_participant_refs = []
-        container = SerializationHelper.find_child_element(element, "MKA-PARTICIPANT-REFS")
+        container = SerializationHelper.find_child_element(element, "MKA-PARTICIPANTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

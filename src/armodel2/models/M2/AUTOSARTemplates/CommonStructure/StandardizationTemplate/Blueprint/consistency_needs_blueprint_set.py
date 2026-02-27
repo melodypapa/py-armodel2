@@ -63,9 +63,9 @@ class ConsistencyNeedsBlueprintSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize consistency_needses (list to container "CONSISTENCY-NEEDSES")
+        # Serialize consistency_needses (list to container "CONSISTENCY-NEEDSS")
         if self.consistency_needses:
-            wrapper = ET.Element("CONSISTENCY-NEEDSES")
+            wrapper = ET.Element("CONSISTENCY-NEEDSS")
             for item in self.consistency_needses:
                 serialized = SerializationHelper.serialize_item(item, "ConsistencyNeeds")
                 if serialized is not None:
@@ -88,9 +88,9 @@ class ConsistencyNeedsBlueprintSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConsistencyNeedsBlueprintSet, cls).deserialize(element)
 
-        # Parse consistency_needses (list from container "CONSISTENCY-NEEDSES")
+        # Parse consistency_needses (list from container "CONSISTENCY-NEEDSS")
         obj.consistency_needses = []
-        container = SerializationHelper.find_child_element(element, "CONSISTENCY-NEEDSES")
+        container = SerializationHelper.find_child_element(element, "CONSISTENCY-NEEDSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

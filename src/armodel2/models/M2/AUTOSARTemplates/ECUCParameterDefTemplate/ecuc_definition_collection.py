@@ -65,9 +65,9 @@ class EcucDefinitionCollection(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize module_refs (list to container "MODULE-REFS")
+        # Serialize module_refs (list to container "MODULES")
         if self.module_refs:
-            wrapper = ET.Element("MODULE-REFS")
+            wrapper = ET.Element("MODULES")
             for item in self.module_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucModuleDef")
                 if serialized is not None:
@@ -97,9 +97,9 @@ class EcucDefinitionCollection(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucDefinitionCollection, cls).deserialize(element)
 
-        # Parse module_refs (list from container "MODULE-REFS")
+        # Parse module_refs (list from container "MODULES")
         obj.module_refs = []
-        container = SerializationHelper.find_child_element(element, "MODULE-REFS")
+        container = SerializationHelper.find_child_element(element, "MODULES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

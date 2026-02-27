@@ -63,9 +63,9 @@ class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize crypto_service_refs (list to container "CRYPTO-SERVICE-REFS")
+        # Serialize crypto_service_refs (list to container "CRYPTO-SERVICES")
         if self.crypto_service_refs:
-            wrapper = ET.Element("CRYPTO-SERVICE-REFS")
+            wrapper = ET.Element("CRYPTO-SERVICES")
             for item in self.crypto_service_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -109,9 +109,9 @@ class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAuthTransmitCertificateMapping, cls).deserialize(element)
 
-        # Parse crypto_service_refs (list from container "CRYPTO-SERVICE-REFS")
+        # Parse crypto_service_refs (list from container "CRYPTO-SERVICES")
         obj.crypto_service_refs = []
-        container = SerializationHelper.find_child_element(element, "CRYPTO-SERVICE-REFS")
+        container = SerializationHelper.find_child_element(element, "CRYPTO-SERVICES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

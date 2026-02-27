@@ -79,9 +79,9 @@ class DiagnosticControlEnableMaskBit(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize controlled_data_refs (list to container "CONTROLLED-DATA-REFS")
+        # Serialize controlled_data_refs (list to container "CONTROLLED-DATAS")
         if self.controlled_data_refs:
-            wrapper = ET.Element("CONTROLLED-DATA-REFS")
+            wrapper = ET.Element("CONTROLLED-DATAS")
             for item in self.controlled_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticDataElement")
                 if serialized is not None:
@@ -117,9 +117,9 @@ class DiagnosticControlEnableMaskBit(ARObject):
             bit_number_value = child.text
             obj.bit_number = bit_number_value
 
-        # Parse controlled_data_refs (list from container "CONTROLLED-DATA-REFS")
+        # Parse controlled_data_refs (list from container "CONTROLLED-DATAS")
         obj.controlled_data_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTROLLED-DATA-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTROLLED-DATAS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

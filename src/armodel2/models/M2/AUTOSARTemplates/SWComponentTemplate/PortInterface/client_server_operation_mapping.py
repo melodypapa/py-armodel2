@@ -72,9 +72,9 @@ class ClientServerOperationMapping(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize argument_refs (list to container "ARGUMENT-REFS")
+        # Serialize argument_refs (list to container "ARGUMENTS")
         if self.argument_refs:
-            wrapper = ET.Element("ARGUMENT-REFS")
+            wrapper = ET.Element("ARGUMENTS")
             for item in self.argument_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataPrototypeMapping")
                 if serialized is not None:
@@ -146,9 +146,9 @@ class ClientServerOperationMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerOperationMapping, cls).deserialize(element)
 
-        # Parse argument_refs (list from container "ARGUMENT-REFS")
+        # Parse argument_refs (list from container "ARGUMENTS")
         obj.argument_refs = []
-        container = SerializationHelper.find_child_element(element, "ARGUMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "ARGUMENTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

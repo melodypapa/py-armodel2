@@ -64,9 +64,9 @@ class EthTpConnection(TpConnection):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize tp_sdu_refs (list to container "TP-SDU-REFS")
+        # Serialize tp_sdu_refs (list to container "TP-SDUS")
         if self.tp_sdu_refs:
-            wrapper = ET.Element("TP-SDU-REFS")
+            wrapper = ET.Element("TP-SDUS")
             for item in self.tp_sdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class EthTpConnection(TpConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthTpConnection, cls).deserialize(element)
 
-        # Parse tp_sdu_refs (list from container "TP-SDU-REFS")
+        # Parse tp_sdu_refs (list from container "TP-SDUS")
         obj.tp_sdu_refs = []
-        container = SerializationHelper.find_child_element(element, "TP-SDU-REFS")
+        container = SerializationHelper.find_child_element(element, "TP-SDUS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

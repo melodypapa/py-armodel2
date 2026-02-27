@@ -85,9 +85,9 @@ class CouplingPortConnection(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize node_port_refs (list to container "NODE-PORT-REFS")
+        # Serialize node_port_refs (list to container "NODE-PORTS")
         if self.node_port_refs:
-            wrapper = ET.Element("NODE-PORT-REFS")
+            wrapper = ET.Element("NODE-PORTS")
             for item in self.node_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "CouplingPort")
                 if serialized is not None:
@@ -165,9 +165,9 @@ class CouplingPortConnection(ARObject):
             first_port_ref_value = ARRef.deserialize(child)
             obj.first_port_ref = first_port_ref_value
 
-        # Parse node_port_refs (list from container "NODE-PORT-REFS")
+        # Parse node_port_refs (list from container "NODE-PORTS")
         obj.node_port_refs = []
-        container = SerializationHelper.find_child_element(element, "NODE-PORT-REFS")
+        container = SerializationHelper.find_child_element(element, "NODE-PORTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

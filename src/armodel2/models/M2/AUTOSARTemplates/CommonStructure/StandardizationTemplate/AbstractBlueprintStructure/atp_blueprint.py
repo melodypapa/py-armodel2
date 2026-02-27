@@ -66,9 +66,9 @@ class AtpBlueprint(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize blueprint_policies (list to container "BLUEPRINT-POLICIES")
+        # Serialize blueprint_policies (list to container "BLUEPRINT-POLICYS")
         if self.blueprint_policies:
-            wrapper = ET.Element("BLUEPRINT-POLICIES")
+            wrapper = ET.Element("BLUEPRINT-POLICYS")
             for item in self.blueprint_policies:
                 serialized = SerializationHelper.serialize_item(item, "BlueprintPolicy")
                 if serialized is not None:
@@ -91,9 +91,9 @@ class AtpBlueprint(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AtpBlueprint, cls).deserialize(element)
 
-        # Parse blueprint_policies (list from container "BLUEPRINT-POLICIES")
+        # Parse blueprint_policies (list from container "BLUEPRINT-POLICYS")
         obj.blueprint_policies = []
-        container = SerializationHelper.find_child_element(element, "BLUEPRINT-POLICIES")
+        container = SerializationHelper.find_child_element(element, "BLUEPRINT-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

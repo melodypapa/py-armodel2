@@ -66,9 +66,9 @@ class DiagnosticSecureCodingMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_identifier_refs (list to container "DATA-IDENTIFIER-REFS")
+        # Serialize data_identifier_refs (list to container "DATA-IDENTIFIERS")
         if self.data_identifier_refs:
-            wrapper = ET.Element("DATA-IDENTIFIER-REFS")
+            wrapper = ET.Element("DATA-IDENTIFIERS")
             for item in self.data_identifier_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -112,9 +112,9 @@ class DiagnosticSecureCodingMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSecureCodingMapping, cls).deserialize(element)
 
-        # Parse data_identifier_refs (list from container "DATA-IDENTIFIER-REFS")
+        # Parse data_identifier_refs (list from container "DATA-IDENTIFIERS")
         obj.data_identifier_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-IDENTIFIER-REFS")
+        container = SerializationHelper.find_child_element(element, "DATA-IDENTIFIERS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

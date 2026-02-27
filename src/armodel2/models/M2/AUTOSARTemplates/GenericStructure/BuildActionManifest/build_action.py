@@ -88,9 +88,9 @@ class BuildAction(BuildActionEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize follow_up_action_refs (list to container "FOLLOW-UP-ACTION-REFS")
+        # Serialize follow_up_action_refs (list to container "FOLLOW-UP-ACTIONS")
         if self.follow_up_action_refs:
-            wrapper = ET.Element("FOLLOW-UP-ACTION-REFS")
+            wrapper = ET.Element("FOLLOW-UP-ACTIONS")
             for item in self.follow_up_action_refs:
                 serialized = SerializationHelper.serialize_item(item, "BuildAction")
                 if serialized is not None:
@@ -125,9 +125,9 @@ class BuildAction(BuildActionEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize predecessor_refs (list to container "PREDECESSOR-REFS")
+        # Serialize predecessor_refs (list to container "PREDECESSORS")
         if self.predecessor_refs:
-            wrapper = ET.Element("PREDECESSOR-REFS")
+            wrapper = ET.Element("PREDECESSORS")
             for item in self.predecessor_refs:
                 serialized = SerializationHelper.serialize_item(item, "BuildAction")
                 if serialized is not None:
@@ -181,9 +181,9 @@ class BuildAction(BuildActionEntity):
                 if child_value is not None:
                     obj.created_datas.append(child_value)
 
-        # Parse follow_up_action_refs (list from container "FOLLOW-UP-ACTION-REFS")
+        # Parse follow_up_action_refs (list from container "FOLLOW-UP-ACTIONS")
         obj.follow_up_action_refs = []
-        container = SerializationHelper.find_child_element(element, "FOLLOW-UP-ACTION-REFS")
+        container = SerializationHelper.find_child_element(element, "FOLLOW-UP-ACTIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -217,9 +217,9 @@ class BuildAction(BuildActionEntity):
                 if child_value is not None:
                     obj.modified_datas.append(child_value)
 
-        # Parse predecessor_refs (list from container "PREDECESSOR-REFS")
+        # Parse predecessor_refs (list from container "PREDECESSORS")
         obj.predecessor_refs = []
-        container = SerializationHelper.find_child_element(element, "PREDECESSOR-REFS")
+        container = SerializationHelper.find_child_element(element, "PREDECESSORS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

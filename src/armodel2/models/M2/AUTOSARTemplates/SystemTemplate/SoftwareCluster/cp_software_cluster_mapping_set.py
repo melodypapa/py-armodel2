@@ -75,9 +75,9 @@ class CpSoftwareClusterMappingSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize port_element_toes (list to container "PORT-ELEMENT-TOES")
+        # Serialize port_element_toes (list to container "PORT-ELEMENT-TOS")
         if self.port_element_toes:
-            wrapper = ET.Element("PORT-ELEMENT-TOES")
+            wrapper = ET.Element("PORT-ELEMENT-TOS")
             for item in self.port_element_toes:
                 serialized = SerializationHelper.serialize_item(item, "PortElementToCommunicationResourceMapping")
                 if serialized is not None:
@@ -85,9 +85,9 @@ class CpSoftwareClusterMappingSet(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize resource_toes (list to container "RESOURCE-TOES")
+        # Serialize resource_toes (list to container "RESOURCE-TOS")
         if self.resource_toes:
-            wrapper = ET.Element("RESOURCE-TOES")
+            wrapper = ET.Element("RESOURCE-TOS")
             for item in self.resource_toes:
                 serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
@@ -105,9 +105,9 @@ class CpSoftwareClusterMappingSet(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize swc_toes (list to container "SWC-TOES")
+        # Serialize swc_toes (list to container "SWC-TOS")
         if self.swc_toes:
-            wrapper = ET.Element("SWC-TOES")
+            wrapper = ET.Element("SWC-TOS")
             for item in self.swc_toes:
                 serialized = SerializationHelper.serialize_item(item, "SwcToApplicationPartitionMapping")
                 if serialized is not None:
@@ -130,9 +130,9 @@ class CpSoftwareClusterMappingSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterMappingSet, cls).deserialize(element)
 
-        # Parse port_element_toes (list from container "PORT-ELEMENT-TOES")
+        # Parse port_element_toes (list from container "PORT-ELEMENT-TOS")
         obj.port_element_toes = []
-        container = SerializationHelper.find_child_element(element, "PORT-ELEMENT-TOES")
+        container = SerializationHelper.find_child_element(element, "PORT-ELEMENT-TOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -140,9 +140,9 @@ class CpSoftwareClusterMappingSet(ARElement):
                 if child_value is not None:
                     obj.port_element_toes.append(child_value)
 
-        # Parse resource_toes (list from container "RESOURCE-TOES")
+        # Parse resource_toes (list from container "RESOURCE-TOS")
         obj.resource_toes = []
-        container = SerializationHelper.find_child_element(element, "RESOURCE-TOES")
+        container = SerializationHelper.find_child_element(element, "RESOURCE-TOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -160,9 +160,9 @@ class CpSoftwareClusterMappingSet(ARElement):
                 if child_value is not None:
                     obj.software_clusters.append(child_value)
 
-        # Parse swc_toes (list from container "SWC-TOES")
+        # Parse swc_toes (list from container "SWC-TOS")
         obj.swc_toes = []
-        container = SerializationHelper.find_child_element(element, "SWC-TOES")
+        container = SerializationHelper.find_child_element(element, "SWC-TOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

@@ -1315,13 +1315,21 @@ def _generate_deserialize_method(
                     else:
                         # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
                         # For reference lists (is_ref=True), the container tag should be singular + -REFS
-                        # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
+                        # For non-reference lists, use AUTOSAR simple plural rule: attr_name (singular) + "S"
+                        # This ensures: RUNNABLE → RUNNABLES, PER-INSTANCE-MEMORY → PER-INSTANCE-MEMORYS
                         container_tag = xml_tag
                         child_tag = None
                         if is_ref:
-                            # For reference lists, the container tag is python_name converted to XML format
-                            # e.g., hw_category_refs -> HW-CATEGORY-REFS
-                            container_tag = python_name.upper().replace('_', '-')
+                            # For reference lists, container is attr_name + S (e.g., HW-CATEGORY-REF → HW-CATEGORY-REFS)
+                            # Convert attr_name to AUTOSAR XML format (UPPER-CASE-WITH-HYPHENS)
+                            singular_xml_tag = NameConverter.to_xml_tag(attr_name)
+                            container_tag = f"{singular_xml_tag}S"
+                        else:
+                            # For non-reference lists, container is attr_name + S
+                            # e.g., perInstanceMemory → PER-INSTANCE-MEMORY → PER-INSTANCE-MEMORYS
+                            # Convert attr_name to AUTOSAR XML format (UPPER-CASE-WITH-HYPHENS)
+                            singular_xml_tag = NameConverter.to_xml_tag(attr_name)
+                            container_tag = f"{singular_xml_tag}S"
 
                     # Handle no container case (direct children)
                     if container_tag is None:
@@ -3264,14 +3272,22 @@ def _generate_serialize_method(
                     else:
                         # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
                         # For reference lists (is_ref=True), the container tag should be singular + -REFS
-                        # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
+                        # For non-reference lists, use AUTOSAR simple plural rule: attr_name (singular) + "S"
+                        # This ensures: RUNNABLE → RUNNABLES, PER-INSTANCE-MEMORY → PER-INSTANCE-MEMORYS
                         container_tag = xml_tag
                         child_tag = None
                         inner_tags = []
                         if is_ref:
-                            # For reference lists, the container tag is python_name converted to XML format
-                            # e.g., hw_category_refs -> HW-CATEGORY-REFS
-                            container_tag = python_name.upper().replace('_', '-')
+                            # For reference lists, container is attr_name + S (e.g., HW-CATEGORY-REF → HW-CATEGORY-REFS)
+                            # Convert attr_name to AUTOSAR XML format (UPPER-CASE-WITH-HYPHENS)
+                            singular_xml_tag = NameConverter.to_xml_tag(attr_name)
+                            container_tag = f"{singular_xml_tag}S"
+                        else:
+                            # For non-reference lists, container is attr_name + S
+                            # e.g., perInstanceMemory → PER-INSTANCE-MEMORY → PER-INSTANCE-MEMORYS
+                            # Convert attr_name to AUTOSAR XML format (UPPER-CASE-WITH-HYPHENS)
+                            singular_xml_tag = NameConverter.to_xml_tag(attr_name)
+                            container_tag = f"{singular_xml_tag}S"
 
                     # Handle no container case (direct children)
                     if container_tag is None:

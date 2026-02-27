@@ -89,9 +89,9 @@ class ISignalTriggering(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_signal_port_refs (list to container "I-SIGNAL-PORT-REFS")
+        # Serialize i_signal_port_refs (list to container "I-SIGNAL-PORTS")
         if self.i_signal_port_refs:
-            wrapper = ET.Element("I-SIGNAL-PORT-REFS")
+            wrapper = ET.Element("I-SIGNAL-PORTS")
             for item in self.i_signal_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalPort")
                 if serialized is not None:
@@ -141,9 +141,9 @@ class ISignalTriggering(Identifiable):
             i_signal_group_ref_value = ARRef.deserialize(child)
             obj.i_signal_group_ref = i_signal_group_ref_value
 
-        # Parse i_signal_port_refs (list from container "I-SIGNAL-PORT-REFS")
+        # Parse i_signal_port_refs (list from container "I-SIGNAL-PORTS")
         obj.i_signal_port_refs = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-PORT-REFS")
+        container = SerializationHelper.find_child_element(element, "I-SIGNAL-PORTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

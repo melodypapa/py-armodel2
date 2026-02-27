@@ -64,9 +64,9 @@ class DoIpRoutingActivation(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize do_ip_target_refs (list to container "DO-IP-TARGET-REFS")
+        # Serialize do_ip_target_refs (list to container "DO-IP-TARGETS")
         if self.do_ip_target_refs:
-            wrapper = ET.Element("DO-IP-TARGET-REFS")
+            wrapper = ET.Element("DO-IP-TARGETS")
             for item in self.do_ip_target_refs:
                 serialized = SerializationHelper.serialize_item(item, "DoIpLogicTargetAddressProps")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class DoIpRoutingActivation(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpRoutingActivation, cls).deserialize(element)
 
-        # Parse do_ip_target_refs (list from container "DO-IP-TARGET-REFS")
+        # Parse do_ip_target_refs (list from container "DO-IP-TARGETS")
         obj.do_ip_target_refs = []
-        container = SerializationHelper.find_child_element(element, "DO-IP-TARGET-REFS")
+        container = SerializationHelper.find_child_element(element, "DO-IP-TARGETS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

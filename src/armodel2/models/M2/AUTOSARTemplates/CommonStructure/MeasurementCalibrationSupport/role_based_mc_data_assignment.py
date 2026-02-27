@@ -73,9 +73,9 @@ class RoleBasedMcDataAssignment(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize execution_refs (list to container "EXECUTION-REFS")
+        # Serialize execution_refs (list to container "EXECUTIONS")
         if self.execution_refs:
-            wrapper = ET.Element("EXECUTION-REFS")
+            wrapper = ET.Element("EXECUTIONS")
             for item in self.execution_refs:
                 serialized = SerializationHelper.serialize_item(item, "RptExecutionContext")
                 if serialized is not None:
@@ -90,9 +90,9 @@ class RoleBasedMcDataAssignment(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mc_data_instance_refs (list to container "MC-DATA-INSTANCE-REFS")
+        # Serialize mc_data_instance_refs (list to container "MC-DATA-INSTANCES")
         if self.mc_data_instance_refs:
-            wrapper = ET.Element("MC-DATA-INSTANCE-REFS")
+            wrapper = ET.Element("MC-DATA-INSTANCES")
             for item in self.mc_data_instance_refs:
                 serialized = SerializationHelper.serialize_item(item, "McDataInstance")
                 if serialized is not None:
@@ -136,9 +136,9 @@ class RoleBasedMcDataAssignment(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RoleBasedMcDataAssignment, cls).deserialize(element)
 
-        # Parse execution_refs (list from container "EXECUTION-REFS")
+        # Parse execution_refs (list from container "EXECUTIONS")
         obj.execution_refs = []
-        container = SerializationHelper.find_child_element(element, "EXECUTION-REFS")
+        container = SerializationHelper.find_child_element(element, "EXECUTIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -152,9 +152,9 @@ class RoleBasedMcDataAssignment(ARObject):
                 if child_value is not None:
                     obj.execution_refs.append(child_value)
 
-        # Parse mc_data_instance_refs (list from container "MC-DATA-INSTANCE-REFS")
+        # Parse mc_data_instance_refs (list from container "MC-DATA-INSTANCES")
         obj.mc_data_instance_refs = []
-        container = SerializationHelper.find_child_element(element, "MC-DATA-INSTANCE-REFS")
+        container = SerializationHelper.find_child_element(element, "MC-DATA-INSTANCES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

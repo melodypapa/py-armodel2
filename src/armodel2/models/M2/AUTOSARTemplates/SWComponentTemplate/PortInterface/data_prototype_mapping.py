@@ -136,9 +136,9 @@ class DataPrototypeMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sub_element_refs (list to container "SUB-ELEMENT-REFS")
+        # Serialize sub_element_refs (list to container "SUB-ELEMENTS")
         if self.sub_element_refs:
-            wrapper = ET.Element("SUB-ELEMENT-REFS")
+            wrapper = ET.Element("SUB-ELEMENTS")
             for item in self.sub_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "SubElementMapping")
                 if serialized is not None:
@@ -206,9 +206,9 @@ class DataPrototypeMapping(ARObject):
             second_to_first_ref_value = ARRef.deserialize(child)
             obj.second_to_first_ref = second_to_first_ref_value
 
-        # Parse sub_element_refs (list from container "SUB-ELEMENT-REFS")
+        # Parse sub_element_refs (list from container "SUB-ELEMENTS")
         obj.sub_element_refs = []
-        container = SerializationHelper.find_child_element(element, "SUB-ELEMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "SUB-ELEMENTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

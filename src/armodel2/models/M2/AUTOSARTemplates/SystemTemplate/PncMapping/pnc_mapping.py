@@ -112,9 +112,9 @@ class PncMapping(Describable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize dynamic_pnc_refs (list to container "DYNAMIC-PNC-REFS")
+        # Serialize dynamic_pnc_refs (list to container "DYNAMIC-PNCS")
         if self.dynamic_pnc_refs:
-            wrapper = ET.Element("DYNAMIC-PNC-REFS")
+            wrapper = ET.Element("DYNAMIC-PNCS")
             for item in self.dynamic_pnc_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
@@ -143,9 +143,9 @@ class PncMapping(Describable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize physical_channel_refs (list to container "PHYSICAL-CHANNEL-REFS")
+        # Serialize physical_channel_refs (list to container "PHYSICAL-CHANNELS")
         if self.physical_channel_refs:
-            wrapper = ET.Element("PHYSICAL-CHANNEL-REFS")
+            wrapper = ET.Element("PHYSICAL-CHANNELS")
             for item in self.physical_channel_refs:
                 serialized = SerializationHelper.serialize_item(item, "PhysicalChannel")
                 if serialized is not None:
@@ -160,9 +160,9 @@ class PncMapping(Describable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize pnc_consumed_refs (list to container "PNC-CONSUMED-REFS")
+        # Serialize pnc_consumed_refs (list to container "PNC-CONSUMEDS")
         if self.pnc_consumed_refs:
-            wrapper = ET.Element("PNC-CONSUMED-REFS")
+            wrapper = ET.Element("PNC-CONSUMEDS")
             for item in self.pnc_consumed_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConsumedProvidedServiceInstanceGroup")
                 if serialized is not None:
@@ -177,9 +177,9 @@ class PncMapping(Describable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize pnc_group_refs (list to container "PNC-GROUP-REFS")
+        # Serialize pnc_group_refs (list to container "PNC-GROUPS")
         if self.pnc_group_refs:
-            wrapper = ET.Element("PNC-GROUP-REFS")
+            wrapper = ET.Element("PNC-GROUPS")
             for item in self.pnc_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
@@ -208,9 +208,9 @@ class PncMapping(Describable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize pnc_pdur_group_refs (list to container "PNC-PDUR-GROUP-REFS")
+        # Serialize pnc_pdur_group_refs (list to container "PNC-PDUR-GROUPS")
         if self.pnc_pdur_group_refs:
-            wrapper = ET.Element("PNC-PDUR-GROUP-REFS")
+            wrapper = ET.Element("PNC-PDUR-GROUPS")
             for item in self.pnc_pdur_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "PdurIPduGroup")
                 if serialized is not None:
@@ -239,9 +239,9 @@ class PncMapping(Describable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize relevant_for_refs (list to container "RELEVANT-FOR-REFS")
+        # Serialize relevant_for_refs (list to container "RELEVANT-FORS")
         if self.relevant_for_refs:
-            wrapper = ET.Element("RELEVANT-FOR-REFS")
+            wrapper = ET.Element("RELEVANT-FORS")
             for item in self.relevant_for_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcuInstance")
                 if serialized is not None:
@@ -270,9 +270,9 @@ class PncMapping(Describable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize vfc_refs (list to container "VFC-REFS")
+        # Serialize vfc_refs (list to container "VFCS")
         if self.vfc_refs:
-            wrapper = ET.Element("VFC-REFS")
+            wrapper = ET.Element("VFCS")
             for item in self.vfc_refs:
                 serialized = SerializationHelper.serialize_item(item, "PortGroup")
                 if serialized is not None:
@@ -287,9 +287,9 @@ class PncMapping(Describable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize wakeup_frame_refs (list to container "WAKEUP-FRAME-REFS")
+        # Serialize wakeup_frame_refs (list to container "WAKEUP-FRAMES")
         if self.wakeup_frame_refs:
-            wrapper = ET.Element("WAKEUP-FRAME-REFS")
+            wrapper = ET.Element("WAKEUP-FRAMES")
             for item in self.wakeup_frame_refs:
                 serialized = SerializationHelper.serialize_item(item, "FrameTriggering")
                 if serialized is not None:
@@ -319,9 +319,9 @@ class PncMapping(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PncMapping, cls).deserialize(element)
 
-        # Parse dynamic_pnc_refs (list from container "DYNAMIC-PNC-REFS")
+        # Parse dynamic_pnc_refs (list from container "DYNAMIC-PNCS")
         obj.dynamic_pnc_refs = []
-        container = SerializationHelper.find_child_element(element, "DYNAMIC-PNC-REFS")
+        container = SerializationHelper.find_child_element(element, "DYNAMIC-PNCS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -341,9 +341,9 @@ class PncMapping(Describable):
             ident_ref_value = ARRef.deserialize(child)
             obj.ident_ref = ident_ref_value
 
-        # Parse physical_channel_refs (list from container "PHYSICAL-CHANNEL-REFS")
+        # Parse physical_channel_refs (list from container "PHYSICAL-CHANNELS")
         obj.physical_channel_refs = []
-        container = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNEL-REFS")
+        container = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNELS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -357,9 +357,9 @@ class PncMapping(Describable):
                 if child_value is not None:
                     obj.physical_channel_refs.append(child_value)
 
-        # Parse pnc_consumed_refs (list from container "PNC-CONSUMED-REFS")
+        # Parse pnc_consumed_refs (list from container "PNC-CONSUMEDS")
         obj.pnc_consumed_refs = []
-        container = SerializationHelper.find_child_element(element, "PNC-CONSUMED-REFS")
+        container = SerializationHelper.find_child_element(element, "PNC-CONSUMEDS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -373,9 +373,9 @@ class PncMapping(Describable):
                 if child_value is not None:
                     obj.pnc_consumed_refs.append(child_value)
 
-        # Parse pnc_group_refs (list from container "PNC-GROUP-REFS")
+        # Parse pnc_group_refs (list from container "PNC-GROUPS")
         obj.pnc_group_refs = []
-        container = SerializationHelper.find_child_element(element, "PNC-GROUP-REFS")
+        container = SerializationHelper.find_child_element(element, "PNC-GROUPS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -395,9 +395,9 @@ class PncMapping(Describable):
             pnc_identifier_value = child.text
             obj.pnc_identifier = pnc_identifier_value
 
-        # Parse pnc_pdur_group_refs (list from container "PNC-PDUR-GROUP-REFS")
+        # Parse pnc_pdur_group_refs (list from container "PNC-PDUR-GROUPS")
         obj.pnc_pdur_group_refs = []
-        container = SerializationHelper.find_child_element(element, "PNC-PDUR-GROUP-REFS")
+        container = SerializationHelper.find_child_element(element, "PNC-PDUR-GROUPS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -417,9 +417,9 @@ class PncMapping(Describable):
             pnc_wakeup_value = child.text
             obj.pnc_wakeup = pnc_wakeup_value
 
-        # Parse relevant_for_refs (list from container "RELEVANT-FOR-REFS")
+        # Parse relevant_for_refs (list from container "RELEVANT-FORS")
         obj.relevant_for_refs = []
-        container = SerializationHelper.find_child_element(element, "RELEVANT-FOR-REFS")
+        container = SerializationHelper.find_child_element(element, "RELEVANT-FORS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -439,9 +439,9 @@ class PncMapping(Describable):
             short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
-        # Parse vfc_refs (list from container "VFC-REFS")
+        # Parse vfc_refs (list from container "VFCS")
         obj.vfc_refs = []
-        container = SerializationHelper.find_child_element(element, "VFC-REFS")
+        container = SerializationHelper.find_child_element(element, "VFCS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -455,9 +455,9 @@ class PncMapping(Describable):
                 if child_value is not None:
                     obj.vfc_refs.append(child_value)
 
-        # Parse wakeup_frame_refs (list from container "WAKEUP-FRAME-REFS")
+        # Parse wakeup_frame_refs (list from container "WAKEUP-FRAMES")
         obj.wakeup_frame_refs = []
-        container = SerializationHelper.find_child_element(element, "WAKEUP-FRAME-REFS")
+        container = SerializationHelper.find_child_element(element, "WAKEUP-FRAMES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

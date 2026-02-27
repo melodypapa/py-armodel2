@@ -66,9 +66,9 @@ class ModeDeclarationMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize first_mode_refs (list to container "FIRST-MODE-REFS")
+        # Serialize first_mode_refs (list to container "FIRST-MODES")
         if self.first_mode_refs:
-            wrapper = ET.Element("FIRST-MODE-REFS")
+            wrapper = ET.Element("FIRST-MODES")
             for item in self.first_mode_refs:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclaration")
                 if serialized is not None:
@@ -112,9 +112,9 @@ class ModeDeclarationMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeDeclarationMapping, cls).deserialize(element)
 
-        # Parse first_mode_refs (list from container "FIRST-MODE-REFS")
+        # Parse first_mode_refs (list from container "FIRST-MODES")
         obj.first_mode_refs = []
-        container = SerializationHelper.find_child_element(element, "FIRST-MODE-REFS")
+        container = SerializationHelper.find_child_element(element, "FIRST-MODES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

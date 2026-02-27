@@ -77,9 +77,9 @@ class RootSwCompositionPrototype(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize calibration_parameter_value_set_refs (list to container "CALIBRATION-PARAMETER-VALUE-SET-REFS")
+        # Serialize calibration_parameter_value_set_refs (list to container "CALIBRATION-PARAMETER-VALUE-SETS")
         if self.calibration_parameter_value_set_refs:
-            wrapper = ET.Element("CALIBRATION-PARAMETER-VALUE-SET-REFS")
+            wrapper = ET.Element("CALIBRATION-PARAMETER-VALUE-SETS")
             for item in self.calibration_parameter_value_set_refs:
                 serialized = SerializationHelper.serialize_item(item, "CalibrationParameterValueSet")
                 if serialized is not None:
@@ -137,9 +137,9 @@ class RootSwCompositionPrototype(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RootSwCompositionPrototype, cls).deserialize(element)
 
-        # Parse calibration_parameter_value_set_refs (list from container "CALIBRATION-PARAMETER-VALUE-SET-REFS")
+        # Parse calibration_parameter_value_set_refs (list from container "CALIBRATION-PARAMETER-VALUE-SETS")
         obj.calibration_parameter_value_set_refs = []
-        container = SerializationHelper.find_child_element(element, "CALIBRATION-PARAMETER-VALUE-SET-REFS")
+        container = SerializationHelper.find_child_element(element, "CALIBRATION-PARAMETER-VALUE-SETS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

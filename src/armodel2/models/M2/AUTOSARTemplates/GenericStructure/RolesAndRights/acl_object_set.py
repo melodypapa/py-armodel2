@@ -85,9 +85,9 @@ class AclObjectSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize acl_object_clas_refs (list to container "ACL-OBJECT-CLAS-REFS")
+        # Serialize acl_object_clas_refs (list to container "ACL-OBJECT-CLASSS")
         if self.acl_object_clas_refs:
-            wrapper = ET.Element("ACL-OBJECT-CLAS-REFS")
+            wrapper = ET.Element("ACL-OBJECT-CLASSS")
             for item in self.acl_object_clas_refs:
                 serialized = SerializationHelper.serialize_item(item, "ReferrableSubtypesEnum")
                 if serialized is not None:
@@ -130,9 +130,9 @@ class AclObjectSet(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize derived_from_refs (list to container "DERIVED-FROM-REFS")
+        # Serialize derived_from_refs (list to container "DERIVED-FROMS")
         if self.derived_from_refs:
-            wrapper = ET.Element("DERIVED-FROM-REFS")
+            wrapper = ET.Element("DERIVED-FROMS")
             for item in self.derived_from_refs:
                 serialized = SerializationHelper.serialize_item(item, "AtpBlueprint")
                 if serialized is not None:
@@ -172,9 +172,9 @@ class AclObjectSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AclObjectSet, cls).deserialize(element)
 
-        # Parse acl_object_clas_refs (list from container "ACL-OBJECT-CLAS-REFS")
+        # Parse acl_object_clas_refs (list from container "ACL-OBJECT-CLASSS")
         obj.acl_object_clas_refs = []
-        container = SerializationHelper.find_child_element(element, "ACL-OBJECT-CLAS-REFS")
+        container = SerializationHelper.find_child_element(element, "ACL-OBJECT-CLASSS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -200,9 +200,9 @@ class AclObjectSet(ARElement):
             collection_ref_value = ARRef.deserialize(child)
             obj.collection_ref = collection_ref_value
 
-        # Parse derived_from_refs (list from container "DERIVED-FROM-REFS")
+        # Parse derived_from_refs (list from container "DERIVED-FROMS")
         obj.derived_from_refs = []
-        container = SerializationHelper.find_child_element(element, "DERIVED-FROM-REFS")
+        container = SerializationHelper.find_child_element(element, "DERIVED-FROMS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

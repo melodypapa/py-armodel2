@@ -70,9 +70,9 @@ class PortGroup(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize inner_group_refs (list to container "INNER-GROUP-REFS")
+        # Serialize inner_group_refs (list to container "INNER-GROUPS")
         if self.inner_group_refs:
-            wrapper = ET.Element("INNER-GROUP-REFS")
+            wrapper = ET.Element("INNER-GROUPS")
             for item in self.inner_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "PortGroup")
                 if serialized is not None:
@@ -87,9 +87,9 @@ class PortGroup(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize outer_port_refs (list to container "OUTER-PORT-REFS")
+        # Serialize outer_port_refs (list to container "OUTER-PORTS")
         if self.outer_port_refs:
-            wrapper = ET.Element("OUTER-PORT-REFS")
+            wrapper = ET.Element("OUTER-PORTS")
             for item in self.outer_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "PortPrototype")
                 if serialized is not None:
@@ -119,9 +119,9 @@ class PortGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortGroup, cls).deserialize(element)
 
-        # Parse inner_group_refs (list from container "INNER-GROUP-REFS")
+        # Parse inner_group_refs (list from container "INNER-GROUPS")
         obj.inner_group_refs = []
-        container = SerializationHelper.find_child_element(element, "INNER-GROUP-REFS")
+        container = SerializationHelper.find_child_element(element, "INNER-GROUPS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -135,9 +135,9 @@ class PortGroup(Identifiable):
                 if child_value is not None:
                     obj.inner_group_refs.append(child_value)
 
-        # Parse outer_port_refs (list from container "OUTER-PORT-REFS")
+        # Parse outer_port_refs (list from container "OUTER-PORTS")
         obj.outer_port_refs = []
-        container = SerializationHelper.find_child_element(element, "OUTER-PORT-REFS")
+        container = SerializationHelper.find_child_element(element, "OUTER-PORTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -56,6 +56,7 @@
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "This specifies the init values for the dataElements in the PortPrototypeBlueprint."
         },
         "interface": {

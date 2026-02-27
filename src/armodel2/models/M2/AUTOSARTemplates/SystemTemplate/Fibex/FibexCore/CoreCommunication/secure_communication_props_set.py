@@ -72,9 +72,9 @@ class SecureCommunicationPropsSet(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize freshness_propses (list to container "FRESHNESS-PROPSES")
+        # Serialize freshness_propses (list to container "FRESHNESS-PROPSS")
         if self.freshness_propses:
-            wrapper = ET.Element("FRESHNESS-PROPSES")
+            wrapper = ET.Element("FRESHNESS-PROPSS")
             for item in self.freshness_propses:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -107,9 +107,9 @@ class SecureCommunicationPropsSet(FibexElement):
                 if child_value is not None:
                     obj.authentications.append(child_value)
 
-        # Parse freshness_propses (list from container "FRESHNESS-PROPSES")
+        # Parse freshness_propses (list from container "FRESHNESS-PROPSS")
         obj.freshness_propses = []
-        container = SerializationHelper.find_child_element(element, "FRESHNESS-PROPSES")
+        container = SerializationHelper.find_child_element(element, "FRESHNESS-PROPSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

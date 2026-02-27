@@ -73,9 +73,9 @@ class J1939TpConfig(TpConfig):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize tp_addresses (list to container "TP-ADDRESSES")
+        # Serialize tp_addresses (list to container "TP-ADDRESSS")
         if self.tp_addresses:
-            wrapper = ET.Element("TP-ADDRESSES")
+            wrapper = ET.Element("TP-ADDRESSS")
             for item in self.tp_addresses:
                 serialized = SerializationHelper.serialize_item(item, "TpAddress")
                 if serialized is not None:
@@ -118,9 +118,9 @@ class J1939TpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939TpConfig, cls).deserialize(element)
 
-        # Parse tp_addresses (list from container "TP-ADDRESSES")
+        # Parse tp_addresses (list from container "TP-ADDRESSS")
         obj.tp_addresses = []
-        container = SerializationHelper.find_child_element(element, "TP-ADDRESSES")
+        container = SerializationHelper.find_child_element(element, "TP-ADDRESSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

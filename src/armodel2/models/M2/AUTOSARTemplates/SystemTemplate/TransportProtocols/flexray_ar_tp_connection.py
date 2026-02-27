@@ -153,9 +153,9 @@ class FlexrayArTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_refs (list to container "TARGET-REFS")
+        # Serialize target_refs (list to container "TARGETS")
         if self.target_refs:
-            wrapper = ET.Element("TARGET-REFS")
+            wrapper = ET.Element("TARGETS")
             for item in self.target_refs:
                 serialized = SerializationHelper.serialize_item(item, "FlexrayArTpNode")
                 if serialized is not None:
@@ -215,9 +215,9 @@ class FlexrayArTpConnection(TpConnection):
             source_ref_value = ARRef.deserialize(child)
             obj.source_ref = source_ref_value
 
-        # Parse target_refs (list from container "TARGET-REFS")
+        # Parse target_refs (list from container "TARGETS")
         obj.target_refs = []
-        container = SerializationHelper.find_child_element(element, "TARGET-REFS")
+        container = SerializationHelper.find_child_element(element, "TARGETS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

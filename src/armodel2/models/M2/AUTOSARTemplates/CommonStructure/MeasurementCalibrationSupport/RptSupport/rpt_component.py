@@ -97,9 +97,9 @@ class RptComponent(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rpt_executable_entities (list to container "RPT-EXECUTABLE-ENTITIES")
+        # Serialize rpt_executable_entities (list to container "RPT-EXECUTABLE-ENTITYS")
         if self.rpt_executable_entities:
-            wrapper = ET.Element("RPT-EXECUTABLE-ENTITIES")
+            wrapper = ET.Element("RPT-EXECUTABLE-ENTITYS")
             for item in self.rpt_executable_entities:
                 serialized = SerializationHelper.serialize_item(item, "RptExecutableEntity")
                 if serialized is not None:
@@ -138,9 +138,9 @@ class RptComponent(Identifiable):
             rp_impl_policy_value = SerializationHelper.deserialize_by_tag(child, "RptImplPolicy")
             obj.rp_impl_policy = rp_impl_policy_value
 
-        # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITIES")
+        # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITYS")
         obj.rpt_executable_entities = []
-        container = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITIES")
+        container = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

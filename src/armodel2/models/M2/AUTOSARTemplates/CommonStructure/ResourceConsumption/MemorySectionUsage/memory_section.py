@@ -103,9 +103,9 @@ class MemorySection(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize executable_entity_refs (list to container "EXECUTABLE-ENTITY-REFS")
+        # Serialize executable_entity_refs (list to container "EXECUTABLE-ENTITYS")
         if self.executable_entity_refs:
-            wrapper = ET.Element("EXECUTABLE-ENTITY-REFS")
+            wrapper = ET.Element("EXECUTABLE-ENTITYS")
             for item in self.executable_entity_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExecutableEntity")
                 if serialized is not None:
@@ -214,9 +214,9 @@ class MemorySection(Identifiable):
             alignment_value = child.text
             obj.alignment = alignment_value
 
-        # Parse executable_entity_refs (list from container "EXECUTABLE-ENTITY-REFS")
+        # Parse executable_entity_refs (list from container "EXECUTABLE-ENTITYS")
         obj.executable_entity_refs = []
-        container = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITY-REFS")
+        container = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITYS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

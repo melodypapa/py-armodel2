@@ -64,9 +64,9 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize resource_need_refs (list to container "RESOURCE-NEED-REFS")
+        # Serialize resource_need_refs (list to container "RESOURCE-NEEDSS")
         if self.resource_need_refs:
-            wrapper = ET.Element("RESOURCE-NEED-REFS")
+            wrapper = ET.Element("RESOURCE-NEEDSS")
             for item in self.resource_need_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucContainerValue")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterServiceResource, cls).deserialize(element)
 
-        # Parse resource_need_refs (list from container "RESOURCE-NEED-REFS")
+        # Parse resource_need_refs (list from container "RESOURCE-NEEDSS")
         obj.resource_need_refs = []
-        container = SerializationHelper.find_child_element(element, "RESOURCE-NEED-REFS")
+        container = SerializationHelper.find_child_element(element, "RESOURCE-NEEDSS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

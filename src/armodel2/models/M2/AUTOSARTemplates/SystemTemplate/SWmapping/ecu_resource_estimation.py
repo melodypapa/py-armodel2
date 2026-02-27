@@ -136,9 +136,9 @@ class EcuResourceEstimation(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_comp_to_ecu_refs (list to container "SW-COMP-TO-ECU-REFS")
+        # Serialize sw_comp_to_ecu_refs (list to container "SW-COMP-TO-ECUS")
         if self.sw_comp_to_ecu_refs:
-            wrapper = ET.Element("SW-COMP-TO-ECU-REFS")
+            wrapper = ET.Element("SW-COMP-TO-ECUS")
             for item in self.sw_comp_to_ecu_refs:
                 serialized = SerializationHelper.serialize_item(item, "SwcToEcuMapping")
                 if serialized is not None:
@@ -192,9 +192,9 @@ class EcuResourceEstimation(ARObject):
             rte_resource_value = SerializationHelper.deserialize_by_tag(child, "ResourceConsumption")
             obj.rte_resource = rte_resource_value
 
-        # Parse sw_comp_to_ecu_refs (list from container "SW-COMP-TO-ECU-REFS")
+        # Parse sw_comp_to_ecu_refs (list from container "SW-COMP-TO-ECUS")
         obj.sw_comp_to_ecu_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-COMP-TO-ECU-REFS")
+        container = SerializationHelper.find_child_element(element, "SW-COMP-TO-ECUS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

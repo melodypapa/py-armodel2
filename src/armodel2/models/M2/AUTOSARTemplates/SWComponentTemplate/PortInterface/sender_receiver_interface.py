@@ -88,9 +88,9 @@ class SenderReceiverInterface(DataInterface):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize invalidation_policy_policies (list to container "INVALIDATION-POLICY-POLICIES")
+        # Serialize invalidation_policy_policies (list to container "INVALIDATION-POLICY-POLICYS")
         if self.invalidation_policy_policies:
-            wrapper = ET.Element("INVALIDATION-POLICY-POLICIES")
+            wrapper = ET.Element("INVALIDATION-POLICY-POLICYS")
             for item in self.invalidation_policy_policies:
                 serialized = SerializationHelper.serialize_item(item, "InvalidationPolicy")
                 if serialized is not None:
@@ -133,9 +133,9 @@ class SenderReceiverInterface(DataInterface):
                 if child_value is not None:
                     obj.data_elements.append(child_value)
 
-        # Parse invalidation_policy_policies (list from container "INVALIDATION-POLICY-POLICIES")
+        # Parse invalidation_policy_policies (list from container "INVALIDATION-POLICY-POLICYS")
         obj.invalidation_policy_policies = []
-        container = SerializationHelper.find_child_element(element, "INVALIDATION-POLICY-POLICIES")
+        container = SerializationHelper.find_child_element(element, "INVALIDATION-POLICY-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

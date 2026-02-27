@@ -152,9 +152,9 @@ class CouplingElement(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize firewall_rule_refs (list to container "FIREWALL-RULE-REFS")
+        # Serialize firewall_rule_refs (list to container "FIREWALL-RULES")
         if self.firewall_rule_refs:
-            wrapper = ET.Element("FIREWALL-RULE-REFS")
+            wrapper = ET.Element("FIREWALL-RULES")
             for item in self.firewall_rule_refs:
                 serialized = SerializationHelper.serialize_item(item, "StateDependentFirewall")
                 if serialized is not None:
@@ -218,9 +218,9 @@ class CouplingElement(FibexElement):
             ecu_instance_ref_value = ARRef.deserialize(child)
             obj.ecu_instance_ref = ecu_instance_ref_value
 
-        # Parse firewall_rule_refs (list from container "FIREWALL-RULE-REFS")
+        # Parse firewall_rule_refs (list from container "FIREWALL-RULES")
         obj.firewall_rule_refs = []
-        container = SerializationHelper.find_child_element(element, "FIREWALL-RULE-REFS")
+        container = SerializationHelper.find_child_element(element, "FIREWALL-RULES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

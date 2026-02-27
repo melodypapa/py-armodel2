@@ -84,9 +84,9 @@ class DependencyOnArtifact(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize usage_refs (list to container "USAGE-REFS")
+        # Serialize usage_refs (list to container "USAGES")
         if self.usage_refs:
-            wrapper = ET.Element("USAGE-REFS")
+            wrapper = ET.Element("USAGES")
             for item in self.usage_refs:
                 serialized = SerializationHelper.serialize_item(item, "DependencyUsageEnum")
                 if serialized is not None:
@@ -122,9 +122,9 @@ class DependencyOnArtifact(Identifiable):
             artifact_descriptor_value = SerializationHelper.deserialize_by_tag(child, "AutosarEngineeringObject")
             obj.artifact_descriptor = artifact_descriptor_value
 
-        # Parse usage_refs (list from container "USAGE-REFS")
+        # Parse usage_refs (list from container "USAGES")
         obj.usage_refs = []
-        container = SerializationHelper.find_child_element(element, "USAGE-REFS")
+        container = SerializationHelper.find_child_element(element, "USAGES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

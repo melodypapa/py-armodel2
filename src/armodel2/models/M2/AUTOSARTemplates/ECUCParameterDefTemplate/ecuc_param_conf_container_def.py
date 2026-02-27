@@ -78,9 +78,9 @@ class EcucParamConfContainerDef(EcucContainerDef):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize reference_refs (list to container "REFERENCE-REFS")
+        # Serialize reference_refs (list to container "REFERENCES")
         if self.reference_refs:
-            wrapper = ET.Element("REFERENCE-REFS")
+            wrapper = ET.Element("REFERENCES")
             for item in self.reference_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -130,9 +130,9 @@ class EcucParamConfContainerDef(EcucContainerDef):
                 if child_value is not None:
                     obj.parameters.append(child_value)
 
-        # Parse reference_refs (list from container "REFERENCE-REFS")
+        # Parse reference_refs (list from container "REFERENCES")
         obj.reference_refs = []
-        container = SerializationHelper.find_child_element(element, "REFERENCE-REFS")
+        container = SerializationHelper.find_child_element(element, "REFERENCES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

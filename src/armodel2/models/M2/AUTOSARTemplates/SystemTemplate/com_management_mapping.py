@@ -69,9 +69,9 @@ class ComManagementMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize com_refs (list to container "COM-REFS")
+        # Serialize com_refs (list to container "COMS")
         if self.com_refs:
-            wrapper = ET.Element("COM-REFS")
+            wrapper = ET.Element("COMS")
             for item in self.com_refs:
                 serialized = SerializationHelper.serialize_item(item, "PortGroup")
                 if serialized is not None:
@@ -86,9 +86,9 @@ class ComManagementMapping(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize physical_channel_refs (list to container "PHYSICAL-CHANNEL-REFS")
+        # Serialize physical_channel_refs (list to container "PHYSICAL-CHANNELS")
         if self.physical_channel_refs:
-            wrapper = ET.Element("PHYSICAL-CHANNEL-REFS")
+            wrapper = ET.Element("PHYSICAL-CHANNELS")
             for item in self.physical_channel_refs:
                 serialized = SerializationHelper.serialize_item(item, "PhysicalChannel")
                 if serialized is not None:
@@ -118,9 +118,9 @@ class ComManagementMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ComManagementMapping, cls).deserialize(element)
 
-        # Parse com_refs (list from container "COM-REFS")
+        # Parse com_refs (list from container "COMS")
         obj.com_refs = []
-        container = SerializationHelper.find_child_element(element, "COM-REFS")
+        container = SerializationHelper.find_child_element(element, "COMS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -134,9 +134,9 @@ class ComManagementMapping(Identifiable):
                 if child_value is not None:
                     obj.com_refs.append(child_value)
 
-        # Parse physical_channel_refs (list from container "PHYSICAL-CHANNEL-REFS")
+        # Parse physical_channel_refs (list from container "PHYSICAL-CHANNELS")
         obj.physical_channel_refs = []
-        container = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNEL-REFS")
+        container = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNELS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

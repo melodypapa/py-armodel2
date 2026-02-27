@@ -76,9 +76,9 @@ class DiagnosticConnection(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize functional_request_refs (list to container "FUNCTIONAL-REQUEST-REFS")
+        # Serialize functional_request_refs (list to container "FUNCTIONAL-REQUESTS")
         if self.functional_request_refs:
-            wrapper = ET.Element("FUNCTIONAL-REQUEST-REFS")
+            wrapper = ET.Element("FUNCTIONAL-REQUESTS")
             for item in self.functional_request_refs:
                 serialized = SerializationHelper.serialize_item(item, "TpConnectionIdent")
                 if serialized is not None:
@@ -93,9 +93,9 @@ class DiagnosticConnection(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize periodic_response_uudt_refs (list to container "PERIODIC-RESPONSE-UUDT-REFS")
+        # Serialize periodic_response_uudt_refs (list to container "PERIODIC-RESPONSE-UUDTS")
         if self.periodic_response_uudt_refs:
-            wrapper = ET.Element("PERIODIC-RESPONSE-UUDT-REFS")
+            wrapper = ET.Element("PERIODIC-RESPONSE-UUDTS")
             for item in self.periodic_response_uudt_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
@@ -167,9 +167,9 @@ class DiagnosticConnection(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticConnection, cls).deserialize(element)
 
-        # Parse functional_request_refs (list from container "FUNCTIONAL-REQUEST-REFS")
+        # Parse functional_request_refs (list from container "FUNCTIONAL-REQUESTS")
         obj.functional_request_refs = []
-        container = SerializationHelper.find_child_element(element, "FUNCTIONAL-REQUEST-REFS")
+        container = SerializationHelper.find_child_element(element, "FUNCTIONAL-REQUESTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -183,9 +183,9 @@ class DiagnosticConnection(ARElement):
                 if child_value is not None:
                     obj.functional_request_refs.append(child_value)
 
-        # Parse periodic_response_uudt_refs (list from container "PERIODIC-RESPONSE-UUDT-REFS")
+        # Parse periodic_response_uudt_refs (list from container "PERIODIC-RESPONSE-UUDTS")
         obj.periodic_response_uudt_refs = []
-        container = SerializationHelper.find_child_element(element, "PERIODIC-RESPONSE-UUDT-REFS")
+        container = SerializationHelper.find_child_element(element, "PERIODIC-RESPONSE-UUDTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

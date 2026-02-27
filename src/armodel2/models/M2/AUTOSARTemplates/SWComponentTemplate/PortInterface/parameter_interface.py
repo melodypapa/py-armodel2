@@ -65,9 +65,9 @@ class ParameterInterface(DataInterface):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize parameter_refs (list to container "PARAMETER-REFS")
+        # Serialize parameter_refs (list to container "PARAMETERS")
         if self.parameter_refs:
-            wrapper = ET.Element("PARAMETER-REFS")
+            wrapper = ET.Element("PARAMETERS")
             for item in self.parameter_refs:
                 serialized = SerializationHelper.serialize_item(item, "ParameterDataPrototype")
                 if serialized is not None:
@@ -97,9 +97,9 @@ class ParameterInterface(DataInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ParameterInterface, cls).deserialize(element)
 
-        # Parse parameter_refs (list from container "PARAMETER-REFS")
+        # Parse parameter_refs (list from container "PARAMETERS")
         obj.parameter_refs = []
-        container = SerializationHelper.find_child_element(element, "PARAMETER-REFS")
+        container = SerializationHelper.find_child_element(element, "PARAMETERS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

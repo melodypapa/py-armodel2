@@ -65,9 +65,9 @@ class IncludedModeDeclarationGroupSet(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize mode_refs (list to container "MODE-REFS")
+        # Serialize mode_refs (list to container "MODES")
         if self.mode_refs:
-            wrapper = ET.Element("MODE-REFS")
+            wrapper = ET.Element("MODES")
             for item in self.mode_refs:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
@@ -111,9 +111,9 @@ class IncludedModeDeclarationGroupSet(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IncludedModeDeclarationGroupSet, cls).deserialize(element)
 
-        # Parse mode_refs (list from container "MODE-REFS")
+        # Parse mode_refs (list from container "MODES")
         obj.mode_refs = []
-        container = SerializationHelper.find_child_element(element, "MODE-REFS")
+        container = SerializationHelper.find_child_element(element, "MODES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

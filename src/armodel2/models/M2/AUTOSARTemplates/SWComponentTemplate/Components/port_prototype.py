@@ -189,9 +189,9 @@ class PortPrototype(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize trigger_port_annotation_refs (list to container "TRIGGER-PORT-ANNOTATION-REFS")
+        # Serialize trigger_port_annotation_refs (list to container "TRIGGER-PORT-ANNOTATIONS")
         if self.trigger_port_annotation_refs:
-            wrapper = ET.Element("TRIGGER-PORT-ANNOTATION-REFS")
+            wrapper = ET.Element("TRIGGER-PORT-ANNOTATIONS")
             for item in self.trigger_port_annotation_refs:
                 serialized = SerializationHelper.serialize_item(item, "TriggerPortAnnotation")
                 if serialized is not None:
@@ -287,9 +287,9 @@ class PortPrototype(Identifiable, ABC):
                 if child_value is not None:
                     obj.sender_receivers.append(child_value)
 
-        # Parse trigger_port_annotation_refs (list from container "TRIGGER-PORT-ANNOTATION-REFS")
+        # Parse trigger_port_annotation_refs (list from container "TRIGGER-PORT-ANNOTATIONS")
         obj.trigger_port_annotation_refs = []
-        container = SerializationHelper.find_child_element(element, "TRIGGER-PORT-ANNOTATION-REFS")
+        container = SerializationHelper.find_child_element(element, "TRIGGER-PORT-ANNOTATIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

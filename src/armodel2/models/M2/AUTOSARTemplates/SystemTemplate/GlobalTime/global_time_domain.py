@@ -132,9 +132,9 @@ class GlobalTimeDomain(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize gatewaies (list to container "GATEWAIES")
+        # Serialize gatewaies (list to container "GATEWAYS")
         if self.gatewaies:
-            wrapper = ET.Element("GATEWAIES")
+            wrapper = ET.Element("GATEWAYS")
             for item in self.gatewaies:
                 serialized = SerializationHelper.serialize_item(item, "GlobalTimeGateway")
                 if serialized is not None:
@@ -170,9 +170,9 @@ class GlobalTimeDomain(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize global_time_sub_refs (list to container "GLOBAL-TIME-SUB-REFS")
+        # Serialize global_time_sub_refs (list to container "GLOBAL-TIME-SUBS")
         if self.global_time_sub_refs:
-            wrapper = ET.Element("GLOBAL-TIME-SUB-REFS")
+            wrapper = ET.Element("GLOBAL-TIME-SUBS")
             for item in self.global_time_sub_refs:
                 serialized = SerializationHelper.serialize_item(item, "GlobalTimeDomain")
                 if serialized is not None:
@@ -229,9 +229,9 @@ class GlobalTimeDomain(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize slaves (list to container "SLAVES")
+        # Serialize slaves (list to container "SLAFS")
         if self.slaves:
-            wrapper = ET.Element("SLAVES")
+            wrapper = ET.Element("SLAFS")
             for item in self.slaves:
                 serialized = SerializationHelper.serialize_item(item, "GlobalTimeSlave")
                 if serialized is not None:
@@ -280,9 +280,9 @@ class GlobalTimeDomain(FibexElement):
             domain_id_value = child.text
             obj.domain_id = domain_id_value
 
-        # Parse gatewaies (list from container "GATEWAIES")
+        # Parse gatewaies (list from container "GATEWAYS")
         obj.gatewaies = []
-        container = SerializationHelper.find_child_element(element, "GATEWAIES")
+        container = SerializationHelper.find_child_element(element, "GATEWAYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -302,9 +302,9 @@ class GlobalTimeDomain(FibexElement):
             global_time_master_value = SerializationHelper.deserialize_by_tag(child, "GlobalTimeMaster")
             obj.global_time_master = global_time_master_value
 
-        # Parse global_time_sub_refs (list from container "GLOBAL-TIME-SUB-REFS")
+        # Parse global_time_sub_refs (list from container "GLOBAL-TIME-SUBS")
         obj.global_time_sub_refs = []
-        container = SerializationHelper.find_child_element(element, "GLOBAL-TIME-SUB-REFS")
+        container = SerializationHelper.find_child_element(element, "GLOBAL-TIME-SUBS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -336,9 +336,9 @@ class GlobalTimeDomain(FibexElement):
             pdu_triggering_ref_value = ARRef.deserialize(child)
             obj.pdu_triggering_ref = pdu_triggering_ref_value
 
-        # Parse slaves (list from container "SLAVES")
+        # Parse slaves (list from container "SLAFS")
         obj.slaves = []
-        container = SerializationHelper.find_child_element(element, "SLAVES")
+        container = SerializationHelper.find_child_element(element, "SLAFS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

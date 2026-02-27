@@ -251,9 +251,9 @@ class ReceiverComSpec(RPortComSpec, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transformation_com_spec_propses (list to container "TRANSFORMATION-COM-SPEC-PROPSES")
+        # Serialize transformation_com_spec_propses (list to container "TRANSFORMATION-COM-SPEC-PROPSS")
         if self.transformation_com_spec_propses:
-            wrapper = ET.Element("TRANSFORMATION-COM-SPEC-PROPSES")
+            wrapper = ET.Element("TRANSFORMATION-COM-SPEC-PROPSS")
             for item in self.transformation_com_spec_propses:
                 serialized = SerializationHelper.serialize_item(item, "TransformationComSpecProps")
                 if serialized is not None:
@@ -354,9 +354,9 @@ class ReceiverComSpec(RPortComSpec, ABC):
             sync_counter_init_value = child.text
             obj.sync_counter_init = sync_counter_init_value
 
-        # Parse transformation_com_spec_propses (list from container "TRANSFORMATION-COM-SPEC-PROPSES")
+        # Parse transformation_com_spec_propses (list from container "TRANSFORMATION-COM-SPEC-PROPSS")
         obj.transformation_com_spec_propses = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-COM-SPEC-PROPSES")
+        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-COM-SPEC-PROPSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

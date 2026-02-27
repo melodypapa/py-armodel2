@@ -125,9 +125,9 @@ class CouplingPortRatePolicy(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize v_lan_refs (list to container "V-LAN-REFS")
+        # Serialize v_lan_refs (list to container "V-LANS")
         if self.v_lan_refs:
-            wrapper = ET.Element("V-LAN-REFS")
+            wrapper = ET.Element("V-LANS")
             for item in self.v_lan_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -181,9 +181,9 @@ class CouplingPortRatePolicy(ARObject):
             time_interval_value = child.text
             obj.time_interval = time_interval_value
 
-        # Parse v_lan_refs (list from container "V-LAN-REFS")
+        # Parse v_lan_refs (list from container "V-LANS")
         obj.v_lan_refs = []
-        container = SerializationHelper.find_child_element(element, "V-LAN-REFS")
+        container = SerializationHelper.find_child_element(element, "V-LANS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

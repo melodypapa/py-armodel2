@@ -70,9 +70,9 @@ class SynchronizationPointConstraint(TimingConstraint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize source_eec_refs (list to container "SOURCE-EEC-REFS")
+        # Serialize source_eec_refs (list to container "SOURCE-EECS")
         if self.source_eec_refs:
-            wrapper = ET.Element("SOURCE-EEC-REFS")
+            wrapper = ET.Element("SOURCE-EECS")
             for item in self.source_eec_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -87,9 +87,9 @@ class SynchronizationPointConstraint(TimingConstraint):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize source_event_refs (list to container "SOURCE-EVENT-REFS")
+        # Serialize source_event_refs (list to container "SOURCE-EVENTS")
         if self.source_event_refs:
-            wrapper = ET.Element("SOURCE-EVENT-REFS")
+            wrapper = ET.Element("SOURCE-EVENTS")
             for item in self.source_event_refs:
                 serialized = SerializationHelper.serialize_item(item, "AbstractEvent")
                 if serialized is not None:
@@ -104,9 +104,9 @@ class SynchronizationPointConstraint(TimingConstraint):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize target_eec_refs (list to container "TARGET-EEC-REFS")
+        # Serialize target_eec_refs (list to container "TARGET-EECS")
         if self.target_eec_refs:
-            wrapper = ET.Element("TARGET-EEC-REFS")
+            wrapper = ET.Element("TARGET-EECS")
             for item in self.target_eec_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -121,9 +121,9 @@ class SynchronizationPointConstraint(TimingConstraint):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize target_event_refs (list to container "TARGET-EVENT-REFS")
+        # Serialize target_event_refs (list to container "TARGET-EVENTS")
         if self.target_event_refs:
-            wrapper = ET.Element("TARGET-EVENT-REFS")
+            wrapper = ET.Element("TARGET-EVENTS")
             for item in self.target_event_refs:
                 serialized = SerializationHelper.serialize_item(item, "AbstractEvent")
                 if serialized is not None:
@@ -153,9 +153,9 @@ class SynchronizationPointConstraint(TimingConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SynchronizationPointConstraint, cls).deserialize(element)
 
-        # Parse source_eec_refs (list from container "SOURCE-EEC-REFS")
+        # Parse source_eec_refs (list from container "SOURCE-EECS")
         obj.source_eec_refs = []
-        container = SerializationHelper.find_child_element(element, "SOURCE-EEC-REFS")
+        container = SerializationHelper.find_child_element(element, "SOURCE-EECS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -169,9 +169,9 @@ class SynchronizationPointConstraint(TimingConstraint):
                 if child_value is not None:
                     obj.source_eec_refs.append(child_value)
 
-        # Parse source_event_refs (list from container "SOURCE-EVENT-REFS")
+        # Parse source_event_refs (list from container "SOURCE-EVENTS")
         obj.source_event_refs = []
-        container = SerializationHelper.find_child_element(element, "SOURCE-EVENT-REFS")
+        container = SerializationHelper.find_child_element(element, "SOURCE-EVENTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -185,9 +185,9 @@ class SynchronizationPointConstraint(TimingConstraint):
                 if child_value is not None:
                     obj.source_event_refs.append(child_value)
 
-        # Parse target_eec_refs (list from container "TARGET-EEC-REFS")
+        # Parse target_eec_refs (list from container "TARGET-EECS")
         obj.target_eec_refs = []
-        container = SerializationHelper.find_child_element(element, "TARGET-EEC-REFS")
+        container = SerializationHelper.find_child_element(element, "TARGET-EECS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -201,9 +201,9 @@ class SynchronizationPointConstraint(TimingConstraint):
                 if child_value is not None:
                     obj.target_eec_refs.append(child_value)
 
-        # Parse target_event_refs (list from container "TARGET-EVENT-REFS")
+        # Parse target_event_refs (list from container "TARGET-EVENTS")
         obj.target_event_refs = []
-        container = SerializationHelper.find_child_element(element, "TARGET-EVENT-REFS")
+        container = SerializationHelper.find_child_element(element, "TARGET-EVENTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

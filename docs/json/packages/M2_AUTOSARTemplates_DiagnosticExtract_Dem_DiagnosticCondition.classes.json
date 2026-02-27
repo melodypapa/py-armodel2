@@ -45,6 +45,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "Defines the initial status for enable or disable of"
         }
       }

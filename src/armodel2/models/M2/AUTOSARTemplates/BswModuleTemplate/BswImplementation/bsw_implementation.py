@@ -119,9 +119,9 @@ class BswImplementation(Implementation):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize preconfigured_configuration_refs (list to container "PRECONFIGURED-CONFIGURATION-REFS")
+        # Serialize preconfigured_configuration_refs (list to container "PRECONFIGURED-CONFIGURATIONS")
         if self.preconfigured_configuration_refs:
-            wrapper = ET.Element("PRECONFIGURED-CONFIGURATION-REFS")
+            wrapper = ET.Element("PRECONFIGURED-CONFIGURATIONS")
             for item in self.preconfigured_configuration_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucModuleConfigurationValues")
                 if serialized is not None:
@@ -136,9 +136,9 @@ class BswImplementation(Implementation):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize recommended_configuration_refs (list to container "RECOMMENDED-CONFIGURATION-REFS")
+        # Serialize recommended_configuration_refs (list to container "RECOMMENDED-CONFIGURATIONS")
         if self.recommended_configuration_refs:
-            wrapper = ET.Element("RECOMMENDED-CONFIGURATION-REFS")
+            wrapper = ET.Element("RECOMMENDED-CONFIGURATIONS")
             for item in self.recommended_configuration_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucModuleConfigurationValues")
                 if serialized is not None:
@@ -167,9 +167,9 @@ class BswImplementation(Implementation):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize vendor_specific_module_def_refs (list to container "VENDOR-SPECIFIC-MODULE-DEF-REFS")
+        # Serialize vendor_specific_module_def_refs (list to container "VENDOR-SPECIFIC-MODULE-DEFS")
         if self.vendor_specific_module_def_refs:
-            wrapper = ET.Element("VENDOR-SPECIFIC-MODULE-DEF-REFS")
+            wrapper = ET.Element("VENDOR-SPECIFIC-MODULE-DEFS")
             for item in self.vendor_specific_module_def_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucModuleDef")
                 if serialized is not None:
@@ -211,9 +211,9 @@ class BswImplementation(Implementation):
             behavior_ref_value = ARRef.deserialize(child)
             obj.behavior_ref = behavior_ref_value
 
-        # Parse preconfigured_configuration_refs (list from container "PRECONFIGURED-CONFIGURATION-REFS")
+        # Parse preconfigured_configuration_refs (list from container "PRECONFIGURED-CONFIGURATIONS")
         obj.preconfigured_configuration_refs = []
-        container = SerializationHelper.find_child_element(element, "PRECONFIGURED-CONFIGURATION-REFS")
+        container = SerializationHelper.find_child_element(element, "PRECONFIGURED-CONFIGURATIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -227,9 +227,9 @@ class BswImplementation(Implementation):
                 if child_value is not None:
                     obj.preconfigured_configuration_refs.append(child_value)
 
-        # Parse recommended_configuration_refs (list from container "RECOMMENDED-CONFIGURATION-REFS")
+        # Parse recommended_configuration_refs (list from container "RECOMMENDED-CONFIGURATIONS")
         obj.recommended_configuration_refs = []
-        container = SerializationHelper.find_child_element(element, "RECOMMENDED-CONFIGURATION-REFS")
+        container = SerializationHelper.find_child_element(element, "RECOMMENDED-CONFIGURATIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -249,9 +249,9 @@ class BswImplementation(Implementation):
             vendor_api_infix_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.vendor_api_infix = vendor_api_infix_value
 
-        # Parse vendor_specific_module_def_refs (list from container "VENDOR-SPECIFIC-MODULE-DEF-REFS")
+        # Parse vendor_specific_module_def_refs (list from container "VENDOR-SPECIFIC-MODULE-DEFS")
         obj.vendor_specific_module_def_refs = []
-        container = SerializationHelper.find_child_element(element, "VENDOR-SPECIFIC-MODULE-DEF-REFS")
+        container = SerializationHelper.find_child_element(element, "VENDOR-SPECIFIC-MODULE-DEFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

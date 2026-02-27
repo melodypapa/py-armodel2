@@ -75,9 +75,9 @@ class NmPdu(Pdu):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize i_signal_to_i_pdu_refs (list to container "I-SIGNAL-TO-I-PDU-REFS")
+        # Serialize i_signal_to_i_pdu_refs (list to container "I-SIGNAL-TO-I-PDUS")
         if self.i_signal_to_i_pdu_refs:
-            wrapper = ET.Element("I-SIGNAL-TO-I-PDU-REFS")
+            wrapper = ET.Element("I-SIGNAL-TO-I-PDUS")
             for item in self.i_signal_to_i_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalToIPduMapping")
                 if serialized is not None:
@@ -149,9 +149,9 @@ class NmPdu(Pdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NmPdu, cls).deserialize(element)
 
-        # Parse i_signal_to_i_pdu_refs (list from container "I-SIGNAL-TO-I-PDU-REFS")
+        # Parse i_signal_to_i_pdu_refs (list from container "I-SIGNAL-TO-I-PDUS")
         obj.i_signal_to_i_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-TO-I-PDU-REFS")
+        container = SerializationHelper.find_child_element(element, "I-SIGNAL-TO-I-PDUS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

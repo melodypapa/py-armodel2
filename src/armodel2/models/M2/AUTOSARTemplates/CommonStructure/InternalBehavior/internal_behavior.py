@@ -100,9 +100,9 @@ class InternalBehavior(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize constant_memories (list to container "CONSTANT-MEMORIES")
+        # Serialize constant_memories (list to container "CONSTANT-MEMORYS")
         if self.constant_memories:
-            wrapper = ET.Element("CONSTANT-MEMORIES")
+            wrapper = ET.Element("CONSTANT-MEMORYS")
             for item in self.constant_memories:
                 serialized = SerializationHelper.serialize_item(item, "ParameterDataPrototype")
                 if serialized is not None:
@@ -110,9 +110,9 @@ class InternalBehavior(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize constant_value_mapping_refs (list to container "CONSTANT-VALUE-MAPPING-REFS")
+        # Serialize constant_value_mapping_refs (list to container "CONSTANT-VALUE-MAPPINGS")
         if self.constant_value_mapping_refs:
-            wrapper = ET.Element("CONSTANT-VALUE-MAPPING-REFS")
+            wrapper = ET.Element("CONSTANT-VALUE-MAPPINGS")
             for item in self.constant_value_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConstantSpecificationMappingSet")
                 if serialized is not None:
@@ -127,9 +127,9 @@ class InternalBehavior(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_type_mapping_refs (list to container "DATA-TYPE-MAPPING-REFS")
+        # Serialize data_type_mapping_refs (list to container "DATA-TYPE-MAPPINGS")
         if self.data_type_mapping_refs:
-            wrapper = ET.Element("DATA-TYPE-MAPPING-REFS")
+            wrapper = ET.Element("DATA-TYPE-MAPPINGS")
             for item in self.data_type_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
@@ -164,9 +164,9 @@ class InternalBehavior(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize static_memories (list to container "STATIC-MEMORIES")
+        # Serialize static_memories (list to container "STATIC-MEMORYS")
         if self.static_memories:
-            wrapper = ET.Element("STATIC-MEMORIES")
+            wrapper = ET.Element("STATIC-MEMORYS")
             for item in self.static_memories:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
@@ -189,9 +189,9 @@ class InternalBehavior(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InternalBehavior, cls).deserialize(element)
 
-        # Parse constant_memories (list from container "CONSTANT-MEMORIES")
+        # Parse constant_memories (list from container "CONSTANT-MEMORYS")
         obj.constant_memories = []
-        container = SerializationHelper.find_child_element(element, "CONSTANT-MEMORIES")
+        container = SerializationHelper.find_child_element(element, "CONSTANT-MEMORYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -199,9 +199,9 @@ class InternalBehavior(Identifiable, ABC):
                 if child_value is not None:
                     obj.constant_memories.append(child_value)
 
-        # Parse constant_value_mapping_refs (list from container "CONSTANT-VALUE-MAPPING-REFS")
+        # Parse constant_value_mapping_refs (list from container "CONSTANT-VALUE-MAPPINGS")
         obj.constant_value_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "CONSTANT-VALUE-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "CONSTANT-VALUE-MAPPINGS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -215,9 +215,9 @@ class InternalBehavior(Identifiable, ABC):
                 if child_value is not None:
                     obj.constant_value_mapping_refs.append(child_value)
 
-        # Parse data_type_mapping_refs (list from container "DATA-TYPE-MAPPING-REFS")
+        # Parse data_type_mapping_refs (list from container "DATA-TYPE-MAPPINGS")
         obj.data_type_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-TYPE-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "DATA-TYPE-MAPPINGS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -251,9 +251,9 @@ class InternalBehavior(Identifiable, ABC):
                 if child_value is not None:
                     obj.exclusive_area_nesting_orders.append(child_value)
 
-        # Parse static_memories (list from container "STATIC-MEMORIES")
+        # Parse static_memories (list from container "STATIC-MEMORYS")
         obj.static_memories = []
-        container = SerializationHelper.find_child_element(element, "STATIC-MEMORIES")
+        container = SerializationHelper.find_child_element(element, "STATIC-MEMORYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

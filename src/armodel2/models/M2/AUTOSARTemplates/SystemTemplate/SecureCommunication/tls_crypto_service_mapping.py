@@ -76,9 +76,9 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize key_exchange_refs (list to container "KEY-EXCHANGE-REFS")
+        # Serialize key_exchange_refs (list to container "KEY-EXCHANGES")
         if self.key_exchange_refs:
-            wrapper = ET.Element("KEY-EXCHANGE-REFS")
+            wrapper = ET.Element("KEY-EXCHANGES")
             for item in self.key_exchange_refs:
                 serialized = SerializationHelper.serialize_item(item, "CryptoServicePrimitive")
                 if serialized is not None:
@@ -146,9 +146,9 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TlsCryptoServiceMapping, cls).deserialize(element)
 
-        # Parse key_exchange_refs (list from container "KEY-EXCHANGE-REFS")
+        # Parse key_exchange_refs (list from container "KEY-EXCHANGES")
         obj.key_exchange_refs = []
-        container = SerializationHelper.find_child_element(element, "KEY-EXCHANGE-REFS")
+        container = SerializationHelper.find_child_element(element, "KEY-EXCHANGES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

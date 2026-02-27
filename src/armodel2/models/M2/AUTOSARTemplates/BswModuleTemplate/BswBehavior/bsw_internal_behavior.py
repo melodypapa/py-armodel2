@@ -154,9 +154,9 @@ class BswInternalBehavior(InternalBehavior):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ar_typed_per_instance_memories (list to container "AR-TYPED-PER-INSTANCE-MEMORIES")
+        # Serialize ar_typed_per_instance_memories (list to container "AR-TYPED-PER-INSTANCE-MEMORYS")
         if self.ar_typed_per_instance_memories:
-            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORIES")
+            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORYS")
             for item in self.ar_typed_per_instance_memories:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
@@ -164,9 +164,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize bsw_per_instance_memory_policies (list to container "BSW-PER-INSTANCE-MEMORY-POLICIES")
+        # Serialize bsw_per_instance_memory_policies (list to container "BSW-PER-INSTANCE-MEMORY-POLICYS")
         if self.bsw_per_instance_memory_policies:
-            wrapper = ET.Element("BSW-PER-INSTANCE-MEMORY-POLICIES")
+            wrapper = ET.Element("BSW-PER-INSTANCE-MEMORY-POLICYS")
             for item in self.bsw_per_instance_memory_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswPerInstanceMemoryPolicy")
                 if serialized is not None:
@@ -174,9 +174,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize client_policies (list to container "CLIENT-POLICIES")
+        # Serialize client_policies (list to container "CLIENT-POLICYS")
         if self.client_policies:
-            wrapper = ET.Element("CLIENT-POLICIES")
+            wrapper = ET.Element("CLIENT-POLICYS")
             for item in self.client_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswClientPolicy")
                 if serialized is not None:
@@ -194,9 +194,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize entities (list to container "ENTITIES")
+        # Serialize entities (list to container "ENTITYS")
         if self.entities:
-            wrapper = ET.Element("ENTITIES")
+            wrapper = ET.Element("ENTITYS")
             for item in self.entities:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntity")
                 if serialized is not None:
@@ -214,9 +214,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize exclusive_area_policies (list to container "EXCLUSIVE-AREA-POLICIES")
+        # Serialize exclusive_area_policies (list to container "EXCLUSIVE-AREA-POLICYS")
         if self.exclusive_area_policies:
-            wrapper = ET.Element("EXCLUSIVE-AREA-POLICIES")
+            wrapper = ET.Element("EXCLUSIVE-AREA-POLICYS")
             for item in self.exclusive_area_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswExclusiveAreaPolicy")
                 if serialized is not None:
@@ -254,9 +254,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize internal_triggering_point_policies (list to container "INTERNAL-TRIGGERING-POINT-POLICIES")
+        # Serialize internal_triggering_point_policies (list to container "INTERNAL-TRIGGERING-POINT-POLICYS")
         if self.internal_triggering_point_policies:
-            wrapper = ET.Element("INTERNAL-TRIGGERING-POINT-POLICIES")
+            wrapper = ET.Element("INTERNAL-TRIGGERING-POINT-POLICYS")
             for item in self.internal_triggering_point_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswInternalTriggeringPointPolicy")
                 if serialized is not None:
@@ -264,9 +264,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mode_receiver_policies (list to container "MODE-RECEIVER-POLICIES")
+        # Serialize mode_receiver_policies (list to container "MODE-RECEIVER-POLICYS")
         if self.mode_receiver_policies:
-            wrapper = ET.Element("MODE-RECEIVER-POLICIES")
+            wrapper = ET.Element("MODE-RECEIVER-POLICYS")
             for item in self.mode_receiver_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswModeReceiverPolicy")
                 if serialized is not None:
@@ -274,9 +274,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mode_sender_policies (list to container "MODE-SENDER-POLICIES")
+        # Serialize mode_sender_policies (list to container "MODE-SENDER-POLICYS")
         if self.mode_sender_policies:
-            wrapper = ET.Element("MODE-SENDER-POLICIES")
+            wrapper = ET.Element("MODE-SENDER-POLICYS")
             for item in self.mode_sender_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswModeSenderPolicy")
                 if serialized is not None:
@@ -284,9 +284,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize parameter_policies (list to container "PARAMETER-POLICIES")
+        # Serialize parameter_policies (list to container "PARAMETER-POLICYS")
         if self.parameter_policies:
-            wrapper = ET.Element("PARAMETER-POLICIES")
+            wrapper = ET.Element("PARAMETER-POLICYS")
             for item in self.parameter_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswParameterPolicy")
                 if serialized is not None:
@@ -304,9 +304,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize reception_policies (list to container "RECEPTION-POLICIES")
+        # Serialize reception_policies (list to container "RECEPTION-POLICYS")
         if self.reception_policies:
-            wrapper = ET.Element("RECEPTION-POLICIES")
+            wrapper = ET.Element("RECEPTION-POLICYS")
             for item in self.reception_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswDataReceptionPolicy")
                 if serialized is not None:
@@ -314,9 +314,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize released_trigger_policies (list to container "RELEASED-TRIGGER-POLICIES")
+        # Serialize released_trigger_policies (list to container "RELEASED-TRIGGER-POLICYS")
         if self.released_trigger_policies:
-            wrapper = ET.Element("RELEASED-TRIGGER-POLICIES")
+            wrapper = ET.Element("RELEASED-TRIGGER-POLICYS")
             for item in self.released_trigger_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswReleasedTriggerPolicy")
                 if serialized is not None:
@@ -324,9 +324,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize scheduler_name_prefixes (list to container "SCHEDULER-NAME-PREFIXES")
+        # Serialize scheduler_name_prefixes (list to container "SCHEDULER-NAME-PREFIXS")
         if self.scheduler_name_prefixes:
-            wrapper = ET.Element("SCHEDULER-NAME-PREFIXES")
+            wrapper = ET.Element("SCHEDULER-NAME-PREFIXS")
             for item in self.scheduler_name_prefixes:
                 serialized = SerializationHelper.serialize_item(item, "BswSchedulerNamePrefix")
                 if serialized is not None:
@@ -334,9 +334,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize send_policies (list to container "SEND-POLICIES")
+        # Serialize send_policies (list to container "SEND-POLICYS")
         if self.send_policies:
-            wrapper = ET.Element("SEND-POLICIES")
+            wrapper = ET.Element("SEND-POLICYS")
             for item in self.send_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswDataSendPolicy")
                 if serialized is not None:
@@ -344,9 +344,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize service_dependencies (list to container "SERVICE-DEPENDENCIES")
+        # Serialize service_dependencies (list to container "SERVICE-DEPENDENCYS")
         if self.service_dependencies:
-            wrapper = ET.Element("SERVICE-DEPENDENCIES")
+            wrapper = ET.Element("SERVICE-DEPENDENCYS")
             for item in self.service_dependencies:
                 serialized = SerializationHelper.serialize_item(item, "BswServiceDependency")
                 if serialized is not None:
@@ -364,9 +364,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXIES")
+        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXYS")
         if self.variation_point_proxies:
-            wrapper = ET.Element("VARIATION-POINT-PROXIES")
+            wrapper = ET.Element("VARIATION-POINT-PROXYS")
             for item in self.variation_point_proxies:
                 serialized = SerializationHelper.serialize_item(item, "VariationPointProxy")
                 if serialized is not None:
@@ -389,9 +389,9 @@ class BswInternalBehavior(InternalBehavior):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswInternalBehavior, cls).deserialize(element)
 
-        # Parse ar_typed_per_instance_memories (list from container "AR-TYPED-PER-INSTANCE-MEMORIES")
+        # Parse ar_typed_per_instance_memories (list from container "AR-TYPED-PER-INSTANCE-MEMORYS")
         obj.ar_typed_per_instance_memories = []
-        container = SerializationHelper.find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORIES")
+        container = SerializationHelper.find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -399,9 +399,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.ar_typed_per_instance_memories.append(child_value)
 
-        # Parse bsw_per_instance_memory_policies (list from container "BSW-PER-INSTANCE-MEMORY-POLICIES")
+        # Parse bsw_per_instance_memory_policies (list from container "BSW-PER-INSTANCE-MEMORY-POLICYS")
         obj.bsw_per_instance_memory_policies = []
-        container = SerializationHelper.find_child_element(element, "BSW-PER-INSTANCE-MEMORY-POLICIES")
+        container = SerializationHelper.find_child_element(element, "BSW-PER-INSTANCE-MEMORY-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -409,9 +409,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.bsw_per_instance_memory_policies.append(child_value)
 
-        # Parse client_policies (list from container "CLIENT-POLICIES")
+        # Parse client_policies (list from container "CLIENT-POLICYS")
         obj.client_policies = []
-        container = SerializationHelper.find_child_element(element, "CLIENT-POLICIES")
+        container = SerializationHelper.find_child_element(element, "CLIENT-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -429,9 +429,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.distinguished_partitions.append(child_value)
 
-        # Parse entities (list from container "ENTITIES")
+        # Parse entities (list from container "ENTITYS")
         obj.entities = []
-        container = SerializationHelper.find_child_element(element, "ENTITIES")
+        container = SerializationHelper.find_child_element(element, "ENTITYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -449,9 +449,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.events.append(child_value)
 
-        # Parse exclusive_area_policies (list from container "EXCLUSIVE-AREA-POLICIES")
+        # Parse exclusive_area_policies (list from container "EXCLUSIVE-AREA-POLICYS")
         obj.exclusive_area_policies = []
-        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-POLICIES")
+        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -489,9 +489,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.internal_triggering_points.append(child_value)
 
-        # Parse internal_triggering_point_policies (list from container "INTERNAL-TRIGGERING-POINT-POLICIES")
+        # Parse internal_triggering_point_policies (list from container "INTERNAL-TRIGGERING-POINT-POLICYS")
         obj.internal_triggering_point_policies = []
-        container = SerializationHelper.find_child_element(element, "INTERNAL-TRIGGERING-POINT-POLICIES")
+        container = SerializationHelper.find_child_element(element, "INTERNAL-TRIGGERING-POINT-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -499,9 +499,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.internal_triggering_point_policies.append(child_value)
 
-        # Parse mode_receiver_policies (list from container "MODE-RECEIVER-POLICIES")
+        # Parse mode_receiver_policies (list from container "MODE-RECEIVER-POLICYS")
         obj.mode_receiver_policies = []
-        container = SerializationHelper.find_child_element(element, "MODE-RECEIVER-POLICIES")
+        container = SerializationHelper.find_child_element(element, "MODE-RECEIVER-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -509,9 +509,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.mode_receiver_policies.append(child_value)
 
-        # Parse mode_sender_policies (list from container "MODE-SENDER-POLICIES")
+        # Parse mode_sender_policies (list from container "MODE-SENDER-POLICYS")
         obj.mode_sender_policies = []
-        container = SerializationHelper.find_child_element(element, "MODE-SENDER-POLICIES")
+        container = SerializationHelper.find_child_element(element, "MODE-SENDER-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -519,9 +519,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.mode_sender_policies.append(child_value)
 
-        # Parse parameter_policies (list from container "PARAMETER-POLICIES")
+        # Parse parameter_policies (list from container "PARAMETER-POLICYS")
         obj.parameter_policies = []
-        container = SerializationHelper.find_child_element(element, "PARAMETER-POLICIES")
+        container = SerializationHelper.find_child_element(element, "PARAMETER-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -539,9 +539,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.per_instance_parameters.append(child_value)
 
-        # Parse reception_policies (list from container "RECEPTION-POLICIES")
+        # Parse reception_policies (list from container "RECEPTION-POLICYS")
         obj.reception_policies = []
-        container = SerializationHelper.find_child_element(element, "RECEPTION-POLICIES")
+        container = SerializationHelper.find_child_element(element, "RECEPTION-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -549,9 +549,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.reception_policies.append(child_value)
 
-        # Parse released_trigger_policies (list from container "RELEASED-TRIGGER-POLICIES")
+        # Parse released_trigger_policies (list from container "RELEASED-TRIGGER-POLICYS")
         obj.released_trigger_policies = []
-        container = SerializationHelper.find_child_element(element, "RELEASED-TRIGGER-POLICIES")
+        container = SerializationHelper.find_child_element(element, "RELEASED-TRIGGER-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -559,9 +559,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.released_trigger_policies.append(child_value)
 
-        # Parse scheduler_name_prefixes (list from container "SCHEDULER-NAME-PREFIXES")
+        # Parse scheduler_name_prefixes (list from container "SCHEDULER-NAME-PREFIXS")
         obj.scheduler_name_prefixes = []
-        container = SerializationHelper.find_child_element(element, "SCHEDULER-NAME-PREFIXES")
+        container = SerializationHelper.find_child_element(element, "SCHEDULER-NAME-PREFIXS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -569,9 +569,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.scheduler_name_prefixes.append(child_value)
 
-        # Parse send_policies (list from container "SEND-POLICIES")
+        # Parse send_policies (list from container "SEND-POLICYS")
         obj.send_policies = []
-        container = SerializationHelper.find_child_element(element, "SEND-POLICIES")
+        container = SerializationHelper.find_child_element(element, "SEND-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -579,9 +579,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.send_policies.append(child_value)
 
-        # Parse service_dependencies (list from container "SERVICE-DEPENDENCIES")
+        # Parse service_dependencies (list from container "SERVICE-DEPENDENCYS")
         obj.service_dependencies = []
-        container = SerializationHelper.find_child_element(element, "SERVICE-DEPENDENCIES")
+        container = SerializationHelper.find_child_element(element, "SERVICE-DEPENDENCYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -599,9 +599,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.trigger_direct_implementations.append(child_value)
 
-        # Parse variation_point_proxies (list from container "VARIATION-POINT-PROXIES")
+        # Parse variation_point_proxies (list from container "VARIATION-POINT-PROXYS")
         obj.variation_point_proxies = []
-        container = SerializationHelper.find_child_element(element, "VARIATION-POINT-PROXIES")
+        container = SerializationHelper.find_child_element(element, "VARIATION-POINT-PROXYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

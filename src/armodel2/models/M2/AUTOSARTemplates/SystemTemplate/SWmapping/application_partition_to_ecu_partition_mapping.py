@@ -69,9 +69,9 @@ class ApplicationPartitionToEcuPartitionMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize application_refs (list to container "APPLICATION-REFS")
+        # Serialize application_refs (list to container "APPLICATIONS")
         if self.application_refs:
-            wrapper = ET.Element("APPLICATION-REFS")
+            wrapper = ET.Element("APPLICATIONS")
             for item in self.application_refs:
                 serialized = SerializationHelper.serialize_item(item, "ApplicationPartition")
                 if serialized is not None:
@@ -115,9 +115,9 @@ class ApplicationPartitionToEcuPartitionMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationPartitionToEcuPartitionMapping, cls).deserialize(element)
 
-        # Parse application_refs (list from container "APPLICATION-REFS")
+        # Parse application_refs (list from container "APPLICATIONS")
         obj.application_refs = []
-        container = SerializationHelper.find_child_element(element, "APPLICATION-REFS")
+        container = SerializationHelper.find_child_element(element, "APPLICATIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

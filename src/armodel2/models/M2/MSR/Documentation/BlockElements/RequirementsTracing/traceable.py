@@ -63,9 +63,9 @@ class Traceable(MultilanguageReferrable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize trace_refs (list to container "TRACE-REFS")
+        # Serialize trace_refs (list to container "TRACES")
         if self.trace_refs:
-            wrapper = ET.Element("TRACE-REFS")
+            wrapper = ET.Element("TRACES")
             for item in self.trace_refs:
                 serialized = SerializationHelper.serialize_item(item, "Traceable")
                 if serialized is not None:
@@ -95,9 +95,9 @@ class Traceable(MultilanguageReferrable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Traceable, cls).deserialize(element)
 
-        # Parse trace_refs (list from container "TRACE-REFS")
+        # Parse trace_refs (list from container "TRACES")
         obj.trace_refs = []
-        container = SerializationHelper.find_child_element(element, "TRACE-REFS")
+        container = SerializationHelper.find_child_element(element, "TRACES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

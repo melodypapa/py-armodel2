@@ -97,9 +97,9 @@ class SecurityEventContextMapping(IdsMapping, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mapped_securities (list to container "MAPPED-SECURITIES")
+        # Serialize mapped_securities (list to container "MAPPED-SECURITYS")
         if self.mapped_securities:
-            wrapper = ET.Element("MAPPED-SECURITIES")
+            wrapper = ET.Element("MAPPED-SECURITYS")
             for item in self.mapped_securities:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -134,9 +134,9 @@ class SecurityEventContextMapping(IdsMapping, ABC):
             idsm_instance_ref_value = ARRef.deserialize(child)
             obj.idsm_instance_ref = idsm_instance_ref_value
 
-        # Parse mapped_securities (list from container "MAPPED-SECURITIES")
+        # Parse mapped_securities (list from container "MAPPED-SECURITYS")
         obj.mapped_securities = []
-        container = SerializationHelper.find_child_element(element, "MAPPED-SECURITIES")
+        container = SerializationHelper.find_child_element(element, "MAPPED-SECURITYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

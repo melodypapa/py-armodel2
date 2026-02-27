@@ -80,9 +80,9 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostic_refs (list to container "DIAGNOSTIC-REFS")
+        # Serialize diagnostic_refs (list to container "DIAGNOSTICS")
         if self.diagnostic_refs:
-            wrapper = ET.Element("DIAGNOSTIC-REFS")
+            wrapper = ET.Element("DIAGNOSTICS")
             for item in self.diagnostic_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticConnection")
                 if serialized is not None:
@@ -168,9 +168,9 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticProtocol, cls).deserialize(element)
 
-        # Parse diagnostic_refs (list from container "DIAGNOSTIC-REFS")
+        # Parse diagnostic_refs (list from container "DIAGNOSTICS")
         obj.diagnostic_refs = []
-        container = SerializationHelper.find_child_element(element, "DIAGNOSTIC-REFS")
+        container = SerializationHelper.find_child_element(element, "DIAGNOSTICS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

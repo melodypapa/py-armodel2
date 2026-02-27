@@ -97,9 +97,9 @@ class CpSoftwareCluster(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sw_composition_component_type_refs (list to container "SW-COMPOSITION-COMPONENT-TYPE-REFS")
+        # Serialize sw_composition_component_type_refs (list to container "SW-COMPOSITION-COMPONENT-TYPES")
         if self.sw_composition_component_type_refs:
-            wrapper = ET.Element("SW-COMPOSITION-COMPONENT-TYPE-REFS")
+            wrapper = ET.Element("SW-COMPOSITION-COMPONENT-TYPES")
             for item in self.sw_composition_component_type_refs:
                 serialized = SerializationHelper.serialize_item(item, "CompositionSwComponentType")
                 if serialized is not None:
@@ -145,9 +145,9 @@ class CpSoftwareCluster(ARElement):
                 if child_value is not None:
                     obj.sw_components.append(child_value)
 
-        # Parse sw_composition_component_type_refs (list from container "SW-COMPOSITION-COMPONENT-TYPE-REFS")
+        # Parse sw_composition_component_type_refs (list from container "SW-COMPOSITION-COMPONENT-TYPES")
         obj.sw_composition_component_type_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-COMPOSITION-COMPONENT-TYPE-REFS")
+        container = SerializationHelper.find_child_element(element, "SW-COMPOSITION-COMPONENT-TYPES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

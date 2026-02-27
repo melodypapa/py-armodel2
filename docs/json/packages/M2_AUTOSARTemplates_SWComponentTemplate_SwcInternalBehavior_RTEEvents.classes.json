@@ -523,7 +523,7 @@
         },
         "mode": {
           "type": "RModeInAtomicSwcInstanceRef",
-          "multiplicity": "0..1",
+          "multiplicity": "*",
           "kind": "iref",
           "is_ref": true,
           "decorator": "instance_ref:flatten=True,list_type=multi",

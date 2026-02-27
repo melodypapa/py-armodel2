@@ -104,9 +104,9 @@ class StructuredReq(Paginateable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize applies_toes (list to container "APPLIES-TOES")
+        # Serialize applies_toes (list to container "APPLIES-TOS")
         if self.applies_toes:
-            wrapper = ET.Element("APPLIES-TOES")
+            wrapper = ET.Element("APPLIES-TOS")
             for item in self.applies_toes:
                 serialized = SerializationHelper.serialize_item(item, "StandardNameEnum")
                 if serialized is not None:
@@ -247,9 +247,9 @@ class StructuredReq(Paginateable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize tested_item_refs (list to container "TESTED-ITEM-REFS")
+        # Serialize tested_item_refs (list to container "TESTED-ITEMS")
         if self.tested_item_refs:
-            wrapper = ET.Element("TESTED-ITEM-REFS")
+            wrapper = ET.Element("TESTED-ITEMS")
             for item in self.tested_item_refs:
                 serialized = SerializationHelper.serialize_item(item, "Traceable")
                 if serialized is not None:
@@ -307,9 +307,9 @@ class StructuredReq(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StructuredReq, cls).deserialize(element)
 
-        # Parse applies_toes (list from container "APPLIES-TOES")
+        # Parse applies_toes (list from container "APPLIES-TOS")
         obj.applies_toes = []
-        container = SerializationHelper.find_child_element(element, "APPLIES-TOES")
+        container = SerializationHelper.find_child_element(element, "APPLIES-TOS")
         if container is not None:
             for child in container:
                 # Extract enum value (StandardNameEnum)
@@ -371,9 +371,9 @@ class StructuredReq(Paginateable):
             supporting_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.supporting = supporting_value
 
-        # Parse tested_item_refs (list from container "TESTED-ITEM-REFS")
+        # Parse tested_item_refs (list from container "TESTED-ITEMS")
         obj.tested_item_refs = []
-        container = SerializationHelper.find_child_element(element, "TESTED-ITEM-REFS")
+        container = SerializationHelper.find_child_element(element, "TESTED-ITEMS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -77,9 +77,9 @@ class FrameTriggering(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize frame_port_refs (list to container "FRAME-PORT-REFS")
+        # Serialize frame_port_refs (list to container "FRAME-PORTS")
         if self.frame_port_refs:
-            wrapper = ET.Element("FRAME-PORT-REFS")
+            wrapper = ET.Element("FRAME-PORTS")
             for item in self.frame_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "FramePort")
                 if serialized is not None:
@@ -108,9 +108,9 @@ class FrameTriggering(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize pdu_triggering_refs (list to container "PDU-TRIGGERING-REFS")
+        # Serialize pdu_triggering_refs (list to container "PDU-TRIGGERINGS")
         if self.pdu_triggering_refs:
-            wrapper = ET.Element("PDU-TRIGGERING-REFS")
+            wrapper = ET.Element("PDU-TRIGGERINGS")
             for item in self.pdu_triggering_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
@@ -140,9 +140,9 @@ class FrameTriggering(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FrameTriggering, cls).deserialize(element)
 
-        # Parse frame_port_refs (list from container "FRAME-PORT-REFS")
+        # Parse frame_port_refs (list from container "FRAME-PORTS")
         obj.frame_port_refs = []
-        container = SerializationHelper.find_child_element(element, "FRAME-PORT-REFS")
+        container = SerializationHelper.find_child_element(element, "FRAME-PORTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -162,9 +162,9 @@ class FrameTriggering(Identifiable, ABC):
             frame_ref_value = ARRef.deserialize(child)
             obj.frame_ref = frame_ref_value
 
-        # Parse pdu_triggering_refs (list from container "PDU-TRIGGERING-REFS")
+        # Parse pdu_triggering_refs (list from container "PDU-TRIGGERINGS")
         obj.pdu_triggering_refs = []
-        container = SerializationHelper.find_child_element(element, "PDU-TRIGGERING-REFS")
+        container = SerializationHelper.find_child_element(element, "PDU-TRIGGERINGS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

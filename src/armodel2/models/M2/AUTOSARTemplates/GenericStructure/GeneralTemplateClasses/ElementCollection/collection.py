@@ -165,9 +165,9 @@ class Collection(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize element_refs (list to container "ELEMENT-REFS")
+        # Serialize element_refs (list to container "ELEMENTS")
         if self.element_refs:
-            wrapper = ET.Element("ELEMENT-REFS")
+            wrapper = ET.Element("ELEMENTS")
             for item in self.element_refs:
                 serialized = SerializationHelper.serialize_item(item, "Identifiable")
                 if serialized is not None:
@@ -182,9 +182,9 @@ class Collection(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize source_element_refs (list to container "SOURCE-ELEMENT-REFS")
+        # Serialize source_element_refs (list to container "SOURCE-ELEMENTS")
         if self.source_element_refs:
-            wrapper = ET.Element("SOURCE-ELEMENT-REFS")
+            wrapper = ET.Element("SOURCE-ELEMENTS")
             for item in self.source_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "Identifiable")
                 if serialized is not None:
@@ -250,9 +250,9 @@ class Collection(ARElement):
             element_role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.element_role = element_role_value
 
-        # Parse element_refs (list from container "ELEMENT-REFS")
+        # Parse element_refs (list from container "ELEMENTS")
         obj.element_refs = []
-        container = SerializationHelper.find_child_element(element, "ELEMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "ELEMENTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -266,9 +266,9 @@ class Collection(ARElement):
                 if child_value is not None:
                     obj.element_refs.append(child_value)
 
-        # Parse source_element_refs (list from container "SOURCE-ELEMENT-REFS")
+        # Parse source_element_refs (list from container "SOURCE-ELEMENTS")
         obj.source_element_refs = []
-        container = SerializationHelper.find_child_element(element, "SOURCE-ELEMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "SOURCE-ELEMENTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

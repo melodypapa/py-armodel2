@@ -87,9 +87,9 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_data_refs (list to container "CONTEXT-DATA-REFS")
+        # Serialize context_data_refs (list to container "CONTEXT-DATAS")
         if self.context_data_refs:
-            wrapper = ET.Element("CONTEXT-DATA-REFS")
+            wrapper = ET.Element("CONTEXT-DATAS")
             for item in self.context_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -153,9 +153,9 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
             abstract_base_ref_value = ARRef.deserialize(child)
             obj.abstract_base_ref = abstract_base_ref_value
 
-        # Parse context_data_refs (list from container "CONTEXT-DATA-REFS")
+        # Parse context_data_refs (list from container "CONTEXT-DATAS")
         obj.context_data_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-DATA-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-DATAS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

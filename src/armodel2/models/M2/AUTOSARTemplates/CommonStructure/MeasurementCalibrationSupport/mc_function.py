@@ -144,9 +144,9 @@ class McFunction(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sub_function_refs (list to container "SUB-FUNCTION-REFS")
+        # Serialize sub_function_refs (list to container "SUB-FUNCTIONS")
         if self.sub_function_refs:
-            wrapper = ET.Element("SUB-FUNCTION-REFS")
+            wrapper = ET.Element("SUB-FUNCTIONS")
             for item in self.sub_function_refs:
                 serialized = SerializationHelper.serialize_item(item, "McFunction")
                 if serialized is not None:
@@ -206,9 +206,9 @@ class McFunction(ARElement):
             ref_calprm_set_ref_value = ARRef.deserialize(child)
             obj.ref_calprm_set_ref = ref_calprm_set_ref_value
 
-        # Parse sub_function_refs (list from container "SUB-FUNCTION-REFS")
+        # Parse sub_function_refs (list from container "SUB-FUNCTIONS")
         obj.sub_function_refs = []
-        container = SerializationHelper.find_child_element(element, "SUB-FUNCTION-REFS")
+        container = SerializationHelper.find_child_element(element, "SUB-FUNCTIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -119,9 +119,9 @@ class BusMirrorChannelMapping(FibexElement, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_pdu_refs (list to container "TARGET-PDU-REFS")
+        # Serialize target_pdu_refs (list to container "TARGET-PDUS")
         if self.target_pdu_refs:
-            wrapper = ET.Element("TARGET-PDU-REFS")
+            wrapper = ET.Element("TARGET-PDUS")
             for item in self.target_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
@@ -169,9 +169,9 @@ class BusMirrorChannelMapping(FibexElement, ABC):
             target_channel_value = SerializationHelper.deserialize_by_tag(child, "BusMirrorChannel")
             obj.target_channel = target_channel_value
 
-        # Parse target_pdu_refs (list from container "TARGET-PDU-REFS")
+        # Parse target_pdu_refs (list from container "TARGET-PDUS")
         obj.target_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "TARGET-PDU-REFS")
+        container = SerializationHelper.find_child_element(element, "TARGET-PDUS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

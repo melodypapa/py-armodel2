@@ -67,9 +67,9 @@ class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize hardware_refs (list to container "HARDWARE-REFS")
+        # Serialize hardware_refs (list to container "HARDWARES")
         if self.hardware_refs:
-            wrapper = ET.Element("HARDWARE-REFS")
+            wrapper = ET.Element("HARDWARES")
             for item in self.hardware_refs:
                 serialized = SerializationHelper.serialize_item(item, "HwDescriptionEntity")
                 if serialized is not None:
@@ -99,9 +99,9 @@ class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ComplexDeviceDriverSwComponentType, cls).deserialize(element)
 
-        # Parse hardware_refs (list from container "HARDWARE-REFS")
+        # Parse hardware_refs (list from container "HARDWARES")
         obj.hardware_refs = []
-        container = SerializationHelper.find_child_element(element, "HARDWARE-REFS")
+        container = SerializationHelper.find_child_element(element, "HARDWARES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

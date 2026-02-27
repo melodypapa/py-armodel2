@@ -91,9 +91,9 @@ class ISignalIPduGroup(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize contained_refs (list to container "CONTAINED-REFS")
+        # Serialize contained_refs (list to container "CONTAINEDS")
         if self.contained_refs:
-            wrapper = ET.Element("CONTAINED-REFS")
+            wrapper = ET.Element("CONTAINEDS")
             for item in self.contained_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
@@ -108,9 +108,9 @@ class ISignalIPduGroup(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize i_signal_i_pdu_refs (list to container "I-SIGNAL-I-PDU-REFS")
+        # Serialize i_signal_i_pdu_refs (list to container "I-SIGNAL-I-PDUS")
         if self.i_signal_i_pdu_refs:
-            wrapper = ET.Element("I-SIGNAL-I-PDU-REFS")
+            wrapper = ET.Element("I-SIGNAL-I-PDUS")
             for item in self.i_signal_i_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalIPdu")
                 if serialized is not None:
@@ -125,9 +125,9 @@ class ISignalIPduGroup(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize nm_pdu_refs (list to container "NM-PDU-REFS")
+        # Serialize nm_pdu_refs (list to container "NM-PDUS")
         if self.nm_pdu_refs:
-            wrapper = ET.Element("NM-PDU-REFS")
+            wrapper = ET.Element("NM-PDUS")
             for item in self.nm_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "NmPdu")
                 if serialized is not None:
@@ -163,9 +163,9 @@ class ISignalIPduGroup(FibexElement):
             communication_value = child.text
             obj.communication = communication_value
 
-        # Parse contained_refs (list from container "CONTAINED-REFS")
+        # Parse contained_refs (list from container "CONTAINEDS")
         obj.contained_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTAINED-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTAINEDS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -179,9 +179,9 @@ class ISignalIPduGroup(FibexElement):
                 if child_value is not None:
                     obj.contained_refs.append(child_value)
 
-        # Parse i_signal_i_pdu_refs (list from container "I-SIGNAL-I-PDU-REFS")
+        # Parse i_signal_i_pdu_refs (list from container "I-SIGNAL-I-PDUS")
         obj.i_signal_i_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-I-PDU-REFS")
+        container = SerializationHelper.find_child_element(element, "I-SIGNAL-I-PDUS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -195,9 +195,9 @@ class ISignalIPduGroup(FibexElement):
                 if child_value is not None:
                     obj.i_signal_i_pdu_refs.append(child_value)
 
-        # Parse nm_pdu_refs (list from container "NM-PDU-REFS")
+        # Parse nm_pdu_refs (list from container "NM-PDUS")
         obj.nm_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "NM-PDU-REFS")
+        container = SerializationHelper.find_child_element(element, "NM-PDUS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

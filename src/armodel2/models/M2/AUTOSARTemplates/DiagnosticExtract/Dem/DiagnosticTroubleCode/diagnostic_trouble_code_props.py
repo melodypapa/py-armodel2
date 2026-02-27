@@ -126,9 +126,9 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize extended_data_refs (list to container "EXTENDED-DATA-REFS")
+        # Serialize extended_data_refs (list to container "EXTENDED-DATAS")
         if self.extended_data_refs:
-            wrapper = ET.Element("EXTENDED-DATA-REFS")
+            wrapper = ET.Element("EXTENDED-DATAS")
             for item in self.extended_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticExtendedDataRecord")
                 if serialized is not None:
@@ -143,9 +143,9 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize freeze_frame_refs (list to container "FREEZE-FRAME-REFS")
+        # Serialize freeze_frame_refs (list to container "FREEZE-FRAMES")
         if self.freeze_frame_refs:
-            wrapper = ET.Element("FREEZE-FRAME-REFS")
+            wrapper = ET.Element("FREEZE-FRAMES")
             for item in self.freeze_frame_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticFreezeFrame")
                 if serialized is not None:
@@ -271,9 +271,9 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
             diagnostic_memory_ref_value = ARRef.deserialize(child)
             obj.diagnostic_memory_ref = diagnostic_memory_ref_value
 
-        # Parse extended_data_refs (list from container "EXTENDED-DATA-REFS")
+        # Parse extended_data_refs (list from container "EXTENDED-DATAS")
         obj.extended_data_refs = []
-        container = SerializationHelper.find_child_element(element, "EXTENDED-DATA-REFS")
+        container = SerializationHelper.find_child_element(element, "EXTENDED-DATAS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -287,9 +287,9 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
                 if child_value is not None:
                     obj.extended_data_refs.append(child_value)
 
-        # Parse freeze_frame_refs (list from container "FREEZE-FRAME-REFS")
+        # Parse freeze_frame_refs (list from container "FREEZE-FRAMES")
         obj.freeze_frame_refs = []
-        container = SerializationHelper.find_child_element(element, "FREEZE-FRAME-REFS")
+        container = SerializationHelper.find_child_element(element, "FREEZE-FRAMES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -65,9 +65,9 @@ class UnitGroup(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize unit_refs (list to container "UNIT-REFS")
+        # Serialize unit_refs (list to container "UNITS")
         if self.unit_refs:
-            wrapper = ET.Element("UNIT-REFS")
+            wrapper = ET.Element("UNITS")
             for item in self.unit_refs:
                 serialized = SerializationHelper.serialize_item(item, "Unit")
                 if serialized is not None:
@@ -97,9 +97,9 @@ class UnitGroup(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(UnitGroup, cls).deserialize(element)
 
-        # Parse unit_refs (list from container "UNIT-REFS")
+        # Parse unit_refs (list from container "UNITS")
         obj.unit_refs = []
-        container = SerializationHelper.find_child_element(element, "UNIT-REFS")
+        container = SerializationHelper.find_child_element(element, "UNITS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

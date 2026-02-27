@@ -68,9 +68,9 @@ class DoIpTpConfig(TpConfig):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize do_ip_logic_address_addresses (list to container "DO-IP-LOGIC-ADDRESS-ADDRESSES")
+        # Serialize do_ip_logic_address_addresses (list to container "DO-IP-LOGIC-ADDRESS-ADDRESSS")
         if self.do_ip_logic_address_addresses:
-            wrapper = ET.Element("DO-IP-LOGIC-ADDRESS-ADDRESSES")
+            wrapper = ET.Element("DO-IP-LOGIC-ADDRESS-ADDRESSS")
             for item in self.do_ip_logic_address_addresses:
                 serialized = SerializationHelper.serialize_item(item, "DoIpLogicAddress")
                 if serialized is not None:
@@ -103,9 +103,9 @@ class DoIpTpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpTpConfig, cls).deserialize(element)
 
-        # Parse do_ip_logic_address_addresses (list from container "DO-IP-LOGIC-ADDRESS-ADDRESSES")
+        # Parse do_ip_logic_address_addresses (list from container "DO-IP-LOGIC-ADDRESS-ADDRESSS")
         obj.do_ip_logic_address_addresses = []
-        container = SerializationHelper.find_child_element(element, "DO-IP-LOGIC-ADDRESS-ADDRESSES")
+        container = SerializationHelper.find_child_element(element, "DO-IP-LOGIC-ADDRESS-ADDRESSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

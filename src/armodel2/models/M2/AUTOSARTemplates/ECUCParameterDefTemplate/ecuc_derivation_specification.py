@@ -80,9 +80,9 @@ class EcucDerivationSpecification(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecuc_queries (list to container "ECUC-QUERIES")
+        # Serialize ecuc_queries (list to container "ECUC-QUERYS")
         if self.ecuc_queries:
-            wrapper = ET.Element("ECUC-QUERIES")
+            wrapper = ET.Element("ECUC-QUERYS")
             for item in self.ecuc_queries:
                 serialized = SerializationHelper.serialize_item(item, "EcucQuery")
                 if serialized is not None:
@@ -125,9 +125,9 @@ class EcucDerivationSpecification(ARObject):
             calculation_value = child.text
             obj.calculation = calculation_value
 
-        # Parse ecuc_queries (list from container "ECUC-QUERIES")
+        # Parse ecuc_queries (list from container "ECUC-QUERYS")
         obj.ecuc_queries = []
-        container = SerializationHelper.find_child_element(element, "ECUC-QUERIES")
+        container = SerializationHelper.find_child_element(element, "ECUC-QUERYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

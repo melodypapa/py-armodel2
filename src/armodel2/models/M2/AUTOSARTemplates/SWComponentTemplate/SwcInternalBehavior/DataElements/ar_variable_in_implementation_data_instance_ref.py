@@ -69,9 +69,9 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize context_data_refs (list to container "CONTEXT-DATA-REFS")
+        # Serialize context_data_refs (list to container "CONTEXT-DATAS")
         if self.context_data_refs:
-            wrapper = ET.Element("CONTEXT-DATA-REFS")
+            wrapper = ET.Element("CONTEXT-DATAS")
             for item in self.context_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -143,9 +143,9 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ArVariableInImplementationDataInstanceRef, cls).deserialize(element)
 
-        # Parse context_data_refs (list from container "CONTEXT-DATA-REFS")
+        # Parse context_data_refs (list from container "CONTEXT-DATAS")
         obj.context_data_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-DATA-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-DATAS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

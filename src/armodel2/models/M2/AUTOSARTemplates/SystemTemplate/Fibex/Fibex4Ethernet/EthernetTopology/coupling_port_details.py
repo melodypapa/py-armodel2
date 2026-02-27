@@ -151,9 +151,9 @@ class CouplingPortDetails(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rate_policies (list to container "RATE-POLICIES")
+        # Serialize rate_policies (list to container "RATE-POLICYS")
         if self.rate_policies:
-            wrapper = ET.Element("RATE-POLICIES")
+            wrapper = ET.Element("RATE-POLICYS")
             for item in self.rate_policies:
                 serialized = SerializationHelper.serialize_item(item, "CouplingPortRatePolicy")
                 if serialized is not None:
@@ -210,9 +210,9 @@ class CouplingPortDetails(ARObject):
             last_egress_ref_value = ARRef.deserialize(child)
             obj.last_egress_ref = last_egress_ref_value
 
-        # Parse rate_policies (list from container "RATE-POLICIES")
+        # Parse rate_policies (list from container "RATE-POLICYS")
         obj.rate_policies = []
-        container = SerializationHelper.find_child_element(element, "RATE-POLICIES")
+        container = SerializationHelper.find_child_element(element, "RATE-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

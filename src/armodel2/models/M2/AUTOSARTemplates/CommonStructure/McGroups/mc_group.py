@@ -74,9 +74,9 @@ class McGroup(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize mc_function_refs (list to container "MC-FUNCTION-REFS")
+        # Serialize mc_function_refs (list to container "MC-FUNCTIONS")
         if self.mc_function_refs:
-            wrapper = ET.Element("MC-FUNCTION-REFS")
+            wrapper = ET.Element("MC-FUNCTIONS")
             for item in self.mc_function_refs:
                 serialized = SerializationHelper.serialize_item(item, "McFunction")
                 if serialized is not None:
@@ -119,9 +119,9 @@ class McGroup(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sub_group_refs (list to container "SUB-GROUP-REFS")
+        # Serialize sub_group_refs (list to container "SUB-GROUPS")
         if self.sub_group_refs:
-            wrapper = ET.Element("SUB-GROUP-REFS")
+            wrapper = ET.Element("SUB-GROUPS")
             for item in self.sub_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "McGroup")
                 if serialized is not None:
@@ -151,9 +151,9 @@ class McGroup(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(McGroup, cls).deserialize(element)
 
-        # Parse mc_function_refs (list from container "MC-FUNCTION-REFS")
+        # Parse mc_function_refs (list from container "MC-FUNCTIONS")
         obj.mc_function_refs = []
-        container = SerializationHelper.find_child_element(element, "MC-FUNCTION-REFS")
+        container = SerializationHelper.find_child_element(element, "MC-FUNCTIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -179,9 +179,9 @@ class McGroup(ARElement):
             ref_ref_value = ARRef.deserialize(child)
             obj.ref_ref = ref_ref_value
 
-        # Parse sub_group_refs (list from container "SUB-GROUP-REFS")
+        # Parse sub_group_refs (list from container "SUB-GROUPS")
         obj.sub_group_refs = []
-        container = SerializationHelper.find_child_element(element, "SUB-GROUP-REFS")
+        container = SerializationHelper.find_child_element(element, "SUB-GROUPS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -62,9 +62,9 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize direct_successor_refs (list to container "DIRECT-SUCCESSOR-REFS")
+        # Serialize direct_successor_refs (list to container "DIRECT-SUCCESSORS")
         if self.direct_successor_refs:
-            wrapper = ET.Element("DIRECT-SUCCESSOR-REFS")
+            wrapper = ET.Element("DIRECT-SUCCESSORS")
             for item in self.direct_successor_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -94,9 +94,9 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EOCExecutableEntityRefAbstract, cls).deserialize(element)
 
-        # Parse direct_successor_refs (list from container "DIRECT-SUCCESSOR-REFS")
+        # Parse direct_successor_refs (list from container "DIRECT-SUCCESSORS")
         obj.direct_successor_refs = []
-        container = SerializationHelper.find_child_element(element, "DIRECT-SUCCESSOR-REFS")
+        container = SerializationHelper.find_child_element(element, "DIRECT-SUCCESSORS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

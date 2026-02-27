@@ -101,9 +101,9 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize provided_ddses (list to container "PROVIDED-DDSES")
+        # Serialize provided_ddses (list to container "PROVIDED-DDSS")
         if self.provided_ddses:
-            wrapper = ET.Element("PROVIDED-DDSES")
+            wrapper = ET.Element("PROVIDED-DDSS")
             for item in self.provided_ddses:
                 serialized = SerializationHelper.serialize_item(item, "DdsCpServiceInstance")
                 if serialized is not None:
@@ -111,9 +111,9 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize static_remote_refs (list to container "STATIC-REMOTE-REFS")
+        # Serialize static_remote_refs (list to container "STATIC-REMOTES")
         if self.static_remote_refs:
-            wrapper = ET.Element("STATIC-REMOTE-REFS")
+            wrapper = ET.Element("STATIC-REMOTES")
             for item in self.static_remote_refs:
                 serialized = SerializationHelper.serialize_item(item, "ApplicationEndpoint")
                 if serialized is not None:
@@ -155,9 +155,9 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
             minor_version_value = child.text
             obj.minor_version = minor_version_value
 
-        # Parse provided_ddses (list from container "PROVIDED-DDSES")
+        # Parse provided_ddses (list from container "PROVIDED-DDSS")
         obj.provided_ddses = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-DDSES")
+        container = SerializationHelper.find_child_element(element, "PROVIDED-DDSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -165,9 +165,9 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
                 if child_value is not None:
                     obj.provided_ddses.append(child_value)
 
-        # Parse static_remote_refs (list from container "STATIC-REMOTE-REFS")
+        # Parse static_remote_refs (list from container "STATIC-REMOTES")
         obj.static_remote_refs = []
-        container = SerializationHelper.find_child_element(element, "STATIC-REMOTE-REFS")
+        container = SerializationHelper.find_child_element(element, "STATIC-REMOTES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

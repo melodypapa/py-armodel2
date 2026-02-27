@@ -68,9 +68,9 @@ class IncludedDataTypeSet(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_type_refs (list to container "DATA-TYPE-REFS")
+        # Serialize data_type_refs (list to container "DATA-TYPES")
         if self.data_type_refs:
-            wrapper = ET.Element("DATA-TYPE-REFS")
+            wrapper = ET.Element("DATA-TYPES")
             for item in self.data_type_refs:
                 serialized = SerializationHelper.serialize_item(item, "AutosarDataType")
                 if serialized is not None:
@@ -114,9 +114,9 @@ class IncludedDataTypeSet(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IncludedDataTypeSet, cls).deserialize(element)
 
-        # Parse data_type_refs (list from container "DATA-TYPE-REFS")
+        # Parse data_type_refs (list from container "DATA-TYPES")
         obj.data_type_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-TYPE-REFS")
+        container = SerializationHelper.find_child_element(element, "DATA-TYPES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

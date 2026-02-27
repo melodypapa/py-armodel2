@@ -60,9 +60,9 @@ class SignalServiceTranslationPropsSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize signal_service_propses (list to container "SIGNAL-SERVICE-PROPSES")
+        # Serialize signal_service_propses (list to container "SIGNAL-SERVICE-PROPSS")
         if self.signal_service_propses:
-            wrapper = ET.Element("SIGNAL-SERVICE-PROPSES")
+            wrapper = ET.Element("SIGNAL-SERVICE-PROPSS")
             for item in self.signal_service_propses:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -85,9 +85,9 @@ class SignalServiceTranslationPropsSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SignalServiceTranslationPropsSet, cls).deserialize(element)
 
-        # Parse signal_service_propses (list from container "SIGNAL-SERVICE-PROPSES")
+        # Parse signal_service_propses (list from container "SIGNAL-SERVICE-PROPSS")
         obj.signal_service_propses = []
-        container = SerializationHelper.find_child_element(element, "SIGNAL-SERVICE-PROPSES")
+        container = SerializationHelper.find_child_element(element, "SIGNAL-SERVICE-PROPSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

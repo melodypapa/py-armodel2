@@ -61,9 +61,9 @@ class EnumerationMappingTable(PackageableElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize entry_refs (list to container "ENTRY-REFS")
+        # Serialize entry_refs (list to container "ENTRYS")
         if self.entry_refs:
-            wrapper = ET.Element("ENTRY-REFS")
+            wrapper = ET.Element("ENTRYS")
             for item in self.entry_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -93,9 +93,9 @@ class EnumerationMappingTable(PackageableElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EnumerationMappingTable, cls).deserialize(element)
 
-        # Parse entry_refs (list from container "ENTRY-REFS")
+        # Parse entry_refs (list from container "ENTRYS")
         obj.entry_refs = []
-        container = SerializationHelper.find_child_element(element, "ENTRY-REFS")
+        container = SerializationHelper.find_child_element(element, "ENTRYS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

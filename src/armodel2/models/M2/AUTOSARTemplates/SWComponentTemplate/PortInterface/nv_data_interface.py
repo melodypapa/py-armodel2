@@ -67,9 +67,9 @@ class NvDataInterface(DataInterface):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize nv_data_refs (list to container "NV-DATA-REFS")
+        # Serialize nv_data_refs (list to container "NV-DATAS")
         if self.nv_data_refs:
-            wrapper = ET.Element("NV-DATA-REFS")
+            wrapper = ET.Element("NV-DATAS")
             for item in self.nv_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
@@ -99,9 +99,9 @@ class NvDataInterface(DataInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NvDataInterface, cls).deserialize(element)
 
-        # Parse nv_data_refs (list from container "NV-DATA-REFS")
+        # Parse nv_data_refs (list from container "NV-DATAS")
         obj.nv_data_refs = []
-        container = SerializationHelper.find_child_element(element, "NV-DATA-REFS")
+        container = SerializationHelper.find_child_element(element, "NV-DATAS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -102,9 +102,9 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_cluster_refs (list to container "SW-CLUSTER-REFS")
+        # Serialize sw_cluster_refs (list to container "SW-CLUSTERS")
         if self.sw_cluster_refs:
-            wrapper = ET.Element("SW-CLUSTER-REFS")
+            wrapper = ET.Element("SW-CLUSTERS")
             for item in self.sw_cluster_refs:
                 serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
@@ -146,9 +146,9 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
             machine_id_value = child.text
             obj.machine_id = machine_id_value
 
-        # Parse sw_cluster_refs (list from container "SW-CLUSTER-REFS")
+        # Parse sw_cluster_refs (list from container "SW-CLUSTERS")
         obj.sw_cluster_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-CLUSTER-REFS")
+        container = SerializationHelper.find_child_element(element, "SW-CLUSTERS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

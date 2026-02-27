@@ -83,9 +83,9 @@ class PdurIPduGroup(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_pdu_refs (list to container "I-PDU-REFS")
+        # Serialize i_pdu_refs (list to container "I-PDUS")
         if self.i_pdu_refs:
-            wrapper = ET.Element("I-PDU-REFS")
+            wrapper = ET.Element("I-PDUS")
             for item in self.i_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
@@ -121,9 +121,9 @@ class PdurIPduGroup(FibexElement):
             communication_value = child.text
             obj.communication = communication_value
 
-        # Parse i_pdu_refs (list from container "I-PDU-REFS")
+        # Parse i_pdu_refs (list from container "I-PDUS")
         obj.i_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "I-PDU-REFS")
+        container = SerializationHelper.find_child_element(element, "I-PDUS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

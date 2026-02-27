@@ -83,9 +83,9 @@ class BswVariableAccess(Referrable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_refs (list to container "CONTEXT-REFS")
+        # Serialize context_refs (list to container "CONTEXTS")
         if self.context_refs:
-            wrapper = ET.Element("CONTEXT-REFS")
+            wrapper = ET.Element("CONTEXTS")
             for item in self.context_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswDistinguishedPartition")
                 if serialized is not None:
@@ -121,9 +121,9 @@ class BswVariableAccess(Referrable):
             accessed_variable_ref_value = ARRef.deserialize(child)
             obj.accessed_variable_ref = accessed_variable_ref_value
 
-        # Parse context_refs (list from container "CONTEXT-REFS")
+        # Parse context_refs (list from container "CONTEXTS")
         obj.context_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTEXTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

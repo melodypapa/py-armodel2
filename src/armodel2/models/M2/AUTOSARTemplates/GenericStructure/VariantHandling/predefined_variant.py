@@ -70,9 +70,9 @@ class PredefinedVariant(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize included_variant_refs (list to container "INCLUDED-VARIANT-REFS")
+        # Serialize included_variant_refs (list to container "INCLUDED-VARIANTS")
         if self.included_variant_refs:
-            wrapper = ET.Element("INCLUDED-VARIANT-REFS")
+            wrapper = ET.Element("INCLUDED-VARIANTS")
             for item in self.included_variant_refs:
                 serialized = SerializationHelper.serialize_item(item, "PredefinedVariant")
                 if serialized is not None:
@@ -87,9 +87,9 @@ class PredefinedVariant(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize post_build_variant_refs (list to container "POST-BUILD-VARIANT-REFS")
+        # Serialize post_build_variant_refs (list to container "POST-BUILD-VARIANTS")
         if self.post_build_variant_refs:
-            wrapper = ET.Element("POST-BUILD-VARIANT-REFS")
+            wrapper = ET.Element("POST-BUILD-VARIANTS")
             for item in self.post_build_variant_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -104,9 +104,9 @@ class PredefinedVariant(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sw_refs (list to container "SW-REFS")
+        # Serialize sw_refs (list to container "SWS")
         if self.sw_refs:
-            wrapper = ET.Element("SW-REFS")
+            wrapper = ET.Element("SWS")
             for item in self.sw_refs:
                 serialized = SerializationHelper.serialize_item(item, "SwSystemconstantValueSet")
                 if serialized is not None:
@@ -136,9 +136,9 @@ class PredefinedVariant(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PredefinedVariant, cls).deserialize(element)
 
-        # Parse included_variant_refs (list from container "INCLUDED-VARIANT-REFS")
+        # Parse included_variant_refs (list from container "INCLUDED-VARIANTS")
         obj.included_variant_refs = []
-        container = SerializationHelper.find_child_element(element, "INCLUDED-VARIANT-REFS")
+        container = SerializationHelper.find_child_element(element, "INCLUDED-VARIANTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -152,9 +152,9 @@ class PredefinedVariant(ARElement):
                 if child_value is not None:
                     obj.included_variant_refs.append(child_value)
 
-        # Parse post_build_variant_refs (list from container "POST-BUILD-VARIANT-REFS")
+        # Parse post_build_variant_refs (list from container "POST-BUILD-VARIANTS")
         obj.post_build_variant_refs = []
-        container = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANT-REFS")
+        container = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -168,9 +168,9 @@ class PredefinedVariant(ARElement):
                 if child_value is not None:
                     obj.post_build_variant_refs.append(child_value)
 
-        # Parse sw_refs (list from container "SW-REFS")
+        # Parse sw_refs (list from container "SWS")
         obj.sw_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-REFS")
+        container = SerializationHelper.find_child_element(element, "SWS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

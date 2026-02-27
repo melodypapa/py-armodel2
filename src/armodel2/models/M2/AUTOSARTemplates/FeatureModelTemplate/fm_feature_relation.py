@@ -69,9 +69,9 @@ class FMFeatureRelation(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize feature_refs (list to container "FEATURE-REFS")
+        # Serialize feature_refs (list to container "FEATURES")
         if self.feature_refs:
-            wrapper = ET.Element("FEATURE-REFS")
+            wrapper = ET.Element("FEATURES")
             for item in self.feature_refs:
                 serialized = SerializationHelper.serialize_item(item, "FMFeature")
                 if serialized is not None:
@@ -115,9 +115,9 @@ class FMFeatureRelation(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeatureRelation, cls).deserialize(element)
 
-        # Parse feature_refs (list from container "FEATURE-REFS")
+        # Parse feature_refs (list from container "FEATURES")
         obj.feature_refs = []
-        container = SerializationHelper.find_child_element(element, "FEATURE-REFS")
+        container = SerializationHelper.find_child_element(element, "FEATURES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

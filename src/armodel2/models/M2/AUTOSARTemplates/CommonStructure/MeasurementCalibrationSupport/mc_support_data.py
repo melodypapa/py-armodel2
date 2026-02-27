@@ -108,9 +108,9 @@ class McSupportData(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize measurable_refs (list to container "MEASURABLE-REFS")
+        # Serialize measurable_refs (list to container "MEASURABLES")
         if self.measurable_refs:
-            wrapper = ET.Element("MEASURABLE-REFS")
+            wrapper = ET.Element("MEASURABLES")
             for item in self.measurable_refs:
                 serialized = SerializationHelper.serialize_item(item, "SwSystemconstantValueSet")
                 if serialized is not None:
@@ -184,9 +184,9 @@ class McSupportData(ARObject):
                 if child_value is not None:
                     obj.mc_variables.append(child_value)
 
-        # Parse measurable_refs (list from container "MEASURABLE-REFS")
+        # Parse measurable_refs (list from container "MEASURABLES")
         obj.measurable_refs = []
-        container = SerializationHelper.find_child_element(element, "MEASURABLE-REFS")
+        container = SerializationHelper.find_child_element(element, "MEASURABLES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -80,9 +80,9 @@ class SignalServiceTranslationProps(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize control_refs (list to container "CONTROL-REFS")
+        # Serialize control_refs (list to container "CONTROLS")
         if self.control_refs:
-            wrapper = ET.Element("CONTROL-REFS")
+            wrapper = ET.Element("CONTROLS")
             for item in self.control_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConsumedEventGroup")
                 if serialized is not None:
@@ -97,9 +97,9 @@ class SignalServiceTranslationProps(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize control_pnc_refs (list to container "CONTROL-PNC-REFS")
+        # Serialize control_pnc_refs (list to container "CONTROL-PNCS")
         if self.control_pnc_refs:
-            wrapper = ET.Element("CONTROL-PNC-REFS")
+            wrapper = ET.Element("CONTROL-PNCS")
             for item in self.control_pnc_refs:
                 serialized = SerializationHelper.serialize_item(item, "PncMappingIdent")
                 if serialized is not None:
@@ -114,9 +114,9 @@ class SignalServiceTranslationProps(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize control_provided_refs (list to container "CONTROL-PROVIDED-REFS")
+        # Serialize control_provided_refs (list to container "CONTROL-PROVIDEDS")
         if self.control_provided_refs:
-            wrapper = ET.Element("CONTROL-PROVIDED-REFS")
+            wrapper = ET.Element("CONTROL-PROVIDEDS")
             for item in self.control_provided_refs:
                 serialized = SerializationHelper.serialize_item(item, "EventHandler")
                 if serialized is not None:
@@ -145,9 +145,9 @@ class SignalServiceTranslationProps(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize signal_service_event_propses (list to container "SIGNAL-SERVICE-EVENT-PROPSES")
+        # Serialize signal_service_event_propses (list to container "SIGNAL-SERVICE-EVENT-PROPSS")
         if self.signal_service_event_propses:
-            wrapper = ET.Element("SIGNAL-SERVICE-EVENT-PROPSES")
+            wrapper = ET.Element("SIGNAL-SERVICE-EVENT-PROPSS")
             for item in self.signal_service_event_propses:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -170,9 +170,9 @@ class SignalServiceTranslationProps(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SignalServiceTranslationProps, cls).deserialize(element)
 
-        # Parse control_refs (list from container "CONTROL-REFS")
+        # Parse control_refs (list from container "CONTROLS")
         obj.control_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTROL-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTROLS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -186,9 +186,9 @@ class SignalServiceTranslationProps(Identifiable):
                 if child_value is not None:
                     obj.control_refs.append(child_value)
 
-        # Parse control_pnc_refs (list from container "CONTROL-PNC-REFS")
+        # Parse control_pnc_refs (list from container "CONTROL-PNCS")
         obj.control_pnc_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTROL-PNC-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTROL-PNCS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -202,9 +202,9 @@ class SignalServiceTranslationProps(Identifiable):
                 if child_value is not None:
                     obj.control_pnc_refs.append(child_value)
 
-        # Parse control_provided_refs (list from container "CONTROL-PROVIDED-REFS")
+        # Parse control_provided_refs (list from container "CONTROL-PROVIDEDS")
         obj.control_provided_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTROL-PROVIDED-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTROL-PROVIDEDS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -224,9 +224,9 @@ class SignalServiceTranslationProps(Identifiable):
             service_control_value = child.text
             obj.service_control = service_control_value
 
-        # Parse signal_service_event_propses (list from container "SIGNAL-SERVICE-EVENT-PROPSES")
+        # Parse signal_service_event_propses (list from container "SIGNAL-SERVICE-EVENT-PROPSS")
         obj.signal_service_event_propses = []
-        container = SerializationHelper.find_child_element(element, "SIGNAL-SERVICE-EVENT-PROPSES")
+        container = SerializationHelper.find_child_element(element, "SIGNAL-SERVICE-EVENT-PROPSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

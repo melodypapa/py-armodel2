@@ -77,9 +77,9 @@ class DocumentElementScope(SpecElementReference):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize tailoring_refs (list to container "TAILORING-REFS")
+        # Serialize tailoring_refs (list to container "TAILORINGS")
         if self.tailoring_refs:
-            wrapper = ET.Element("TAILORING-REFS")
+            wrapper = ET.Element("TAILORINGS")
             for item in self.tailoring_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -115,9 +115,9 @@ class DocumentElementScope(SpecElementReference):
             custom_document_ref_value = ARRef.deserialize(child)
             obj.custom_document_ref = custom_document_ref_value
 
-        # Parse tailoring_refs (list from container "TAILORING-REFS")
+        # Parse tailoring_refs (list from container "TAILORINGS")
         obj.tailoring_refs = []
-        container = SerializationHelper.find_child_element(element, "TAILORING-REFS")
+        container = SerializationHelper.find_child_element(element, "TAILORINGS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

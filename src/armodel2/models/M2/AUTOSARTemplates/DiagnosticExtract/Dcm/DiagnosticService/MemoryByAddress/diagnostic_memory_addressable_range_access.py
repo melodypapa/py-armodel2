@@ -62,9 +62,9 @@ class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize memory_range_refs (list to container "MEMORY-RANGE-REFS")
+        # Serialize memory_range_refs (list to container "MEMORY-RANGES")
         if self.memory_range_refs:
-            wrapper = ET.Element("MEMORY-RANGE-REFS")
+            wrapper = ET.Element("MEMORY-RANGES")
             for item in self.memory_range_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -94,9 +94,9 @@ class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMemoryAddressableRangeAccess, cls).deserialize(element)
 
-        # Parse memory_range_refs (list from container "MEMORY-RANGE-REFS")
+        # Parse memory_range_refs (list from container "MEMORY-RANGES")
         obj.memory_range_refs = []
-        container = SerializationHelper.find_child_element(element, "MEMORY-RANGE-REFS")
+        container = SerializationHelper.find_child_element(element, "MEMORY-RANGES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

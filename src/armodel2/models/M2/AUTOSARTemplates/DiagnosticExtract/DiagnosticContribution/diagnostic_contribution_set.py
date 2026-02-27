@@ -82,9 +82,9 @@ class DiagnosticContributionSet(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize element_refs (list to container "ELEMENT-REFS")
+        # Serialize element_refs (list to container "ELEMENTS")
         if self.element_refs:
-            wrapper = ET.Element("ELEMENT-REFS")
+            wrapper = ET.Element("ELEMENTS")
             for item in self.element_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -99,9 +99,9 @@ class DiagnosticContributionSet(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize service_table_refs (list to container "SERVICE-TABLE-REFS")
+        # Serialize service_table_refs (list to container "SERVICE-TABLES")
         if self.service_table_refs:
-            wrapper = ET.Element("SERVICE-TABLE-REFS")
+            wrapper = ET.Element("SERVICE-TABLES")
             for item in self.service_table_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticServiceTable")
                 if serialized is not None:
@@ -137,9 +137,9 @@ class DiagnosticContributionSet(ARElement):
             common_value = child.text
             obj.common = common_value
 
-        # Parse element_refs (list from container "ELEMENT-REFS")
+        # Parse element_refs (list from container "ELEMENTS")
         obj.element_refs = []
-        container = SerializationHelper.find_child_element(element, "ELEMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "ELEMENTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -153,9 +153,9 @@ class DiagnosticContributionSet(ARElement):
                 if child_value is not None:
                     obj.element_refs.append(child_value)
 
-        # Parse service_table_refs (list from container "SERVICE-TABLE-REFS")
+        # Parse service_table_refs (list from container "SERVICE-TABLES")
         obj.service_table_refs = []
-        container = SerializationHelper.find_child_element(element, "SERVICE-TABLE-REFS")
+        container = SerializationHelper.find_child_element(element, "SERVICE-TABLES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

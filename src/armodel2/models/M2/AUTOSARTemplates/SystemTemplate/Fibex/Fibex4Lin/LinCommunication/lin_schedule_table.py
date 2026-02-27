@@ -99,9 +99,9 @@ class LinScheduleTable(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize table_entries (list to container "TABLE-ENTRIES")
+        # Serialize table_entries (list to container "TABLE-ENTRYS")
         if self.table_entries:
-            wrapper = ET.Element("TABLE-ENTRIES")
+            wrapper = ET.Element("TABLE-ENTRYS")
             for item in self.table_entries:
                 serialized = SerializationHelper.serialize_item(item, "ScheduleTableEntry")
                 if serialized is not None:
@@ -136,9 +136,9 @@ class LinScheduleTable(Identifiable):
             run_mode_value = RunMode.deserialize(child)
             obj.run_mode = run_mode_value
 
-        # Parse table_entries (list from container "TABLE-ENTRIES")
+        # Parse table_entries (list from container "TABLE-ENTRYS")
         obj.table_entries = []
-        container = SerializationHelper.find_child_element(element, "TABLE-ENTRIES")
+        container = SerializationHelper.find_child_element(element, "TABLE-ENTRYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

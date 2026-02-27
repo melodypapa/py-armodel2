@@ -148,9 +148,9 @@ class IPSecRule(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize local_certificate_refs (list to container "LOCAL-CERTIFICATE-REFS")
+        # Serialize local_certificate_refs (list to container "LOCAL-CERTIFICATES")
         if self.local_certificate_refs:
-            wrapper = ET.Element("LOCAL-CERTIFICATE-REFS")
+            wrapper = ET.Element("LOCAL-CERTIFICATES")
             for item in self.local_certificate_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -249,9 +249,9 @@ class IPSecRule(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize remote_refs (list to container "REMOTE-REFS")
+        # Serialize remote_refs (list to container "REMOTES")
         if self.remote_refs:
-            wrapper = ET.Element("REMOTE-REFS")
+            wrapper = ET.Element("REMOTES")
             for item in self.remote_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -280,9 +280,9 @@ class IPSecRule(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize remote_ip_refs (list to container "REMOTE-IP-REFS")
+        # Serialize remote_ip_refs (list to container "REMOTE-IPS")
         if self.remote_ip_refs:
-            wrapper = ET.Element("REMOTE-IP-REFS")
+            wrapper = ET.Element("REMOTE-IPS")
             for item in self.remote_ip_refs:
                 serialized = SerializationHelper.serialize_item(item, "NetworkEndpoint")
                 if serialized is not None:
@@ -344,9 +344,9 @@ class IPSecRule(Identifiable):
             ip_protocol_value = IPsecIpProtocolEnum.deserialize(child)
             obj.ip_protocol = ip_protocol_value
 
-        # Parse local_certificate_refs (list from container "LOCAL-CERTIFICATE-REFS")
+        # Parse local_certificate_refs (list from container "LOCAL-CERTIFICATES")
         obj.local_certificate_refs = []
-        container = SerializationHelper.find_child_element(element, "LOCAL-CERTIFICATE-REFS")
+        container = SerializationHelper.find_child_element(element, "LOCAL-CERTIFICATES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -396,9 +396,9 @@ class IPSecRule(Identifiable):
             priority_value = child.text
             obj.priority = priority_value
 
-        # Parse remote_refs (list from container "REMOTE-REFS")
+        # Parse remote_refs (list from container "REMOTES")
         obj.remote_refs = []
-        container = SerializationHelper.find_child_element(element, "REMOTE-REFS")
+        container = SerializationHelper.find_child_element(element, "REMOTES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -418,9 +418,9 @@ class IPSecRule(Identifiable):
             remote_id_value = child.text
             obj.remote_id = remote_id_value
 
-        # Parse remote_ip_refs (list from container "REMOTE-IP-REFS")
+        # Parse remote_ip_refs (list from container "REMOTE-IPS")
         obj.remote_ip_refs = []
-        container = SerializationHelper.find_child_element(element, "REMOTE-IP-REFS")
+        container = SerializationHelper.find_child_element(element, "REMOTE-IPS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

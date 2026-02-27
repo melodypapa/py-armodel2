@@ -68,9 +68,9 @@ class EndToEndProtectionVariablePrototype(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize receiver_refs (list to container "RECEIVER-REFS")
+        # Serialize receiver_refs (list to container "RECEIVERS")
         if self.receiver_refs:
-            wrapper = ET.Element("RECEIVER-REFS")
+            wrapper = ET.Element("RECEIVERS")
             for item in self.receiver_refs:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
@@ -128,9 +128,9 @@ class EndToEndProtectionVariablePrototype(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EndToEndProtectionVariablePrototype, cls).deserialize(element)
 
-        # Parse receiver_refs (list from container "RECEIVER-REFS")
+        # Parse receiver_refs (list from container "RECEIVERS")
         obj.receiver_refs = []
-        container = SerializationHelper.find_child_element(element, "RECEIVER-REFS")
+        container = SerializationHelper.find_child_element(element, "RECEIVERS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

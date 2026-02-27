@@ -160,9 +160,9 @@ class TlsCryptoCipherSuite(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize elliptic_curf_refs (list to container "ELLIPTIC-CURF-REFS")
+        # Serialize elliptic_curf_refs (list to container "ELLIPTIC-CURFS")
         if self.elliptic_curf_refs:
-            wrapper = ET.Element("ELLIPTIC-CURF-REFS")
+            wrapper = ET.Element("ELLIPTIC-CURFS")
             for item in self.elliptic_curf_refs:
                 serialized = SerializationHelper.serialize_item(item, "CryptoEllipticCurveProps")
                 if serialized is not None:
@@ -191,9 +191,9 @@ class TlsCryptoCipherSuite(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize key_exchange_refs (list to container "KEY-EXCHANGE-REFS")
+        # Serialize key_exchange_refs (list to container "KEY-EXCHANGES")
         if self.key_exchange_refs:
-            wrapper = ET.Element("KEY-EXCHANGE-REFS")
+            wrapper = ET.Element("KEY-EXCHANGES")
             for item in self.key_exchange_refs:
                 serialized = SerializationHelper.serialize_item(item, "CryptoServicePrimitive")
                 if serialized is not None:
@@ -264,9 +264,9 @@ class TlsCryptoCipherSuite(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize signature_refs (list to container "SIGNATURE-REFS")
+        # Serialize signature_refs (list to container "SIGNATURES")
         if self.signature_refs:
-            wrapper = ET.Element("SIGNATURE-REFS")
+            wrapper = ET.Element("SIGNATURES")
             for item in self.signature_refs:
                 serialized = SerializationHelper.serialize_item(item, "CryptoSignatureScheme")
                 if serialized is not None:
@@ -334,9 +334,9 @@ class TlsCryptoCipherSuite(Identifiable):
             cipher_suite_value = child.text
             obj.cipher_suite = cipher_suite_value
 
-        # Parse elliptic_curf_refs (list from container "ELLIPTIC-CURF-REFS")
+        # Parse elliptic_curf_refs (list from container "ELLIPTIC-CURFS")
         obj.elliptic_curf_refs = []
-        container = SerializationHelper.find_child_element(element, "ELLIPTIC-CURF-REFS")
+        container = SerializationHelper.find_child_element(element, "ELLIPTIC-CURFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -356,9 +356,9 @@ class TlsCryptoCipherSuite(Identifiable):
             encryption_ref_value = ARRef.deserialize(child)
             obj.encryption_ref = encryption_ref_value
 
-        # Parse key_exchange_refs (list from container "KEY-EXCHANGE-REFS")
+        # Parse key_exchange_refs (list from container "KEY-EXCHANGES")
         obj.key_exchange_refs = []
-        container = SerializationHelper.find_child_element(element, "KEY-EXCHANGE-REFS")
+        container = SerializationHelper.find_child_element(element, "KEY-EXCHANGES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -396,9 +396,9 @@ class TlsCryptoCipherSuite(Identifiable):
             remote_ref_value = ARRef.deserialize(child)
             obj.remote_ref = remote_ref_value
 
-        # Parse signature_refs (list from container "SIGNATURE-REFS")
+        # Parse signature_refs (list from container "SIGNATURES")
         obj.signature_refs = []
-        container = SerializationHelper.find_child_element(element, "SIGNATURE-REFS")
+        container = SerializationHelper.find_child_element(element, "SIGNATURES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

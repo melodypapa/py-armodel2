@@ -150,9 +150,9 @@ class LifeCycleInfo(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize use_instead_refs (list to container "USE-INSTEAD-REFS")
+        # Serialize use_instead_refs (list to container "USE-INSTEADS")
         if self.use_instead_refs:
-            wrapper = ET.Element("USE-INSTEAD-REFS")
+            wrapper = ET.Element("USE-INSTEADS")
             for item in self.use_instead_refs:
                 serialized = SerializationHelper.serialize_item(item, "Referrable")
                 if serialized is not None:
@@ -212,9 +212,9 @@ class LifeCycleInfo(ARObject):
             remark_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.remark = remark_value
 
-        # Parse use_instead_refs (list from container "USE-INSTEAD-REFS")
+        # Parse use_instead_refs (list from container "USE-INSTEADS")
         obj.use_instead_refs = []
-        container = SerializationHelper.find_child_element(element, "USE-INSTEAD-REFS")
+        container = SerializationHelper.find_child_element(element, "USE-INSTEADS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

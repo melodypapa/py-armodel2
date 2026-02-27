@@ -115,9 +115,9 @@ class J1939TpPg(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sdu_refs (list to container "SDU-REFS")
+        # Serialize sdu_refs (list to container "SDUS")
         if self.sdu_refs:
-            wrapper = ET.Element("SDU-REFS")
+            wrapper = ET.Element("SDUS")
             for item in self.sdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "IPdu")
                 if serialized is not None:
@@ -165,9 +165,9 @@ class J1939TpPg(ARObject):
             requestable_value = child.text
             obj.requestable = requestable_value
 
-        # Parse sdu_refs (list from container "SDU-REFS")
+        # Parse sdu_refs (list from container "SDUS")
         obj.sdu_refs = []
-        container = SerializationHelper.find_child_element(element, "SDU-REFS")
+        container = SerializationHelper.find_child_element(element, "SDUS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

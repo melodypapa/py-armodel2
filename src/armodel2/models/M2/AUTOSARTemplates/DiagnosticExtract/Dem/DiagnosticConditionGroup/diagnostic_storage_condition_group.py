@@ -61,9 +61,9 @@ class DiagnosticStorageConditionGroup(DiagnosticConditionGroup):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize storage_refs (list to container "STORAGE-REFS")
+        # Serialize storage_refs (list to container "STORAGES")
         if self.storage_refs:
-            wrapper = ET.Element("STORAGE-REFS")
+            wrapper = ET.Element("STORAGES")
             for item in self.storage_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -93,9 +93,9 @@ class DiagnosticStorageConditionGroup(DiagnosticConditionGroup):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticStorageConditionGroup, cls).deserialize(element)
 
-        # Parse storage_refs (list from container "STORAGE-REFS")
+        # Parse storage_refs (list from container "STORAGES")
         obj.storage_refs = []
-        container = SerializationHelper.find_child_element(element, "STORAGE-REFS")
+        container = SerializationHelper.find_child_element(element, "STORAGES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

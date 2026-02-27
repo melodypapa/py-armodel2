@@ -65,9 +65,9 @@ class TriggerInterface(PortInterface):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize trigger_refs (list to container "TRIGGER-REFS")
+        # Serialize trigger_refs (list to container "TRIGGERS")
         if self.trigger_refs:
-            wrapper = ET.Element("TRIGGER-REFS")
+            wrapper = ET.Element("TRIGGERS")
             for item in self.trigger_refs:
                 serialized = SerializationHelper.serialize_item(item, "Trigger")
                 if serialized is not None:
@@ -97,9 +97,9 @@ class TriggerInterface(PortInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TriggerInterface, cls).deserialize(element)
 
-        # Parse trigger_refs (list from container "TRIGGER-REFS")
+        # Parse trigger_refs (list from container "TRIGGERS")
         obj.trigger_refs = []
-        container = SerializationHelper.find_child_element(element, "TRIGGER-REFS")
+        container = SerializationHelper.find_child_element(element, "TRIGGERS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

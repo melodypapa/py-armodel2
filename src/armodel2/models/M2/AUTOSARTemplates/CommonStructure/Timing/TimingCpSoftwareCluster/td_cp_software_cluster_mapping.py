@@ -85,9 +85,9 @@ class TDCpSoftwareClusterMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize requestor_refs (list to container "REQUESTOR-REFS")
+        # Serialize requestor_refs (list to container "REQUESTORS")
         if self.requestor_refs:
-            wrapper = ET.Element("REQUESTOR-REFS")
+            wrapper = ET.Element("REQUESTORS")
             for item in self.requestor_refs:
                 serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
@@ -137,9 +137,9 @@ class TDCpSoftwareClusterMapping(Identifiable):
             provider_ref_value = ARRef.deserialize(child)
             obj.provider_ref = provider_ref_value
 
-        # Parse requestor_refs (list from container "REQUESTOR-REFS")
+        # Parse requestor_refs (list from container "REQUESTORS")
         obj.requestor_refs = []
-        container = SerializationHelper.find_child_element(element, "REQUESTOR-REFS")
+        container = SerializationHelper.find_child_element(element, "REQUESTORS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

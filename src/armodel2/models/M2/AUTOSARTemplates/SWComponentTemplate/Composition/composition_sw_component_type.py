@@ -115,9 +115,9 @@ class CompositionSwComponentType(SwComponentType):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize constant_value_mapping_refs (list to container "CONSTANT-VALUE-MAPPING-REFS")
+        # Serialize constant_value_mapping_refs (list to container "CONSTANT-VALUE-MAPPINGS")
         if self.constant_value_mapping_refs:
-            wrapper = ET.Element("CONSTANT-VALUE-MAPPING-REFS")
+            wrapper = ET.Element("CONSTANT-VALUE-MAPPINGS")
             for item in self.constant_value_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConstantSpecificationMappingSet")
                 if serialized is not None:
@@ -132,9 +132,9 @@ class CompositionSwComponentType(SwComponentType):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_type_mapping_refs (list to container "DATA-TYPE-MAPPING-REFS")
+        # Serialize data_type_mapping_refs (list to container "DATA-TYPE-MAPPINGS")
         if self.data_type_mapping_refs:
-            wrapper = ET.Element("DATA-TYPE-MAPPING-REFS")
+            wrapper = ET.Element("DATA-TYPE-MAPPINGS")
             for item in self.data_type_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
@@ -208,9 +208,9 @@ class CompositionSwComponentType(SwComponentType):
                 if child_value is not None:
                     obj.connectors.append(child_value)
 
-        # Parse constant_value_mapping_refs (list from container "CONSTANT-VALUE-MAPPING-REFS")
+        # Parse constant_value_mapping_refs (list from container "CONSTANT-VALUE-MAPPINGS")
         obj.constant_value_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "CONSTANT-VALUE-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "CONSTANT-VALUE-MAPPINGS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -224,9 +224,9 @@ class CompositionSwComponentType(SwComponentType):
                 if child_value is not None:
                     obj.constant_value_mapping_refs.append(child_value)
 
-        # Parse data_type_mapping_refs (list from container "DATA-TYPE-MAPPING-REFS")
+        # Parse data_type_mapping_refs (list from container "DATA-TYPE-MAPPINGS")
         obj.data_type_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-TYPE-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "DATA-TYPE-MAPPINGS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

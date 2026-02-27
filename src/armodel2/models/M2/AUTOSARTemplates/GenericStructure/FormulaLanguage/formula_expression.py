@@ -65,9 +65,9 @@ class FormulaExpression(ARObject, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize atp_reference_refs (list to container "ATP-REFERENCE-REFS")
+        # Serialize atp_reference_refs (list to container "ATP-REFERENCES")
         if self.atp_reference_refs:
-            wrapper = ET.Element("ATP-REFERENCE-REFS")
+            wrapper = ET.Element("ATP-REFERENCES")
             for item in self.atp_reference_refs:
                 serialized = SerializationHelper.serialize_item(item, "Referrable")
                 if serialized is not None:
@@ -82,9 +82,9 @@ class FormulaExpression(ARObject, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize atp_string_refs (list to container "ATP-STRING-REFS")
+        # Serialize atp_string_refs (list to container "ATP-STRINGS")
         if self.atp_string_refs:
-            wrapper = ET.Element("ATP-STRING-REFS")
+            wrapper = ET.Element("ATP-STRINGS")
             for item in self.atp_string_refs:
                 serialized = SerializationHelper.serialize_item(item, "Referrable")
                 if serialized is not None:
@@ -114,9 +114,9 @@ class FormulaExpression(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FormulaExpression, cls).deserialize(element)
 
-        # Parse atp_reference_refs (list from container "ATP-REFERENCE-REFS")
+        # Parse atp_reference_refs (list from container "ATP-REFERENCES")
         obj.atp_reference_refs = []
-        container = SerializationHelper.find_child_element(element, "ATP-REFERENCE-REFS")
+        container = SerializationHelper.find_child_element(element, "ATP-REFERENCES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -130,9 +130,9 @@ class FormulaExpression(ARObject, ABC):
                 if child_value is not None:
                     obj.atp_reference_refs.append(child_value)
 
-        # Parse atp_string_refs (list from container "ATP-STRING-REFS")
+        # Parse atp_string_refs (list from container "ATP-STRINGS")
         obj.atp_string_refs = []
-        container = SerializationHelper.find_child_element(element, "ATP-STRING-REFS")
+        container = SerializationHelper.find_child_element(element, "ATP-STRINGS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

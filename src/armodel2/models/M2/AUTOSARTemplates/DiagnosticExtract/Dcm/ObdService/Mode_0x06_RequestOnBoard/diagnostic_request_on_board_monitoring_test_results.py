@@ -66,9 +66,9 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostic_test_result_refs (list to container "DIAGNOSTIC-TEST-RESULT-REFS")
+        # Serialize diagnostic_test_result_refs (list to container "DIAGNOSTIC-TEST-RESULTS")
         if self.diagnostic_test_result_refs:
-            wrapper = ET.Element("DIAGNOSTIC-TEST-RESULT-REFS")
+            wrapper = ET.Element("DIAGNOSTIC-TEST-RESULTS")
             for item in self.diagnostic_test_result_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticTestResult")
                 if serialized is not None:
@@ -112,9 +112,9 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestOnBoardMonitoringTestResults, cls).deserialize(element)
 
-        # Parse diagnostic_test_result_refs (list from container "DIAGNOSTIC-TEST-RESULT-REFS")
+        # Parse diagnostic_test_result_refs (list from container "DIAGNOSTIC-TEST-RESULTS")
         obj.diagnostic_test_result_refs = []
-        container = SerializationHelper.find_child_element(element, "DIAGNOSTIC-TEST-RESULT-REFS")
+        container = SerializationHelper.find_child_element(element, "DIAGNOSTIC-TEST-RESULTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -64,9 +64,9 @@ class IEEE1722TpConfig(TpConfig):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize tp_connection_refs (list to container "TP-CONNECTION-REFS")
+        # Serialize tp_connection_refs (list to container "TP-CONNECTIONS")
         if self.tp_connection_refs:
-            wrapper = ET.Element("TP-CONNECTION-REFS")
+            wrapper = ET.Element("TP-CONNECTIONS")
             for item in self.tp_connection_refs:
                 serialized = SerializationHelper.serialize_item(item, "IEEE1722TpConnection")
                 if serialized is not None:
@@ -96,9 +96,9 @@ class IEEE1722TpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpConfig, cls).deserialize(element)
 
-        # Parse tp_connection_refs (list from container "TP-CONNECTION-REFS")
+        # Parse tp_connection_refs (list from container "TP-CONNECTIONS")
         obj.tp_connection_refs = []
-        container = SerializationHelper.find_child_element(element, "TP-CONNECTION-REFS")
+        container = SerializationHelper.find_child_element(element, "TP-CONNECTIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

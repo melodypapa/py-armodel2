@@ -183,9 +183,9 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_variable_ref_proxy_refs (list to container "SW-VARIABLE-REF-PROXY-REFS")
+        # Serialize sw_variable_ref_proxy_refs (list to container "SW-VARIABLE-REF-PROXYS")
         if self.sw_variable_ref_proxy_refs:
-            wrapper = ET.Element("SW-VARIABLE-REF-PROXY-REFS")
+            wrapper = ET.Element("SW-VARIABLE-REF-PROXYS")
             for item in self.sw_variable_ref_proxy_refs:
                 serialized = SerializationHelper.serialize_item(item, "SwVariableRefProxy")
                 if serialized is not None:
@@ -265,9 +265,9 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
             sw_min_axis_value = child.text
             obj.sw_min_axis = sw_min_axis_value
 
-        # Parse sw_variable_ref_proxy_refs (list from container "SW-VARIABLE-REF-PROXY-REFS")
+        # Parse sw_variable_ref_proxy_refs (list from container "SW-VARIABLE-REF-PROXYS")
         obj.sw_variable_ref_proxy_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-VARIABLE-REF-PROXY-REFS")
+        container = SerializationHelper.find_child_element(element, "SW-VARIABLE-REF-PROXYS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

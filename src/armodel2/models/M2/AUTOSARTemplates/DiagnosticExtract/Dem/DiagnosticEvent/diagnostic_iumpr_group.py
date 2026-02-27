@@ -66,9 +66,9 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize iumpr_refs (list to container "IUMPR-REFS")
+        # Serialize iumpr_refs (list to container "IUMPRS")
         if self.iumpr_refs:
-            wrapper = ET.Element("IUMPR-REFS")
+            wrapper = ET.Element("IUMPRS")
             for item in self.iumpr_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticIumpr")
                 if serialized is not None:
@@ -112,9 +112,9 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticIumprGroup, cls).deserialize(element)
 
-        # Parse iumpr_refs (list from container "IUMPR-REFS")
+        # Parse iumpr_refs (list from container "IUMPRS")
         obj.iumpr_refs = []
-        container = SerializationHelper.find_child_element(element, "IUMPR-REFS")
+        container = SerializationHelper.find_child_element(element, "IUMPRS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

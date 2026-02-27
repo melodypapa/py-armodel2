@@ -60,9 +60,9 @@ class DiagnosticAuthRoleProxy(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize authentication_refs (list to container "AUTHENTICATION-REFS")
+        # Serialize authentication_refs (list to container "AUTHENTICATIONS")
         if self.authentication_refs:
-            wrapper = ET.Element("AUTHENTICATION-REFS")
+            wrapper = ET.Element("AUTHENTICATIONS")
             for item in self.authentication_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticAuthRole")
                 if serialized is not None:
@@ -92,9 +92,9 @@ class DiagnosticAuthRoleProxy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAuthRoleProxy, cls).deserialize(element)
 
-        # Parse authentication_refs (list from container "AUTHENTICATION-REFS")
+        # Parse authentication_refs (list from container "AUTHENTICATIONS")
         obj.authentication_refs = []
-        container = SerializationHelper.find_child_element(element, "AUTHENTICATION-REFS")
+        container = SerializationHelper.find_child_element(element, "AUTHENTICATIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

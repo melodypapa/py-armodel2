@@ -86,9 +86,9 @@ class PduTriggering(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize i_pdu_port_refs (list to container "I-PDU-PORT-REFS")
+        # Serialize i_pdu_port_refs (list to container "I-PDU-PORTS")
         if self.i_pdu_port_refs:
-            wrapper = ET.Element("I-PDU-PORT-REFS")
+            wrapper = ET.Element("I-PDU-PORTS")
             for item in self.i_pdu_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "IPduPort")
                 if serialized is not None:
@@ -117,9 +117,9 @@ class PduTriggering(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_signal_refs (list to container "I-SIGNAL-REFS")
+        # Serialize i_signal_refs (list to container "I-SIGNALS")
         if self.i_signal_refs:
-            wrapper = ET.Element("I-SIGNAL-REFS")
+            wrapper = ET.Element("I-SIGNALS")
             for item in self.i_signal_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalTriggering")
                 if serialized is not None:
@@ -148,9 +148,9 @@ class PduTriggering(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize trigger_i_pdu_send_refs (list to container "TRIGGER-I-PDU-SEND-REFS")
+        # Serialize trigger_i_pdu_send_refs (list to container "TRIGGER-I-PDU-SENDS")
         if self.trigger_i_pdu_send_refs:
-            wrapper = ET.Element("TRIGGER-I-PDU-SEND-REFS")
+            wrapper = ET.Element("TRIGGER-I-PDU-SENDS")
             for item in self.trigger_i_pdu_send_refs:
                 serialized = SerializationHelper.serialize_item(item, "TriggerIPduSendCondition")
                 if serialized is not None:
@@ -180,9 +180,9 @@ class PduTriggering(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PduTriggering, cls).deserialize(element)
 
-        # Parse i_pdu_port_refs (list from container "I-PDU-PORT-REFS")
+        # Parse i_pdu_port_refs (list from container "I-PDU-PORTS")
         obj.i_pdu_port_refs = []
-        container = SerializationHelper.find_child_element(element, "I-PDU-PORT-REFS")
+        container = SerializationHelper.find_child_element(element, "I-PDU-PORTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -202,9 +202,9 @@ class PduTriggering(Identifiable):
             i_pdu_ref_value = ARRef.deserialize(child)
             obj.i_pdu_ref = i_pdu_ref_value
 
-        # Parse i_signal_refs (list from container "I-SIGNAL-REFS")
+        # Parse i_signal_refs (list from container "I-SIGNALS")
         obj.i_signal_refs = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-REFS")
+        container = SerializationHelper.find_child_element(element, "I-SIGNALS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -224,9 +224,9 @@ class PduTriggering(Identifiable):
             sec_oc_crypto_service_ref_value = ARRef.deserialize(child)
             obj.sec_oc_crypto_service_ref = sec_oc_crypto_service_ref_value
 
-        # Parse trigger_i_pdu_send_refs (list from container "TRIGGER-I-PDU-SEND-REFS")
+        # Parse trigger_i_pdu_send_refs (list from container "TRIGGER-I-PDU-SENDS")
         obj.trigger_i_pdu_send_refs = []
-        container = SerializationHelper.find_child_element(element, "TRIGGER-I-PDU-SEND-REFS")
+        container = SerializationHelper.find_child_element(element, "TRIGGER-I-PDU-SENDS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

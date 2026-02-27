@@ -77,9 +77,9 @@ class McDataAccessDetails(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize variable_accesses (list to container "VARIABLE-ACCESSES")
+        # Serialize variable_accesses (list to container "VARIABLE-ACCESSS")
         if self.variable_accesses:
-            wrapper = ET.Element("VARIABLE-ACCESSES")
+            wrapper = ET.Element("VARIABLE-ACCESSS")
             for item in self.variable_accesses:
                 serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
@@ -112,9 +112,9 @@ class McDataAccessDetails(ARObject):
                 if child_value is not None:
                     obj.rte_event_refs.append(child_value)
 
-        # Parse variable_accesses (list from container "VARIABLE-ACCESSES")
+        # Parse variable_accesses (list from container "VARIABLE-ACCESSS")
         obj.variable_accesses = []
-        container = SerializationHelper.find_child_element(element, "VARIABLE-ACCESSES")
+        container = SerializationHelper.find_child_element(element, "VARIABLE-ACCESSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

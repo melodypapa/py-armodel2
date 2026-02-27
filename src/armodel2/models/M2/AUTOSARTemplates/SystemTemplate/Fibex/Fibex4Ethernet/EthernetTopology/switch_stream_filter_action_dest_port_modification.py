@@ -66,9 +66,9 @@ class SwitchStreamFilterActionDestPortModification(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize egress_port_refs (list to container "EGRESS-PORT-REFS")
+        # Serialize egress_port_refs (list to container "EGRESS-PORTS")
         if self.egress_port_refs:
-            wrapper = ET.Element("EGRESS-PORT-REFS")
+            wrapper = ET.Element("EGRESS-PORTS")
             for item in self.egress_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "CouplingPort")
                 if serialized is not None:
@@ -112,9 +112,9 @@ class SwitchStreamFilterActionDestPortModification(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwitchStreamFilterActionDestPortModification, cls).deserialize(element)
 
-        # Parse egress_port_refs (list from container "EGRESS-PORT-REFS")
+        # Parse egress_port_refs (list from container "EGRESS-PORTS")
         obj.egress_port_refs = []
-        container = SerializationHelper.find_child_element(element, "EGRESS-PORT-REFS")
+        container = SerializationHelper.find_child_element(element, "EGRESS-PORTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

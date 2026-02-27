@@ -90,9 +90,9 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize diagnostic_session_refs (list to container "DIAGNOSTIC-SESSION-REFS")
+        # Serialize diagnostic_session_refs (list to container "DIAGNOSTIC-SESSIONS")
         if self.diagnostic_session_refs:
-            wrapper = ET.Element("DIAGNOSTIC-SESSION-REFS")
+            wrapper = ET.Element("DIAGNOSTIC-SESSIONS")
             for item in self.diagnostic_session_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticSession")
                 if serialized is not None:
@@ -121,9 +121,9 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize security_level_refs (list to container "SECURITY-LEVEL-REFS")
+        # Serialize security_level_refs (list to container "SECURITY-LEVELS")
         if self.security_level_refs:
-            wrapper = ET.Element("SECURITY-LEVEL-REFS")
+            wrapper = ET.Element("SECURITY-LEVELS")
             for item in self.security_level_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticSecurityLevel")
                 if serialized is not None:
@@ -159,9 +159,9 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
             authentication_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticAuthRole")
             obj.authentication = authentication_value
 
-        # Parse diagnostic_session_refs (list from container "DIAGNOSTIC-SESSION-REFS")
+        # Parse diagnostic_session_refs (list from container "DIAGNOSTIC-SESSIONS")
         obj.diagnostic_session_refs = []
-        container = SerializationHelper.find_child_element(element, "DIAGNOSTIC-SESSION-REFS")
+        container = SerializationHelper.find_child_element(element, "DIAGNOSTIC-SESSIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -181,9 +181,9 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
             environmental_ref_value = ARRef.deserialize(child)
             obj.environmental_ref = environmental_ref_value
 
-        # Parse security_level_refs (list from container "SECURITY-LEVEL-REFS")
+        # Parse security_level_refs (list from container "SECURITY-LEVELS")
         obj.security_level_refs = []
-        container = SerializationHelper.find_child_element(element, "SECURITY-LEVEL-REFS")
+        container = SerializationHelper.find_child_element(element, "SECURITY-LEVELS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

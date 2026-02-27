@@ -172,9 +172,9 @@ class Implementation(ARElement, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize hw_element_refs (list to container "HW-ELEMENT-REFS")
+        # Serialize hw_element_refs (list to container "HW-ELEMENTS")
         if self.hw_element_refs:
-            wrapper = ET.Element("HW-ELEMENT-REFS")
+            wrapper = ET.Element("HW-ELEMENTS")
             for item in self.hw_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "HwElement")
                 if serialized is not None:
@@ -368,9 +368,9 @@ class Implementation(ARElement, ABC):
                 if child_value is not None:
                     obj.generated_artifacts.append(child_value)
 
-        # Parse hw_element_refs (list from container "HW-ELEMENT-REFS")
+        # Parse hw_element_refs (list from container "HW-ELEMENTS")
         obj.hw_element_refs = []
-        container = SerializationHelper.find_child_element(element, "HW-ELEMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "HW-ELEMENTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

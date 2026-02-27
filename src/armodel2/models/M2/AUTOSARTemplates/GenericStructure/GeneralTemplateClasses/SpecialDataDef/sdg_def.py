@@ -64,9 +64,9 @@ class SdgDef(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sdg_classes (list to container "SDG-CLASSES")
+        # Serialize sdg_classes (list to container "SDG-CLASSS")
         if self.sdg_classes:
-            wrapper = ET.Element("SDG-CLASSES")
+            wrapper = ET.Element("SDG-CLASSS")
             for item in self.sdg_classes:
                 serialized = SerializationHelper.serialize_item(item, "SdgClass")
                 if serialized is not None:
@@ -89,9 +89,9 @@ class SdgDef(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SdgDef, cls).deserialize(element)
 
-        # Parse sdg_classes (list from container "SDG-CLASSES")
+        # Parse sdg_classes (list from container "SDG-CLASSS")
         obj.sdg_classes = []
-        container = SerializationHelper.find_child_element(element, "SDG-CLASSES")
+        container = SerializationHelper.find_child_element(element, "SDG-CLASSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

@@ -61,9 +61,9 @@ class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize enable_condition_refs (list to container "ENABLE-CONDITION-REFS")
+        # Serialize enable_condition_refs (list to container "ENABLE-CONDITIONS")
         if self.enable_condition_refs:
-            wrapper = ET.Element("ENABLE-CONDITION-REFS")
+            wrapper = ET.Element("ENABLE-CONDITIONS")
             for item in self.enable_condition_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -93,9 +93,9 @@ class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEnableConditionGroup, cls).deserialize(element)
 
-        # Parse enable_condition_refs (list from container "ENABLE-CONDITION-REFS")
+        # Parse enable_condition_refs (list from container "ENABLE-CONDITIONS")
         obj.enable_condition_refs = []
-        container = SerializationHelper.find_child_element(element, "ENABLE-CONDITION-REFS")
+        container = SerializationHelper.find_child_element(element, "ENABLE-CONDITIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

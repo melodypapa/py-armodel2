@@ -98,9 +98,9 @@ class SwComponentType(ARElement, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize consistency_needses (list to container "CONSISTENCY-NEEDSES")
+        # Serialize consistency_needses (list to container "CONSISTENCY-NEEDSS")
         if self.consistency_needses:
-            wrapper = ET.Element("CONSISTENCY-NEEDSES")
+            wrapper = ET.Element("CONSISTENCY-NEEDSS")
             for item in self.consistency_needses:
                 serialized = SerializationHelper.serialize_item(item, "ConsistencyNeeds")
                 if serialized is not None:
@@ -128,9 +128,9 @@ class SwComponentType(ARElement, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize swc_mapping_constraint_refs (list to container "SWC-MAPPING-CONSTRAINT-REFS")
+        # Serialize swc_mapping_constraint_refs (list to container "SWC-MAPPING-CONSTRAINTS")
         if self.swc_mapping_constraint_refs:
-            wrapper = ET.Element("SWC-MAPPING-CONSTRAINT-REFS")
+            wrapper = ET.Element("SWC-MAPPING-CONSTRAINTS")
             for item in self.swc_mapping_constraint_refs:
                 serialized = SerializationHelper.serialize_item(item, "SwComponentMappingConstraints")
                 if serialized is not None:
@@ -159,9 +159,9 @@ class SwComponentType(ARElement, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize unit_group_refs (list to container "UNIT-GROUP-REFS")
+        # Serialize unit_group_refs (list to container "UNIT-GROUPS")
         if self.unit_group_refs:
-            wrapper = ET.Element("UNIT-GROUP-REFS")
+            wrapper = ET.Element("UNIT-GROUPS")
             for item in self.unit_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "UnitGroup")
                 if serialized is not None:
@@ -191,9 +191,9 @@ class SwComponentType(ARElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwComponentType, cls).deserialize(element)
 
-        # Parse consistency_needses (list from container "CONSISTENCY-NEEDSES")
+        # Parse consistency_needses (list from container "CONSISTENCY-NEEDSS")
         obj.consistency_needses = []
-        container = SerializationHelper.find_child_element(element, "CONSISTENCY-NEEDSES")
+        container = SerializationHelper.find_child_element(element, "CONSISTENCY-NEEDSS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -221,9 +221,9 @@ class SwComponentType(ARElement, ABC):
                 if child_value is not None:
                     obj.port_groups.append(child_value)
 
-        # Parse swc_mapping_constraint_refs (list from container "SWC-MAPPING-CONSTRAINT-REFS")
+        # Parse swc_mapping_constraint_refs (list from container "SWC-MAPPING-CONSTRAINTS")
         obj.swc_mapping_constraint_refs = []
-        container = SerializationHelper.find_child_element(element, "SWC-MAPPING-CONSTRAINT-REFS")
+        container = SerializationHelper.find_child_element(element, "SWC-MAPPING-CONSTRAINTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -243,9 +243,9 @@ class SwComponentType(ARElement, ABC):
             sw_component_documentation_value = SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation")
             obj.sw_component_documentation = sw_component_documentation_value
 
-        # Parse unit_group_refs (list from container "UNIT-GROUP-REFS")
+        # Parse unit_group_refs (list from container "UNIT-GROUPS")
         obj.unit_group_refs = []
-        container = SerializationHelper.find_child_element(element, "UNIT-GROUP-REFS")
+        container = SerializationHelper.find_child_element(element, "UNIT-GROUPS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

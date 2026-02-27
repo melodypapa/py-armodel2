@@ -3,6 +3,7 @@
   "classes": [
     {
       "name": "PerInstanceMemory",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::PerInstanceMemory",
       "is_abstract": false,
       "atp_type": null,
@@ -40,9 +41,10 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "Specifies initial value(s) of the PerInstanceMemory"
         },
-        "swDataDef": {
+        "swDataDefProps": {
           "type": "SwDataDefProps",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -61,7 +63,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "A definition of the type with the syntax of a ’C’ typedef."
+          "note": "A definition of the type with the syntax of a 'C' typedef."
         }
       }
     }

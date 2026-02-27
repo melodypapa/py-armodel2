@@ -100,9 +100,9 @@ class DltApplication(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_refs (list to container "CONTEXT-REFS")
+        # Serialize context_refs (list to container "CONTEXTS")
         if self.context_refs:
-            wrapper = ET.Element("CONTEXT-REFS")
+            wrapper = ET.Element("CONTEXTS")
             for item in self.context_refs:
                 serialized = SerializationHelper.serialize_item(item, "DltContext")
                 if serialized is not None:
@@ -144,9 +144,9 @@ class DltApplication(Identifiable):
             application_id_value = child.text
             obj.application_id = application_id_value
 
-        # Parse context_refs (list from container "CONTEXT-REFS")
+        # Parse context_refs (list from container "CONTEXTS")
         obj.context_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTEXTS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -123,9 +123,9 @@ class NvBlockDescriptor(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize constant_value_refs (list to container "CONSTANT-VALUE-REFS")
+        # Serialize constant_value_refs (list to container "CONSTANT-VALUES")
         if self.constant_value_refs:
-            wrapper = ET.Element("CONSTANT-VALUE-REFS")
+            wrapper = ET.Element("CONSTANT-VALUES")
             for item in self.constant_value_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConstantSpecification")
                 if serialized is not None:
@@ -140,9 +140,9 @@ class NvBlockDescriptor(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_type_refs (list to container "DATA-TYPE-REFS")
+        # Serialize data_type_refs (list to container "DATA-TYPES")
         if self.data_type_refs:
-            wrapper = ET.Element("DATA-TYPE-REFS")
+            wrapper = ET.Element("DATA-TYPES")
             for item in self.data_type_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
@@ -177,9 +177,9 @@ class NvBlockDescriptor(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize nv_block_data_refs (list to container "NV-BLOCK-DATA-REFS")
+        # Serialize nv_block_data_refs (list to container "NV-BLOCK-DATAS")
         if self.nv_block_data_refs:
-            wrapper = ET.Element("NV-BLOCK-DATA-REFS")
+            wrapper = ET.Element("NV-BLOCK-DATAS")
             for item in self.nv_block_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "NvBlockDataMapping")
                 if serialized is not None:
@@ -264,9 +264,9 @@ class NvBlockDescriptor(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize writing_strategies (list to container "WRITING-STRATEGIES")
+        # Serialize writing_strategies (list to container "WRITING-STRATEGYS")
         if self.writing_strategies:
-            wrapper = ET.Element("WRITING-STRATEGIES")
+            wrapper = ET.Element("WRITING-STRATEGYS")
             for item in self.writing_strategies:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -299,9 +299,9 @@ class NvBlockDescriptor(Identifiable):
                 if child_value is not None:
                     obj.client_server_ports.append(child_value)
 
-        # Parse constant_value_refs (list from container "CONSTANT-VALUE-REFS")
+        # Parse constant_value_refs (list from container "CONSTANT-VALUES")
         obj.constant_value_refs = []
-        container = SerializationHelper.find_child_element(element, "CONSTANT-VALUE-REFS")
+        container = SerializationHelper.find_child_element(element, "CONSTANT-VALUES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -315,9 +315,9 @@ class NvBlockDescriptor(Identifiable):
                 if child_value is not None:
                     obj.constant_value_refs.append(child_value)
 
-        # Parse data_type_refs (list from container "DATA-TYPE-REFS")
+        # Parse data_type_refs (list from container "DATA-TYPES")
         obj.data_type_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-TYPE-REFS")
+        container = SerializationHelper.find_child_element(element, "DATA-TYPES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -351,9 +351,9 @@ class NvBlockDescriptor(Identifiable):
                 if child_value is not None:
                     obj.mode_switch_events.append(child_value)
 
-        # Parse nv_block_data_refs (list from container "NV-BLOCK-DATA-REFS")
+        # Parse nv_block_data_refs (list from container "NV-BLOCK-DATAS")
         obj.nv_block_data_refs = []
-        container = SerializationHelper.find_child_element(element, "NV-BLOCK-DATA-REFS")
+        container = SerializationHelper.find_child_element(element, "NV-BLOCK-DATAS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -397,9 +397,9 @@ class NvBlockDescriptor(Identifiable):
             timing_event_ref_value = ARRef.deserialize(child)
             obj.timing_event_ref = timing_event_ref_value
 
-        # Parse writing_strategies (list from container "WRITING-STRATEGIES")
+        # Parse writing_strategies (list from container "WRITING-STRATEGYS")
         obj.writing_strategies = []
-        container = SerializationHelper.find_child_element(element, "WRITING-STRATEGIES")
+        container = SerializationHelper.find_child_element(element, "WRITING-STRATEGYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

@@ -93,9 +93,9 @@ class Gateway(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize frame_mapping_refs (list to container "FRAME-MAPPING-REFS")
+        # Serialize frame_mapping_refs (list to container "FRAME-MAPPINGS")
         if self.frame_mapping_refs:
-            wrapper = ET.Element("FRAME-MAPPING-REFS")
+            wrapper = ET.Element("FRAME-MAPPINGS")
             for item in self.frame_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "FrameMapping")
                 if serialized is not None:
@@ -110,9 +110,9 @@ class Gateway(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize i_pdu_mapping_refs (list to container "I-PDU-MAPPING-REFS")
+        # Serialize i_pdu_mapping_refs (list to container "I-PDU-MAPPINGS")
         if self.i_pdu_mapping_refs:
-            wrapper = ET.Element("I-PDU-MAPPING-REFS")
+            wrapper = ET.Element("I-PDU-MAPPINGS")
             for item in self.i_pdu_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "IPduMapping")
                 if serialized is not None:
@@ -127,9 +127,9 @@ class Gateway(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize signal_mapping_refs (list to container "SIGNAL-MAPPING-REFS")
+        # Serialize signal_mapping_refs (list to container "SIGNAL-MAPPINGS")
         if self.signal_mapping_refs:
-            wrapper = ET.Element("SIGNAL-MAPPING-REFS")
+            wrapper = ET.Element("SIGNAL-MAPPINGS")
             for item in self.signal_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalMapping")
                 if serialized is not None:
@@ -165,9 +165,9 @@ class Gateway(FibexElement):
             ecu_ref_value = ARRef.deserialize(child)
             obj.ecu_ref = ecu_ref_value
 
-        # Parse frame_mapping_refs (list from container "FRAME-MAPPING-REFS")
+        # Parse frame_mapping_refs (list from container "FRAME-MAPPINGS")
         obj.frame_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "FRAME-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "FRAME-MAPPINGS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -181,9 +181,9 @@ class Gateway(FibexElement):
                 if child_value is not None:
                     obj.frame_mapping_refs.append(child_value)
 
-        # Parse i_pdu_mapping_refs (list from container "I-PDU-MAPPING-REFS")
+        # Parse i_pdu_mapping_refs (list from container "I-PDU-MAPPINGS")
         obj.i_pdu_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "I-PDU-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "I-PDU-MAPPINGS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -197,9 +197,9 @@ class Gateway(FibexElement):
                 if child_value is not None:
                     obj.i_pdu_mapping_refs.append(child_value)
 
-        # Parse signal_mapping_refs (list from container "SIGNAL-MAPPING-REFS")
+        # Parse signal_mapping_refs (list from container "SIGNAL-MAPPINGS")
         obj.signal_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "SIGNAL-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "SIGNAL-MAPPINGS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

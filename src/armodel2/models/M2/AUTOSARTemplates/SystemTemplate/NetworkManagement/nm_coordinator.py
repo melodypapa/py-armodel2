@@ -116,9 +116,9 @@ class NmCoordinator(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize nm_node_refs (list to container "NM-NODE-REFS")
+        # Serialize nm_node_refs (list to container "NM-NODES")
         if self.nm_node_refs:
-            wrapper = ET.Element("NM-NODE-REFS")
+            wrapper = ET.Element("NM-NODES")
             for item in self.nm_node_refs:
                 serialized = SerializationHelper.serialize_item(item, "NmNode")
                 if serialized is not None:
@@ -166,9 +166,9 @@ class NmCoordinator(ARObject):
             nm_global_value = child.text
             obj.nm_global = nm_global_value
 
-        # Parse nm_node_refs (list from container "NM-NODE-REFS")
+        # Parse nm_node_refs (list from container "NM-NODES")
         obj.nm_node_refs = []
-        container = SerializationHelper.find_child_element(element, "NM-NODE-REFS")
+        container = SerializationHelper.find_child_element(element, "NM-NODES")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

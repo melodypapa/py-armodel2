@@ -80,9 +80,9 @@ class Code(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize callback_header_refs (list to container "CALLBACK-HEADER-REFS")
+        # Serialize callback_header_refs (list to container "CALLBACK-HEADERS")
         if self.callback_header_refs:
-            wrapper = ET.Element("CALLBACK-HEADER-REFS")
+            wrapper = ET.Element("CALLBACK-HEADERS")
             for item in self.callback_header_refs:
                 serialized = SerializationHelper.serialize_item(item, "ServiceNeeds")
                 if serialized is not None:
@@ -122,9 +122,9 @@ class Code(Identifiable):
                 if child_value is not None:
                     obj.artifact_descriptors.append(child_value)
 
-        # Parse callback_header_refs (list from container "CALLBACK-HEADER-REFS")
+        # Parse callback_header_refs (list from container "CALLBACK-HEADERS")
         obj.callback_header_refs = []
-        container = SerializationHelper.find_child_element(element, "CALLBACK-HEADER-REFS")
+        container = SerializationHelper.find_child_element(element, "CALLBACK-HEADERS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

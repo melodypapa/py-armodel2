@@ -227,9 +227,9 @@ class CanTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize receiver_refs (list to container "RECEIVER-REFS")
+        # Serialize receiver_refs (list to container "RECEIVERS")
         if self.receiver_refs:
-            wrapper = ET.Element("RECEIVER-REFS")
+            wrapper = ET.Element("RECEIVERS")
             for item in self.receiver_refs:
                 serialized = SerializationHelper.serialize_item(item, "CanTpNode")
                 if serialized is not None:
@@ -405,9 +405,9 @@ class CanTpConnection(TpConnection):
             padding_value = child.text
             obj.padding = padding_value
 
-        # Parse receiver_refs (list from container "RECEIVER-REFS")
+        # Parse receiver_refs (list from container "RECEIVERS")
         obj.receiver_refs = []
-        container = SerializationHelper.find_child_element(element, "RECEIVER-REFS")
+        container = SerializationHelper.find_child_element(element, "RECEIVERS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

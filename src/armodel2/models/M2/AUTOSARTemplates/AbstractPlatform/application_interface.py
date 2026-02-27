@@ -94,9 +94,9 @@ class ApplicationInterface(PortInterface):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize indication_refs (list to container "INDICATION-REFS")
+        # Serialize indication_refs (list to container "INDICATIONS")
         if self.indication_refs:
-            wrapper = ET.Element("INDICATION-REFS")
+            wrapper = ET.Element("INDICATIONS")
             for item in self.indication_refs:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
@@ -146,9 +146,9 @@ class ApplicationInterface(PortInterface):
                 if child_value is not None:
                     obj.commands.append(child_value)
 
-        # Parse indication_refs (list from container "INDICATION-REFS")
+        # Parse indication_refs (list from container "INDICATIONS")
         obj.indication_refs = []
-        container = SerializationHelper.find_child_element(element, "INDICATION-REFS")
+        container = SerializationHelper.find_child_element(element, "INDICATIONS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
