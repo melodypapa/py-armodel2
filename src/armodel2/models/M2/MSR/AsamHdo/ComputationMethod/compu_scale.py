@@ -309,10 +309,11 @@ class CompuScale(ARObject):
         return elem
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> Self:
+    def deserialize(cls, element: ET.Element) -> "CompuScale":
         """Deserialize XML element to CompuScale.
 
         Uses static dispatch table for O(1) tag-to-handler lookup.
+        Calls super().deserialize() first to handle inherited attributes from ARObject.
 
         Args:
             element: XML element to deserialize from
@@ -320,10 +321,10 @@ class CompuScale(ARObject):
         Returns:
             Deserialized CompuScale instance
         """
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, deserialize inherited attributes from parent chain (ARObject)
+        obj = super(CompuScale, cls).deserialize(element)
 
-        # Single-pass deserialization with dispatch table
+        # Then process CompuScale-specific elements with dispatch table
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag

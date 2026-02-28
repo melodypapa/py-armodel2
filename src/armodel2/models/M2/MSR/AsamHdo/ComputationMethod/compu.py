@@ -78,12 +78,13 @@ class Compu(ARObject):
         return elem
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> Self:
+    def deserialize(cls, element: ET.Element) -> "Compu":
         """Deserialize XML element to Compu.
 
         Handles CompuContent polymorphic types by using ModelFactory to resolve
         concrete subclasses like CompuScales. This ensures Compu.compu_content
         is properly populated with the correct concrete subclass.
+        Calls super().deserialize() first to handle inherited attributes from ARObject.
 
         Args:
             element: XML element to deserialize from
@@ -91,8 +92,8 @@ class Compu(ARObject):
         Returns:
             Deserialized Compu instance with compu_content properly set
         """
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, deserialize inherited attributes from parent chain (ARObject)
+        obj = super(Compu, cls).deserialize(element)
 
         # Use ModelFactory for polymorphic type resolution
         factory = ModelFactory()

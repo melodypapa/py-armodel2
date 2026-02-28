@@ -166,6 +166,8 @@ class CompuMethod(ARElement):
         Uses static dispatch table for O(1) tag-to-handler lookup.
         Handles the COMPU-INTERNAL-TO-PHYS and COMPU-PHYS-TO-INTERNAL elements
         by using the factory pattern to properly deserialize them as Compu objects.
+        Calls super().deserialize() first to handle inherited attributes from
+        the chain: CompuMethod -> ARElement -> PackageableElement -> ... -> Referrable.
 
         Args:
             element: XML element to deserialize from
@@ -173,10 +175,11 @@ class CompuMethod(ARElement):
         Returns:
             Deserialized CompuMethod instance
         """
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, deserialize inherited attributes from parent chain
+        # The parent chain will create and return the object
+        obj = super(CompuMethod, cls).deserialize(element)
 
-        # Single-pass deserialization with dispatch table
+        # Then process CompuMethod-specific elements with dispatch table
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag

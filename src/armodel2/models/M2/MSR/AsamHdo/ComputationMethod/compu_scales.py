@@ -74,11 +74,12 @@ class CompuScales(CompuContent):
         return elem
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> Self:
+    def deserialize(cls, element: ET.Element) -> "CompuScales":
         """Deserialize XML element to CompuScales.
 
         AUTOSAR schema uses flat structure: COMPU-SCALES contains COMPU-SCALE items directly.
         Uses static dispatch table for O(1) tag-to-handler lookup.
+        Calls super().deserialize() first to handle inherited attributes from CompuContent -> ARObject.
 
         Args:
             element: XML element to deserialize from
@@ -86,10 +87,10 @@ class CompuScales(CompuContent):
         Returns:
             Deserialized CompuScales instance
         """
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, deserialize inherited attributes from parent chain (CompuContent -> ARObject)
+        obj = super(CompuScales, cls).deserialize(element)
 
-        # Single-pass deserialization with dispatch table
+        # Then process CompuScales-specific elements with dispatch table
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag

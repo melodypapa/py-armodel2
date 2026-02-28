@@ -127,6 +127,9 @@ class ARPackage(CollectableElement):
         """Deserialize XML element to ARPackage object.
 
         Uses static dispatch table for O(1) tag-to-handler lookup.
+        Calls super().deserialize() first to handle inherited attributes
+        from the chain: ARPackage -> CollectableElement -> Identifiable ->
+        MultilanguageReferrable -> Referrable -> ARObject.
 
         Args:
             element: XML element to deserialize from
@@ -134,10 +137,11 @@ class ARPackage(CollectableElement):
         Returns:
             Deserialized ARPackage object
         """
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, deserialize inherited attributes from parent chain
+        # The parent chain will create and return the object
+        obj = super(ARPackage, cls).deserialize(element)
 
-        # Single-pass deserialization with dispatch table
+        # Then process ARPackage-specific elements with dispatch table
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag

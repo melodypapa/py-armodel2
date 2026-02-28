@@ -76,12 +76,13 @@ class CompuConst(ARObject):
         return elem
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> Self:
+    def deserialize(cls, element: ET.Element) -> "CompuConst":
         """Deserialize XML element to CompuConst.
 
         Handles CompuConstContent polymorphic types by using ModelFactory to resolve
         concrete subclasses like CompuConstTextContent. This ensures CompuConst.compu_const_content_type
         is properly populated with the correct concrete subclass.
+        Calls super().deserialize() first to handle inherited attributes from ARObject.
 
         Args:
             element: XML element to deserialize from
@@ -89,8 +90,8 @@ class CompuConst(ARObject):
         Returns:
             Deserialized CompuConst instance with compu_const_content_type properly set
         """
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, deserialize inherited attributes from parent chain (ARObject)
+        obj = super(CompuConst, cls).deserialize(element)
 
         # Use ModelFactory for polymorphic type resolution
         factory = ModelFactory()
