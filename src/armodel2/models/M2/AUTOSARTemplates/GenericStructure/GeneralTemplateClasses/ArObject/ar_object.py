@@ -120,9 +120,11 @@ class ARObject:
 
         # Single-pass deserialization with O(1) dispatch for child elements
         # Inline namespace stripping for performance
+        # Use ARObject._DESERIALIZE_DISPATCH explicitly to avoid processing
+        # subclass-specific elements (which the subclass deserialize() will handle)
         for child in element:
             tag = child.tag.split('}', 1)[1] if child.tag.startswith('{') else child.tag
-            handler = cls._DESERIALIZE_DISPATCH.get(tag)
+            handler = ARObject._DESERIALIZE_DISPATCH.get(tag)
             if handler is not None:
                 handler(obj, child)
 
