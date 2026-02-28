@@ -29,9 +29,19 @@ class DdsResourceLimits(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-RESOURCE-LIMITS"
+
+
     max_instances: Optional[PositiveInteger]
     max_samples: Optional[PositiveInteger]
     max_samples_per_instance: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-INSTANCES": lambda obj, elem: setattr(obj, "max_instances", elem.text),
+        "MAX-SAMPLES": lambda obj, elem: setattr(obj, "max_samples", elem.text),
+        "MAX-SAMPLES-PER-INSTANCE": lambda obj, elem: setattr(obj, "max_samples_per_instance", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsResourceLimits."""
         super().__init__()
@@ -45,9 +55,8 @@ class DdsResourceLimits(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsResourceLimits, self).serialize()

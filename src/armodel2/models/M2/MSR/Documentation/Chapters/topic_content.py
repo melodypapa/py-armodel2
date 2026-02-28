@@ -35,9 +35,19 @@ class TopicContent(ARObject):
         """
         return False
 
+    _XML_TAG = "TOPIC-CONTENT"
+
+
     block_level: DocumentationBlock
     table: Optional[Table]
     traceable_table: Any
+    _DESERIALIZE_DISPATCH = {
+        "BLOCK-LEVEL": lambda obj, elem: setattr(obj, "block_level", DocumentationBlock.deserialize(elem)),
+        "TABLE": lambda obj, elem: setattr(obj, "table", Table.deserialize(elem)),
+        "TRACEABLE-TABLE": lambda obj, elem: setattr(obj, "traceable_table", any (TraceableTable).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TopicContent."""
         super().__init__()

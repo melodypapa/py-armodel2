@@ -32,6 +32,9 @@ class CanControllerXlConfigurationRequirements(ARObject):
         """
         return False
 
+    _XML_TAG = "CAN-CONTROLLER-XL-CONFIGURATION-REQUIREMENTS"
+
+
     error_signaling: Optional[Boolean]
     max_number_of_time_quanta_per: Optional[Any]
     max_pwm_l: Optional[PositiveInteger]
@@ -48,6 +51,26 @@ class CanControllerXlConfigurationRequirements(ARObject):
     min_sync_jump: Optional[Float]
     min_trcv_delay: Optional[TimeValue]
     trcv_pwm_mode: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ERROR-SIGNALING": lambda obj, elem: setattr(obj, "error_signaling", elem.text),
+        "MAX-NUMBER-OF-TIME-QUANTA-PER": lambda obj, elem: setattr(obj, "max_number_of_time_quanta_per", any (IntegerBit).deserialize(elem)),
+        "MAX-PWM-L": lambda obj, elem: setattr(obj, "max_pwm_l", elem.text),
+        "MAX-PWM-O": lambda obj, elem: setattr(obj, "max_pwm_o", elem.text),
+        "MAX-PWM-S": lambda obj, elem: setattr(obj, "max_pwm_s", elem.text),
+        "MAX-SAMPLE": lambda obj, elem: setattr(obj, "max_sample", elem.text),
+        "MAX-SYNC-JUMP": lambda obj, elem: setattr(obj, "max_sync_jump", elem.text),
+        "MAX-TRCV-DELAY": lambda obj, elem: setattr(obj, "max_trcv_delay", elem.text),
+        "MIN-NUMBER-OF-TIME-QUANTA-PER": lambda obj, elem: setattr(obj, "min_number_of_time_quanta_per", any (IntegerBit).deserialize(elem)),
+        "MIN-PWM-L": lambda obj, elem: setattr(obj, "min_pwm_l", elem.text),
+        "MIN-PWM-O": lambda obj, elem: setattr(obj, "min_pwm_o", elem.text),
+        "MIN-PWM-S": lambda obj, elem: setattr(obj, "min_pwm_s", elem.text),
+        "MIN-SAMPLE-POINT": lambda obj, elem: setattr(obj, "min_sample_point", elem.text),
+        "MIN-SYNC-JUMP": lambda obj, elem: setattr(obj, "min_sync_jump", elem.text),
+        "MIN-TRCV-DELAY": lambda obj, elem: setattr(obj, "min_trcv_delay", elem.text),
+        "TRCV-PWM-MODE": lambda obj, elem: setattr(obj, "trcv_pwm_mode", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanControllerXlConfigurationRequirements."""
         super().__init__()
@@ -74,9 +97,8 @@ class CanControllerXlConfigurationRequirements(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanControllerXlConfigurationRequirements, self).serialize()

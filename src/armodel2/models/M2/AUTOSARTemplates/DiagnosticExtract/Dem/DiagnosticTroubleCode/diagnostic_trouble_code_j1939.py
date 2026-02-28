@@ -40,11 +40,23 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-TROUBLE-CODE-J1939"
+
+
     dtc_props_props_ref: Optional[ARRef]
     fmi: Optional[PositiveInteger]
     kind: Optional[DiagnosticTroubleCode]
     node_ref: Optional[ARRef]
     spn_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DTC-PROPS-PROPS-REF": lambda obj, elem: setattr(obj, "dtc_props_props_ref", ARRef.deserialize(elem)),
+        "FMI": lambda obj, elem: setattr(obj, "fmi", elem.text),
+        "KIND": lambda obj, elem: setattr(obj, "kind", DiagnosticTroubleCode.deserialize(elem)),
+        "NODE-REF": lambda obj, elem: setattr(obj, "node_ref", ARRef.deserialize(elem)),
+        "SPN-REF": lambda obj, elem: setattr(obj, "spn_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeJ1939."""
         super().__init__()
@@ -60,9 +72,8 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticTroubleCodeJ1939, self).serialize()

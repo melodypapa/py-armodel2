@@ -37,8 +37,17 @@ class BulkNvDataDescriptor(Identifiable):
         """
         return False
 
+    _XML_TAG = "BULK-NV-DATA-DESCRIPTOR"
+
+
     bulk_nv_block_ref: Optional[ARRef]
     nv_block_data_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BULK-NV-BLOCK-REF": lambda obj, elem: setattr(obj, "bulk_nv_block_ref", ARRef.deserialize(elem)),
+        "NV-BLOCK-DATAS": lambda obj, elem: obj.nv_block_data_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BulkNvDataDescriptor."""
         super().__init__()
@@ -51,9 +60,8 @@ class BulkNvDataDescriptor(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BulkNvDataDescriptor, self).serialize()

@@ -30,8 +30,17 @@ class ConstantSpecificationMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "CONSTANT-SPECIFICATION-MAPPING"
+
+
     appl_constant_ref: Optional[ARRef]
     impl_constant_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPL-CONSTANT-REF": lambda obj, elem: setattr(obj, "appl_constant_ref", ARRef.deserialize(elem)),
+        "IMPL-CONSTANT-REF": lambda obj, elem: setattr(obj, "impl_constant_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConstantSpecificationMapping."""
         super().__init__()
@@ -44,9 +53,8 @@ class ConstantSpecificationMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConstantSpecificationMapping, self).serialize()

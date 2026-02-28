@@ -33,9 +33,19 @@ class SimulatedExecutionTime(ExecutionTime):
         """
         return False
 
+    _XML_TAG = "SIMULATED-EXECUTION-TIME"
+
+
     maximum_execution_time: Optional[MultidimensionalTime]
     minimum_execution_time: Optional[MultidimensionalTime]
     nominal_execution_time: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "MAXIMUM-EXECUTION-TIME": lambda obj, elem: setattr(obj, "maximum_execution_time", MultidimensionalTime.deserialize(elem)),
+        "MINIMUM-EXECUTION-TIME": lambda obj, elem: setattr(obj, "minimum_execution_time", MultidimensionalTime.deserialize(elem)),
+        "NOMINAL-EXECUTION-TIME": lambda obj, elem: setattr(obj, "nominal_execution_time", MultidimensionalTime.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SimulatedExecutionTime."""
         super().__init__()
@@ -49,9 +59,8 @@ class SimulatedExecutionTime(ExecutionTime):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SimulatedExecutionTime, self).serialize()

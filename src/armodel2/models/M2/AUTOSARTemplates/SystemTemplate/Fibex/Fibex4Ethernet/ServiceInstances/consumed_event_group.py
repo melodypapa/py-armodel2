@@ -48,6 +48,9 @@ class ConsumedEventGroup(Identifiable):
         """
         return False
 
+    _XML_TAG = "CONSUMED-EVENT-GROUP"
+
+
     application_endpoint_ref: Optional[ARRef]
     auto_require: Optional[Boolean]
     event_group: Optional[PositiveInteger]
@@ -57,6 +60,19 @@ class ConsumedEventGroup(Identifiable):
     routing_group_refs: list[ARRef]
     sd_client_config: Optional[Any]
     sd_client_timer_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATION-ENDPOINT-REF": lambda obj, elem: setattr(obj, "application_endpoint_ref", ARRef.deserialize(elem)),
+        "AUTO-REQUIRE": lambda obj, elem: setattr(obj, "auto_require", elem.text),
+        "EVENT-GROUP": lambda obj, elem: setattr(obj, "event_group", elem.text),
+        "EVENT-MULTICASTS": lambda obj, elem: obj.event_multicast_refs.append(ARRef.deserialize(elem)),
+        "PDU-ACTIVATION-ROUTINGS": lambda obj, elem: obj.pdu_activation_routings.append(PduActivationRoutingGroup.deserialize(elem)),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "ROUTING-GROUPS": lambda obj, elem: obj.routing_group_refs.append(ARRef.deserialize(elem)),
+        "SD-CLIENT-CONFIG": lambda obj, elem: setattr(obj, "sd_client_config", any (SdClientConfig).deserialize(elem)),
+        "SD-CLIENT-TIMER-REF": lambda obj, elem: setattr(obj, "sd_client_timer_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConsumedEventGroup."""
         super().__init__()
@@ -76,9 +92,8 @@ class ConsumedEventGroup(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConsumedEventGroup, self).serialize()

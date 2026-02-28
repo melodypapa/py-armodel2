@@ -41,9 +41,19 @@ class ISignalTriggering(Identifiable):
         """
         return False
 
+    _XML_TAG = "I-SIGNAL-TRIGGERING"
+
+
     i_signal_group_ref: Optional[ARRef]
     i_signal_port_refs: list[ARRef]
     i_signal_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "I-SIGNAL-GROUP-REF": lambda obj, elem: setattr(obj, "i_signal_group_ref", ARRef.deserialize(elem)),
+        "I-SIGNAL-PORTS": lambda obj, elem: obj.i_signal_port_refs.append(ARRef.deserialize(elem)),
+        "I-SIGNAL-REF": lambda obj, elem: setattr(obj, "i_signal_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ISignalTriggering."""
         super().__init__()
@@ -57,9 +67,8 @@ class ISignalTriggering(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ISignalTriggering, self).serialize()

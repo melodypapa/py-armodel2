@@ -30,7 +30,15 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-ACF-CAN"
+
+
     message_type_message_type_enum: Optional[IEEE1722TpAcfCan]
+    _DESERIALIZE_DISPATCH = {
+        "MESSAGE-TYPE-MESSAGE-TYPE-ENUM": lambda obj, elem: setattr(obj, "message_type_message_type_enum", IEEE1722TpAcfCan.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfCan."""
         super().__init__()
@@ -42,9 +50,8 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpAcfCan, self).serialize()

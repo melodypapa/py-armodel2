@@ -34,6 +34,12 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
 
     base: Optional[Identifier]
     enum_table_ref: Optional[Ref]
+    _DESERIALIZE_DISPATCH = {
+        "BASE": lambda obj, elem: setattr(obj, "base", elem.text),
+        "ENUM-TABLE-REF": lambda obj, elem: setattr(obj, "enum_table_ref", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AbstractEnumerationValueVariationPoint."""
         super().__init__()
@@ -46,9 +52,8 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AbstractEnumerationValueVariationPoint, self).serialize()

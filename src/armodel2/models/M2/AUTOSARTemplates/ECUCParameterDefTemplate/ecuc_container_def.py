@@ -49,6 +49,15 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
     origin: Optional[String]
     post_build_variant: Optional[Boolean]
     requires_index: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION-URIS": lambda obj, elem: obj.destination_uri_refs.append(ARRef.deserialize(elem)),
+        "MULTIPLICITIES": lambda obj, elem: obj.multiplicities.append(EcucMultiplicityConfigurationClass.deserialize(elem)),
+        "ORIGIN": lambda obj, elem: setattr(obj, "origin", elem.text),
+        "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", elem.text),
+        "REQUIRES-INDEX": lambda obj, elem: setattr(obj, "requires_index", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucContainerDef."""
         super().__init__()
@@ -64,9 +73,8 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucContainerDef, self).serialize()

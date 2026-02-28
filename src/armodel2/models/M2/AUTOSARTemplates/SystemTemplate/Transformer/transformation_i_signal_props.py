@@ -37,6 +37,13 @@ class TransformationISignalProps(ARObject, ABC):
     cs_error_reaction: Optional[CSTransformerErrorReactionEnum]
     data_prototype_refs: list[ARRef]
     transformer_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CS-ERROR-REACTION": lambda obj, elem: setattr(obj, "cs_error_reaction", CSTransformerErrorReactionEnum.deserialize(elem)),
+        "DATA-PROTOTYPES": lambda obj, elem: obj.data_prototype_refs.append(ARRef.deserialize(elem)),
+        "TRANSFORMER-REF": lambda obj, elem: setattr(obj, "transformer_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TransformationISignalProps."""
         super().__init__()
@@ -50,9 +57,8 @@ class TransformationISignalProps(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TransformationISignalProps, self).serialize()

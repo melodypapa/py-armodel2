@@ -41,10 +41,21 @@ class ISignalGroup(FibexElement):
         """
         return False
 
+    _XML_TAG = "I-SIGNAL-GROUP"
+
+
     com_based_ref: Optional[ARRef]
     i_signal_refs: list[ARRef]
     system_signal_group_ref: Optional[ARRef]
     transformation_i_signals: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "COM-BASED-REF": lambda obj, elem: setattr(obj, "com_based_ref", ARRef.deserialize(elem)),
+        "I-SIGNALS": lambda obj, elem: obj.i_signal_refs.append(ARRef.deserialize(elem)),
+        "SYSTEM-SIGNAL-GROUP-REF": lambda obj, elem: setattr(obj, "system_signal_group_ref", ARRef.deserialize(elem)),
+        "TRANSFORMATION-I-SIGNALS": lambda obj, elem: obj.transformation_i_signals.append(any (TransformationISignal).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ISignalGroup."""
         super().__init__()
@@ -59,9 +70,8 @@ class ISignalGroup(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ISignalGroup, self).serialize()

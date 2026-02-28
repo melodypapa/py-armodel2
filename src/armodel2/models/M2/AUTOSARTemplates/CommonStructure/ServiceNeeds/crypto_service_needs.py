@@ -35,10 +35,21 @@ class CryptoServiceNeeds(ServiceNeeds):
         """
         return False
 
+    _XML_TAG = "CRYPTO-SERVICE-NEEDS"
+
+
     algorithm_family: Optional[String]
     algorithm_mode: Optional[String]
     crypto_key: Optional[String]
     maximum_key: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ALGORITHM-FAMILY": lambda obj, elem: setattr(obj, "algorithm_family", elem.text),
+        "ALGORITHM-MODE": lambda obj, elem: setattr(obj, "algorithm_mode", elem.text),
+        "CRYPTO-KEY": lambda obj, elem: setattr(obj, "crypto_key", elem.text),
+        "MAXIMUM-KEY": lambda obj, elem: setattr(obj, "maximum_key", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CryptoServiceNeeds."""
         super().__init__()
@@ -53,9 +64,8 @@ class CryptoServiceNeeds(ServiceNeeds):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CryptoServiceNeeds, self).serialize()

@@ -26,8 +26,17 @@ class CompositeNetworkRepresentation(ARObject):
         """
         return False
 
+    _XML_TAG = "COMPOSITE-NETWORK-REPRESENTATION"
+
+
     leaf_element_element_in_port_interface_instance_ref: Optional[Any]
     network_representation: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "LEAF-ELEMENT-ELEMENT-IN-PORT-INTERFACE-INSTANCE-REF": lambda obj, elem: setattr(obj, "leaf_element_element_in_port_interface_instance_ref", any (ApplicationComposite).deserialize(elem)),
+        "NETWORK-REPRESENTATION": lambda obj, elem: setattr(obj, "network_representation", any (SwDataDefPropsRepresentation).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompositeNetworkRepresentation."""
         super().__init__()
@@ -40,9 +49,8 @@ class CompositeNetworkRepresentation(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompositeNetworkRepresentation, self).serialize()

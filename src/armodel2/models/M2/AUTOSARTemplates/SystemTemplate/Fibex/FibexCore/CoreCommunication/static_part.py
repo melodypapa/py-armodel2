@@ -34,7 +34,15 @@ class StaticPart(MultiplexedPart):
         """
         return False
 
+    _XML_TAG = "STATIC-PART"
+
+
     i_pdu_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "I-PDU-REF": lambda obj, elem: setattr(obj, "i_pdu_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StaticPart."""
         super().__init__()
@@ -46,9 +54,8 @@ class StaticPart(MultiplexedPart):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StaticPart, self).serialize()

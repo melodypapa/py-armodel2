@@ -36,9 +36,19 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
         """
         return False
 
+    _XML_TAG = "TTCAN-ABSOLUTELY-SCHEDULED-TIMING"
+
+
     communication_cycle_cycle: Optional[CommunicationCycle]
     time_mark: Optional[Integer]
     trigger_ref: Optional[TtcanTriggerType]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CYCLE-CYCLE": lambda obj, elem: setattr(obj, "communication_cycle_cycle", CommunicationCycle.deserialize(elem)),
+        "TIME-MARK": lambda obj, elem: setattr(obj, "time_mark", elem.text),
+        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", TtcanTriggerType.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TtcanAbsolutelyScheduledTiming."""
         super().__init__()
@@ -52,9 +62,8 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TtcanAbsolutelyScheduledTiming, self).serialize()

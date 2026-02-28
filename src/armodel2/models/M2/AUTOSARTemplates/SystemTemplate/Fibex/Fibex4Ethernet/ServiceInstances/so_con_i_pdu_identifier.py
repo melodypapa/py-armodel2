@@ -40,10 +40,21 @@ class SoConIPduIdentifier(Referrable):
         """
         return False
 
+    _XML_TAG = "SO-CON-I-PDU-IDENTIFIER"
+
+
     header_id: Optional[PositiveInteger]
     pdu_collection_ref: Optional[Any]
     pdu_collection_trigger_ref: Optional[PduCollectionTriggerEnum]
     pdu_triggering_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "HEADER-ID": lambda obj, elem: setattr(obj, "header_id", elem.text),
+        "PDU-COLLECTION-REF": lambda obj, elem: setattr(obj, "pdu_collection_ref", ARRef.deserialize(elem)),
+        "PDU-COLLECTION-TRIGGER-REF": lambda obj, elem: setattr(obj, "pdu_collection_trigger_ref", PduCollectionTriggerEnum.deserialize(elem)),
+        "PDU-TRIGGERING-REF": lambda obj, elem: setattr(obj, "pdu_triggering_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SoConIPduIdentifier."""
         super().__init__()
@@ -58,9 +69,8 @@ class SoConIPduIdentifier(Referrable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SoConIPduIdentifier, self).serialize()

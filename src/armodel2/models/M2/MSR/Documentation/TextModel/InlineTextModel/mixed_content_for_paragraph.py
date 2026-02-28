@@ -77,6 +77,23 @@ class MixedContentForParagraph(ARObject, ABC):
     xfile: Xfile
     xref: Xref
     xref_target: XrefTarget
+    _DESERIALIZE_DISPATCH = {
+        "BR": lambda obj, elem: setattr(obj, "br", Br.deserialize(elem)),
+        "E": lambda obj, elem: setattr(obj, "e", EmphasisText.deserialize(elem)),
+        "FT": lambda obj, elem: setattr(obj, "ft", SlParagraph.deserialize(elem)),
+        "IE": lambda obj, elem: setattr(obj, "ie", IndexEntry.deserialize(elem)),
+        "STD": lambda obj, elem: setattr(obj, "std", Std.deserialize(elem)),
+        "SUB": lambda obj, elem: setattr(obj, "sub", elem.text),
+        "SUP": lambda obj, elem: setattr(obj, "sup", elem.text),
+        "TRACE-REF": lambda obj, elem: setattr(obj, "trace_ref", ARRef.deserialize(elem)),
+        "TT": lambda obj, elem: setattr(obj, "tt", Tt.deserialize(elem)),
+        "XDOC": lambda obj, elem: setattr(obj, "xdoc", Xdoc.deserialize(elem)),
+        "XFILE": lambda obj, elem: setattr(obj, "xfile", Xfile.deserialize(elem)),
+        "XREF": lambda obj, elem: setattr(obj, "xref", Xref.deserialize(elem)),
+        "XREF-TARGET": lambda obj, elem: setattr(obj, "xref_target", XrefTarget.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MixedContentForParagraph."""
         super().__init__()
@@ -100,9 +117,8 @@ class MixedContentForParagraph(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MixedContentForParagraph, self).serialize()

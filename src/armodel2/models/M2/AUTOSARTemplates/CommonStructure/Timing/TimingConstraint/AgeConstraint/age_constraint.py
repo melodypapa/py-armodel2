@@ -37,9 +37,19 @@ class AgeConstraint(TimingConstraint):
         """
         return False
 
+    _XML_TAG = "AGE-CONSTRAINT"
+
+
     maximum: Optional[MultidimensionalTime]
     minimum: Optional[MultidimensionalTime]
     scope_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", MultidimensionalTime.deserialize(elem)),
+        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", MultidimensionalTime.deserialize(elem)),
+        "SCOPE-REF": lambda obj, elem: setattr(obj, "scope_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AgeConstraint."""
         super().__init__()
@@ -53,9 +63,8 @@ class AgeConstraint(TimingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AgeConstraint, self).serialize()

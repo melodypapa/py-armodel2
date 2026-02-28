@@ -34,11 +34,23 @@ class Ipv4DhcpServerConfiguration(Describable):
         """
         return False
 
+    _XML_TAG = "IPV4-DHCP-SERVER-CONFIGURATION"
+
+
     address_range: Optional[Ip4AddressString]
     default_gateway: Optional[Ip4AddressString]
     default_lease: Optional[TimeValue]
     dns_servers: list[Ip4AddressString]
     network_mask: Optional[Ip4AddressString]
+    _DESERIALIZE_DISPATCH = {
+        "ADDRESS-RANGE": lambda obj, elem: setattr(obj, "address_range", elem.text),
+        "DEFAULT-GATEWAY": lambda obj, elem: setattr(obj, "default_gateway", elem.text),
+        "DEFAULT-LEASE": lambda obj, elem: setattr(obj, "default_lease", elem.text),
+        "DNS-SERVERS": lambda obj, elem: obj.dns_servers.append(elem.text),
+        "NETWORK-MASK": lambda obj, elem: setattr(obj, "network_mask", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ipv4DhcpServerConfiguration."""
         super().__init__()
@@ -54,9 +66,8 @@ class Ipv4DhcpServerConfiguration(Describable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ipv4DhcpServerConfiguration, self).serialize()

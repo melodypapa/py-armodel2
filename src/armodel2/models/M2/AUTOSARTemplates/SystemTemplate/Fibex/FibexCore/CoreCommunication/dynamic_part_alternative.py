@@ -34,9 +34,19 @@ class DynamicPartAlternative(ARObject):
         """
         return False
 
+    _XML_TAG = "DYNAMIC-PART-ALTERNATIVE"
+
+
     initial_dynamic: Optional[Boolean]
     i_pdu_ref: Optional[ARRef]
     selector_field: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "INITIAL-DYNAMIC": lambda obj, elem: setattr(obj, "initial_dynamic", elem.text),
+        "I-PDU-REF": lambda obj, elem: setattr(obj, "i_pdu_ref", ARRef.deserialize(elem)),
+        "SELECTOR-FIELD": lambda obj, elem: setattr(obj, "selector_field", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DynamicPartAlternative."""
         super().__init__()
@@ -50,9 +60,8 @@ class DynamicPartAlternative(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DynamicPartAlternative, self).serialize()

@@ -29,8 +29,17 @@ class PlcaProps(ARObject):
         """
         return False
 
+    _XML_TAG = "PLCA-PROPS"
+
+
     plca_local_node: Optional[PositiveInteger]
     plca_max_burst: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "PLCA-LOCAL-NODE": lambda obj, elem: setattr(obj, "plca_local_node", elem.text),
+        "PLCA-MAX-BURST": lambda obj, elem: setattr(obj, "plca_max_burst", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PlcaProps."""
         super().__init__()
@@ -43,9 +52,8 @@ class PlcaProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PlcaProps, self).serialize()

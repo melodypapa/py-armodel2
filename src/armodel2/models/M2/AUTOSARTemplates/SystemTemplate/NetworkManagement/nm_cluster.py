@@ -47,6 +47,18 @@ class NmCluster(Identifiable, ABC):
     nm_repeat_msg_ind_enabled: Optional[Boolean]
     nm: Optional[Boolean]
     pnc_cluster: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CLUSTER-REF": lambda obj, elem: setattr(obj, "communication_cluster_ref", ARRef.deserialize(elem)),
+        "NM-CHANNEL": lambda obj, elem: setattr(obj, "nm_channel", elem.text),
+        "NM-NODE": lambda obj, elem: setattr(obj, "nm_node", elem.text),
+        "NM-NODE-ID-ENABLED": lambda obj, elem: setattr(obj, "nm_node_id_enabled", elem.text),
+        "NM-PNC": lambda obj, elem: setattr(obj, "nm_pnc", elem.text),
+        "NM-REPEAT-MSG-IND-ENABLED": lambda obj, elem: setattr(obj, "nm_repeat_msg_ind_enabled", elem.text),
+        "NM": lambda obj, elem: setattr(obj, "nm", elem.text),
+        "PNC-CLUSTER": lambda obj, elem: setattr(obj, "pnc_cluster", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NmCluster."""
         super().__init__()
@@ -65,9 +77,8 @@ class NmCluster(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NmCluster, self).serialize()

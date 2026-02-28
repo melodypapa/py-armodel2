@@ -37,9 +37,19 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
         """
         return False
 
+    _XML_TAG = "MODE-SWITCH-RECEIVER-COM-SPEC"
+
+
     enhanced_mode: Optional[Boolean]
     mode_group_ref: Optional[ARRef]
     supports: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ENHANCED-MODE": lambda obj, elem: setattr(obj, "enhanced_mode", elem.text),
+        "MODE-GROUP-REF": lambda obj, elem: setattr(obj, "mode_group_ref", ARRef.deserialize(elem)),
+        "SUPPORTS": lambda obj, elem: setattr(obj, "supports", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeSwitchReceiverComSpec."""
         super().__init__()
@@ -53,9 +63,8 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeSwitchReceiverComSpec, self).serialize()

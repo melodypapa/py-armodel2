@@ -61,6 +61,9 @@ class NvBlockDescriptor(Identifiable):
         """
         return False
 
+    _XML_TAG = "NV-BLOCK-DESCRIPTOR"
+
+
     client_server_ports: list[RoleBasedPortAssignment]
     constant_value_refs: list[ARRef]
     data_type_refs: list[ARRef]
@@ -73,6 +76,22 @@ class NvBlockDescriptor(Identifiable):
     support_dirty: Optional[Boolean]
     timing_event_ref: Optional[ARRef]
     writing_strategies: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CLIENT-SERVER-PORTS": lambda obj, elem: obj.client_server_ports.append(RoleBasedPortAssignment.deserialize(elem)),
+        "CONSTANT-VALUES": lambda obj, elem: obj.constant_value_refs.append(ARRef.deserialize(elem)),
+        "DATA-TYPES": lambda obj, elem: obj.data_type_refs.append(ARRef.deserialize(elem)),
+        "INSTANTIATION-DATA-DEFS": lambda obj, elem: obj.instantiation_data_defs.append(InstantiationDataDefProps.deserialize(elem)),
+        "MODE-SWITCH-EVENTS": lambda obj, elem: obj.mode_switch_events.append(any (ModeSwitchEvent).deserialize(elem)),
+        "NV-BLOCK-DATAS": lambda obj, elem: obj.nv_block_data_refs.append(ARRef.deserialize(elem)),
+        "NV-BLOCK-NEEDS": lambda obj, elem: setattr(obj, "nv_block_needs", NvBlockNeeds.deserialize(elem)),
+        "RAM-BLOCK-REF": lambda obj, elem: setattr(obj, "ram_block_ref", ARRef.deserialize(elem)),
+        "ROM-BLOCK-REF": lambda obj, elem: setattr(obj, "rom_block_ref", ARRef.deserialize(elem)),
+        "SUPPORT-DIRTY": lambda obj, elem: setattr(obj, "support_dirty", elem.text),
+        "TIMING-EVENT-REF": lambda obj, elem: setattr(obj, "timing_event_ref", ARRef.deserialize(elem)),
+        "WRITING-STRATEGIES": lambda obj, elem: obj.writing_strategies.append(any (RoleBasedData).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NvBlockDescriptor."""
         super().__init__()
@@ -95,9 +114,8 @@ class NvBlockDescriptor(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NvBlockDescriptor, self).serialize()

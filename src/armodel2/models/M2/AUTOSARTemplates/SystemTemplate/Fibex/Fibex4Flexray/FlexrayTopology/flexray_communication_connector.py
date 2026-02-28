@@ -34,8 +34,17 @@ class FlexrayCommunicationConnector(CommunicationConnector):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-COMMUNICATION-CONNECTOR"
+
+
     nm_ready_sleep: Optional[Float]
     wake_up: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "NM-READY-SLEEP": lambda obj, elem: setattr(obj, "nm_ready_sleep", elem.text),
+        "WAKE-UP": lambda obj, elem: setattr(obj, "wake_up", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayCommunicationConnector."""
         super().__init__()
@@ -48,9 +57,8 @@ class FlexrayCommunicationConnector(CommunicationConnector):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayCommunicationConnector, self).serialize()

@@ -40,10 +40,21 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SERVICE-DATA-MAPPING"
+
+
     diagnostic_data_ref: Optional[ARRef]
     diagnostic_ref: Optional[ARRef]
     mapped_data_ref: Optional[ARRef]
     parameter: Optional[DiagnosticParameter]
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTIC-DATA-REF": lambda obj, elem: setattr(obj, "diagnostic_data_ref", ARRef.deserialize(elem)),
+        "DIAGNOSTIC-REF": lambda obj, elem: setattr(obj, "diagnostic_ref", ARRef.deserialize(elem)),
+        "MAPPED-DATA-REF": lambda obj, elem: setattr(obj, "mapped_data_ref", ARRef.deserialize(elem)),
+        "PARAMETER": lambda obj, elem: setattr(obj, "parameter", DiagnosticParameter.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticServiceDataMapping."""
         super().__init__()
@@ -58,9 +69,8 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticServiceDataMapping, self).serialize()

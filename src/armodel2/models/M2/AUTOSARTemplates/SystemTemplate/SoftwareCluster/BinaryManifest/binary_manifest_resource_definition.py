@@ -33,7 +33,15 @@ class BinaryManifestResourceDefinition(Identifiable):
         """
         return False
 
+    _XML_TAG = "BINARY-MANIFEST-RESOURCE-DEFINITION"
+
+
     item_definitions: list[BinaryManifestItem]
+    _DESERIALIZE_DISPATCH = {
+        "ITEM-DEFINITIONS": lambda obj, elem: obj.item_definitions.append(BinaryManifestItem.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BinaryManifestResourceDefinition."""
         super().__init__()
@@ -45,9 +53,8 @@ class BinaryManifestResourceDefinition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BinaryManifestResourceDefinition, self).serialize()

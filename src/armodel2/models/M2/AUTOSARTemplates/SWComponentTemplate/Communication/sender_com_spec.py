@@ -66,6 +66,17 @@ class SenderComSpec(PPortComSpec, ABC):
     transmission_acknowledge: Optional[TransmissionAcknowledgementRequest]
     transmission_props: Optional[TransmissionComSpecProps]
     uses_end_to_end_protection: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "COMPOSITE-NETWORK-REPRESENTATIONS": lambda obj, elem: obj.composite_network_representations.append(CompositeNetworkRepresentation.deserialize(elem)),
+        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "HANDLE-OUT-OF-RANGE": lambda obj, elem: setattr(obj, "handle_out_of_range", HandleOutOfRangeEnum.deserialize(elem)),
+        "NETWORK-REPRESENTATION": lambda obj, elem: setattr(obj, "network_representation", SwDataDefProps.deserialize(elem)),
+        "TRANSMISSION-ACKNOWLEDGE": lambda obj, elem: setattr(obj, "transmission_acknowledge", TransmissionAcknowledgementRequest.deserialize(elem)),
+        "TRANSMISSION-PROPS": lambda obj, elem: setattr(obj, "transmission_props", TransmissionComSpecProps.deserialize(elem)),
+        "USES-END-TO-END-PROTECTION": lambda obj, elem: setattr(obj, "uses_end_to_end_protection", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SenderComSpec."""
         super().__init__()
@@ -83,9 +94,8 @@ class SenderComSpec(PPortComSpec, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SenderComSpec, self).serialize()

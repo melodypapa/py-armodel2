@@ -34,9 +34,19 @@ class RuleBasedValueSpecification(ARObject):
         """
         return False
 
+    _XML_TAG = "RULE-BASED-VALUE-SPECIFICATION"
+
+
     arguments: Optional[RuleArguments]
     max_size_to_fill: Optional[Integer]
     rule: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "ARGUMENTS": lambda obj, elem: setattr(obj, "arguments", RuleArguments.deserialize(elem)),
+        "MAX-SIZE-TO-FILL": lambda obj, elem: setattr(obj, "max_size_to_fill", elem.text),
+        "RULE": lambda obj, elem: setattr(obj, "rule", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RuleBasedValueSpecification."""
         super().__init__()
@@ -50,9 +60,8 @@ class RuleBasedValueSpecification(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RuleBasedValueSpecification, self).serialize()

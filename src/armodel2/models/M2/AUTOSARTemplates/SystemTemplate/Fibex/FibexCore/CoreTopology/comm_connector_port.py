@@ -35,6 +35,11 @@ class CommConnectorPort(Identifiable, ABC):
         return True
 
     communication_direction: Optional[CommunicationDirectionType]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-DIRECTION": lambda obj, elem: setattr(obj, "communication_direction", CommunicationDirectionType.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CommConnectorPort."""
         super().__init__()
@@ -46,9 +51,8 @@ class CommConnectorPort(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CommConnectorPort, self).serialize()

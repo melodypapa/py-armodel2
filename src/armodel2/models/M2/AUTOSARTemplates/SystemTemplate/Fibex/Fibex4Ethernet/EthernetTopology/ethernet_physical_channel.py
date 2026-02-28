@@ -40,9 +40,19 @@ class EthernetPhysicalChannel(PhysicalChannel):
         """
         return False
 
+    _XML_TAG = "ETHERNET-PHYSICAL-CHANNEL"
+
+
     network_endpoints: list[NetworkEndpoint]
     so_ad_config: Optional[SoAdConfig]
     vlan: Optional[VlanConfig]
+    _DESERIALIZE_DISPATCH = {
+        "NETWORK-ENDPOINTS": lambda obj, elem: obj.network_endpoints.append(NetworkEndpoint.deserialize(elem)),
+        "SO-AD-CONFIG": lambda obj, elem: setattr(obj, "so_ad_config", SoAdConfig.deserialize(elem)),
+        "VLAN": lambda obj, elem: setattr(obj, "vlan", VlanConfig.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthernetPhysicalChannel."""
         super().__init__()
@@ -56,9 +66,8 @@ class EthernetPhysicalChannel(PhysicalChannel):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthernetPhysicalChannel, self).serialize()

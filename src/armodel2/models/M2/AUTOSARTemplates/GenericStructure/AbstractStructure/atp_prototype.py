@@ -36,6 +36,11 @@ class AtpPrototype(Identifiable, ABC):
         return True
 
     atp_type_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "ATP-TYPE-REF": lambda obj, elem: setattr(obj, "atp_type_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AtpPrototype."""
         super().__init__()
@@ -47,9 +52,8 @@ class AtpPrototype(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AtpPrototype, self).serialize()

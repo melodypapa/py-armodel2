@@ -37,6 +37,11 @@ class AtpBlueprint(Identifiable, ABC):
         return True
 
     blueprint_policies: list[BlueprintPolicy]
+    _DESERIALIZE_DISPATCH = {
+        "BLUEPRINT-POLICIES": lambda obj, elem: obj.blueprint_policies.append(BlueprintPolicy.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AtpBlueprint."""
         super().__init__()
@@ -48,9 +53,8 @@ class AtpBlueprint(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AtpBlueprint, self).serialize()

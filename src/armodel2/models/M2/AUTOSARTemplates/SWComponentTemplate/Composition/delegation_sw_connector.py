@@ -40,8 +40,17 @@ class DelegationSwConnector(SwConnector):
         """
         return False
 
+    _XML_TAG = "DELEGATION-SW-CONNECTOR"
+
+
     _inner_port_iref: Optional[PortInCompositionTypeInstanceRef]
     outer_port_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "INNER-PORT": lambda obj, elem: setattr(obj, "_inner_port_iref", ARRef.deserialize(elem)),
+        "OUTER-PORT-REF": lambda obj, elem: setattr(obj, "outer_port_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DelegationSwConnector."""
         super().__init__()
@@ -65,9 +74,8 @@ class DelegationSwConnector(SwConnector):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DelegationSwConnector, self).serialize()

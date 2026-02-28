@@ -37,8 +37,17 @@ class ApplicationPartitionToEcuPartitionMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "APPLICATION-PARTITION-TO-ECU-PARTITION-MAPPING"
+
+
     application_refs: list[ARRef]
     ecu_partition_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATIONS": lambda obj, elem: obj.application_refs.append(ARRef.deserialize(elem)),
+        "ECU-PARTITION-REF": lambda obj, elem: setattr(obj, "ecu_partition_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationPartitionToEcuPartitionMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class ApplicationPartitionToEcuPartitionMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationPartitionToEcuPartitionMapping, self).serialize()

@@ -42,10 +42,21 @@ class ClassContentConditional(Identifiable):
         """
         return False
 
+    _XML_TAG = "CLASS-CONTENT-CONDITIONAL"
+
+
     attributes: list[AttributeTailoring]
     condition: Optional[AbstractCondition]
     constraints: list[ConstraintTailoring]
     sdg_tailorings: list[SdgTailoring]
+    _DESERIALIZE_DISPATCH = {
+        "ATTRIBUTES": lambda obj, elem: obj.attributes.append(AttributeTailoring.deserialize(elem)),
+        "CONDITION": lambda obj, elem: setattr(obj, "condition", AbstractCondition.deserialize(elem)),
+        "CONSTRAINTS": lambda obj, elem: obj.constraints.append(ConstraintTailoring.deserialize(elem)),
+        "SDG-TAILORINGS": lambda obj, elem: obj.sdg_tailorings.append(SdgTailoring.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClassContentConditional."""
         super().__init__()
@@ -60,9 +71,8 @@ class ClassContentConditional(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClassContentConditional, self).serialize()

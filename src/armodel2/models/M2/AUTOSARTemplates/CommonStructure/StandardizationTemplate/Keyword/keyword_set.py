@@ -33,7 +33,15 @@ class KeywordSet(ARElement):
         """
         return False
 
+    _XML_TAG = "KEYWORD-SET"
+
+
     keywords: list[Keyword]
+    _DESERIALIZE_DISPATCH = {
+        "KEYWORDS": lambda obj, elem: obj.keywords.append(Keyword.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize KeywordSet."""
         super().__init__()
@@ -45,9 +53,8 @@ class KeywordSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(KeywordSet, self).serialize()

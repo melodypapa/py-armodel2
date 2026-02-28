@@ -40,9 +40,19 @@ class RteEventInCompositionToOsTaskProxyMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "RTE-EVENT-IN-COMPOSITION-TO-OS-TASK-PROXY-MAPPING"
+
+
     offset: Optional[PositiveInteger]
     os_task_proxy_ref: Optional[ARRef]
     rte_event_instance_ref: Optional[RTEEvent]
+    _DESERIALIZE_DISPATCH = {
+        "OFFSET": lambda obj, elem: setattr(obj, "offset", elem.text),
+        "OS-TASK-PROXY-REF": lambda obj, elem: setattr(obj, "os_task_proxy_ref", ARRef.deserialize(elem)),
+        "RTE-EVENT-INSTANCE-REF": lambda obj, elem: setattr(obj, "rte_event_instance_ref", RTEEvent.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RteEventInCompositionToOsTaskProxyMapping."""
         super().__init__()
@@ -56,9 +66,8 @@ class RteEventInCompositionToOsTaskProxyMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RteEventInCompositionToOsTaskProxyMapping, self).serialize()

@@ -45,6 +45,13 @@ class BswEvent(AbstractEvent, ABC):
     context_refs: list[ARRef]
     disabled_in_mode_description_instance_refs: list[ModeDeclaration]
     starts_on_event_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXTS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
+        "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS": lambda obj, elem: obj.disabled_in_mode_description_instance_refs.append(ModeDeclaration.deserialize(elem)),
+        "STARTS-ON-EVENT-REF": lambda obj, elem: setattr(obj, "starts_on_event_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswEvent."""
         super().__init__()
@@ -58,9 +65,8 @@ class BswEvent(AbstractEvent, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswEvent, self).serialize()

@@ -38,10 +38,21 @@ class DiagnosticFreezeFrame(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-FREEZE-FRAME"
+
+
     custom_trigger: Optional[String]
     record_number: Optional[PositiveInteger]
     trigger: Optional[DiagnosticRecordTriggerEnum]
     update: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CUSTOM-TRIGGER": lambda obj, elem: setattr(obj, "custom_trigger", elem.text),
+        "RECORD-NUMBER": lambda obj, elem: setattr(obj, "record_number", elem.text),
+        "TRIGGER": lambda obj, elem: setattr(obj, "trigger", DiagnosticRecordTriggerEnum.deserialize(elem)),
+        "UPDATE": lambda obj, elem: setattr(obj, "update", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticFreezeFrame."""
         super().__init__()
@@ -56,9 +67,8 @@ class DiagnosticFreezeFrame(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticFreezeFrame, self).serialize()

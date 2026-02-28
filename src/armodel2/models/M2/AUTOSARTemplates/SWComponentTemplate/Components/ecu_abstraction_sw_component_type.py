@@ -37,7 +37,15 @@ class EcuAbstractionSwComponentType(AtomicSwComponentType):
         """
         return False
 
+    _XML_TAG = "ECU-ABSTRACTION-SW-COMPONENT-TYPE"
+
+
     hardware_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "HARDWARES": lambda obj, elem: obj.hardware_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcuAbstractionSwComponentType."""
         super().__init__()
@@ -49,9 +57,8 @@ class EcuAbstractionSwComponentType(AtomicSwComponentType):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcuAbstractionSwComponentType, self).serialize()

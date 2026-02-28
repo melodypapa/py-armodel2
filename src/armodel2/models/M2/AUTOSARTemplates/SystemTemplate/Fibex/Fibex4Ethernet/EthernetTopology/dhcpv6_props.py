@@ -29,9 +29,19 @@ class Dhcpv6Props(ARObject):
         """
         return False
 
+    _XML_TAG = "DHCPV6-PROPS"
+
+
     tcp_ip_dhcp: Optional[TimeValue]
     tcp_ip_dhcp_v6_inf: Optional[TimeValue]
     tcp_ip_dhcp_v6_sol: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "TCP-IP-DHCP": lambda obj, elem: setattr(obj, "tcp_ip_dhcp", elem.text),
+        "TCP-IP-DHCP-V6-INF": lambda obj, elem: setattr(obj, "tcp_ip_dhcp_v6_inf", elem.text),
+        "TCP-IP-DHCP-V6-SOL": lambda obj, elem: setattr(obj, "tcp_ip_dhcp_v6_sol", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Dhcpv6Props."""
         super().__init__()
@@ -45,9 +55,8 @@ class Dhcpv6Props(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Dhcpv6Props, self).serialize()

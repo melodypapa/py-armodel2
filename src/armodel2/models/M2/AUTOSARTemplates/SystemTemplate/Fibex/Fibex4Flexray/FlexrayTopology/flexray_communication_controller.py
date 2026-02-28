@@ -36,6 +36,9 @@ class FlexrayCommunicationController(ARObject):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-COMMUNICATION-CONTROLLER"
+
+
     accepted: Optional[Integer]
     allow_halt_due_to: Optional[Boolean]
     allow_passive_to: Optional[Integer]
@@ -64,6 +67,38 @@ class FlexrayCommunicationController(ARObject):
     second_key_slot: Optional[PositiveInteger]
     two_key_slot: Optional[Boolean]
     wake_up_pattern: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "ACCEPTED": lambda obj, elem: setattr(obj, "accepted", elem.text),
+        "ALLOW-HALT-DUE-TO": lambda obj, elem: setattr(obj, "allow_halt_due_to", elem.text),
+        "ALLOW-PASSIVE-TO": lambda obj, elem: setattr(obj, "allow_passive_to", elem.text),
+        "CLUSTER-DRIFT": lambda obj, elem: setattr(obj, "cluster_drift", elem.text),
+        "DECODING": lambda obj, elem: setattr(obj, "decoding", elem.text),
+        "DELAY": lambda obj, elem: setattr(obj, "delay", elem.text),
+        "EXTERNAL-SYNC": lambda obj, elem: setattr(obj, "external_sync", elem.text),
+        "EXTERN-OFFSET": lambda obj, elem: setattr(obj, "extern_offset", elem.text),
+        "EXTERN-RATE": lambda obj, elem: setattr(obj, "extern_rate", elem.text),
+        "FALL-BACK-INTERNAL": lambda obj, elem: setattr(obj, "fall_back_internal", elem.text),
+        "FLEXRAY-FIFOES": lambda obj, elem: obj.flexray_fifoes.append(any (FlexrayFifo).deserialize(elem)),
+        "KEY-SLOT-ID": lambda obj, elem: setattr(obj, "key_slot_id", elem.text),
+        "KEY-SLOT-ONLY": lambda obj, elem: setattr(obj, "key_slot_only", elem.text),
+        "KEY-SLOT-USED-FOR": lambda obj, elem: setattr(obj, "key_slot_used_for", elem.text),
+        "LATEST-TX": lambda obj, elem: setattr(obj, "latest_tx", elem.text),
+        "LISTEN-TIMEOUT": lambda obj, elem: setattr(obj, "listen_timeout", elem.text),
+        "MACRO-INITIAL": lambda obj, elem: setattr(obj, "macro_initial", elem.text),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", elem.text),
+        "MICRO-INITIAL": lambda obj, elem: setattr(obj, "micro_initial", elem.text),
+        "MICRO-PER-CYCLE": lambda obj, elem: setattr(obj, "micro_per_cycle", elem.text),
+        "MICROTICK": lambda obj, elem: setattr(obj, "microtick", elem.text),
+        "NM-VECTOR-EARLY": lambda obj, elem: setattr(obj, "nm_vector_early", elem.text),
+        "OFFSET-CORRECTION": lambda obj, elem: setattr(obj, "offset_correction", elem.text),
+        "RATE-CORRECTION": lambda obj, elem: setattr(obj, "rate_correction", elem.text),
+        "SAMPLES-PER-MICROTICK": lambda obj, elem: setattr(obj, "samples_per_microtick", elem.text),
+        "SECOND-KEY-SLOT": lambda obj, elem: setattr(obj, "second_key_slot", elem.text),
+        "TWO-KEY-SLOT": lambda obj, elem: setattr(obj, "two_key_slot", elem.text),
+        "WAKE-UP-PATTERN": lambda obj, elem: setattr(obj, "wake_up_pattern", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayCommunicationController."""
         super().__init__()

@@ -31,7 +31,15 @@ class DiagnosticRequestFileTransfer(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-REQUEST-FILE-TRANSFER"
+
+
     request_file_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "REQUEST-FILE-REF": lambda obj, elem: setattr(obj, "request_file_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticRequestFileTransfer."""
         super().__init__()
@@ -43,9 +51,8 @@ class DiagnosticRequestFileTransfer(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticRequestFileTransfer, self).serialize()

@@ -46,12 +46,25 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         """
         return False
 
+    _XML_TAG = "CP-SOFTWARE-CLUSTER-BINARY-MANIFEST-DESCRIPTOR"
+
+
     cp_software_cluster_ref: Optional[ARRef]
     meta_data_fields: list[BinaryManifestMetaDataField]
     provides: list[BinaryManifestProvideResource]
     requires: list[BinaryManifestRequireResource]
     resources: list[Any]
     software_cluster: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CP-SOFTWARE-CLUSTER-REF": lambda obj, elem: setattr(obj, "cp_software_cluster_ref", ARRef.deserialize(elem)),
+        "META-DATA-FIELDS": lambda obj, elem: obj.meta_data_fields.append(BinaryManifestMetaDataField.deserialize(elem)),
+        "PROVIDES": lambda obj, elem: obj.provides.append(BinaryManifestProvideResource.deserialize(elem)),
+        "REQUIRES": lambda obj, elem: obj.requires.append(BinaryManifestRequireResource.deserialize(elem)),
+        "RESOURCES": lambda obj, elem: obj.resources.append(any (BinaryManifest).deserialize(elem)),
+        "SOFTWARE-CLUSTER": lambda obj, elem: setattr(obj, "software_cluster", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterBinaryManifestDescriptor."""
         super().__init__()
@@ -68,9 +81,8 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSoftwareClusterBinaryManifestDescriptor, self).serialize()

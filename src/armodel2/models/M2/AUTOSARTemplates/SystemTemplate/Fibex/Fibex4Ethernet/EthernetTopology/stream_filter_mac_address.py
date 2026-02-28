@@ -29,7 +29,15 @@ class StreamFilterMACAddress(ARObject):
         """
         return False
 
+    _XML_TAG = "STREAM-FILTER-M-A-C-ADDRESS"
+
+
     mac_address_string: Optional[MacAddressString]
+    _DESERIALIZE_DISPATCH = {
+        "MAC-ADDRESS-STRING": lambda obj, elem: setattr(obj, "mac_address_string", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StreamFilterMACAddress."""
         super().__init__()
@@ -41,9 +49,8 @@ class StreamFilterMACAddress(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StreamFilterMACAddress, self).serialize()

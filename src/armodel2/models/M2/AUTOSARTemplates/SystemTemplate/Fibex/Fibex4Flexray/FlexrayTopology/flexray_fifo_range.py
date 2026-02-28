@@ -29,8 +29,17 @@ class FlexrayFifoRange(ARObject):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-FIFO-RANGE"
+
+
     range_max: Optional[Integer]
     range_min: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "RANGE-MAX": lambda obj, elem: setattr(obj, "range_max", elem.text),
+        "RANGE-MIN": lambda obj, elem: setattr(obj, "range_min", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayFifoRange."""
         super().__init__()
@@ -43,9 +52,8 @@ class FlexrayFifoRange(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayFifoRange, self).serialize()

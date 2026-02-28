@@ -40,9 +40,19 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
         """
         return False
 
+    _XML_TAG = "OBD-RATIO-SERVICE-NEEDS"
+
+
     connection_type: Optional[ObdRatioConnectionKindEnum]
     rate_based_monitored_event_ref: Optional[ARRef]
     used_fid_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONNECTION-TYPE": lambda obj, elem: setattr(obj, "connection_type", ObdRatioConnectionKindEnum.deserialize(elem)),
+        "RATE-BASED-MONITORED-EVENT-REF": lambda obj, elem: setattr(obj, "rate_based_monitored_event_ref", ARRef.deserialize(elem)),
+        "USED-FID-REF": lambda obj, elem: setattr(obj, "used_fid_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ObdRatioServiceNeeds."""
         super().__init__()
@@ -56,9 +66,8 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ObdRatioServiceNeeds, self).serialize()

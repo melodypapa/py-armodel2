@@ -32,8 +32,17 @@ class DataFormatTailoring(ARObject):
         """
         return False
 
+    _XML_TAG = "DATA-FORMAT-TAILORING"
+
+
     class_tailorings: list[ClassTailoring]
     constraints: list[ConstraintTailoring]
+    _DESERIALIZE_DISPATCH = {
+        "CLASS-TAILORINGS": lambda obj, elem: obj.class_tailorings.append(ClassTailoring.deserialize(elem)),
+        "CONSTRAINTS": lambda obj, elem: obj.constraints.append(ConstraintTailoring.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataFormatTailoring."""
         super().__init__()
@@ -46,9 +55,8 @@ class DataFormatTailoring(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataFormatTailoring, self).serialize()

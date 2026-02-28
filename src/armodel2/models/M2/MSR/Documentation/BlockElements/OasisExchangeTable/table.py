@@ -44,6 +44,9 @@ class Table(Paginateable):
         """
         return False
 
+    _XML_TAG = "TABLE"
+
+
     colsep: Optional[TableSeparatorString]
     float: FloatEnum
     frame: Optional[FrameEnum]
@@ -53,6 +56,19 @@ class Table(Paginateable):
     rowsep: Optional[TableSeparatorString]
     table_caption: Optional[Caption]
     tabstyle: Optional[NameToken]
+    _DESERIALIZE_DISPATCH = {
+        "COLSEP": lambda obj, elem: setattr(obj, "colsep", elem.text),
+        "FLOAT": lambda obj, elem: setattr(obj, "float", FloatEnum.deserialize(elem)),
+        "FRAME": lambda obj, elem: setattr(obj, "frame", FrameEnum.deserialize(elem)),
+        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", elem.text),
+        "ORIENT": lambda obj, elem: setattr(obj, "orient", any (OrientEnum).deserialize(elem)),
+        "PGWIDE": lambda obj, elem: setattr(obj, "pgwide", elem.text),
+        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", elem.text),
+        "TABLE-CAPTION": lambda obj, elem: setattr(obj, "table_caption", Caption.deserialize(elem)),
+        "TABSTYLE": lambda obj, elem: setattr(obj, "tabstyle", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Table."""
         super().__init__()
@@ -72,9 +88,8 @@ class Table(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Table, self).serialize()

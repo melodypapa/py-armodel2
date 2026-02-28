@@ -33,7 +33,15 @@ class BusMirrorChannelMappingIp(BusMirrorChannelMapping):
         """
         return False
 
+    _XML_TAG = "BUS-MIRROR-CHANNEL-MAPPING-IP"
+
+
     transmission: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BusMirrorChannelMappingIp."""
         super().__init__()
@@ -45,9 +53,8 @@ class BusMirrorChannelMappingIp(BusMirrorChannelMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BusMirrorChannelMappingIp, self).serialize()

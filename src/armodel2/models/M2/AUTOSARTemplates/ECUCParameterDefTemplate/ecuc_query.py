@@ -36,7 +36,15 @@ class EcucQuery(Identifiable):
         """
         return False
 
+    _XML_TAG = "ECUC-QUERY"
+
+
     ecuc_query: Optional[EcucQueryExpression]
+    _DESERIALIZE_DISPATCH = {
+        "ECUC-QUERY": lambda obj, elem: setattr(obj, "ecuc_query", EcucQueryExpression.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucQuery."""
         super().__init__()
@@ -48,9 +56,8 @@ class EcucQuery(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucQuery, self).serialize()

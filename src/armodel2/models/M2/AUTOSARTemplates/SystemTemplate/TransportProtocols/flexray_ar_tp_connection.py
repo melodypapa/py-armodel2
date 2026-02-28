@@ -43,12 +43,25 @@ class FlexrayArTpConnection(TpConnection):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-AR-TP-CONNECTION"
+
+
     connection_prio: Optional[Integer]
     direct_tp_sdu_ref: Optional[ARRef]
     multicast_ref: Optional[ARRef]
     reversed_tp_sdu_ref: Optional[ARRef]
     source_ref: Optional[ARRef]
     target_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONNECTION-PRIO": lambda obj, elem: setattr(obj, "connection_prio", elem.text),
+        "DIRECT-TP-SDU-REF": lambda obj, elem: setattr(obj, "direct_tp_sdu_ref", ARRef.deserialize(elem)),
+        "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
+        "REVERSED-TP-SDU-REF": lambda obj, elem: setattr(obj, "reversed_tp_sdu_ref", ARRef.deserialize(elem)),
+        "SOURCE-REF": lambda obj, elem: setattr(obj, "source_ref", ARRef.deserialize(elem)),
+        "TARGETS": lambda obj, elem: obj.target_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayArTpConnection."""
         super().__init__()
@@ -65,9 +78,8 @@ class FlexrayArTpConnection(TpConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayArTpConnection, self).serialize()

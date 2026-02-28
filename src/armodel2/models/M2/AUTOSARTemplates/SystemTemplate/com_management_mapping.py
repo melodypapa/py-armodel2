@@ -37,8 +37,17 @@ class ComManagementMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "COM-MANAGEMENT-MAPPING"
+
+
     com_refs: list[ARRef]
     physical_channel_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMS": lambda obj, elem: obj.com_refs.append(ARRef.deserialize(elem)),
+        "PHYSICAL-CHANNELS": lambda obj, elem: obj.physical_channel_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ComManagementMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class ComManagementMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ComManagementMapping, self).serialize()

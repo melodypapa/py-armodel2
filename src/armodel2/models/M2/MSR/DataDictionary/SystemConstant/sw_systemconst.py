@@ -41,7 +41,15 @@ class SwSystemconst(ARElement):
         """
         return False
 
+    _XML_TAG = "SW-SYSTEMCONST"
+
+
     sw_data_def: Optional[SwDataDefProps]
+    _DESERIALIZE_DISPATCH = {
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SwDataDefProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwSystemconst."""
         super().__init__()
@@ -53,9 +61,8 @@ class SwSystemconst(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwSystemconst, self).serialize()

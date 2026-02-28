@@ -37,8 +37,17 @@ class VariationPoint(ARObject):
         """
         return False
 
+    _XML_TAG = "VARIATION-POINT"
+
+
     blueprint: Optional[DocumentationBlock]
     sw_syscond: Optional[ConditionByFormula]
+    _DESERIALIZE_DISPATCH = {
+        "BLUEPRINT": lambda obj, elem: setattr(obj, "blueprint", DocumentationBlock.deserialize(elem)),
+        "SW-SYSCOND": lambda obj, elem: setattr(obj, "sw_syscond", ConditionByFormula.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize VariationPoint."""
         super().__init__()
@@ -51,9 +60,8 @@ class VariationPoint(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(VariationPoint, self).serialize()

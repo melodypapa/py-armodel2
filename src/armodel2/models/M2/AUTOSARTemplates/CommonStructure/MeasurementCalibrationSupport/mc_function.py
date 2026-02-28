@@ -34,12 +34,25 @@ class McFunction(ARElement):
         """
         return False
 
+    _XML_TAG = "MC-FUNCTION"
+
+
     def_calprm_set_ref: Optional[ARRef]
     in_measurement_ref: Optional[ARRef]
     loc_ref: Optional[ARRef]
     out_ref: Optional[ARRef]
     ref_calprm_set_ref: Optional[ARRef]
     sub_function_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DEF-CALPRM-SET-REF": lambda obj, elem: setattr(obj, "def_calprm_set_ref", ARRef.deserialize(elem)),
+        "IN-MEASUREMENT-REF": lambda obj, elem: setattr(obj, "in_measurement_ref", ARRef.deserialize(elem)),
+        "LOC-REF": lambda obj, elem: setattr(obj, "loc_ref", ARRef.deserialize(elem)),
+        "OUT-REF": lambda obj, elem: setattr(obj, "out_ref", ARRef.deserialize(elem)),
+        "REF-CALPRM-SET-REF": lambda obj, elem: setattr(obj, "ref_calprm_set_ref", ARRef.deserialize(elem)),
+        "SUB-FUNCTIONS": lambda obj, elem: obj.sub_function_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize McFunction."""
         super().__init__()
@@ -56,9 +69,8 @@ class McFunction(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(McFunction, self).serialize()

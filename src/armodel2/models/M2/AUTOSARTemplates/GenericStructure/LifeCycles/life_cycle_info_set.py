@@ -45,11 +45,23 @@ class LifeCycleInfoSet(ARElement):
         """
         return False
 
+    _XML_TAG = "LIFE-CYCLE-INFO-SET"
+
+
     default_lc_state_ref: ARRef
     default_period_begin: Optional[LifeCyclePeriod]
     default_period_end: Optional[LifeCyclePeriod]
     _life_cycle_infoes: list[LifeCycleInfo]
     used_life_cycle_state_definition_group_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-LC-STATE-REF": lambda obj, elem: setattr(obj, "default_lc_state_ref", ARRef.deserialize(elem)),
+        "DEFAULT-PERIOD-BEGIN": lambda obj, elem: setattr(obj, "default_period_begin", LifeCyclePeriod.deserialize(elem)),
+        "DEFAULT-PERIOD-END": lambda obj, elem: setattr(obj, "default_period_end", LifeCyclePeriod.deserialize(elem)),
+        "LIFE-CYCLE-INFOES": lambda obj, elem: obj._life_cycle_infoes.append(LifeCycleInfo.deserialize(elem)),
+        "USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF": lambda obj, elem: setattr(obj, "used_life_cycle_state_definition_group_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LifeCycleInfoSet."""
         super().__init__()
@@ -76,9 +88,8 @@ class LifeCycleInfoSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LifeCycleInfoSet, self).serialize()

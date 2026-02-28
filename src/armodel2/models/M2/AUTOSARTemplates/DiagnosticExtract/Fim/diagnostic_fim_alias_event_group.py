@@ -31,7 +31,15 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-FIM-ALIAS-EVENT-GROUP"
+
+
     grouped_alia_refs: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "GROUPED-ALIASES": lambda obj, elem: obj.grouped_alia_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticFimAliasEventGroup."""
         super().__init__()
@@ -43,9 +51,8 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticFimAliasEventGroup, self).serialize()

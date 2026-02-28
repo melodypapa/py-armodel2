@@ -35,9 +35,19 @@ class LinMaster(ARObject):
         """
         return False
 
+    _XML_TAG = "LIN-MASTER"
+
+
     lin_slaves: list[LinSlaveConfig]
     time_base: Optional[TimeValue]
     time_base_jitter: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "LIN-SLAVES": lambda obj, elem: obj.lin_slaves.append(LinSlaveConfig.deserialize(elem)),
+        "TIME-BASE": lambda obj, elem: setattr(obj, "time_base", elem.text),
+        "TIME-BASE-JITTER": lambda obj, elem: setattr(obj, "time_base_jitter", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinMaster."""
         super().__init__()

@@ -33,9 +33,19 @@ class BswTriggerDirectImplementation(ARObject):
         """
         return False
 
+    _XML_TAG = "BSW-TRIGGER-DIRECT-IMPLEMENTATION"
+
+
     cat2_isr: Optional[Identifier]
     mastered_trigger_ref: Optional[ARRef]
     task: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "CAT2-ISR": lambda obj, elem: setattr(obj, "cat2_isr", elem.text),
+        "MASTERED-TRIGGER-REF": lambda obj, elem: setattr(obj, "mastered_trigger_ref", ARRef.deserialize(elem)),
+        "TASK": lambda obj, elem: setattr(obj, "task", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswTriggerDirectImplementation."""
         super().__init__()
@@ -49,9 +59,8 @@ class BswTriggerDirectImplementation(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswTriggerDirectImplementation, self).serialize()

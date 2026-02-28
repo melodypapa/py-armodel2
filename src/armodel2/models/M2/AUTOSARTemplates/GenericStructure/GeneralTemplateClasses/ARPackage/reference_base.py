@@ -38,6 +38,9 @@ class ReferenceBase(ARObject):
         """
         return False
 
+    _XML_TAG = "REFERENCE-BASE"
+
+
     short_label: Identifier
     is_default: Boolean
     is_global: Boolean
@@ -45,6 +48,17 @@ class ReferenceBase(ARObject):
     package_ref: Optional[ARRef]
     global_element_refs: list[ReferrableSubtypesEnum]
     global_in_package_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "IS-DEFAULT": lambda obj, elem: setattr(obj, "is_default", elem.text),
+        "IS-GLOBAL": lambda obj, elem: setattr(obj, "is_global", elem.text),
+        "BASE-IS-THIS-PACKAGE": lambda obj, elem: setattr(obj, "base_is_this_package", elem.text),
+        "PACKAGE-REF": lambda obj, elem: setattr(obj, "package_ref", ARRef.deserialize(elem)),
+        "GLOBAL-ELEMENTS": lambda obj, elem: obj.global_element_refs.append(elem.text),
+        "GLOBAL-IN-PACKAGES": lambda obj, elem: obj.global_in_package_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ReferenceBase."""
         super().__init__()
@@ -62,9 +76,8 @@ class ReferenceBase(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ReferenceBase, self).serialize()

@@ -44,6 +44,9 @@ class J1939TpConnection(TpConnection):
         """
         return False
 
+    _XML_TAG = "J1939-TP-CONNECTION"
+
+
     broadcast: Optional[Boolean]
     buffer_ratio: Optional[PositiveInteger]
     cancellation: Optional[Boolean]
@@ -56,6 +59,22 @@ class J1939TpConnection(TpConnection):
     retry: Optional[Boolean]
     tp_pgs: list[J1939TpPg]
     transmitter_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BROADCAST": lambda obj, elem: setattr(obj, "broadcast", elem.text),
+        "BUFFER-RATIO": lambda obj, elem: setattr(obj, "buffer_ratio", elem.text),
+        "CANCELLATION": lambda obj, elem: setattr(obj, "cancellation", elem.text),
+        "DATA-PDU-REF": lambda obj, elem: setattr(obj, "data_pdu_ref", ARRef.deserialize(elem)),
+        "DYNAMIC-BS": lambda obj, elem: setattr(obj, "dynamic_bs", elem.text),
+        "FLOW-CONTROL-PDU": lambda obj, elem: setattr(obj, "flow_control_pdu", NPdu.deserialize(elem)),
+        "MAX-BS": lambda obj, elem: setattr(obj, "max_bs", elem.text),
+        "MAX-EXP-BS": lambda obj, elem: setattr(obj, "max_exp_bs", elem.text),
+        "RECEIVERS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
+        "RETRY": lambda obj, elem: setattr(obj, "retry", elem.text),
+        "TP-PGS": lambda obj, elem: obj.tp_pgs.append(J1939TpPg.deserialize(elem)),
+        "TRANSMITTER-REF": lambda obj, elem: setattr(obj, "transmitter_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939TpConnection."""
         super().__init__()
@@ -78,9 +97,8 @@ class J1939TpConnection(TpConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939TpConnection, self).serialize()

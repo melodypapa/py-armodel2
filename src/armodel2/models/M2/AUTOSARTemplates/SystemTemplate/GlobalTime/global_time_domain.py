@@ -54,6 +54,9 @@ class GlobalTimeDomain(FibexElement):
         """
         return False
 
+    _XML_TAG = "GLOBAL-TIME-DOMAIN"
+
+
     debounce_time: Optional[TimeValue]
     domain_id: Optional[PositiveInteger]
     gatewaies: list[GlobalTimeGateway]
@@ -65,6 +68,21 @@ class GlobalTimeDomain(FibexElement):
     pdu_triggering_ref: Optional[ARRef]
     slaves: list[GlobalTimeSlave]
     sync_loss: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "DEBOUNCE-TIME": lambda obj, elem: setattr(obj, "debounce_time", elem.text),
+        "DOMAIN-ID": lambda obj, elem: setattr(obj, "domain_id", elem.text),
+        "GATEWAIES": lambda obj, elem: obj.gatewaies.append(GlobalTimeGateway.deserialize(elem)),
+        "GLOBAL-TIME": lambda obj, elem: setattr(obj, "global_time", AbstractGlobalTimeDomainProps.deserialize(elem)),
+        "GLOBAL-TIME-MASTER": lambda obj, elem: setattr(obj, "global_time_master", GlobalTimeMaster.deserialize(elem)),
+        "GLOBAL-TIME-SUBS": lambda obj, elem: obj.global_time_sub_refs.append(ARRef.deserialize(elem)),
+        "NETWORK": lambda obj, elem: setattr(obj, "network", NetworkSegmentIdentification.deserialize(elem)),
+        "OFFSET-TIME-REF": lambda obj, elem: setattr(obj, "offset_time_ref", ARRef.deserialize(elem)),
+        "PDU-TRIGGERING-REF": lambda obj, elem: setattr(obj, "pdu_triggering_ref", ARRef.deserialize(elem)),
+        "SLAVES": lambda obj, elem: obj.slaves.append(GlobalTimeSlave.deserialize(elem)),
+        "SYNC-LOSS": lambda obj, elem: setattr(obj, "sync_loss", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeDomain."""
         super().__init__()
@@ -86,9 +104,8 @@ class GlobalTimeDomain(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeDomain, self).serialize()

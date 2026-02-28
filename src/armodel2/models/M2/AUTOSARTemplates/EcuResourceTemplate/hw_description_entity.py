@@ -50,6 +50,13 @@ class HwDescriptionEntity(Identifiable, ABC):
     hw_attribute_values: list[HwAttributeValue]
     hw_category_refs: list[ARRef]
     hw_type_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "HW-ATTRIBUTE-VALUES": lambda obj, elem: obj.hw_attribute_values.append(HwAttributeValue.deserialize(elem)),
+        "HW-CATEGORIES": lambda obj, elem: obj.hw_category_refs.append(ARRef.deserialize(elem)),
+        "HW-TYPE-REF": lambda obj, elem: setattr(obj, "hw_type_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize HwDescriptionEntity."""
         super().__init__()
@@ -63,9 +70,8 @@ class HwDescriptionEntity(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(HwDescriptionEntity, self).serialize()

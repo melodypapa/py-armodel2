@@ -37,8 +37,17 @@ class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         """
         return False
 
+    _XML_TAG = "R-MODE-GROUP-IN-ATOMIC-SWC-INSTANCE-REF"
+
+
     context_r_port_ref: Optional[ARRef]
     target_mode_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXT-R-PORT-REF": lambda obj, elem: setattr(obj, "context_r_port_ref", ARRef.deserialize(elem)),
+        "TARGET-MODE-REF": lambda obj, elem: setattr(obj, "target_mode_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RModeGroupInAtomicSWCInstanceRef."""
         super().__init__()
@@ -51,9 +60,8 @@ class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RModeGroupInAtomicSWCInstanceRef, self).serialize()

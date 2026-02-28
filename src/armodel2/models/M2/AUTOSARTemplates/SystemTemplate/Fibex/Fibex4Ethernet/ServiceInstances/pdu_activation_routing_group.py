@@ -37,8 +37,17 @@ class PduActivationRoutingGroup(Identifiable):
         """
         return False
 
+    _XML_TAG = "PDU-ACTIVATION-ROUTING-GROUP"
+
+
     event_group_ref: Optional[EventGroupControlTypeEnum]
     i_pdu_identifier_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-GROUP-REF": lambda obj, elem: setattr(obj, "event_group_ref", EventGroupControlTypeEnum.deserialize(elem)),
+        "I-PDU-IDENTIFIERS": lambda obj, elem: obj.i_pdu_identifier_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PduActivationRoutingGroup."""
         super().__init__()
@@ -51,9 +60,8 @@ class PduActivationRoutingGroup(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PduActivationRoutingGroup, self).serialize()

@@ -36,7 +36,15 @@ class FlatMap(ARElement):
         """
         return False
 
+    _XML_TAG = "FLAT-MAP"
+
+
     instances: list[FlatInstanceDescriptor]
+    _DESERIALIZE_DISPATCH = {
+        "INSTANCES": lambda obj, elem: obj.instances.append(FlatInstanceDescriptor.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlatMap."""
         super().__init__()
@@ -48,9 +56,8 @@ class FlatMap(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlatMap, self).serialize()

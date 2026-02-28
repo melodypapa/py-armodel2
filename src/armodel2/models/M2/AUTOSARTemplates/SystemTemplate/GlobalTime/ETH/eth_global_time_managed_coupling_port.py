@@ -37,6 +37,9 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         """
         return False
 
+    _XML_TAG = "ETH-GLOBAL-TIME-MANAGED-COUPLING-PORT"
+
+
     coupling_port_ref: Optional[ARRef]
     global_time_port_role: Optional[GlobalTimePortRoleEnum]
     global_time_tx_period: Optional[TimeValue]
@@ -44,6 +47,17 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
     pdelay_request: Optional[TimeValue]
     pdelay_resp_and: Optional[TimeValue]
     pdelay: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "COUPLING-PORT-REF": lambda obj, elem: setattr(obj, "coupling_port_ref", ARRef.deserialize(elem)),
+        "GLOBAL-TIME-PORT-ROLE": lambda obj, elem: setattr(obj, "global_time_port_role", GlobalTimePortRoleEnum.deserialize(elem)),
+        "GLOBAL-TIME-TX-PERIOD": lambda obj, elem: setattr(obj, "global_time_tx_period", elem.text),
+        "PDELAY-LATENCY": lambda obj, elem: setattr(obj, "pdelay_latency", elem.text),
+        "PDELAY-REQUEST": lambda obj, elem: setattr(obj, "pdelay_request", elem.text),
+        "PDELAY-RESP-AND": lambda obj, elem: setattr(obj, "pdelay_resp_and", elem.text),
+        "PDELAY": lambda obj, elem: setattr(obj, "pdelay", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthGlobalTimeManagedCouplingPort."""
         super().__init__()
@@ -61,9 +75,8 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthGlobalTimeManagedCouplingPort, self).serialize()

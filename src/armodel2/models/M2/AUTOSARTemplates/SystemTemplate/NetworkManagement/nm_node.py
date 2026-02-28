@@ -59,6 +59,18 @@ class NmNode(Identifiable, ABC):
     nm_passive: Optional[Boolean]
     rx_nm_pdu_refs: list[ARRef]
     tx_nm_pdu_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONTROLLER-REF": lambda obj, elem: setattr(obj, "controller_ref", ARRef.deserialize(elem)),
+        "NM-COORD-CLUSTER": lambda obj, elem: setattr(obj, "nm_coord_cluster", elem.text),
+        "NM-COORDINATOR-ROLE": lambda obj, elem: setattr(obj, "nm_coordinator_role", NmCoordinatorRoleEnum.deserialize(elem)),
+        "NM-IF-ECU-REF": lambda obj, elem: setattr(obj, "nm_if_ecu_ref", ARRef.deserialize(elem)),
+        "NM-NODE-ID": lambda obj, elem: setattr(obj, "nm_node_id", elem.text),
+        "NM-PASSIVE": lambda obj, elem: setattr(obj, "nm_passive", elem.text),
+        "RX-NM-PDUS": lambda obj, elem: obj.rx_nm_pdu_refs.append(ARRef.deserialize(elem)),
+        "TX-NM-PDUS": lambda obj, elem: obj.tx_nm_pdu_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NmNode."""
         super().__init__()
@@ -77,9 +89,8 @@ class NmNode(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NmNode, self).serialize()

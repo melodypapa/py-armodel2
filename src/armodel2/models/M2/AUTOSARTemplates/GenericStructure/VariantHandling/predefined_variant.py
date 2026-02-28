@@ -36,9 +36,19 @@ class PredefinedVariant(ARElement):
         """
         return False
 
+    _XML_TAG = "PREDEFINED-VARIANT"
+
+
     included_variant_refs: list[ARRef]
     post_build_variant_refs: list[Any]
     sw_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "INCLUDED-VARIANTS": lambda obj, elem: obj.included_variant_refs.append(ARRef.deserialize(elem)),
+        "POST-BUILD-VARIANTS": lambda obj, elem: obj.post_build_variant_refs.append(ARRef.deserialize(elem)),
+        "SWS": lambda obj, elem: obj.sw_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PredefinedVariant."""
         super().__init__()
@@ -52,9 +62,8 @@ class PredefinedVariant(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PredefinedVariant, self).serialize()

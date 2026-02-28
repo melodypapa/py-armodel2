@@ -41,12 +41,25 @@ class DltMessage(Identifiable):
         """
         return False
 
+    _XML_TAG = "DLT-MESSAGE"
+
+
     dlt_arguments: list[DltArgument]
     message_id: Optional[PositiveInteger]
     message_line: Optional[PositiveInteger]
     message_source: Optional[String]
     message_type_info: Optional[String]
     privacy_level: Optional[PrivacyLevel]
+    _DESERIALIZE_DISPATCH = {
+        "DLT-ARGUMENTS": lambda obj, elem: obj.dlt_arguments.append(DltArgument.deserialize(elem)),
+        "MESSAGE-ID": lambda obj, elem: setattr(obj, "message_id", elem.text),
+        "MESSAGE-LINE": lambda obj, elem: setattr(obj, "message_line", elem.text),
+        "MESSAGE-SOURCE": lambda obj, elem: setattr(obj, "message_source", elem.text),
+        "MESSAGE-TYPE-INFO": lambda obj, elem: setattr(obj, "message_type_info", elem.text),
+        "PRIVACY-LEVEL": lambda obj, elem: setattr(obj, "privacy_level", PrivacyLevel.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DltMessage."""
         super().__init__()
@@ -63,9 +76,8 @@ class DltMessage(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DltMessage, self).serialize()

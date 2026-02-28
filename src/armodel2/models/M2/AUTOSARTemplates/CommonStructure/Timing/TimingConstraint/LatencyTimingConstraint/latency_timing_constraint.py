@@ -40,11 +40,23 @@ class LatencyTimingConstraint(TimingConstraint):
         """
         return False
 
+    _XML_TAG = "LATENCY-TIMING-CONSTRAINT"
+
+
     latency: Optional[LatencyConstraintTypeEnum]
     maximum: Optional[MultidimensionalTime]
     minimum: Optional[MultidimensionalTime]
     nominal: Optional[MultidimensionalTime]
     scope_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "LATENCY": lambda obj, elem: setattr(obj, "latency", LatencyConstraintTypeEnum.deserialize(elem)),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", MultidimensionalTime.deserialize(elem)),
+        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", MultidimensionalTime.deserialize(elem)),
+        "NOMINAL": lambda obj, elem: setattr(obj, "nominal", MultidimensionalTime.deserialize(elem)),
+        "SCOPE-REF": lambda obj, elem: setattr(obj, "scope_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LatencyTimingConstraint."""
         super().__init__()
@@ -60,9 +72,8 @@ class LatencyTimingConstraint(TimingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LatencyTimingConstraint, self).serialize()

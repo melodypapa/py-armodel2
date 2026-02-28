@@ -37,10 +37,21 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-COM-CONTROL-CLASS"
+
+
     all_channel_refs: list[ARRef]
     all_physical_refs: list[Any]
     specific_channels: list[DiagnosticComControl]
     sub_nodes: list[DiagnosticComControl]
+    _DESERIALIZE_DISPATCH = {
+        "ALL-CHANNELSES": lambda obj, elem: obj.all_channel_refs.append(ARRef.deserialize(elem)),
+        "ALL-PHYSICALS": lambda obj, elem: obj.all_physical_refs.append(ARRef.deserialize(elem)),
+        "SPECIFIC-CHANNELS": lambda obj, elem: obj.specific_channels.append(DiagnosticComControl.deserialize(elem)),
+        "SUB-NODES": lambda obj, elem: obj.sub_nodes.append(DiagnosticComControl.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticComControlClass."""
         super().__init__()
@@ -55,9 +66,8 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticComControlClass, self).serialize()

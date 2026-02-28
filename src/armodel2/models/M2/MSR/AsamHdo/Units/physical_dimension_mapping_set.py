@@ -33,7 +33,15 @@ class PhysicalDimensionMappingSet(ARElement):
         """
         return False
 
+    _XML_TAG = "PHYSICAL-DIMENSION-MAPPING-SET"
+
+
     physicals: list[PhysicalDimension]
+    _DESERIALIZE_DISPATCH = {
+        "PHYSICALS": lambda obj, elem: obj.physicals.append(PhysicalDimension.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PhysicalDimensionMappingSet."""
         super().__init__()
@@ -45,9 +53,8 @@ class PhysicalDimensionMappingSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PhysicalDimensionMappingSet, self).serialize()

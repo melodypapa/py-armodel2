@@ -36,6 +36,13 @@ class ClassTailoring(ARObject, ABC):
     class_contents: list[ClassContentConditional]
     multiplicity: Optional[Any]
     variation: Optional[VariationRestrictionWithSeverity]
+    _DESERIALIZE_DISPATCH = {
+        "CLASS-CONTENTS": lambda obj, elem: obj.class_contents.append(ClassContentConditional.deserialize(elem)),
+        "MULTIPLICITY": lambda obj, elem: setattr(obj, "multiplicity", any (MultiplicityRestriction).deserialize(elem)),
+        "VARIATION": lambda obj, elem: setattr(obj, "variation", VariationRestrictionWithSeverity.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClassTailoring."""
         super().__init__()
@@ -49,9 +56,8 @@ class ClassTailoring(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClassTailoring, self).serialize()

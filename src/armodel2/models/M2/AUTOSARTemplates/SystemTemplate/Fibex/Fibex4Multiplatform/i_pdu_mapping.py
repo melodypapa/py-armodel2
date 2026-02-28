@@ -39,11 +39,23 @@ class IPduMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "I-PDU-MAPPING"
+
+
     introduction: Optional[DocumentationBlock]
     pdu_max_length: Optional[PositiveInteger]
     pdur_tp_chunk: Optional[PositiveInteger]
     source_i_pdu_ref: Optional[ARRef]
     target_i_pdu_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", DocumentationBlock.deserialize(elem)),
+        "PDU-MAX-LENGTH": lambda obj, elem: setattr(obj, "pdu_max_length", elem.text),
+        "PDUR-TP-CHUNK": lambda obj, elem: setattr(obj, "pdur_tp_chunk", elem.text),
+        "SOURCE-I-PDU-REF": lambda obj, elem: setattr(obj, "source_i_pdu_ref", ARRef.deserialize(elem)),
+        "TARGET-I-PDU-REF": lambda obj, elem: setattr(obj, "target_i_pdu_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IPduMapping."""
         super().__init__()
@@ -59,9 +71,8 @@ class IPduMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IPduMapping, self).serialize()

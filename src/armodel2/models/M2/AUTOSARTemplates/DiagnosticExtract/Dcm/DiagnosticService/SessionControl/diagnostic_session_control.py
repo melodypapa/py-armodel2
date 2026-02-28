@@ -34,8 +34,17 @@ class DiagnosticSessionControl(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SESSION-CONTROL"
+
+
     diagnostic_session_session_ref: Optional[ARRef]
     session_control_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTIC-SESSION-SESSION-REF": lambda obj, elem: setattr(obj, "diagnostic_session_session_ref", ARRef.deserialize(elem)),
+        "SESSION-CONTROL-REF": lambda obj, elem: setattr(obj, "session_control_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticSessionControl."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticSessionControl(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticSessionControl, self).serialize()

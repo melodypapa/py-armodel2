@@ -33,9 +33,19 @@ class CouplingPortCreditBasedShaper(Identifiable):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT-CREDIT-BASED-SHAPER"
+
+
     idle_slope: Optional[PositiveInteger]
     lower_boundary: Optional[PositiveInteger]
     upper_boundary: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "IDLE-SLOPE": lambda obj, elem: setattr(obj, "idle_slope", elem.text),
+        "LOWER-BOUNDARY": lambda obj, elem: setattr(obj, "lower_boundary", elem.text),
+        "UPPER-BOUNDARY": lambda obj, elem: setattr(obj, "upper_boundary", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPortCreditBasedShaper."""
         super().__init__()
@@ -49,9 +59,8 @@ class CouplingPortCreditBasedShaper(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPortCreditBasedShaper, self).serialize()

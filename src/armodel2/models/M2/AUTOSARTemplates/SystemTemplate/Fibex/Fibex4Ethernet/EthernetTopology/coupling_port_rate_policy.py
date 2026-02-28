@@ -31,11 +31,23 @@ class CouplingPortRatePolicy(ARObject):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT-RATE-POLICY"
+
+
     data_length: Optional[PositiveInteger]
     policy_action: Optional[CouplingPortRatePolicy]
     priority: Optional[PositiveInteger]
     time_interval: Optional[TimeValue]
     v_lan_refs: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", elem.text),
+        "POLICY-ACTION": lambda obj, elem: setattr(obj, "policy_action", CouplingPortRatePolicy.deserialize(elem)),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "TIME-INTERVAL": lambda obj, elem: setattr(obj, "time_interval", elem.text),
+        "V-LANS": lambda obj, elem: obj.v_lan_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPortRatePolicy."""
         super().__init__()
@@ -51,9 +63,8 @@ class CouplingPortRatePolicy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPortRatePolicy, self).serialize()

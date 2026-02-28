@@ -37,9 +37,19 @@ class PermissibleSignalPath(SignalPathConstraint):
         """
         return False
 
+    _XML_TAG = "PERMISSIBLE-SIGNAL-PATH"
+
+
     operations: list[Any]
     physical_channel_refs: list[ARRef]
     signals: list[SwcToSwcSignal]
+    _DESERIALIZE_DISPATCH = {
+        "OPERATIONS": lambda obj, elem: obj.operations.append(any (SwcToSwcOperation).deserialize(elem)),
+        "PHYSICAL-CHANNELS": lambda obj, elem: obj.physical_channel_refs.append(ARRef.deserialize(elem)),
+        "SIGNALS": lambda obj, elem: obj.signals.append(SwcToSwcSignal.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PermissibleSignalPath."""
         super().__init__()
@@ -53,9 +63,8 @@ class PermissibleSignalPath(SignalPathConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PermissibleSignalPath, self).serialize()

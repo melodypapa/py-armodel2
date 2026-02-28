@@ -34,7 +34,15 @@ class FlexrayTpPduPool(Identifiable):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-TP-PDU-POOL"
+
+
     n_pdu_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "N-PDUS": lambda obj, elem: obj.n_pdu_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayTpPduPool."""
         super().__init__()
@@ -46,9 +54,8 @@ class FlexrayTpPduPool(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayTpPduPool, self).serialize()

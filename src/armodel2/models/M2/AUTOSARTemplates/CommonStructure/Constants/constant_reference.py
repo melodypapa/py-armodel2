@@ -34,7 +34,15 @@ class ConstantReference(ValueSpecification):
         """
         return False
 
+    _XML_TAG = "CONSTANT-REFERENCE"
+
+
     constant_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONSTANT-REF": lambda obj, elem: setattr(obj, "constant_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConstantReference."""
         super().__init__()
@@ -46,9 +54,8 @@ class ConstantReference(ValueSpecification):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConstantReference, self).serialize()

@@ -47,6 +47,9 @@ class PortAPIOption(ARObject):
         """
         return False
 
+    _XML_TAG = "PORT-API-OPTION"
+
+
     enable_take_address: Optional[Boolean]
     error_handling: Optional[DataTransformationErrorHandlingEnum]
     indirect_api: Optional[Boolean]
@@ -54,6 +57,17 @@ class PortAPIOption(ARObject):
     port_arg_values: list[PortDefinedArgumentValue]
     supported_features: list[SwcSupportedFeature]
     transformer_status_forwarding: Optional[DataTransformationStatusForwardingEnum]
+    _DESERIALIZE_DISPATCH = {
+        "ENABLE-TAKE-ADDRESS": lambda obj, elem: setattr(obj, "enable_take_address", elem.text),
+        "ERROR-HANDLING": lambda obj, elem: setattr(obj, "error_handling", DataTransformationErrorHandlingEnum.deserialize(elem)),
+        "INDIRECT-API": lambda obj, elem: setattr(obj, "indirect_api", elem.text),
+        "PORT-REF": lambda obj, elem: setattr(obj, "port_ref", ARRef.deserialize(elem)),
+        "PORT-ARG-VALUES": lambda obj, elem: obj.port_arg_values.append(PortDefinedArgumentValue.deserialize(elem)),
+        "SUPPORTED-FEATURES": lambda obj, elem: obj.supported_features.append(SwcSupportedFeature.deserialize(elem)),
+        "TRANSFORMER-STATUS-FORWARDING": lambda obj, elem: setattr(obj, "transformer_status_forwarding", DataTransformationStatusForwardingEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PortAPIOption."""
         super().__init__()
@@ -71,9 +85,8 @@ class PortAPIOption(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PortAPIOption, self).serialize()

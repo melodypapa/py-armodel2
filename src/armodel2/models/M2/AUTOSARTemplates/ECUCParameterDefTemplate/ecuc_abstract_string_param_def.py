@@ -37,6 +37,14 @@ class EcucAbstractStringParamDef(ARObject, ABC):
     max_length: Optional[PositiveInteger]
     min_length: Optional[PositiveInteger]
     regular: Optional[RegularExpression]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", elem.text),
+        "MAX-LENGTH": lambda obj, elem: setattr(obj, "max_length", elem.text),
+        "MIN-LENGTH": lambda obj, elem: setattr(obj, "min_length", elem.text),
+        "REGULAR": lambda obj, elem: setattr(obj, "regular", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucAbstractStringParamDef."""
         super().__init__()
@@ -51,9 +59,8 @@ class EcucAbstractStringParamDef(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucAbstractStringParamDef, self).serialize()

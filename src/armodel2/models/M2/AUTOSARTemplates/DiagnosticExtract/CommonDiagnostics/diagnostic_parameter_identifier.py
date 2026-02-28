@@ -39,10 +39,21 @@ class DiagnosticParameterIdentifier(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-PARAMETER-IDENTIFIER"
+
+
     data_elements: list[DiagnosticParameter]
     id: Optional[PositiveInteger]
     pid_size: Optional[PositiveInteger]
     support_info_byte: Optional[DiagnosticSupportInfoByte]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENTS": lambda obj, elem: obj.data_elements.append(DiagnosticParameter.deserialize(elem)),
+        "ID": lambda obj, elem: setattr(obj, "id", elem.text),
+        "PID-SIZE": lambda obj, elem: setattr(obj, "pid_size", elem.text),
+        "SUPPORT-INFO-BYTE": lambda obj, elem: setattr(obj, "support_info_byte", DiagnosticSupportInfoByte.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticParameterIdentifier."""
         super().__init__()
@@ -57,9 +68,8 @@ class DiagnosticParameterIdentifier(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticParameterIdentifier, self).serialize()

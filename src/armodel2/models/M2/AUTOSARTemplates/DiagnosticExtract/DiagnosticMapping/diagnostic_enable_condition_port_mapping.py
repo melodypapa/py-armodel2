@@ -31,9 +31,19 @@ class DiagnosticEnableConditionPortMapping(DiagnosticSwMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-ENABLE-CONDITION-PORT-MAPPING"
+
+
     enable_condition_ref: Optional[Any]
     swc_flat_service_ref: Optional[Any]
     swc_service: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ENABLE-CONDITION-REF": lambda obj, elem: setattr(obj, "enable_condition_ref", ARRef.deserialize(elem)),
+        "SWC-FLAT-SERVICE-REF": lambda obj, elem: setattr(obj, "swc_flat_service_ref", ARRef.deserialize(elem)),
+        "SWC-SERVICE": lambda obj, elem: setattr(obj, "swc_service", any (SwcService).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEnableConditionPortMapping."""
         super().__init__()
@@ -47,9 +57,8 @@ class DiagnosticEnableConditionPortMapping(DiagnosticSwMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEnableConditionPortMapping, self).serialize()

@@ -40,6 +40,12 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
 
     assigned_ref: Optional[ARRef]
     assigned_lin_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ASSIGNED-REF": lambda obj, elem: setattr(obj, "assigned_ref", ARRef.deserialize(elem)),
+        "ASSIGNED-LIN-REF": lambda obj, elem: setattr(obj, "assigned_lin_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinConfigurationEntry."""
         super().__init__()
@@ -52,9 +58,8 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinConfigurationEntry, self).serialize()

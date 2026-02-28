@@ -34,8 +34,17 @@ class TDEventVariableDataPrototype(TDEventVfbPort):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-VARIABLE-DATA-PROTOTYPE"
+
+
     data_element_ref: Optional[ARRef]
     td_event_variable_type: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "TD-EVENT-VARIABLE-TYPE": lambda obj, elem: setattr(obj, "td_event_variable_type", any (TDEventVariableData).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventVariableDataPrototype."""
         super().__init__()
@@ -48,9 +57,8 @@ class TDEventVariableDataPrototype(TDEventVfbPort):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventVariableDataPrototype, self).serialize()

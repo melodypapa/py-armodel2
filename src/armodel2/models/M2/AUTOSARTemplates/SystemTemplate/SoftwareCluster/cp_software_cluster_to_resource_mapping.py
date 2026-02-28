@@ -34,9 +34,19 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "CP-SOFTWARE-CLUSTER-TO-RESOURCE-MAPPING"
+
+
     provider_ref: Optional[ARRef]
     requester_refs: list[ARRef]
     service_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "PROVIDER-REF": lambda obj, elem: setattr(obj, "provider_ref", ARRef.deserialize(elem)),
+        "REQUESTERS": lambda obj, elem: obj.requester_refs.append(ARRef.deserialize(elem)),
+        "SERVICE-REF": lambda obj, elem: setattr(obj, "service_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterToResourceMapping."""
         super().__init__()
@@ -50,9 +60,8 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSoftwareClusterToResourceMapping, self).serialize()

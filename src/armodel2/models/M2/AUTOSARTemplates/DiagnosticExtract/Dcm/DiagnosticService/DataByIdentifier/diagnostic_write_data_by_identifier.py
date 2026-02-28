@@ -31,7 +31,15 @@ class DiagnosticWriteDataByIdentifier(DiagnosticDataByIdentifier):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-WRITE-DATA-BY-IDENTIFIER"
+
+
     write_class_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "WRITE-CLASS-REF": lambda obj, elem: setattr(obj, "write_class_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticWriteDataByIdentifier."""
         super().__init__()
@@ -43,9 +51,8 @@ class DiagnosticWriteDataByIdentifier(DiagnosticDataByIdentifier):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticWriteDataByIdentifier, self).serialize()

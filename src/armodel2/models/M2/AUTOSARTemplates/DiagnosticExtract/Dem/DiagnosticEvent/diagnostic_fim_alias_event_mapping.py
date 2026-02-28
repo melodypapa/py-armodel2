@@ -34,8 +34,17 @@ class DiagnosticFimAliasEventMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-FIM-ALIAS-EVENT-MAPPING"
+
+
     actual_event_ref: Optional[ARRef]
     alias_event_event_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ACTUAL-EVENT-REF": lambda obj, elem: setattr(obj, "actual_event_ref", ARRef.deserialize(elem)),
+        "ALIAS-EVENT-EVENT-REF": lambda obj, elem: setattr(obj, "alias_event_event_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticFimAliasEventMapping."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticFimAliasEventMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticFimAliasEventMapping, self).serialize()

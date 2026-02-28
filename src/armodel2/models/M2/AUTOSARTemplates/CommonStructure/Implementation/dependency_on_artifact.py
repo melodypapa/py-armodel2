@@ -38,8 +38,17 @@ class DependencyOnArtifact(Identifiable):
         """
         return False
 
+    _XML_TAG = "DEPENDENCY-ON-ARTIFACT"
+
+
     artifact_descriptor: Optional[AutosarEngineeringObject]
     usage_refs: list[DependencyUsageEnum]
+    _DESERIALIZE_DISPATCH = {
+        "ARTIFACT-DESCRIPTOR": lambda obj, elem: setattr(obj, "artifact_descriptor", AutosarEngineeringObject.deserialize(elem)),
+        "USAGES": lambda obj, elem: obj.usage_refs.append(DependencyUsageEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DependencyOnArtifact."""
         super().__init__()
@@ -52,9 +61,8 @@ class DependencyOnArtifact(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DependencyOnArtifact, self).serialize()

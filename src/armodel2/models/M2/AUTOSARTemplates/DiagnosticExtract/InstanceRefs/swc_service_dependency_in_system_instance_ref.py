@@ -30,9 +30,19 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "SWC-SERVICE-DEPENDENCY-IN-SYSTEM-INSTANCE-REF"
+
+
     context_root_sw_ref: Optional[ARRef]
     context_sw_prototype_refs: list[Any]
     target_swc_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXT-ROOT-SW-REF": lambda obj, elem: setattr(obj, "context_root_sw_ref", ARRef.deserialize(elem)),
+        "CONTEXT-SW-PROTOTYPES": lambda obj, elem: obj.context_sw_prototype_refs.append(ARRef.deserialize(elem)),
+        "TARGET-SWC-REF": lambda obj, elem: setattr(obj, "target_swc_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcServiceDependencyInSystemInstanceRef."""
         super().__init__()
@@ -46,9 +56,8 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcServiceDependencyInSystemInstanceRef, self).serialize()

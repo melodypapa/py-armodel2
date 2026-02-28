@@ -36,8 +36,17 @@ class DdsCpConfig(ARElement):
         """
         return False
 
+    _XML_TAG = "DDS-CP-CONFIG"
+
+
     dds_domains: list[DdsCpDomain]
     dds_qos_profiles: list[DdsCpQosProfile]
+    _DESERIALIZE_DISPATCH = {
+        "DDS-DOMAINS": lambda obj, elem: obj.dds_domains.append(DdsCpDomain.deserialize(elem)),
+        "DDS-QOS-PROFILES": lambda obj, elem: obj.dds_qos_profiles.append(DdsCpQosProfile.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpConfig."""
         super().__init__()
@@ -50,9 +59,8 @@ class DdsCpConfig(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpConfig, self).serialize()

@@ -32,6 +32,9 @@ class CanCluster(AbstractCanCluster):
         """
         return False
 
+    _XML_TAG = "CAN-CLUSTER"
+
+
     def __init__(self) -> None:
         """Initialize CanCluster."""
         super().__init__()

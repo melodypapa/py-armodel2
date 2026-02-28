@@ -38,10 +38,21 @@ class TextTableMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "TEXT-TABLE-MAPPING"
+
+
     bitfield_text_table: Optional[PositiveInteger]
     identical: Optional[Boolean]
     mapping_ref: Optional[MappingDirectionEnum]
     value_pairs: list[TextTableValuePair]
+    _DESERIALIZE_DISPATCH = {
+        "BITFIELD-TEXT-TABLE": lambda obj, elem: setattr(obj, "bitfield_text_table", elem.text),
+        "IDENTICAL": lambda obj, elem: setattr(obj, "identical", elem.text),
+        "MAPPING-REF": lambda obj, elem: setattr(obj, "mapping_ref", MappingDirectionEnum.deserialize(elem)),
+        "VALUE-PAIRS": lambda obj, elem: obj.value_pairs.append(TextTableValuePair.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TextTableMapping."""
         super().__init__()
@@ -56,9 +67,8 @@ class TextTableMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TextTableMapping, self).serialize()

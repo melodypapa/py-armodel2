@@ -34,8 +34,17 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
         """
         return False
 
+    _XML_TAG = "DATA-COM-PROPS"
+
+
     data: Optional[DataConsistencyPolicyEnum]
     send_indication_enum: Optional[SendIndicationEnum]
+    _DESERIALIZE_DISPATCH = {
+        "DATA": lambda obj, elem: setattr(obj, "data", DataConsistencyPolicyEnum.deserialize(elem)),
+        "SEND-INDICATION-ENUM": lambda obj, elem: setattr(obj, "send_indication_enum", SendIndicationEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataComProps."""
         super().__init__()
@@ -48,9 +57,8 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataComProps, self).serialize()

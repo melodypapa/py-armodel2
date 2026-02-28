@@ -37,6 +37,9 @@ class SupervisedEntityNeeds(ServiceNeeds):
         """
         return False
 
+    _XML_TAG = "SUPERVISED-ENTITY-NEEDS"
+
+
     activate_at_start: Optional[Boolean]
     checkpoint_refs: list[Any]
     enable: Optional[Boolean]
@@ -44,6 +47,17 @@ class SupervisedEntityNeeds(ServiceNeeds):
     max_alive_cycle: Optional[TimeValue]
     min_alive_cycle: Optional[TimeValue]
     tolerated_failed: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ACTIVATE-AT-START": lambda obj, elem: setattr(obj, "activate_at_start", elem.text),
+        "CHECKPOINTSES": lambda obj, elem: obj.checkpoint_refs.append(ARRef.deserialize(elem)),
+        "ENABLE": lambda obj, elem: setattr(obj, "enable", elem.text),
+        "EXPECTED-ALIVE": lambda obj, elem: setattr(obj, "expected_alive", elem.text),
+        "MAX-ALIVE-CYCLE": lambda obj, elem: setattr(obj, "max_alive_cycle", elem.text),
+        "MIN-ALIVE-CYCLE": lambda obj, elem: setattr(obj, "min_alive_cycle", elem.text),
+        "TOLERATED-FAILED": lambda obj, elem: setattr(obj, "tolerated_failed", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SupervisedEntityNeeds."""
         super().__init__()
@@ -61,9 +75,8 @@ class SupervisedEntityNeeds(ServiceNeeds):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SupervisedEntityNeeds, self).serialize()

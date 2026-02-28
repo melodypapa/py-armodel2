@@ -36,10 +36,21 @@ class ClientServerOperationMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "CLIENT-SERVER-OPERATION-MAPPING"
+
+
     argument_refs: list[ARRef]
     first_operation_ref: Optional[ARRef]
     first_to_second_ref: Optional[ARRef]
     second_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ARGUMENTS": lambda obj, elem: obj.argument_refs.append(ARRef.deserialize(elem)),
+        "FIRST-OPERATION-REF": lambda obj, elem: setattr(obj, "first_operation_ref", ARRef.deserialize(elem)),
+        "FIRST-TO-SECOND-REF": lambda obj, elem: setattr(obj, "first_to_second_ref", ARRef.deserialize(elem)),
+        "SECOND-REF": lambda obj, elem: setattr(obj, "second_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientServerOperationMapping."""
         super().__init__()
@@ -54,9 +65,8 @@ class ClientServerOperationMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientServerOperationMapping, self).serialize()

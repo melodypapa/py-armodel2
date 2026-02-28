@@ -36,9 +36,19 @@ class Baseline(ARObject):
         """
         return False
 
+    _XML_TAG = "BASELINE"
+
+
     custom_sdg_def_refs: list[ARRef]
     custom_refs: list[ARRef]
     standards: list[String]
+    _DESERIALIZE_DISPATCH = {
+        "CUSTOM-SDG-DEFS": lambda obj, elem: obj.custom_sdg_def_refs.append(ARRef.deserialize(elem)),
+        "CUSTOMS": lambda obj, elem: obj.custom_refs.append(ARRef.deserialize(elem)),
+        "STANDARDS": lambda obj, elem: obj.standards.append(elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Baseline."""
         super().__init__()
@@ -52,9 +62,8 @@ class Baseline(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Baseline, self).serialize()

@@ -39,6 +39,9 @@ class Entry(ARObject):
         """
         return False
 
+    _XML_TAG = "ENTRY"
+
+
     align: Optional[AlignEnum]
     bgcolor: String
     colname: Optional[String]
@@ -51,6 +54,22 @@ class Entry(ARObject):
     rowsep: Optional[TableSeparatorString]
     spanname: Optional[String]
     valign: Optional[ValignEnum]
+    _DESERIALIZE_DISPATCH = {
+        "ALIGN": lambda obj, elem: setattr(obj, "align", AlignEnum.deserialize(elem)),
+        "BGCOLOR": lambda obj, elem: setattr(obj, "bgcolor", elem.text),
+        "COLNAME": lambda obj, elem: setattr(obj, "colname", elem.text),
+        "COLSEP": lambda obj, elem: setattr(obj, "colsep", elem.text),
+        "ENTRY-CONTENTS": lambda obj, elem: setattr(obj, "entry_contents", DocumentationBlock.deserialize(elem)),
+        "MOREROWS": lambda obj, elem: setattr(obj, "morerows", elem.text),
+        "NAMEEND": lambda obj, elem: setattr(obj, "nameend", elem.text),
+        "NAMEST": lambda obj, elem: setattr(obj, "namest", elem.text),
+        "ROTATE": lambda obj, elem: setattr(obj, "rotate", elem.text),
+        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", elem.text),
+        "SPANNAME": lambda obj, elem: setattr(obj, "spanname", elem.text),
+        "VALIGN": lambda obj, elem: setattr(obj, "valign", ValignEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Entry."""
         super().__init__()
@@ -73,9 +92,8 @@ class Entry(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Entry, self).serialize()

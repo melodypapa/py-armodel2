@@ -50,6 +50,9 @@ class IdsmInstance(IdsCommonElement):
         """
         return False
 
+    _XML_TAG = "IDSM-INSTANCE"
+
+
     block_states: list[BlockState]
     ecu_instance_ref: Optional[ARRef]
     idsm_instance_id: Optional[PositiveInteger]
@@ -58,6 +61,18 @@ class IdsmInstance(IdsCommonElement):
     signature: Optional[Any]
     timestamp: Optional[String]
     traffic_limitation_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BLOCK-STATES": lambda obj, elem: obj.block_states.append(BlockState.deserialize(elem)),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+        "IDSM-INSTANCE-ID": lambda obj, elem: setattr(obj, "idsm_instance_id", elem.text),
+        "IDSM-MODULE-REF": lambda obj, elem: setattr(obj, "idsm_module_ref", ARRef.deserialize(elem)),
+        "RATE-LIMITATION-REF": lambda obj, elem: setattr(obj, "rate_limitation_ref", ARRef.deserialize(elem)),
+        "SIGNATURE": lambda obj, elem: setattr(obj, "signature", any (IdsmSignatureSupport).deserialize(elem)),
+        "TIMESTAMP": lambda obj, elem: setattr(obj, "timestamp", elem.text),
+        "TRAFFIC-LIMITATION-REF": lambda obj, elem: setattr(obj, "traffic_limitation_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IdsmInstance."""
         super().__init__()
@@ -76,9 +91,8 @@ class IdsmInstance(IdsCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IdsmInstance, self).serialize()

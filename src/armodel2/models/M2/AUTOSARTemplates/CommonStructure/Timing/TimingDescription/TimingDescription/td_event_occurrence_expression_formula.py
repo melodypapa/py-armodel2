@@ -36,10 +36,21 @@ class TDEventOccurrenceExpressionFormula(ARObject):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-OCCURRENCE-EXPRESSION-FORMULA"
+
+
     argument_ref: Optional[ARRef]
     event_ref: Optional[ARRef]
     mode_ref: Optional[ARRef]
     variable_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ARGUMENT-REF": lambda obj, elem: setattr(obj, "argument_ref", ARRef.deserialize(elem)),
+        "EVENT-REF": lambda obj, elem: setattr(obj, "event_ref", ARRef.deserialize(elem)),
+        "MODE-REF": lambda obj, elem: setattr(obj, "mode_ref", ARRef.deserialize(elem)),
+        "VARIABLE-REF": lambda obj, elem: setattr(obj, "variable_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventOccurrenceExpressionFormula."""
         super().__init__()
@@ -54,9 +65,8 @@ class TDEventOccurrenceExpressionFormula(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventOccurrenceExpressionFormula, self).serialize()

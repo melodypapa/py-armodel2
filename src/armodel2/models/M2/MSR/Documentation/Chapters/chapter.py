@@ -40,8 +40,17 @@ class Chapter(Paginateable):
         """
         return False
 
+    _XML_TAG = "CHAPTER"
+
+
     chapter_model: ChapterModel
     help_entry: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "CHAPTER-MODEL": lambda obj, elem: setattr(obj, "chapter_model", ChapterModel.deserialize(elem)),
+        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Chapter."""
         super().__init__()
@@ -54,9 +63,8 @@ class Chapter(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Chapter, self).serialize()

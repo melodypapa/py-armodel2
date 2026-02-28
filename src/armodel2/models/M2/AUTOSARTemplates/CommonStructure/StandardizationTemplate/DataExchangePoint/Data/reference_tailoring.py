@@ -37,8 +37,17 @@ class ReferenceTailoring(AttributeTailoring):
         """
         return False
 
+    _XML_TAG = "REFERENCE-TAILORING"
+
+
     type_tailorings: list[ClassTailoring]
     unresolved_restriction_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TYPE-TAILORINGS": lambda obj, elem: obj.type_tailorings.append(ClassTailoring.deserialize(elem)),
+        "UNRESOLVED-RESTRICTION-REF": lambda obj, elem: setattr(obj, "unresolved_restriction_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ReferenceTailoring."""
         super().__init__()
@@ -51,9 +60,8 @@ class ReferenceTailoring(AttributeTailoring):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ReferenceTailoring, self).serialize()

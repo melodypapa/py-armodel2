@@ -42,11 +42,23 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-PROTOCOL"
+
+
     diagnostic_refs: list[ARRef]
     priority: Optional[PositiveInteger]
     protocol_kind: Optional[NameToken]
     send_resp_pend: Optional[Boolean]
     service_table_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTICS": lambda obj, elem: obj.diagnostic_refs.append(ARRef.deserialize(elem)),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "PROTOCOL-KIND": lambda obj, elem: setattr(obj, "protocol_kind", elem.text),
+        "SEND-RESP-PEND": lambda obj, elem: setattr(obj, "send_resp_pend", elem.text),
+        "SERVICE-TABLE-REF": lambda obj, elem: setattr(obj, "service_table_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticProtocol."""
         super().__init__()
@@ -62,9 +74,8 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticProtocol, self).serialize()

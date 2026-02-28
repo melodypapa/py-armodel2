@@ -46,6 +46,15 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
     post_build_variant: Optional[Boolean]
     requires_index: Optional[Boolean]
     value_configs: list[EcucValueConfigurationClass]
+    _DESERIALIZE_DISPATCH = {
+        "MULTIPLICITIES": lambda obj, elem: obj.multiplicities.append(EcucMultiplicityConfigurationClass.deserialize(elem)),
+        "ORIGIN": lambda obj, elem: setattr(obj, "origin", elem.text),
+        "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", elem.text),
+        "REQUIRES-INDEX": lambda obj, elem: setattr(obj, "requires_index", elem.text),
+        "VALUE-CONFIGS": lambda obj, elem: obj.value_configs.append(EcucValueConfigurationClass.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucCommonAttributes."""
         super().__init__()
@@ -61,9 +70,8 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucCommonAttributes, self).serialize()

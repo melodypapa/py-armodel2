@@ -40,9 +40,19 @@ class ClientComSpec(RPortComSpec):
         """
         return False
 
+    _XML_TAG = "CLIENT-COM-SPEC"
+
+
     end_to_end_call_response_timeout: Optional[TimeValue]
     operation_ref: Optional[ARRef]
     transformation_com_spec_props: list[TransformationComSpecProps]
+    _DESERIALIZE_DISPATCH = {
+        "END-TO-END-CALL-RESPONSE-TIMEOUT": lambda obj, elem: setattr(obj, "end_to_end_call_response_timeout", elem.text),
+        "OPERATION-REF": lambda obj, elem: setattr(obj, "operation_ref", ARRef.deserialize(elem)),
+        "TRANSFORMATION-COM-SPEC-PROPS": lambda obj, elem: obj.transformation_com_spec_props.append(TransformationComSpecProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientComSpec."""
         super().__init__()
@@ -56,9 +66,8 @@ class ClientComSpec(RPortComSpec):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientComSpec, self).serialize()

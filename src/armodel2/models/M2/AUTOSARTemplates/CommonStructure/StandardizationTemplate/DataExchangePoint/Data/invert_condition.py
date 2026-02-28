@@ -30,7 +30,15 @@ class InvertCondition(AbstractCondition):
         """
         return False
 
+    _XML_TAG = "INVERT-CONDITION"
+
+
     condition: AbstractCondition
+    _DESERIALIZE_DISPATCH = {
+        "CONDITION": lambda obj, elem: setattr(obj, "condition", AbstractCondition.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InvertCondition."""
         super().__init__()
@@ -42,9 +50,8 @@ class InvertCondition(AbstractCondition):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InvertCondition, self).serialize()

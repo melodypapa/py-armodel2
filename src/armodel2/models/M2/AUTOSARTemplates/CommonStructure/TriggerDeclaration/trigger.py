@@ -39,8 +39,17 @@ class Trigger(Identifiable):
         """
         return False
 
+    _XML_TAG = "TRIGGER"
+
+
     sw_impl_policy_enum: Optional[SwImplPolicyEnum]
     trigger_period: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "SW-IMPL-POLICY-ENUM": lambda obj, elem: setattr(obj, "sw_impl_policy_enum", SwImplPolicyEnum.deserialize(elem)),
+        "TRIGGER-PERIOD": lambda obj, elem: setattr(obj, "trigger_period", MultidimensionalTime.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Trigger."""
         super().__init__()
@@ -53,9 +62,8 @@ class Trigger(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Trigger, self).serialize()

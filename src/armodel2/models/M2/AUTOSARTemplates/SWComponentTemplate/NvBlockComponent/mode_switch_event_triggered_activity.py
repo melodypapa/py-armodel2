@@ -33,8 +33,17 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         """
         return False
 
+    _XML_TAG = "MODE-SWITCH-EVENT-TRIGGERED-ACTIVITY"
+
+
     role: Optional[Identifier]
     swc_mode_switch_event_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+        "SWC-MODE-SWITCH-EVENT-REF": lambda obj, elem: setattr(obj, "swc_mode_switch_event_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeSwitchEventTriggeredActivity."""
         super().__init__()
@@ -47,9 +56,8 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeSwitchEventTriggeredActivity, self).serialize()

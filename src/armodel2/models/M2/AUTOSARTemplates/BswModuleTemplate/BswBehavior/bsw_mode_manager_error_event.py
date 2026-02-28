@@ -34,7 +34,15 @@ class BswModeManagerErrorEvent(BswScheduleEvent):
         """
         return False
 
+    _XML_TAG = "BSW-MODE-MANAGER-ERROR-EVENT"
+
+
     mode_group_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "MODE-GROUP-REF": lambda obj, elem: setattr(obj, "mode_group_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswModeManagerErrorEvent."""
         super().__init__()
@@ -46,9 +54,8 @@ class BswModeManagerErrorEvent(BswScheduleEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswModeManagerErrorEvent, self).serialize()

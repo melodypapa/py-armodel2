@@ -40,10 +40,21 @@ class RoleBasedDataAssignment(ARObject):
         """
         return False
 
+    _XML_TAG = "ROLE-BASED-DATA-ASSIGNMENT"
+
+
     role: Optional[Identifier]
     used_data_ref: Optional[ARRef]
     used_parameter_ref: Optional[ARRef]
     used_pim_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+        "USED-DATA-REF": lambda obj, elem: setattr(obj, "used_data_ref", ARRef.deserialize(elem)),
+        "USED-PARAMETER-REF": lambda obj, elem: setattr(obj, "used_parameter_ref", ARRef.deserialize(elem)),
+        "USED-PIM-REF": lambda obj, elem: setattr(obj, "used_pim_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RoleBasedDataAssignment."""
         super().__init__()
@@ -58,9 +69,8 @@ class RoleBasedDataAssignment(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RoleBasedDataAssignment, self).serialize()

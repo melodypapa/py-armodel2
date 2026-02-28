@@ -33,11 +33,23 @@ class NvBlockDataMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "NV-BLOCK-DATA-MAPPING"
+
+
     bitfield_text_table: Optional[PositiveInteger]
     nv_ram_block_ref: Optional[ARRef]
     read_nv_data_ref: Optional[ARRef]
     written_nv_data_ref: Optional[ARRef]
     written_read_nv_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BITFIELD-TEXT-TABLE": lambda obj, elem: setattr(obj, "bitfield_text_table", elem.text),
+        "NV-RAM-BLOCK-REF": lambda obj, elem: setattr(obj, "nv_ram_block_ref", ARRef.deserialize(elem)),
+        "READ-NV-DATA-REF": lambda obj, elem: setattr(obj, "read_nv_data_ref", ARRef.deserialize(elem)),
+        "WRITTEN-NV-DATA-REF": lambda obj, elem: setattr(obj, "written_nv_data_ref", ARRef.deserialize(elem)),
+        "WRITTEN-READ-NV-REF": lambda obj, elem: setattr(obj, "written_read_nv_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NvBlockDataMapping."""
         super().__init__()
@@ -53,9 +65,8 @@ class NvBlockDataMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NvBlockDataMapping, self).serialize()

@@ -31,6 +31,9 @@ class Ipv6NdpProps(ARObject):
         """
         return False
 
+    _XML_TAG = "IPV6-NDP-PROPS"
+
+
     tcp_ip_ndp_default: Optional[TimeValue]
     tcp_ip_ndp_default_router_list_size: Optional[PositiveInteger]
     tcp_ip_ndp: Optional[Boolean]
@@ -44,6 +47,23 @@ class Ipv6NdpProps(ARObject):
     tcp_ip_ndp_rnd_rtr: Optional[Boolean]
     tcp_ip_ndp_rtr: Optional[TimeValue]
     tcp_ip_ndp_slaac: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "TCP-IP-NDP-DEFAULT": lambda obj, elem: setattr(obj, "tcp_ip_ndp_default", elem.text),
+        "TCP-IP-NDP-DEFAULT-ROUTER-LIST-SIZE": lambda obj, elem: setattr(obj, "tcp_ip_ndp_default_router_list_size", elem.text),
+        "TCP-IP-NDP": lambda obj, elem: setattr(obj, "tcp_ip_ndp", elem.text),
+        "TCP-IP-NDP-DELAY-FIRST-PROBE-TIME-VALUE": lambda obj, elem: setattr(obj, "tcp_ip_ndp_delay_first_probe_time_value", elem.text),
+        "TCP-IP-NDP-MAX-RANDOM-FACTOR": lambda obj, elem: setattr(obj, "tcp_ip_ndp_max_random_factor", elem.text),
+        "TCP-IP-NDP-MAX-RTR": lambda obj, elem: setattr(obj, "tcp_ip_ndp_max_rtr", elem.text),
+        "TCP-IP-NDP-MIN-RANDOM-FACTOR": lambda obj, elem: setattr(obj, "tcp_ip_ndp_min_random_factor", elem.text),
+        "TCP-IP-NDP-NUM": lambda obj, elem: setattr(obj, "tcp_ip_ndp_num", elem.text),
+        "TCP-IP-NDP-PACKET": lambda obj, elem: setattr(obj, "tcp_ip_ndp_packet", elem.text),
+        "TCP-IP-NDP-PREFIX": lambda obj, elem: setattr(obj, "tcp_ip_ndp_prefix", elem.text),
+        "TCP-IP-NDP-RND-RTR": lambda obj, elem: setattr(obj, "tcp_ip_ndp_rnd_rtr", elem.text),
+        "TCP-IP-NDP-RTR": lambda obj, elem: setattr(obj, "tcp_ip_ndp_rtr", elem.text),
+        "TCP-IP-NDP-SLAAC": lambda obj, elem: setattr(obj, "tcp_ip_ndp_slaac", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ipv6NdpProps."""
         super().__init__()
@@ -67,9 +87,8 @@ class Ipv6NdpProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ipv6NdpProps, self).serialize()

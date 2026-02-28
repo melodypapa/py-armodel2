@@ -64,6 +64,16 @@ class SwComponentType(ARElement, ABC):
     swc_mapping_constraint_refs: list[ARRef]
     sw_component_documentation: Optional[SwComponentDocumentation]
     unit_group_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONSISTENCY-NEEDSES": lambda obj, elem: obj.consistency_needses.append(ConsistencyNeeds.deserialize(elem)),
+        "PORTS": lambda obj, elem: obj.ports.append(PortPrototype.deserialize(elem)),
+        "PORT-GROUPS": lambda obj, elem: obj.port_groups.append(PortGroup.deserialize(elem)),
+        "SWC-MAPPING-CONSTRAINTS": lambda obj, elem: obj.swc_mapping_constraint_refs.append(ARRef.deserialize(elem)),
+        "SW-COMPONENT-DOCUMENTATION": lambda obj, elem: setattr(obj, "sw_component_documentation", SwComponentDocumentation.deserialize(elem)),
+        "UNIT-GROUPS": lambda obj, elem: obj.unit_group_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwComponentType."""
         super().__init__()
@@ -80,9 +90,8 @@ class SwComponentType(ARElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwComponentType, self).serialize()

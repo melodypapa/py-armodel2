@@ -37,7 +37,15 @@ class NvDataPortAnnotation(GeneralAnnotation):
         """
         return False
 
+    _XML_TAG = "NV-DATA-PORT-ANNOTATION"
+
+
     variable_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "VARIABLE-REF": lambda obj, elem: setattr(obj, "variable_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NvDataPortAnnotation."""
         super().__init__()
@@ -49,9 +57,8 @@ class NvDataPortAnnotation(GeneralAnnotation):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NvDataPortAnnotation, self).serialize()

@@ -38,7 +38,15 @@ class ConstantSpecification(ARElement):
         """
         return False
 
+    _XML_TAG = "CONSTANT-SPECIFICATION"
+
+
     _value_spec: Optional[ValueSpecification]
+    _DESERIALIZE_DISPATCH = {
+        "VALUE-SPEC": lambda obj, elem: setattr(obj, "_value_spec", ValueSpecification.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConstantSpecification."""
         super().__init__()
@@ -61,9 +69,8 @@ class ConstantSpecification(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConstantSpecification, self).serialize()

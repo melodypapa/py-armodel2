@@ -30,8 +30,17 @@ class ClientServerApplicationErrorMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "CLIENT-SERVER-APPLICATION-ERROR-MAPPING"
+
+
     first_application_ref: Optional[ARRef]
     second_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FIRST-APPLICATION-REF": lambda obj, elem: setattr(obj, "first_application_ref", ARRef.deserialize(elem)),
+        "SECOND-REF": lambda obj, elem: setattr(obj, "second_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientServerApplicationErrorMapping."""
         super().__init__()
@@ -44,9 +53,8 @@ class ClientServerApplicationErrorMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientServerApplicationErrorMapping, self).serialize()

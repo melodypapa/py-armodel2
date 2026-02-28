@@ -40,9 +40,19 @@ class TDEventFrame(TDEventCom):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-FRAME"
+
+
     frame_ref: Optional[ARRef]
     physical_channel_ref: Optional[ARRef]
     td_event_type_enum: Optional[TDEventFrameTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "FRAME-REF": lambda obj, elem: setattr(obj, "frame_ref", ARRef.deserialize(elem)),
+        "PHYSICAL-CHANNEL-REF": lambda obj, elem: setattr(obj, "physical_channel_ref", ARRef.deserialize(elem)),
+        "TD-EVENT-TYPE-ENUM": lambda obj, elem: setattr(obj, "td_event_type_enum", TDEventFrameTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventFrame."""
         super().__init__()
@@ -56,9 +66,8 @@ class TDEventFrame(TDEventCom):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventFrame, self).serialize()

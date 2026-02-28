@@ -36,10 +36,21 @@ class RptExecutableEntityProperties(ARObject):
         """
         return False
 
+    _XML_TAG = "RPT-EXECUTABLE-ENTITY-PROPERTIES"
+
+
     max_rpt_event_id: Optional[PositiveInteger]
     min_rpt_event_id: Optional[PositiveInteger]
     rpt_execution_control: Optional[RptExecutionControlEnum]
     rpt_service_point_enum: Optional[RptServicePointEnum]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-RPT-EVENT-ID": lambda obj, elem: setattr(obj, "max_rpt_event_id", elem.text),
+        "MIN-RPT-EVENT-ID": lambda obj, elem: setattr(obj, "min_rpt_event_id", elem.text),
+        "RPT-EXECUTION-CONTROL": lambda obj, elem: setattr(obj, "rpt_execution_control", RptExecutionControlEnum.deserialize(elem)),
+        "RPT-SERVICE-POINT-ENUM": lambda obj, elem: setattr(obj, "rpt_service_point_enum", RptServicePointEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptExecutableEntityProperties."""
         super().__init__()
@@ -54,9 +65,8 @@ class RptExecutableEntityProperties(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptExecutableEntityProperties, self).serialize()

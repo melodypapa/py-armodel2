@@ -38,7 +38,15 @@ class SwSystemconstantValueSet(ARElement):
         """
         return False
 
+    _XML_TAG = "SW-SYSTEMCONSTANT-VALUE-SET"
+
+
     sws: list[SwSystemconstValue]
+    _DESERIALIZE_DISPATCH = {
+        "SWS": lambda obj, elem: obj.sws.append(SwSystemconstValue.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwSystemconstantValueSet."""
         super().__init__()
@@ -50,9 +58,8 @@ class SwSystemconstantValueSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwSystemconstantValueSet, self).serialize()

@@ -46,6 +46,13 @@ class EcucParameterValue(EcucIndexableValue, ABC):
     annotations: list[Annotation]
     definition_ref: Optional[ARRef]
     is_auto_value: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ANNOTATIONS": lambda obj, elem: obj.annotations.append(Annotation.deserialize(elem)),
+        "DEFINITION-REF": lambda obj, elem: setattr(obj, "definition_ref", ARRef.deserialize(elem)),
+        "IS-AUTO-VALUE": lambda obj, elem: setattr(obj, "is_auto_value", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucParameterValue."""
         super().__init__()
@@ -59,9 +66,8 @@ class EcucParameterValue(EcucIndexableValue, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucParameterValue, self).serialize()

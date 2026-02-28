@@ -77,6 +77,9 @@ class EcuInstance(FibexElement):
         """
         return False
 
+    _XML_TAG = "ECU-INSTANCE"
+
+
     associated_com_i_pdu_group_refs: list[ARRef]
     associated_consumed_provided_service_instance_group_refs: list[ARRef]
     associated_pdur_i_pdu_group_refs: list[ARRef]
@@ -103,6 +106,36 @@ class EcuInstance(FibexElement):
     tcp_ip_props_ref: Optional[ARRef]
     v2x_supported: Optional[V2xSupportEnum]
     wake_up_over_bus_supported: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ASSOCIATED-COM-I-PDU-GROUPS": lambda obj, elem: obj.associated_com_i_pdu_group_refs.append(ARRef.deserialize(elem)),
+        "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUPS": lambda obj, elem: obj.associated_consumed_provided_service_instance_group_refs.append(ARRef.deserialize(elem)),
+        "ASSOCIATED-PDUR-I-PDU-GROUPS": lambda obj, elem: obj.associated_pdur_i_pdu_group_refs.append(ARRef.deserialize(elem)),
+        "CHANNEL-SYNCHRONOUS-WAKEUP": lambda obj, elem: setattr(obj, "channel_synchronous_wakeup", elem.text),
+        "CLIENT-ID-RANGE": lambda obj, elem: setattr(obj, "client_id_range", ClientIdRange.deserialize(elem)),
+        "COM-CONFIGURATION-GW-TIME-BASE": lambda obj, elem: setattr(obj, "com_configuration_gw_time_base", elem.text),
+        "COM-CONFIGURATION-RX-TIME-BASE": lambda obj, elem: setattr(obj, "com_configuration_rx_time_base", elem.text),
+        "COM-CONFIGURATION-TX-TIME-BASE": lambda obj, elem: setattr(obj, "com_configuration_tx_time_base", elem.text),
+        "COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION": lambda obj, elem: setattr(obj, "com_enable_mdt_for_cyclic_transmission", elem.text),
+        "COMM-CONTROLLERS": lambda obj, elem: obj.comm_controllers.append(CommunicationController.deserialize(elem)),
+        "CONNECTORS": lambda obj, elem: obj.connectors.append(CommunicationConnector.deserialize(elem)),
+        "DLT-CONFIG": lambda obj, elem: setattr(obj, "dlt_config", DltConfig.deserialize(elem)),
+        "DO-IP-CONFIG": lambda obj, elem: setattr(obj, "do_ip_config", DoIpConfig.deserialize(elem)),
+        "ECU-TASK-PROXIES": lambda obj, elem: obj.ecu_task_proxy_refs.append(ARRef.deserialize(elem)),
+        "ETH-SWITCH-PORT-GROUP-DERIVATION": lambda obj, elem: setattr(obj, "eth_switch_port_group_derivation", elem.text),
+        "FIREWALL-RULES": lambda obj, elem: obj.firewall_rule_refs.append(ARRef.deserialize(elem)),
+        "PARTITIONS": lambda obj, elem: obj.partitions.append(EcuPartition.deserialize(elem)),
+        "PNC-NM-REQUEST": lambda obj, elem: setattr(obj, "pnc_nm_request", elem.text),
+        "PNC-PREPARE-SLEEP-TIMER": lambda obj, elem: setattr(obj, "pnc_prepare_sleep_timer", elem.text),
+        "PNC-SYNCHRONOUS-WAKEUP": lambda obj, elem: setattr(obj, "pnc_synchronous_wakeup", elem.text),
+        "PN-RESET-TIME": lambda obj, elem: setattr(obj, "pn_reset_time", elem.text),
+        "SLEEP-MODE-SUPPORTED": lambda obj, elem: setattr(obj, "sleep_mode_supported", elem.text),
+        "TCP-IP-ICMP-PROPS-REF": lambda obj, elem: setattr(obj, "tcp_ip_icmp_props_ref", ARRef.deserialize(elem)),
+        "TCP-IP-PROPS-REF": lambda obj, elem: setattr(obj, "tcp_ip_props_ref", ARRef.deserialize(elem)),
+        "V2X-SUPPORTED": lambda obj, elem: setattr(obj, "v2x_supported", V2xSupportEnum.deserialize(elem)),
+        "WAKE-UP-OVER-BUS-SUPPORTED": lambda obj, elem: setattr(obj, "wake_up_over_bus_supported", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcuInstance."""
         super().__init__()
@@ -139,9 +172,8 @@ class EcuInstance(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcuInstance, self).serialize()

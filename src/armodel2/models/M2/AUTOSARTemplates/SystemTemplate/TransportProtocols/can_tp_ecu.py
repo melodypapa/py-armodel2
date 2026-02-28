@@ -33,8 +33,17 @@ class CanTpEcu(ARObject):
         """
         return False
 
+    _XML_TAG = "CAN-TP-ECU"
+
+
     cycle_time_main: Optional[TimeValue]
     ecu_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CYCLE-TIME-MAIN": lambda obj, elem: setattr(obj, "cycle_time_main", elem.text),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanTpEcu."""
         super().__init__()
@@ -47,9 +56,8 @@ class CanTpEcu(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanTpEcu, self).serialize()

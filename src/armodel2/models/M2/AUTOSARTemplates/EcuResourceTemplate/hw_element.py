@@ -43,9 +43,19 @@ class HwElement(HwDescriptionEntity):
         """
         return False
 
+    _XML_TAG = "HW-ELEMENT"
+
+
     hw_element_connections: list[HwElementConnector]
     hw_pin_groups: list[HwPinGroup]
     nested_element_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "HW-ELEMENT-CONNECTIONS": lambda obj, elem: obj.hw_element_connections.append(HwElementConnector.deserialize(elem)),
+        "HW-PIN-GROUPS": lambda obj, elem: obj.hw_pin_groups.append(HwPinGroup.deserialize(elem)),
+        "NESTED-ELEMENTS": lambda obj, elem: obj.nested_element_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize HwElement."""
         super().__init__()
@@ -59,9 +69,8 @@ class HwElement(HwDescriptionEntity):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(HwElement, self).serialize()

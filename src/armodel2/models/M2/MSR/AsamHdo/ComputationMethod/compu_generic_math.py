@@ -29,7 +29,15 @@ class CompuGenericMath(ARObject):
         """
         return False
 
+    _XML_TAG = "COMPU-GENERIC-MATH"
+
+
     level: Optional[PrimitiveIdentifier]
+    _DESERIALIZE_DISPATCH = {
+        "LEVEL": lambda obj, elem: setattr(obj, "level", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompuGenericMath."""
         super().__init__()
@@ -41,9 +49,8 @@ class CompuGenericMath(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompuGenericMath, self).serialize()

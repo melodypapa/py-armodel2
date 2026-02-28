@@ -33,7 +33,15 @@ class RteEventInCompositionSeparation(Identifiable):
         """
         return False
 
+    _XML_TAG = "RTE-EVENT-IN-COMPOSITION-SEPARATION"
+
+
     rte_event_instance_refs: list[RTEEvent]
+    _DESERIALIZE_DISPATCH = {
+        "RTE-EVENT-INSTANCE-REFS": lambda obj, elem: obj.rte_event_instance_refs.append(RTEEvent.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RteEventInCompositionSeparation."""
         super().__init__()
@@ -45,9 +53,8 @@ class RteEventInCompositionSeparation(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RteEventInCompositionSeparation, self).serialize()

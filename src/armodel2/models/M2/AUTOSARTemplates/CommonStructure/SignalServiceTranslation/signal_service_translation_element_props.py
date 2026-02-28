@@ -40,9 +40,19 @@ class SignalServiceTranslationElementProps(Identifiable):
         """
         return False
 
+    _XML_TAG = "SIGNAL-SERVICE-TRANSLATION-ELEMENT-PROPS"
+
+
     element_ref: Optional[ARRef]
     filter: Optional[DataFilter]
     transmission: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ELEMENT-REF": lambda obj, elem: setattr(obj, "element_ref", ARRef.deserialize(elem)),
+        "FILTER": lambda obj, elem: setattr(obj, "filter", DataFilter.deserialize(elem)),
+        "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SignalServiceTranslationElementProps."""
         super().__init__()
@@ -56,9 +66,8 @@ class SignalServiceTranslationElementProps(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SignalServiceTranslationElementProps, self).serialize()

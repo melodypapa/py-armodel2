@@ -30,9 +30,19 @@ class RptSwPrototypingAccess(ARObject):
         """
         return False
 
+    _XML_TAG = "RPT-SW-PROTOTYPING-ACCESS"
+
+
     rpt_hook_access: Optional[RptAccessEnum]
     rpt_read_access: Optional[RptAccessEnum]
     rpt_write_access: Optional[RptAccessEnum]
+    _DESERIALIZE_DISPATCH = {
+        "RPT-HOOK-ACCESS": lambda obj, elem: setattr(obj, "rpt_hook_access", RptAccessEnum.deserialize(elem)),
+        "RPT-READ-ACCESS": lambda obj, elem: setattr(obj, "rpt_read_access", RptAccessEnum.deserialize(elem)),
+        "RPT-WRITE-ACCESS": lambda obj, elem: setattr(obj, "rpt_write_access", RptAccessEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptSwPrototypingAccess."""
         super().__init__()
@@ -46,9 +56,8 @@ class RptSwPrototypingAccess(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptSwPrototypingAccess, self).serialize()

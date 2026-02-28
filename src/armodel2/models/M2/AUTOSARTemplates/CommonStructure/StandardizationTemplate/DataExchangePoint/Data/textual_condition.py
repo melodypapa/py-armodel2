@@ -33,7 +33,15 @@ class TextualCondition(AbstractCondition):
         """
         return False
 
+    _XML_TAG = "TEXTUAL-CONDITION"
+
+
     text: String
+    _DESERIALIZE_DISPATCH = {
+        "TEXT": lambda obj, elem: setattr(obj, "text", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TextualCondition."""
         super().__init__()
@@ -45,9 +53,8 @@ class TextualCondition(AbstractCondition):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TextualCondition, self).serialize()

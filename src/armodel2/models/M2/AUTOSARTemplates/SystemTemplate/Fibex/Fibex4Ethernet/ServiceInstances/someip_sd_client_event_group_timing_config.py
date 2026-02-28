@@ -36,9 +36,19 @@ class SomeipSdClientEventGroupTimingConfig(ARElement):
         """
         return False
 
+    _XML_TAG = "SOMEIP-SD-CLIENT-EVENT-GROUP-TIMING-CONFIG"
+
+
     request: Optional[RequestResponseDelay]
     subscribe: Optional[PositiveInteger]
     time_to_live: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "REQUEST": lambda obj, elem: setattr(obj, "request", RequestResponseDelay.deserialize(elem)),
+        "SUBSCRIBE": lambda obj, elem: setattr(obj, "subscribe", elem.text),
+        "TIME-TO-LIVE": lambda obj, elem: setattr(obj, "time_to_live", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SomeipSdClientEventGroupTimingConfig."""
         super().__init__()
@@ -52,9 +62,8 @@ class SomeipSdClientEventGroupTimingConfig(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SomeipSdClientEventGroupTimingConfig, self).serialize()

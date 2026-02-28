@@ -40,8 +40,17 @@ class WaitPoint(Identifiable):
         """
         return False
 
+    _XML_TAG = "WAIT-POINT"
+
+
     timeout: Optional[TimeValue]
     trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", elem.text),
+        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize WaitPoint."""
         super().__init__()
@@ -54,9 +63,8 @@ class WaitPoint(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(WaitPoint, self).serialize()

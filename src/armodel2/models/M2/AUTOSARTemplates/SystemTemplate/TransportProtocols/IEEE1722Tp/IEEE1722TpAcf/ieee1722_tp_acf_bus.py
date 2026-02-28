@@ -39,6 +39,12 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
 
     acf_parts: list[IEEE1722TpAcfBusPart]
     bus_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ACF-PARTS": lambda obj, elem: obj.acf_parts.append(IEEE1722TpAcfBusPart.deserialize(elem)),
+        "BUS-ID": lambda obj, elem: setattr(obj, "bus_id", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfBus."""
         super().__init__()
@@ -51,9 +57,8 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpAcfBus, self).serialize()

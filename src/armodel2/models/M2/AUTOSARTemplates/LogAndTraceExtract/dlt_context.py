@@ -38,9 +38,19 @@ class DltContext(ARElement):
         """
         return False
 
+    _XML_TAG = "DLT-CONTEXT"
+
+
     context: Optional[String]
     context_id: Optional[String]
     dlt_message_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXT": lambda obj, elem: setattr(obj, "context", elem.text),
+        "CONTEXT-ID": lambda obj, elem: setattr(obj, "context_id", elem.text),
+        "DLT-MESSAGES": lambda obj, elem: obj.dlt_message_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DltContext."""
         super().__init__()
@@ -54,9 +64,8 @@ class DltContext(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DltContext, self).serialize()

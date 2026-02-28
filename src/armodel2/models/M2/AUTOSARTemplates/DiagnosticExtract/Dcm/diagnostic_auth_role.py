@@ -34,8 +34,17 @@ class DiagnosticAuthRole(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-AUTH-ROLE"
+
+
     bit_position: Optional[PositiveInteger]
     is_default: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "BIT-POSITION": lambda obj, elem: setattr(obj, "bit_position", elem.text),
+        "IS-DEFAULT": lambda obj, elem: setattr(obj, "is_default", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticAuthRole."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticAuthRole(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticAuthRole, self).serialize()

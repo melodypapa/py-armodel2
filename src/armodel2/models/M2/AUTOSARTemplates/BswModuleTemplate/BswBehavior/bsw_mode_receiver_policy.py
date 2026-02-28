@@ -33,9 +33,19 @@ class BswModeReceiverPolicy(ARObject):
         """
         return False
 
+    _XML_TAG = "BSW-MODE-RECEIVER-POLICY"
+
+
     enhanced_mode: Optional[Boolean]
     required_mode_ref: Optional[ARRef]
     supports: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ENHANCED-MODE": lambda obj, elem: setattr(obj, "enhanced_mode", elem.text),
+        "REQUIRED-MODE-REF": lambda obj, elem: setattr(obj, "required_mode_ref", ARRef.deserialize(elem)),
+        "SUPPORTS": lambda obj, elem: setattr(obj, "supports", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswModeReceiverPolicy."""
         super().__init__()
@@ -49,9 +59,8 @@ class BswModeReceiverPolicy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswModeReceiverPolicy, self).serialize()

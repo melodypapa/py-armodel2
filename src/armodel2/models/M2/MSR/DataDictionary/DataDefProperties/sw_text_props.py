@@ -39,10 +39,21 @@ class SwTextProps(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-TEXT-PROPS"
+
+
     array_size: Optional[ArraySizeSemanticsEnum]
     base_type_ref: Optional[ARRef]
     sw_fill_character: Optional[Integer]
     sw_max_text_size: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(elem)),
+        "BASE-TYPE-REF": lambda obj, elem: setattr(obj, "base_type_ref", ARRef.deserialize(elem)),
+        "SW-FILL-CHARACTER": lambda obj, elem: setattr(obj, "sw_fill_character", elem.text),
+        "SW-MAX-TEXT-SIZE": lambda obj, elem: setattr(obj, "sw_max_text_size", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwTextProps."""
         super().__init__()
@@ -57,9 +68,8 @@ class SwTextProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwTextProps, self).serialize()

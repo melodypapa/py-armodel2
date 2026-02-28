@@ -39,9 +39,19 @@ class RoleBasedMcDataAssignment(ARObject):
         """
         return False
 
+    _XML_TAG = "ROLE-BASED-MC-DATA-ASSIGNMENT"
+
+
     execution_refs: list[ARRef]
     mc_data_instance_refs: list[ARRef]
     role: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "EXECUTIONS": lambda obj, elem: obj.execution_refs.append(ARRef.deserialize(elem)),
+        "MC-DATA-INSTANCES": lambda obj, elem: obj.mc_data_instance_refs.append(ARRef.deserialize(elem)),
+        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RoleBasedMcDataAssignment."""
         super().__init__()
@@ -55,9 +65,8 @@ class RoleBasedMcDataAssignment(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RoleBasedMcDataAssignment, self).serialize()

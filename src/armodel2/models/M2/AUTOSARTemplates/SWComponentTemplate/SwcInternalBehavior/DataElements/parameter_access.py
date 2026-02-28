@@ -41,8 +41,17 @@ class ParameterAccess(AbstractAccessPoint):
         """
         return False
 
+    _XML_TAG = "PARAMETER-ACCESS"
+
+
     accessed_parameter_ref: Optional[ARRef]
     sw_data_def: Optional[SwDataDefProps]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESSED-PARAMETER-REF": lambda obj, elem: setattr(obj, "accessed_parameter_ref", ARRef.deserialize(elem)),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SwDataDefProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ParameterAccess."""
         super().__init__()
@@ -55,9 +64,8 @@ class ParameterAccess(AbstractAccessPoint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ParameterAccess, self).serialize()

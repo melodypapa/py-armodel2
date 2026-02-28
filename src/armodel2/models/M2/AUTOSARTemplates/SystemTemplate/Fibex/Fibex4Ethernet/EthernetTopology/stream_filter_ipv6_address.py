@@ -29,7 +29,15 @@ class StreamFilterIpv6Address(ARObject):
         """
         return False
 
+    _XML_TAG = "STREAM-FILTER-IPV6-ADDRESS"
+
+
     ipv6_address: Optional[Ip6AddressString]
+    _DESERIALIZE_DISPATCH = {
+        "IPV6-ADDRESS": lambda obj, elem: setattr(obj, "ipv6_address", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StreamFilterIpv6Address."""
         super().__init__()
@@ -41,9 +49,8 @@ class StreamFilterIpv6Address(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StreamFilterIpv6Address, self).serialize()

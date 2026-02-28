@@ -38,8 +38,17 @@ class DataPrototypeGroup(Identifiable):
         """
         return False
 
+    _XML_TAG = "DATA-PROTOTYPE-GROUP"
+
+
     data_prototype_group_group_in_composition_instance_ref: list[ARRef]
     implicit_data_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS": lambda obj, elem: obj.data_prototype_group_group_in_composition_instance_ref.append(ARRef.deserialize(elem)),
+        "IMPLICIT-DATAS": lambda obj, elem: obj.implicit_data_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataPrototypeGroup."""
         super().__init__()
@@ -52,9 +61,8 @@ class DataPrototypeGroup(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataPrototypeGroup, self).serialize()

@@ -40,9 +40,19 @@ class ISignalIPdu(IPdu):
         """
         return False
 
+    _XML_TAG = "I-SIGNAL-I-PDU"
+
+
     i_pdu_timing_specifications: list[IPduTiming]
     i_signal_to_pdu_mappings: list[ISignalToIPduMapping]
     unused_bit_pattern: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "I-PDU-TIMING-SPECIFICATIONS": lambda obj, elem: obj.i_pdu_timing_specifications.append(IPduTiming.deserialize(elem)),
+        "I-SIGNAL-TO-PDU-MAPPINGS": lambda obj, elem: obj.i_signal_to_pdu_mappings.append(ISignalToIPduMapping.deserialize(elem)),
+        "UNUSED-BIT-PATTERN": lambda obj, elem: setattr(obj, "unused_bit_pattern", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ISignalIPdu."""
         super().__init__()
@@ -56,9 +66,8 @@ class ISignalIPdu(IPdu):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ISignalIPdu, self).serialize()

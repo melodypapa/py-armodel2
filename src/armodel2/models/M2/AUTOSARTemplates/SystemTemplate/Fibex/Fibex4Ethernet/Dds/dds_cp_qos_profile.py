@@ -66,6 +66,9 @@ class DdsCpQosProfile(Identifiable):
         """
         return False
 
+    _XML_TAG = "DDS-CP-QOS-PROFILE"
+
+
     deadline: Optional[DdsDeadline]
     destination_order: Optional[DdsDestinationOrder]
     durability: Optional[DdsDurabilityService]
@@ -78,6 +81,22 @@ class DdsCpQosProfile(Identifiable):
     resource_limits: Optional[DdsResourceLimits]
     topic_data: Optional[DdsTopicData]
     transport_priority: Optional[DdsTransportPriority]
+    _DESERIALIZE_DISPATCH = {
+        "DEADLINE": lambda obj, elem: setattr(obj, "deadline", DdsDeadline.deserialize(elem)),
+        "DESTINATION-ORDER": lambda obj, elem: setattr(obj, "destination_order", DdsDestinationOrder.deserialize(elem)),
+        "DURABILITY": lambda obj, elem: setattr(obj, "durability", DdsDurabilityService.deserialize(elem)),
+        "HISTORY": lambda obj, elem: setattr(obj, "history", DdsHistory.deserialize(elem)),
+        "LATENCY-BUDGET": lambda obj, elem: setattr(obj, "latency_budget", DdsLatencyBudget.deserialize(elem)),
+        "LIFESPAN": lambda obj, elem: setattr(obj, "lifespan", DdsLifespan.deserialize(elem)),
+        "LIVELINESS": lambda obj, elem: setattr(obj, "liveliness", DdsLiveliness.deserialize(elem)),
+        "OWNERSHIP": lambda obj, elem: setattr(obj, "ownership", DdsOwnershipStrength.deserialize(elem)),
+        "RELIABILITY": lambda obj, elem: setattr(obj, "reliability", DdsReliability.deserialize(elem)),
+        "RESOURCE-LIMITS": lambda obj, elem: setattr(obj, "resource_limits", DdsResourceLimits.deserialize(elem)),
+        "TOPIC-DATA": lambda obj, elem: setattr(obj, "topic_data", DdsTopicData.deserialize(elem)),
+        "TRANSPORT-PRIORITY": lambda obj, elem: setattr(obj, "transport_priority", DdsTransportPriority.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpQosProfile."""
         super().__init__()
@@ -100,9 +119,8 @@ class DdsCpQosProfile(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpQosProfile, self).serialize()

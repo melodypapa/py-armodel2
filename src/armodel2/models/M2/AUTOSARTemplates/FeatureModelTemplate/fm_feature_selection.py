@@ -33,7 +33,15 @@ class FMFeatureSelection(Identifiable):
         """
         return False
 
+    _XML_TAG = "F-M-FEATURE-SELECTION"
+
+
     attribute_values: list[FMAttributeValue]
+    _DESERIALIZE_DISPATCH = {
+        "ATTRIBUTE-VALUES": lambda obj, elem: obj.attribute_values.append(FMAttributeValue.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FMFeatureSelection."""
         super().__init__()
@@ -45,9 +53,8 @@ class FMFeatureSelection(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FMFeatureSelection, self).serialize()

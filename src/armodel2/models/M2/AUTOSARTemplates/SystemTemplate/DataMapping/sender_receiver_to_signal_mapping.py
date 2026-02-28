@@ -43,10 +43,21 @@ class SenderReceiverToSignalMapping(DataMapping):
         """
         return False
 
+    _XML_TAG = "SENDER-RECEIVER-TO-SIGNAL-MAPPING"
+
+
     _data_element_iref: Optional[VariableDataPrototypeInSystemInstanceRef]
     sender_to_signal_text_table_mapping: Optional[TextTableMapping]
     signal_to_receiver_text_table_mapping: Optional[TextTableMapping]
     system_signal_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENT": lambda obj, elem: setattr(obj, "_data_element_iref", ARRef.deserialize(elem)),
+        "SENDER-TO-SIGNAL-TEXT-TABLE-MAPPING": lambda obj, elem: setattr(obj, "sender_to_signal_text_table_mapping", TextTableMapping.deserialize(elem)),
+        "SIGNAL-TO-RECEIVER-TEXT-TABLE-MAPPING": lambda obj, elem: setattr(obj, "signal_to_receiver_text_table_mapping", TextTableMapping.deserialize(elem)),
+        "SYSTEM-SIGNAL-REF": lambda obj, elem: setattr(obj, "system_signal_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SenderReceiverToSignalMapping."""
         super().__init__()
@@ -72,9 +83,8 @@ class SenderReceiverToSignalMapping(DataMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SenderReceiverToSignalMapping, self).serialize()

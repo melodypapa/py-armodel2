@@ -36,8 +36,17 @@ class EthernetCluster(ARObject):
         """
         return False
 
+    _XML_TAG = "ETHERNET-CLUSTER"
+
+
     coupling_port: Optional[TimeValue]
     mac_multicast_group_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COUPLING-PORT": lambda obj, elem: setattr(obj, "coupling_port", elem.text),
+        "MAC-MULTICAST-GROUPS": lambda obj, elem: obj.mac_multicast_group_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthernetCluster."""
         super().__init__()

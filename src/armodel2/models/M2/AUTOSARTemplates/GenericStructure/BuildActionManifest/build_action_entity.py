@@ -39,6 +39,12 @@ class BuildActionEntity(Identifiable, ABC):
 
     delivery_artifacts: list[AutosarEngineeringObject]
     invocation: Optional[BuildActionInvocator]
+    _DESERIALIZE_DISPATCH = {
+        "DELIVERY-ARTIFACTS": lambda obj, elem: obj.delivery_artifacts.append(AutosarEngineeringObject.deserialize(elem)),
+        "INVOCATION": lambda obj, elem: setattr(obj, "invocation", BuildActionInvocator.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BuildActionEntity."""
         super().__init__()
@@ -51,9 +57,8 @@ class BuildActionEntity(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BuildActionEntity, self).serialize()

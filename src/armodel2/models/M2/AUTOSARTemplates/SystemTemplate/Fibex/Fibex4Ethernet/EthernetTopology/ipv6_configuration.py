@@ -39,6 +39,9 @@ class Ipv6Configuration(NetworkEndpointAddress):
         """
         return False
 
+    _XML_TAG = "IPV6-CONFIGURATION"
+
+
     assignment: Optional[PositiveInteger]
     default_router: Optional[Ip6AddressString]
     dns_servers: list[Ip6AddressString]
@@ -48,6 +51,19 @@ class Ipv6Configuration(NetworkEndpointAddress):
     ip_address_prefix: Optional[PositiveInteger]
     ipv6_address: Optional[Ip6AddressString]
     ipv6_address_source: Optional[Ipv6AddressSourceEnum]
+    _DESERIALIZE_DISPATCH = {
+        "ASSIGNMENT": lambda obj, elem: setattr(obj, "assignment", elem.text),
+        "DEFAULT-ROUTER": lambda obj, elem: setattr(obj, "default_router", elem.text),
+        "DNS-SERVERS": lambda obj, elem: obj.dns_servers.append(elem.text),
+        "ENABLE-ANYCAST": lambda obj, elem: setattr(obj, "enable_anycast", elem.text),
+        "HOP-COUNT": lambda obj, elem: setattr(obj, "hop_count", elem.text),
+        "IP-ADDRESS-KEEP-ENUM": lambda obj, elem: setattr(obj, "ip_address_keep_enum", IpAddressKeepEnum.deserialize(elem)),
+        "IP-ADDRESS-PREFIX": lambda obj, elem: setattr(obj, "ip_address_prefix", elem.text),
+        "IPV6-ADDRESS": lambda obj, elem: setattr(obj, "ipv6_address", elem.text),
+        "IPV6-ADDRESS-SOURCE": lambda obj, elem: setattr(obj, "ipv6_address_source", Ipv6AddressSourceEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ipv6Configuration."""
         super().__init__()
@@ -67,9 +83,8 @@ class Ipv6Configuration(NetworkEndpointAddress):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ipv6Configuration, self).serialize()

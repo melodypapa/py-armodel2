@@ -41,6 +41,9 @@ class Tgroup(ARObject):
         """
         return False
 
+    _XML_TAG = "TGROUP"
+
+
     align: Optional[AlignEnum]
     cols: Integer
     colsep: Optional[TableSeparatorString]
@@ -49,6 +52,18 @@ class Tgroup(ARObject):
     tbody: Tbody
     tfoot: Optional[Tbody]
     thead: Optional[Tbody]
+    _DESERIALIZE_DISPATCH = {
+        "ALIGN": lambda obj, elem: setattr(obj, "align", AlignEnum.deserialize(elem)),
+        "COLS": lambda obj, elem: setattr(obj, "cols", elem.text),
+        "COLSEP": lambda obj, elem: setattr(obj, "colsep", elem.text),
+        "COLSPECS": lambda obj, elem: obj.colspecs.append(Colspec.deserialize(elem)),
+        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", elem.text),
+        "TBODY": lambda obj, elem: setattr(obj, "tbody", Tbody.deserialize(elem)),
+        "TFOOT": lambda obj, elem: setattr(obj, "tfoot", Tbody.deserialize(elem)),
+        "THEAD": lambda obj, elem: setattr(obj, "thead", Tbody.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Tgroup."""
         super().__init__()
@@ -67,9 +82,8 @@ class Tgroup(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Tgroup, self).serialize()

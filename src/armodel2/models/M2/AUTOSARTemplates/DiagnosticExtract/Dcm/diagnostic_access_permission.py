@@ -40,10 +40,21 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-ACCESS-PERMISSION"
+
+
     authentication: Optional[DiagnosticAuthRole]
     diagnostic_session_refs: list[ARRef]
     environmental_ref: Optional[Any]
     security_level_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AUTHENTICATION": lambda obj, elem: setattr(obj, "authentication", DiagnosticAuthRole.deserialize(elem)),
+        "DIAGNOSTIC-SESSIONS": lambda obj, elem: obj.diagnostic_session_refs.append(ARRef.deserialize(elem)),
+        "ENVIRONMENTAL-REF": lambda obj, elem: setattr(obj, "environmental_ref", ARRef.deserialize(elem)),
+        "SECURITY-LEVELS": lambda obj, elem: obj.security_level_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticAccessPermission."""
         super().__init__()
@@ -58,9 +69,8 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticAccessPermission, self).serialize()

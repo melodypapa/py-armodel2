@@ -40,9 +40,19 @@ class HwAttributeDef(Identifiable):
         """
         return False
 
+    _XML_TAG = "HW-ATTRIBUTE-DEF"
+
+
     hw_attributes: list[HwAttributeLiteralDef]
     is_required: Optional[Boolean]
     unit_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "HW-ATTRIBUTES": lambda obj, elem: obj.hw_attributes.append(HwAttributeLiteralDef.deserialize(elem)),
+        "IS-REQUIRED": lambda obj, elem: setattr(obj, "is_required", elem.text),
+        "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize HwAttributeDef."""
         super().__init__()
@@ -56,9 +66,8 @@ class HwAttributeDef(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(HwAttributeDef, self).serialize()

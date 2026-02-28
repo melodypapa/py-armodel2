@@ -29,6 +29,12 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
 
     can_controller_fd: Optional[Any]
     can_controller_xl: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CAN-CONTROLLER-FD": lambda obj, elem: setattr(obj, "can_controller_fd", any (CanControllerFd).deserialize(elem)),
+        "CAN-CONTROLLER-XL": lambda obj, elem: setattr(obj, "can_controller_xl", any (CanControllerXl).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AbstractCanCommunicationControllerAttributes."""
         super().__init__()
@@ -41,9 +47,8 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AbstractCanCommunicationControllerAttributes, self).serialize()

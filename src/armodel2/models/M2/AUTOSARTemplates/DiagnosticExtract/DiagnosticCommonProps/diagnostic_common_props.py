@@ -43,6 +43,9 @@ class DiagnosticCommonProps(ARObject):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-COMMON-PROPS"
+
+
     authentication: Optional[TimeValue]
     debounces: list[Any]
     default: Optional[ByteOrderEnum]
@@ -54,6 +57,21 @@ class DiagnosticCommonProps(ARObject):
     response_on_all: Optional[Boolean]
     response_on: Optional[Boolean]
     type_of_event: Optional[DiagnosticEvent]
+    _DESERIALIZE_DISPATCH = {
+        "AUTHENTICATION": lambda obj, elem: setattr(obj, "authentication", elem.text),
+        "DEBOUNCES": lambda obj, elem: obj.debounces.append(any (DiagnosticDebounce).deserialize(elem)),
+        "DEFAULT": lambda obj, elem: setattr(obj, "default", ByteOrderEnum.deserialize(elem)),
+        "EVENT": lambda obj, elem: setattr(obj, "event", DiagnosticEvent.deserialize(elem)),
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
+        "OCCURRENCE": lambda obj, elem: setattr(obj, "occurrence", DiagnosticOccurrenceCounterProcessingEnum.deserialize(elem)),
+        "RESET-CONFIRMED": lambda obj, elem: setattr(obj, "reset_confirmed", elem.text),
+        "RESET-PENDING-BIT": lambda obj, elem: setattr(obj, "reset_pending_bit", elem.text),
+        "RESPONSE-ON-ALL": lambda obj, elem: setattr(obj, "response_on_all", elem.text),
+        "RESPONSE-ON": lambda obj, elem: setattr(obj, "response_on", elem.text),
+        "TYPE-OF-EVENT": lambda obj, elem: setattr(obj, "type_of_event", DiagnosticEvent.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticCommonProps."""
         super().__init__()

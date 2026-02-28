@@ -36,7 +36,15 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
         """
         return False
 
+    _XML_TAG = "P-R-PORT-PROTOTYPE"
+
+
     provided: Optional[PortInterface]
+    _DESERIALIZE_DISPATCH = {
+        "PROVIDED": lambda obj, elem: setattr(obj, "provided", PortInterface.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PRPortPrototype."""
         super().__init__()
@@ -48,9 +56,8 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PRPortPrototype, self).serialize()

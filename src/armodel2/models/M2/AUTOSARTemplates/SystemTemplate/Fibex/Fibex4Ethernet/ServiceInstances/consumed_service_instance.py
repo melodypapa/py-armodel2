@@ -53,6 +53,9 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         """
         return False
 
+    _XML_TAG = "CONSUMED-SERVICE-INSTANCE"
+
+
     allowed_service_refs: list[ARRef]
     auto_require: Optional[Boolean]
     blocklisteds: list[SomeipServiceVersion]
@@ -67,6 +70,24 @@ class ConsumedServiceInstance(AbstractServiceInstance):
     sd_client_timer_ref: Optional[ARRef]
     service_identifier: Optional[PositiveInteger]
     version_driven: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ALLOWED-SERVICES": lambda obj, elem: obj.allowed_service_refs.append(ARRef.deserialize(elem)),
+        "AUTO-REQUIRE": lambda obj, elem: setattr(obj, "auto_require", elem.text),
+        "BLOCKLISTEDS": lambda obj, elem: obj.blocklisteds.append(SomeipServiceVersion.deserialize(elem)),
+        "CONSUMED-EVENT-GROUPS": lambda obj, elem: obj.consumed_event_group_refs.append(ARRef.deserialize(elem)),
+        "EVENT-MULTICAST-REF": lambda obj, elem: setattr(obj, "event_multicast_ref", ARRef.deserialize(elem)),
+        "INSTANCE": lambda obj, elem: setattr(obj, "instance", elem.text),
+        "LOCAL-UNICAST": lambda obj, elem: setattr(obj, "local_unicast", ApplicationEndpoint.deserialize(elem)),
+        "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", elem.text),
+        "PROVIDED-SERVICE-REF": lambda obj, elem: setattr(obj, "provided_service_ref", ARRef.deserialize(elem)),
+        "REMOTE-UNICAST": lambda obj, elem: setattr(obj, "remote_unicast", ApplicationEndpoint.deserialize(elem)),
+        "SD-CLIENT-CONFIG": lambda obj, elem: setattr(obj, "sd_client_config", any (SdClientConfig).deserialize(elem)),
+        "SD-CLIENT-TIMER-REF": lambda obj, elem: setattr(obj, "sd_client_timer_ref", ARRef.deserialize(elem)),
+        "SERVICE-IDENTIFIER": lambda obj, elem: setattr(obj, "service_identifier", elem.text),
+        "VERSION-DRIVEN": lambda obj, elem: setattr(obj, "version_driven", any (ServiceVersion).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConsumedServiceInstance."""
         super().__init__()
@@ -91,9 +112,8 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConsumedServiceInstance, self).serialize()

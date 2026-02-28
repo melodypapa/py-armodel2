@@ -37,8 +37,17 @@ class HwPinGroupConnector(Describable):
         """
         return False
 
+    _XML_TAG = "HW-PIN-GROUP-CONNECTOR"
+
+
     hw_pins: list[HwPinConnector]
     hw_pin_group_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "HW-PINS": lambda obj, elem: obj.hw_pins.append(HwPinConnector.deserialize(elem)),
+        "HW-PIN-GROUPS": lambda obj, elem: obj.hw_pin_group_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize HwPinGroupConnector."""
         super().__init__()
@@ -51,9 +60,8 @@ class HwPinGroupConnector(Describable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(HwPinGroupConnector, self).serialize()

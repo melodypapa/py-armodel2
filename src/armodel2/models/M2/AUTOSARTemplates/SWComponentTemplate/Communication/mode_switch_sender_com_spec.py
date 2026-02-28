@@ -41,10 +41,21 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         """
         return False
 
+    _XML_TAG = "MODE-SWITCH-SENDER-COM-SPEC"
+
+
     enhanced_mode_api: Optional[Boolean]
     mode_group_ref: Optional[ARRef]
     mode_switched_ack: Optional[ModeSwitchedAckRequest]
     queue_length: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ENHANCED-MODE-API": lambda obj, elem: setattr(obj, "enhanced_mode_api", elem.text),
+        "MODE-GROUP-REF": lambda obj, elem: setattr(obj, "mode_group_ref", ARRef.deserialize(elem)),
+        "MODE-SWITCHED-ACK": lambda obj, elem: setattr(obj, "mode_switched_ack", ModeSwitchedAckRequest.deserialize(elem)),
+        "QUEUE-LENGTH": lambda obj, elem: setattr(obj, "queue_length", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeSwitchSenderComSpec."""
         super().__init__()
@@ -59,9 +70,8 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeSwitchSenderComSpec, self).serialize()

@@ -39,12 +39,25 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-EVENT-NEEDS"
+
+
     deferring_fid_refs: list[ARRef]
     diag_event_debounce: Optional[Any]
     inhibiting_fid_ref: Optional[ARRef]
     inhibiting_refs: list[ARRef]
     prestored: Optional[Boolean]
     uses_monitor: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "DEFERRING-FIDS": lambda obj, elem: obj.deferring_fid_refs.append(ARRef.deserialize(elem)),
+        "DIAG-EVENT-DEBOUNCE": lambda obj, elem: setattr(obj, "diag_event_debounce", any (DiagEventDebounce).deserialize(elem)),
+        "INHIBITING-FID-REF": lambda obj, elem: setattr(obj, "inhibiting_fid_ref", ARRef.deserialize(elem)),
+        "INHIBITINGS": lambda obj, elem: obj.inhibiting_refs.append(ARRef.deserialize(elem)),
+        "PRESTORED": lambda obj, elem: setattr(obj, "prestored", elem.text),
+        "USES-MONITOR": lambda obj, elem: setattr(obj, "uses_monitor", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEventNeeds."""
         super().__init__()
@@ -61,9 +74,8 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEventNeeds, self).serialize()

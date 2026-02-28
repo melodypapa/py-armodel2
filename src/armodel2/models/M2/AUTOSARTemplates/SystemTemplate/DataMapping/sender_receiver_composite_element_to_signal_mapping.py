@@ -40,9 +40,19 @@ class SenderReceiverCompositeElementToSignalMapping(DataMapping):
         """
         return False
 
+    _XML_TAG = "SENDER-RECEIVER-COMPOSITE-ELEMENT-TO-SIGNAL-MAPPING"
+
+
     data_element_ref: Optional[ARRef]
     system_signal_ref: Optional[ARRef]
     type_mapping: Optional[SenderRecCompositeTypeMapping]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "SYSTEM-SIGNAL-REF": lambda obj, elem: setattr(obj, "system_signal_ref", ARRef.deserialize(elem)),
+        "TYPE-MAPPING": lambda obj, elem: setattr(obj, "type_mapping", SenderRecCompositeTypeMapping.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SenderReceiverCompositeElementToSignalMapping."""
         super().__init__()
@@ -56,9 +66,8 @@ class SenderReceiverCompositeElementToSignalMapping(DataMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SenderReceiverCompositeElementToSignalMapping, self).serialize()

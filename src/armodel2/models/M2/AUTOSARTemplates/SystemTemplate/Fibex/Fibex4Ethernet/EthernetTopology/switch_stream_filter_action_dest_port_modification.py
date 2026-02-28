@@ -34,8 +34,17 @@ class SwitchStreamFilterActionDestPortModification(Identifiable):
         """
         return False
 
+    _XML_TAG = "SWITCH-STREAM-FILTER-ACTION-DEST-PORT-MODIFICATION"
+
+
     egress_port_refs: list[ARRef]
     modification: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "EGRESS-PORTS": lambda obj, elem: obj.egress_port_refs.append(ARRef.deserialize(elem)),
+        "MODIFICATION": lambda obj, elem: setattr(obj, "modification", any (SwitchStreamFilter).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwitchStreamFilterActionDestPortModification."""
         super().__init__()
@@ -48,9 +57,8 @@ class SwitchStreamFilterActionDestPortModification(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwitchStreamFilterActionDestPortModification, self).serialize()

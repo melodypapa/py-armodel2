@@ -33,8 +33,17 @@ class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         """
         return False
 
+    _XML_TAG = "FR-GLOBAL-TIME-DOMAIN-PROPS"
+
+
     ofs_data_id_list: PositiveInteger
     sync_data_id_list: PositiveInteger
+    _DESERIALIZE_DISPATCH = {
+        "OFS-DATA-ID-LIST": lambda obj, elem: setattr(obj, "ofs_data_id_list", elem.text),
+        "SYNC-DATA-ID-LIST": lambda obj, elem: setattr(obj, "sync_data_id_list", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FrGlobalTimeDomainProps."""
         super().__init__()
@@ -47,9 +56,8 @@ class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FrGlobalTimeDomainProps, self).serialize()

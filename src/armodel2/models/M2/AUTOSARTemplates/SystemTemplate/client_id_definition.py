@@ -36,8 +36,17 @@ class ClientIdDefinition(Identifiable):
         """
         return False
 
+    _XML_TAG = "CLIENT-ID-DEFINITION"
+
+
     client_id: Optional[Numerical]
     client_server_instance_ref: Optional[ClientServerOperation]
+    _DESERIALIZE_DISPATCH = {
+        "CLIENT-ID": lambda obj, elem: setattr(obj, "client_id", elem.text),
+        "CLIENT-SERVER-INSTANCE-REF": lambda obj, elem: setattr(obj, "client_server_instance_ref", ClientServerOperation.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientIdDefinition."""
         super().__init__()
@@ -50,9 +59,8 @@ class ClientIdDefinition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientIdDefinition, self).serialize()

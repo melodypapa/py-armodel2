@@ -34,11 +34,23 @@ class ConditionalChangeNad(LinConfigurationEntry):
         """
         return False
 
+    _XML_TAG = "CONDITIONAL-CHANGE-NAD"
+
+
     byte: Optional[Integer]
     id: Optional[PositiveInteger]
     invert: Optional[Integer]
     mask: Optional[Integer]
     new_nad: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "BYTE": lambda obj, elem: setattr(obj, "byte", elem.text),
+        "ID": lambda obj, elem: setattr(obj, "id", elem.text),
+        "INVERT": lambda obj, elem: setattr(obj, "invert", elem.text),
+        "MASK": lambda obj, elem: setattr(obj, "mask", elem.text),
+        "NEW-NAD": lambda obj, elem: setattr(obj, "new_nad", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConditionalChangeNad."""
         super().__init__()
@@ -54,9 +66,8 @@ class ConditionalChangeNad(LinConfigurationEntry):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConditionalChangeNad, self).serialize()

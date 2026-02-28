@@ -30,9 +30,19 @@ class InitialSdDelayConfig(ARObject):
         """
         return False
 
+    _XML_TAG = "INITIAL-SD-DELAY-CONFIG"
+
+
     initial_delay_max: Optional[TimeValue]
     initial_delay_min: Optional[TimeValue]
     initial: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "INITIAL-DELAY-MAX": lambda obj, elem: setattr(obj, "initial_delay_max", elem.text),
+        "INITIAL-DELAY-MIN": lambda obj, elem: setattr(obj, "initial_delay_min", elem.text),
+        "INITIAL": lambda obj, elem: setattr(obj, "initial", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InitialSdDelayConfig."""
         super().__init__()
@@ -46,9 +56,8 @@ class InitialSdDelayConfig(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InitialSdDelayConfig, self).serialize()

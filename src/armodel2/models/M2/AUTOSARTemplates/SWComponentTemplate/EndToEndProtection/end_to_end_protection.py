@@ -31,7 +31,15 @@ class EndToEndProtection(Identifiable):
         """
         return False
 
+    _XML_TAG = "END-TO-END-PROTECTION"
+
+
     end_to_ends: list[EndToEndProtection]
+    _DESERIALIZE_DISPATCH = {
+        "END-TO-ENDS": lambda obj, elem: obj.end_to_ends.append(EndToEndProtection.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EndToEndProtection."""
         super().__init__()
@@ -43,9 +51,8 @@ class EndToEndProtection(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EndToEndProtection, self).serialize()

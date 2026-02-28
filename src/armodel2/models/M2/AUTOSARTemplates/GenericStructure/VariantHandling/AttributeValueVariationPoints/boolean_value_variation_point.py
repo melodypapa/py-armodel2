@@ -26,6 +26,9 @@ class BooleanValueVariationPoint(ARObject):
         """
         return False
 
+    _XML_TAG = "BOOLEAN-VALUE-VARIATION-POINT"
+
+
     def __init__(self) -> None:
         """Initialize BooleanValueVariationPoint."""
         super().__init__()
@@ -36,9 +39,8 @@ class BooleanValueVariationPoint(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BooleanValueVariationPoint, self).serialize()

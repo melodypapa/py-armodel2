@@ -33,7 +33,15 @@ class CompuScaleRationalFormula(CompuScaleContents):
         """
         return False
 
+    _XML_TAG = "COMPU-SCALE-RATIONAL-FORMULA"
+
+
     compu_rational_coeffs: Optional[CompuRationalCoeffs]
+    _DESERIALIZE_DISPATCH = {
+        "COMPU-RATIONAL-COEFFS": lambda obj, elem: setattr(obj, "compu_rational_coeffs", CompuRationalCoeffs.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompuScaleRationalFormula."""
         super().__init__()
@@ -45,9 +53,8 @@ class CompuScaleRationalFormula(CompuScaleContents):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompuScaleRationalFormula, self).serialize()

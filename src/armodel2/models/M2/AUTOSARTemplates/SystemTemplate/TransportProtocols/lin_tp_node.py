@@ -39,12 +39,25 @@ class LinTpNode(Identifiable):
         """
         return False
 
+    _XML_TAG = "LIN-TP-NODE"
+
+
     connector_ref: Optional[Any]
     drop_not: Optional[Boolean]
     max_number_of: Optional[Integer]
     p2_max: Optional[TimeValue]
     p2_timing: Optional[TimeValue]
     tp_address_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONNECTOR-REF": lambda obj, elem: setattr(obj, "connector_ref", ARRef.deserialize(elem)),
+        "DROP-NOT": lambda obj, elem: setattr(obj, "drop_not", elem.text),
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
+        "P2-MAX": lambda obj, elem: setattr(obj, "p2_max", elem.text),
+        "P2-TIMING": lambda obj, elem: setattr(obj, "p2_timing", elem.text),
+        "TP-ADDRESS-REF": lambda obj, elem: setattr(obj, "tp_address_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinTpNode."""
         super().__init__()
@@ -61,9 +74,8 @@ class LinTpNode(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinTpNode, self).serialize()

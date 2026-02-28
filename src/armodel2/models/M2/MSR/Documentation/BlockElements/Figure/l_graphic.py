@@ -36,8 +36,17 @@ class LGraphic(LanguageSpecific):
         """
         return False
 
+    _XML_TAG = "L-GRAPHIC"
+
+
     graphic: Graphic
     map: Optional[Map]
+    _DESERIALIZE_DISPATCH = {
+        "GRAPHIC": lambda obj, elem: setattr(obj, "graphic", Graphic.deserialize(elem)),
+        "MAP": lambda obj, elem: setattr(obj, "map", Map.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LGraphic."""
         super().__init__()
@@ -50,9 +59,8 @@ class LGraphic(LanguageSpecific):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LGraphic, self).serialize()

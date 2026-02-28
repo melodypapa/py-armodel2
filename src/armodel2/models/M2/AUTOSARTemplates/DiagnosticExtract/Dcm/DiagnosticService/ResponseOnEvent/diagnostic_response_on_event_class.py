@@ -35,11 +35,23 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-RESPONSE-ON-EVENT-CLASS"
+
+
     max_number_of: Optional[PositiveInteger]
     max_num: Optional[PositiveInteger]
     max_supported: Optional[PositiveInteger]
     response_on: Optional[TimeValue]
     store_event: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
+        "MAX-NUM": lambda obj, elem: setattr(obj, "max_num", elem.text),
+        "MAX-SUPPORTED": lambda obj, elem: setattr(obj, "max_supported", elem.text),
+        "RESPONSE-ON": lambda obj, elem: setattr(obj, "response_on", elem.text),
+        "STORE-EVENT": lambda obj, elem: setattr(obj, "store_event", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticResponseOnEventClass."""
         super().__init__()
@@ -55,9 +67,8 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticResponseOnEventClass, self).serialize()

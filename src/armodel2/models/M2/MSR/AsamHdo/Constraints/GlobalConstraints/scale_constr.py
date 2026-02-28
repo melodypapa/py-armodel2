@@ -33,11 +33,23 @@ class ScaleConstr(ARObject):
         """
         return False
 
+    _XML_TAG = "SCALE-CONSTR"
+
+
     desc: Optional[MultiLanguageOverviewParagraph]
     lower_limit: Optional[Limit]
     short_label: Optional[Identifier]
     upper_limit: Optional[Limit]
     validity: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DESC": lambda obj, elem: setattr(obj, "desc", MultiLanguageOverviewParagraph.deserialize(elem)),
+        "LOWER-LIMIT": lambda obj, elem: setattr(obj, "lower_limit", elem.text),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "UPPER-LIMIT": lambda obj, elem: setattr(obj, "upper_limit", elem.text),
+        "VALIDITY": lambda obj, elem: setattr(obj, "validity", any (ScaleConstrValidity).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ScaleConstr."""
         super().__init__()
@@ -53,9 +65,8 @@ class ScaleConstr(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ScaleConstr, self).serialize()

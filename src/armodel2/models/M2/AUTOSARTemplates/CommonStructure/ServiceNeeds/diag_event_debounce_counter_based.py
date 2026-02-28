@@ -35,12 +35,25 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
         """
         return False
 
+    _XML_TAG = "DIAG-EVENT-DEBOUNCE-COUNTER-BASED"
+
+
     counter_based: Optional[Integer]
     counter: Optional[Integer]
     counter_failed: Optional[Integer]
     counter_jump: Optional[Integer]
     counter_jump_up: Optional[Integer]
     counter_passed: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "COUNTER-BASED": lambda obj, elem: setattr(obj, "counter_based", elem.text),
+        "COUNTER": lambda obj, elem: setattr(obj, "counter", elem.text),
+        "COUNTER-FAILED": lambda obj, elem: setattr(obj, "counter_failed", elem.text),
+        "COUNTER-JUMP": lambda obj, elem: setattr(obj, "counter_jump", elem.text),
+        "COUNTER-JUMP-UP": lambda obj, elem: setattr(obj, "counter_jump_up", elem.text),
+        "COUNTER-PASSED": lambda obj, elem: setattr(obj, "counter_passed", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagEventDebounceCounterBased."""
         super().__init__()
@@ -57,9 +70,8 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagEventDebounceCounterBased, self).serialize()

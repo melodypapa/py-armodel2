@@ -30,7 +30,15 @@ class FMFeatureMapCondition(Identifiable):
         """
         return False
 
+    _XML_TAG = "F-M-FEATURE-MAP-CONDITION"
+
+
     fm_cond_and_attributes: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "FM-COND-AND-ATTRIBUTES": lambda obj, elem: setattr(obj, "fm_cond_and_attributes", any (FMConditionByFeatures).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FMFeatureMapCondition."""
         super().__init__()
@@ -42,9 +50,8 @@ class FMFeatureMapCondition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FMFeatureMapCondition, self).serialize()

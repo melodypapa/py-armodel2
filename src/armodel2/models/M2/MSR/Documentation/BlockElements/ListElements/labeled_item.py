@@ -42,9 +42,19 @@ class LabeledItem(Paginateable):
         """
         return False
 
+    _XML_TAG = "LABELED-ITEM"
+
+
     help_entry: Optional[String]
     item_contents: Optional[DocumentationBlock]
     item_label: MultiLanguageOverviewParagraph
+    _DESERIALIZE_DISPATCH = {
+        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", elem.text),
+        "ITEM-CONTENTS": lambda obj, elem: setattr(obj, "item_contents", DocumentationBlock.deserialize(elem)),
+        "ITEM-LABEL": lambda obj, elem: setattr(obj, "item_label", MultiLanguageOverviewParagraph.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LabeledItem."""
         super().__init__()
@@ -58,9 +68,8 @@ class LabeledItem(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LabeledItem, self).serialize()

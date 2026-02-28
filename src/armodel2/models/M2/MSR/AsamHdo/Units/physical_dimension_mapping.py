@@ -30,8 +30,17 @@ class PhysicalDimensionMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "PHYSICAL-DIMENSION-MAPPING"
+
+
     first_physical_ref: Optional[ARRef]
     second_physical_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FIRST-PHYSICAL-REF": lambda obj, elem: setattr(obj, "first_physical_ref", ARRef.deserialize(elem)),
+        "SECOND-PHYSICAL-REF": lambda obj, elem: setattr(obj, "second_physical_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PhysicalDimensionMapping."""
         super().__init__()
@@ -44,9 +53,8 @@ class PhysicalDimensionMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PhysicalDimensionMapping, self).serialize()

@@ -50,6 +50,9 @@ class StructuredReq(Paginateable):
         """
         return False
 
+    _XML_TAG = "STRUCTURED-REQ"
+
+
     applies_toes: list[StandardNameEnum]
     conflicts: Optional[DocumentationBlock]
     date: DateTime
@@ -63,6 +66,23 @@ class StructuredReq(Paginateable):
     tested_item_refs: list[ARRef]
     type: String
     use_case: Optional[DocumentationBlock]
+    _DESERIALIZE_DISPATCH = {
+        "APPLIES-TOES": lambda obj, elem: obj.applies_toes.append(StandardNameEnum.deserialize(elem)),
+        "CONFLICTS": lambda obj, elem: setattr(obj, "conflicts", DocumentationBlock.deserialize(elem)),
+        "DATE": lambda obj, elem: setattr(obj, "date", elem.text),
+        "DEPENDENCIES": lambda obj, elem: setattr(obj, "dependencies", DocumentationBlock.deserialize(elem)),
+        "DESCRIPTION": lambda obj, elem: setattr(obj, "description", DocumentationBlock.deserialize(elem)),
+        "IMPORTANCE": lambda obj, elem: setattr(obj, "importance", elem.text),
+        "ISSUED-BY": lambda obj, elem: setattr(obj, "issued_by", elem.text),
+        "RATIONALE": lambda obj, elem: setattr(obj, "rationale", DocumentationBlock.deserialize(elem)),
+        "REMARK": lambda obj, elem: setattr(obj, "remark", DocumentationBlock.deserialize(elem)),
+        "SUPPORTING": lambda obj, elem: setattr(obj, "supporting", DocumentationBlock.deserialize(elem)),
+        "TESTED-ITEMS": lambda obj, elem: obj.tested_item_refs.append(ARRef.deserialize(elem)),
+        "TYPE": lambda obj, elem: setattr(obj, "type", elem.text),
+        "USE-CASE": lambda obj, elem: setattr(obj, "use_case", DocumentationBlock.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StructuredReq."""
         super().__init__()
@@ -86,9 +106,8 @@ class StructuredReq(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StructuredReq, self).serialize()

@@ -34,7 +34,15 @@ class ComponentSeparation(MappingConstraint):
         """
         return False
 
+    _XML_TAG = "COMPONENT-SEPARATION"
+
+
     mapping_scope_enum_ref: Optional[MappingScopeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "MAPPING-SCOPE-ENUM-REF": lambda obj, elem: setattr(obj, "mapping_scope_enum_ref", MappingScopeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ComponentSeparation."""
         super().__init__()
@@ -46,9 +54,8 @@ class ComponentSeparation(MappingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ComponentSeparation, self).serialize()

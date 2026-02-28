@@ -36,9 +36,19 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
         """
         return False
 
+    _XML_TAG = "SOMEIP-SD-CLIENT-SERVICE-INSTANCE-CONFIG"
+
+
     initial_find_behavior: Optional[InitialSdDelayConfig]
     priority: Optional[PositiveInteger]
     service_find: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "INITIAL-FIND-BEHAVIOR": lambda obj, elem: setattr(obj, "initial_find_behavior", InitialSdDelayConfig.deserialize(elem)),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "SERVICE-FIND": lambda obj, elem: setattr(obj, "service_find", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SomeipSdClientServiceInstanceConfig."""
         super().__init__()
@@ -52,9 +62,8 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SomeipSdClientServiceInstanceConfig, self).serialize()

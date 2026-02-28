@@ -39,8 +39,17 @@ class HwPinGroupContent(ARObject):
         """
         return False
 
+    _XML_TAG = "HW-PIN-GROUP-CONTENT"
+
+
     hw_pin: Optional[HwPin]
     hw_pin_group_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "HW-PIN": lambda obj, elem: setattr(obj, "hw_pin", HwPin.deserialize(elem)),
+        "HW-PIN-GROUP-REF": lambda obj, elem: setattr(obj, "hw_pin_group_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize HwPinGroupContent."""
         super().__init__()

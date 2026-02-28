@@ -43,6 +43,9 @@ class FlexrayArTpChannel(ARObject):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-AR-TP-CHANNEL"
+
+
     ack_type: Optional[FrArTpAckType]
     cancellation: Optional[Boolean]
     extended: Optional[Boolean]
@@ -62,6 +65,29 @@ class FlexrayArTpChannel(ARObject):
     timeout_bs: Optional[TimeValue]
     timeout_cr: Optional[TimeValue]
     tp_connections: list[FlexrayArTpConnection]
+    _DESERIALIZE_DISPATCH = {
+        "ACK-TYPE": lambda obj, elem: setattr(obj, "ack_type", FrArTpAckType.deserialize(elem)),
+        "CANCELLATION": lambda obj, elem: setattr(obj, "cancellation", elem.text),
+        "EXTENDED": lambda obj, elem: setattr(obj, "extended", elem.text),
+        "MAX-AR": lambda obj, elem: setattr(obj, "max_ar", elem.text),
+        "MAX-AS": lambda obj, elem: setattr(obj, "max_as", elem.text),
+        "MAX-BS": lambda obj, elem: setattr(obj, "max_bs", elem.text),
+        "MAX-FC-WAIT": lambda obj, elem: setattr(obj, "max_fc_wait", elem.text),
+        "MAXIMUM-MESSAGE": lambda obj, elem: setattr(obj, "maximum_message", MaximumMessageLengthType.deserialize(elem)),
+        "MAX-RETRIES": lambda obj, elem: setattr(obj, "max_retries", elem.text),
+        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", elem.text),
+        "MULTICAST": lambda obj, elem: setattr(obj, "multicast", elem.text),
+        "N-PDUS": lambda obj, elem: obj.n_pdu_refs.append(ARRef.deserialize(elem)),
+        "TIME-BR": lambda obj, elem: setattr(obj, "time_br", elem.text),
+        "TIME-CS": lambda obj, elem: setattr(obj, "time_cs", elem.text),
+        "TIMEOUT-AR": lambda obj, elem: setattr(obj, "timeout_ar", elem.text),
+        "TIMEOUT-AS": lambda obj, elem: setattr(obj, "timeout_as", elem.text),
+        "TIMEOUT-BS": lambda obj, elem: setattr(obj, "timeout_bs", elem.text),
+        "TIMEOUT-CR": lambda obj, elem: setattr(obj, "timeout_cr", elem.text),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(FlexrayArTpConnection.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayArTpChannel."""
         super().__init__()
@@ -91,9 +117,8 @@ class FlexrayArTpChannel(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayArTpChannel, self).serialize()

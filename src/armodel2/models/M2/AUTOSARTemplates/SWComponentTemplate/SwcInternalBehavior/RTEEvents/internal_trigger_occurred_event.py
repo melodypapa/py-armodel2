@@ -34,7 +34,15 @@ class InternalTriggerOccurredEvent(RTEEvent):
         """
         return False
 
+    _XML_TAG = "INTERNAL-TRIGGER-OCCURRED-EVENT"
+
+
     event_source_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-SOURCE-REF": lambda obj, elem: setattr(obj, "event_source_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InternalTriggerOccurredEvent."""
         super().__init__()
@@ -46,9 +54,8 @@ class InternalTriggerOccurredEvent(RTEEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InternalTriggerOccurredEvent, self).serialize()

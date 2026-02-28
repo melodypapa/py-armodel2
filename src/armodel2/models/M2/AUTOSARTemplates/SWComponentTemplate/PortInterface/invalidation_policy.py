@@ -33,8 +33,17 @@ class InvalidationPolicy(ARObject):
         """
         return False
 
+    _XML_TAG = "INVALIDATION-POLICY"
+
+
     data_element_ref: Optional[ARRef]
     handle_invalid_enum: Optional[HandleInvalidEnum]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "HANDLE-INVALID-ENUM": lambda obj, elem: setattr(obj, "handle_invalid_enum", HandleInvalidEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InvalidationPolicy."""
         super().__init__()
@@ -47,9 +56,8 @@ class InvalidationPolicy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InvalidationPolicy, self).serialize()

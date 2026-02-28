@@ -40,10 +40,21 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         """
         return False
 
+    _XML_TAG = "TLS-CRYPTO-SERVICE-MAPPING"
+
+
     key_exchange_refs: list[ARRef]
     tls_cipher_suites: list[TlsCryptoCipherSuite]
     use_client: Optional[Boolean]
     use_security: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "KEY-EXCHANGES": lambda obj, elem: obj.key_exchange_refs.append(ARRef.deserialize(elem)),
+        "TLS-CIPHER-SUITES": lambda obj, elem: obj.tls_cipher_suites.append(TlsCryptoCipherSuite.deserialize(elem)),
+        "USE-CLIENT": lambda obj, elem: setattr(obj, "use_client", elem.text),
+        "USE-SECURITY": lambda obj, elem: setattr(obj, "use_security", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TlsCryptoServiceMapping."""
         super().__init__()
@@ -58,9 +69,8 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TlsCryptoServiceMapping, self).serialize()

@@ -45,11 +45,23 @@ class SdgContents(ARObject):
         """
         return False
 
+    _XML_TAG = "SDG-CONTENTS"
+
+
     sd: Optional[Sd]
     sdf: Optional[Sdf]
     sdg: Optional[Sdg]
     sdx_ref: Optional[ARRef]
     sdxf_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SD": lambda obj, elem: setattr(obj, "sd", Sd.deserialize(elem)),
+        "SDF": lambda obj, elem: setattr(obj, "sdf", Sdf.deserialize(elem)),
+        "SDG": lambda obj, elem: setattr(obj, "sdg", Sdg.deserialize(elem)),
+        "SDX-REF": lambda obj, elem: setattr(obj, "sdx_ref", ARRef.deserialize(elem)),
+        "SDXF-REF": lambda obj, elem: setattr(obj, "sdxf_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SdgContents."""
         super().__init__()

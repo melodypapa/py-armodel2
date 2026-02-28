@@ -36,9 +36,19 @@ class DataConstrRule(ARObject):
         """
         return False
 
+    _XML_TAG = "DATA-CONSTR-RULE"
+
+
     constr_level: Optional[Integer]
     internal_constrs: Optional[InternalConstrs]
     phys_constrs: Optional[PhysConstrs]
+    _DESERIALIZE_DISPATCH = {
+        "CONSTR-LEVEL": lambda obj, elem: setattr(obj, "constr_level", elem.text),
+        "INTERNAL-CONSTRS": lambda obj, elem: setattr(obj, "internal_constrs", InternalConstrs.deserialize(elem)),
+        "PHYS-CONSTRS": lambda obj, elem: setattr(obj, "phys_constrs", PhysConstrs.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataConstrRule."""
         super().__init__()
@@ -52,9 +62,8 @@ class DataConstrRule(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataConstrRule, self).serialize()

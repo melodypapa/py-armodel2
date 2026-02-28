@@ -48,6 +48,14 @@ class AbstractServiceInstance(Identifiable, ABC):
     major_version: Optional[PositiveInteger]
     method: Optional[PduActivationRoutingGroup]
     routing_group_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CAPABILITIES": lambda obj, elem: obj.capabilities.append(TagWithOptionalValue.deserialize(elem)),
+        "MAJOR-VERSION": lambda obj, elem: setattr(obj, "major_version", elem.text),
+        "METHOD": lambda obj, elem: setattr(obj, "method", PduActivationRoutingGroup.deserialize(elem)),
+        "ROUTING-GROUPS": lambda obj, elem: obj.routing_group_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AbstractServiceInstance."""
         super().__init__()
@@ -62,9 +70,8 @@ class AbstractServiceInstance(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AbstractServiceInstance, self).serialize()

@@ -34,8 +34,17 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-IUMPR-TO-FUNCTION-IDENTIFIER-MAPPING"
+
+
     function_ref: Optional[Any]
     iumpr_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FUNCTION-REF": lambda obj, elem: setattr(obj, "function_ref", ARRef.deserialize(elem)),
+        "IUMPR-REF": lambda obj, elem: setattr(obj, "iumpr_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticIumprToFunctionIdentifierMapping."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticIumprToFunctionIdentifierMapping, self).serialize()

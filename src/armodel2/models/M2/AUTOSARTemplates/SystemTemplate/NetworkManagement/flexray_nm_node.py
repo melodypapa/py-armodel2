@@ -30,6 +30,9 @@ class FlexrayNmNode(NmNode):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-NM-NODE"
+
+
     def __init__(self) -> None:
         """Initialize FlexrayNmNode."""
         super().__init__()
@@ -40,9 +43,8 @@ class FlexrayNmNode(NmNode):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayNmNode, self).serialize()

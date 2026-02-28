@@ -38,6 +38,9 @@ class TcpTp(TcpUdpConfig):
         """
         return False
 
+    _XML_TAG = "TCP-TP"
+
+
     keep_alive: Optional[PositiveInteger]
     keep_alives: Optional[Boolean]
     keep_alive_time: Optional[TimeValue]
@@ -45,6 +48,17 @@ class TcpTp(TcpUdpConfig):
     receive_window_min: Optional[PositiveInteger]
     tcp: Optional[TimeValue]
     tcp_tp_port: Optional[TpPort]
+    _DESERIALIZE_DISPATCH = {
+        "KEEP-ALIVE": lambda obj, elem: setattr(obj, "keep_alive", elem.text),
+        "KEEP-ALIVES": lambda obj, elem: setattr(obj, "keep_alives", elem.text),
+        "KEEP-ALIVE-TIME": lambda obj, elem: setattr(obj, "keep_alive_time", elem.text),
+        "NAGLES-ALGORITHM": lambda obj, elem: setattr(obj, "nagles_algorithm", elem.text),
+        "RECEIVE-WINDOW-MIN": lambda obj, elem: setattr(obj, "receive_window_min", elem.text),
+        "TCP": lambda obj, elem: setattr(obj, "tcp", elem.text),
+        "TCP-TP-PORT": lambda obj, elem: setattr(obj, "tcp_tp_port", TpPort.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TcpTp."""
         super().__init__()
@@ -62,9 +76,8 @@ class TcpTp(TcpUdpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TcpTp, self).serialize()

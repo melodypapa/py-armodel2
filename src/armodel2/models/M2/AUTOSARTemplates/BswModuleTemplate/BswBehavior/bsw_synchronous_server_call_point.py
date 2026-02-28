@@ -37,8 +37,17 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
         """
         return False
 
+    _XML_TAG = "BSW-SYNCHRONOUS-SERVER-CALL-POINT"
+
+
     called_entry_entry_ref: Optional[ARRef]
     called_from_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CALLED-ENTRY-ENTRY-REF": lambda obj, elem: setattr(obj, "called_entry_entry_ref", ARRef.deserialize(elem)),
+        "CALLED-FROM-REF": lambda obj, elem: setattr(obj, "called_from_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswSynchronousServerCallPoint."""
         super().__init__()
@@ -51,9 +60,8 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswSynchronousServerCallPoint, self).serialize()

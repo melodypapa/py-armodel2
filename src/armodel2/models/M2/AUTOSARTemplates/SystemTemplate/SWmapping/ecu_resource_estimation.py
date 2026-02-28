@@ -42,11 +42,23 @@ class EcuResourceEstimation(ARObject):
         """
         return False
 
+    _XML_TAG = "ECU-RESOURCE-ESTIMATION"
+
+
     bsw_resource: Optional[ResourceConsumption]
     ecu_instance_ref: Optional[ARRef]
     introduction: Optional[DocumentationBlock]
     rte_resource: Optional[ResourceConsumption]
     sw_comp_to_ecu_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BSW-RESOURCE": lambda obj, elem: setattr(obj, "bsw_resource", ResourceConsumption.deserialize(elem)),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", DocumentationBlock.deserialize(elem)),
+        "RTE-RESOURCE": lambda obj, elem: setattr(obj, "rte_resource", ResourceConsumption.deserialize(elem)),
+        "SW-COMP-TO-ECUS": lambda obj, elem: obj.sw_comp_to_ecu_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcuResourceEstimation."""
         super().__init__()
@@ -62,9 +74,8 @@ class EcuResourceEstimation(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcuResourceEstimation, self).serialize()

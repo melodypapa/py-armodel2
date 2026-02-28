@@ -29,7 +29,15 @@ class PredefinedChapter(ARObject):
         """
         return False
 
+    _XML_TAG = "PREDEFINED-CHAPTER"
+
+
     chapter_model: ChapterModel
+    _DESERIALIZE_DISPATCH = {
+        "CHAPTER-MODEL": lambda obj, elem: setattr(obj, "chapter_model", ChapterModel.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PredefinedChapter."""
         super().__init__()
@@ -41,9 +49,8 @@ class PredefinedChapter(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PredefinedChapter, self).serialize()

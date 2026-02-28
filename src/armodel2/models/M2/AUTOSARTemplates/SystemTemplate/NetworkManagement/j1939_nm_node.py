@@ -37,8 +37,17 @@ class J1939NmNode(NmNode):
         """
         return False
 
+    _XML_TAG = "J1939-NM-NODE"
+
+
     address: Optional[J1939NmAddressConfigurationCapabilityEnum]
     node_name: Optional[J1939NodeName]
+    _DESERIALIZE_DISPATCH = {
+        "ADDRESS": lambda obj, elem: setattr(obj, "address", J1939NmAddressConfigurationCapabilityEnum.deserialize(elem)),
+        "NODE-NAME": lambda obj, elem: setattr(obj, "node_name", J1939NodeName.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939NmNode."""
         super().__init__()
@@ -51,9 +60,8 @@ class J1939NmNode(NmNode):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939NmNode, self).serialize()

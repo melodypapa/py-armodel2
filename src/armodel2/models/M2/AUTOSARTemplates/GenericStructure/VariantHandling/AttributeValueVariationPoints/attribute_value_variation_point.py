@@ -40,6 +40,14 @@ class AttributeValueVariationPoint(ARObject, ABC):
     blueprint_value: Optional[String]
     sd: Optional[String]
     short_label: Optional[PrimitiveIdentifier]
+    _DESERIALIZE_DISPATCH = {
+        "BINDING-TIME-ENUM": lambda obj, elem: setattr(obj, "binding_time_enum", BindingTimeEnum.deserialize(elem)),
+        "BLUEPRINT-VALUE": lambda obj, elem: setattr(obj, "blueprint_value", elem.text),
+        "SD": lambda obj, elem: setattr(obj, "sd", elem.text),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AttributeValueVariationPoint."""
         super().__init__()
@@ -54,9 +62,8 @@ class AttributeValueVariationPoint(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AttributeValueVariationPoint, self).serialize()

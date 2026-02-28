@@ -41,6 +41,13 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
     derivation: Optional[EcucDerivationSpecification]
     symbolic_name: Optional[Boolean]
     with_auto: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "DERIVATION": lambda obj, elem: setattr(obj, "derivation", EcucDerivationSpecification.deserialize(elem)),
+        "SYMBOLIC-NAME": lambda obj, elem: setattr(obj, "symbolic_name", elem.text),
+        "WITH-AUTO": lambda obj, elem: setattr(obj, "with_auto", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucParameterDef."""
         super().__init__()
@@ -54,9 +61,8 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucParameterDef, self).serialize()

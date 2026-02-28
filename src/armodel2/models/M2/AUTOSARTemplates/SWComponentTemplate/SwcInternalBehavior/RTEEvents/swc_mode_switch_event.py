@@ -39,8 +39,17 @@ class SwcModeSwitchEvent(RTEEvent):
         """
         return False
 
+    _XML_TAG = "SWC-MODE-SWITCH-EVENT"
+
+
     activation: Optional[ModeActivationKind]
     _mode_irefs: list[RModeInAtomicSwcInstanceRef]
+    _DESERIALIZE_DISPATCH = {
+        "ACTIVATION": lambda obj, elem: setattr(obj, "activation", ModeActivationKind.deserialize(elem)),
+        "MODES": lambda obj, elem: obj._mode_irefs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcModeSwitchEvent."""
         super().__init__()
@@ -64,9 +73,8 @@ class SwcModeSwitchEvent(RTEEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcModeSwitchEvent, self).serialize()

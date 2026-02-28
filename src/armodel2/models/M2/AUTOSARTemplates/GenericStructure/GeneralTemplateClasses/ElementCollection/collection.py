@@ -48,6 +48,9 @@ class Collection(ARElement):
         """
         return False
 
+    _XML_TAG = "COLLECTION"
+
+
     auto_collect: Optional[AutoCollectEnum]
     _collected_instance_irefs: list[AnyInstanceRef]
     collection_semantics: Optional[NameToken]
@@ -55,6 +58,17 @@ class Collection(ARElement):
     element_refs: list[ARRef]
     source_element_refs: list[ARRef]
     _source_instance_irefs: list[AnyInstanceRef]
+    _DESERIALIZE_DISPATCH = {
+        "AUTO-COLLECT": lambda obj, elem: setattr(obj, "auto_collect", AutoCollectEnum.deserialize(elem)),
+        "COLLECTED-INSTANCES": lambda obj, elem: obj._collected_instance_irefs.append(ARRef.deserialize(elem)),
+        "COLLECTION-SEMANTICS": lambda obj, elem: setattr(obj, "collection_semantics", elem.text),
+        "ELEMENT-ROLE": lambda obj, elem: setattr(obj, "element_role", elem.text),
+        "ELEMENTS": lambda obj, elem: obj.element_refs.append(ARRef.deserialize(elem)),
+        "SOURCE-ELEMENTS": lambda obj, elem: obj.source_element_refs.append(ARRef.deserialize(elem)),
+        "SOURCE-INSTANCES": lambda obj, elem: obj._source_instance_irefs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Collection."""
         super().__init__()
@@ -94,9 +108,8 @@ class Collection(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Collection, self).serialize()

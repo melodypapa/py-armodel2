@@ -37,6 +37,11 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
         return True
 
     required_com_specs: list[RPortComSpec]
+    _DESERIALIZE_DISPATCH = {
+        "REQUIRED-COM-SPECS": lambda obj, elem: obj.required_com_specs.append(RPortComSpec.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AbstractRequiredPortPrototype."""
         super().__init__()
@@ -48,9 +53,8 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AbstractRequiredPortPrototype, self).serialize()

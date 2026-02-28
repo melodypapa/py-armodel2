@@ -48,11 +48,23 @@ class SwcBswMapping(ARElement):
         """
         return False
 
+    _XML_TAG = "SWC-BSW-MAPPING"
+
+
     bsw_behavior_ref: Optional[ARRef]
     runnable_mappings: list[SwcBswRunnableMapping]
     swc_behavior_ref: Optional[ARRef]
     synchronized_mode_groups: list[SwcBswSynchronizedModeGroupPrototype]
     synchronized_triggers: list[SwcBswSynchronizedTrigger]
+    _DESERIALIZE_DISPATCH = {
+        "BSW-BEHAVIOR-REF": lambda obj, elem: setattr(obj, "bsw_behavior_ref", ARRef.deserialize(elem)),
+        "RUNNABLE-MAPPINGS": lambda obj, elem: obj.runnable_mappings.append(SwcBswRunnableMapping.deserialize(elem)),
+        "SWC-BEHAVIOR-REF": lambda obj, elem: setattr(obj, "swc_behavior_ref", ARRef.deserialize(elem)),
+        "SYNCHRONIZED-MODE-GROUPS": lambda obj, elem: obj.synchronized_mode_groups.append(SwcBswSynchronizedModeGroupPrototype.deserialize(elem)),
+        "SYNCHRONIZED-TRIGGERS": lambda obj, elem: obj.synchronized_triggers.append(SwcBswSynchronizedTrigger.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcBswMapping."""
         super().__init__()
@@ -68,9 +80,8 @@ class SwcBswMapping(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcBswMapping, self).serialize()

@@ -85,6 +85,25 @@ class Implementation(ARElement, ABC):
     sw_version: Optional[RevisionLabelString]
     used_code_generator: Optional[String]
     vendor_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "BUILD-ACTION-MANIFEST-REF": lambda obj, elem: setattr(obj, "build_action_manifest_ref", ARRef.deserialize(elem)),
+        "CODE-DESCRIPTORS": lambda obj, elem: obj.code_descriptors.append(Code.deserialize(elem)),
+        "COMPILERS": lambda obj, elem: obj.compilers.append(Compiler.deserialize(elem)),
+        "GENERATED-ARTIFACTS": lambda obj, elem: obj.generated_artifacts.append(DependencyOnArtifact.deserialize(elem)),
+        "HW-ELEMENTS": lambda obj, elem: obj.hw_element_refs.append(ARRef.deserialize(elem)),
+        "LINKERS": lambda obj, elem: obj.linkers.append(Linker.deserialize(elem)),
+        "MC-SUPPORT": lambda obj, elem: setattr(obj, "mc_support", McSupportData.deserialize(elem)),
+        "PROGRAMMING-LANGUAGE": lambda obj, elem: setattr(obj, "programming_language", ProgramminglanguageEnum.deserialize(elem)),
+        "REQUIRED-ARTIFACTS": lambda obj, elem: obj.required_artifacts.append(DependencyOnArtifact.deserialize(elem)),
+        "REQUIRED-GENERATOR-TOOLS": lambda obj, elem: obj.required_generator_tools.append(DependencyOnArtifact.deserialize(elem)),
+        "RESOURCE-CONSUMPTION": lambda obj, elem: setattr(obj, "resource_consumption", ResourceConsumption.deserialize(elem)),
+        "SWC-BSW-MAPPING-REF": lambda obj, elem: setattr(obj, "swc_bsw_mapping_ref", ARRef.deserialize(elem)),
+        "SW-VERSION": lambda obj, elem: setattr(obj, "sw_version", elem.text),
+        "USED-CODE-GENERATOR": lambda obj, elem: setattr(obj, "used_code_generator", elem.text),
+        "VENDOR-ID": lambda obj, elem: setattr(obj, "vendor_id", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Implementation."""
         super().__init__()
@@ -110,9 +129,8 @@ class Implementation(ARElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Implementation, self).serialize()

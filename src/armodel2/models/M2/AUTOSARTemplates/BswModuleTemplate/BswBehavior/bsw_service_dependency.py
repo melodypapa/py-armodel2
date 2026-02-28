@@ -38,10 +38,21 @@ class BswServiceDependency(ServiceDependency):
         """
         return False
 
+    _XML_TAG = "BSW-SERVICE-DEPENDENCY"
+
+
     assigned_datas: list[Any]
     assigned_entries: list[RoleBasedBswModuleEntryAssignment]
     ident: Optional[Any]
     service_needs: Optional[ServiceNeeds]
+    _DESERIALIZE_DISPATCH = {
+        "ASSIGNED-DATAS": lambda obj, elem: obj.assigned_datas.append(any (RoleBasedData).deserialize(elem)),
+        "ASSIGNED-ENTRIES": lambda obj, elem: obj.assigned_entries.append(RoleBasedBswModuleEntryAssignment.deserialize(elem)),
+        "IDENT": lambda obj, elem: setattr(obj, "ident", any (BswService).deserialize(elem)),
+        "SERVICE-NEEDS": lambda obj, elem: setattr(obj, "service_needs", ServiceNeeds.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswServiceDependency."""
         super().__init__()
@@ -56,9 +67,8 @@ class BswServiceDependency(ServiceDependency):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswServiceDependency, self).serialize()

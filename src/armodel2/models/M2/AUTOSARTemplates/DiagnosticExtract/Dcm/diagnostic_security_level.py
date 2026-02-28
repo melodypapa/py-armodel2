@@ -34,11 +34,23 @@ class DiagnosticSecurityLevel(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SECURITY-LEVEL"
+
+
     access_data: Optional[PositiveInteger]
     key_size: Optional[PositiveInteger]
     num_failed: Optional[PositiveInteger]
     security_delay: Optional[TimeValue]
     seed_size: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESS-DATA": lambda obj, elem: setattr(obj, "access_data", elem.text),
+        "KEY-SIZE": lambda obj, elem: setattr(obj, "key_size", elem.text),
+        "NUM-FAILED": lambda obj, elem: setattr(obj, "num_failed", elem.text),
+        "SECURITY-DELAY": lambda obj, elem: setattr(obj, "security_delay", elem.text),
+        "SEED-SIZE": lambda obj, elem: setattr(obj, "seed_size", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticSecurityLevel."""
         super().__init__()
@@ -54,9 +66,8 @@ class DiagnosticSecurityLevel(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticSecurityLevel, self).serialize()

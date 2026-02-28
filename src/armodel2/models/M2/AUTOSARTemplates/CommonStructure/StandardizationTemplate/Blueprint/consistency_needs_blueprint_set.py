@@ -33,7 +33,15 @@ class ConsistencyNeedsBlueprintSet(ARElement):
         """
         return False
 
+    _XML_TAG = "CONSISTENCY-NEEDS-BLUEPRINT-SET"
+
+
     consistency_needses: list[ConsistencyNeeds]
+    _DESERIALIZE_DISPATCH = {
+        "CONSISTENCY-NEEDSES": lambda obj, elem: obj.consistency_needses.append(ConsistencyNeeds.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConsistencyNeedsBlueprintSet."""
         super().__init__()
@@ -45,9 +53,8 @@ class ConsistencyNeedsBlueprintSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConsistencyNeedsBlueprintSet, self).serialize()

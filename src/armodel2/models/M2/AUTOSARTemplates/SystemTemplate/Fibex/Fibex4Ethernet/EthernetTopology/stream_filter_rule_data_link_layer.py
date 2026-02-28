@@ -32,11 +32,23 @@ class StreamFilterRuleDataLinkLayer(ARObject):
         """
         return False
 
+    _XML_TAG = "STREAM-FILTER-RULE-DATA-LINK-LAYER"
+
+
     destination_mac: Optional[StreamFilterMACAddress]
     ether_type: Optional[PositiveInteger]
     source_mac: Optional[StreamFilterMACAddress]
     vlan_id: Optional[PositiveInteger]
     vlan_priority: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION-MAC": lambda obj, elem: setattr(obj, "destination_mac", StreamFilterMACAddress.deserialize(elem)),
+        "ETHER-TYPE": lambda obj, elem: setattr(obj, "ether_type", elem.text),
+        "SOURCE-MAC": lambda obj, elem: setattr(obj, "source_mac", StreamFilterMACAddress.deserialize(elem)),
+        "VLAN-ID": lambda obj, elem: setattr(obj, "vlan_id", elem.text),
+        "VLAN-PRIORITY": lambda obj, elem: setattr(obj, "vlan_priority", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StreamFilterRuleDataLinkLayer."""
         super().__init__()
@@ -52,9 +64,8 @@ class StreamFilterRuleDataLinkLayer(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StreamFilterRuleDataLinkLayer, self).serialize()

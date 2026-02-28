@@ -42,6 +42,9 @@ class NvBlockNeeds(ServiceNeeds):
         """
         return False
 
+    _XML_TAG = "NV-BLOCK-NEEDS"
+
+
     calc_ram_block: Optional[Boolean]
     check_static_block_id: Optional[Boolean]
     cyclic_writing: Optional[TimeValue]
@@ -64,6 +67,32 @@ class NvBlockNeeds(ServiceNeeds):
     write_verification: Optional[Boolean]
     writing: Optional[PositiveInteger]
     writing_priority: Optional[NvBlockNeedsWritingPriorityEnum]
+    _DESERIALIZE_DISPATCH = {
+        "CALC-RAM-BLOCK": lambda obj, elem: setattr(obj, "calc_ram_block", elem.text),
+        "CHECK-STATIC-BLOCK-ID": lambda obj, elem: setattr(obj, "check_static_block_id", elem.text),
+        "CYCLIC-WRITING": lambda obj, elem: setattr(obj, "cyclic_writing", elem.text),
+        "N-DATA-SETS": lambda obj, elem: setattr(obj, "n_data_sets", elem.text),
+        "N-ROM-BLOCKS": lambda obj, elem: setattr(obj, "n_rom_blocks", elem.text),
+        "RAM-BLOCK-STATUS-CONTROL": lambda obj, elem: setattr(obj, "ram_block_status_control", RamBlockStatusControlEnum.deserialize(elem)),
+        "READONLY": lambda obj, elem: setattr(obj, "readonly", elem.text),
+        "RELIABILITY-RELIABILITY-ENUM": lambda obj, elem: setattr(obj, "reliability_reliability_enum", NvBlockNeeds.deserialize(elem)),
+        "RESISTANT-TO": lambda obj, elem: setattr(obj, "resistant_to", elem.text),
+        "RESTORE-AT-START": lambda obj, elem: setattr(obj, "restore_at_start", elem.text),
+        "SELECT-BLOCK-FOR": lambda obj, elem: setattr(obj, "select_block_for", elem.text),
+        "STORE-AT": lambda obj, elem: setattr(obj, "store_at", elem.text),
+        "STORE-CYCLIC": lambda obj, elem: setattr(obj, "store_cyclic", elem.text),
+        "STORE": lambda obj, elem: setattr(obj, "store", elem.text),
+        "STORE-IMMEDIATE": lambda obj, elem: setattr(obj, "store_immediate", elem.text),
+        "STORE-ON-CHANGE": lambda obj, elem: setattr(obj, "store_on_change", elem.text),
+        "USE-AUTO": lambda obj, elem: setattr(obj, "use_auto", elem.text),
+        "USE-CRC-COMP": lambda obj, elem: setattr(obj, "use_crc_comp", elem.text),
+        "WRITE-ONLY-ONCE": lambda obj, elem: setattr(obj, "write_only_once", elem.text),
+        "WRITE-VERIFICATION": lambda obj, elem: setattr(obj, "write_verification", elem.text),
+        "WRITING": lambda obj, elem: setattr(obj, "writing", elem.text),
+        "WRITING-PRIORITY": lambda obj, elem: setattr(obj, "writing_priority", NvBlockNeedsWritingPriorityEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NvBlockNeeds."""
         super().__init__()
@@ -96,9 +125,8 @@ class NvBlockNeeds(ServiceNeeds):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NvBlockNeeds, self).serialize()

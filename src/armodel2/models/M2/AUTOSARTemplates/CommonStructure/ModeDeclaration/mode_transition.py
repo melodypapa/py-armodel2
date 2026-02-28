@@ -35,8 +35,17 @@ class ModeTransition(Identifiable):
         """
         return False
 
+    _XML_TAG = "MODE-TRANSITION"
+
+
     entered_mode_ref: Optional[ARRef]
     exited_mode_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ENTERED-MODE-REF": lambda obj, elem: setattr(obj, "entered_mode_ref", ARRef.deserialize(elem)),
+        "EXITED-MODE-REF": lambda obj, elem: setattr(obj, "exited_mode_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeTransition."""
         super().__init__()
@@ -49,9 +58,8 @@ class ModeTransition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeTransition, self).serialize()

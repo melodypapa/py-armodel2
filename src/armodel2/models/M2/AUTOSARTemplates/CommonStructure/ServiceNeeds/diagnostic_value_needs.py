@@ -40,10 +40,21 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-VALUE-NEEDS"
+
+
     data_length: Optional[PositiveInteger]
     diagnostic_value_access: Optional[DiagnosticValueAccessEnum]
     fixed_length: Optional[Boolean]
     processing_style: Optional[DiagnosticProcessingStyleEnum]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", elem.text),
+        "DIAGNOSTIC-VALUE-ACCESS": lambda obj, elem: setattr(obj, "diagnostic_value_access", DiagnosticValueAccessEnum.deserialize(elem)),
+        "FIXED-LENGTH": lambda obj, elem: setattr(obj, "fixed_length", elem.text),
+        "PROCESSING-STYLE": lambda obj, elem: setattr(obj, "processing_style", DiagnosticProcessingStyleEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticValueNeeds."""
         super().__init__()
@@ -58,9 +69,8 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticValueNeeds, self).serialize()

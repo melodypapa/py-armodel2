@@ -39,10 +39,21 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-IO-CONTROL-NEEDS"
+
+
     current_value_ref: Optional[ARRef]
     freeze_current: Optional[Boolean]
     reset_to_default: Optional[Boolean]
     short_term: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CURRENT-VALUE-REF": lambda obj, elem: setattr(obj, "current_value_ref", ARRef.deserialize(elem)),
+        "FREEZE-CURRENT": lambda obj, elem: setattr(obj, "freeze_current", elem.text),
+        "RESET-TO-DEFAULT": lambda obj, elem: setattr(obj, "reset_to_default", elem.text),
+        "SHORT-TERM": lambda obj, elem: setattr(obj, "short_term", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticIoControlNeeds."""
         super().__init__()
@@ -57,9 +68,8 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticIoControlNeeds, self).serialize()

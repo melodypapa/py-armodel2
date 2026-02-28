@@ -33,7 +33,15 @@ class EcucDestinationUriDefSet(ARElement):
         """
         return False
 
+    _XML_TAG = "ECUC-DESTINATION-URI-DEF-SET"
+
+
     destination_uri_defs: list[EcucDestinationUriDef]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION-URI-DEFS": lambda obj, elem: obj.destination_uri_defs.append(EcucDestinationUriDef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucDestinationUriDefSet."""
         super().__init__()
@@ -45,9 +53,8 @@ class EcucDestinationUriDefSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucDestinationUriDefSet, self).serialize()

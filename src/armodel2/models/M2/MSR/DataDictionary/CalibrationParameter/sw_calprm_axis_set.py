@@ -29,7 +29,15 @@ class SwCalprmAxisSet(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-CALPRM-AXIS-SET"
+
+
     sw_calprm_axises: list[SwCalprmAxis]
+    _DESERIALIZE_DISPATCH = {
+        "SW-CALPRM-AXISES": lambda obj, elem: obj.sw_calprm_axises.append(SwCalprmAxis.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwCalprmAxisSet."""
         super().__init__()
@@ -41,9 +49,8 @@ class SwCalprmAxisSet(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwCalprmAxisSet, self).serialize()

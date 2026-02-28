@@ -32,8 +32,17 @@ class AccessCountSet(ARObject):
         """
         return False
 
+    _XML_TAG = "ACCESS-COUNT-SET"
+
+
     access_counts: list[AccessCount]
     count_profile: Optional[NameToken]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESS-COUNTS": lambda obj, elem: obj.access_counts.append(AccessCount.deserialize(elem)),
+        "COUNT-PROFILE": lambda obj, elem: setattr(obj, "count_profile", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AccessCountSet."""
         super().__init__()
@@ -46,9 +55,8 @@ class AccessCountSet(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AccessCountSet, self).serialize()

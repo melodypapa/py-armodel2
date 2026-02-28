@@ -40,8 +40,17 @@ class ClientServerInterface(PortInterface):
         """
         return False
 
+    _XML_TAG = "CLIENT-SERVER-INTERFACE"
+
+
     operations: list[ClientServerOperation]
     possible_errors: list[ApplicationError]
+    _DESERIALIZE_DISPATCH = {
+        "OPERATIONS": lambda obj, elem: obj.operations.append(ClientServerOperation.deserialize(elem)),
+        "POSSIBLE-ERRORS": lambda obj, elem: obj.possible_errors.append(ApplicationError.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientServerInterface."""
         super().__init__()
@@ -54,9 +63,8 @@ class ClientServerInterface(PortInterface):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientServerInterface, self).serialize()

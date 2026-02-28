@@ -40,10 +40,21 @@ class ECUMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "E-C-U-MAPPING"
+
+
     comm_controllers: list[Any]
     ecu_ref: Optional[ARRef]
     ecu_instance_ref: Optional[ARRef]
     hw_port_mapping_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "COMM-CONTROLLERS": lambda obj, elem: obj.comm_controllers.append(any (Communication).deserialize(elem)),
+        "ECU-REF": lambda obj, elem: setattr(obj, "ecu_ref", ARRef.deserialize(elem)),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+        "HW-PORT-MAPPING-REF": lambda obj, elem: setattr(obj, "hw_port_mapping_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ECUMapping."""
         super().__init__()
@@ -58,9 +69,8 @@ class ECUMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ECUMapping, self).serialize()

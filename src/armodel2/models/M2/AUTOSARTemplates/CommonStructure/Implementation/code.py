@@ -38,8 +38,17 @@ class Code(Identifiable):
         """
         return False
 
+    _XML_TAG = "CODE"
+
+
     artifact_descriptors: list[AutosarEngineeringObject]
     callback_header_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ARTIFACT-DESCRIPTORS": lambda obj, elem: obj.artifact_descriptors.append(AutosarEngineeringObject.deserialize(elem)),
+        "CALLBACK-HEADERS": lambda obj, elem: obj.callback_header_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Code."""
         super().__init__()
@@ -52,9 +61,8 @@ class Code(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Code, self).serialize()

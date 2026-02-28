@@ -38,10 +38,21 @@ class NmCoordinator(ARObject):
         """
         return False
 
+    _XML_TAG = "NM-COORDINATOR"
+
+
     index: Optional[Integer]
     nm_coord_sync: Optional[Boolean]
     nm_global: Optional[TimeValue]
     nm_node_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "INDEX": lambda obj, elem: setattr(obj, "index", elem.text),
+        "NM-COORD-SYNC": lambda obj, elem: setattr(obj, "nm_coord_sync", elem.text),
+        "NM-GLOBAL": lambda obj, elem: setattr(obj, "nm_global", elem.text),
+        "NM-NODES": lambda obj, elem: obj.nm_node_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NmCoordinator."""
         super().__init__()
@@ -56,9 +67,8 @@ class NmCoordinator(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NmCoordinator, self).serialize()

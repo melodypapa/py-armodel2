@@ -33,8 +33,17 @@ class TransmissionModeCondition(ARObject):
         """
         return False
 
+    _XML_TAG = "TRANSMISSION-MODE-CONDITION"
+
+
     data_filter: Optional[DataFilter]
     i_signal_in_i_pdu_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-FILTER": lambda obj, elem: setattr(obj, "data_filter", DataFilter.deserialize(elem)),
+        "I-SIGNAL-IN-I-PDU-REF": lambda obj, elem: setattr(obj, "i_signal_in_i_pdu_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TransmissionModeCondition."""
         super().__init__()
@@ -47,9 +56,8 @@ class TransmissionModeCondition(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TransmissionModeCondition, self).serialize()

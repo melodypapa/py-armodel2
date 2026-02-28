@@ -37,8 +37,17 @@ class DocumentationContext(MultilanguageReferrable):
         """
         return False
 
+    _XML_TAG = "DOCUMENTATION-CONTEXT"
+
+
     feature: Optional[AtpFeature]
     identifiable_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FEATURE": lambda obj, elem: setattr(obj, "feature", AtpFeature.deserialize(elem)),
+        "IDENTIFIABLE-REF": lambda obj, elem: setattr(obj, "identifiable_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DocumentationContext."""
         super().__init__()
@@ -51,9 +60,8 @@ class DocumentationContext(MultilanguageReferrable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DocumentationContext, self).serialize()

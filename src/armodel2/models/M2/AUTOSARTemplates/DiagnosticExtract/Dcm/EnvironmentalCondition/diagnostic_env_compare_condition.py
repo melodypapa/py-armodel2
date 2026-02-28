@@ -35,6 +35,11 @@ class DiagnosticEnvCompareCondition(DiagnosticEnvConditionFormulaPart, ABC):
         return True
 
     compare_type: Optional[DiagnosticCompareTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "COMPARE-TYPE": lambda obj, elem: setattr(obj, "compare_type", DiagnosticCompareTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEnvCompareCondition."""
         super().__init__()
@@ -46,9 +51,8 @@ class DiagnosticEnvCompareCondition(DiagnosticEnvConditionFormulaPart, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEnvCompareCondition, self).serialize()

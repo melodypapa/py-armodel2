@@ -47,6 +47,9 @@ class MemorySection(Identifiable):
         """
         return False
 
+    _XML_TAG = "MEMORY-SECTION"
+
+
     alignment: Optional[AlignmentType]
     executable_entity_refs: list[ARRef]
     options: list[Identifier]
@@ -54,6 +57,17 @@ class MemorySection(Identifiable):
     size: Optional[PositiveInteger]
     sw_addrmethod_ref: Optional[ARRef]
     symbol: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "ALIGNMENT": lambda obj, elem: setattr(obj, "alignment", elem.text),
+        "EXECUTABLE-ENTITIES": lambda obj, elem: obj.executable_entity_refs.append(ARRef.deserialize(elem)),
+        "OPTIONS": lambda obj, elem: obj.options.append(elem.text),
+        "PREFIX-REF": lambda obj, elem: setattr(obj, "prefix_ref", ARRef.deserialize(elem)),
+        "SIZE": lambda obj, elem: setattr(obj, "size", elem.text),
+        "SW-ADDRMETHOD-REF": lambda obj, elem: setattr(obj, "sw_addrmethod_ref", ARRef.deserialize(elem)),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MemorySection."""
         super().__init__()
@@ -71,9 +85,8 @@ class MemorySection(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MemorySection, self).serialize()

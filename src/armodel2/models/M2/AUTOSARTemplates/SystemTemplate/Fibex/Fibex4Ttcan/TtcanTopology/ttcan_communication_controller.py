@@ -33,6 +33,9 @@ class TtcanCommunicationController(ARObject):
         """
         return False
 
+    _XML_TAG = "TTCAN-COMMUNICATION-CONTROLLER"
+
+
     appl_watchdog: Optional[Integer]
     expected_tx: Optional[Integer]
     external_clock: Optional[Boolean]
@@ -41,6 +44,18 @@ class TtcanCommunicationController(ARObject):
     time_master: Optional[Integer]
     time_triggered: Optional[Integer]
     tx_enable: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "APPL-WATCHDOG": lambda obj, elem: setattr(obj, "appl_watchdog", elem.text),
+        "EXPECTED-TX": lambda obj, elem: setattr(obj, "expected_tx", elem.text),
+        "EXTERNAL-CLOCK": lambda obj, elem: setattr(obj, "external_clock", elem.text),
+        "INITIAL-REF-OFFSET": lambda obj, elem: setattr(obj, "initial_ref_offset", elem.text),
+        "MASTER": lambda obj, elem: setattr(obj, "master", elem.text),
+        "TIME-MASTER": lambda obj, elem: setattr(obj, "time_master", elem.text),
+        "TIME-TRIGGERED": lambda obj, elem: setattr(obj, "time_triggered", elem.text),
+        "TX-ENABLE": lambda obj, elem: setattr(obj, "tx_enable", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TtcanCommunicationController."""
         super().__init__()

@@ -36,8 +36,17 @@ class RoughEstimateOfExecutionTime(ExecutionTime):
         """
         return False
 
+    _XML_TAG = "ROUGH-ESTIMATE-OF-EXECUTION-TIME"
+
+
     additional: Optional[String]
     estimated_execution_time: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "ADDITIONAL": lambda obj, elem: setattr(obj, "additional", elem.text),
+        "ESTIMATED-EXECUTION-TIME": lambda obj, elem: setattr(obj, "estimated_execution_time", MultidimensionalTime.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RoughEstimateOfExecutionTime."""
         super().__init__()
@@ -50,9 +59,8 @@ class RoughEstimateOfExecutionTime(ExecutionTime):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RoughEstimateOfExecutionTime, self).serialize()

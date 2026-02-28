@@ -37,8 +37,17 @@ class DiagnosticIumpr(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-IUMPR"
+
+
     event_ref: Optional[ARRef]
     ratio_kind: Optional[DiagnosticIumprKindEnum]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-REF": lambda obj, elem: setattr(obj, "event_ref", ARRef.deserialize(elem)),
+        "RATIO-KIND": lambda obj, elem: setattr(obj, "ratio_kind", DiagnosticIumprKindEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticIumpr."""
         super().__init__()
@@ -51,9 +60,8 @@ class DiagnosticIumpr(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticIumpr, self).serialize()

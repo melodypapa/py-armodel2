@@ -37,8 +37,17 @@ class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
         """
         return False
 
+    _XML_TAG = "P-OPERATION-IN-ATOMIC-SWC-INSTANCE-REF"
+
+
     context_p_port_ref: Optional[ARRef]
     target_provided_operation_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXT-P-PORT-REF": lambda obj, elem: setattr(obj, "context_p_port_ref", ARRef.deserialize(elem)),
+        "TARGET-PROVIDED-OPERATION-REF": lambda obj, elem: setattr(obj, "target_provided_operation_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize POperationInAtomicSwcInstanceRef."""
         super().__init__()
@@ -51,9 +60,8 @@ class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(POperationInAtomicSwcInstanceRef, self).serialize()

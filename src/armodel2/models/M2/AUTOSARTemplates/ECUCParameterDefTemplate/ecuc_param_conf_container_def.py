@@ -34,9 +34,19 @@ class EcucParamConfContainerDef(EcucContainerDef):
         """
         return False
 
+    _XML_TAG = "ECUC-PARAM-CONF-CONTAINER-DEF"
+
+
     parameters: list[EcucParameterDef]
     reference_refs: list[Any]
     sub_containers: list[EcucContainerDef]
+    _DESERIALIZE_DISPATCH = {
+        "PARAMETERS": lambda obj, elem: obj.parameters.append(EcucParameterDef.deserialize(elem)),
+        "REFERENCES": lambda obj, elem: obj.reference_refs.append(ARRef.deserialize(elem)),
+        "SUB-CONTAINERS": lambda obj, elem: obj.sub_containers.append(EcucContainerDef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucParamConfContainerDef."""
         super().__init__()
@@ -50,9 +60,8 @@ class EcucParamConfContainerDef(EcucContainerDef):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucParamConfContainerDef, self).serialize()

@@ -55,6 +55,9 @@ class CouplingPort(Identifiable):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT"
+
+
     connection: Optional[EthernetConnectionNegotiationEnum]
     coupling_port_details: Optional[CouplingPortDetails]
     coupling_port_role_enum: Optional[CouplingPortRoleEnum]
@@ -69,6 +72,24 @@ class CouplingPort(Identifiable):
     vlans: list[VlanMembership]
     vlan_modifier_ref: Optional[Any]
     wakeup_sleep_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CONNECTION": lambda obj, elem: setattr(obj, "connection", EthernetConnectionNegotiationEnum.deserialize(elem)),
+        "COUPLING-PORT-DETAILS": lambda obj, elem: setattr(obj, "coupling_port_details", CouplingPortDetails.deserialize(elem)),
+        "COUPLING-PORT-ROLE-ENUM": lambda obj, elem: setattr(obj, "coupling_port_role_enum", CouplingPortRoleEnum.deserialize(elem)),
+        "DEFAULT-VLAN-REF": lambda obj, elem: setattr(obj, "default_vlan_ref", ARRef.deserialize(elem)),
+        "MAC-LAYER-TYPE-ENUM": lambda obj, elem: setattr(obj, "mac_layer_type_enum", EthernetMacLayerTypeEnum.deserialize(elem)),
+        "MAC-MULTICAST-GROUPS": lambda obj, elem: obj.mac_multicast_group_refs.append(ARRef.deserialize(elem)),
+        "MAC-SEC-PROPSES": lambda obj, elem: obj.mac_sec_propses.append(MacSecProps.deserialize(elem)),
+        "PHYSICAL-LAYER": lambda obj, elem: setattr(obj, "physical_layer", EthernetPhysicalLayerTypeEnum.deserialize(elem)),
+        "PLCA-PROPS": lambda obj, elem: setattr(obj, "plca_props", PlcaProps.deserialize(elem)),
+        "PNC-MAPPING-IDENTS": lambda obj, elem: obj.pnc_mapping_ident_refs.append(ARRef.deserialize(elem)),
+        "RECEIVE-ACTIVITY": lambda obj, elem: setattr(obj, "receive_activity", any (EthernetSwitchVlan).deserialize(elem)),
+        "VLANS": lambda obj, elem: obj.vlans.append(VlanMembership.deserialize(elem)),
+        "VLAN-MODIFIER-REF": lambda obj, elem: setattr(obj, "vlan_modifier_ref", ARRef.deserialize(elem)),
+        "WAKEUP-SLEEP-REF": lambda obj, elem: setattr(obj, "wakeup_sleep_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPort."""
         super().__init__()
@@ -93,9 +114,8 @@ class CouplingPort(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPort, self).serialize()

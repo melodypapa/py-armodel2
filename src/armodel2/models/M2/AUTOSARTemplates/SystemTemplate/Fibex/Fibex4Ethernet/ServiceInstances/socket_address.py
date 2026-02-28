@@ -54,6 +54,9 @@ class SocketAddress(Identifiable):
         """
         return False
 
+    _XML_TAG = "SOCKET-ADDRESS"
+
+
     allowed_i_pv6_ext_ref: Optional[ARRef]
     allowed_tcp_ref: Optional[ARRef]
     application_endpoint_endpoint: Optional[ApplicationEndpoint]
@@ -65,6 +68,21 @@ class SocketAddress(Identifiable):
     pdu_collection: Optional[TimeValue]
     static_sockets: list[StaticSocketConnection]
     udp_checksum: Optional[UdpChecksumCalculationEnum]
+    _DESERIALIZE_DISPATCH = {
+        "ALLOWED-I-PV6-EXT-REF": lambda obj, elem: setattr(obj, "allowed_i_pv6_ext_ref", ARRef.deserialize(elem)),
+        "ALLOWED-TCP-REF": lambda obj, elem: setattr(obj, "allowed_tcp_ref", ARRef.deserialize(elem)),
+        "APPLICATION-ENDPOINT-ENDPOINT": lambda obj, elem: setattr(obj, "application_endpoint_endpoint", ApplicationEndpoint.deserialize(elem)),
+        "CONNECTOR-REF": lambda obj, elem: setattr(obj, "connector_ref", ARRef.deserialize(elem)),
+        "DIFFERENTIATED": lambda obj, elem: setattr(obj, "differentiated", elem.text),
+        "FLOW-LABEL": lambda obj, elem: setattr(obj, "flow_label", elem.text),
+        "MULTICASTS": lambda obj, elem: obj.multicast_refs.append(ARRef.deserialize(elem)),
+        "PATH-MTU": lambda obj, elem: setattr(obj, "path_mtu", elem.text),
+        "PDU-COLLECTION": lambda obj, elem: setattr(obj, "pdu_collection", elem.text),
+        "STATIC-SOCKETS": lambda obj, elem: obj.static_sockets.append(StaticSocketConnection.deserialize(elem)),
+        "UDP-CHECKSUM": lambda obj, elem: setattr(obj, "udp_checksum", UdpChecksumCalculationEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SocketAddress."""
         super().__init__()
@@ -86,9 +104,8 @@ class SocketAddress(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SocketAddress, self).serialize()

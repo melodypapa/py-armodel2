@@ -67,6 +67,9 @@ class RunnableEntity(ExecutableEntity):
         """
         return False
 
+    _XML_TAG = "RUNNABLE-ENTITY"
+
+
     arguments: list[RunnableEntity]
     asynchronous_servers: list[Any]
     can_be_invoked: Optional[Boolean]
@@ -84,6 +87,27 @@ class RunnableEntity(ExecutableEntity):
     symbol: Optional[CIdentifier]
     wait_points: list[WaitPoint]
     written_locals: list[VariableAccess]
+    _DESERIALIZE_DISPATCH = {
+        "ARGUMENTS": lambda obj, elem: obj.arguments.append(RunnableEntity.deserialize(elem)),
+        "ASYNCHRONOUS-SERVERS": lambda obj, elem: obj.asynchronous_servers.append(any (AsynchronousServer).deserialize(elem)),
+        "CAN-BE-INVOKED": lambda obj, elem: setattr(obj, "can_be_invoked", elem.text),
+        "DATA-READS": lambda obj, elem: obj.data_reads.append(VariableAccess.deserialize(elem)),
+        "DATA-RECEIVES": lambda obj, elem: obj.data_receives.append(VariableAccess.deserialize(elem)),
+        "DATA-SEND-POINTS": lambda obj, elem: obj.data_send_points.append(VariableAccess.deserialize(elem)),
+        "DATA-WRITES": lambda obj, elem: obj.data_writes.append(VariableAccess.deserialize(elem)),
+        "EXTERNALS": lambda obj, elem: obj.external_refs.append(ARRef.deserialize(elem)),
+        "INTERNALS": lambda obj, elem: obj.internal_refs.append(ARRef.deserialize(elem)),
+        "MODE-ACCESS-POINTS": lambda obj, elem: obj.mode_access_points.append(ModeAccessPoint.deserialize(elem)),
+        "MODE-SWITCH-POINTS": lambda obj, elem: obj.mode_switch_points.append(ModeSwitchPoint.deserialize(elem)),
+        "PARAMETER-ACCESSES": lambda obj, elem: obj.parameter_accesses.append(ParameterAccess.deserialize(elem)),
+        "READ-LOCALS": lambda obj, elem: obj.read_locals.append(VariableAccess.deserialize(elem)),
+        "SERVER-CALL-POINTS": lambda obj, elem: obj.server_call_points.append(ServerCallPoint.deserialize(elem)),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", elem.text),
+        "WAIT-POINTS": lambda obj, elem: obj.wait_points.append(WaitPoint.deserialize(elem)),
+        "WRITTEN-LOCALS": lambda obj, elem: obj.written_locals.append(VariableAccess.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RunnableEntity."""
         super().__init__()
@@ -111,9 +135,8 @@ class RunnableEntity(ExecutableEntity):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RunnableEntity, self).serialize()

@@ -37,8 +37,17 @@ class DiagnosticEventToTroubleCodeUdsMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-EVENT-TO-TROUBLE-CODE-UDS-MAPPING"
+
+
     diagnostic_event_ref: Optional[ARRef]
     trouble_code_uds_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTIC-EVENT-REF": lambda obj, elem: setattr(obj, "diagnostic_event_ref", ARRef.deserialize(elem)),
+        "TROUBLE-CODE-UDS-REF": lambda obj, elem: setattr(obj, "trouble_code_uds_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEventToTroubleCodeUdsMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class DiagnosticEventToTroubleCodeUdsMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEventToTroubleCodeUdsMapping, self).serialize()

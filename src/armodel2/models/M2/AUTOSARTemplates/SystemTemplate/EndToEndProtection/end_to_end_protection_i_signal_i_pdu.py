@@ -37,9 +37,19 @@ class EndToEndProtectionISignalIPdu(ARObject):
         """
         return False
 
+    _XML_TAG = "END-TO-END-PROTECTION-I-SIGNAL-I-PDU"
+
+
     data_offset: Optional[Integer]
     i_signal_group_ref: Optional[ARRef]
     i_signal_i_pdu_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-OFFSET": lambda obj, elem: setattr(obj, "data_offset", elem.text),
+        "I-SIGNAL-GROUP-REF": lambda obj, elem: setattr(obj, "i_signal_group_ref", ARRef.deserialize(elem)),
+        "I-SIGNAL-I-PDU-REF": lambda obj, elem: setattr(obj, "i_signal_i_pdu_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EndToEndProtectionISignalIPdu."""
         super().__init__()
@@ -53,9 +63,8 @@ class EndToEndProtectionISignalIPdu(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EndToEndProtectionISignalIPdu, self).serialize()

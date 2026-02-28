@@ -36,6 +36,9 @@ class CanNmCluster(NmCluster):
         """
         return False
 
+    _XML_TAG = "CAN-NM-CLUSTER"
+
+
     nm_busload: Optional[Boolean]
     nm_car_wake_up: Optional[PositiveInteger]
     nm_car_wake_up_filter_node_id: Optional[PositiveInteger]
@@ -48,6 +51,22 @@ class CanNmCluster(NmCluster):
     nm_remote: Optional[TimeValue]
     nm_repeat: Optional[TimeValue]
     nm_wait_bus: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "NM-BUSLOAD": lambda obj, elem: setattr(obj, "nm_busload", elem.text),
+        "NM-CAR-WAKE-UP": lambda obj, elem: setattr(obj, "nm_car_wake_up", elem.text),
+        "NM-CAR-WAKE-UP-FILTER-NODE-ID": lambda obj, elem: setattr(obj, "nm_car_wake_up_filter_node_id", elem.text),
+        "NM-CBV-POSITION": lambda obj, elem: setattr(obj, "nm_cbv_position", elem.text),
+        "NM-IMMEDIATE": lambda obj, elem: setattr(obj, "nm_immediate", elem.text),
+        "NM-MESSAGE": lambda obj, elem: setattr(obj, "nm_message", elem.text),
+        "NM-MSG-CYCLE": lambda obj, elem: setattr(obj, "nm_msg_cycle", elem.text),
+        "NM-NETWORK": lambda obj, elem: setattr(obj, "nm_network", elem.text),
+        "NM-NID-POSITION": lambda obj, elem: setattr(obj, "nm_nid_position", elem.text),
+        "NM-REMOTE": lambda obj, elem: setattr(obj, "nm_remote", elem.text),
+        "NM-REPEAT": lambda obj, elem: setattr(obj, "nm_repeat", elem.text),
+        "NM-WAIT-BUS": lambda obj, elem: setattr(obj, "nm_wait_bus", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanNmCluster."""
         super().__init__()
@@ -70,9 +89,8 @@ class CanNmCluster(NmCluster):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanNmCluster, self).serialize()

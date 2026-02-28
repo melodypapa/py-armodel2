@@ -34,9 +34,19 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-FUNCTION-IDENTIFIER-INHIBIT"
+
+
     function_ref: Optional[Any]
     inhibition_mask: Optional[DiagnosticInhibitionMaskEnum]
     inhibit_sources: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "FUNCTION-REF": lambda obj, elem: setattr(obj, "function_ref", ARRef.deserialize(elem)),
+        "INHIBITION-MASK": lambda obj, elem: setattr(obj, "inhibition_mask", DiagnosticInhibitionMaskEnum.deserialize(elem)),
+        "INHIBIT-SOURCES": lambda obj, elem: obj.inhibit_sources.append(any (DiagnosticFunction).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticFunctionIdentifierInhibit."""
         super().__init__()
@@ -50,9 +60,8 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticFunctionIdentifierInhibit, self).serialize()

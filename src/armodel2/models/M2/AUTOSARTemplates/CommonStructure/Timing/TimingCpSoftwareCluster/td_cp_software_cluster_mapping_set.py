@@ -30,7 +30,15 @@ class TDCpSoftwareClusterMappingSet(ARElement):
         """
         return False
 
+    _XML_TAG = "T-D-CP-SOFTWARE-CLUSTER-MAPPING-SET"
+
+
     td_cp_softwares: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "TD-CP-SOFTWARES": lambda obj, elem: obj.td_cp_softwares.append(any (TDCpSoftwareCluster).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDCpSoftwareClusterMappingSet."""
         super().__init__()
@@ -42,9 +50,8 @@ class TDCpSoftwareClusterMappingSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDCpSoftwareClusterMappingSet, self).serialize()

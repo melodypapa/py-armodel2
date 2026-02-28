@@ -48,6 +48,9 @@ class DoIpInterface(Identifiable):
         """
         return False
 
+    _XML_TAG = "DO-IP-INTERFACE"
+
+
     alive_check: Optional[TimeValue]
     doip_channel_ref: Optional[ARRef]
     doip_connection_refs: list[ARRef]
@@ -61,6 +64,23 @@ class DoIpInterface(Identifiable):
     use_mac_address: Optional[Boolean]
     use_vehicle: Optional[Boolean]
     vehicle: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "ALIVE-CHECK": lambda obj, elem: setattr(obj, "alive_check", elem.text),
+        "DOIP-CHANNEL-REF": lambda obj, elem: setattr(obj, "doip_channel_ref", ARRef.deserialize(elem)),
+        "DOIP-CONNECTIONS": lambda obj, elem: obj.doip_connection_refs.append(ARRef.deserialize(elem)),
+        "DO-IP-ROUTINGS": lambda obj, elem: obj.do_ip_routings.append(DoIpRoutingActivation.deserialize(elem)),
+        "GENERAL-INACTIVITY": lambda obj, elem: setattr(obj, "general_inactivity", elem.text),
+        "INITIAL-INACTIVITY": lambda obj, elem: setattr(obj, "initial_inactivity", elem.text),
+        "INITIAL-VEHICLE": lambda obj, elem: setattr(obj, "initial_vehicle", elem.text),
+        "IS-ACTIVATION-LINE": lambda obj, elem: setattr(obj, "is_activation_line", elem.text),
+        "MAX-TESTER": lambda obj, elem: setattr(obj, "max_tester", elem.text),
+        "SOCKETS": lambda obj, elem: obj.socket_refs.append(ARRef.deserialize(elem)),
+        "USE-MAC-ADDRESS": lambda obj, elem: setattr(obj, "use_mac_address", elem.text),
+        "USE-VEHICLE": lambda obj, elem: setattr(obj, "use_vehicle", elem.text),
+        "VEHICLE": lambda obj, elem: setattr(obj, "vehicle", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DoIpInterface."""
         super().__init__()
@@ -84,9 +104,8 @@ class DoIpInterface(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DoIpInterface, self).serialize()

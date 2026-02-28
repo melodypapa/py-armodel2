@@ -33,7 +33,15 @@ class UdpTp(TcpUdpConfig):
         """
         return False
 
+    _XML_TAG = "UDP-TP"
+
+
     udp_tp_port: Optional[TpPort]
+    _DESERIALIZE_DISPATCH = {
+        "UDP-TP-PORT": lambda obj, elem: setattr(obj, "udp_tp_port", TpPort.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize UdpTp."""
         super().__init__()
@@ -45,9 +53,8 @@ class UdpTp(TcpUdpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(UdpTp, self).serialize()

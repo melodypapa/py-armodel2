@@ -47,6 +47,9 @@ class NmEcu(Identifiable):
         """
         return False
 
+    _XML_TAG = "NM-ECU"
+
+
     bus_dependent_nm_ecus: list[BusspecificNmEcu]
     ecu_instance_ref: Optional[ARRef]
     nm_bus_synchronization: Optional[Any]
@@ -57,6 +60,20 @@ class NmEcu(Identifiable):
     nm_remote_sleep_ind: Optional[Any]
     nm_state_change: Optional[Boolean]
     nm_user_data_enabled: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "BUS-DEPENDENT-NM-ECUS": lambda obj, elem: obj.bus_dependent_nm_ecus.append(BusspecificNmEcu.deserialize(elem)),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+        "NM-BUS-SYNCHRONIZATION": lambda obj, elem: setattr(obj, "nm_bus_synchronization", any (BooleanEnabled).deserialize(elem)),
+        "NM-COM-CONTROL-ENABLED": lambda obj, elem: setattr(obj, "nm_com_control_enabled", elem.text),
+        "NM-COORDINATOR": lambda obj, elem: setattr(obj, "nm_coordinator", NmCoordinator.deserialize(elem)),
+        "NM-CYCLETIME": lambda obj, elem: setattr(obj, "nm_cycletime", elem.text),
+        "NM-PDU-RX-INDICATION": lambda obj, elem: setattr(obj, "nm_pdu_rx_indication", any (BooleanEnabled).deserialize(elem)),
+        "NM-REMOTE-SLEEP-IND": lambda obj, elem: setattr(obj, "nm_remote_sleep_ind", any (BooleanEnabled).deserialize(elem)),
+        "NM-STATE-CHANGE": lambda obj, elem: setattr(obj, "nm_state_change", elem.text),
+        "NM-USER-DATA-ENABLED": lambda obj, elem: setattr(obj, "nm_user_data_enabled", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NmEcu."""
         super().__init__()
@@ -77,9 +94,8 @@ class NmEcu(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NmEcu, self).serialize()

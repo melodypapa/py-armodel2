@@ -29,8 +29,17 @@ class SwBitRepresentation(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-BIT-REPRESENTATION"
+
+
     bit_position: Optional[Integer]
     number_of_bits: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "BIT-POSITION": lambda obj, elem: setattr(obj, "bit_position", elem.text),
+        "NUMBER-OF-BITS": lambda obj, elem: setattr(obj, "number_of_bits", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwBitRepresentation."""
         super().__init__()
@@ -43,9 +52,8 @@ class SwBitRepresentation(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwBitRepresentation, self).serialize()

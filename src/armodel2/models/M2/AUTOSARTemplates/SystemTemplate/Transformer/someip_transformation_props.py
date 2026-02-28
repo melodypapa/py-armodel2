@@ -33,11 +33,23 @@ class SOMEIPTransformationProps(TransformationProps):
         """
         return False
 
+    _XML_TAG = "S-O-M-E-I-P-TRANSFORMATION-PROPS"
+
+
     alignment: Optional[PositiveInteger]
     size_of_array: Optional[PositiveInteger]
     size_of_string: Optional[PositiveInteger]
     size_of_struct: Optional[PositiveInteger]
     size_of_union: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ALIGNMENT": lambda obj, elem: setattr(obj, "alignment", elem.text),
+        "SIZE-OF-ARRAY": lambda obj, elem: setattr(obj, "size_of_array", elem.text),
+        "SIZE-OF-STRING": lambda obj, elem: setattr(obj, "size_of_string", elem.text),
+        "SIZE-OF-STRUCT": lambda obj, elem: setattr(obj, "size_of_struct", elem.text),
+        "SIZE-OF-UNION": lambda obj, elem: setattr(obj, "size_of_union", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SOMEIPTransformationProps."""
         super().__init__()
@@ -53,9 +65,8 @@ class SOMEIPTransformationProps(TransformationProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SOMEIPTransformationProps, self).serialize()

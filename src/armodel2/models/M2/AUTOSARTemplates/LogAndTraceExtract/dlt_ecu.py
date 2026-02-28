@@ -37,8 +37,17 @@ class DltEcu(ARElement):
         """
         return False
 
+    _XML_TAG = "DLT-ECU"
+
+
     applications: list[DltApplication]
     ecu_id: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATIONS": lambda obj, elem: obj.applications.append(DltApplication.deserialize(elem)),
+        "ECU-ID": lambda obj, elem: setattr(obj, "ecu_id", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DltEcu."""
         super().__init__()
@@ -51,9 +60,8 @@ class DltEcu(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DltEcu, self).serialize()

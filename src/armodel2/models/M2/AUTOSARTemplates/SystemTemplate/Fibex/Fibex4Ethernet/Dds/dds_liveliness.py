@@ -32,8 +32,17 @@ class DdsLiveliness(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-LIVELINESS"
+
+
     liveliness_lease: Optional[Float]
     liveness_kind: Optional[DdsLivenessKindEnum]
+    _DESERIALIZE_DISPATCH = {
+        "LIVELINESS-LEASE": lambda obj, elem: setattr(obj, "liveliness_lease", elem.text),
+        "LIVENESS-KIND": lambda obj, elem: setattr(obj, "liveness_kind", DdsLivenessKindEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsLiveliness."""
         super().__init__()
@@ -46,9 +55,8 @@ class DdsLiveliness(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsLiveliness, self).serialize()

@@ -37,12 +37,25 @@ class ExecutionOrderConstraint(TimingConstraint):
         """
         return False
 
+    _XML_TAG = "EXECUTION-ORDER-CONSTRAINT"
+
+
     base_ref: Optional[ARRef]
     execution_order: Optional[Any]
     ignore_order: Optional[Boolean]
     is_event: Optional[Boolean]
     ordered_elements: list[Any]
     permit_multiple: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "EXECUTION-ORDER": lambda obj, elem: setattr(obj, "execution_order", any (ExecutionOrder).deserialize(elem)),
+        "IGNORE-ORDER": lambda obj, elem: setattr(obj, "ignore_order", elem.text),
+        "IS-EVENT": lambda obj, elem: setattr(obj, "is_event", elem.text),
+        "ORDERED-ELEMENTS": lambda obj, elem: obj.ordered_elements.append(any (EOCExecutableEntity).deserialize(elem)),
+        "PERMIT-MULTIPLE": lambda obj, elem: setattr(obj, "permit_multiple", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ExecutionOrderConstraint."""
         super().__init__()
@@ -59,9 +72,8 @@ class ExecutionOrderConstraint(TimingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ExecutionOrderConstraint, self).serialize()

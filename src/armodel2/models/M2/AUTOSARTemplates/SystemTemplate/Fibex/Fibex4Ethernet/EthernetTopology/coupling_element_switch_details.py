@@ -42,11 +42,23 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         """
         return False
 
+    _XML_TAG = "COUPLING-ELEMENT-SWITCH-DETAILS"
+
+
     flow_meterings: list[SwitchFlowMeteringEntry]
     stream_filters: list[SwitchStreamFilterEntry]
     stream_gates: list[SwitchStreamGateEntry]
     switch_streams: list[Any]
     traffic_shapers: list[SwitchAsynchronousTrafficShaperGroupEntry]
+    _DESERIALIZE_DISPATCH = {
+        "FLOW-METERINGS": lambda obj, elem: obj.flow_meterings.append(SwitchFlowMeteringEntry.deserialize(elem)),
+        "STREAM-FILTERS": lambda obj, elem: obj.stream_filters.append(SwitchStreamFilterEntry.deserialize(elem)),
+        "STREAM-GATES": lambda obj, elem: obj.stream_gates.append(SwitchStreamGateEntry.deserialize(elem)),
+        "SWITCH-STREAMS": lambda obj, elem: obj.switch_streams.append(any (SwitchStream).deserialize(elem)),
+        "TRAFFIC-SHAPERS": lambda obj, elem: obj.traffic_shapers.append(SwitchAsynchronousTrafficShaperGroupEntry.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingElementSwitchDetails."""
         super().__init__()
@@ -62,9 +74,8 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingElementSwitchDetails, self).serialize()

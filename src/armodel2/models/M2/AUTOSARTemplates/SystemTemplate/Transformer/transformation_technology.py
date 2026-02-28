@@ -44,6 +44,9 @@ class TransformationTechnology(Identifiable):
         """
         return False
 
+    _XML_TAG = "TRANSFORMATION-TECHNOLOGY"
+
+
     buffer_properties: Optional[BufferProperties]
     has_internal: Optional[Boolean]
     needs_original: Optional[Boolean]
@@ -51,6 +54,17 @@ class TransformationTechnology(Identifiable):
     transformation_description: Optional[TransformationDescription]
     transformer: Optional[TransformerClassEnum]
     version: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "BUFFER-PROPERTIES": lambda obj, elem: setattr(obj, "buffer_properties", BufferProperties.deserialize(elem)),
+        "HAS-INTERNAL": lambda obj, elem: setattr(obj, "has_internal", elem.text),
+        "NEEDS-ORIGINAL": lambda obj, elem: setattr(obj, "needs_original", elem.text),
+        "PROTOCOL": lambda obj, elem: setattr(obj, "protocol", elem.text),
+        "TRANSFORMATION-DESCRIPTION": lambda obj, elem: setattr(obj, "transformation_description", TransformationDescription.deserialize(elem)),
+        "TRANSFORMER": lambda obj, elem: setattr(obj, "transformer", TransformerClassEnum.deserialize(elem)),
+        "VERSION": lambda obj, elem: setattr(obj, "version", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TransformationTechnology."""
         super().__init__()
@@ -68,9 +82,8 @@ class TransformationTechnology(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TransformationTechnology, self).serialize()

@@ -31,6 +31,11 @@ class MultiplexedPart(ARObject, ABC):
         return True
 
     segment_positions: list[SegmentPosition]
+    _DESERIALIZE_DISPATCH = {
+        "SEGMENT-POSITIONS": lambda obj, elem: obj.segment_positions.append(SegmentPosition.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MultiplexedPart."""
         super().__init__()
@@ -42,9 +47,8 @@ class MultiplexedPart(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MultiplexedPart, self).serialize()

@@ -33,10 +33,21 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
         """
         return False
 
+    _XML_TAG = "CAN-CONTROLLER-CONFIGURATION"
+
+
     prop_seg: Optional[Integer]
     sync_jump_width: Optional[Integer]
     time_seg1: Optional[Integer]
     time_seg2: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "PROP-SEG": lambda obj, elem: setattr(obj, "prop_seg", elem.text),
+        "SYNC-JUMP-WIDTH": lambda obj, elem: setattr(obj, "sync_jump_width", elem.text),
+        "TIME-SEG1": lambda obj, elem: setattr(obj, "time_seg1", elem.text),
+        "TIME-SEG2": lambda obj, elem: setattr(obj, "time_seg2", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanControllerConfiguration."""
         super().__init__()
@@ -51,9 +62,8 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanControllerConfiguration, self).serialize()

@@ -34,10 +34,21 @@ class FlexrayTpEcu(ARObject):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-TP-ECU"
+
+
     cancellation: Optional[Boolean]
     cycle_time_main: Optional[TimeValue]
     ecu_instance_ref: Optional[ARRef]
     full_duplex: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CANCELLATION": lambda obj, elem: setattr(obj, "cancellation", elem.text),
+        "CYCLE-TIME-MAIN": lambda obj, elem: setattr(obj, "cycle_time_main", elem.text),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+        "FULL-DUPLEX": lambda obj, elem: setattr(obj, "full_duplex", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayTpEcu."""
         super().__init__()
@@ -52,9 +63,8 @@ class FlexrayTpEcu(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayTpEcu, self).serialize()

@@ -47,10 +47,21 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
         """
         return False
 
+    _XML_TAG = "APPLICATION-ARRAY-ELEMENT"
+
+
     array_size_handling: Optional[ArraySizeHandlingEnum]
     array_size_semantics: Optional[ArraySizeSemanticsEnum]
     index_data_type_ref: Optional[ARRef]
     max_number_of_elements: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ARRAY-SIZE-HANDLING": lambda obj, elem: setattr(obj, "array_size_handling", ArraySizeHandlingEnum.deserialize(elem)),
+        "ARRAY-SIZE-SEMANTICS": lambda obj, elem: setattr(obj, "array_size_semantics", ArraySizeSemanticsEnum.deserialize(elem)),
+        "INDEX-DATA-TYPE-REF": lambda obj, elem: setattr(obj, "index_data_type_ref", ARRef.deserialize(elem)),
+        "MAX-NUMBER-OF-ELEMENTS": lambda obj, elem: setattr(obj, "max_number_of_elements", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationArrayElement."""
         super().__init__()
@@ -65,9 +76,8 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationArrayElement, self).serialize()

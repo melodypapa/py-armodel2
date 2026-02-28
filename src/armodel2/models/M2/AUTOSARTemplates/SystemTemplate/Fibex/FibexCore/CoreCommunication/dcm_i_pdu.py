@@ -33,7 +33,15 @@ class DcmIPdu(IPdu):
         """
         return False
 
+    _XML_TAG = "DCM-I-PDU"
+
+
     diag_pdu_type: Optional[DiagPduType]
+    _DESERIALIZE_DISPATCH = {
+        "DIAG-PDU-TYPE": lambda obj, elem: setattr(obj, "diag_pdu_type", DiagPduType.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DcmIPdu."""
         super().__init__()
@@ -45,9 +53,8 @@ class DcmIPdu(IPdu):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DcmIPdu, self).serialize()

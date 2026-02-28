@@ -30,8 +30,17 @@ class EnumerationMappingEntry(ARObject):
         """
         return False
 
+    _XML_TAG = "ENUMERATION-MAPPING-ENTRY"
+
+
     enumerator: NameToken
     numerical_value: PositiveInteger
+    _DESERIALIZE_DISPATCH = {
+        "ENUMERATOR": lambda obj, elem: setattr(obj, "enumerator", elem.text),
+        "NUMERICAL-VALUE": lambda obj, elem: setattr(obj, "numerical_value", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EnumerationMappingEntry."""
         super().__init__()
@@ -44,9 +53,8 @@ class EnumerationMappingEntry(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EnumerationMappingEntry, self).serialize()

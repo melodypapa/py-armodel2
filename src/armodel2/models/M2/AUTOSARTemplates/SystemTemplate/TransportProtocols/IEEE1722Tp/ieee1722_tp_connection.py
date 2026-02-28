@@ -45,6 +45,16 @@ class IEEE1722TpConnection(ARElement, ABC):
     unique_stream_id: Optional[PositiveInteger]
     version: Optional[PositiveInteger]
     vlan_priority: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION-MAC": lambda obj, elem: setattr(obj, "destination_mac", elem.text),
+        "MAC-ADDRESS-STRING": lambda obj, elem: setattr(obj, "mac_address_string", elem.text),
+        "PDU-REF": lambda obj, elem: setattr(obj, "pdu_ref", ARRef.deserialize(elem)),
+        "UNIQUE-STREAM-ID": lambda obj, elem: setattr(obj, "unique_stream_id", elem.text),
+        "VERSION": lambda obj, elem: setattr(obj, "version", elem.text),
+        "VLAN-PRIORITY": lambda obj, elem: setattr(obj, "vlan_priority", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpConnection."""
         super().__init__()
@@ -61,9 +71,8 @@ class IEEE1722TpConnection(ARElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpConnection, self).serialize()

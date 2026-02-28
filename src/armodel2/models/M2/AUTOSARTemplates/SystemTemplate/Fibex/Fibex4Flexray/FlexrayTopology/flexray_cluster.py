@@ -35,6 +35,9 @@ class FlexrayCluster(ARObject):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-CLUSTER"
+
+
     action_point_offset: Optional[Integer]
     bit: Optional[TimeValue]
     cas_rx_low_max: Optional[Integer]
@@ -68,6 +71,43 @@ class FlexrayCluster(ARObject):
     wakeup_rx: Optional[Integer]
     wakeup_tx_active: Optional[Integer]
     wakeup_tx_idle: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "ACTION-POINT-OFFSET": lambda obj, elem: setattr(obj, "action_point_offset", elem.text),
+        "BIT": lambda obj, elem: setattr(obj, "bit", elem.text),
+        "CAS-RX-LOW-MAX": lambda obj, elem: setattr(obj, "cas_rx_low_max", elem.text),
+        "COLD-START": lambda obj, elem: setattr(obj, "cold_start", elem.text),
+        "CYCLE": lambda obj, elem: setattr(obj, "cycle", elem.text),
+        "CYCLE-COUNT-MAX": lambda obj, elem: setattr(obj, "cycle_count_max", elem.text),
+        "DETECT-NIT-ERROR": lambda obj, elem: setattr(obj, "detect_nit_error", elem.text),
+        "DYNAMIC-SLOT-IDLE-PHASE": lambda obj, elem: setattr(obj, "dynamic_slot_idle_phase", elem.text),
+        "IGNORE-AFTER-TX": lambda obj, elem: setattr(obj, "ignore_after_tx", elem.text),
+        "LISTEN-NOISE": lambda obj, elem: setattr(obj, "listen_noise", elem.text),
+        "MACRO-PER-CYCLE": lambda obj, elem: setattr(obj, "macro_per_cycle", elem.text),
+        "MACROTICK": lambda obj, elem: setattr(obj, "macrotick", elem.text),
+        "MAX-WITHOUT": lambda obj, elem: setattr(obj, "max_without", elem.text),
+        "MINISLOT-ACTION": lambda obj, elem: setattr(obj, "minislot_action", elem.text),
+        "MINISLOT-DURATION": lambda obj, elem: setattr(obj, "minislot_duration", elem.text),
+        "NETWORK-IDLE-TIME": lambda obj, elem: setattr(obj, "network_idle_time", elem.text),
+        "NETWORK": lambda obj, elem: setattr(obj, "network", elem.text),
+        "NUMBER-OF-MINISLOTS": lambda obj, elem: setattr(obj, "number_of_minislots", elem.text),
+        "NUMBER-OF-STATIC-SLOTS": lambda obj, elem: setattr(obj, "number_of_static_slots", elem.text),
+        "OFFSET-CORRECTION": lambda obj, elem: setattr(obj, "offset_correction", elem.text),
+        "PAYLOAD-LENGTH": lambda obj, elem: setattr(obj, "payload_length", elem.text),
+        "SAFETY-MARGIN": lambda obj, elem: setattr(obj, "safety_margin", elem.text),
+        "SAMPLE-CLOCK-PERIOD": lambda obj, elem: setattr(obj, "sample_clock_period", elem.text),
+        "STATIC-SLOT": lambda obj, elem: setattr(obj, "static_slot", elem.text),
+        "SYMBOL-WINDOW": lambda obj, elem: setattr(obj, "symbol_window", elem.text),
+        "SYNC-FRAME-ID": lambda obj, elem: setattr(obj, "sync_frame_id", elem.text),
+        "TRANCEIVER": lambda obj, elem: setattr(obj, "tranceiver", elem.text),
+        "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", elem.text),
+        "WAKEUP-RX-IDLE": lambda obj, elem: setattr(obj, "wakeup_rx_idle", elem.text),
+        "WAKEUP-RX-LOW": lambda obj, elem: setattr(obj, "wakeup_rx_low", elem.text),
+        "WAKEUP-RX": lambda obj, elem: setattr(obj, "wakeup_rx", elem.text),
+        "WAKEUP-TX-ACTIVE": lambda obj, elem: setattr(obj, "wakeup_tx_active", elem.text),
+        "WAKEUP-TX-IDLE": lambda obj, elem: setattr(obj, "wakeup_tx_idle", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayCluster."""
         super().__init__()

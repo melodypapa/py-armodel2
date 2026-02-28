@@ -41,8 +41,17 @@ class ModeDeclarationGroupPrototype(Identifiable):
         """
         return False
 
+    _XML_TAG = "MODE-DECLARATION-GROUP-PROTOTYPE"
+
+
     sw_calibration_access: Optional[SwCalibrationAccessEnum]
     type_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SW-CALIBRATION-ACCESS": lambda obj, elem: setattr(obj, "sw_calibration_access", SwCalibrationAccessEnum.deserialize(elem)),
+        "TYPE-TREF": lambda obj, elem: setattr(obj, "type_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroupPrototype."""
         super().__init__()
@@ -55,9 +64,8 @@ class ModeDeclarationGroupPrototype(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeDeclarationGroupPrototype, self).serialize()

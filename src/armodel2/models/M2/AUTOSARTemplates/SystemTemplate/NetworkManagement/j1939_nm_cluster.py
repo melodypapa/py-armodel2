@@ -33,8 +33,17 @@ class J1939NmCluster(NmCluster):
         """
         return False
 
+    _XML_TAG = "J1939-NM-CLUSTER"
+
+
     address_claim: Optional[Boolean]
     uses_dynamic: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ADDRESS-CLAIM": lambda obj, elem: setattr(obj, "address_claim", elem.text),
+        "USES-DYNAMIC": lambda obj, elem: setattr(obj, "uses_dynamic", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939NmCluster."""
         super().__init__()
@@ -47,9 +56,8 @@ class J1939NmCluster(NmCluster):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939NmCluster, self).serialize()

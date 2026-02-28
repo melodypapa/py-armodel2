@@ -42,6 +42,13 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
     audiences: list[DiagnosticAudienceEnum]
     diag: Optional[DiagRequirementIdString]
     security_access: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "AUDIENCES": lambda obj, elem: obj.audiences.append(DiagnosticAudienceEnum.deserialize(elem)),
+        "DIAG": lambda obj, elem: setattr(obj, "diag", elem.text),
+        "SECURITY-ACCESS": lambda obj, elem: setattr(obj, "security_access", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticCapabilityElement."""
         super().__init__()
@@ -55,9 +62,8 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticCapabilityElement, self).serialize()

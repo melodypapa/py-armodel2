@@ -50,6 +50,9 @@ class TlsCryptoCipherSuite(Identifiable):
         """
         return False
 
+    _XML_TAG = "TLS-CRYPTO-CIPHER-SUITE"
+
+
     authentication_ref: Optional[ARRef]
     certificate_ref: Optional[Any]
     cipher_suite_id: Optional[PositiveInteger]
@@ -63,6 +66,23 @@ class TlsCryptoCipherSuite(Identifiable):
     remote_ref: Optional[Any]
     signature_refs: list[ARRef]
     version: Optional[TlsVersionEnum]
+    _DESERIALIZE_DISPATCH = {
+        "AUTHENTICATION-REF": lambda obj, elem: setattr(obj, "authentication_ref", ARRef.deserialize(elem)),
+        "CERTIFICATE-REF": lambda obj, elem: setattr(obj, "certificate_ref", ARRef.deserialize(elem)),
+        "CIPHER-SUITE-ID": lambda obj, elem: setattr(obj, "cipher_suite_id", elem.text),
+        "CIPHER-SUITE": lambda obj, elem: setattr(obj, "cipher_suite", elem.text),
+        "ELLIPTIC-CURVES": lambda obj, elem: obj.elliptic_curf_refs.append(ARRef.deserialize(elem)),
+        "ENCRYPTION-REF": lambda obj, elem: setattr(obj, "encryption_ref", ARRef.deserialize(elem)),
+        "KEY-EXCHANGES": lambda obj, elem: obj.key_exchange_refs.append(ARRef.deserialize(elem)),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "PROPS": lambda obj, elem: setattr(obj, "props", TlsCryptoCipherSuite.deserialize(elem)),
+        "PSK-IDENTITY": lambda obj, elem: setattr(obj, "psk_identity", TlsPskIdentity.deserialize(elem)),
+        "REMOTE-REF": lambda obj, elem: setattr(obj, "remote_ref", ARRef.deserialize(elem)),
+        "SIGNATURES": lambda obj, elem: obj.signature_refs.append(ARRef.deserialize(elem)),
+        "VERSION": lambda obj, elem: setattr(obj, "version", TlsVersionEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TlsCryptoCipherSuite."""
         super().__init__()
@@ -86,9 +106,8 @@ class TlsCryptoCipherSuite(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TlsCryptoCipherSuite, self).serialize()

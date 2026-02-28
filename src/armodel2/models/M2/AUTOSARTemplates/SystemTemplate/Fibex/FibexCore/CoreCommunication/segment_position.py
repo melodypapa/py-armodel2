@@ -32,9 +32,19 @@ class SegmentPosition(ARObject):
         """
         return False
 
+    _XML_TAG = "SEGMENT-POSITION"
+
+
     segment_byte: Optional[ByteOrderEnum]
     segment_length: Optional[Integer]
     segment: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "SEGMENT-BYTE": lambda obj, elem: setattr(obj, "segment_byte", ByteOrderEnum.deserialize(elem)),
+        "SEGMENT-LENGTH": lambda obj, elem: setattr(obj, "segment_length", elem.text),
+        "SEGMENT": lambda obj, elem: setattr(obj, "segment", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SegmentPosition."""
         super().__init__()
@@ -48,9 +58,8 @@ class SegmentPosition(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SegmentPosition, self).serialize()

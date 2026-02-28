@@ -40,10 +40,21 @@ class SwAddrMethod(ARElement):
         """
         return False
 
+    _XML_TAG = "SW-ADDR-METHOD"
+
+
     memory: Optional[MemoryAllocationKeywordPolicyType]
     options: list[Identifier]
     section: Optional[SectionInitializationPolicyType]
     section_type: Optional[MemorySectionType]
+    _DESERIALIZE_DISPATCH = {
+        "MEMORY": lambda obj, elem: setattr(obj, "memory", MemoryAllocationKeywordPolicyType.deserialize(elem)),
+        "OPTIONS": lambda obj, elem: obj.options.append(elem.text),
+        "SECTION": lambda obj, elem: setattr(obj, "section", elem.text),
+        "SECTION-TYPE": lambda obj, elem: setattr(obj, "section_type", MemorySectionType.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwAddrMethod."""
         super().__init__()
@@ -58,9 +69,8 @@ class SwAddrMethod(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwAddrMethod, self).serialize()

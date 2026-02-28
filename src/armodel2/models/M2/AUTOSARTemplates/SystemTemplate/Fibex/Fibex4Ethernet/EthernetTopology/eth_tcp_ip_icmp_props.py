@@ -36,8 +36,17 @@ class EthTcpIpIcmpProps(ARElement):
         """
         return False
 
+    _XML_TAG = "ETH-TCP-IP-ICMP-PROPS"
+
+
     icmp_v4_props: Optional[TcpIpIcmpv4Props]
     icmp_v6_props: Optional[TcpIpIcmpv6Props]
+    _DESERIALIZE_DISPATCH = {
+        "ICMP-V4-PROPS": lambda obj, elem: setattr(obj, "icmp_v4_props", TcpIpIcmpv4Props.deserialize(elem)),
+        "ICMP-V6-PROPS": lambda obj, elem: setattr(obj, "icmp_v6_props", TcpIpIcmpv6Props.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthTcpIpIcmpProps."""
         super().__init__()
@@ -50,9 +59,8 @@ class EthTcpIpIcmpProps(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthTcpIpIcmpProps, self).serialize()

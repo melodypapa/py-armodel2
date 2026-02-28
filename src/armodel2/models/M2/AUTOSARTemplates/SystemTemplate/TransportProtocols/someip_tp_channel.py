@@ -34,9 +34,19 @@ class SomeipTpChannel(Identifiable):
         """
         return False
 
+    _XML_TAG = "SOMEIP-TP-CHANNEL"
+
+
     burst_size: Optional[PositiveInteger]
     rx_timeout_time: Optional[TimeValue]
     separation_time: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "BURST-SIZE": lambda obj, elem: setattr(obj, "burst_size", elem.text),
+        "RX-TIMEOUT-TIME": lambda obj, elem: setattr(obj, "rx_timeout_time", elem.text),
+        "SEPARATION-TIME": lambda obj, elem: setattr(obj, "separation_time", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SomeipTpChannel."""
         super().__init__()
@@ -50,9 +60,8 @@ class SomeipTpChannel(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SomeipTpChannel, self).serialize()

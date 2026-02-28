@@ -40,12 +40,25 @@ class MacSecLocalKayProps(ARObject):
         """
         return False
 
+    _XML_TAG = "MAC-SEC-LOCAL-KAY-PROPS"
+
+
     destination_mac: Optional[MacAddressString]
     global_kay_props_ref: Optional[ARRef]
     key_server: Optional[PositiveInteger]
     mka_participant_refs: list[ARRef]
     role: Optional[MacSecRoleEnum]
     source_mac: Optional[MacAddressString]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION-MAC": lambda obj, elem: setattr(obj, "destination_mac", elem.text),
+        "GLOBAL-KAY-PROPS-REF": lambda obj, elem: setattr(obj, "global_kay_props_ref", ARRef.deserialize(elem)),
+        "KEY-SERVER": lambda obj, elem: setattr(obj, "key_server", elem.text),
+        "MKA-PARTICIPANTS": lambda obj, elem: obj.mka_participant_refs.append(ARRef.deserialize(elem)),
+        "ROLE": lambda obj, elem: setattr(obj, "role", MacSecRoleEnum.deserialize(elem)),
+        "SOURCE-MAC": lambda obj, elem: setattr(obj, "source_mac", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MacSecLocalKayProps."""
         super().__init__()
@@ -62,9 +75,8 @@ class MacSecLocalKayProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MacSecLocalKayProps, self).serialize()

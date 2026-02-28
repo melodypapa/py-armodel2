@@ -36,9 +36,19 @@ class ClientServerOperationBlueprintMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "CLIENT-SERVER-OPERATION-BLUEPRINT-MAPPING"
+
+
     blueprint: Optional[DocumentationBlock]
     bsw_module_entry_ref: ARRef
     client_server_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "BLUEPRINT": lambda obj, elem: setattr(obj, "blueprint", DocumentationBlock.deserialize(elem)),
+        "BSW-MODULE-ENTRY-REF": lambda obj, elem: setattr(obj, "bsw_module_entry_ref", ARRef.deserialize(elem)),
+        "CLIENT-SERVER-REF": lambda obj, elem: setattr(obj, "client_server_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientServerOperationBlueprintMapping."""
         super().__init__()
@@ -52,9 +62,8 @@ class ClientServerOperationBlueprintMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientServerOperationBlueprintMapping, self).serialize()

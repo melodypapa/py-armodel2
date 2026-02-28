@@ -34,10 +34,21 @@ class MeasuredStackUsage(StackUsage):
         """
         return False
 
+    _XML_TAG = "MEASURED-STACK-USAGE"
+
+
     average_memory_consumption: Optional[PositiveInteger]
     maximum_memory_consumption: Optional[PositiveInteger]
     minimum_memory_consumption: Optional[PositiveInteger]
     test_pattern: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "AVERAGE-MEMORY-CONSUMPTION": lambda obj, elem: setattr(obj, "average_memory_consumption", elem.text),
+        "MAXIMUM-MEMORY-CONSUMPTION": lambda obj, elem: setattr(obj, "maximum_memory_consumption", elem.text),
+        "MINIMUM-MEMORY-CONSUMPTION": lambda obj, elem: setattr(obj, "minimum_memory_consumption", elem.text),
+        "TEST-PATTERN": lambda obj, elem: setattr(obj, "test_pattern", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MeasuredStackUsage."""
         super().__init__()
@@ -52,9 +63,8 @@ class MeasuredStackUsage(StackUsage):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MeasuredStackUsage, self).serialize()

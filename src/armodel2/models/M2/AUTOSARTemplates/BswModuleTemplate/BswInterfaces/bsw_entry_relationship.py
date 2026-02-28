@@ -31,9 +31,19 @@ class BswEntryRelationship(ARObject):
         """
         return False
 
+    _XML_TAG = "BSW-ENTRY-RELATIONSHIP"
+
+
     bsw_entry: Optional[BswEntryRelationship]
     from_ref: Optional[ARRef]
     to_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BSW-ENTRY": lambda obj, elem: setattr(obj, "bsw_entry", BswEntryRelationship.deserialize(elem)),
+        "FROM-REF": lambda obj, elem: setattr(obj, "from_ref", ARRef.deserialize(elem)),
+        "TO-REF": lambda obj, elem: setattr(obj, "to_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswEntryRelationship."""
         super().__init__()
@@ -47,9 +57,8 @@ class BswEntryRelationship(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswEntryRelationship, self).serialize()

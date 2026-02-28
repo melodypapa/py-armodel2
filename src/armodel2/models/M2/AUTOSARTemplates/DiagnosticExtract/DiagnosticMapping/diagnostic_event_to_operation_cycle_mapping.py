@@ -34,8 +34,17 @@ class DiagnosticEventToOperationCycleMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-EVENT-TO-OPERATION-CYCLE-MAPPING"
+
+
     diagnostic_event_ref: Optional[ARRef]
     operation_cycle_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTIC-EVENT-REF": lambda obj, elem: setattr(obj, "diagnostic_event_ref", ARRef.deserialize(elem)),
+        "OPERATION-CYCLE-REF": lambda obj, elem: setattr(obj, "operation_cycle_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEventToOperationCycleMapping."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticEventToOperationCycleMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEventToOperationCycleMapping, self).serialize()

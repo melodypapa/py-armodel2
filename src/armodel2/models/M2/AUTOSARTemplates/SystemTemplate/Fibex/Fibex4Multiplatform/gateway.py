@@ -43,10 +43,21 @@ class Gateway(FibexElement):
         """
         return False
 
+    _XML_TAG = "GATEWAY"
+
+
     ecu_ref: Optional[ARRef]
     frame_mapping_refs: list[ARRef]
     i_pdu_mapping_refs: list[ARRef]
     signal_mapping_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ECU-REF": lambda obj, elem: setattr(obj, "ecu_ref", ARRef.deserialize(elem)),
+        "FRAME-MAPPINGS": lambda obj, elem: obj.frame_mapping_refs.append(ARRef.deserialize(elem)),
+        "I-PDU-MAPPINGS": lambda obj, elem: obj.i_pdu_mapping_refs.append(ARRef.deserialize(elem)),
+        "SIGNAL-MAPPINGS": lambda obj, elem: obj.signal_mapping_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Gateway."""
         super().__init__()
@@ -61,9 +72,8 @@ class Gateway(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Gateway, self).serialize()

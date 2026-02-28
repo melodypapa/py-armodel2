@@ -49,6 +49,14 @@ class StackUsage(Identifiable, ABC):
     hardware: Optional[HardwareConfiguration]
     hw_element_ref: Optional[ARRef]
     software_context: Optional[SoftwareContext]
+    _DESERIALIZE_DISPATCH = {
+        "EXECUTABLE-ENTITY-REF": lambda obj, elem: setattr(obj, "executable_entity_ref", ARRef.deserialize(elem)),
+        "HARDWARE": lambda obj, elem: setattr(obj, "hardware", HardwareConfiguration.deserialize(elem)),
+        "HW-ELEMENT-REF": lambda obj, elem: setattr(obj, "hw_element_ref", ARRef.deserialize(elem)),
+        "SOFTWARE-CONTEXT": lambda obj, elem: setattr(obj, "software_context", SoftwareContext.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StackUsage."""
         super().__init__()
@@ -63,9 +71,8 @@ class StackUsage(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StackUsage, self).serialize()

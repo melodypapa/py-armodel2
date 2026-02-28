@@ -30,6 +30,9 @@ class DiagnosticAuthenticationConfiguration(DiagnosticAuthentication):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-AUTHENTICATION-CONFIGURATION"
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticAuthenticationConfiguration."""
         super().__init__()
@@ -40,9 +43,8 @@ class DiagnosticAuthenticationConfiguration(DiagnosticAuthentication):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticAuthenticationConfiguration, self).serialize()

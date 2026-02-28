@@ -50,6 +50,9 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-TROUBLE-CODE-PROPS"
+
+
     aging_ref: Optional[ARRef]
     diagnostic_memory_ref: Optional[Any]
     extended_data_refs: list[ARRef]
@@ -60,6 +63,20 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
     priority: Optional[PositiveInteger]
     significance: Optional[DiagnosticSignificanceEnum]
     snapshot_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AGING-REF": lambda obj, elem: setattr(obj, "aging_ref", ARRef.deserialize(elem)),
+        "DIAGNOSTIC-MEMORY-REF": lambda obj, elem: setattr(obj, "diagnostic_memory_ref", ARRef.deserialize(elem)),
+        "EXTENDED-DATAS": lambda obj, elem: obj.extended_data_refs.append(ARRef.deserialize(elem)),
+        "FREEZE-FRAMES": lambda obj, elem: obj.freeze_frame_refs.append(ARRef.deserialize(elem)),
+        "IMMEDIATE-NV": lambda obj, elem: setattr(obj, "immediate_nv", elem.text),
+        "LEGISLATED-REF": lambda obj, elem: setattr(obj, "legislated_ref", ARRef.deserialize(elem)),
+        "MAX-NUMBER": lambda obj, elem: setattr(obj, "max_number", elem.text),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "SIGNIFICANCE": lambda obj, elem: setattr(obj, "significance", DiagnosticSignificanceEnum.deserialize(elem)),
+        "SNAPSHOT-REF": lambda obj, elem: setattr(obj, "snapshot_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeProps."""
         super().__init__()
@@ -80,9 +97,8 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticTroubleCodeProps, self).serialize()

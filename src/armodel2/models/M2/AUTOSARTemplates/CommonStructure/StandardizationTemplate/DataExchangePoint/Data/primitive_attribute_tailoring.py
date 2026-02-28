@@ -36,9 +36,19 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
         """
         return False
 
+    _XML_TAG = "PRIMITIVE-ATTRIBUTE-TAILORING"
+
+
     default_value: Optional[DefaultValueApplicationStrategyEnum]
     sub_attributes: list[Any]
     value_restriction_with_severity: Optional[ValueRestrictionWithSeverity]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", DefaultValueApplicationStrategyEnum.deserialize(elem)),
+        "SUB-ATTRIBUTES": lambda obj, elem: obj.sub_attributes.append(any (PrimitiveAttribute).deserialize(elem)),
+        "VALUE-RESTRICTION-WITH-SEVERITY": lambda obj, elem: setattr(obj, "value_restriction_with_severity", ValueRestrictionWithSeverity.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PrimitiveAttributeTailoring."""
         super().__init__()
@@ -52,9 +62,8 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PrimitiveAttributeTailoring, self).serialize()

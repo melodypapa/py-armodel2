@@ -33,8 +33,17 @@ class BswExclusiveAreaPolicy(ARObject):
         """
         return False
 
+    _XML_TAG = "BSW-EXCLUSIVE-AREA-POLICY"
+
+
     api_principle_enum: Optional[ApiPrincipleEnum]
     exclusive_area_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "API-PRINCIPLE-ENUM": lambda obj, elem: setattr(obj, "api_principle_enum", ApiPrincipleEnum.deserialize(elem)),
+        "EXCLUSIVE-AREA-REF": lambda obj, elem: setattr(obj, "exclusive_area_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswExclusiveAreaPolicy."""
         super().__init__()
@@ -47,9 +56,8 @@ class BswExclusiveAreaPolicy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswExclusiveAreaPolicy, self).serialize()

@@ -40,10 +40,21 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SERVICE-TABLE"
+
+
     diagnostic_refs: list[ARRef]
     ecu_instance_ref: Optional[ARRef]
     protocol_kind: Optional[NameToken]
     service_instance_refs: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTICS": lambda obj, elem: obj.diagnostic_refs.append(ARRef.deserialize(elem)),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+        "PROTOCOL-KIND": lambda obj, elem: setattr(obj, "protocol_kind", elem.text),
+        "SERVICE-INSTANCES": lambda obj, elem: obj.service_instance_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticServiceTable."""
         super().__init__()
@@ -58,9 +69,8 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticServiceTable, self).serialize()

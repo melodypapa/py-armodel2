@@ -37,10 +37,21 @@ class TimingDescriptionEventChain(TimingDescription):
         """
         return False
 
+    _XML_TAG = "TIMING-DESCRIPTION-EVENT-CHAIN"
+
+
     is_pipelining: Optional[Boolean]
     response_ref: Optional[ARRef]
     segment_refs: list[ARRef]
     stimulus_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "IS-PIPELINING": lambda obj, elem: setattr(obj, "is_pipelining", elem.text),
+        "RESPONSE-REF": lambda obj, elem: setattr(obj, "response_ref", ARRef.deserialize(elem)),
+        "SEGMENTS": lambda obj, elem: obj.segment_refs.append(ARRef.deserialize(elem)),
+        "STIMULUS-REF": lambda obj, elem: setattr(obj, "stimulus_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimingDescriptionEventChain."""
         super().__init__()
@@ -55,9 +66,8 @@ class TimingDescriptionEventChain(TimingDescription):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimingDescriptionEventChain, self).serialize()

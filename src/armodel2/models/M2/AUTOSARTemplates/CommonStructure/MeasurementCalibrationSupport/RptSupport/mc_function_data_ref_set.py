@@ -37,8 +37,17 @@ class McFunctionDataRefSet(ARObject):
         """
         return False
 
+    _XML_TAG = "MC-FUNCTION-DATA-REF-SET"
+
+
     flat_map_entry_refs: list[ARRef]
     mc_data_instance_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FLAT-MAP-ENTRIES": lambda obj, elem: obj.flat_map_entry_refs.append(ARRef.deserialize(elem)),
+        "MC-DATA-INSTANCES": lambda obj, elem: obj.mc_data_instance_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize McFunctionDataRefSet."""
         super().__init__()

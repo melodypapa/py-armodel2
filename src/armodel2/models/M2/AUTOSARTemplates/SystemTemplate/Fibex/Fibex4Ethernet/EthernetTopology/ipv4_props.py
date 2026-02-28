@@ -35,9 +35,19 @@ class Ipv4Props(ARObject):
         """
         return False
 
+    _XML_TAG = "IPV4-PROPS"
+
+
     arp_props: Optional[Ipv4ArpProps]
     auto_ip_props: Optional[Ipv4AutoIpProps]
     fragmentation: Optional[Ipv4FragmentationProps]
+    _DESERIALIZE_DISPATCH = {
+        "ARP-PROPS": lambda obj, elem: setattr(obj, "arp_props", Ipv4ArpProps.deserialize(elem)),
+        "AUTO-IP-PROPS": lambda obj, elem: setattr(obj, "auto_ip_props", Ipv4AutoIpProps.deserialize(elem)),
+        "FRAGMENTATION": lambda obj, elem: setattr(obj, "fragmentation", Ipv4FragmentationProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ipv4Props."""
         super().__init__()
@@ -51,9 +61,8 @@ class Ipv4Props(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ipv4Props, self).serialize()

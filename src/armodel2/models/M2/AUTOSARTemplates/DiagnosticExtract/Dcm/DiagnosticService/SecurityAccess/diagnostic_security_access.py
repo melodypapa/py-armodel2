@@ -38,10 +38,21 @@ class DiagnosticSecurityAccess(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SECURITY-ACCESS"
+
+
     request_seed_id: Optional[PositiveInteger]
     security_access_ref: Optional[Any]
     security_delay: Optional[TimeValue]
     security_level_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "REQUEST-SEED-ID": lambda obj, elem: setattr(obj, "request_seed_id", elem.text),
+        "SECURITY-ACCESS-REF": lambda obj, elem: setattr(obj, "security_access_ref", ARRef.deserialize(elem)),
+        "SECURITY-DELAY": lambda obj, elem: setattr(obj, "security_delay", elem.text),
+        "SECURITY-LEVEL-REF": lambda obj, elem: setattr(obj, "security_level_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticSecurityAccess."""
         super().__init__()
@@ -56,9 +67,8 @@ class DiagnosticSecurityAccess(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticSecurityAccess, self).serialize()

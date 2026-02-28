@@ -33,7 +33,15 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-CONTROL-D-T-C-SETTING-CLASS"
+
+
     control_option: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CONTROL-OPTION": lambda obj, elem: setattr(obj, "control_option", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticControlDTCSettingClass."""
         super().__init__()
@@ -45,9 +53,8 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticControlDTCSettingClass, self).serialize()

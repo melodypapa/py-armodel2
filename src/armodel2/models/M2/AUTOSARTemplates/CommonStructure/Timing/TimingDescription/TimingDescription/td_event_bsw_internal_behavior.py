@@ -34,8 +34,17 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-BSW-INTERNAL-BEHAVIOR"
+
+
     bsw_module_entity_entity_ref: Optional[ARRef]
     td_event_bsw_behavior_type: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "BSW-MODULE-ENTITY-ENTITY-REF": lambda obj, elem: setattr(obj, "bsw_module_entity_entity_ref", ARRef.deserialize(elem)),
+        "TD-EVENT-BSW-BEHAVIOR-TYPE": lambda obj, elem: setattr(obj, "td_event_bsw_behavior_type", any (TDEventBswInternal).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventBswInternalBehavior."""
         super().__init__()
@@ -48,9 +57,8 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventBswInternalBehavior, self).serialize()

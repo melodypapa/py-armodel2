@@ -45,6 +45,9 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         """
         return False
 
+    _XML_TAG = "PROVIDED-SERVICE-INSTANCE"
+
+
     allowed_service_refs: list[ARRef]
     auto_available: Optional[Boolean]
     event_handlers: list[EventHandler]
@@ -58,6 +61,23 @@ class ProvidedServiceInstance(AbstractServiceInstance):
     sd_server_config: Optional[Any]
     sd_server_timer_ref: Optional[Any]
     service_identifier: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ALLOWED-SERVICES": lambda obj, elem: obj.allowed_service_refs.append(ARRef.deserialize(elem)),
+        "AUTO-AVAILABLE": lambda obj, elem: setattr(obj, "auto_available", elem.text),
+        "EVENT-HANDLERS": lambda obj, elem: obj.event_handlers.append(EventHandler.deserialize(elem)),
+        "INSTANCE": lambda obj, elem: setattr(obj, "instance", elem.text),
+        "LOAD-BALANCING": lambda obj, elem: setattr(obj, "load_balancing", elem.text),
+        "LOCAL-UNICAST": lambda obj, elem: setattr(obj, "local_unicast", ApplicationEndpoint.deserialize(elem)),
+        "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", elem.text),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "REMOTE-MULTICASTS": lambda obj, elem: obj.remote_multicast_refs.append(ARRef.deserialize(elem)),
+        "REMOTE-UNICASTS": lambda obj, elem: obj.remote_unicast_refs.append(ARRef.deserialize(elem)),
+        "SD-SERVER-CONFIG": lambda obj, elem: setattr(obj, "sd_server_config", any (SdServerConfig).deserialize(elem)),
+        "SD-SERVER-TIMER-REF": lambda obj, elem: setattr(obj, "sd_server_timer_ref", ARRef.deserialize(elem)),
+        "SERVICE-IDENTIFIER": lambda obj, elem: setattr(obj, "service_identifier", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ProvidedServiceInstance."""
         super().__init__()
@@ -81,9 +101,8 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ProvidedServiceInstance, self).serialize()

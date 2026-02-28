@@ -32,7 +32,15 @@ class PostBuildVariantCriterionValueSet(ARElement):
         """
         return False
 
+    _XML_TAG = "POST-BUILD-VARIANT-CRITERION-VALUE-SET"
+
+
     post_build_variants: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "POST-BUILD-VARIANTS": lambda obj, elem: obj.post_build_variants.append(any (PostBuildVariant).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PostBuildVariantCriterionValueSet."""
         super().__init__()
@@ -44,9 +52,8 @@ class PostBuildVariantCriterionValueSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PostBuildVariantCriterionValueSet, self).serialize()

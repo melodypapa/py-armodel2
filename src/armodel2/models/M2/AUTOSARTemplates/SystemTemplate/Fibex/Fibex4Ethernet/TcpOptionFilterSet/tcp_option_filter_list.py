@@ -33,7 +33,15 @@ class TcpOptionFilterList(Identifiable):
         """
         return False
 
+    _XML_TAG = "TCP-OPTION-FILTER-LIST"
+
+
     allowed_tcp_options: list[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ALLOWED-TCP-OPTIONS": lambda obj, elem: obj.allowed_tcp_options.append(elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TcpOptionFilterList."""
         super().__init__()
@@ -45,9 +53,8 @@ class TcpOptionFilterList(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TcpOptionFilterList, self).serialize()

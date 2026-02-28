@@ -30,7 +30,15 @@ class SenderRecRecordTypeMapping(SenderRecCompositeTypeMapping):
         """
         return False
 
+    _XML_TAG = "SENDER-REC-RECORD-TYPE-MAPPING"
+
+
     record_elements: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "RECORD-ELEMENTS": lambda obj, elem: obj.record_elements.append(any (SenderRecRecord).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SenderRecRecordTypeMapping."""
         super().__init__()
@@ -42,9 +50,8 @@ class SenderRecRecordTypeMapping(SenderRecCompositeTypeMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SenderRecRecordTypeMapping, self).serialize()

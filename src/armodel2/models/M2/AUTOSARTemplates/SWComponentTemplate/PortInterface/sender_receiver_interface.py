@@ -44,9 +44,19 @@ class SenderReceiverInterface(DataInterface):
         """
         return False
 
+    _XML_TAG = "SENDER-RECEIVER-INTERFACE"
+
+
     data_elements: list[VariableDataPrototype]
     invalidation_policy_policies: list[InvalidationPolicy]
     meta_data_item_sets: list[MetaDataItemSet]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENTS": lambda obj, elem: obj.data_elements.append(VariableDataPrototype.deserialize(elem)),
+        "INVALIDATION-POLICY-POLICIES": lambda obj, elem: obj.invalidation_policy_policies.append(InvalidationPolicy.deserialize(elem)),
+        "META-DATA-ITEM-SETS": lambda obj, elem: obj.meta_data_item_sets.append(MetaDataItemSet.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SenderReceiverInterface."""
         super().__init__()
@@ -60,9 +70,8 @@ class SenderReceiverInterface(DataInterface):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SenderReceiverInterface, self).serialize()

@@ -38,6 +38,9 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-AAF-CONNECTION"
+
+
     aaf_aes3_data: Optional[IEEE1722TpAafAes3DataTypeEnum]
     aaf_format_enum: Optional[IEEE1722TpAafFormatEnum]
     aaf_nominal_rate: Optional[Any]
@@ -48,6 +51,20 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
     pcm_bit_depth: Optional[PositiveInteger]
     sparse: Optional[Boolean]
     streams_per: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "AAF-AES3-DATA": lambda obj, elem: setattr(obj, "aaf_aes3_data", IEEE1722TpAafAes3DataTypeEnum.deserialize(elem)),
+        "AAF-FORMAT-ENUM": lambda obj, elem: setattr(obj, "aaf_format_enum", IEEE1722TpAafFormatEnum.deserialize(elem)),
+        "AAF-NOMINAL-RATE": lambda obj, elem: setattr(obj, "aaf_nominal_rate", any (IEEE1722TpAaf).deserialize(elem)),
+        "AES3-DATA-TYPE-H": lambda obj, elem: setattr(obj, "aes3_data_type_h", elem.text),
+        "AES3-DATA-TYPE-L": lambda obj, elem: setattr(obj, "aes3_data_type_l", elem.text),
+        "CHANNELS-PER": lambda obj, elem: setattr(obj, "channels_per", elem.text),
+        "EVENT-DEFAULT": lambda obj, elem: setattr(obj, "event_default", elem.text),
+        "PCM-BIT-DEPTH": lambda obj, elem: setattr(obj, "pcm_bit_depth", elem.text),
+        "SPARSE": lambda obj, elem: setattr(obj, "sparse", elem.text),
+        "STREAMS-PER": lambda obj, elem: setattr(obj, "streams_per", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpAafConnection."""
         super().__init__()
@@ -68,9 +85,8 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpAafConnection, self).serialize()

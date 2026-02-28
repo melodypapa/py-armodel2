@@ -39,10 +39,21 @@ class TriggerInSystemInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "TRIGGER-IN-SYSTEM-INSTANCE-REF"
+
+
     base_ref: Optional[ARRef]
     context_ref: Optional[ARRef]
     context_port_ref: ARRef
     target_trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "CONTEXT-REF": lambda obj, elem: setattr(obj, "context_ref", ARRef.deserialize(elem)),
+        "CONTEXT-PORT-REF": lambda obj, elem: setattr(obj, "context_port_ref", ARRef.deserialize(elem)),
+        "TARGET-TRIGGER-REF": lambda obj, elem: setattr(obj, "target_trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TriggerInSystemInstanceRef."""
         super().__init__()
@@ -57,9 +68,8 @@ class TriggerInSystemInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TriggerInSystemInstanceRef, self).serialize()

@@ -35,6 +35,12 @@ class FormulaExpression(ARObject, ABC):
 
     atp_reference_refs: list[ARRef]
     atp_string_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ATP-REFERENCES": lambda obj, elem: obj.atp_reference_refs.append(ARRef.deserialize(elem)),
+        "ATP-STRINGS": lambda obj, elem: obj.atp_string_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FormulaExpression."""
         super().__init__()
@@ -47,9 +53,8 @@ class FormulaExpression(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FormulaExpression, self).serialize()

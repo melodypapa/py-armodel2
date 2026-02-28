@@ -36,8 +36,17 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-ENV-CONDITION-FORMULA"
+
+
     nrc_value: Optional[PositiveInteger]
     op: Optional[DiagnosticLogicalOperatorEnum]
+    _DESERIALIZE_DISPATCH = {
+        "NRC-VALUE": lambda obj, elem: setattr(obj, "nrc_value", elem.text),
+        "OP": lambda obj, elem: setattr(obj, "op", DiagnosticLogicalOperatorEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEnvConditionFormula."""
         super().__init__()
@@ -50,9 +59,8 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEnvConditionFormula, self).serialize()

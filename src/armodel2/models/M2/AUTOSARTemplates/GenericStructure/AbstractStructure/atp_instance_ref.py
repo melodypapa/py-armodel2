@@ -44,6 +44,13 @@ class AtpInstanceRef(ARObject, ABC):
     atp_base_ref: ARRef
     atp_context_refs: list[ARRef]
     atp_target_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "ATP-BASE-REF": lambda obj, elem: setattr(obj, "atp_base_ref", ARRef.deserialize(elem)),
+        "ATP-CONTEXTS": lambda obj, elem: obj.atp_context_refs.append(ARRef.deserialize(elem)),
+        "ATP-TARGET-REF": lambda obj, elem: setattr(obj, "atp_target_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AtpInstanceRef."""
         super().__init__()
@@ -57,9 +64,8 @@ class AtpInstanceRef(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AtpInstanceRef, self).serialize()

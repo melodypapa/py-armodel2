@@ -36,8 +36,17 @@ class RtpTp(TransportProtocolConfiguration):
         """
         return False
 
+    _XML_TAG = "RTP-TP"
+
+
     ssrc: Optional[PositiveInteger]
     tcp_udp_config: Optional[TcpUdpConfig]
+    _DESERIALIZE_DISPATCH = {
+        "SSRC": lambda obj, elem: setattr(obj, "ssrc", elem.text),
+        "TCP-UDP-CONFIG": lambda obj, elem: setattr(obj, "tcp_udp_config", TcpUdpConfig.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RtpTp."""
         super().__init__()
@@ -50,9 +59,8 @@ class RtpTp(TransportProtocolConfiguration):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RtpTp, self).serialize()

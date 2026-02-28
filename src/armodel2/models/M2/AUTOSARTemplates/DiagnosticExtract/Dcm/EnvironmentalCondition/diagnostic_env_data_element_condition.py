@@ -43,9 +43,19 @@ class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-ENV-DATA-ELEMENT-CONDITION"
+
+
     compare_value: Optional[ValueSpecification]
     data_prototype_ref: Optional[ARRef]
     sw_data_def: Optional[SwDataDefProps]
+    _DESERIALIZE_DISPATCH = {
+        "COMPARE-VALUE": lambda obj, elem: setattr(obj, "compare_value", ValueSpecification.deserialize(elem)),
+        "DATA-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "data_prototype_ref", ARRef.deserialize(elem)),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SwDataDefProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEnvDataElementCondition."""
         super().__init__()
@@ -59,9 +69,8 @@ class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEnvDataElementCondition, self).serialize()

@@ -29,6 +29,9 @@ class LinCluster(ARObject):
         """
         return False
 
+    _XML_TAG = "LIN-CLUSTER"
+
+
     def __init__(self) -> None:
         """Initialize LinCluster."""
         super().__init__()

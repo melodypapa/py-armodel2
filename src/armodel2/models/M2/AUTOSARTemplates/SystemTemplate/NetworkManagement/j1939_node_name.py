@@ -29,6 +29,9 @@ class J1939NodeName(ARObject):
         """
         return False
 
+    _XML_TAG = "J1939-NODE-NAME"
+
+
     arbitrary_address: Optional[Any]
     ecu_instance: Optional[Integer]
     function: Optional[Integer]
@@ -38,6 +41,19 @@ class J1939NodeName(ARObject):
     manufacturer_code: Optional[Integer]
     vehicle_system: Optional[Integer]
     vehicle_system_instance: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "ARBITRARY-ADDRESS": lambda obj, elem: setattr(obj, "arbitrary_address", any (BooleanCapable).deserialize(elem)),
+        "ECU-INSTANCE": lambda obj, elem: setattr(obj, "ecu_instance", elem.text),
+        "FUNCTION": lambda obj, elem: setattr(obj, "function", elem.text),
+        "FUNCTION-INSTANCE": lambda obj, elem: setattr(obj, "function_instance", elem.text),
+        "IDENTITIY-NUMBER": lambda obj, elem: setattr(obj, "identitiy_number", elem.text),
+        "INDUSTRY-GROUP": lambda obj, elem: setattr(obj, "industry_group", elem.text),
+        "MANUFACTURER-CODE": lambda obj, elem: setattr(obj, "manufacturer_code", elem.text),
+        "VEHICLE-SYSTEM": lambda obj, elem: setattr(obj, "vehicle_system", elem.text),
+        "VEHICLE-SYSTEM-INSTANCE": lambda obj, elem: setattr(obj, "vehicle_system_instance", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939NodeName."""
         super().__init__()
@@ -57,9 +73,8 @@ class J1939NodeName(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939NodeName, self).serialize()

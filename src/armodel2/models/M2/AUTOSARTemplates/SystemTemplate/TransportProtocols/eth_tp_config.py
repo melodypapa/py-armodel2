@@ -33,7 +33,15 @@ class EthTpConfig(TpConfig):
         """
         return False
 
+    _XML_TAG = "ETH-TP-CONFIG"
+
+
     tp_connections: list[EthTpConnection]
+    _DESERIALIZE_DISPATCH = {
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(EthTpConnection.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthTpConfig."""
         super().__init__()
@@ -45,9 +53,8 @@ class EthTpConfig(TpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthTpConfig, self).serialize()

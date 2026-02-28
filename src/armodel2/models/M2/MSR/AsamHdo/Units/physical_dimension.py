@@ -33,6 +33,9 @@ class PhysicalDimension(ARElement):
         """
         return False
 
+    _XML_TAG = "PHYSICAL-DIMENSION"
+
+
     current_exp: Optional[Numerical]
     length_exp: Optional[Numerical]
     luminous_intensity_exp: Optional[Numerical]
@@ -40,6 +43,17 @@ class PhysicalDimension(ARElement):
     molar_amount_exp: Optional[Numerical]
     temperature_exp: Optional[Numerical]
     time_exp: Optional[Numerical]
+    _DESERIALIZE_DISPATCH = {
+        "CURRENT-EXP": lambda obj, elem: setattr(obj, "current_exp", elem.text),
+        "LENGTH-EXP": lambda obj, elem: setattr(obj, "length_exp", elem.text),
+        "LUMINOUS-INTENSITY-EXP": lambda obj, elem: setattr(obj, "luminous_intensity_exp", elem.text),
+        "MASS-EXP": lambda obj, elem: setattr(obj, "mass_exp", elem.text),
+        "MOLAR-AMOUNT-EXP": lambda obj, elem: setattr(obj, "molar_amount_exp", elem.text),
+        "TEMPERATURE-EXP": lambda obj, elem: setattr(obj, "temperature_exp", elem.text),
+        "TIME-EXP": lambda obj, elem: setattr(obj, "time_exp", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PhysicalDimension."""
         super().__init__()
@@ -57,9 +71,8 @@ class PhysicalDimension(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PhysicalDimension, self).serialize()

@@ -40,9 +40,19 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
         """
         return False
 
+    _XML_TAG = "SEC-OC-CRYPTO-SERVICE-MAPPING"
+
+
     authentication_ref: Optional[ARRef]
     crypto_service_key_ref: Optional[ARRef]
     crypto_service_queue_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AUTHENTICATION-REF": lambda obj, elem: setattr(obj, "authentication_ref", ARRef.deserialize(elem)),
+        "CRYPTO-SERVICE-KEY-REF": lambda obj, elem: setattr(obj, "crypto_service_key_ref", ARRef.deserialize(elem)),
+        "CRYPTO-SERVICE-QUEUE-REF": lambda obj, elem: setattr(obj, "crypto_service_queue_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecOcCryptoServiceMapping."""
         super().__init__()
@@ -56,9 +66,8 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecOcCryptoServiceMapping, self).serialize()

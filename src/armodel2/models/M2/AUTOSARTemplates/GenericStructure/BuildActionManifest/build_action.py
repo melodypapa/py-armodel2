@@ -38,12 +38,25 @@ class BuildAction(BuildActionEntity):
         """
         return False
 
+    _XML_TAG = "BUILD-ACTION"
+
+
     created_datas: list[BuildActionIoElement]
     follow_up_action_refs: list[ARRef]
     input_datas: list[BuildActionIoElement]
     modified_datas: list[BuildActionIoElement]
     predecessor_refs: list[ARRef]
     required_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "CREATED-DATAS": lambda obj, elem: obj.created_datas.append(BuildActionIoElement.deserialize(elem)),
+        "FOLLOW-UP-ACTIONS": lambda obj, elem: obj.follow_up_action_refs.append(ARRef.deserialize(elem)),
+        "INPUT-DATAS": lambda obj, elem: obj.input_datas.append(BuildActionIoElement.deserialize(elem)),
+        "MODIFIED-DATAS": lambda obj, elem: obj.modified_datas.append(BuildActionIoElement.deserialize(elem)),
+        "PREDECESSORS": lambda obj, elem: obj.predecessor_refs.append(ARRef.deserialize(elem)),
+        "REQUIRED-REF": lambda obj, elem: setattr(obj, "required_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BuildAction."""
         super().__init__()
@@ -60,9 +73,8 @@ class BuildAction(BuildActionEntity):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BuildAction, self).serialize()

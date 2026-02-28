@@ -36,9 +36,19 @@ class DdsCpServiceInstanceEvent(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-CP-SERVICE-INSTANCE-EVENT"
+
+
     dds_event_ref: Optional[ARRef]
     dds_event_qos_ref: Optional[ARRef]
     dds_event_topic_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DDS-EVENT-REF": lambda obj, elem: setattr(obj, "dds_event_ref", ARRef.deserialize(elem)),
+        "DDS-EVENT-QOS-REF": lambda obj, elem: setattr(obj, "dds_event_qos_ref", ARRef.deserialize(elem)),
+        "DDS-EVENT-TOPIC-REF": lambda obj, elem: setattr(obj, "dds_event_topic_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpServiceInstanceEvent."""
         super().__init__()
@@ -52,9 +62,8 @@ class DdsCpServiceInstanceEvent(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpServiceInstanceEvent, self).serialize()

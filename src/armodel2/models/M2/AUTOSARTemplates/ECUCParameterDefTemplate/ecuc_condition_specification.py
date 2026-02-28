@@ -35,9 +35,19 @@ class EcucConditionSpecification(ARObject):
         """
         return False
 
+    _XML_TAG = "ECUC-CONDITION-SPECIFICATION"
+
+
     condition: Optional[EcucConditionFormula]
     ecuc_queries: list[EcucQuery]
     informal_formula: Optional[MlFormula]
+    _DESERIALIZE_DISPATCH = {
+        "CONDITION": lambda obj, elem: setattr(obj, "condition", EcucConditionFormula.deserialize(elem)),
+        "ECUC-QUERIES": lambda obj, elem: obj.ecuc_queries.append(EcucQuery.deserialize(elem)),
+        "INFORMAL-FORMULA": lambda obj, elem: setattr(obj, "informal_formula", MlFormula.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucConditionSpecification."""
         super().__init__()
@@ -51,9 +61,8 @@ class EcucConditionSpecification(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucConditionSpecification, self).serialize()

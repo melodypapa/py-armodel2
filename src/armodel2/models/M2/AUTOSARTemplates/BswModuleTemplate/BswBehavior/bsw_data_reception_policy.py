@@ -32,6 +32,11 @@ class BswDataReceptionPolicy(ARObject, ABC):
         return True
 
     received_data_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "RECEIVED-DATA-REF": lambda obj, elem: setattr(obj, "received_data_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswDataReceptionPolicy."""
         super().__init__()
@@ -43,9 +48,8 @@ class BswDataReceptionPolicy(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswDataReceptionPolicy, self).serialize()

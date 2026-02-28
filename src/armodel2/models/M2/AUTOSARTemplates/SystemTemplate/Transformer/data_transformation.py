@@ -38,9 +38,19 @@ class DataTransformation(Identifiable):
         """
         return False
 
+    _XML_TAG = "DATA-TRANSFORMATION"
+
+
     data: Optional[DataTransformationKindEnum]
     execute_despite: Optional[Boolean]
     transformer_refs: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DATA": lambda obj, elem: setattr(obj, "data", DataTransformationKindEnum.deserialize(elem)),
+        "EXECUTE-DESPITE": lambda obj, elem: setattr(obj, "execute_despite", elem.text),
+        "TRANSFORMERS": lambda obj, elem: obj.transformer_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataTransformation."""
         super().__init__()
@@ -54,9 +64,8 @@ class DataTransformation(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataTransformation, self).serialize()

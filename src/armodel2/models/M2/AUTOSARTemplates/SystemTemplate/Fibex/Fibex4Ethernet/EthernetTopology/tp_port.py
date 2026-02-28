@@ -30,8 +30,17 @@ class TpPort(ARObject):
         """
         return False
 
+    _XML_TAG = "TP-PORT"
+
+
     dynamically: Optional[Boolean]
     port_number: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DYNAMICALLY": lambda obj, elem: setattr(obj, "dynamically", elem.text),
+        "PORT-NUMBER": lambda obj, elem: setattr(obj, "port_number", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TpPort."""
         super().__init__()
@@ -44,9 +53,8 @@ class TpPort(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TpPort, self).serialize()

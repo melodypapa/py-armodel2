@@ -49,6 +49,9 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         """
         return False
 
+    _XML_TAG = "NONQUEUED-RECEIVER-COM-SPEC"
+
+
     alive_timeout: Optional[TimeValue]
     enable_update: Optional[Boolean]
     filter: Optional[DataFilter]
@@ -57,6 +60,18 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
     handle_timeout_type: Optional[HandleTimeoutEnum]
     _init_value: Optional[ValueSpecification]
     timeout_substitution_value: Optional[ValueSpecification]
+    _DESERIALIZE_DISPATCH = {
+        "ALIVE-TIMEOUT": lambda obj, elem: setattr(obj, "alive_timeout", elem.text),
+        "ENABLE-UPDATE": lambda obj, elem: setattr(obj, "enable_update", elem.text),
+        "FILTER": lambda obj, elem: setattr(obj, "filter", DataFilter.deserialize(elem)),
+        "HANDLE-DATA-STATUS": lambda obj, elem: setattr(obj, "handle_data_status", elem.text),
+        "HANDLE-NEVER-RECEIVED": lambda obj, elem: setattr(obj, "handle_never_received", elem.text),
+        "HANDLE-TIMEOUT-TYPE": lambda obj, elem: setattr(obj, "handle_timeout_type", HandleTimeoutEnum.deserialize(elem)),
+        "INIT-VALUE": lambda obj, elem: setattr(obj, "_init_value", ValueSpecification.deserialize(elem)),
+        "TIMEOUT-SUBSTITUTION-VALUE": lambda obj, elem: setattr(obj, "timeout_substitution_value", ValueSpecification.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NonqueuedReceiverComSpec."""
         super().__init__()
@@ -86,9 +101,8 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NonqueuedReceiverComSpec, self).serialize()

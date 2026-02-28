@@ -35,8 +35,17 @@ class ChapterContent(ARObject):
         """
         return False
 
+    _XML_TAG = "CHAPTER-CONTENT"
+
+
     prms: Prms
     topic_content_or_msr: Optional[TopicContentOrMsrQuery]
+    _DESERIALIZE_DISPATCH = {
+        "PRMS": lambda obj, elem: setattr(obj, "prms", Prms.deserialize(elem)),
+        "TOPIC-CONTENT-OR-MSR": lambda obj, elem: setattr(obj, "topic_content_or_msr", TopicContentOrMsrQuery.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ChapterContent."""
         super().__init__()

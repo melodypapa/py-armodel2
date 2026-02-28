@@ -44,6 +44,9 @@ class EndToEndTransformationDescription(TransformationDescription):
         """
         return False
 
+    _XML_TAG = "END-TO-END-TRANSFORMATION-DESCRIPTION"
+
+
     clear_from_valid: Optional[Boolean]
     counter_offset: Optional[PositiveInteger]
     crc_offset: Optional[PositiveInteger]
@@ -62,6 +65,28 @@ class EndToEndTransformationDescription(TransformationDescription):
     upper_header: Optional[PositiveInteger]
     window_size_init: Optional[PositiveInteger]
     window_size: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CLEAR-FROM-VALID": lambda obj, elem: setattr(obj, "clear_from_valid", elem.text),
+        "COUNTER-OFFSET": lambda obj, elem: setattr(obj, "counter_offset", elem.text),
+        "CRC-OFFSET": lambda obj, elem: setattr(obj, "crc_offset", elem.text),
+        "DATA-ID-MODE": lambda obj, elem: setattr(obj, "data_id_mode", DataIdModeEnum.deserialize(elem)),
+        "DATA-ID-NIBBLE": lambda obj, elem: setattr(obj, "data_id_nibble", elem.text),
+        "E2E-PROFILE-REF": lambda obj, elem: setattr(obj, "e2e_profile_ref", ARRef.deserialize(elem)),
+        "MAX-DELTA": lambda obj, elem: setattr(obj, "max_delta", elem.text),
+        "MAX-ERROR-STATE": lambda obj, elem: setattr(obj, "max_error_state", elem.text),
+        "MAX-NO-NEW-OR": lambda obj, elem: setattr(obj, "max_no_new_or", elem.text),
+        "MIN-OK-STATE-INIT": lambda obj, elem: setattr(obj, "min_ok_state_init", elem.text),
+        "MIN-OK-STATE": lambda obj, elem: setattr(obj, "min_ok_state", elem.text),
+        "OFFSET": lambda obj, elem: setattr(obj, "offset", elem.text),
+        "PROFILE-BEHAVIOR-BEHAVIOR-ENUM": lambda obj, elem: setattr(obj, "profile_behavior_behavior_enum", EndToEndProfileBehaviorEnum.deserialize(elem)),
+        "PROFILE-NAME": lambda obj, elem: setattr(obj, "profile_name", elem.text),
+        "SYNC-COUNTER-INIT": lambda obj, elem: setattr(obj, "sync_counter_init", elem.text),
+        "UPPER-HEADER": lambda obj, elem: setattr(obj, "upper_header", elem.text),
+        "WINDOW-SIZE-INIT": lambda obj, elem: setattr(obj, "window_size_init", elem.text),
+        "WINDOW-SIZE": lambda obj, elem: setattr(obj, "window_size", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EndToEndTransformationDescription."""
         super().__init__()
@@ -90,9 +115,8 @@ class EndToEndTransformationDescription(TransformationDescription):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EndToEndTransformationDescription, self).serialize()

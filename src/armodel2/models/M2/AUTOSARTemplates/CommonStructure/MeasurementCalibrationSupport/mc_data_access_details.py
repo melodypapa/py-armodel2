@@ -35,8 +35,17 @@ class McDataAccessDetails(ARObject):
         """
         return False
 
+    _XML_TAG = "MC-DATA-ACCESS-DETAILS"
+
+
     rte_event_refs: list[RTEEvent]
     variable_accesses: list[VariableAccess]
+    _DESERIALIZE_DISPATCH = {
+        "RTE-EVENT-REFS": lambda obj, elem: obj.rte_event_refs.append(RTEEvent.deserialize(elem)),
+        "VARIABLE-ACCESSES": lambda obj, elem: obj.variable_accesses.append(VariableAccess.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize McDataAccessDetails."""
         super().__init__()
@@ -49,9 +58,8 @@ class McDataAccessDetails(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(McDataAccessDetails, self).serialize()

@@ -45,6 +45,16 @@ class GlobalTimeSlave(Identifiable, ABC):
     time_leap_future: Optional[TimeValue]
     time_leap: Optional[PositiveInteger]
     time_leap_past: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CONNECTOR-REF": lambda obj, elem: setattr(obj, "communication_connector_ref", ARRef.deserialize(elem)),
+        "FOLLOW-UP-TIMEOUT-VALUE": lambda obj, elem: setattr(obj, "follow_up_timeout_value", elem.text),
+        "ICV-VERIFICATION": lambda obj, elem: setattr(obj, "icv_verification", any (GlobalTimeIcv).deserialize(elem)),
+        "TIME-LEAP-FUTURE": lambda obj, elem: setattr(obj, "time_leap_future", elem.text),
+        "TIME-LEAP": lambda obj, elem: setattr(obj, "time_leap", elem.text),
+        "TIME-LEAP-PAST": lambda obj, elem: setattr(obj, "time_leap_past", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeSlave."""
         super().__init__()
@@ -61,9 +71,8 @@ class GlobalTimeSlave(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeSlave, self).serialize()

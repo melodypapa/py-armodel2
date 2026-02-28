@@ -36,9 +36,19 @@ class AnyInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "ANY-INSTANCE-REF"
+
+
     base_ref: ARRef
     context_element_refs: list[ARRef]
     target_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "CONTEXT-ELEMENTS": lambda obj, elem: obj.context_element_refs.append(ARRef.deserialize(elem)),
+        "TARGET-REF": lambda obj, elem: setattr(obj, "target_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AnyInstanceRef."""
         super().__init__()
@@ -52,9 +62,8 @@ class AnyInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AnyInstanceRef, self).serialize()

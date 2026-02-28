@@ -29,9 +29,19 @@ class BusMirrorCanIdRangeMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "BUS-MIRROR-CAN-ID-RANGE-MAPPING"
+
+
     destination_base: Optional[PositiveInteger]
     source_can_id_code: Optional[PositiveInteger]
     source_can_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION-BASE": lambda obj, elem: setattr(obj, "destination_base", elem.text),
+        "SOURCE-CAN-ID-CODE": lambda obj, elem: setattr(obj, "source_can_id_code", elem.text),
+        "SOURCE-CAN-ID": lambda obj, elem: setattr(obj, "source_can_id", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BusMirrorCanIdRangeMapping."""
         super().__init__()
@@ -45,9 +55,8 @@ class BusMirrorCanIdRangeMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BusMirrorCanIdRangeMapping, self).serialize()

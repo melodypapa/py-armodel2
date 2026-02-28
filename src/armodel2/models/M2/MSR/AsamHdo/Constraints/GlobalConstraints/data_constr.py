@@ -36,7 +36,15 @@ class DataConstr(ARElement):
         """
         return False
 
+    _XML_TAG = "DATA-CONSTR"
+
+
     data_constr_rules: list[DataConstrRule]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-CONSTR-RULES": lambda obj, elem: obj.data_constr_rules.append(DataConstrRule.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataConstr."""
         super().__init__()
@@ -48,9 +56,8 @@ class DataConstr(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataConstr, self).serialize()

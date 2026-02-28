@@ -33,8 +33,17 @@ class DiagnosticControlEnableMaskBit(ARObject):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-CONTROL-ENABLE-MASK-BIT"
+
+
     bit_number: Optional[PositiveInteger]
     controlled_data_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BIT-NUMBER": lambda obj, elem: setattr(obj, "bit_number", elem.text),
+        "CONTROLLED-DATAS": lambda obj, elem: obj.controlled_data_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticControlEnableMaskBit."""
         super().__init__()
@@ -47,9 +56,8 @@ class DiagnosticControlEnableMaskBit(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticControlEnableMaskBit, self).serialize()

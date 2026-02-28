@@ -29,6 +29,9 @@ class UserDefinedCluster(ARObject):
         """
         return False
 
+    _XML_TAG = "USER-DEFINED-CLUSTER"
+
+
     def __init__(self) -> None:
         """Initialize UserDefinedCluster."""
         super().__init__()

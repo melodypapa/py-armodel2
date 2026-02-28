@@ -33,8 +33,17 @@ class Prms(Paginateable):
         """
         return False
 
+    _XML_TAG = "PRMS"
+
+
     label: Optional[MultilanguageLongName]
     prm: Any
+    _DESERIALIZE_DISPATCH = {
+        "LABEL": lambda obj, elem: setattr(obj, "label", MultilanguageLongName.deserialize(elem)),
+        "PRM": lambda obj, elem: setattr(obj, "prm", any (GeneralParameter).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Prms."""
         super().__init__()
@@ -47,9 +56,8 @@ class Prms(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Prms, self).serialize()

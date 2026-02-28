@@ -29,8 +29,17 @@ class ClientIdRange(ARObject):
         """
         return False
 
+    _XML_TAG = "CLIENT-ID-RANGE"
+
+
     lower_limit: Optional[Limit]
     upper_limit: Optional[Limit]
+    _DESERIALIZE_DISPATCH = {
+        "LOWER-LIMIT": lambda obj, elem: setattr(obj, "lower_limit", elem.text),
+        "UPPER-LIMIT": lambda obj, elem: setattr(obj, "upper_limit", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientIdRange."""
         super().__init__()
@@ -43,9 +52,8 @@ class ClientIdRange(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientIdRange, self).serialize()

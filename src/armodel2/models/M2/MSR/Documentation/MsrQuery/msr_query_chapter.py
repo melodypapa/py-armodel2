@@ -39,8 +39,17 @@ class MsrQueryChapter(Paginateable):
         """
         return False
 
+    _XML_TAG = "MSR-QUERY-CHAPTER"
+
+
     msr_query_props: MsrQueryProps
     msr_query_result_chapter: Optional[MsrQueryResultChapter]
+    _DESERIALIZE_DISPATCH = {
+        "MSR-QUERY-PROPS": lambda obj, elem: setattr(obj, "msr_query_props", MsrQueryProps.deserialize(elem)),
+        "MSR-QUERY-RESULT-CHAPTER": lambda obj, elem: setattr(obj, "msr_query_result_chapter", MsrQueryResultChapter.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MsrQueryChapter."""
         super().__init__()
@@ -53,9 +62,8 @@ class MsrQueryChapter(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MsrQueryChapter, self).serialize()

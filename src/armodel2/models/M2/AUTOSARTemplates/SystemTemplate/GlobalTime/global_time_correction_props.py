@@ -30,9 +30,19 @@ class GlobalTimeCorrectionProps(ARObject):
         """
         return False
 
+    _XML_TAG = "GLOBAL-TIME-CORRECTION-PROPS"
+
+
     offset_correction: Optional[TimeValue]
     rate_correction: Optional[TimeValue]
     rate_corrections: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "OFFSET-CORRECTION": lambda obj, elem: setattr(obj, "offset_correction", elem.text),
+        "RATE-CORRECTION": lambda obj, elem: setattr(obj, "rate_correction", elem.text),
+        "RATE-CORRECTIONS": lambda obj, elem: setattr(obj, "rate_corrections", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeCorrectionProps."""
         super().__init__()
@@ -46,9 +56,8 @@ class GlobalTimeCorrectionProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeCorrectionProps, self).serialize()

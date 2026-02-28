@@ -42,11 +42,23 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "VARIABLE-DATA-PROTOTYPE-IN-SYSTEM-INSTANCE-REF"
+
+
     base_ref: Optional[ARRef]
     context_component_ref: Optional[ARRef]
     context_composition_ref: Optional[ARRef]
     context_port_ref: ARRef
     target_data_prototype_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "CONTEXT-COMPONENT-REF": lambda obj, elem: setattr(obj, "context_component_ref", ARRef.deserialize(elem)),
+        "CONTEXT-COMPOSITION-REF": lambda obj, elem: setattr(obj, "context_composition_ref", ARRef.deserialize(elem)),
+        "CONTEXT-PORT-REF": lambda obj, elem: setattr(obj, "context_port_ref", ARRef.deserialize(elem)),
+        "TARGET-DATA-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "target_data_prototype_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize VariableDataPrototypeInSystemInstanceRef."""
         super().__init__()
@@ -62,9 +74,8 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(VariableDataPrototypeInSystemInstanceRef, self).serialize()

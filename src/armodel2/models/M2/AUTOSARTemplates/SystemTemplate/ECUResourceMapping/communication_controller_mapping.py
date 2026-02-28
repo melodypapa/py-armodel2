@@ -33,8 +33,17 @@ class CommunicationControllerMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "COMMUNICATION-CONTROLLER-MAPPING"
+
+
     communication_controller_ref: Optional[ARRef]
     hw_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CONTROLLER-REF": lambda obj, elem: setattr(obj, "communication_controller_ref", ARRef.deserialize(elem)),
+        "HW-REF": lambda obj, elem: setattr(obj, "hw_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CommunicationControllerMapping."""
         super().__init__()
@@ -47,9 +56,8 @@ class CommunicationControllerMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CommunicationControllerMapping, self).serialize()

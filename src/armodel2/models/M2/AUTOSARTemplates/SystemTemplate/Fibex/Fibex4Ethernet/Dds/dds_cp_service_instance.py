@@ -48,6 +48,16 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
     dds_service_qos_ref: Optional[ARRef]
     service_instance: Optional[PositiveInteger]
     service_interface: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "DDS-FIELD-REPLY-REF": lambda obj, elem: setattr(obj, "dds_field_reply_ref", ARRef.deserialize(elem)),
+        "DDS-FIELD-REF": lambda obj, elem: setattr(obj, "dds_field_ref", ARRef.deserialize(elem)),
+        "DDS-METHOD-REF": lambda obj, elem: setattr(obj, "dds_method_ref", ARRef.deserialize(elem)),
+        "DDS-SERVICE-QOS-REF": lambda obj, elem: setattr(obj, "dds_service_qos_ref", ARRef.deserialize(elem)),
+        "SERVICE-INSTANCE": lambda obj, elem: setattr(obj, "service_instance", elem.text),
+        "SERVICE-INTERFACE": lambda obj, elem: setattr(obj, "service_interface", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpServiceInstance."""
         super().__init__()
@@ -64,9 +74,8 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpServiceInstance, self).serialize()

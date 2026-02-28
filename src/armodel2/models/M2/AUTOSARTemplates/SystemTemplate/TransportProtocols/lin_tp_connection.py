@@ -46,6 +46,9 @@ class LinTpConnection(TpConnection):
         """
         return False
 
+    _XML_TAG = "LIN-TP-CONNECTION"
+
+
     data_pdu_ref: Optional[ARRef]
     flow_control_ref: Optional[ARRef]
     lin_tp_n_sdu_ref: Optional[ARRef]
@@ -55,6 +58,19 @@ class LinTpConnection(TpConnection):
     timeout_cr: Optional[TimeValue]
     timeout_cs: Optional[TimeValue]
     transmitter_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-PDU-REF": lambda obj, elem: setattr(obj, "data_pdu_ref", ARRef.deserialize(elem)),
+        "FLOW-CONTROL-REF": lambda obj, elem: setattr(obj, "flow_control_ref", ARRef.deserialize(elem)),
+        "LIN-TP-N-SDU-REF": lambda obj, elem: setattr(obj, "lin_tp_n_sdu_ref", ARRef.deserialize(elem)),
+        "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
+        "RECEIVERS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
+        "TIMEOUT-AS": lambda obj, elem: setattr(obj, "timeout_as", elem.text),
+        "TIMEOUT-CR": lambda obj, elem: setattr(obj, "timeout_cr", elem.text),
+        "TIMEOUT-CS": lambda obj, elem: setattr(obj, "timeout_cs", elem.text),
+        "TRANSMITTER-REF": lambda obj, elem: setattr(obj, "transmitter_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinTpConnection."""
         super().__init__()
@@ -74,9 +90,8 @@ class LinTpConnection(TpConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinTpConnection, self).serialize()

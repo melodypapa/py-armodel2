@@ -33,6 +33,9 @@ class FirewallRule(ARElement):
         """
         return False
 
+    _XML_TAG = "FIREWALL-RULE"
+
+
     bucket_size: Optional[PositiveInteger]
     data_link_layer_rule: Optional[Any]
     dds_rule: Optional[Any]
@@ -43,6 +46,20 @@ class FirewallRule(ARElement):
     someip_rule: Optional[Any]
     someip_sd_rule: Optional[Any]
     transport_layer_rule: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "BUCKET-SIZE": lambda obj, elem: setattr(obj, "bucket_size", elem.text),
+        "DATA-LINK-LAYER-RULE": lambda obj, elem: setattr(obj, "data_link_layer_rule", any (DataLinkLayerRule).deserialize(elem)),
+        "DDS-RULE": lambda obj, elem: setattr(obj, "dds_rule", any (DdsRule).deserialize(elem)),
+        "DO-IP-RULE": lambda obj, elem: setattr(obj, "do_ip_rule", any (DoIpRule).deserialize(elem)),
+        "NETWORK-LAYER-RULE": lambda obj, elem: setattr(obj, "network_layer_rule", any (NetworkLayerRule).deserialize(elem)),
+        "PAYLOAD-BYTE-PATTERNS": lambda obj, elem: obj.payload_byte_patterns.append(any (PayloadBytePattern).deserialize(elem)),
+        "REFILL-AMOUNT": lambda obj, elem: setattr(obj, "refill_amount", elem.text),
+        "SOMEIP-RULE": lambda obj, elem: setattr(obj, "someip_rule", any (SomeipProtocolRule).deserialize(elem)),
+        "SOMEIP-SD-RULE": lambda obj, elem: setattr(obj, "someip_sd_rule", any (SomeipSdRule).deserialize(elem)),
+        "TRANSPORT-LAYER-RULE": lambda obj, elem: setattr(obj, "transport_layer_rule", any (TransportLayerRule).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FirewallRule."""
         super().__init__()
@@ -63,9 +80,8 @@ class FirewallRule(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FirewallRule, self).serialize()

@@ -80,6 +80,9 @@ class SwcInternalBehavior(InternalBehavior):
         """
         return False
 
+    _XML_TAG = "SWC-INTERNAL-BEHAVIOR"
+
+
     ar_typed_per_instance_memories: list[VariableDataPrototype]
     events: list[RTEEvent]
     exclusive_area_policies: list[SwcExclusiveAreaPolicy]
@@ -97,6 +100,27 @@ class SwcInternalBehavior(InternalBehavior):
     shared_parameters: list[ParameterDataPrototype]
     support_multiple_instantiations: Optional[Boolean]
     variation_point_proxies: list[VariationPointProxy]
+    _DESERIALIZE_DISPATCH = {
+        "AR-TYPED-PER-INSTANCE-MEMORIES": lambda obj, elem: obj.ar_typed_per_instance_memories.append(VariableDataPrototype.deserialize(elem)),
+        "EVENTS": lambda obj, elem: obj.events.append(RTEEvent.deserialize(elem)),
+        "EXCLUSIVE-AREA-POLICIES": lambda obj, elem: obj.exclusive_area_policies.append(SwcExclusiveAreaPolicy.deserialize(elem)),
+        "EXPLICIT-INTER-RUNNABLE-VARIABLES": lambda obj, elem: obj.explicit_inter_runnable_variables.append(VariableDataPrototype.deserialize(elem)),
+        "HANDLE-TERMINATION-AND-RESTART": lambda obj, elem: setattr(obj, "handle_termination_and_restart", HandleTerminationAndRestartEnum.deserialize(elem)),
+        "IMPLICIT-INTER-RUNNABLE-VARIABLES": lambda obj, elem: obj.implicit_inter_runnable_variables.append(VariableDataPrototype.deserialize(elem)),
+        "INCLUDED-DATA-TYPE-SETS": lambda obj, elem: obj.included_data_type_sets.append(IncludedDataTypeSet.deserialize(elem)),
+        "INCLUDED-MODE-DECLARATION-GROUP-SETS": lambda obj, elem: obj.included_mode_declaration_group_sets.append(IncludedModeDeclarationGroupSet.deserialize(elem)),
+        "INSTANTIATION-DATA-DEF-PROPS": lambda obj, elem: obj.instantiation_data_def_props.append(InstantiationDataDefProps.deserialize(elem)),
+        "PER-INSTANCE-MEMORIES": lambda obj, elem: obj.per_instance_memories.append(PerInstanceMemory.deserialize(elem)),
+        "PER-INSTANCE-PARAMETERS": lambda obj, elem: obj.per_instance_parameters.append(ParameterDataPrototype.deserialize(elem)),
+        "PORT-API-OPTIONS": lambda obj, elem: obj.port_api_options.append(PortAPIOption.deserialize(elem)),
+        "RUNNABLES": lambda obj, elem: obj.runnables.append(RunnableEntity.deserialize(elem)),
+        "SERVICE-DEPENDENCIES": lambda obj, elem: obj.service_dependencies.append(SwcServiceDependency.deserialize(elem)),
+        "SHARED-PARAMETERS": lambda obj, elem: obj.shared_parameters.append(ParameterDataPrototype.deserialize(elem)),
+        "SUPPORT-MULTIPLE-INSTANTIATIONS": lambda obj, elem: setattr(obj, "support_multiple_instantiations", elem.text),
+        "VARIATION-POINT-PROXIES": lambda obj, elem: obj.variation_point_proxies.append(VariationPointProxy.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcInternalBehavior."""
         super().__init__()
@@ -124,9 +148,8 @@ class SwcInternalBehavior(InternalBehavior):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcInternalBehavior, self).serialize()

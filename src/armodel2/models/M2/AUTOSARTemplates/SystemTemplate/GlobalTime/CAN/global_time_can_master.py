@@ -36,8 +36,17 @@ class GlobalTimeCanMaster(GlobalTimeMaster):
         """
         return False
 
+    _XML_TAG = "GLOBAL-TIME-CAN-MASTER"
+
+
     crc_secured: Optional[GlobalTimeCrcSupportEnum]
     sync: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "CRC-SECURED": lambda obj, elem: setattr(obj, "crc_secured", GlobalTimeCrcSupportEnum.deserialize(elem)),
+        "SYNC": lambda obj, elem: setattr(obj, "sync", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeCanMaster."""
         super().__init__()
@@ -50,9 +59,8 @@ class GlobalTimeCanMaster(GlobalTimeMaster):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeCanMaster, self).serialize()

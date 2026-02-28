@@ -42,10 +42,21 @@ class AdminData(ARObject):
         """
         return False
 
+    _XML_TAG = "ADMIN-DATA"
+
+
     doc_revisions: list[DocRevision]
     language: Optional[LEnum]
     sdgs: list[Sdg]
     used_languages: Optional[MultiLanguagePlainText]
+    _DESERIALIZE_DISPATCH = {
+        "DOC-REVISIONS": lambda obj, elem: obj.doc_revisions.append(DocRevision.deserialize(elem)),
+        "LANGUAGE": lambda obj, elem: setattr(obj, "language", LEnum.deserialize(elem)),
+        "SDGS": lambda obj, elem: obj.sdgs.append(Sdg.deserialize(elem)),
+        "USED-LANGUAGES": lambda obj, elem: setattr(obj, "used_languages", MultiLanguagePlainText.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AdminData."""
         super().__init__()
@@ -60,9 +71,8 @@ class AdminData(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AdminData, self).serialize()

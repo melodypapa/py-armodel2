@@ -30,8 +30,17 @@ class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-ENVIRONMENTAL-CONDITION"
+
+
     formula: Optional[Any]
     mode_elements: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "FORMULA": lambda obj, elem: setattr(obj, "formula", any (DiagnosticEnvCondition).deserialize(elem)),
+        "MODE-ELEMENTS": lambda obj, elem: obj.mode_elements.append(any (DiagnosticEnvMode).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEnvironmentalCondition."""
         super().__init__()
@@ -44,9 +53,8 @@ class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEnvironmentalCondition, self).serialize()

@@ -67,6 +67,19 @@ class BswModuleEntity(ExecutableEntity, ABC):
     issued_trigger_refs: list[ARRef]
     managed_mode_group_refs: list[ARRef]
     scheduler_name_prefix_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESSED-MODE-GROUPS": lambda obj, elem: obj.accessed_mode_group_refs.append(ARRef.deserialize(elem)),
+        "ACTIVATION-POINTS": lambda obj, elem: obj.activation_point_refs.append(ARRef.deserialize(elem)),
+        "CALL-POINTS": lambda obj, elem: obj.call_points.append(BswModuleCallPoint.deserialize(elem)),
+        "DATA-RECEIVE-POINTS": lambda obj, elem: obj.data_receive_points.append(BswVariableAccess.deserialize(elem)),
+        "DATA-SEND-POINTS": lambda obj, elem: obj.data_send_points.append(BswVariableAccess.deserialize(elem)),
+        "IMPLEMENTED-ENTRY-REF": lambda obj, elem: setattr(obj, "implemented_entry_ref", ARRef.deserialize(elem)),
+        "ISSUED-TRIGGERS": lambda obj, elem: obj.issued_trigger_refs.append(ARRef.deserialize(elem)),
+        "MANAGED-MODE-GROUPS": lambda obj, elem: obj.managed_mode_group_refs.append(ARRef.deserialize(elem)),
+        "SCHEDULER-NAME-PREFIX-REF": lambda obj, elem: setattr(obj, "scheduler_name_prefix_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswModuleEntity."""
         super().__init__()
@@ -86,9 +99,8 @@ class BswModuleEntity(ExecutableEntity, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswModuleEntity, self).serialize()

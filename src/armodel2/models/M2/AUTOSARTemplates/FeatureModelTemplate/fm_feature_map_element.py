@@ -40,10 +40,21 @@ class FMFeatureMapElement(Identifiable):
         """
         return False
 
+    _XML_TAG = "F-M-FEATURE-MAP-ELEMENT"
+
+
     assertions: list[FMFeatureMap]
     conditions: list[FMFeatureMap]
     post_build_variant_refs: list[Any]
     sw_value_set_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ASSERTIONS": lambda obj, elem: obj.assertions.append(FMFeatureMap.deserialize(elem)),
+        "CONDITIONS": lambda obj, elem: obj.conditions.append(FMFeatureMap.deserialize(elem)),
+        "POST-BUILD-VARIANTS": lambda obj, elem: obj.post_build_variant_refs.append(ARRef.deserialize(elem)),
+        "SW-VALUE-SETS": lambda obj, elem: obj.sw_value_set_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FMFeatureMapElement."""
         super().__init__()
@@ -58,9 +69,8 @@ class FMFeatureMapElement(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FMFeatureMapElement, self).serialize()

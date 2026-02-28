@@ -40,10 +40,21 @@ class Unit(ARElement):
         """
         return False
 
+    _XML_TAG = "UNIT"
+
+
     display_name: Optional[SingleLanguageUnitNames]
     factor_si_to_unit: Optional[Float]
     offset_si_to_unit: Optional[Float]
     physical_dimension_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DISPLAY-NAME": lambda obj, elem: setattr(obj, "display_name", SingleLanguageUnitNames.deserialize(elem)),
+        "FACTOR-SI-TO-UNIT": lambda obj, elem: setattr(obj, "factor_si_to_unit", elem.text),
+        "OFFSET-SI-TO-UNIT": lambda obj, elem: setattr(obj, "offset_si_to_unit", elem.text),
+        "PHYSICAL-DIMENSION-REF": lambda obj, elem: setattr(obj, "physical_dimension_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Unit."""
         super().__init__()
@@ -58,9 +69,8 @@ class Unit(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Unit, self).serialize()

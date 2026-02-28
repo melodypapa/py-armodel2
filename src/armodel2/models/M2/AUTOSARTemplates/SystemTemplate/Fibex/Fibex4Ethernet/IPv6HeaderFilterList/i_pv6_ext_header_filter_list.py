@@ -33,7 +33,15 @@ class IPv6ExtHeaderFilterList(Identifiable):
         """
         return False
 
+    _XML_TAG = "I-PV6-EXT-HEADER-FILTER-LIST"
+
+
     allowed_i_pv6_exts: list[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ALLOWED-I-PV6-EXTS": lambda obj, elem: obj.allowed_i_pv6_exts.append(elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IPv6ExtHeaderFilterList."""
         super().__init__()
@@ -45,9 +53,8 @@ class IPv6ExtHeaderFilterList(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IPv6ExtHeaderFilterList, self).serialize()

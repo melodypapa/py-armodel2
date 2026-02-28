@@ -47,11 +47,23 @@ class AclPermission(ARElement):
         """
         return False
 
+    _XML_TAG = "ACL-PERMISSION"
+
+
     acl_contexts: list[NameToken]
     acl_object_set_refs: list[ARRef]
     acl_operation_refs: list[ARRef]
     acl_role_refs: list[ARRef]
     acl_scope: AclScopeEnum
+    _DESERIALIZE_DISPATCH = {
+        "ACL-CONTEXTS": lambda obj, elem: obj.acl_contexts.append(elem.text),
+        "ACL-OBJECT-SETS": lambda obj, elem: obj.acl_object_set_refs.append(ARRef.deserialize(elem)),
+        "ACL-OPERATIONS": lambda obj, elem: obj.acl_operation_refs.append(ARRef.deserialize(elem)),
+        "ACL-ROLES": lambda obj, elem: obj.acl_role_refs.append(ARRef.deserialize(elem)),
+        "ACL-SCOPE": lambda obj, elem: setattr(obj, "acl_scope", AclScopeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AclPermission."""
         super().__init__()
@@ -67,9 +79,8 @@ class AclPermission(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AclPermission, self).serialize()

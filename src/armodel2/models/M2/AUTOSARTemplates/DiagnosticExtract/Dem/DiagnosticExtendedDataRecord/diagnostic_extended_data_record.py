@@ -41,11 +41,23 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-EXTENDED-DATA-RECORD"
+
+
     custom_trigger: Optional[String]
     record_elements: list[DiagnosticParameter]
     record_number: Optional[PositiveInteger]
     trigger: Optional[DiagnosticRecordTriggerEnum]
     update: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CUSTOM-TRIGGER": lambda obj, elem: setattr(obj, "custom_trigger", elem.text),
+        "RECORD-ELEMENTS": lambda obj, elem: obj.record_elements.append(DiagnosticParameter.deserialize(elem)),
+        "RECORD-NUMBER": lambda obj, elem: setattr(obj, "record_number", elem.text),
+        "TRIGGER": lambda obj, elem: setattr(obj, "trigger", DiagnosticRecordTriggerEnum.deserialize(elem)),
+        "UPDATE": lambda obj, elem: setattr(obj, "update", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticExtendedDataRecord."""
         super().__init__()
@@ -61,9 +73,8 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticExtendedDataRecord, self).serialize()

@@ -37,10 +37,21 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRef(DataPrototypeInPortInter
         """
         return False
 
+    _XML_TAG = "DATA-PROTOTYPE-IN-SENDER-RECEIVER-INTERFACE-INSTANCE-REF"
+
+
     base_interface_ref: Optional[Any]
     context_data_refs: list[Any]
     root_data_prototype_in_sr_ref: Optional[ARRef]
     target_data_prototype_in_sr_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-INTERFACE-REF": lambda obj, elem: setattr(obj, "base_interface_ref", ARRef.deserialize(elem)),
+        "CONTEXT-DATAS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
+        "ROOT-DATA-PROTOTYPE-IN-SR-REF": lambda obj, elem: setattr(obj, "root_data_prototype_in_sr_ref", ARRef.deserialize(elem)),
+        "TARGET-DATA-PROTOTYPE-IN-SR-REF": lambda obj, elem: setattr(obj, "target_data_prototype_in_sr_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataPrototypeInSenderReceiverInterfaceInstanceRef."""
         super().__init__()
@@ -55,9 +66,8 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRef(DataPrototypeInPortInter
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataPrototypeInSenderReceiverInterfaceInstanceRef, self).serialize()

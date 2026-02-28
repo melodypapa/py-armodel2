@@ -37,8 +37,17 @@ class PPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
         """
         return False
 
+    _XML_TAG = "P-PORT-IN-COMPOSITION-INSTANCE-REF"
+
+
     context_component_ref: Optional[ARRef]
     target_p_port_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXT-COMPONENT-REF": lambda obj, elem: setattr(obj, "context_component_ref", ARRef.deserialize(elem)),
+        "TARGET-P-PORT-REF": lambda obj, elem: setattr(obj, "target_p_port_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PPortInCompositionInstanceRef."""
         super().__init__()
@@ -51,9 +60,8 @@ class PPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PPortInCompositionInstanceRef, self).serialize()

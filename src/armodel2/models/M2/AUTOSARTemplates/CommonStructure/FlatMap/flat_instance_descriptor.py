@@ -47,11 +47,23 @@ class FlatInstanceDescriptor(Identifiable):
         """
         return False
 
+    _XML_TAG = "FLAT-INSTANCE-DESCRIPTOR"
+
+
     ecu_extract: Optional[AtpFeature]
     role: Optional[Identifier]
     rte_plugin_props: Optional[RtePluginProps]
     sw_data_def: Optional[SwDataDefProps]
     upstream: Optional[AtpFeature]
+    _DESERIALIZE_DISPATCH = {
+        "ECU-EXTRACT": lambda obj, elem: setattr(obj, "ecu_extract", AtpFeature.deserialize(elem)),
+        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+        "RTE-PLUGIN-PROPS": lambda obj, elem: setattr(obj, "rte_plugin_props", RtePluginProps.deserialize(elem)),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SwDataDefProps.deserialize(elem)),
+        "UPSTREAM": lambda obj, elem: setattr(obj, "upstream", AtpFeature.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlatInstanceDescriptor."""
         super().__init__()
@@ -67,9 +79,8 @@ class FlatInstanceDescriptor(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlatInstanceDescriptor, self).serialize()

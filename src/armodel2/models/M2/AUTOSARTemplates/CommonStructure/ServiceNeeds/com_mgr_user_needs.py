@@ -34,7 +34,15 @@ class ComMgrUserNeeds(ServiceNeeds):
         """
         return False
 
+    _XML_TAG = "COM-MGR-USER-NEEDS"
+
+
     max_comm_mode_enum: Optional[MaxCommModeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-COMM-MODE-ENUM": lambda obj, elem: setattr(obj, "max_comm_mode_enum", MaxCommModeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ComMgrUserNeeds."""
         super().__init__()
@@ -46,9 +54,8 @@ class ComMgrUserNeeds(ServiceNeeds):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ComMgrUserNeeds, self).serialize()

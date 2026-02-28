@@ -35,7 +35,15 @@ class ApplicationRecordElement(ApplicationCompositeElementDataPrototype):
         """
         return False
 
+    _XML_TAG = "APPLICATION-RECORD-ELEMENT"
+
+
     is_optional: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "IS-OPTIONAL": lambda obj, elem: setattr(obj, "is_optional", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationRecordElement."""
         super().__init__()
@@ -47,9 +55,8 @@ class ApplicationRecordElement(ApplicationCompositeElementDataPrototype):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationRecordElement, self).serialize()

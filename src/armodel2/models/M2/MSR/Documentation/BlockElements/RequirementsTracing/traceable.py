@@ -34,6 +34,11 @@ class Traceable(MultilanguageReferrable, ABC):
         return True
 
     trace_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TRACES": lambda obj, elem: obj.trace_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Traceable."""
         super().__init__()
@@ -45,9 +50,8 @@ class Traceable(MultilanguageReferrable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Traceable, self).serialize()

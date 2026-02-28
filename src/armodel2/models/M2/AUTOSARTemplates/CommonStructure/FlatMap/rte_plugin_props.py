@@ -30,8 +30,17 @@ class RtePluginProps(ARObject):
         """
         return False
 
+    _XML_TAG = "RTE-PLUGIN-PROPS"
+
+
     associated_ref: Optional[ARRef]
     associated_rte_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ASSOCIATED-REF": lambda obj, elem: setattr(obj, "associated_ref", ARRef.deserialize(elem)),
+        "ASSOCIATED-RTE-REF": lambda obj, elem: setattr(obj, "associated_rte_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RtePluginProps."""
         super().__init__()
@@ -44,9 +53,8 @@ class RtePluginProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RtePluginProps, self).serialize()

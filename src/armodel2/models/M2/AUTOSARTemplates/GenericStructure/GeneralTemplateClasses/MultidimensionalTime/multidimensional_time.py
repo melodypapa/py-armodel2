@@ -32,8 +32,17 @@ class MultidimensionalTime(ARObject):
         """
         return False
 
+    _XML_TAG = "MULTIDIMENSIONAL-TIME"
+
+
     cse_code: Optional[CseCodeType]
     cse_code_factor: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "CSE-CODE": lambda obj, elem: setattr(obj, "cse_code", elem.text),
+        "CSE-CODE-FACTOR": lambda obj, elem: setattr(obj, "cse_code_factor", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MultidimensionalTime."""
         super().__init__()
@@ -46,9 +55,8 @@ class MultidimensionalTime(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MultidimensionalTime, self).serialize()

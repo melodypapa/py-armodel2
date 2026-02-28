@@ -42,8 +42,17 @@ class DataTypeMappingSet(ARElement):
         """
         return False
 
+    _XML_TAG = "DATA-TYPE-MAPPING-SET"
+
+
     data_type_maps: list[DataTypeMap]
     mode_request_type_maps: list[ModeRequestTypeMap]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-TYPE-MAPS": lambda obj, elem: obj.data_type_maps.append(DataTypeMap.deserialize(elem)),
+        "MODE-REQUEST-TYPE-MAPS": lambda obj, elem: obj.mode_request_type_maps.append(ModeRequestTypeMap.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataTypeMappingSet."""
         super().__init__()
@@ -56,9 +65,8 @@ class DataTypeMappingSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataTypeMappingSet, self).serialize()

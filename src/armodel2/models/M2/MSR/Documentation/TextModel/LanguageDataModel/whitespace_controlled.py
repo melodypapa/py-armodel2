@@ -28,6 +28,11 @@ class WhitespaceControlled(ARObject, ABC):
         return True
 
     xml_space: Any
+    _DESERIALIZE_DISPATCH = {
+        "XML-SPACE": lambda obj, elem: setattr(obj, "xml_space", any (XmlSpaceEnum).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize WhitespaceControlled."""
         super().__init__()
@@ -39,9 +44,8 @@ class WhitespaceControlled(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(WhitespaceControlled, self).serialize()

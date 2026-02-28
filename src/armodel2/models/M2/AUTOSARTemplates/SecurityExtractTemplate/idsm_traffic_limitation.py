@@ -34,8 +34,17 @@ class IdsmTrafficLimitation(Identifiable):
         """
         return False
 
+    _XML_TAG = "IDSM-TRAFFIC-LIMITATION"
+
+
     max_bytes_in: Optional[PositiveInteger]
     time_interval: Optional[Float]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-BYTES-IN": lambda obj, elem: setattr(obj, "max_bytes_in", elem.text),
+        "TIME-INTERVAL": lambda obj, elem: setattr(obj, "time_interval", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IdsmTrafficLimitation."""
         super().__init__()
@@ -48,9 +57,8 @@ class IdsmTrafficLimitation(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IdsmTrafficLimitation, self).serialize()

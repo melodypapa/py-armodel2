@@ -50,9 +50,19 @@ class ClientServerOperation(Identifiable):
         """
         return False
 
+    _XML_TAG = "CLIENT-SERVER-OPERATION"
+
+
     arguments: list[ArgumentDataPrototype]
     diag_arg_integrity: Optional[Boolean]
     possible_error_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ARGUMENTS": lambda obj, elem: obj.arguments.append(ArgumentDataPrototype.deserialize(elem)),
+        "DIAG-ARG-INTEGRITY": lambda obj, elem: setattr(obj, "diag_arg_integrity", elem.text),
+        "POSSIBLE-ERRORS": lambda obj, elem: obj.possible_error_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientServerOperation."""
         super().__init__()
@@ -66,9 +76,8 @@ class ClientServerOperation(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientServerOperation, self).serialize()

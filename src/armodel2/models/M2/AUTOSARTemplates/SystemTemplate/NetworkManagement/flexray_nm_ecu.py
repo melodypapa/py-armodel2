@@ -33,8 +33,17 @@ class FlexrayNmEcu(BusspecificNmEcu):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-NM-ECU"
+
+
     nm_hw_vote: Optional[Boolean]
     nm_main: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "NM-HW-VOTE": lambda obj, elem: setattr(obj, "nm_hw_vote", elem.text),
+        "NM-MAIN": lambda obj, elem: setattr(obj, "nm_main", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayNmEcu."""
         super().__init__()
@@ -47,9 +56,8 @@ class FlexrayNmEcu(BusspecificNmEcu):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayNmEcu, self).serialize()

@@ -42,10 +42,21 @@ class SdgClass(SdgElementWithGid):
         """
         return False
 
+    _XML_TAG = "SDG-CLASS"
+
+
     attributes: list[SdgAttribute]
     caption: Optional[Boolean]
     extends_meta: Optional[MetaClassName]
     sdg_constraint_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ATTRIBUTES": lambda obj, elem: obj.attributes.append(SdgAttribute.deserialize(elem)),
+        "CAPTION": lambda obj, elem: setattr(obj, "caption", elem.text),
+        "EXTENDS-META": lambda obj, elem: setattr(obj, "extends_meta", elem.text),
+        "SDG-CONSTRAINTS": lambda obj, elem: obj.sdg_constraint_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SdgClass."""
         super().__init__()
@@ -60,9 +71,8 @@ class SdgClass(SdgElementWithGid):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SdgClass, self).serialize()

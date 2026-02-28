@@ -48,11 +48,23 @@ class ImplementationDataType(AbstractImplementationDataType):
         """
         return False
 
+    _XML_TAG = "IMPLEMENTATION-DATA-TYPE"
+
+
     dynamic_array_size_profile: Optional[String]
     is_struct_with_optional_element: Optional[Boolean]
     sub_elements: list[ImplementationDataTypeElement]
     symbol_props: Optional[SymbolProps]
     type_emitter: Optional[NameToken]
+    _DESERIALIZE_DISPATCH = {
+        "DYNAMIC-ARRAY-SIZE-PROFILE": lambda obj, elem: setattr(obj, "dynamic_array_size_profile", elem.text),
+        "IS-STRUCT-WITH-OPTIONAL-ELEMENT": lambda obj, elem: setattr(obj, "is_struct_with_optional_element", elem.text),
+        "SUB-ELEMENTS": lambda obj, elem: obj.sub_elements.append(ImplementationDataTypeElement.deserialize(elem)),
+        "SYMBOL-PROPS": lambda obj, elem: setattr(obj, "symbol_props", SymbolProps.deserialize(elem)),
+        "TYPE-EMITTER": lambda obj, elem: setattr(obj, "type_emitter", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ImplementationDataType."""
         super().__init__()
@@ -68,9 +80,8 @@ class ImplementationDataType(AbstractImplementationDataType):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ImplementationDataType, self).serialize()

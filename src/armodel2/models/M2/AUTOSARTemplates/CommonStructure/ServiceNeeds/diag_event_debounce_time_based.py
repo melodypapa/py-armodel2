@@ -35,9 +35,19 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
         """
         return False
 
+    _XML_TAG = "DIAG-EVENT-DEBOUNCE-TIME-BASED"
+
+
     time_based_fdc: Optional[TimeValue]
     time_failed: Optional[TimeValue]
     time_passed: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "TIME-BASED-FDC": lambda obj, elem: setattr(obj, "time_based_fdc", elem.text),
+        "TIME-FAILED": lambda obj, elem: setattr(obj, "time_failed", elem.text),
+        "TIME-PASSED": lambda obj, elem: setattr(obj, "time_passed", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagEventDebounceTimeBased."""
         super().__init__()
@@ -51,9 +61,8 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagEventDebounceTimeBased, self).serialize()

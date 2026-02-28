@@ -35,9 +35,19 @@ class RptSupportData(ARObject):
         """
         return False
 
+    _XML_TAG = "RPT-SUPPORT-DATA"
+
+
     executions: list[RptExecutionContext]
     rpt_components: list[RptComponent]
     rpt_service_points: list[RptServicePoint]
+    _DESERIALIZE_DISPATCH = {
+        "EXECUTIONS": lambda obj, elem: obj.executions.append(RptExecutionContext.deserialize(elem)),
+        "RPT-COMPONENTS": lambda obj, elem: obj.rpt_components.append(RptComponent.deserialize(elem)),
+        "RPT-SERVICE-POINTS": lambda obj, elem: obj.rpt_service_points.append(RptServicePoint.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptSupportData."""
         super().__init__()
@@ -51,9 +61,8 @@ class RptSupportData(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptSupportData, self).serialize()

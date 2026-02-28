@@ -38,6 +38,9 @@ class IPSecConfigProps(ARElement):
         """
         return False
 
+    _XML_TAG = "I-P-SEC-CONFIG-PROPS"
+
+
     ah_cipher_suites: list[String]
     dpd_action: Optional[IPsecDpdActionEnum]
     dpd_delay: Optional[TimeValue]
@@ -50,6 +53,22 @@ class IPSecConfigProps(ARElement):
     sa_over_time: Optional[PositiveInteger]
     sa_rand_time: Optional[TimeValue]
     sa_rekey_time: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "AH-CIPHER-SUITES": lambda obj, elem: obj.ah_cipher_suites.append(elem.text),
+        "DPD-ACTION": lambda obj, elem: setattr(obj, "dpd_action", IPsecDpdActionEnum.deserialize(elem)),
+        "DPD-DELAY": lambda obj, elem: setattr(obj, "dpd_delay", elem.text),
+        "ESP-CIPHER-SUITES": lambda obj, elem: obj.esp_cipher_suites.append(elem.text),
+        "IKE-CIPHER-SUITE": lambda obj, elem: setattr(obj, "ike_cipher_suite", elem.text),
+        "IKE-OVER-TIME": lambda obj, elem: setattr(obj, "ike_over_time", elem.text),
+        "IKE-RAND-TIME": lambda obj, elem: setattr(obj, "ike_rand_time", elem.text),
+        "IKE-REAUTH-TIME": lambda obj, elem: setattr(obj, "ike_reauth_time", elem.text),
+        "IKE-REKEY-TIME": lambda obj, elem: setattr(obj, "ike_rekey_time", elem.text),
+        "SA-OVER-TIME": lambda obj, elem: setattr(obj, "sa_over_time", elem.text),
+        "SA-RAND-TIME": lambda obj, elem: setattr(obj, "sa_rand_time", elem.text),
+        "SA-REKEY-TIME": lambda obj, elem: setattr(obj, "sa_rekey_time", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IPSecConfigProps."""
         super().__init__()
@@ -72,9 +91,8 @@ class IPSecConfigProps(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IPSecConfigProps, self).serialize()

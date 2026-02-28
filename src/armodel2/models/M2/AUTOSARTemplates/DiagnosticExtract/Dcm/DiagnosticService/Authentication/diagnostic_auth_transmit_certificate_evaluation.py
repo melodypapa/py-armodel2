@@ -34,8 +34,17 @@ class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-AUTH-TRANSMIT-CERTIFICATE-EVALUATION"
+
+
     evaluation_id: Optional[PositiveInteger]
     function: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "EVALUATION-ID": lambda obj, elem: setattr(obj, "evaluation_id", elem.text),
+        "FUNCTION": lambda obj, elem: setattr(obj, "function", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticAuthTransmitCertificateEvaluation."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticAuthTransmitCertificateEvaluation, self).serialize()

@@ -33,8 +33,17 @@ class EcucEnumerationLiteralDef(Identifiable):
         """
         return False
 
+    _XML_TAG = "ECUC-ENUMERATION-LITERAL-DEF"
+
+
     ecuc_cond: Optional[Any]
     origin: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "ECUC-COND": lambda obj, elem: setattr(obj, "ecuc_cond", any (EcucCondition).deserialize(elem)),
+        "ORIGIN": lambda obj, elem: setattr(obj, "origin", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucEnumerationLiteralDef."""
         super().__init__()
@@ -47,9 +56,8 @@ class EcucEnumerationLiteralDef(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucEnumerationLiteralDef, self).serialize()

@@ -49,6 +49,9 @@ class CanFrameTriggering(FrameTriggering):
         """
         return False
 
+    _XML_TAG = "CAN-FRAME-TRIGGERING"
+
+
     absolutely_can_frame_triggerings: list[TtcanAbsolutelyScheduledTiming]
     can_addressing_mode: Optional[CanAddressingModeType]
     can_frame_rx_behavior: Optional[CanFrameRxBehaviorEnum]
@@ -59,6 +62,20 @@ class CanFrameTriggering(FrameTriggering):
     rx_identifier_range: Optional[RxIdentifierRange]
     rx_mask: Optional[PositiveInteger]
     tx_mask: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ABSOLUTELY-CAN-FRAME-TRIGGERINGS": lambda obj, elem: obj.absolutely_can_frame_triggerings.append(TtcanAbsolutelyScheduledTiming.deserialize(elem)),
+        "CAN-ADDRESSING-MODE": lambda obj, elem: setattr(obj, "can_addressing_mode", CanAddressingModeType.deserialize(elem)),
+        "CAN-FRAME-RX-BEHAVIOR": lambda obj, elem: setattr(obj, "can_frame_rx_behavior", CanFrameRxBehaviorEnum.deserialize(elem)),
+        "CAN-FRAME-TX-BEHAVIOR": lambda obj, elem: setattr(obj, "can_frame_tx_behavior", CanFrameTxBehaviorEnum.deserialize(elem)),
+        "CAN-XL-FRAME-TRIGGERING-PROPS": lambda obj, elem: setattr(obj, "can_xl_frame_triggering_props", CanXlFrameTriggeringProps.deserialize(elem)),
+        "IDENTIFIER": lambda obj, elem: setattr(obj, "identifier", elem.text),
+        "J1939REQUESTABLE": lambda obj, elem: setattr(obj, "j1939requestable", elem.text),
+        "RX-IDENTIFIER-RANGE": lambda obj, elem: setattr(obj, "rx_identifier_range", RxIdentifierRange.deserialize(elem)),
+        "RX-MASK": lambda obj, elem: setattr(obj, "rx_mask", elem.text),
+        "TX-MASK": lambda obj, elem: setattr(obj, "tx_mask", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanFrameTriggering."""
         super().__init__()
@@ -79,9 +96,8 @@ class CanFrameTriggering(FrameTriggering):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanFrameTriggering, self).serialize()

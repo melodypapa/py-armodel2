@@ -36,9 +36,19 @@ class SenderRecArrayElementMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "SENDER-REC-ARRAY-ELEMENT-MAPPING"
+
+
     complex_type: Optional[SenderRecCompositeTypeMapping]
     indexed_array: Optional[IndexedArrayElement]
     system_signal_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMPLEX-TYPE": lambda obj, elem: setattr(obj, "complex_type", SenderRecCompositeTypeMapping.deserialize(elem)),
+        "INDEXED-ARRAY": lambda obj, elem: setattr(obj, "indexed_array", IndexedArrayElement.deserialize(elem)),
+        "SYSTEM-SIGNAL-REF": lambda obj, elem: setattr(obj, "system_signal_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SenderRecArrayElementMapping."""
         super().__init__()
@@ -52,9 +62,8 @@ class SenderRecArrayElementMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SenderRecArrayElementMapping, self).serialize()

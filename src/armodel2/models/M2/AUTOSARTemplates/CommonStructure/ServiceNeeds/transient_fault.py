@@ -30,7 +30,15 @@ class TransientFault(TracedFailure):
         """
         return False
 
+    _XML_TAG = "TRANSIENT-FAULT"
+
+
     possible_error_reactions: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "POSSIBLE-ERROR-REACTIONS": lambda obj, elem: obj.possible_error_reactions.append(any (PossibleErrorReaction).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TransientFault."""
         super().__init__()
@@ -42,9 +50,8 @@ class TransientFault(TracedFailure):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TransientFault, self).serialize()

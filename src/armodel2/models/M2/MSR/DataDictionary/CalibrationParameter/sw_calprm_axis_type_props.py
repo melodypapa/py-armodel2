@@ -35,6 +35,12 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
 
     max_gradient: Optional[Float]
     monotony: Optional[MonotonyEnum]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-GRADIENT": lambda obj, elem: setattr(obj, "max_gradient", elem.text),
+        "MONOTONY": lambda obj, elem: setattr(obj, "monotony", MonotonyEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwCalprmAxisTypeProps."""
         super().__init__()
@@ -47,9 +53,8 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwCalprmAxisTypeProps, self).serialize()

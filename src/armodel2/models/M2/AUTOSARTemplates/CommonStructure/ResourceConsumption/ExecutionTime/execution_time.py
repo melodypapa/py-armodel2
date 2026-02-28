@@ -61,6 +61,17 @@ class ExecutionTime(Identifiable, ABC):
     included_library_refs: list[ARRef]
     memory_section_locations: list[MemorySectionLocation]
     software_context: Optional[SoftwareContext]
+    _DESERIALIZE_DISPATCH = {
+        "EXCLUSIVE-AREA-REF": lambda obj, elem: setattr(obj, "exclusive_area_ref", ARRef.deserialize(elem)),
+        "EXECUTABLE-ENTITY-REF": lambda obj, elem: setattr(obj, "executable_entity_ref", ARRef.deserialize(elem)),
+        "HARDWARE": lambda obj, elem: setattr(obj, "hardware", HardwareConfiguration.deserialize(elem)),
+        "HW-ELEMENT-REF": lambda obj, elem: setattr(obj, "hw_element_ref", ARRef.deserialize(elem)),
+        "INCLUDED-LIBRARIES": lambda obj, elem: obj.included_library_refs.append(ARRef.deserialize(elem)),
+        "MEMORY-SECTION-LOCATIONS": lambda obj, elem: obj.memory_section_locations.append(MemorySectionLocation.deserialize(elem)),
+        "SOFTWARE-CONTEXT": lambda obj, elem: setattr(obj, "software_context", SoftwareContext.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ExecutionTime."""
         super().__init__()
@@ -78,9 +89,8 @@ class ExecutionTime(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ExecutionTime, self).serialize()

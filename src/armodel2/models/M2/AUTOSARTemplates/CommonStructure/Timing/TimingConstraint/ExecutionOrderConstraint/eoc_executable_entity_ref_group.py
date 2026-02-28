@@ -41,6 +41,9 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         """
         return False
 
+    _XML_TAG = "E-O-C-EXECUTABLE-ENTITY-REF-GROUP"
+
+
     let_data_exchange: Optional[LetDataExchangeParadigmEnum]
     let_interval_refs: list[ARRef]
     max_cycle: Optional[PositiveInteger]
@@ -50,6 +53,19 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
     nested_element_refs: list[Any]
     successor_refs: list[Any]
     triggering_event_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "LET-DATA-EXCHANGE": lambda obj, elem: setattr(obj, "let_data_exchange", LetDataExchangeParadigmEnum.deserialize(elem)),
+        "LET-INTERVALS": lambda obj, elem: obj.let_interval_refs.append(ARRef.deserialize(elem)),
+        "MAX-CYCLE": lambda obj, elem: setattr(obj, "max_cycle", elem.text),
+        "MAX-CYCLES": lambda obj, elem: setattr(obj, "max_cycles", elem.text),
+        "MAX-SLOTS": lambda obj, elem: setattr(obj, "max_slots", elem.text),
+        "MAX-SLOTS-PER": lambda obj, elem: setattr(obj, "max_slots_per", elem.text),
+        "NESTED-ELEMENTS": lambda obj, elem: obj.nested_element_refs.append(ARRef.deserialize(elem)),
+        "SUCCESSORS": lambda obj, elem: obj.successor_refs.append(ARRef.deserialize(elem)),
+        "TRIGGERING-EVENT-REF": lambda obj, elem: setattr(obj, "triggering_event_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EOCExecutableEntityRefGroup."""
         super().__init__()
@@ -69,9 +85,8 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EOCExecutableEntityRefGroup, self).serialize()

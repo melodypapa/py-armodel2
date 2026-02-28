@@ -43,6 +43,9 @@ class LinSlaveConfig(ARObject):
         """
         return False
 
+    _XML_TAG = "LIN-SLAVE-CONFIG"
+
+
     configured_nad: Optional[Integer]
     function_id: Optional[PositiveInteger]
     ident: Optional[LinSlaveConfigIdent]
@@ -53,6 +56,20 @@ class LinSlaveConfig(ARObject):
     protocol_version: Optional[String]
     supplier_id: Optional[PositiveInteger]
     variant_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CONFIGURED-NAD": lambda obj, elem: setattr(obj, "configured_nad", elem.text),
+        "FUNCTION-ID": lambda obj, elem: setattr(obj, "function_id", elem.text),
+        "IDENT": lambda obj, elem: setattr(obj, "ident", LinSlaveConfigIdent.deserialize(elem)),
+        "INITIAL-NAD": lambda obj, elem: setattr(obj, "initial_nad", elem.text),
+        "LIN-CONFIGURABLE-FRAMES": lambda obj, elem: obj.lin_configurable_frames.append(LinConfigurableFrame.deserialize(elem)),
+        "LIN-ERROR-RESPONSE": lambda obj, elem: setattr(obj, "lin_error_response", LinErrorResponse.deserialize(elem)),
+        "LIN-ORDEREDS": lambda obj, elem: obj.lin_ordereds.append(LinOrderedConfigurableFrame.deserialize(elem)),
+        "PROTOCOL-VERSION": lambda obj, elem: setattr(obj, "protocol_version", elem.text),
+        "SUPPLIER-ID": lambda obj, elem: setattr(obj, "supplier_id", elem.text),
+        "VARIANT-ID": lambda obj, elem: setattr(obj, "variant_id", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinSlaveConfig."""
         super().__init__()
@@ -73,9 +90,8 @@ class LinSlaveConfig(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinSlaveConfig, self).serialize()

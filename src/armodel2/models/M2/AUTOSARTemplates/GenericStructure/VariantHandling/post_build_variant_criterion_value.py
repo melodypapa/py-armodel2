@@ -35,9 +35,19 @@ class PostBuildVariantCriterionValue(ARObject):
         """
         return False
 
+    _XML_TAG = "POST-BUILD-VARIANT-CRITERION-VALUE"
+
+
     annotations: list[Annotation]
     value: Integer
     variant_criterion_ref: Any
+    _DESERIALIZE_DISPATCH = {
+        "ANNOTATIONS": lambda obj, elem: obj.annotations.append(Annotation.deserialize(elem)),
+        "VALUE": lambda obj, elem: setattr(obj, "value", elem.text),
+        "VARIANT-CRITERION-REF": lambda obj, elem: setattr(obj, "variant_criterion_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PostBuildVariantCriterionValue."""
         super().__init__()
@@ -51,9 +61,8 @@ class PostBuildVariantCriterionValue(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PostBuildVariantCriterionValue, self).serialize()

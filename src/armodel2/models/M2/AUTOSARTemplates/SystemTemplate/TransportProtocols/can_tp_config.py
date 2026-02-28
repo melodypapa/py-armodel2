@@ -45,11 +45,23 @@ class CanTpConfig(TpConfig):
         """
         return False
 
+    _XML_TAG = "CAN-TP-CONFIG"
+
+
     tp_addresses: list[CanTpAddress]
     tp_channels: list[CanTpChannel]
     tp_connections: list[CanTpConnection]
     tp_ecus: list[CanTpEcu]
     tp_nodes: list[CanTpNode]
+    _DESERIALIZE_DISPATCH = {
+        "TP-ADDRESSES": lambda obj, elem: obj.tp_addresses.append(CanTpAddress.deserialize(elem)),
+        "TP-CHANNELS": lambda obj, elem: obj.tp_channels.append(CanTpChannel.deserialize(elem)),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(CanTpConnection.deserialize(elem)),
+        "TP-ECUS": lambda obj, elem: obj.tp_ecus.append(CanTpEcu.deserialize(elem)),
+        "TP-NODES": lambda obj, elem: obj.tp_nodes.append(CanTpNode.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanTpConfig."""
         super().__init__()
@@ -65,9 +77,8 @@ class CanTpConfig(TpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanTpConfig, self).serialize()

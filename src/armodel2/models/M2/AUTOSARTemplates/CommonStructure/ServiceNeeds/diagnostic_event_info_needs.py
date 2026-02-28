@@ -34,8 +34,17 @@ class DiagnosticEventInfoNeeds(DiagnosticCapabilityElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-EVENT-INFO-NEEDS"
+
+
     obd_dtc_number: Optional[PositiveInteger]
     uds_dtc_number: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "OBD-DTC-NUMBER": lambda obj, elem: setattr(obj, "obd_dtc_number", elem.text),
+        "UDS-DTC-NUMBER": lambda obj, elem: setattr(obj, "uds_dtc_number", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEventInfoNeeds."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticEventInfoNeeds(DiagnosticCapabilityElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEventInfoNeeds, self).serialize()

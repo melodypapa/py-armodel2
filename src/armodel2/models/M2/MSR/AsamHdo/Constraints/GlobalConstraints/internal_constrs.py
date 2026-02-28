@@ -36,12 +36,25 @@ class InternalConstrs(ARObject):
         """
         return False
 
+    _XML_TAG = "INTERNAL-CONSTRS"
+
+
     lower_limit: Optional[Limit]
     max_diff: Optional[Numerical]
     max_gradient: Optional[Numerical]
     monotony: Optional[MonotonyEnum]
     scale_constrs: list[ScaleConstr]
     upper_limit: Optional[Limit]
+    _DESERIALIZE_DISPATCH = {
+        "LOWER-LIMIT": lambda obj, elem: setattr(obj, "lower_limit", elem.text),
+        "MAX-DIFF": lambda obj, elem: setattr(obj, "max_diff", elem.text),
+        "MAX-GRADIENT": lambda obj, elem: setattr(obj, "max_gradient", elem.text),
+        "MONOTONY": lambda obj, elem: setattr(obj, "monotony", MonotonyEnum.deserialize(elem)),
+        "SCALE-CONSTRS": lambda obj, elem: obj.scale_constrs.append(ScaleConstr.deserialize(elem)),
+        "UPPER-LIMIT": lambda obj, elem: setattr(obj, "upper_limit", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InternalConstrs."""
         super().__init__()
@@ -58,9 +71,8 @@ class InternalConstrs(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InternalConstrs, self).serialize()

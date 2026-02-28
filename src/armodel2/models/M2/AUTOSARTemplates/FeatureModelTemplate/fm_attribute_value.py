@@ -33,8 +33,17 @@ class FMAttributeValue(ARObject):
         """
         return False
 
+    _XML_TAG = "F-M-ATTRIBUTE-VALUE"
+
+
     definition_ref: Optional[ARRef]
     value: Optional[Numerical]
+    _DESERIALIZE_DISPATCH = {
+        "DEFINITION-REF": lambda obj, elem: setattr(obj, "definition_ref", ARRef.deserialize(elem)),
+        "VALUE": lambda obj, elem: setattr(obj, "value", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FMAttributeValue."""
         super().__init__()
@@ -47,9 +56,8 @@ class FMAttributeValue(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FMAttributeValue, self).serialize()

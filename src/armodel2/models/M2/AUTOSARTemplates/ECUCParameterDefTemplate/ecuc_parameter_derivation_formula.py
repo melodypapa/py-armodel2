@@ -30,7 +30,15 @@ class EcucParameterDerivationFormula(ARObject):
         """
         return False
 
+    _XML_TAG = "ECUC-PARAMETER-DERIVATION-FORMULA"
+
+
     ecuc_query_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ECUC-QUERY-REF": lambda obj, elem: setattr(obj, "ecuc_query_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucParameterDerivationFormula."""
         super().__init__()
@@ -42,9 +50,8 @@ class EcucParameterDerivationFormula(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucParameterDerivationFormula, self).serialize()

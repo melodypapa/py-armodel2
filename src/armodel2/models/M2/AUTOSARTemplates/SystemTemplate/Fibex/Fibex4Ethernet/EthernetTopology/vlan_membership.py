@@ -30,10 +30,21 @@ class VlanMembership(ARObject):
         """
         return False
 
+    _XML_TAG = "VLAN-MEMBERSHIP"
+
+
     default_priority: Optional[PositiveInteger]
     dhcp_address: Optional[Any]
     send_activity: Optional[Any]
     vlan_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-PRIORITY": lambda obj, elem: setattr(obj, "default_priority", elem.text),
+        "DHCP-ADDRESS": lambda obj, elem: setattr(obj, "dhcp_address", any (DhcpServer).deserialize(elem)),
+        "SEND-ACTIVITY": lambda obj, elem: setattr(obj, "send_activity", any (EthernetSwitchVlan).deserialize(elem)),
+        "VLAN-REF": lambda obj, elem: setattr(obj, "vlan_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize VlanMembership."""
         super().__init__()
@@ -48,9 +59,8 @@ class VlanMembership(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(VlanMembership, self).serialize()

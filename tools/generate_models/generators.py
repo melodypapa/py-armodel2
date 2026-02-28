@@ -28,6 +28,84 @@ PRIMITIVE_BASE_CLASS = "ARPrimitive"
 ENUM_BASE_CLASS = "AREnum"
 
 
+def _generate_xml_tag_constant(class_name: str) -> str:
+    """Generate _XML_TAG constant for a class."""
+    xml_tag = NameConverter.to_xml_tag(class_name)
+    return f'    _XML_TAG = "{xml_tag}"\n\n\n'
+
+
+def _generate_dispatch_table(
+    attribute_types: Dict[str, Dict[str, Any]],
+    package_data: Dict[str, Dict[str, Any]],
+) -> str:
+    """Generate _DESERIALIZE_DISPATCH table for a class."""
+    if not attribute_types:
+        return ""
+
+    dispatch_lines = ["    _DESERIALIZE_DISPATCH = {"]
+
+    for attr_name, attr_info in attribute_types.items():
+        kind = attr_info.get("kind", "attribute")
+        decorator_name = attr_info.get("decorator_name")
+
+        # Skip xml_attribute and lang_abbr (handled by parent class)
+        if kind == "xml_attribute" or decorator_name == "xml_attribute":
+            continue
+        if decorator_name == "lang_abbr":
+            continue
+
+        multiplicity = attr_info.get("multiplicity", "1")
+        is_ref = attr_info.get("is_ref", False)
+        snake_name = to_snake_case(attr_name)
+        xml_tag = snake_name.upper().replace("_", "-")
+
+        # For list attributes, use pluralized tag
+        if multiplicity in ("*", "0..*"):
+            from ._common import to_plural as pluralize_snake
+            plural_snake = pluralize_snake(snake_name)
+            xml_tag = plural_snake.upper().replace("_", "-")
+
+        # Add -REF suffix for reference attributes with multiplicity != "*"
+        if is_ref and multiplicity != "*" and kind != "iref":
+            xml_tag = f"{xml_tag}-TREF" if kind == "tref" else f"{xml_tag}-REF"
+
+        # Get Python identifier for the target attribute
+        python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
+
+        # Determine target attribute name (private for decorated attrs)
+        target_attr = f"_{python_name}" if decorator_name in (
+            "xml_attribute", "lang_prefix", "lang_abbr", "xml_element_name",
+            "ref_conditional", "instance_ref", "polymorphic"
+        ) else python_name
+
+        # Build handler lambda
+        attr_type = attr_info["type"]
+        is_list = multiplicity in ("*", "0..*", "1..*")
+
+        # Check for basic Python types or AUTOSAR primitives
+        is_basic_type = attr_type in ("str", "int", "float", "bool")
+        is_prim = is_basic_type or is_primitive_type(attr_type, package_data)
+
+        if is_prim:
+            value_code = "elem.text"
+        elif is_enum_type(attr_type, package_data):
+            value_code = f"{attr_type}.deserialize(elem)"
+        elif is_ref:
+            value_code = "ARRef.deserialize(elem)"
+        else:
+            value_code = f"{attr_type}.deserialize(elem)"
+
+        if is_list:
+            handler = f'lambda obj, elem: obj.{target_attr}.append({value_code})'
+        else:
+            handler = f'lambda obj, elem: setattr(obj, "{target_attr}", {value_code})'
+
+        dispatch_lines.append(f'        "{xml_tag}": {handler},')
+
+    dispatch_lines.append("    }")
+    return "\n".join(dispatch_lines) + "\n\n\n"
+
+
 def generate_class_code(
     type_def: Dict[str, Any],
     hierarchy_info: Dict[str, Dict[str, Any]],
@@ -653,6 +731,10 @@ class {class_name}(ABC):
 
 '''
 
+    # Add _XML_TAG constant for non-abstract classes
+    if not is_abstract:
+        code += _generate_xml_tag_constant(class_name)
+
     if is_splitable:
         code += f'''    is_splitable = True
     split_file_name = "{split_file_name}"
@@ -692,6 +774,10 @@ class {class_name}(ABC):
             else:
                 # Add class-level annotation
                 code += f"    {python_name}: {python_type}\n"
+
+    # Add _DESERIALIZE_DISPATCH table for classes with attributes
+    if attribute_types:
+        code += _generate_dispatch_table(attribute_types, package_data)
 
     code += f'''    def __init__(self) -> None:
         """Initialize {class_name}."""\n'''
@@ -3002,9 +3088,8 @@ def _generate_serialize_method(
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
 '''
 

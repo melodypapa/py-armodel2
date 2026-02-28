@@ -105,6 +105,9 @@ class SystemMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "SYSTEM-MAPPING"
+
+
     application_partition_to_ecu_partition_mappings: list[ApplicationPartitionToEcuPartitionMapping]
     app_os_task_proxy_to_ecu_task_proxy_mappings: list[AppOsTaskProxyToEcuTaskProxyMapping]
     com_management_mappings: list[ComManagementMapping]
@@ -129,6 +132,34 @@ class SystemMapping(Identifiable):
     sw_mappings: list[SwcToEcuMapping]
     system_signal_group_to_com_resource_mappings: list[SystemSignalGroupToCommunicationResourceMapping]
     system_signal_to_com_resource_mappings: list[SystemSignalToCommunicationResourceMapping]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATION-PARTITION-TO-ECU-PARTITION-MAPPINGS": lambda obj, elem: obj.application_partition_to_ecu_partition_mappings.append(ApplicationPartitionToEcuPartitionMapping.deserialize(elem)),
+        "APP-OS-TASK-PROXY-TO-ECU-TASK-PROXY-MAPPINGS": lambda obj, elem: obj.app_os_task_proxy_to_ecu_task_proxy_mappings.append(AppOsTaskProxyToEcuTaskProxyMapping.deserialize(elem)),
+        "COM-MANAGEMENT-MAPPINGS": lambda obj, elem: obj.com_management_mappings.append(ComManagementMapping.deserialize(elem)),
+        "CRYPTO-SERVICE-MAPPINGS": lambda obj, elem: obj.crypto_service_mappings.append(CryptoServiceMapping.deserialize(elem)),
+        "DATA-MAPPINGS": lambda obj, elem: obj.data_mappings.append(DataMapping.deserialize(elem)),
+        "DDS-I-SIGNAL-TO-TOPIC-MAPPINGS": lambda obj, elem: obj.dds_i_signal_to_topic_mappings.append(DdsCpISignalToDdsTopicMapping.deserialize(elem)),
+        "ECU-RESOURCES-MAPPINGS": lambda obj, elem: obj.ecu_resources_mappings.append(ECUMapping.deserialize(elem)),
+        "J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPINGS": lambda obj, elem: obj.j1939_controller_application_to_j1939_nm_node_mappings.append(J1939ControllerApplicationToJ1939NmNodeMapping.deserialize(elem)),
+        "MAPPING-CONSTRAINTS": lambda obj, elem: obj.mapping_constraints.append(MappingConstraint.deserialize(elem)),
+        "PNC-MAPPINGS": lambda obj, elem: obj.pnc_mappings.append(PncMapping.deserialize(elem)),
+        "PORT-ELEMENT-TO-COM-RESOURCE-MAPPINGS": lambda obj, elem: obj.port_element_to_com_resource_mappings.append(PortElementToCommunicationResourceMapping.deserialize(elem)),
+        "RESOURCE-ESTIMATIONS": lambda obj, elem: obj.resource_estimations.append(EcuResourceEstimation.deserialize(elem)),
+        "RESOURCE-TO-APPLICATION-PARTITION-MAPPINGS": lambda obj, elem: obj.resource_to_application_partition_mappings.append(CpSoftwareClusterResourceToApplicationPartitionMapping.deserialize(elem)),
+        "RTE-EVENT-SEPARATIONS": lambda obj, elem: obj.rte_event_separations.append(RteEventInSystemSeparation.deserialize(elem)),
+        "RTE-EVENT-TO-OS-TASK-PROXY-MAPPINGS": lambda obj, elem: obj.rte_event_to_os_task_proxy_mappings.append(RteEventInSystemToOsTaskProxyMapping.deserialize(elem)),
+        "SIGNAL-PATH-CONSTRAINTS": lambda obj, elem: obj.signal_path_constraints.append(SignalPathConstraint.deserialize(elem)),
+        "SOFTWARE-CLUSTER-TO-APPLICATION-PARTITION-MAPPINGS": lambda obj, elem: obj.software_cluster_to_application_partition_mappings.append(CpSoftwareClusterToApplicationPartitionMapping.deserialize(elem)),
+        "SW-CLUSTER-TO-RESOURCE-MAPPINGS": lambda obj, elem: obj.sw_cluster_to_resource_mappings.append(CpSoftwareClusterToResourceMapping.deserialize(elem)),
+        "SW-CLUSTER-MAPPINGS": lambda obj, elem: obj.sw_cluster_mappings.append(CpSoftwareClusterToEcuInstanceMapping.deserialize(elem)),
+        "SWC-TO-APPLICATION-PARTITION-MAPPINGS": lambda obj, elem: obj.swc_to_application_partition_mappings.append(SwcToApplicationPartitionMapping.deserialize(elem)),
+        "SW-IMPL-MAPPINGS": lambda obj, elem: obj.sw_impl_mappings.append(SwcToImplMapping.deserialize(elem)),
+        "SW-MAPPINGS": lambda obj, elem: obj.sw_mappings.append(SwcToEcuMapping.deserialize(elem)),
+        "SYSTEM-SIGNAL-GROUP-TO-COM-RESOURCE-MAPPINGS": lambda obj, elem: obj.system_signal_group_to_com_resource_mappings.append(SystemSignalGroupToCommunicationResourceMapping.deserialize(elem)),
+        "SYSTEM-SIGNAL-TO-COM-RESOURCE-MAPPINGS": lambda obj, elem: obj.system_signal_to_com_resource_mappings.append(SystemSignalToCommunicationResourceMapping.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SystemMapping."""
         super().__init__()
@@ -163,9 +194,8 @@ class SystemMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SystemMapping, self).serialize()

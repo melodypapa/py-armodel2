@@ -41,9 +41,19 @@ class ParameterSwComponentType(SwComponentType):
         """
         return False
 
+    _XML_TAG = "PARAMETER-SW-COMPONENT-TYPE"
+
+
     constant_refs: list[ARRef]
     data_type_refs: list[ARRef]
     instantiation_data_defs: list[InstantiationDataDefProps]
+    _DESERIALIZE_DISPATCH = {
+        "CONSTANTS": lambda obj, elem: obj.constant_refs.append(ARRef.deserialize(elem)),
+        "DATA-TYPES": lambda obj, elem: obj.data_type_refs.append(ARRef.deserialize(elem)),
+        "INSTANTIATION-DATA-DEFS": lambda obj, elem: obj.instantiation_data_defs.append(InstantiationDataDefProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ParameterSwComponentType."""
         super().__init__()
@@ -57,9 +67,8 @@ class ParameterSwComponentType(SwComponentType):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ParameterSwComponentType, self).serialize()

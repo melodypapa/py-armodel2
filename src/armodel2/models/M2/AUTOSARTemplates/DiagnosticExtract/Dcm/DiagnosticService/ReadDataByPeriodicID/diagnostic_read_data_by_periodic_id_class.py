@@ -36,9 +36,19 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-READ-DATA-BY-PERIODIC-ID-CLASS"
+
+
     max_periodic_did: Optional[PositiveInteger]
     periodic_rates: list[DiagnosticPeriodicRate]
     scheduler_max: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-PERIODIC-DID": lambda obj, elem: setattr(obj, "max_periodic_did", elem.text),
+        "PERIODIC-RATES": lambda obj, elem: obj.periodic_rates.append(DiagnosticPeriodicRate.deserialize(elem)),
+        "SCHEDULER-MAX": lambda obj, elem: setattr(obj, "scheduler_max", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticReadDataByPeriodicIDClass."""
         super().__init__()
@@ -52,9 +62,8 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticReadDataByPeriodicIDClass, self).serialize()

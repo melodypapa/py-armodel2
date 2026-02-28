@@ -41,9 +41,19 @@ class VariationPointProxy(Identifiable):
         """
         return False
 
+    _XML_TAG = "VARIATION-POINT-PROXY"
+
+
     condition_access: Optional[ConditionByFormula]
     implementation_ref: Optional[ARRef]
     post_build_value_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CONDITION-ACCESS": lambda obj, elem: setattr(obj, "condition_access", ConditionByFormula.deserialize(elem)),
+        "IMPLEMENTATION-REF": lambda obj, elem: setattr(obj, "implementation_ref", ARRef.deserialize(elem)),
+        "POST-BUILD-VALUE-REF": lambda obj, elem: setattr(obj, "post_build_value_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize VariationPointProxy."""
         super().__init__()
@@ -57,9 +67,8 @@ class VariationPointProxy(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(VariationPointProxy, self).serialize()

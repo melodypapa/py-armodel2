@@ -39,10 +39,21 @@ class PduToFrameMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "PDU-TO-FRAME-MAPPING"
+
+
     packing_byte_order: Optional[ByteOrderEnum]
     pdu_ref: Optional[ARRef]
     start_position: Optional[Integer]
     update_indication_bit_position: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "PACKING-BYTE-ORDER": lambda obj, elem: setattr(obj, "packing_byte_order", ByteOrderEnum.deserialize(elem)),
+        "PDU-REF": lambda obj, elem: setattr(obj, "pdu_ref", ARRef.deserialize(elem)),
+        "START-POSITION": lambda obj, elem: setattr(obj, "start_position", elem.text),
+        "UPDATE-INDICATION-BIT-POSITION": lambda obj, elem: setattr(obj, "update_indication_bit_position", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PduToFrameMapping."""
         super().__init__()
@@ -57,9 +68,8 @@ class PduToFrameMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PduToFrameMapping, self).serialize()

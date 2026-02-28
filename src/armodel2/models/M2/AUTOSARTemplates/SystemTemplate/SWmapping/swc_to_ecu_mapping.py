@@ -45,10 +45,21 @@ class SwcToEcuMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "SWC-TO-ECU-MAPPING"
+
+
     _component_irefs: list[ComponentInSystemInstanceRef]
     controlled_hw_element_ref: Optional[ARRef]
     ecu_instance_ref: Optional[ARRef]
     processing_unit_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMPONENTS": lambda obj, elem: obj._component_irefs.append(ARRef.deserialize(elem)),
+        "CONTROLLED-HW-ELEMENT-REF": lambda obj, elem: setattr(obj, "controlled_hw_element_ref", ARRef.deserialize(elem)),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+        "PROCESSING-UNIT-REF": lambda obj, elem: setattr(obj, "processing_unit_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcToEcuMapping."""
         super().__init__()
@@ -74,9 +85,8 @@ class SwcToEcuMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcToEcuMapping, self).serialize()

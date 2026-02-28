@@ -41,10 +41,21 @@ class ISignalIPduGroup(FibexElement):
         """
         return False
 
+    _XML_TAG = "I-SIGNAL-I-PDU-GROUP"
+
+
     communication: Optional[String]
     contained_refs: list[ARRef]
     i_signal_i_pdu_refs: list[ARRef]
     nm_pdu_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION": lambda obj, elem: setattr(obj, "communication", elem.text),
+        "CONTAINEDS": lambda obj, elem: obj.contained_refs.append(ARRef.deserialize(elem)),
+        "I-SIGNAL-I-PDUS": lambda obj, elem: obj.i_signal_i_pdu_refs.append(ARRef.deserialize(elem)),
+        "NM-PDUS": lambda obj, elem: obj.nm_pdu_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ISignalIPduGroup."""
         super().__init__()
@@ -59,9 +70,8 @@ class ISignalIPduGroup(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ISignalIPduGroup, self).serialize()

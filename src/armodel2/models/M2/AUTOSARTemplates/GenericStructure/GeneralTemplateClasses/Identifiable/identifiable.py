@@ -66,6 +66,15 @@ class Identifiable(MultilanguageReferrable, ABC):
     category: Optional[CategoryString]
     introduction: Optional[DocumentationBlock]
     _uuid: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "ADMIN-DATA": lambda obj, elem: setattr(obj, "admin_data", AdminData.deserialize(elem)),
+        "ANNOTATIONS": lambda obj, elem: obj.annotations.append(Annotation.deserialize(elem)),
+        "DESC": lambda obj, elem: setattr(obj, "desc", MultiLanguageOverviewParagraph.deserialize(elem)),
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
+        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", DocumentationBlock.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Identifiable."""
         super().__init__()
@@ -93,9 +102,8 @@ class Identifiable(MultilanguageReferrable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Identifiable, self).serialize()

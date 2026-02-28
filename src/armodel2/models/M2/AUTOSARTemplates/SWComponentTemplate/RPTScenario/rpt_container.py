@@ -49,6 +49,9 @@ class RptContainer(Identifiable):
         """
         return False
 
+    _XML_TAG = "RPT-CONTAINER"
+
+
     by_pass_points: list[AtpFeature]
     explicit_rpt_refs: list[ARRef]
     rpt_containers: list[RptContainer]
@@ -56,6 +59,17 @@ class RptContainer(Identifiable):
     rpt_hook: Optional[RptHook]
     rpt_impl_policy: Optional[RptImplPolicy]
     rpt_sw: Optional[RptSwPrototypingAccess]
+    _DESERIALIZE_DISPATCH = {
+        "BY-PASS-POINTS": lambda obj, elem: obj.by_pass_points.append(AtpFeature.deserialize(elem)),
+        "EXPLICIT-RPTS": lambda obj, elem: obj.explicit_rpt_refs.append(ARRef.deserialize(elem)),
+        "RPT-CONTAINERS": lambda obj, elem: obj.rpt_containers.append(RptContainer.deserialize(elem)),
+        "RPT-EXECUTABLE-ENTITY": lambda obj, elem: setattr(obj, "rpt_executable_entity", RptExecutableEntity.deserialize(elem)),
+        "RPT-HOOK": lambda obj, elem: setattr(obj, "rpt_hook", RptHook.deserialize(elem)),
+        "RPT-IMPL-POLICY": lambda obj, elem: setattr(obj, "rpt_impl_policy", RptImplPolicy.deserialize(elem)),
+        "RPT-SW": lambda obj, elem: setattr(obj, "rpt_sw", RptSwPrototypingAccess.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptContainer."""
         super().__init__()
@@ -73,9 +87,8 @@ class RptContainer(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptContainer, self).serialize()

@@ -32,8 +32,17 @@ class DhcpServerConfiguration(ARObject):
         """
         return False
 
+    _XML_TAG = "DHCP-SERVER-CONFIGURATION"
+
+
     ipv4_dhcp_server: Optional[Ipv4DhcpServerConfiguration]
     ipv6_dhcp_server: Optional[Ipv6DhcpServerConfiguration]
+    _DESERIALIZE_DISPATCH = {
+        "IPV4-DHCP-SERVER": lambda obj, elem: setattr(obj, "ipv4_dhcp_server", Ipv4DhcpServerConfiguration.deserialize(elem)),
+        "IPV6-DHCP-SERVER": lambda obj, elem: setattr(obj, "ipv6_dhcp_server", Ipv6DhcpServerConfiguration.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DhcpServerConfiguration."""
         super().__init__()
@@ -46,9 +55,8 @@ class DhcpServerConfiguration(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DhcpServerConfiguration, self).serialize()

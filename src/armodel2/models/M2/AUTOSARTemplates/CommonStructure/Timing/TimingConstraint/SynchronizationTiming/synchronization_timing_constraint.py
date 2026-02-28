@@ -41,11 +41,23 @@ class SynchronizationTimingConstraint(TimingConstraint):
         """
         return False
 
+    _XML_TAG = "SYNCHRONIZATION-TIMING-CONSTRAINT"
+
+
     event: Optional[EventOccurrenceKindEnum]
     scope_refs: list[ARRef]
     scope_event_refs: list[ARRef]
     synchronization: Optional[SynchronizationTypeEnum]
     tolerance: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT": lambda obj, elem: setattr(obj, "event", EventOccurrenceKindEnum.deserialize(elem)),
+        "SCOPES": lambda obj, elem: obj.scope_refs.append(ARRef.deserialize(elem)),
+        "SCOPE-EVENTS": lambda obj, elem: obj.scope_event_refs.append(ARRef.deserialize(elem)),
+        "SYNCHRONIZATION": lambda obj, elem: setattr(obj, "synchronization", SynchronizationTypeEnum.deserialize(elem)),
+        "TOLERANCE": lambda obj, elem: setattr(obj, "tolerance", MultidimensionalTime.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SynchronizationTimingConstraint."""
         super().__init__()
@@ -61,9 +73,8 @@ class SynchronizationTimingConstraint(TimingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SynchronizationTimingConstraint, self).serialize()

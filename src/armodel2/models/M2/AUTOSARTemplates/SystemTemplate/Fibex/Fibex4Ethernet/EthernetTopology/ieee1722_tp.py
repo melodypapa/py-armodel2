@@ -34,10 +34,21 @@ class Ieee1722Tp(TransportProtocolConfiguration):
         """
         return False
 
+    _XML_TAG = "IEEE1722-TP"
+
+
     relative: Optional[TimeValue]
     stream_identifier: Optional[PositiveInteger]
     sub_type: Optional[PositiveInteger]
     version: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "RELATIVE": lambda obj, elem: setattr(obj, "relative", elem.text),
+        "STREAM-IDENTIFIER": lambda obj, elem: setattr(obj, "stream_identifier", elem.text),
+        "SUB-TYPE": lambda obj, elem: setattr(obj, "sub_type", elem.text),
+        "VERSION": lambda obj, elem: setattr(obj, "version", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ieee1722Tp."""
         super().__init__()
@@ -52,9 +63,8 @@ class Ieee1722Tp(TransportProtocolConfiguration):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ieee1722Tp, self).serialize()

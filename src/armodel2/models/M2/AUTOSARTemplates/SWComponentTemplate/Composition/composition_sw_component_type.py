@@ -55,12 +55,25 @@ class CompositionSwComponentType(SwComponentType):
         """
         return False
 
+    _XML_TAG = "COMPOSITION-SW-COMPONENT-TYPE"
+
+
     components: list[SwComponentPrototype]
     connectors: list[SwConnector]
     constant_value_mapping_refs: list[ARRef]
     data_type_mapping_refs: list[ARRef]
     instantiation_rte_event_props: list[InstantiationRTEEventProps]
     physical_dimension_mapping_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMPONENTS": lambda obj, elem: obj.components.append(SwComponentPrototype.deserialize(elem)),
+        "CONNECTORS": lambda obj, elem: obj.connectors.append(SwConnector.deserialize(elem)),
+        "CONSTANT-VALUE-MAPPINGS": lambda obj, elem: obj.constant_value_mapping_refs.append(ARRef.deserialize(elem)),
+        "DATA-TYPE-MAPPINGS": lambda obj, elem: obj.data_type_mapping_refs.append(ARRef.deserialize(elem)),
+        "INSTANTIATION-RTE-EVENT-PROPS": lambda obj, elem: obj.instantiation_rte_event_props.append(InstantiationRTEEventProps.deserialize(elem)),
+        "PHYSICAL-DIMENSION-MAPPING-REF": lambda obj, elem: setattr(obj, "physical_dimension_mapping_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompositionSwComponentType."""
         super().__init__()
@@ -77,9 +90,8 @@ class CompositionSwComponentType(SwComponentType):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompositionSwComponentType, self).serialize()

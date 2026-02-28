@@ -40,6 +40,9 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SERVICE-SW-MAPPING"
+
+
     accessed_data_ref: Optional[ARRef]
     diagnostic_data_ref: Optional[ARRef]
     diagnostic_ref: Optional[ARRef]
@@ -48,6 +51,18 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
     mapped_swc: Optional[Any]
     parameter: Optional[DiagnosticParameter]
     service_instance_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESSED-DATA-REF": lambda obj, elem: setattr(obj, "accessed_data_ref", ARRef.deserialize(elem)),
+        "DIAGNOSTIC-DATA-REF": lambda obj, elem: setattr(obj, "diagnostic_data_ref", ARRef.deserialize(elem)),
+        "DIAGNOSTIC-REF": lambda obj, elem: setattr(obj, "diagnostic_ref", ARRef.deserialize(elem)),
+        "MAPPED-BSW-REF": lambda obj, elem: setattr(obj, "mapped_bsw_ref", ARRef.deserialize(elem)),
+        "MAPPED-FLAT-SWC-REF": lambda obj, elem: setattr(obj, "mapped_flat_swc_ref", ARRef.deserialize(elem)),
+        "MAPPED-SWC": lambda obj, elem: setattr(obj, "mapped_swc", any (SwcService).deserialize(elem)),
+        "PARAMETER": lambda obj, elem: setattr(obj, "parameter", DiagnosticParameter.deserialize(elem)),
+        "SERVICE-INSTANCE-REF": lambda obj, elem: setattr(obj, "service_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticServiceSwMapping."""
         super().__init__()
@@ -66,9 +81,8 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticServiceSwMapping, self).serialize()

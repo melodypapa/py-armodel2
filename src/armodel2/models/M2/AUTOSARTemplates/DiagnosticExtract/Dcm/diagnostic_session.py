@@ -37,10 +37,21 @@ class DiagnosticSession(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SESSION"
+
+
     id: Optional[PositiveInteger]
     jump_to_boot: Optional[DiagnosticJumpToBootLoaderEnum]
     p2_server_max: Optional[TimeValue]
     p2_star_server: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "ID": lambda obj, elem: setattr(obj, "id", elem.text),
+        "JUMP-TO-BOOT": lambda obj, elem: setattr(obj, "jump_to_boot", DiagnosticJumpToBootLoaderEnum.deserialize(elem)),
+        "P2-SERVER-MAX": lambda obj, elem: setattr(obj, "p2_server_max", elem.text),
+        "P2-STAR-SERVER": lambda obj, elem: setattr(obj, "p2_star_server", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticSession."""
         super().__init__()
@@ -55,9 +66,8 @@ class DiagnosticSession(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticSession, self).serialize()

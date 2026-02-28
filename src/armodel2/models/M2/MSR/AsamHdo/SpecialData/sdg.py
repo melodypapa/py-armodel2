@@ -41,9 +41,19 @@ class Sdg(ARObject):
         """
         return False
 
+    _XML_TAG = "SDG"
+
+
     gid: NameToken
     sdg_caption: Optional[SdgCaption]
     sdg_contents: Optional[SdgContents]
+    _DESERIALIZE_DISPATCH = {
+        "GID": lambda obj, elem: setattr(obj, "gid", elem.text),
+        "SDG-CAPTION": lambda obj, elem: setattr(obj, "sdg_caption", SdgCaption.deserialize(elem)),
+        "SDG-CONTENTS": lambda obj, elem: setattr(obj, "sdg_contents", SdgContents.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Sdg."""
         super().__init__()
@@ -57,9 +67,8 @@ class Sdg(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Sdg, self).serialize()

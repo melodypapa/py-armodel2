@@ -49,12 +49,25 @@ class PortElementToCommunicationResourceMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "PORT-ELEMENT-TO-COMMUNICATION-RESOURCE-MAPPING"
+
+
     client_server_instance_ref: Optional[ClientServerOperation]
     communication_ref: Optional[ARRef]
     mode_ref: Optional[ARRef]
     parameter_data_in_system_instance_ref: Optional[ARRef]
     trigger_ref: Optional[ARRef]
     variable_data_system_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CLIENT-SERVER-INSTANCE-REF": lambda obj, elem: setattr(obj, "client_server_instance_ref", ClientServerOperation.deserialize(elem)),
+        "COMMUNICATION-REF": lambda obj, elem: setattr(obj, "communication_ref", ARRef.deserialize(elem)),
+        "MODE-REF": lambda obj, elem: setattr(obj, "mode_ref", ARRef.deserialize(elem)),
+        "PARAMETER-DATA-IN-SYSTEM-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "parameter_data_in_system_instance_ref", ARRef.deserialize(elem)),
+        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),
+        "VARIABLE-DATA-SYSTEM-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "variable_data_system_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PortElementToCommunicationResourceMapping."""
         super().__init__()
@@ -71,9 +84,8 @@ class PortElementToCommunicationResourceMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PortElementToCommunicationResourceMapping, self).serialize()

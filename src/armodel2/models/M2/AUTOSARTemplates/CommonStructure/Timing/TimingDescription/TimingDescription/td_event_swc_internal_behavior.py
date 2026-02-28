@@ -37,9 +37,19 @@ class TDEventSwcInternalBehavior(TDEventSwc):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-SWC-INTERNAL-BEHAVIOR"
+
+
     runnable_ref: Optional[ARRef]
     td_event_swc_behavior_type: Optional[Any]
     variable_access_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "RUNNABLE-REF": lambda obj, elem: setattr(obj, "runnable_ref", ARRef.deserialize(elem)),
+        "TD-EVENT-SWC-BEHAVIOR-TYPE": lambda obj, elem: setattr(obj, "td_event_swc_behavior_type", any (TDEventSwcInternal).deserialize(elem)),
+        "VARIABLE-ACCESS-REF": lambda obj, elem: setattr(obj, "variable_access_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventSwcInternalBehavior."""
         super().__init__()
@@ -53,9 +63,8 @@ class TDEventSwcInternalBehavior(TDEventSwc):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventSwcInternalBehavior, self).serialize()

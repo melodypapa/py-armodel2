@@ -34,10 +34,21 @@ class FMFeatureDecomposition(ARObject):
         """
         return False
 
+    _XML_TAG = "F-M-FEATURE-DECOMPOSITION"
+
+
     category: Optional[CategoryString]
     feature_refs: list[ARRef]
     max: Optional[PositiveInteger]
     min: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
+        "FEATURES": lambda obj, elem: obj.feature_refs.append(ARRef.deserialize(elem)),
+        "MAX": lambda obj, elem: setattr(obj, "max", elem.text),
+        "MIN": lambda obj, elem: setattr(obj, "min", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FMFeatureDecomposition."""
         super().__init__()
@@ -52,9 +63,8 @@ class FMFeatureDecomposition(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FMFeatureDecomposition, self).serialize()

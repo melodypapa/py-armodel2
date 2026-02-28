@@ -39,10 +39,21 @@ class BuildActionManifest(ARElement):
         """
         return False
 
+    _XML_TAG = "BUILD-ACTION-MANIFEST"
+
+
     build_actions: list[BuildActionEnvironment]
     dynamic_action_refs: list[ARRef]
     start_action_refs: list[ARRef]
     tear_down_action_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BUILD-ACTIONS": lambda obj, elem: obj.build_actions.append(BuildActionEnvironment.deserialize(elem)),
+        "DYNAMIC-ACTIONS": lambda obj, elem: obj.dynamic_action_refs.append(ARRef.deserialize(elem)),
+        "START-ACTIONS": lambda obj, elem: obj.start_action_refs.append(ARRef.deserialize(elem)),
+        "TEAR-DOWN-ACTIONS": lambda obj, elem: obj.tear_down_action_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BuildActionManifest."""
         super().__init__()
@@ -57,9 +68,8 @@ class BuildActionManifest(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BuildActionManifest, self).serialize()

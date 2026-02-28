@@ -32,10 +32,21 @@ class StreamFilterRuleIpTp(ARObject):
         """
         return False
 
+    _XML_TAG = "STREAM-FILTER-RULE-IP-TP"
+
+
     destination: Optional[StreamFilterIpv6Address]
     destination_ports: list[StreamFilterPortRange]
     source: Optional[StreamFilterIpv6Address]
     source_ports: list[StreamFilterPortRange]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION": lambda obj, elem: setattr(obj, "destination", StreamFilterIpv6Address.deserialize(elem)),
+        "DESTINATION-PORTS": lambda obj, elem: obj.destination_ports.append(StreamFilterPortRange.deserialize(elem)),
+        "SOURCE": lambda obj, elem: setattr(obj, "source", StreamFilterIpv6Address.deserialize(elem)),
+        "SOURCE-PORTS": lambda obj, elem: obj.source_ports.append(StreamFilterPortRange.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StreamFilterRuleIpTp."""
         super().__init__()
@@ -50,9 +61,8 @@ class StreamFilterRuleIpTp(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StreamFilterRuleIpTp, self).serialize()

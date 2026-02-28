@@ -34,10 +34,21 @@ class CanNmNode(NmNode):
         """
         return False
 
+    _XML_TAG = "CAN-NM-NODE"
+
+
     all_nm_messages: Optional[Boolean]
     nm_car_wake_up: Optional[Boolean]
     nm_msg_cycle: Optional[TimeValue]
     nm_msg: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "ALL-NM-MESSAGES": lambda obj, elem: setattr(obj, "all_nm_messages", elem.text),
+        "NM-CAR-WAKE-UP": lambda obj, elem: setattr(obj, "nm_car_wake_up", elem.text),
+        "NM-MSG-CYCLE": lambda obj, elem: setattr(obj, "nm_msg_cycle", elem.text),
+        "NM-MSG": lambda obj, elem: setattr(obj, "nm_msg", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanNmNode."""
         super().__init__()
@@ -52,9 +63,8 @@ class CanNmNode(NmNode):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanNmNode, self).serialize()

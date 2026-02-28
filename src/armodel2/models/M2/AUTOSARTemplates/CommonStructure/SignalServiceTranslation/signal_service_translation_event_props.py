@@ -37,10 +37,21 @@ class SignalServiceTranslationEventProps(Identifiable):
         """
         return False
 
+    _XML_TAG = "SIGNAL-SERVICE-TRANSLATION-EVENT-PROPS"
+
+
     element_propses: list[Any]
     safe_translation: Optional[Boolean]
     secure: Optional[Boolean]
     translation_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ELEMENT-PROPSES": lambda obj, elem: obj.element_propses.append(any (SignalService).deserialize(elem)),
+        "SAFE-TRANSLATION": lambda obj, elem: setattr(obj, "safe_translation", elem.text),
+        "SECURE": lambda obj, elem: setattr(obj, "secure", elem.text),
+        "TRANSLATION-REF": lambda obj, elem: setattr(obj, "translation_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SignalServiceTranslationEventProps."""
         super().__init__()
@@ -55,9 +66,8 @@ class SignalServiceTranslationEventProps(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SignalServiceTranslationEventProps, self).serialize()

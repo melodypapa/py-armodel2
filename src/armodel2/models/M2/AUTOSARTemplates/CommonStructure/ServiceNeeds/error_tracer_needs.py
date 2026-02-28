@@ -34,7 +34,15 @@ class ErrorTracerNeeds(ServiceNeeds):
         """
         return False
 
+    _XML_TAG = "ERROR-TRACER-NEEDS"
+
+
     traced_failures: list[TracedFailure]
+    _DESERIALIZE_DISPATCH = {
+        "TRACED-FAILURES": lambda obj, elem: obj.traced_failures.append(TracedFailure.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ErrorTracerNeeds."""
         super().__init__()
@@ -46,9 +54,8 @@ class ErrorTracerNeeds(ServiceNeeds):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ErrorTracerNeeds, self).serialize()

@@ -40,6 +40,13 @@ class GeneralAnnotation(ARObject, ABC):
     annotation: String
     annotation_text: DocumentationBlock
     label: Optional[MultilanguageLongName]
+    _DESERIALIZE_DISPATCH = {
+        "ANNOTATION": lambda obj, elem: setattr(obj, "annotation", elem.text),
+        "ANNOTATION-TEXT": lambda obj, elem: setattr(obj, "annotation_text", DocumentationBlock.deserialize(elem)),
+        "LABEL": lambda obj, elem: setattr(obj, "label", MultilanguageLongName.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GeneralAnnotation."""
         super().__init__()
@@ -53,9 +60,8 @@ class GeneralAnnotation(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GeneralAnnotation, self).serialize()

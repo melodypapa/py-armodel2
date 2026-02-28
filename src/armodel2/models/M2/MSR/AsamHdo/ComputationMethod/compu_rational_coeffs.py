@@ -29,8 +29,17 @@ class CompuRationalCoeffs(ARObject):
         """
         return False
 
+    _XML_TAG = "COMPU-RATIONAL-COEFFS"
+
+
     compu_numerator: Optional[CompuNominatorDenominator]
     compu_denominator: Optional[CompuNominatorDenominator]
+    _DESERIALIZE_DISPATCH = {
+        "COMPU-NUMERATOR": lambda obj, elem: setattr(obj, "compu_numerator", CompuNominatorDenominator.deserialize(elem)),
+        "COMPU-DENOMINATOR": lambda obj, elem: setattr(obj, "compu_denominator", CompuNominatorDenominator.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompuRationalCoeffs."""
         super().__init__()
@@ -43,9 +52,8 @@ class CompuRationalCoeffs(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompuRationalCoeffs, self).serialize()

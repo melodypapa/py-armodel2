@@ -46,6 +46,13 @@ class FrameTriggering(Identifiable, ABC):
     frame_port_refs: list[ARRef]
     frame_ref: Optional[ARRef]
     pdu_triggering_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FRAME-PORTS": lambda obj, elem: obj.frame_port_refs.append(ARRef.deserialize(elem)),
+        "FRAME-REF": lambda obj, elem: setattr(obj, "frame_ref", ARRef.deserialize(elem)),
+        "PDU-TRIGGERINGS": lambda obj, elem: obj.pdu_triggering_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FrameTriggering."""
         super().__init__()
@@ -59,9 +66,8 @@ class FrameTriggering(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FrameTriggering, self).serialize()

@@ -30,7 +30,15 @@ class SignalServiceTranslationPropsSet(ARElement):
         """
         return False
 
+    _XML_TAG = "SIGNAL-SERVICE-TRANSLATION-PROPS-SET"
+
+
     signal_service_propses: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "SIGNAL-SERVICE-PROPSES": lambda obj, elem: obj.signal_service_propses.append(any (SignalService).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SignalServiceTranslationPropsSet."""
         super().__init__()
@@ -42,9 +50,8 @@ class SignalServiceTranslationPropsSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SignalServiceTranslationPropsSet, self).serialize()

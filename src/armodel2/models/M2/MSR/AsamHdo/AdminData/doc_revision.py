@@ -36,6 +36,9 @@ class DocRevision(ARObject):
         """
         return False
 
+    _XML_TAG = "DOC-REVISION"
+
+
     date: DateTime
     issued_by: Optional[String]
     modifications: list[Modification]
@@ -43,6 +46,17 @@ class DocRevision(ARObject):
     revision_label_p1: Optional[RevisionLabelString]
     revision_label_p2: Optional[RevisionLabelString]
     state: Optional[NameToken]
+    _DESERIALIZE_DISPATCH = {
+        "DATE": lambda obj, elem: setattr(obj, "date", elem.text),
+        "ISSUED-BY": lambda obj, elem: setattr(obj, "issued_by", elem.text),
+        "MODIFICATIONS": lambda obj, elem: obj.modifications.append(Modification.deserialize(elem)),
+        "REVISION-LABEL-STRING": lambda obj, elem: setattr(obj, "revision_label_string", elem.text),
+        "REVISION-LABEL-P1": lambda obj, elem: setattr(obj, "revision_label_p1", elem.text),
+        "REVISION-LABEL-P2": lambda obj, elem: setattr(obj, "revision_label_p2", elem.text),
+        "STATE": lambda obj, elem: setattr(obj, "state", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DocRevision."""
         super().__init__()
@@ -60,9 +74,8 @@ class DocRevision(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DocRevision, self).serialize()

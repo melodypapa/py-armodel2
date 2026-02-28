@@ -29,8 +29,17 @@ class SwcToSwcOperationArguments(ARObject):
         """
         return False
 
+    _XML_TAG = "SWC-TO-SWC-OPERATION-ARGUMENTS"
+
+
     direction: Optional[Any]
     operations: list[ClientServerOperation]
+    _DESERIALIZE_DISPATCH = {
+        "DIRECTION": lambda obj, elem: setattr(obj, "direction", any (SwcToSwcOperation).deserialize(elem)),
+        "OPERATIONS": lambda obj, elem: obj.operations.append(ClientServerOperation.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcToSwcOperationArguments."""
         super().__init__()
@@ -43,9 +52,8 @@ class SwcToSwcOperationArguments(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcToSwcOperationArguments, self).serialize()

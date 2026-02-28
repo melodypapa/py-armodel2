@@ -36,6 +36,14 @@ class EngineeringObject(ARObject, ABC):
     category: NameToken
     domain: Optional[NameToken]
     revision_labels: list[RevisionLabelString]
+    _DESERIALIZE_DISPATCH = {
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
+        "DOMAIN": lambda obj, elem: setattr(obj, "domain", elem.text),
+        "REVISION-LABELS": lambda obj, elem: obj.revision_labels.append(elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EngineeringObject."""
         super().__init__()
@@ -50,9 +58,8 @@ class EngineeringObject(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EngineeringObject, self).serialize()

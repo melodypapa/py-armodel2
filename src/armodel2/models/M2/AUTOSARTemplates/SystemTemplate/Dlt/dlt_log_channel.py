@@ -48,6 +48,9 @@ class DltLogChannel(Identifiable):
         """
         return False
 
+    _XML_TAG = "DLT-LOG-CHANNEL"
+
+
     application_refs: list[ARRef]
     default_trace: Optional[DltDefaultTraceStateEnum]
     dlt_message_refs: list[ARRef]
@@ -57,6 +60,19 @@ class DltLogChannel(Identifiable):
     rx_pdu_triggering_channel_ref: Optional[ARRef]
     segmentation: Optional[Boolean]
     tx_pdu_triggering_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATIONS": lambda obj, elem: obj.application_refs.append(ARRef.deserialize(elem)),
+        "DEFAULT-TRACE": lambda obj, elem: setattr(obj, "default_trace", DltDefaultTraceStateEnum.deserialize(elem)),
+        "DLT-MESSAGES": lambda obj, elem: obj.dlt_message_refs.append(ARRef.deserialize(elem)),
+        "LOG-CHANNEL-ID": lambda obj, elem: setattr(obj, "log_channel_id", elem.text),
+        "LOG-TRACE-DEFAULT-LOG": lambda obj, elem: setattr(obj, "log_trace_default_log", LogTraceDefaultLogLevelEnum.deserialize(elem)),
+        "NON-VERBOSE": lambda obj, elem: setattr(obj, "non_verbose", elem.text),
+        "RX-PDU-TRIGGERING-CHANNEL-REF": lambda obj, elem: setattr(obj, "rx_pdu_triggering_channel_ref", ARRef.deserialize(elem)),
+        "SEGMENTATION": lambda obj, elem: setattr(obj, "segmentation", elem.text),
+        "TX-PDU-TRIGGERING-REF": lambda obj, elem: setattr(obj, "tx_pdu_triggering_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DltLogChannel."""
         super().__init__()
@@ -76,9 +92,8 @@ class DltLogChannel(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DltLogChannel, self).serialize()

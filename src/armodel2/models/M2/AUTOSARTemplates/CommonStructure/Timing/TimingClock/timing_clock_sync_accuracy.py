@@ -37,9 +37,19 @@ class TimingClockSyncAccuracy(Identifiable):
         """
         return False
 
+    _XML_TAG = "TIMING-CLOCK-SYNC-ACCURACY"
+
+
     accuracy: Optional[MultidimensionalTime]
     lower_ref: Optional[ARRef]
     upper_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ACCURACY": lambda obj, elem: setattr(obj, "accuracy", MultidimensionalTime.deserialize(elem)),
+        "LOWER-REF": lambda obj, elem: setattr(obj, "lower_ref", ARRef.deserialize(elem)),
+        "UPPER-REF": lambda obj, elem: setattr(obj, "upper_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimingClockSyncAccuracy."""
         super().__init__()
@@ -53,9 +63,8 @@ class TimingClockSyncAccuracy(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimingClockSyncAccuracy, self).serialize()

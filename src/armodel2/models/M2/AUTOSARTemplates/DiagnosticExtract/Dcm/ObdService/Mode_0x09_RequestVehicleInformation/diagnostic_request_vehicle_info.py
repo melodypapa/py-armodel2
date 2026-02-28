@@ -34,8 +34,17 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-REQUEST-VEHICLE-INFO"
+
+
     info_type_ref: Optional[ARRef]
     request_vehicle_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "INFO-TYPE-REF": lambda obj, elem: setattr(obj, "info_type_ref", ARRef.deserialize(elem)),
+        "REQUEST-VEHICLE-REF": lambda obj, elem: setattr(obj, "request_vehicle_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticRequestVehicleInfo."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticRequestVehicleInfo, self).serialize()

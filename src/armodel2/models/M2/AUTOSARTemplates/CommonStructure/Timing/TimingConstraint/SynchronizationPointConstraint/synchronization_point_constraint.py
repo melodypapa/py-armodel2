@@ -34,10 +34,21 @@ class SynchronizationPointConstraint(TimingConstraint):
         """
         return False
 
+    _XML_TAG = "SYNCHRONIZATION-POINT-CONSTRAINT"
+
+
     source_eec_refs: list[Any]
     source_event_refs: list[ARRef]
     target_eec_refs: list[Any]
     target_event_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SOURCE-EECS": lambda obj, elem: obj.source_eec_refs.append(ARRef.deserialize(elem)),
+        "SOURCE-EVENTS": lambda obj, elem: obj.source_event_refs.append(ARRef.deserialize(elem)),
+        "TARGET-EECS": lambda obj, elem: obj.target_eec_refs.append(ARRef.deserialize(elem)),
+        "TARGET-EVENTS": lambda obj, elem: obj.target_event_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SynchronizationPointConstraint."""
         super().__init__()
@@ -52,9 +63,8 @@ class SynchronizationPointConstraint(TimingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SynchronizationPointConstraint, self).serialize()

@@ -65,6 +65,9 @@ class ISignal(FibexElement):
         """
         return False
 
+    _XML_TAG = "I-SIGNAL"
+
+
     data_transformation_ref: Optional[ARRef]
     data_type_policy: Optional[DataTypePolicyEnum]
     _init_value: Optional[ValueSpecification]
@@ -75,6 +78,20 @@ class ISignal(FibexElement):
     system_signal_ref: Optional[ARRef]
     timeout_substitution_value: Optional[ValueSpecification]
     transformation_i_signal_props: list[TransformationISignalProps]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-TRANSFORMATION-REF": lambda obj, elem: setattr(obj, "data_transformation_ref", ARRef.deserialize(elem)),
+        "DATA-TYPE-POLICY": lambda obj, elem: setattr(obj, "data_type_policy", DataTypePolicyEnum.deserialize(elem)),
+        "INIT-VALUE": lambda obj, elem: setattr(obj, "_init_value", ValueSpecification.deserialize(elem)),
+        "I-SIGNAL-PROPS": lambda obj, elem: setattr(obj, "i_signal_props", ISignalProps.deserialize(elem)),
+        "I-SIGNAL-TYPE": lambda obj, elem: setattr(obj, "i_signal_type", ISignalTypeEnum.deserialize(elem)),
+        "LENGTH": lambda obj, elem: setattr(obj, "length", elem.text),
+        "NETWORK-REPRESENTATION-PROPS": lambda obj, elem: setattr(obj, "network_representation_props", SwDataDefProps.deserialize(elem)),
+        "SYSTEM-SIGNAL-REF": lambda obj, elem: setattr(obj, "system_signal_ref", ARRef.deserialize(elem)),
+        "TIMEOUT-SUBSTITUTION-VALUE": lambda obj, elem: setattr(obj, "timeout_substitution_value", ValueSpecification.deserialize(elem)),
+        "TRANSFORMATION-I-SIGNAL-PROPS": lambda obj, elem: obj.transformation_i_signal_props.append(TransformationISignalProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ISignal."""
         super().__init__()
@@ -106,9 +123,8 @@ class ISignal(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ISignal, self).serialize()

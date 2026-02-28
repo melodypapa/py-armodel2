@@ -37,10 +37,21 @@ class J1939TpPg(ARObject):
         """
         return False
 
+    _XML_TAG = "J1939-TP-PG"
+
+
     direct_pdu_ref: Optional[ARRef]
     pgn: Optional[Integer]
     requestable: Optional[Boolean]
     sdu_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DIRECT-PDU-REF": lambda obj, elem: setattr(obj, "direct_pdu_ref", ARRef.deserialize(elem)),
+        "PGN": lambda obj, elem: setattr(obj, "pgn", elem.text),
+        "REQUESTABLE": lambda obj, elem: setattr(obj, "requestable", elem.text),
+        "SDUS": lambda obj, elem: obj.sdu_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939TpPg."""
         super().__init__()
@@ -55,9 +66,8 @@ class J1939TpPg(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939TpPg, self).serialize()

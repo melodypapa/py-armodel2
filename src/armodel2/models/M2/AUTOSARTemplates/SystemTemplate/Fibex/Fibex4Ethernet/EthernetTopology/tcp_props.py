@@ -31,6 +31,9 @@ class TcpProps(ARObject):
         """
         return False
 
+    _XML_TAG = "TCP-PROPS"
+
+
     tcp_congestion: Optional[Boolean]
     tcp_delayed_ack: Optional[TimeValue]
     tcp_fast_recovery: Optional[Any]
@@ -46,6 +49,25 @@ class TcpProps(ARObject):
     tcp_syn_max_rtx: Optional[PositiveInteger]
     tcp_syn_received: Optional[TimeValue]
     tcp_ttl: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "TCP-CONGESTION": lambda obj, elem: setattr(obj, "tcp_congestion", elem.text),
+        "TCP-DELAYED-ACK": lambda obj, elem: setattr(obj, "tcp_delayed_ack", elem.text),
+        "TCP-FAST-RECOVERY": lambda obj, elem: setattr(obj, "tcp_fast_recovery", any (BooleanRecovery).deserialize(elem)),
+        "TCP-FAST": lambda obj, elem: setattr(obj, "tcp_fast", elem.text),
+        "TCP-FIN": lambda obj, elem: setattr(obj, "tcp_fin", elem.text),
+        "TCP-KEEP-ALIVE": lambda obj, elem: setattr(obj, "tcp_keep_alive", elem.text),
+        "TCP-MAX-RTX": lambda obj, elem: setattr(obj, "tcp_max_rtx", elem.text),
+        "TCP-MSL": lambda obj, elem: setattr(obj, "tcp_msl", elem.text),
+        "TCP-NAGLE": lambda obj, elem: setattr(obj, "tcp_nagle", elem.text),
+        "TCP-RECEIVE-WINDOW-MAX": lambda obj, elem: setattr(obj, "tcp_receive_window_max", elem.text),
+        "TCP": lambda obj, elem: setattr(obj, "tcp", elem.text),
+        "TCP-SLOW-START": lambda obj, elem: setattr(obj, "tcp_slow_start", elem.text),
+        "TCP-SYN-MAX-RTX": lambda obj, elem: setattr(obj, "tcp_syn_max_rtx", elem.text),
+        "TCP-SYN-RECEIVED": lambda obj, elem: setattr(obj, "tcp_syn_received", elem.text),
+        "TCP-TTL": lambda obj, elem: setattr(obj, "tcp_ttl", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TcpProps."""
         super().__init__()
@@ -71,9 +93,8 @@ class TcpProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TcpProps, self).serialize()

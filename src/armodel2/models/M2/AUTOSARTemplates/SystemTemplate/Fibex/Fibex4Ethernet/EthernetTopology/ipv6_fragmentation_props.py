@@ -30,10 +30,21 @@ class Ipv6FragmentationProps(ARObject):
         """
         return False
 
+    _XML_TAG = "IPV6-FRAGMENTATION-PROPS"
+
+
     tcp_ip_ip: Optional[TimeValue]
     tcp_ip_ip_reassembly_buffer_size: Optional[PositiveInteger]
     tcp_ip_ip_tx: Optional[PositiveInteger]
     tcp_ip_ip_tx_fragment_buffer_size: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "TCP-IP-IP": lambda obj, elem: setattr(obj, "tcp_ip_ip", elem.text),
+        "TCP-IP-IP-REASSEMBLY-BUFFER-SIZE": lambda obj, elem: setattr(obj, "tcp_ip_ip_reassembly_buffer_size", elem.text),
+        "TCP-IP-IP-TX": lambda obj, elem: setattr(obj, "tcp_ip_ip_tx", elem.text),
+        "TCP-IP-IP-TX-FRAGMENT-BUFFER-SIZE": lambda obj, elem: setattr(obj, "tcp_ip_ip_tx_fragment_buffer_size", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ipv6FragmentationProps."""
         super().__init__()
@@ -48,9 +59,8 @@ class Ipv6FragmentationProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ipv6FragmentationProps, self).serialize()

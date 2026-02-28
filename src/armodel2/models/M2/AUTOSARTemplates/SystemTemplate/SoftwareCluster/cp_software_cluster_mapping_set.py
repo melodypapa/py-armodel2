@@ -39,10 +39,21 @@ class CpSoftwareClusterMappingSet(ARElement):
         """
         return False
 
+    _XML_TAG = "CP-SOFTWARE-CLUSTER-MAPPING-SET"
+
+
     port_element_toes: list[PortElementToCommunicationResourceMapping]
     resource_toes: list[CpSoftwareCluster]
     software_clusters: list[Any]
     swc_toes: list[SwcToApplicationPartitionMapping]
+    _DESERIALIZE_DISPATCH = {
+        "PORT-ELEMENT-TOES": lambda obj, elem: obj.port_element_toes.append(PortElementToCommunicationResourceMapping.deserialize(elem)),
+        "RESOURCE-TOES": lambda obj, elem: obj.resource_toes.append(CpSoftwareCluster.deserialize(elem)),
+        "SOFTWARE-CLUSTERS": lambda obj, elem: obj.software_clusters.append(any (CpSoftwareClusterTo).deserialize(elem)),
+        "SWC-TOES": lambda obj, elem: obj.swc_toes.append(SwcToApplicationPartitionMapping.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterMappingSet."""
         super().__init__()
@@ -57,9 +68,8 @@ class CpSoftwareClusterMappingSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSoftwareClusterMappingSet, self).serialize()

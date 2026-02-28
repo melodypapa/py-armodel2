@@ -34,7 +34,15 @@ class TriggerPortAnnotation(GeneralAnnotation):
         """
         return False
 
+    _XML_TAG = "TRIGGER-PORT-ANNOTATION"
+
+
     trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TriggerPortAnnotation."""
         super().__init__()
@@ -46,9 +54,8 @@ class TriggerPortAnnotation(GeneralAnnotation):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TriggerPortAnnotation, self).serialize()

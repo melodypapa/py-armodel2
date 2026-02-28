@@ -33,9 +33,19 @@ class CouplingPortFifo(CouplingPortStructuralElement):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT-FIFO"
+
+
     assigned_traffic: PositiveInteger
     minimum_fifo: Optional[PositiveInteger]
     shaper: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ASSIGNED-TRAFFIC": lambda obj, elem: setattr(obj, "assigned_traffic", elem.text),
+        "MINIMUM-FIFO": lambda obj, elem: setattr(obj, "minimum_fifo", elem.text),
+        "SHAPER": lambda obj, elem: setattr(obj, "shaper", any (CouplingPortAbstract).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPortFifo."""
         super().__init__()
@@ -49,9 +59,8 @@ class CouplingPortFifo(CouplingPortStructuralElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPortFifo, self).serialize()

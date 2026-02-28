@@ -43,6 +43,14 @@ class MixedContentForVerbatim(ARObject, ABC):
     e: EmphasisText
     tt: Tt
     xref: Xref
+    _DESERIALIZE_DISPATCH = {
+        "BR": lambda obj, elem: setattr(obj, "br", Br.deserialize(elem)),
+        "E": lambda obj, elem: setattr(obj, "e", EmphasisText.deserialize(elem)),
+        "TT": lambda obj, elem: setattr(obj, "tt", Tt.deserialize(elem)),
+        "XREF": lambda obj, elem: setattr(obj, "xref", Xref.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MixedContentForVerbatim."""
         super().__init__()
@@ -57,9 +65,8 @@ class MixedContentForVerbatim(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MixedContentForVerbatim, self).serialize()

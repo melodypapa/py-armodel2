@@ -36,9 +36,19 @@ class McParameterElementGroup(ARObject):
         """
         return False
 
+    _XML_TAG = "MC-PARAMETER-ELEMENT-GROUP"
+
+
     ram_location_ref: Optional[ARRef]
     rom_location_ref: Optional[ARRef]
     short_label: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "RAM-LOCATION-REF": lambda obj, elem: setattr(obj, "ram_location_ref", ARRef.deserialize(elem)),
+        "ROM-LOCATION-REF": lambda obj, elem: setattr(obj, "rom_location_ref", ARRef.deserialize(elem)),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize McParameterElementGroup."""
         super().__init__()
@@ -52,9 +62,8 @@ class McParameterElementGroup(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(McParameterElementGroup, self).serialize()

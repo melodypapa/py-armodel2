@@ -37,8 +37,17 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-ACF-LIN-PART"
+
+
     lin_identifier: Optional[PositiveInteger]
     sdu_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "LIN-IDENTIFIER": lambda obj, elem: setattr(obj, "lin_identifier", elem.text),
+        "SDU-REF": lambda obj, elem: setattr(obj, "sdu_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfLinPart."""
         super().__init__()
@@ -51,9 +60,8 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpAcfLinPart, self).serialize()

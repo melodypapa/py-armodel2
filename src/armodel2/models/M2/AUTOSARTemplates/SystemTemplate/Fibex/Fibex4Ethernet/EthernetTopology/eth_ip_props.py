@@ -36,8 +36,17 @@ class EthIpProps(ARElement):
         """
         return False
 
+    _XML_TAG = "ETH-IP-PROPS"
+
+
     ipv4_props: Optional[Ipv4Props]
     ipv6_props: Optional[Ipv6Props]
+    _DESERIALIZE_DISPATCH = {
+        "IPV4-PROPS": lambda obj, elem: setattr(obj, "ipv4_props", Ipv4Props.deserialize(elem)),
+        "IPV6-PROPS": lambda obj, elem: setattr(obj, "ipv6_props", Ipv6Props.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthIpProps."""
         super().__init__()
@@ -50,9 +59,8 @@ class EthIpProps(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthIpProps, self).serialize()

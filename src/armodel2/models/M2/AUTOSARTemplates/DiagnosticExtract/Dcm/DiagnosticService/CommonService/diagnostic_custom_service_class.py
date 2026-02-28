@@ -33,7 +33,15 @@ class DiagnosticCustomServiceClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-CUSTOM-SERVICE-CLASS"
+
+
     custom_service: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CUSTOM-SERVICE": lambda obj, elem: setattr(obj, "custom_service", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticCustomServiceClass."""
         super().__init__()
@@ -45,9 +53,8 @@ class DiagnosticCustomServiceClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticCustomServiceClass, self).serialize()

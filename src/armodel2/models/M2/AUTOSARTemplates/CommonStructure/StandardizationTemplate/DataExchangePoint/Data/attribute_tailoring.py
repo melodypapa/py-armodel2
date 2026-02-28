@@ -36,6 +36,12 @@ class AttributeTailoring(DataFormatElementScope, ABC):
 
     multiplicity: Optional[Any]
     variation: Optional[VariationRestrictionWithSeverity]
+    _DESERIALIZE_DISPATCH = {
+        "MULTIPLICITY": lambda obj, elem: setattr(obj, "multiplicity", any (MultiplicityRestriction).deserialize(elem)),
+        "VARIATION": lambda obj, elem: setattr(obj, "variation", VariationRestrictionWithSeverity.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AttributeTailoring."""
         super().__init__()
@@ -48,9 +54,8 @@ class AttributeTailoring(DataFormatElementScope, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AttributeTailoring, self).serialize()

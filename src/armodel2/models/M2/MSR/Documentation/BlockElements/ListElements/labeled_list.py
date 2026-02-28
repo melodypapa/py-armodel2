@@ -39,8 +39,17 @@ class LabeledList(Paginateable):
         """
         return False
 
+    _XML_TAG = "LABELED-LIST"
+
+
     indent_sample: Optional[IndentSample]
     labeled_item_label: LabeledItem
+    _DESERIALIZE_DISPATCH = {
+        "INDENT-SAMPLE": lambda obj, elem: setattr(obj, "indent_sample", IndentSample.deserialize(elem)),
+        "LABELED-ITEM-LABEL": lambda obj, elem: setattr(obj, "labeled_item_label", LabeledItem.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LabeledList."""
         super().__init__()
@@ -53,9 +62,8 @@ class LabeledList(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LabeledList, self).serialize()

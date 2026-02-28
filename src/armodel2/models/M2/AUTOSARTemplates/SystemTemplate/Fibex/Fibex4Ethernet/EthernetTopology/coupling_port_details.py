@@ -45,12 +45,25 @@ class CouplingPortDetails(ARObject):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT-DETAILS"
+
+
     coupling_ports: list[CouplingPortStructuralElement]
     ethernet_priority: EthernetPriorityRegeneration
     ethernet_traffic: CouplingPortTrafficClassAssignment
     global_time_coupling: Optional[GlobalTimeCouplingPortProps]
     last_egress_ref: Optional[ARRef]
     rate_policies: list[CouplingPortRatePolicy]
+    _DESERIALIZE_DISPATCH = {
+        "COUPLING-PORTS": lambda obj, elem: obj.coupling_ports.append(CouplingPortStructuralElement.deserialize(elem)),
+        "ETHERNET-PRIORITY": lambda obj, elem: setattr(obj, "ethernet_priority", EthernetPriorityRegeneration.deserialize(elem)),
+        "ETHERNET-TRAFFIC": lambda obj, elem: setattr(obj, "ethernet_traffic", CouplingPortTrafficClassAssignment.deserialize(elem)),
+        "GLOBAL-TIME-COUPLING": lambda obj, elem: setattr(obj, "global_time_coupling", GlobalTimeCouplingPortProps.deserialize(elem)),
+        "LAST-EGRESS-REF": lambda obj, elem: setattr(obj, "last_egress_ref", ARRef.deserialize(elem)),
+        "RATE-POLICIES": lambda obj, elem: obj.rate_policies.append(CouplingPortRatePolicy.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPortDetails."""
         super().__init__()
@@ -67,9 +80,8 @@ class CouplingPortDetails(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPortDetails, self).serialize()

@@ -40,11 +40,23 @@ class McSupportData(ARObject):
         """
         return False
 
+    _XML_TAG = "MC-SUPPORT-DATA"
+
+
     emulations: list[McSwEmulationMethodSupport]
     mc_parameters: list[McDataInstance]
     mc_variables: list[McDataInstance]
     measurable_refs: list[ARRef]
     rpt_support_data: Optional[RptSupportData]
+    _DESERIALIZE_DISPATCH = {
+        "EMULATIONS": lambda obj, elem: obj.emulations.append(McSwEmulationMethodSupport.deserialize(elem)),
+        "MC-PARAMETERS": lambda obj, elem: obj.mc_parameters.append(McDataInstance.deserialize(elem)),
+        "MC-VARIABLES": lambda obj, elem: obj.mc_variables.append(McDataInstance.deserialize(elem)),
+        "MEASURABLES": lambda obj, elem: obj.measurable_refs.append(ARRef.deserialize(elem)),
+        "RPT-SUPPORT-DATA": lambda obj, elem: setattr(obj, "rpt_support_data", RptSupportData.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize McSupportData."""
         super().__init__()
@@ -60,9 +72,8 @@ class McSupportData(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(McSupportData, self).serialize()

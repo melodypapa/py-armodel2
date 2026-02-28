@@ -30,8 +30,17 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
         """
         return False
 
+    _XML_TAG = "SWC-BSW-SYNCHRONIZED-MODE-GROUP-PROTOTYPE"
+
+
     bsw_mode_group_prototype_ref: Optional[ARRef]
     swc_mode_group_swc_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BSW-MODE-GROUP-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "bsw_mode_group_prototype_ref", ARRef.deserialize(elem)),
+        "SWC-MODE-GROUP-SWC-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "swc_mode_group_swc_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcBswSynchronizedModeGroupPrototype."""
         super().__init__()
@@ -44,9 +53,8 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcBswSynchronizedModeGroupPrototype, self).serialize()

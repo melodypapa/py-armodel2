@@ -32,6 +32,12 @@ class EcucAbstractConfigurationClass(ARObject, ABC):
 
     config_class: Optional[EcucConfigurationClassEnum]
     config_variant: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CONFIG-CLASS": lambda obj, elem: setattr(obj, "config_class", EcucConfigurationClassEnum.deserialize(elem)),
+        "CONFIG-VARIANT": lambda obj, elem: setattr(obj, "config_variant", any (EcucConfiguration).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucAbstractConfigurationClass."""
         super().__init__()
@@ -44,9 +50,8 @@ class EcucAbstractConfigurationClass(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucAbstractConfigurationClass, self).serialize()

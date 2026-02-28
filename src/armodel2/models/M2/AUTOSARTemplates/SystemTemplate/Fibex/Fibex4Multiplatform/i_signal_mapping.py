@@ -33,9 +33,19 @@ class ISignalMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "I-SIGNAL-MAPPING"
+
+
     introduction: Optional[DocumentationBlock]
     source_signal_ref: Optional[ARRef]
     target_signal_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", DocumentationBlock.deserialize(elem)),
+        "SOURCE-SIGNAL-REF": lambda obj, elem: setattr(obj, "source_signal_ref", ARRef.deserialize(elem)),
+        "TARGET-SIGNAL-REF": lambda obj, elem: setattr(obj, "target_signal_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ISignalMapping."""
         super().__init__()
@@ -49,9 +59,8 @@ class ISignalMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ISignalMapping, self).serialize()

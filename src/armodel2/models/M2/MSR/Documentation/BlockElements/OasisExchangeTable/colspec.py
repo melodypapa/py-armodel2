@@ -35,12 +35,25 @@ class Colspec(ARObject):
         """
         return False
 
+    _XML_TAG = "COLSPEC"
+
+
     align: Optional[AlignEnum]
     colname: Optional[String]
     colnum: Optional[String]
     colsep: Optional[TableSeparatorString]
     colwidth: Optional[String]
     rowsep: Optional[TableSeparatorString]
+    _DESERIALIZE_DISPATCH = {
+        "ALIGN": lambda obj, elem: setattr(obj, "align", AlignEnum.deserialize(elem)),
+        "COLNAME": lambda obj, elem: setattr(obj, "colname", elem.text),
+        "COLNUM": lambda obj, elem: setattr(obj, "colnum", elem.text),
+        "COLSEP": lambda obj, elem: setattr(obj, "colsep", elem.text),
+        "COLWIDTH": lambda obj, elem: setattr(obj, "colwidth", elem.text),
+        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Colspec."""
         super().__init__()
@@ -57,9 +70,8 @@ class Colspec(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Colspec, self).serialize()

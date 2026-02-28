@@ -40,10 +40,21 @@ class TDEventFrameEthernet(TDEventCom):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-FRAME-ETHERNET"
+
+
     static_socket_ref: Optional[ARRef]
     td_event_type: Optional[TDEventFrameEthernet]
     td_header_id_filters: list[TDHeaderIdRange]
     td_pdu_triggering_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "STATIC-SOCKET-REF": lambda obj, elem: setattr(obj, "static_socket_ref", ARRef.deserialize(elem)),
+        "TD-EVENT-TYPE": lambda obj, elem: setattr(obj, "td_event_type", TDEventFrameEthernet.deserialize(elem)),
+        "TD-HEADER-ID-FILTERS": lambda obj, elem: obj.td_header_id_filters.append(TDHeaderIdRange.deserialize(elem)),
+        "TD-PDU-TRIGGERINGS": lambda obj, elem: obj.td_pdu_triggering_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventFrameEthernet."""
         super().__init__()
@@ -58,9 +69,8 @@ class TDEventFrameEthernet(TDEventCom):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventFrameEthernet, self).serialize()

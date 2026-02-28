@@ -43,10 +43,21 @@ class PortPrototypeBlueprint(ARElement):
         """
         return False
 
+    _XML_TAG = "PORT-PROTOTYPE-BLUEPRINT"
+
+
     _init_value_refs: list[ARRef]
     interface_ref: ARRef
     provided_coms: list[PPortComSpec]
     required_coms: list[RPortComSpec]
+    _DESERIALIZE_DISPATCH = {
+        "INIT-VALUES": lambda obj, elem: obj._init_value_refs.append(ARRef.deserialize(elem)),
+        "INTERFACE-REF": lambda obj, elem: setattr(obj, "interface_ref", ARRef.deserialize(elem)),
+        "PROVIDED-COMS": lambda obj, elem: obj.provided_coms.append(PPortComSpec.deserialize(elem)),
+        "REQUIRED-COMS": lambda obj, elem: obj.required_coms.append(RPortComSpec.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PortPrototypeBlueprint."""
         super().__init__()
@@ -72,9 +83,8 @@ class PortPrototypeBlueprint(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PortPrototypeBlueprint, self).serialize()

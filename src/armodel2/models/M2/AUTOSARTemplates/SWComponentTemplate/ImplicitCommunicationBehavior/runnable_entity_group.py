@@ -38,8 +38,17 @@ class RunnableEntityGroup(Identifiable):
         """
         return False
 
+    _XML_TAG = "RUNNABLE-ENTITY-GROUP"
+
+
     runnable_entities: list[RunnableEntity]
     runnable_entity_group_group_in_composition_instance_ref: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "RUNNABLE-ENTITIES": lambda obj, elem: obj.runnable_entities.append(RunnableEntity.deserialize(elem)),
+        "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS": lambda obj, elem: obj.runnable_entity_group_group_in_composition_instance_ref.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RunnableEntityGroup."""
         super().__init__()
@@ -52,9 +61,8 @@ class RunnableEntityGroup(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RunnableEntityGroup, self).serialize()

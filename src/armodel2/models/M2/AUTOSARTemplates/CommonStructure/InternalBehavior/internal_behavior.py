@@ -66,6 +66,16 @@ class InternalBehavior(Identifiable, ABC):
     exclusive_areas: list[ExclusiveArea]
     exclusive_area_nesting_orders: list[ExclusiveAreaNestingOrder]
     static_memories: list[VariableDataPrototype]
+    _DESERIALIZE_DISPATCH = {
+        "CONSTANT-MEMORIES": lambda obj, elem: obj.constant_memories.append(ParameterDataPrototype.deserialize(elem)),
+        "CONSTANT-VALUE-MAPPINGS": lambda obj, elem: obj.constant_value_mapping_refs.append(ARRef.deserialize(elem)),
+        "DATA-TYPE-MAPPINGS": lambda obj, elem: obj.data_type_mapping_refs.append(ARRef.deserialize(elem)),
+        "EXCLUSIVE-AREAS": lambda obj, elem: obj.exclusive_areas.append(ExclusiveArea.deserialize(elem)),
+        "EXCLUSIVE-AREA-NESTING-ORDERS": lambda obj, elem: obj.exclusive_area_nesting_orders.append(ExclusiveAreaNestingOrder.deserialize(elem)),
+        "STATIC-MEMORIES": lambda obj, elem: obj.static_memories.append(VariableDataPrototype.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InternalBehavior."""
         super().__init__()
@@ -82,9 +92,8 @@ class InternalBehavior(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InternalBehavior, self).serialize()

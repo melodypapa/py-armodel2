@@ -40,9 +40,19 @@ class GlobalTimeGateway(Identifiable):
         """
         return False
 
+    _XML_TAG = "GLOBAL-TIME-GATEWAY"
+
+
     host_ref: Optional[ARRef]
     master_ref: Optional[ARRef]
     slave_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "HOST-REF": lambda obj, elem: setattr(obj, "host_ref", ARRef.deserialize(elem)),
+        "MASTER-REF": lambda obj, elem: setattr(obj, "master_ref", ARRef.deserialize(elem)),
+        "SLAVE-REF": lambda obj, elem: setattr(obj, "slave_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeGateway."""
         super().__init__()
@@ -56,9 +66,8 @@ class GlobalTimeGateway(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeGateway, self).serialize()

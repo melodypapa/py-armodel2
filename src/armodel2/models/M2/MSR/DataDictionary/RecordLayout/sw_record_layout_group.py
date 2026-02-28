@@ -44,6 +44,9 @@ class SwRecordLayoutGroup(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-RECORD-LAYOUT-GROUP"
+
+
     category: Optional[AsamRecordLayoutSemantics]
     desc: Optional[MultiLanguageOverviewParagraph]
     short_label: Optional[Identifier]
@@ -55,6 +58,21 @@ class SwRecordLayoutGroup(ARObject):
     sw_record_layout_group_content_type: Optional[swRecordLayoutGroupContent]
     sw_record_layout_group_index: Optional[NameToken]
     sw_record_layout_group_step: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
+        "DESC": lambda obj, elem: setattr(obj, "desc", MultiLanguageOverviewParagraph.deserialize(elem)),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "SW-GENERIC-AXIS-PARAM-TYPE-REF": lambda obj, elem: setattr(obj, "sw_generic_axis_param_type_ref", ARRef.deserialize(elem)),
+        "SW-RECORD-LAYOUT-COMPONENT": lambda obj, elem: setattr(obj, "sw_record_layout_component", elem.text),
+        "SW-RECORD-LAYOUT-GROUP-AXIS": lambda obj, elem: setattr(obj, "sw_record_layout_group_axis", elem.text),
+        "SW-RECORD-LAYOUT-GROUP-FROM": lambda obj, elem: setattr(obj, "sw_record_layout_group_from", elem.text),
+        "SW-RECORD-LAYOUT-GROUP-TO": lambda obj, elem: setattr(obj, "sw_record_layout_group_to", elem.text),
+        "SW-RECORD-LAYOUT-GROUP-CONTENT-TYPE": lambda obj, elem: setattr(obj, "sw_record_layout_group_content_type", swRecordLayoutGroupContent.deserialize(elem)),
+        "SW-RECORD-LAYOUT-GROUP-INDEX": lambda obj, elem: setattr(obj, "sw_record_layout_group_index", elem.text),
+        "SW-RECORD-LAYOUT-GROUP-STEP": lambda obj, elem: setattr(obj, "sw_record_layout_group_step", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwRecordLayoutGroup."""
         super().__init__()
@@ -76,9 +94,8 @@ class SwRecordLayoutGroup(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwRecordLayoutGroup, self).serialize()

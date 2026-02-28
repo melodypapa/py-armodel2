@@ -33,8 +33,17 @@ class EthernetPriorityRegeneration(Referrable):
         """
         return False
 
+    _XML_TAG = "ETHERNET-PRIORITY-REGENERATION"
+
+
     ingress_priority: Optional[PositiveInteger]
     regenerated: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "INGRESS-PRIORITY": lambda obj, elem: setattr(obj, "ingress_priority", elem.text),
+        "REGENERATED": lambda obj, elem: setattr(obj, "regenerated", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthernetPriorityRegeneration."""
         super().__init__()
@@ -47,9 +56,8 @@ class EthernetPriorityRegeneration(Referrable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthernetPriorityRegeneration, self).serialize()

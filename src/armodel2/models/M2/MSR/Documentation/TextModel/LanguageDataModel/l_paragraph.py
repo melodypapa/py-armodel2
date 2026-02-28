@@ -125,9 +125,18 @@ class LParagraph(LanguageSpecific):
 
         return elem
 
+    _DESERIALIZE_DISPATCH = {
+        "L-1": lambda obj, elem: obj._l1.append(LParagraph.deserialize(elem)),
+        "L-2": lambda obj, elem: obj._l2.append(LParagraph.deserialize(elem)),
+        "L-3": lambda obj, elem: obj._l3.append(LParagraph.deserialize(elem)),
+    }
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "LParagraph":
         """Deserialize XML element to LParagraph object.
+
+        Uses static dispatch table for O(1) tag-to-handler lookup.
+        Single-pass iteration through child elements.
 
         Args:
             element: XML element to deserialize from
@@ -138,26 +147,13 @@ class LParagraph(LanguageSpecific):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LParagraph, cls).deserialize(element)
 
-        # Deserialize l1 list from L-1 elements
-        obj._l1 = []
+        # Single-pass deserialization with dispatch table
+        ns_split = '}'
         for child in element:
-            if SerializationHelper.strip_namespace(child.tag) == "L-1":
-                l1_value = LParagraph.deserialize(child)
-                obj._l1.append(l1_value)
-
-        # Deserialize l2 list from L-2 elements
-        obj._l2 = []
-        for child in element:
-            if SerializationHelper.strip_namespace(child.tag) == "L-2":
-                l2_value = LParagraph.deserialize(child)
-                obj._l2.append(l2_value)
-
-        # Deserialize l3 list from L-3 elements
-        obj._l3 = []
-        for child in element:
-            if SerializationHelper.strip_namespace(child.tag) == "L-3":
-                l3_value = LParagraph.deserialize(child)
-                obj._l3.append(l3_value)
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            handler = cls._DESERIALIZE_DISPATCH.get(tag)
+            if handler is not None:
+                handler(obj, child)
 
         return obj
 

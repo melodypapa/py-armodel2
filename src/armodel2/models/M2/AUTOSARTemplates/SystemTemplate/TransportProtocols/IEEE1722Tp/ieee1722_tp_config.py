@@ -34,7 +34,15 @@ class IEEE1722TpConfig(TpConfig):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-CONFIG"
+
+
     tp_connection_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connection_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpConfig."""
         super().__init__()
@@ -46,9 +54,8 @@ class IEEE1722TpConfig(TpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpConfig, self).serialize()

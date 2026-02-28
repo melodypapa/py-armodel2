@@ -40,12 +40,25 @@ class DataPrototypeMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "DATA-PROTOTYPE-MAPPING"
+
+
     first_data_ref: Optional[ARRef]
     first_to_second_ref: Optional[ARRef]
     second_data_ref: Optional[ARRef]
     second_to_first_ref: Optional[ARRef]
     sub_element_refs: list[ARRef]
     text_table_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "FIRST-DATA-REF": lambda obj, elem: setattr(obj, "first_data_ref", ARRef.deserialize(elem)),
+        "FIRST-TO-SECOND-REF": lambda obj, elem: setattr(obj, "first_to_second_ref", ARRef.deserialize(elem)),
+        "SECOND-DATA-REF": lambda obj, elem: setattr(obj, "second_data_ref", ARRef.deserialize(elem)),
+        "SECOND-TO-FIRST-REF": lambda obj, elem: setattr(obj, "second_to_first_ref", ARRef.deserialize(elem)),
+        "SUB-ELEMENTS": lambda obj, elem: obj.sub_element_refs.append(ARRef.deserialize(elem)),
+        "TEXT-TABLE-REF": lambda obj, elem: setattr(obj, "text_table_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataPrototypeMapping."""
         super().__init__()
@@ -62,9 +75,8 @@ class DataPrototypeMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataPrototypeMapping, self).serialize()

@@ -34,8 +34,17 @@ class SystemSignalGroup(ARElement):
         """
         return False
 
+    _XML_TAG = "SYSTEM-SIGNAL-GROUP"
+
+
     system_signal_refs: list[ARRef]
     transforming_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SYSTEM-SIGNALS": lambda obj, elem: obj.system_signal_refs.append(ARRef.deserialize(elem)),
+        "TRANSFORMING-REF": lambda obj, elem: setattr(obj, "transforming_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SystemSignalGroup."""
         super().__init__()
@@ -48,9 +57,8 @@ class SystemSignalGroup(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SystemSignalGroup, self).serialize()

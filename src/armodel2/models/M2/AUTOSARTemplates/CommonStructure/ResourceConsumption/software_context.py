@@ -29,8 +29,17 @@ class SoftwareContext(ARObject):
         """
         return False
 
+    _XML_TAG = "SOFTWARE-CONTEXT"
+
+
     input: Optional[String]
     state: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "INPUT": lambda obj, elem: setattr(obj, "input", elem.text),
+        "STATE": lambda obj, elem: setattr(obj, "state", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SoftwareContext."""
         super().__init__()
@@ -43,9 +52,8 @@ class SoftwareContext(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SoftwareContext, self).serialize()

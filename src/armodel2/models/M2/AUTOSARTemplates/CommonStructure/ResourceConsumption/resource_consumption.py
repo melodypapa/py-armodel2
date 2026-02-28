@@ -51,12 +51,25 @@ class ResourceConsumption(Identifiable):
         """
         return False
 
+    _XML_TAG = "RESOURCE-CONSUMPTION"
+
+
     access_count_set_refs: list[ARRef]
     execution_times: list[ExecutionTime]
     heap_usages: list[HeapUsage]
     memory_sections: list[MemorySection]
     section_name_prefixes: list[SectionNamePrefix]
     stack_usages: list[StackUsage]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESS-COUNT-SETS": lambda obj, elem: obj.access_count_set_refs.append(ARRef.deserialize(elem)),
+        "EXECUTION-TIMES": lambda obj, elem: obj.execution_times.append(ExecutionTime.deserialize(elem)),
+        "HEAP-USAGES": lambda obj, elem: obj.heap_usages.append(HeapUsage.deserialize(elem)),
+        "MEMORY-SECTIONS": lambda obj, elem: obj.memory_sections.append(MemorySection.deserialize(elem)),
+        "SECTION-NAME-PREFIXES": lambda obj, elem: obj.section_name_prefixes.append(SectionNamePrefix.deserialize(elem)),
+        "STACK-USAGES": lambda obj, elem: obj.stack_usages.append(StackUsage.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ResourceConsumption."""
         super().__init__()
@@ -73,9 +86,8 @@ class ResourceConsumption(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ResourceConsumption, self).serialize()

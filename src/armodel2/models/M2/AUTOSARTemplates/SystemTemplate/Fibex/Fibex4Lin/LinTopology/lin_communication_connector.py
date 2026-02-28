@@ -40,10 +40,21 @@ class LinCommunicationConnector(CommunicationConnector):
         """
         return False
 
+    _XML_TAG = "LIN-COMMUNICATION-CONNECTOR"
+
+
     initial_nad: Optional[Integer]
     lin_configurable_frames: list[LinConfigurableFrame]
     lin_ordereds: list[LinOrderedConfigurableFrame]
     schedule: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "INITIAL-NAD": lambda obj, elem: setattr(obj, "initial_nad", elem.text),
+        "LIN-CONFIGURABLE-FRAMES": lambda obj, elem: obj.lin_configurable_frames.append(LinConfigurableFrame.deserialize(elem)),
+        "LIN-ORDEREDS": lambda obj, elem: obj.lin_ordereds.append(LinOrderedConfigurableFrame.deserialize(elem)),
+        "SCHEDULE": lambda obj, elem: setattr(obj, "schedule", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinCommunicationConnector."""
         super().__init__()
@@ -58,9 +69,8 @@ class LinCommunicationConnector(CommunicationConnector):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinCommunicationConnector, self).serialize()

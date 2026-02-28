@@ -33,10 +33,21 @@ class CanGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         """
         return False
 
+    _XML_TAG = "CAN-GLOBAL-TIME-DOMAIN-PROPS"
+
+
     fup_data_id_list: PositiveInteger
     ofns_data_id_list: PositiveInteger
     ofs_data_id_list: PositiveInteger
     sync_data_id_list: PositiveInteger
+    _DESERIALIZE_DISPATCH = {
+        "FUP-DATA-ID-LIST": lambda obj, elem: setattr(obj, "fup_data_id_list", elem.text),
+        "OFNS-DATA-ID-LIST": lambda obj, elem: setattr(obj, "ofns_data_id_list", elem.text),
+        "OFS-DATA-ID-LIST": lambda obj, elem: setattr(obj, "ofs_data_id_list", elem.text),
+        "SYNC-DATA-ID-LIST": lambda obj, elem: setattr(obj, "sync_data_id_list", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanGlobalTimeDomainProps."""
         super().__init__()
@@ -51,9 +62,8 @@ class CanGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanGlobalTimeDomainProps, self).serialize()

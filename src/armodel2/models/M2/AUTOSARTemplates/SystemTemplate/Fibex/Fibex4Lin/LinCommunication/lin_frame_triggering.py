@@ -36,8 +36,17 @@ class LinFrameTriggering(FrameTriggering):
         """
         return False
 
+    _XML_TAG = "LIN-FRAME-TRIGGERING"
+
+
     identifier: Optional[Integer]
     lin_checksum: Optional[LinChecksumType]
+    _DESERIALIZE_DISPATCH = {
+        "IDENTIFIER": lambda obj, elem: setattr(obj, "identifier", elem.text),
+        "LIN-CHECKSUM": lambda obj, elem: setattr(obj, "lin_checksum", LinChecksumType.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinFrameTriggering."""
         super().__init__()
@@ -50,9 +59,8 @@ class LinFrameTriggering(FrameTriggering):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinFrameTriggering, self).serialize()

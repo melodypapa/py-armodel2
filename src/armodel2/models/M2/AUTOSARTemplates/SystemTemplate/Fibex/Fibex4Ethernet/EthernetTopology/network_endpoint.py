@@ -43,11 +43,23 @@ class NetworkEndpoint(Identifiable):
         """
         return False
 
+    _XML_TAG = "NETWORK-ENDPOINT"
+
+
     fully_qualified: Optional[String]
     infrastructure_services: Optional[InfrastructureServices]
     ip_sec_config: Optional[IPSecConfig]
     network_endpoints: list[NetworkEndpoint]
     priority: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "FULLY-QUALIFIED": lambda obj, elem: setattr(obj, "fully_qualified", elem.text),
+        "INFRASTRUCTURE-SERVICES": lambda obj, elem: setattr(obj, "infrastructure_services", InfrastructureServices.deserialize(elem)),
+        "IP-SEC-CONFIG": lambda obj, elem: setattr(obj, "ip_sec_config", IPSecConfig.deserialize(elem)),
+        "NETWORK-ENDPOINTS": lambda obj, elem: obj.network_endpoints.append(NetworkEndpoint.deserialize(elem)),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NetworkEndpoint."""
         super().__init__()
@@ -63,9 +75,8 @@ class NetworkEndpoint(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NetworkEndpoint, self).serialize()

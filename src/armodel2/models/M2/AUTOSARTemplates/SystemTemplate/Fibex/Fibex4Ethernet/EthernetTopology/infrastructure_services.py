@@ -32,8 +32,17 @@ class InfrastructureServices(ARObject):
         """
         return False
 
+    _XML_TAG = "INFRASTRUCTURE-SERVICES"
+
+
     do_ip_entity: Optional[DoIpEntity]
     time: Optional[TimeSynchronization]
+    _DESERIALIZE_DISPATCH = {
+        "DO-IP-ENTITY": lambda obj, elem: setattr(obj, "do_ip_entity", DoIpEntity.deserialize(elem)),
+        "TIME": lambda obj, elem: setattr(obj, "time", TimeSynchronization.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InfrastructureServices."""
         super().__init__()
@@ -46,9 +55,8 @@ class InfrastructureServices(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InfrastructureServices, self).serialize()

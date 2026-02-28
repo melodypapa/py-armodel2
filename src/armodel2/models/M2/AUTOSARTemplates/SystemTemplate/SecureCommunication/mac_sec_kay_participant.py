@@ -37,9 +37,19 @@ class MacSecKayParticipant(Identifiable):
         """
         return False
 
+    _XML_TAG = "MAC-SEC-KAY-PARTICIPANT"
+
+
     ckn_ref: Optional[ARRef]
     crypto_algo: Optional[MacSecCryptoAlgoConfig]
     sak_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CKN-REF": lambda obj, elem: setattr(obj, "ckn_ref", ARRef.deserialize(elem)),
+        "CRYPTO-ALGO": lambda obj, elem: setattr(obj, "crypto_algo", MacSecCryptoAlgoConfig.deserialize(elem)),
+        "SAK-REF": lambda obj, elem: setattr(obj, "sak_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MacSecKayParticipant."""
         super().__init__()
@@ -53,9 +63,8 @@ class MacSecKayParticipant(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MacSecKayParticipant, self).serialize()

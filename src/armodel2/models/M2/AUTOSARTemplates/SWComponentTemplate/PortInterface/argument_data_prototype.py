@@ -41,8 +41,17 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         """
         return False
 
+    _XML_TAG = "ARGUMENT-DATA-PROTOTYPE"
+
+
     direction: Optional[ArgumentDirectionEnum]
     server_argument_impl: Optional[ServerArgumentImplPolicyEnum]
+    _DESERIALIZE_DISPATCH = {
+        "DIRECTION": lambda obj, elem: setattr(obj, "direction", ArgumentDirectionEnum.deserialize(elem)),
+        "SERVER-ARGUMENT-IMPL": lambda obj, elem: setattr(obj, "server_argument_impl", ServerArgumentImplPolicyEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ArgumentDataPrototype."""
         super().__init__()
@@ -55,9 +64,8 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ArgumentDataPrototype, self).serialize()

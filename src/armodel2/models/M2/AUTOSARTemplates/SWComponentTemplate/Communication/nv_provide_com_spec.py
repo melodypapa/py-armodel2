@@ -40,9 +40,19 @@ class NvProvideComSpec(PPortComSpec):
         """
         return False
 
+    _XML_TAG = "NV-PROVIDE-COM-SPEC"
+
+
     ram_block_init_value: Optional[ValueSpecification]
     rom_block_init_value: Optional[ValueSpecification]
     variable_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "RAM-BLOCK-INIT-VALUE": lambda obj, elem: setattr(obj, "ram_block_init_value", ValueSpecification.deserialize(elem)),
+        "ROM-BLOCK-INIT-VALUE": lambda obj, elem: setattr(obj, "rom_block_init_value", ValueSpecification.deserialize(elem)),
+        "VARIABLE-REF": lambda obj, elem: setattr(obj, "variable_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NvProvideComSpec."""
         super().__init__()
@@ -56,9 +66,8 @@ class NvProvideComSpec(PPortComSpec):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NvProvideComSpec, self).serialize()

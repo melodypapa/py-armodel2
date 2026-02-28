@@ -37,10 +37,21 @@ class FlexrayFrameTriggering(FrameTriggering):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-FRAME-TRIGGERING"
+
+
     absolutelies: list[FlexrayAbsolutelyScheduledTiming]
     allow_dynamic: Optional[Boolean]
     message_id: Optional[PositiveInteger]
     payload_preamble: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ABSOLUTELIES": lambda obj, elem: obj.absolutelies.append(FlexrayAbsolutelyScheduledTiming.deserialize(elem)),
+        "ALLOW-DYNAMIC": lambda obj, elem: setattr(obj, "allow_dynamic", elem.text),
+        "MESSAGE-ID": lambda obj, elem: setattr(obj, "message_id", elem.text),
+        "PAYLOAD-PREAMBLE": lambda obj, elem: setattr(obj, "payload_preamble", any (BooleanIndicator).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayFrameTriggering."""
         super().__init__()
@@ -55,9 +66,8 @@ class FlexrayFrameTriggering(FrameTriggering):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayFrameTriggering, self).serialize()

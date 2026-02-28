@@ -37,8 +37,17 @@ class BswInterruptEntity(BswModuleEntity):
         """
         return False
 
+    _XML_TAG = "BSW-INTERRUPT-ENTITY"
+
+
     interrupt_category: Optional[BswInterruptCategory]
     interrupt_source: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "INTERRUPT-CATEGORY": lambda obj, elem: setattr(obj, "interrupt_category", BswInterruptCategory.deserialize(elem)),
+        "INTERRUPT-SOURCE": lambda obj, elem: setattr(obj, "interrupt_source", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswInterruptEntity."""
         super().__init__()
@@ -51,9 +60,8 @@ class BswInterruptEntity(BswModuleEntity):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswInterruptEntity, self).serialize()

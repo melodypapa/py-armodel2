@@ -40,9 +40,19 @@ class TDEventIPdu(TDEventCom):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-I-PDU"
+
+
     i_pdu_ref: Optional[ARRef]
     physical_channel_ref: Optional[ARRef]
     td_event_type: Optional[TDEventIPduTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "I-PDU-REF": lambda obj, elem: setattr(obj, "i_pdu_ref", ARRef.deserialize(elem)),
+        "PHYSICAL-CHANNEL-REF": lambda obj, elem: setattr(obj, "physical_channel_ref", ARRef.deserialize(elem)),
+        "TD-EVENT-TYPE": lambda obj, elem: setattr(obj, "td_event_type", TDEventIPduTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventIPdu."""
         super().__init__()
@@ -56,9 +66,8 @@ class TDEventIPdu(TDEventCom):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventIPdu, self).serialize()

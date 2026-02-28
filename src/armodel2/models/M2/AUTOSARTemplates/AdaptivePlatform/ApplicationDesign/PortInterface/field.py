@@ -33,9 +33,19 @@ class Field(AutosarDataPrototype):
         """
         return False
 
+    _XML_TAG = "FIELD"
+
+
     has_getter: Optional[Boolean]
     has_notifier: Optional[Boolean]
     has_setter: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "HAS-GETTER": lambda obj, elem: setattr(obj, "has_getter", elem.text),
+        "HAS-NOTIFIER": lambda obj, elem: setattr(obj, "has_notifier", elem.text),
+        "HAS-SETTER": lambda obj, elem: setattr(obj, "has_setter", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Field."""
         super().__init__()
@@ -49,9 +59,8 @@ class Field(AutosarDataPrototype):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Field, self).serialize()

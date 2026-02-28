@@ -40,11 +40,23 @@ class SomeipSdServerServiceInstanceConfig(ARElement):
         """
         return False
 
+    _XML_TAG = "SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG"
+
+
     initial_offer_behavior: Optional[InitialSdDelayConfig]
     offer_cyclic_delay: Optional[TimeValue]
     priority: Optional[PositiveInteger]
     request: Optional[RequestResponseDelay]
     service_offer: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "INITIAL-OFFER-BEHAVIOR": lambda obj, elem: setattr(obj, "initial_offer_behavior", InitialSdDelayConfig.deserialize(elem)),
+        "OFFER-CYCLIC-DELAY": lambda obj, elem: setattr(obj, "offer_cyclic_delay", elem.text),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "REQUEST": lambda obj, elem: setattr(obj, "request", RequestResponseDelay.deserialize(elem)),
+        "SERVICE-OFFER": lambda obj, elem: setattr(obj, "service_offer", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SomeipSdServerServiceInstanceConfig."""
         super().__init__()
@@ -60,9 +72,8 @@ class SomeipSdServerServiceInstanceConfig(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SomeipSdServerServiceInstanceConfig, self).serialize()

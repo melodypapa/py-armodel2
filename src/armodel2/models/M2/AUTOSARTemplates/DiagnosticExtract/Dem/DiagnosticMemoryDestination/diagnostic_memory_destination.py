@@ -49,6 +49,18 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
     memory_entry: Optional[DiagnosticMemoryEntryStorageTriggerEnum]
     status_bit: Optional[Boolean]
     type_of_freeze: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "AGING-REQUIRES": lambda obj, elem: setattr(obj, "aging_requires", elem.text),
+        "CLEAR-DTC": lambda obj, elem: setattr(obj, "clear_dtc", any (DiagnosticClearDtc).deserialize(elem)),
+        "DTC-STATUS": lambda obj, elem: setattr(obj, "dtc_status", elem.text),
+        "EVENT": lambda obj, elem: setattr(obj, "event", DiagnosticEvent.deserialize(elem)),
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
+        "MEMORY-ENTRY": lambda obj, elem: setattr(obj, "memory_entry", DiagnosticMemoryEntryStorageTriggerEnum.deserialize(elem)),
+        "STATUS-BIT": lambda obj, elem: setattr(obj, "status_bit", elem.text),
+        "TYPE-OF-FREEZE": lambda obj, elem: setattr(obj, "type_of_freeze", any (DiagnosticTypeOf).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestination."""
         super().__init__()
@@ -67,9 +79,8 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticMemoryDestination, self).serialize()

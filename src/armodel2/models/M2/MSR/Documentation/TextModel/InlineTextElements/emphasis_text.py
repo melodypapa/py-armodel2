@@ -39,12 +39,25 @@ class EmphasisText(ARObject):
         """
         return False
 
+    _XML_TAG = "EMPHASIS-TEXT"
+
+
     color: Optional[String]
     font: Optional[EEnumFont]
     sub: Superscript
     sup: Superscript
     tt: Optional[Tt]
     type: Optional[EEnum]
+    _DESERIALIZE_DISPATCH = {
+        "COLOR": lambda obj, elem: setattr(obj, "color", elem.text),
+        "FONT": lambda obj, elem: setattr(obj, "font", EEnumFont.deserialize(elem)),
+        "SUB": lambda obj, elem: setattr(obj, "sub", elem.text),
+        "SUP": lambda obj, elem: setattr(obj, "sup", elem.text),
+        "TT": lambda obj, elem: setattr(obj, "tt", Tt.deserialize(elem)),
+        "TYPE": lambda obj, elem: setattr(obj, "type", EEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EmphasisText."""
         super().__init__()
@@ -61,9 +74,8 @@ class EmphasisText(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EmphasisText, self).serialize()

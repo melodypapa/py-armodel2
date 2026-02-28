@@ -40,9 +40,19 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         """
         return False
 
+    _XML_TAG = "CLIENT-SERVER-INTERFACE-TO-BSW-MODULE-ENTRY-BLUEPRINT-MAPPING"
+
+
     client_server_ref: ARRef
     operation: ClientServerOperation
     port_defined_arguments: list[PortDefinedArgumentValue]
+    _DESERIALIZE_DISPATCH = {
+        "CLIENT-SERVER-REF": lambda obj, elem: setattr(obj, "client_server_ref", ARRef.deserialize(elem)),
+        "OPERATION": lambda obj, elem: setattr(obj, "operation", ClientServerOperation.deserialize(elem)),
+        "PORT-DEFINED-ARGUMENTS": lambda obj, elem: obj.port_defined_arguments.append(PortDefinedArgumentValue.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientServerInterfaceToBswModuleEntryBlueprintMapping."""
         super().__init__()
@@ -56,9 +66,8 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientServerInterfaceToBswModuleEntryBlueprintMapping, self).serialize()

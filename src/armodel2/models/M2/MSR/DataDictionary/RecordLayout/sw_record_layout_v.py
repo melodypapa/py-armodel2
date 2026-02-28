@@ -45,6 +45,9 @@ class SwRecordLayoutV(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-RECORD-LAYOUT-V"
+
+
     short_label: Optional[Identifier]
     base_type_ref: Optional[ARRef]
     desc: Optional[MultiLanguageOverviewParagraph]
@@ -53,6 +56,18 @@ class SwRecordLayoutV(ARObject):
     sw_record_layout_v_fix_value: Optional[Integer]
     sw_record_layout_v_index: Optional[NameTokens]
     sw_record_layout_v_prop: Optional[NameToken]
+    _DESERIALIZE_DISPATCH = {
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "BASE-TYPE-REF": lambda obj, elem: setattr(obj, "base_type_ref", ARRef.deserialize(elem)),
+        "DESC": lambda obj, elem: setattr(obj, "desc", MultiLanguageOverviewParagraph.deserialize(elem)),
+        "SW-GENERIC-AXIS-PARAM-TYPE-REF": lambda obj, elem: setattr(obj, "sw_generic_axis_param_type_ref", ARRef.deserialize(elem)),
+        "SW-RECORD-LAYOUT-V-AXIS": lambda obj, elem: setattr(obj, "sw_record_layout_v_axis", elem.text),
+        "SW-RECORD-LAYOUT-V-FIX-VALUE": lambda obj, elem: setattr(obj, "sw_record_layout_v_fix_value", elem.text),
+        "SW-RECORD-LAYOUT-V-INDEX": lambda obj, elem: setattr(obj, "sw_record_layout_v_index", elem.text),
+        "SW-RECORD-LAYOUT-V-PROP": lambda obj, elem: setattr(obj, "sw_record_layout_v_prop", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwRecordLayoutV."""
         super().__init__()
@@ -71,9 +86,8 @@ class SwRecordLayoutV(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwRecordLayoutV, self).serialize()

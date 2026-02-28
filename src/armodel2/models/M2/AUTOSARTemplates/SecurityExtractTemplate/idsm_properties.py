@@ -36,8 +36,17 @@ class IdsmProperties(IdsCommonElement):
         """
         return False
 
+    _XML_TAG = "IDSM-PROPERTIES"
+
+
     rate_limitations: list[IdsmRateLimitation]
     traffic_limitations: list[IdsmTrafficLimitation]
+    _DESERIALIZE_DISPATCH = {
+        "RATE-LIMITATIONS": lambda obj, elem: obj.rate_limitations.append(IdsmRateLimitation.deserialize(elem)),
+        "TRAFFIC-LIMITATIONS": lambda obj, elem: obj.traffic_limitations.append(IdsmTrafficLimitation.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IdsmProperties."""
         super().__init__()
@@ -50,9 +59,8 @@ class IdsmProperties(IdsCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IdsmProperties, self).serialize()

@@ -34,8 +34,17 @@ class MetaDataItemSet(ARObject):
         """
         return False
 
+    _XML_TAG = "META-DATA-ITEM-SET"
+
+
     data_element_refs: list[ARRef]
     meta_data_items: list[MetaDataItem]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENTS": lambda obj, elem: obj.data_element_refs.append(ARRef.deserialize(elem)),
+        "META-DATA-ITEMS": lambda obj, elem: obj.meta_data_items.append(MetaDataItem.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MetaDataItemSet."""
         super().__init__()
@@ -48,9 +57,8 @@ class MetaDataItemSet(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MetaDataItemSet, self).serialize()

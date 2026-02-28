@@ -34,7 +34,15 @@ class TriggerInterfaceMapping(PortInterfaceMapping):
         """
         return False
 
+    _XML_TAG = "TRIGGER-INTERFACE-MAPPING"
+
+
     trigger_mapping_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TRIGGER-MAPPINGS": lambda obj, elem: obj.trigger_mapping_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TriggerInterfaceMapping."""
         super().__init__()
@@ -46,9 +54,8 @@ class TriggerInterfaceMapping(PortInterfaceMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TriggerInterfaceMapping, self).serialize()

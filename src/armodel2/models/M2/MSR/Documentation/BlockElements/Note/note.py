@@ -42,9 +42,19 @@ class Note(Paginateable):
         """
         return False
 
+    _XML_TAG = "NOTE"
+
+
     label: Optional[MultilanguageLongName]
     note_text: DocumentationBlock
     note_type: Optional[NoteTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "LABEL": lambda obj, elem: setattr(obj, "label", MultilanguageLongName.deserialize(elem)),
+        "NOTE-TEXT": lambda obj, elem: setattr(obj, "note_text", DocumentationBlock.deserialize(elem)),
+        "NOTE-TYPE": lambda obj, elem: setattr(obj, "note_type", NoteTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Note."""
         super().__init__()
@@ -58,9 +68,8 @@ class Note(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Note, self).serialize()

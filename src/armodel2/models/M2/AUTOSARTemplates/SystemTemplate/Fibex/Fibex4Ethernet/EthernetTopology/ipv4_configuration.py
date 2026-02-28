@@ -38,6 +38,9 @@ class Ipv4Configuration(NetworkEndpointAddress):
         """
         return False
 
+    _XML_TAG = "IPV4-CONFIGURATION"
+
+
     assignment: Optional[PositiveInteger]
     default_gateway: Optional[Ip4AddressString]
     dns_servers: list[Ip4AddressString]
@@ -46,6 +49,18 @@ class Ipv4Configuration(NetworkEndpointAddress):
     ipv4_address_source: Optional[Ipv4AddressSourceEnum]
     network_mask: Optional[Ip4AddressString]
     ttl: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ASSIGNMENT": lambda obj, elem: setattr(obj, "assignment", elem.text),
+        "DEFAULT-GATEWAY": lambda obj, elem: setattr(obj, "default_gateway", elem.text),
+        "DNS-SERVERS": lambda obj, elem: obj.dns_servers.append(elem.text),
+        "IP-ADDRESS-KEEP-ENUM": lambda obj, elem: setattr(obj, "ip_address_keep_enum", IpAddressKeepEnum.deserialize(elem)),
+        "IPV4-ADDRESS": lambda obj, elem: setattr(obj, "ipv4_address", elem.text),
+        "IPV4-ADDRESS-SOURCE": lambda obj, elem: setattr(obj, "ipv4_address_source", Ipv4AddressSourceEnum.deserialize(elem)),
+        "NETWORK-MASK": lambda obj, elem: setattr(obj, "network_mask", elem.text),
+        "TTL": lambda obj, elem: setattr(obj, "ttl", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ipv4Configuration."""
         super().__init__()
@@ -64,9 +79,8 @@ class Ipv4Configuration(NetworkEndpointAddress):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ipv4Configuration, self).serialize()

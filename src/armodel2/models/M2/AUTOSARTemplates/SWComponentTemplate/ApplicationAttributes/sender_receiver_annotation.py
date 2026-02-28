@@ -46,6 +46,14 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
     data_element_ref: Optional[ARRef]
     limit_kind: Optional[DataLimitKindEnum]
     processing_kind_enum: Optional[ProcessingKindEnum]
+    _DESERIALIZE_DISPATCH = {
+        "COMPUTED": lambda obj, elem: setattr(obj, "computed", elem.text),
+        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "LIMIT-KIND": lambda obj, elem: setattr(obj, "limit_kind", DataLimitKindEnum.deserialize(elem)),
+        "PROCESSING-KIND-ENUM": lambda obj, elem: setattr(obj, "processing_kind_enum", ProcessingKindEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SenderReceiverAnnotation."""
         super().__init__()
@@ -60,9 +68,8 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SenderReceiverAnnotation, self).serialize()

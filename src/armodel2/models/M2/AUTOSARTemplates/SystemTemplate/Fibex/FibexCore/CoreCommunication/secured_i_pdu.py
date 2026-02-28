@@ -40,6 +40,9 @@ class SecuredIPdu(IPdu):
         """
         return False
 
+    _XML_TAG = "SECURED-I-PDU"
+
+
     authentication_ref: Optional[Any]
     dynamic: Optional[Boolean]
     freshness_props_ref: Optional[Any]
@@ -47,6 +50,17 @@ class SecuredIPdu(IPdu):
     secure: Optional[Any]
     use_as: Optional[Boolean]
     use_secured_pdu: Optional[SecuredPduHeaderEnum]
+    _DESERIALIZE_DISPATCH = {
+        "AUTHENTICATION-REF": lambda obj, elem: setattr(obj, "authentication_ref", ARRef.deserialize(elem)),
+        "DYNAMIC": lambda obj, elem: setattr(obj, "dynamic", elem.text),
+        "FRESHNESS-PROPS-REF": lambda obj, elem: setattr(obj, "freshness_props_ref", ARRef.deserialize(elem)),
+        "PAYLOAD-REF": lambda obj, elem: setattr(obj, "payload_ref", ARRef.deserialize(elem)),
+        "SECURE": lambda obj, elem: setattr(obj, "secure", any (SecureCommunication).deserialize(elem)),
+        "USE-AS": lambda obj, elem: setattr(obj, "use_as", elem.text),
+        "USE-SECURED-PDU": lambda obj, elem: setattr(obj, "use_secured_pdu", SecuredPduHeaderEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecuredIPdu."""
         super().__init__()
@@ -64,9 +78,8 @@ class SecuredIPdu(IPdu):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecuredIPdu, self).serialize()

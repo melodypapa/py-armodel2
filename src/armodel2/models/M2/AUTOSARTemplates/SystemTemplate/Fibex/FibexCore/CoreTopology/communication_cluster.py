@@ -44,6 +44,15 @@ class CommunicationCluster(ARElement, ABC):
     protocol_name: Optional[String]
     protocol_version: Optional[String]
     speed: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "BAUDRATE": lambda obj, elem: setattr(obj, "baudrate", elem.text),
+        "PHYSICAL-CHANNELS": lambda obj, elem: obj.physical_channels.append(PhysicalChannel.deserialize(elem)),
+        "PROTOCOL-NAME": lambda obj, elem: setattr(obj, "protocol_name", elem.text),
+        "PROTOCOL-VERSION": lambda obj, elem: setattr(obj, "protocol_version", elem.text),
+        "SPEED": lambda obj, elem: setattr(obj, "speed", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CommunicationCluster."""
         super().__init__()
@@ -59,9 +68,8 @@ class CommunicationCluster(ARElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CommunicationCluster, self).serialize()

@@ -32,9 +32,19 @@ class ConfidenceInterval(ARObject):
         """
         return False
 
+    _XML_TAG = "CONFIDENCE-INTERVAL"
+
+
     lower_bound: Optional[MultidimensionalTime]
     propability: Optional[Float]
     upper_bound: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "LOWER-BOUND": lambda obj, elem: setattr(obj, "lower_bound", MultidimensionalTime.deserialize(elem)),
+        "PROPABILITY": lambda obj, elem: setattr(obj, "propability", elem.text),
+        "UPPER-BOUND": lambda obj, elem: setattr(obj, "upper_bound", MultidimensionalTime.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConfidenceInterval."""
         super().__init__()
@@ -48,9 +58,8 @@ class ConfidenceInterval(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConfidenceInterval, self).serialize()

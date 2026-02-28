@@ -40,9 +40,19 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
         """
         return False
 
+    _XML_TAG = "APPLICATION-RULE-BASED-VALUE-SPECIFICATION"
+
+
     category_specification: Optional[Identifier]
     sw_axis_conts: list[RuleBasedAxisCont]
     sw_value_cont: Optional[RuleBasedValueCont]
+    _DESERIALIZE_DISPATCH = {
+        "CATEGORY-SPECIFICATION": lambda obj, elem: setattr(obj, "category_specification", elem.text),
+        "SW-AXIS-CONTS": lambda obj, elem: obj.sw_axis_conts.append(RuleBasedAxisCont.deserialize(elem)),
+        "SW-VALUE-CONT": lambda obj, elem: setattr(obj, "sw_value_cont", RuleBasedValueCont.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationRuleBasedValueSpecification."""
         super().__init__()
@@ -56,9 +66,8 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationRuleBasedValueSpecification, self).serialize()

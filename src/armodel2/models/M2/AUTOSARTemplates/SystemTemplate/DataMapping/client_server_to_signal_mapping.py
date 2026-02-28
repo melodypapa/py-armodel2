@@ -37,9 +37,19 @@ class ClientServerToSignalMapping(DataMapping):
         """
         return False
 
+    _XML_TAG = "CLIENT-SERVER-TO-SIGNAL-MAPPING"
+
+
     call_signal_ref: Optional[ARRef]
     client_server: Optional[ClientServerOperation]
     return_signal_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CALL-SIGNAL-REF": lambda obj, elem: setattr(obj, "call_signal_ref", ARRef.deserialize(elem)),
+        "CLIENT-SERVER": lambda obj, elem: setattr(obj, "client_server", ClientServerOperation.deserialize(elem)),
+        "RETURN-SIGNAL-REF": lambda obj, elem: setattr(obj, "return_signal_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientServerToSignalMapping."""
         super().__init__()
@@ -53,9 +63,8 @@ class ClientServerToSignalMapping(DataMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientServerToSignalMapping, self).serialize()

@@ -32,8 +32,17 @@ class TimeSynchronization(ARObject):
         """
         return False
 
+    _XML_TAG = "TIME-SYNCHRONIZATION"
+
+
     time_sync_client_configuration: Optional[TimeSyncClientConfiguration]
     time_sync_server_configuration: Optional[TimeSyncServerConfiguration]
+    _DESERIALIZE_DISPATCH = {
+        "TIME-SYNC-CLIENT-CONFIGURATION": lambda obj, elem: setattr(obj, "time_sync_client_configuration", TimeSyncClientConfiguration.deserialize(elem)),
+        "TIME-SYNC-SERVER-CONFIGURATION": lambda obj, elem: setattr(obj, "time_sync_server_configuration", TimeSyncServerConfiguration.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimeSynchronization."""
         super().__init__()
@@ -46,9 +55,8 @@ class TimeSynchronization(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimeSynchronization, self).serialize()

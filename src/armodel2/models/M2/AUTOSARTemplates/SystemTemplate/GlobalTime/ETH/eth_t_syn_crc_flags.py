@@ -29,12 +29,25 @@ class EthTSynCrcFlags(ARObject):
         """
         return False
 
+    _XML_TAG = "ETH-T-SYN-CRC-FLAGS"
+
+
     crc_correction: Optional[Boolean]
     crc_domain: Optional[Boolean]
     crc_message: Optional[Boolean]
     crc_precise: Optional[Boolean]
     crc_sequence_id: Optional[Boolean]
     crc_source_port: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CRC-CORRECTION": lambda obj, elem: setattr(obj, "crc_correction", elem.text),
+        "CRC-DOMAIN": lambda obj, elem: setattr(obj, "crc_domain", elem.text),
+        "CRC-MESSAGE": lambda obj, elem: setattr(obj, "crc_message", elem.text),
+        "CRC-PRECISE": lambda obj, elem: setattr(obj, "crc_precise", elem.text),
+        "CRC-SEQUENCE-ID": lambda obj, elem: setattr(obj, "crc_sequence_id", elem.text),
+        "CRC-SOURCE-PORT": lambda obj, elem: setattr(obj, "crc_source_port", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthTSynCrcFlags."""
         super().__init__()
@@ -51,9 +64,8 @@ class EthTSynCrcFlags(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthTSynCrcFlags, self).serialize()

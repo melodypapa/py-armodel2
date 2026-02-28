@@ -37,8 +37,17 @@ class PTriggerInAtomicSwcTypeInstanceRef(TriggerInAtomicSwcInstanceRef):
         """
         return False
 
+    _XML_TAG = "P-TRIGGER-IN-ATOMIC-SWC-TYPE-INSTANCE-REF"
+
+
     context_p_port_ref: Optional[ARRef]
     target_trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXT-P-PORT-REF": lambda obj, elem: setattr(obj, "context_p_port_ref", ARRef.deserialize(elem)),
+        "TARGET-TRIGGER-REF": lambda obj, elem: setattr(obj, "target_trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PTriggerInAtomicSwcTypeInstanceRef."""
         super().__init__()
@@ -51,9 +60,8 @@ class PTriggerInAtomicSwcTypeInstanceRef(TriggerInAtomicSwcInstanceRef):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PTriggerInAtomicSwcTypeInstanceRef, self).serialize()

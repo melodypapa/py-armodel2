@@ -34,11 +34,23 @@ class Std(SingleLanguageReferrable):
         """
         return False
 
+    _XML_TAG = "STD"
+
+
     date: Optional[DateTime]
     position: Optional[String]
     state: Optional[String]
     subtitle: Optional[String]
     url: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DATE": lambda obj, elem: setattr(obj, "date", elem.text),
+        "POSITION": lambda obj, elem: setattr(obj, "position", elem.text),
+        "STATE": lambda obj, elem: setattr(obj, "state", elem.text),
+        "SUBTITLE": lambda obj, elem: setattr(obj, "subtitle", elem.text),
+        "URL": lambda obj, elem: setattr(obj, "url", any (Url).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Std."""
         super().__init__()
@@ -54,9 +66,8 @@ class Std(SingleLanguageReferrable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Std, self).serialize()

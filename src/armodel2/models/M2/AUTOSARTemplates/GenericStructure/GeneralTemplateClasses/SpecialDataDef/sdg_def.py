@@ -34,7 +34,15 @@ class SdgDef(ARElement):
         """
         return False
 
+    _XML_TAG = "SDG-DEF"
+
+
     sdg_classes: list[SdgClass]
+    _DESERIALIZE_DISPATCH = {
+        "SDG-CLASSES": lambda obj, elem: obj.sdg_classes.append(SdgClass.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SdgDef."""
         super().__init__()
@@ -46,9 +54,8 @@ class SdgDef(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SdgDef, self).serialize()

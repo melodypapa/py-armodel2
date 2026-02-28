@@ -39,9 +39,19 @@ class DdsCpDomain(Identifiable):
         """
         return False
 
+    _XML_TAG = "DDS-CP-DOMAIN"
+
+
     dds_partitions: list[DdsCpPartition]
     dds_topics: list[DdsCpTopic]
     domain_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DDS-PARTITIONS": lambda obj, elem: obj.dds_partitions.append(DdsCpPartition.deserialize(elem)),
+        "DDS-TOPICS": lambda obj, elem: obj.dds_topics.append(DdsCpTopic.deserialize(elem)),
+        "DOMAIN-ID": lambda obj, elem: setattr(obj, "domain_id", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpDomain."""
         super().__init__()
@@ -55,9 +65,8 @@ class DdsCpDomain(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpDomain, self).serialize()

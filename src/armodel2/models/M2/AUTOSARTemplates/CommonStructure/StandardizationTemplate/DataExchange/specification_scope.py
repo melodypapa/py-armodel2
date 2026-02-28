@@ -29,7 +29,15 @@ class SpecificationScope(ARObject):
         """
         return False
 
+    _XML_TAG = "SPECIFICATION-SCOPE"
+
+
     specification_documents: list[SpecificationDocumentScope]
+    _DESERIALIZE_DISPATCH = {
+        "SPECIFICATION-DOCUMENTS": lambda obj, elem: obj.specification_documents.append(SpecificationDocumentScope.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SpecificationScope."""
         super().__init__()
@@ -41,9 +49,8 @@ class SpecificationScope(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SpecificationScope, self).serialize()

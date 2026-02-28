@@ -33,7 +33,15 @@ class CompuScaleConstantContents(CompuScaleContents):
         """
         return False
 
+    _XML_TAG = "COMPU-SCALE-CONSTANT-CONTENTS"
+
+
     compu_const: Optional[CompuConst]
+    _DESERIALIZE_DISPATCH = {
+        "COMPU-CONST": lambda obj, elem: setattr(obj, "compu_const", CompuConst.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompuScaleConstantContents."""
         super().__init__()
@@ -45,9 +53,8 @@ class CompuScaleConstantContents(CompuScaleContents):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompuScaleConstantContents, self).serialize()

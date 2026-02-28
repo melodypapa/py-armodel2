@@ -39,9 +39,19 @@ class RptComponent(Identifiable):
         """
         return False
 
+    _XML_TAG = "RPT-COMPONENT"
+
+
     mc_datas: list[RoleBasedMcDataAssignment]
     rp_impl_policy: Optional[RptImplPolicy]
     rpt_executable_entities: list[RptExecutableEntity]
+    _DESERIALIZE_DISPATCH = {
+        "MC-DATAS": lambda obj, elem: obj.mc_datas.append(RoleBasedMcDataAssignment.deserialize(elem)),
+        "RP-IMPL-POLICY": lambda obj, elem: setattr(obj, "rp_impl_policy", RptImplPolicy.deserialize(elem)),
+        "RPT-EXECUTABLE-ENTITIES": lambda obj, elem: obj.rpt_executable_entities.append(RptExecutableEntity.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptComponent."""
         super().__init__()
@@ -55,9 +65,8 @@ class RptComponent(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptComponent, self).serialize()

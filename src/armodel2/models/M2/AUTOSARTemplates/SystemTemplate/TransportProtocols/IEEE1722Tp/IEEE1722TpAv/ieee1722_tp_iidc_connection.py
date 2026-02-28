@@ -34,6 +34,9 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-IIDC-CONNECTION"
+
+
     iidc_channel: Optional[PositiveInteger]
     iidc_data_block: Optional[PositiveInteger]
     iidc_fraction: Optional[PositiveInteger]
@@ -42,6 +45,18 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
     iidc_sy: Optional[PositiveInteger]
     iidc_tag: Optional[PositiveInteger]
     iidc_t_code: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "IIDC-CHANNEL": lambda obj, elem: setattr(obj, "iidc_channel", elem.text),
+        "IIDC-DATA-BLOCK": lambda obj, elem: setattr(obj, "iidc_data_block", elem.text),
+        "IIDC-FRACTION": lambda obj, elem: setattr(obj, "iidc_fraction", elem.text),
+        "IIDC-SOURCE": lambda obj, elem: setattr(obj, "iidc_source", elem.text),
+        "IIDC-STREAM": lambda obj, elem: setattr(obj, "iidc_stream", elem.text),
+        "IIDC-SY": lambda obj, elem: setattr(obj, "iidc_sy", elem.text),
+        "IIDC-TAG": lambda obj, elem: setattr(obj, "iidc_tag", elem.text),
+        "IIDC-T-CODE": lambda obj, elem: setattr(obj, "iidc_t_code", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpIidcConnection."""
         super().__init__()
@@ -60,9 +75,8 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpIidcConnection, self).serialize()

@@ -35,6 +35,9 @@ class FlexrayNmCluster(NmCluster):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-NM-CLUSTER"
+
+
     nm_car_wake_up: Optional[Boolean]
     nm_data_cycle: Optional[Integer]
     nm_main: Optional[TimeValue]
@@ -42,6 +45,17 @@ class FlexrayNmCluster(NmCluster):
     nm_repeat: Optional[TimeValue]
     nm_repetition: Optional[Integer]
     nm_voting_cycle: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "NM-CAR-WAKE-UP": lambda obj, elem: setattr(obj, "nm_car_wake_up", elem.text),
+        "NM-DATA-CYCLE": lambda obj, elem: setattr(obj, "nm_data_cycle", elem.text),
+        "NM-MAIN": lambda obj, elem: setattr(obj, "nm_main", elem.text),
+        "NM-REMOTE": lambda obj, elem: setattr(obj, "nm_remote", elem.text),
+        "NM-REPEAT": lambda obj, elem: setattr(obj, "nm_repeat", elem.text),
+        "NM-REPETITION": lambda obj, elem: setattr(obj, "nm_repetition", elem.text),
+        "NM-VOTING-CYCLE": lambda obj, elem: setattr(obj, "nm_voting_cycle", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayNmCluster."""
         super().__init__()
@@ -59,9 +73,8 @@ class FlexrayNmCluster(NmCluster):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayNmCluster, self).serialize()

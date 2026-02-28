@@ -29,6 +29,9 @@ class UserDefinedCommunicationController(ARObject):
         """
         return False
 
+    _XML_TAG = "USER-DEFINED-COMMUNICATION-CONTROLLER"
+
+
     def __init__(self) -> None:
         """Initialize UserDefinedCommunicationController."""
         super().__init__()

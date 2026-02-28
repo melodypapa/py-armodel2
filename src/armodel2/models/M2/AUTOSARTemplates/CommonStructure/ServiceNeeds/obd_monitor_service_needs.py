@@ -44,10 +44,21 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         """
         return False
 
+    _XML_TAG = "OBD-MONITOR-SERVICE-NEEDS"
+
+
     application_data_ref: Optional[ARRef]
     event_needs_ref: Optional[ARRef]
     unit_and_scaling_id: Optional[PositiveInteger]
     update_kind: Optional[DiagnosticMonitorUpdateKindEnum]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATION-DATA-REF": lambda obj, elem: setattr(obj, "application_data_ref", ARRef.deserialize(elem)),
+        "EVENT-NEEDS-REF": lambda obj, elem: setattr(obj, "event_needs_ref", ARRef.deserialize(elem)),
+        "UNIT-AND-SCALING-ID": lambda obj, elem: setattr(obj, "unit_and_scaling_id", elem.text),
+        "UPDATE-KIND": lambda obj, elem: setattr(obj, "update_kind", DiagnosticMonitorUpdateKindEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ObdMonitorServiceNeeds."""
         super().__init__()
@@ -62,9 +73,8 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ObdMonitorServiceNeeds, self).serialize()

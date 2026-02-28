@@ -37,10 +37,21 @@ class BuildActionIoElement(ARObject):
         """
         return False
 
+    _XML_TAG = "BUILD-ACTION-IO-ELEMENT"
+
+
     category: NameToken
     ecuc_definition_ref: Optional[ARRef]
     role: Optional[Identifier]
     sdgs: list[Sdg]
+    _DESERIALIZE_DISPATCH = {
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
+        "ECUC-DEFINITION-REF": lambda obj, elem: setattr(obj, "ecuc_definition_ref", ARRef.deserialize(elem)),
+        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+        "SDGS": lambda obj, elem: obj.sdgs.append(Sdg.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BuildActionIoElement."""
         super().__init__()
@@ -55,9 +66,8 @@ class BuildActionIoElement(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BuildActionIoElement, self).serialize()

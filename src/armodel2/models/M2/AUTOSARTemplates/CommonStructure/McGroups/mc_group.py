@@ -38,10 +38,21 @@ class McGroup(ARElement):
         """
         return False
 
+    _XML_TAG = "MC-GROUP"
+
+
     mc_function_refs: list[ARRef]
     ref_calprm_set_ref: Optional[ARRef]
     ref_ref: Optional[ARRef]
     sub_group_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "MC-FUNCTIONS": lambda obj, elem: obj.mc_function_refs.append(ARRef.deserialize(elem)),
+        "REF-CALPRM-SET-REF": lambda obj, elem: setattr(obj, "ref_calprm_set_ref", ARRef.deserialize(elem)),
+        "REF-REF": lambda obj, elem: setattr(obj, "ref_ref", ARRef.deserialize(elem)),
+        "SUB-GROUPS": lambda obj, elem: obj.sub_group_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize McGroup."""
         super().__init__()
@@ -56,9 +67,8 @@ class McGroup(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(McGroup, self).serialize()

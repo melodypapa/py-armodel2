@@ -36,8 +36,17 @@ class SomeipTpConfig(TpConfig):
         """
         return False
 
+    _XML_TAG = "SOMEIP-TP-CONFIG"
+
+
     tp_channels: list[SomeipTpChannel]
     tp_connections: list[SomeipTpConnection]
+    _DESERIALIZE_DISPATCH = {
+        "TP-CHANNELS": lambda obj, elem: obj.tp_channels.append(SomeipTpChannel.deserialize(elem)),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SomeipTpConnection.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SomeipTpConfig."""
         super().__init__()
@@ -50,9 +59,8 @@ class SomeipTpConfig(TpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SomeipTpConfig, self).serialize()

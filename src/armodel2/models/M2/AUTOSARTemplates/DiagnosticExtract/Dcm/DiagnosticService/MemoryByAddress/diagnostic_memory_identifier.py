@@ -38,10 +38,21 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-MEMORY-IDENTIFIER"
+
+
     access_ref: Optional[ARRef]
     id: Optional[PositiveInteger]
     memory_high: Optional[String]
     memory_low: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESS-REF": lambda obj, elem: setattr(obj, "access_ref", ARRef.deserialize(elem)),
+        "ID": lambda obj, elem: setattr(obj, "id", elem.text),
+        "MEMORY-HIGH": lambda obj, elem: setattr(obj, "memory_high", elem.text),
+        "MEMORY-LOW": lambda obj, elem: setattr(obj, "memory_low", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryIdentifier."""
         super().__init__()
@@ -56,9 +67,8 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticMemoryIdentifier, self).serialize()

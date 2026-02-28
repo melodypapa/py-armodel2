@@ -33,8 +33,17 @@ class SwCalprmRefProxy(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-CALPRM-REF-PROXY"
+
+
     ar_parameter_ref: Optional[ARRef]
     mc_data_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AR-PARAMETER-REF": lambda obj, elem: setattr(obj, "ar_parameter_ref", ARRef.deserialize(elem)),
+        "MC-DATA-INSTANCE-REF": lambda obj, elem: setattr(obj, "mc_data_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwCalprmRefProxy."""
         super().__init__()
@@ -47,9 +56,8 @@ class SwCalprmRefProxy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwCalprmRefProxy, self).serialize()

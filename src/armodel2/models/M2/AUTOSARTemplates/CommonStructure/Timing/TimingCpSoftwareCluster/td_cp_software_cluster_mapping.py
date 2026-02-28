@@ -37,9 +37,19 @@ class TDCpSoftwareClusterMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "T-D-CP-SOFTWARE-CLUSTER-MAPPING"
+
+
     provider_ref: Optional[ARRef]
     requestor_refs: list[ARRef]
     timing_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "PROVIDER-REF": lambda obj, elem: setattr(obj, "provider_ref", ARRef.deserialize(elem)),
+        "REQUESTORS": lambda obj, elem: obj.requestor_refs.append(ARRef.deserialize(elem)),
+        "TIMING-REF": lambda obj, elem: setattr(obj, "timing_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDCpSoftwareClusterMapping."""
         super().__init__()
@@ -53,9 +63,8 @@ class TDCpSoftwareClusterMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDCpSoftwareClusterMapping, self).serialize()

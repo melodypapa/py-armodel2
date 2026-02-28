@@ -33,7 +33,15 @@ class TlvDataIdDefinitionSet(ARElement):
         """
         return False
 
+    _XML_TAG = "TLV-DATA-ID-DEFINITION-SET"
+
+
     tlv_data_ids: list[TlvDataIdDefinition]
+    _DESERIALIZE_DISPATCH = {
+        "TLV-DATA-IDS": lambda obj, elem: obj.tlv_data_ids.append(TlvDataIdDefinition.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TlvDataIdDefinitionSet."""
         super().__init__()
@@ -45,9 +53,8 @@ class TlvDataIdDefinitionSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TlvDataIdDefinitionSet, self).serialize()

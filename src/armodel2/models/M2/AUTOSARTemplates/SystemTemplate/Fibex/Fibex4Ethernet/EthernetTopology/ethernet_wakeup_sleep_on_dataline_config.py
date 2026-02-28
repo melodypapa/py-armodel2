@@ -35,6 +35,9 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
         """
         return False
 
+    _XML_TAG = "ETHERNET-WAKEUP-SLEEP-ON-DATALINE-CONFIG"
+
+
     sleep_mode: Optional[TimeValue]
     sleep_repetition: Optional[TimeValue]
     sleep: Optional[PositiveInteger]
@@ -42,6 +45,17 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
     wakeup_local: Optional[Boolean]
     wakeup_remote: Optional[Boolean]
     wakeup: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "SLEEP-MODE": lambda obj, elem: setattr(obj, "sleep_mode", elem.text),
+        "SLEEP-REPETITION": lambda obj, elem: setattr(obj, "sleep_repetition", elem.text),
+        "SLEEP": lambda obj, elem: setattr(obj, "sleep", elem.text),
+        "WAKEUP-FORWARD": lambda obj, elem: setattr(obj, "wakeup_forward", elem.text),
+        "WAKEUP-LOCAL": lambda obj, elem: setattr(obj, "wakeup_local", elem.text),
+        "WAKEUP-REMOTE": lambda obj, elem: setattr(obj, "wakeup_remote", elem.text),
+        "WAKEUP": lambda obj, elem: setattr(obj, "wakeup", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthernetWakeupSleepOnDatalineConfig."""
         super().__init__()
@@ -59,9 +73,8 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthernetWakeupSleepOnDatalineConfig, self).serialize()

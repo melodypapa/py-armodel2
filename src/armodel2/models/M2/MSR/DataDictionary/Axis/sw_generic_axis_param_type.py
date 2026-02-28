@@ -34,7 +34,15 @@ class SwGenericAxisParamType(Identifiable):
         """
         return False
 
+    _XML_TAG = "SW-GENERIC-AXIS-PARAM-TYPE"
+
+
     data_constr_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-CONSTR-REF": lambda obj, elem: setattr(obj, "data_constr_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwGenericAxisParamType."""
         super().__init__()
@@ -46,9 +54,8 @@ class SwGenericAxisParamType(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwGenericAxisParamType, self).serialize()

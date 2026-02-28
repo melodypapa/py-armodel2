@@ -43,9 +43,19 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         """
         return False
 
+    _XML_TAG = "SW-AXIS-GROUPED"
+
+
     shared_axis_type_ref: Optional[ARRef]
     sw_axis_index: Optional[AxisIndexType]
     sw_calprm_ref_proxy_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "SHARED-AXIS-TYPE-REF": lambda obj, elem: setattr(obj, "shared_axis_type_ref", ARRef.deserialize(elem)),
+        "SW-AXIS-INDEX": lambda obj, elem: setattr(obj, "sw_axis_index", elem.text),
+        "SW-CALPRM-REF-PROXY-REF": lambda obj, elem: setattr(obj, "sw_calprm_ref_proxy_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwAxisGrouped."""
         super().__init__()
@@ -59,9 +69,8 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwAxisGrouped, self).serialize()

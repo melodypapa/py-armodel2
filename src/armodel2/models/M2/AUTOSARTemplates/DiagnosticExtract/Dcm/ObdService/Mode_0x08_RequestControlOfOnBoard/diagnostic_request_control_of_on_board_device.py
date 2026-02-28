@@ -34,8 +34,17 @@ class DiagnosticRequestControlOfOnBoardDevice(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-REQUEST-CONTROL-OF-ON-BOARD-DEVICE"
+
+
     request_control_ref: Optional[Any]
     test_id_identifier_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "REQUEST-CONTROL-REF": lambda obj, elem: setattr(obj, "request_control_ref", ARRef.deserialize(elem)),
+        "TEST-ID-IDENTIFIER-REF": lambda obj, elem: setattr(obj, "test_id_identifier_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticRequestControlOfOnBoardDevice."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticRequestControlOfOnBoardDevice(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticRequestControlOfOnBoardDevice, self).serialize()

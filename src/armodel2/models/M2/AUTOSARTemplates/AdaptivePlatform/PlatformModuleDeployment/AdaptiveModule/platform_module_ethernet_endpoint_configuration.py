@@ -38,9 +38,19 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
         """
         return False
 
+    _XML_TAG = "PLATFORM-MODULE-ETHERNET-ENDPOINT-CONFIGURATION"
+
+
     communication_connector_ref: Optional[ARRef]
     ipv4_multicast_ip_address: Optional[Ip4AddressString]
     ipv6_multicast_ip_address: Optional[Ip6AddressString]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CONNECTOR-REF": lambda obj, elem: setattr(obj, "communication_connector_ref", ARRef.deserialize(elem)),
+        "IPV4-MULTICAST-IP-ADDRESS": lambda obj, elem: setattr(obj, "ipv4_multicast_ip_address", elem.text),
+        "IPV6-MULTICAST-IP-ADDRESS": lambda obj, elem: setattr(obj, "ipv6_multicast_ip_address", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PlatformModuleEthernetEndpointConfiguration."""
         super().__init__()
@@ -54,9 +64,8 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PlatformModuleEthernetEndpointConfiguration, self).serialize()

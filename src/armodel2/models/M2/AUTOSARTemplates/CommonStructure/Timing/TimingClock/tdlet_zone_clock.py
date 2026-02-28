@@ -33,8 +33,17 @@ class TDLETZoneClock(TimingClock):
         """
         return False
 
+    _XML_TAG = "T-D-L-E-T-ZONE-CLOCK"
+
+
     accuracy_ext: Optional[MultidimensionalTime]
     accuracy_int: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "ACCURACY-EXT": lambda obj, elem: setattr(obj, "accuracy_ext", MultidimensionalTime.deserialize(elem)),
+        "ACCURACY-INT": lambda obj, elem: setattr(obj, "accuracy_int", MultidimensionalTime.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDLETZoneClock."""
         super().__init__()
@@ -47,9 +56,8 @@ class TDLETZoneClock(TimingClock):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDLETZoneClock, self).serialize()

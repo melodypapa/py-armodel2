@@ -36,8 +36,17 @@ class IncludedDataTypeSet(ARObject):
         """
         return False
 
+    _XML_TAG = "INCLUDED-DATA-TYPE-SET"
+
+
     data_type_refs: list[ARRef]
     literal_prefix: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-TYPES": lambda obj, elem: obj.data_type_refs.append(ARRef.deserialize(elem)),
+        "LITERAL-PREFIX": lambda obj, elem: setattr(obj, "literal_prefix", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IncludedDataTypeSet."""
         super().__init__()
@@ -50,9 +59,8 @@ class IncludedDataTypeSet(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IncludedDataTypeSet, self).serialize()

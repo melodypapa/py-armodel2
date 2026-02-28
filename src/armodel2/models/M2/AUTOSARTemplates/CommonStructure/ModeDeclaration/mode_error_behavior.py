@@ -34,8 +34,17 @@ class ModeErrorBehavior(ARObject):
         """
         return False
 
+    _XML_TAG = "MODE-ERROR-BEHAVIOR"
+
+
     default_mode_ref: Optional[ARRef]
     error_reaction: Optional[ModeErrorReactionPolicyEnum]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-MODE-REF": lambda obj, elem: setattr(obj, "default_mode_ref", ARRef.deserialize(elem)),
+        "ERROR-REACTION": lambda obj, elem: setattr(obj, "error_reaction", ModeErrorReactionPolicyEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeErrorBehavior."""
         super().__init__()
@@ -48,9 +57,8 @@ class ModeErrorBehavior(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeErrorBehavior, self).serialize()

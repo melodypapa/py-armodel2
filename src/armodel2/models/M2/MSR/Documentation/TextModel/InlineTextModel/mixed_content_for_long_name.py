@@ -44,6 +44,15 @@ class MixedContentForLongName(ARObject, ABC):
     sub: Superscript
     sup: Superscript
     tt: Tt
+    _DESERIALIZE_DISPATCH = {
+        "E": lambda obj, elem: setattr(obj, "e", EmphasisText.deserialize(elem)),
+        "IE": lambda obj, elem: setattr(obj, "ie", IndexEntry.deserialize(elem)),
+        "SUB": lambda obj, elem: setattr(obj, "sub", elem.text),
+        "SUP": lambda obj, elem: setattr(obj, "sup", elem.text),
+        "TT": lambda obj, elem: setattr(obj, "tt", Tt.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MixedContentForLongName."""
         super().__init__()
@@ -59,9 +68,8 @@ class MixedContentForLongName(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MixedContentForLongName, self).serialize()

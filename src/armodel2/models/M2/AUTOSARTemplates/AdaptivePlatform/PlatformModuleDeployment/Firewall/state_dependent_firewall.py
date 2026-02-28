@@ -37,9 +37,19 @@ class StateDependentFirewall(ARElement):
         """
         return False
 
+    _XML_TAG = "STATE-DEPENDENT-FIREWALL"
+
+
     default_action: Optional[FirewallActionEnum]
     firewall_rule_propses: list[FirewallRuleProps]
     firewall_state_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-ACTION": lambda obj, elem: setattr(obj, "default_action", FirewallActionEnum.deserialize(elem)),
+        "FIREWALL-RULE-PROPSES": lambda obj, elem: obj.firewall_rule_propses.append(FirewallRuleProps.deserialize(elem)),
+        "FIREWALL-STATES": lambda obj, elem: obj.firewall_state_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StateDependentFirewall."""
         super().__init__()
@@ -53,9 +63,8 @@ class StateDependentFirewall(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StateDependentFirewall, self).serialize()

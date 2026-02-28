@@ -37,8 +37,17 @@ class TDEventTrigger(TDEventVfbPort):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-TRIGGER"
+
+
     td_event_trigger_ref: Optional[TDEventTriggerTypeEnum]
     trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TD-EVENT-TRIGGER-REF": lambda obj, elem: setattr(obj, "td_event_trigger_ref", TDEventTriggerTypeEnum.deserialize(elem)),
+        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventTrigger."""
         super().__init__()
@@ -51,9 +60,8 @@ class TDEventTrigger(TDEventVfbPort):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventTrigger, self).serialize()

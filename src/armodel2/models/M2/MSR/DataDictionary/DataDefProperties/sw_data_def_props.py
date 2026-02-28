@@ -106,6 +106,9 @@ class SwDataDefProps(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-DATA-DEF-PROPS"
+
+
     additional_native_type_qualifier: Optional[NativeDeclarationString]
     annotations: list[Annotation]
     base_type_ref: Optional[ARRef]
@@ -136,6 +139,40 @@ class SwDataDefProps(ARObject):
     sw_value_block_size_mults: list[Numerical]
     unit_ref: Optional[ARRef]
     value_axis_data_type_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ADDITIONAL-NATIVE-TYPE-QUALIFIER": lambda obj, elem: setattr(obj, "additional_native_type_qualifier", elem.text),
+        "ANNOTATIONS": lambda obj, elem: obj.annotations.append(Annotation.deserialize(elem)),
+        "BASE-TYPE-REF": lambda obj, elem: setattr(obj, "base_type_ref", ARRef.deserialize(elem)),
+        "COMPU-METHOD-REF": lambda obj, elem: setattr(obj, "compu_method_ref", ARRef.deserialize(elem)),
+        "DATA-CONSTR-REF": lambda obj, elem: setattr(obj, "data_constr_ref", ARRef.deserialize(elem)),
+        "DISPLAY-FORMAT": lambda obj, elem: setattr(obj, "display_format", elem.text),
+        "DISPLAY-PRESENTATION": lambda obj, elem: setattr(obj, "display_presentation", DisplayPresentationEnum.deserialize(elem)),
+        "IMPLEMENTATION-DATA-TYPE-REF": lambda obj, elem: setattr(obj, "implementation_data_type_ref", ARRef.deserialize(elem)),
+        "INVALID-VALUE": lambda obj, elem: setattr(obj, "invalid_value", ValueSpecification.deserialize(elem)),
+        "STEP-SIZE": lambda obj, elem: setattr(obj, "step_size", elem.text),
+        "SW-ADDR-METHOD-REF": lambda obj, elem: setattr(obj, "sw_addr_method_ref", ARRef.deserialize(elem)),
+        "SW-ALIGNMENT": lambda obj, elem: setattr(obj, "sw_alignment", elem.text),
+        "SW-BIT-REPRESENTATION": lambda obj, elem: setattr(obj, "sw_bit_representation", SwBitRepresentation.deserialize(elem)),
+        "SW-CALIBRATION-ACCESS": lambda obj, elem: setattr(obj, "sw_calibration_access", SwCalibrationAccessEnum.deserialize(elem)),
+        "SW-CALPRM-AXIS-SET": lambda obj, elem: setattr(obj, "sw_calprm_axis_set", SwCalprmAxisSet.deserialize(elem)),
+        "SW-COMPARISON-VARIABLES": lambda obj, elem: obj.sw_comparison_variables.append(SwVariableRefProxy.deserialize(elem)),
+        "SW-DATA-DEPENDENCY": lambda obj, elem: setattr(obj, "sw_data_dependency", SwDataDependency.deserialize(elem)),
+        "SW-HOST-VARIABLE": lambda obj, elem: setattr(obj, "sw_host_variable", SwVariableRefProxy.deserialize(elem)),
+        "SW-IMPL-POLICY": lambda obj, elem: setattr(obj, "sw_impl_policy", SwImplPolicyEnum.deserialize(elem)),
+        "SW-INTENDED-RESOLUTION": lambda obj, elem: setattr(obj, "sw_intended_resolution", elem.text),
+        "SW-INTERPOLATION-METHOD": lambda obj, elem: setattr(obj, "sw_interpolation_method", elem.text),
+        "SW-IS-VIRTUAL": lambda obj, elem: setattr(obj, "sw_is_virtual", elem.text),
+        "SW-POINTER-TARGET-PROPS": lambda obj, elem: setattr(obj, "sw_pointer_target_props", SwPointerTargetProps.deserialize(elem)),
+        "SW-RECORD-LAYOUT-REF": lambda obj, elem: setattr(obj, "sw_record_layout_ref", ARRef.deserialize(elem)),
+        "SW-REFRESH-TIMING": lambda obj, elem: setattr(obj, "sw_refresh_timing", MultidimensionalTime.deserialize(elem)),
+        "SW-TEXT-PROPS": lambda obj, elem: setattr(obj, "sw_text_props", SwTextProps.deserialize(elem)),
+        "SW-VALUE-BLOCK-SIZE": lambda obj, elem: setattr(obj, "sw_value_block_size", elem.text),
+        "SW-VALUE-BLOCK-SIZE-MULTS": lambda obj, elem: obj.sw_value_block_size_mults.append(elem.text),
+        "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
+        "VALUE-AXIS-DATA-TYPE-REF": lambda obj, elem: setattr(obj, "value_axis_data_type_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwDataDefProps."""
         super().__init__()

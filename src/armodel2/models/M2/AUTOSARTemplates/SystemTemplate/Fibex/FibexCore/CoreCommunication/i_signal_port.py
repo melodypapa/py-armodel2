@@ -43,11 +43,23 @@ class ISignalPort(CommConnectorPort):
         """
         return False
 
+    _XML_TAG = "I-SIGNAL-PORT"
+
+
     data_filter: Optional[DataFilter]
     dds_qos_profile_ref: Optional[ARRef]
     first_timeout: Optional[TimeValue]
     handle_invalid_enum: Optional[HandleInvalidEnum]
     timeout: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-FILTER": lambda obj, elem: setattr(obj, "data_filter", DataFilter.deserialize(elem)),
+        "DDS-QOS-PROFILE-REF": lambda obj, elem: setattr(obj, "dds_qos_profile_ref", ARRef.deserialize(elem)),
+        "FIRST-TIMEOUT": lambda obj, elem: setattr(obj, "first_timeout", elem.text),
+        "HANDLE-INVALID-ENUM": lambda obj, elem: setattr(obj, "handle_invalid_enum", HandleInvalidEnum.deserialize(elem)),
+        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ISignalPort."""
         super().__init__()
@@ -63,9 +75,8 @@ class ISignalPort(CommConnectorPort):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ISignalPort, self).serialize()

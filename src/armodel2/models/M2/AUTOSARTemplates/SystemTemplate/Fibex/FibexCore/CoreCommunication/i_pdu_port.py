@@ -37,10 +37,21 @@ class IPduPort(CommConnectorPort):
         """
         return False
 
+    _XML_TAG = "I-PDU-PORT"
+
+
     i_pdu_signal: Optional[IPduSignalProcessingEnum]
     rx_security: Optional[Boolean]
     timestamp_rx: Optional[TimeValue]
     use_auth_data: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "I-PDU-SIGNAL": lambda obj, elem: setattr(obj, "i_pdu_signal", IPduSignalProcessingEnum.deserialize(elem)),
+        "RX-SECURITY": lambda obj, elem: setattr(obj, "rx_security", elem.text),
+        "TIMESTAMP-RX": lambda obj, elem: setattr(obj, "timestamp_rx", elem.text),
+        "USE-AUTH-DATA": lambda obj, elem: setattr(obj, "use_auth_data", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IPduPort."""
         super().__init__()
@@ -55,9 +66,8 @@ class IPduPort(CommConnectorPort):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IPduPort, self).serialize()

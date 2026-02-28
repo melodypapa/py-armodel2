@@ -33,7 +33,15 @@ class CommunicationBufferLocking(SwcSupportedFeature):
         """
         return False
 
+    _XML_TAG = "COMMUNICATION-BUFFER-LOCKING"
+
+
     support_buffer_locking: Optional[SupportBufferLockingEnum]
+    _DESERIALIZE_DISPATCH = {
+        "SUPPORT-BUFFER-LOCKING": lambda obj, elem: setattr(obj, "support_buffer_locking", SupportBufferLockingEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CommunicationBufferLocking."""
         super().__init__()
@@ -45,9 +53,8 @@ class CommunicationBufferLocking(SwcSupportedFeature):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CommunicationBufferLocking, self).serialize()

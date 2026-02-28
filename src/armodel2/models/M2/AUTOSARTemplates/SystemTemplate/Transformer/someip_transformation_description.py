@@ -36,9 +36,19 @@ class SOMEIPTransformationDescription(TransformationDescription):
         """
         return False
 
+    _XML_TAG = "S-O-M-E-I-P-TRANSFORMATION-DESCRIPTION"
+
+
     alignment: Optional[PositiveInteger]
     byte_order: Optional[ByteOrderEnum]
     interface_version: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ALIGNMENT": lambda obj, elem: setattr(obj, "alignment", elem.text),
+        "BYTE-ORDER": lambda obj, elem: setattr(obj, "byte_order", ByteOrderEnum.deserialize(elem)),
+        "INTERFACE-VERSION": lambda obj, elem: setattr(obj, "interface_version", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SOMEIPTransformationDescription."""
         super().__init__()
@@ -52,9 +62,8 @@ class SOMEIPTransformationDescription(TransformationDescription):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SOMEIPTransformationDescription, self).serialize()

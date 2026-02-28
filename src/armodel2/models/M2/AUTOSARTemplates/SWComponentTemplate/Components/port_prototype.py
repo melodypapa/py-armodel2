@@ -79,6 +79,18 @@ class PortPrototype(Identifiable, ABC):
     parameter_ports: list[ParameterPortAnnotation]
     sender_receivers: list[Any]
     trigger_port_annotation_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CLIENT-SERVERS": lambda obj, elem: obj.client_servers.append(ClientServerAnnotation.deserialize(elem)),
+        "DELEGATED-PORT": lambda obj, elem: setattr(obj, "delegated_port", DelegatedPortAnnotation.deserialize(elem)),
+        "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS": lambda obj, elem: obj.io_hw_abstraction_server_annotations.append(IoHwAbstractionServerAnnotation.deserialize(elem)),
+        "MODE-PORT-ANNOTATIONS": lambda obj, elem: obj.mode_port_annotations.append(ModePortAnnotation.deserialize(elem)),
+        "NV-DATA-PORT-ANNOTATIONS": lambda obj, elem: obj.nv_data_port_annotations.append(NvDataPortAnnotation.deserialize(elem)),
+        "PARAMETER-PORTS": lambda obj, elem: obj.parameter_ports.append(ParameterPortAnnotation.deserialize(elem)),
+        "SENDER-RECEIVERS": lambda obj, elem: obj.sender_receivers.append(any (SenderReceiver).deserialize(elem)),
+        "TRIGGER-PORT-ANNOTATIONS": lambda obj, elem: obj.trigger_port_annotation_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PortPrototype."""
         super().__init__()
@@ -97,9 +109,8 @@ class PortPrototype(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PortPrototype, self).serialize()

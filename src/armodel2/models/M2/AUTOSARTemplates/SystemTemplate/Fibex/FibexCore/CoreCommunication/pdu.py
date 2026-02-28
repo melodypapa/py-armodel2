@@ -38,6 +38,12 @@ class Pdu(FibexElement, ABC):
 
     has_dynamic_length: Optional[Boolean]
     length: Optional[UnlimitedInteger]
+    _DESERIALIZE_DISPATCH = {
+        "HAS-DYNAMIC-LENGTH": lambda obj, elem: setattr(obj, "has_dynamic_length", elem.text),
+        "LENGTH": lambda obj, elem: setattr(obj, "length", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Pdu."""
         super().__init__()
@@ -50,9 +56,8 @@ class Pdu(FibexElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Pdu, self).serialize()

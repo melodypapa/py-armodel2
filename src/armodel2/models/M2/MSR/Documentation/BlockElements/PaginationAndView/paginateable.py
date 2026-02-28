@@ -37,6 +37,12 @@ class Paginateable(DocumentViewSelectable, ABC):
 
     break_: Optional[ChapterEnumBreak]
     keep_with: Optional[KeepWithPreviousEnum]
+    _DESERIALIZE_DISPATCH = {
+        "BREAK": lambda obj, elem: setattr(obj, "break_", ChapterEnumBreak.deserialize(elem)),
+        "KEEP-WITH": lambda obj, elem: setattr(obj, "keep_with", KeepWithPreviousEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Paginateable."""
         super().__init__()
@@ -49,9 +55,8 @@ class Paginateable(DocumentViewSelectable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Paginateable, self).serialize()

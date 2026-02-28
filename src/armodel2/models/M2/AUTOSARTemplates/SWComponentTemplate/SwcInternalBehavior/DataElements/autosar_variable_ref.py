@@ -34,8 +34,17 @@ class AutosarVariableRef(ARObject):
         """
         return False
 
+    _XML_TAG = "AUTOSAR-VARIABLE-REF"
+
+
     autosar_variable: Optional[Any]
     local_variable_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AUTOSAR-VARIABLE": lambda obj, elem: setattr(obj, "autosar_variable", any (ArVariableIn).deserialize(elem)),
+        "LOCAL-VARIABLE-REF": lambda obj, elem: setattr(obj, "local_variable_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AutosarVariableRef."""
         super().__init__()
@@ -48,9 +57,8 @@ class AutosarVariableRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AutosarVariableRef, self).serialize()

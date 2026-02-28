@@ -38,6 +38,9 @@ class LinSlave(ARObject):
         """
         return False
 
+    _XML_TAG = "LIN-SLAVE"
+
+
     assign_nad: Optional[Boolean]
     configured_nad: Optional[Integer]
     function_id: Optional[PositiveInteger]
@@ -46,6 +49,18 @@ class LinSlave(ARObject):
     nas_timeout: Optional[TimeValue]
     supplier_id: Optional[PositiveInteger]
     variant_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ASSIGN-NAD": lambda obj, elem: setattr(obj, "assign_nad", elem.text),
+        "CONFIGURED-NAD": lambda obj, elem: setattr(obj, "configured_nad", elem.text),
+        "FUNCTION-ID": lambda obj, elem: setattr(obj, "function_id", elem.text),
+        "INITIAL-NAD": lambda obj, elem: setattr(obj, "initial_nad", elem.text),
+        "LIN-ERROR-RESPONSE": lambda obj, elem: setattr(obj, "lin_error_response", LinErrorResponse.deserialize(elem)),
+        "NAS-TIMEOUT": lambda obj, elem: setattr(obj, "nas_timeout", elem.text),
+        "SUPPLIER-ID": lambda obj, elem: setattr(obj, "supplier_id", elem.text),
+        "VARIANT-ID": lambda obj, elem: setattr(obj, "variant_id", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinSlave."""
         super().__init__()

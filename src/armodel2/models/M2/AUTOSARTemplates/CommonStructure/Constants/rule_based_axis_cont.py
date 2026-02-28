@@ -39,11 +39,23 @@ class RuleBasedAxisCont(ARObject):
         """
         return False
 
+    _XML_TAG = "RULE-BASED-AXIS-CONT"
+
+
     category: Optional[CalprmAxisCategoryEnum]
     rule_based: Optional[Any]
     sw_arraysize_ref: Optional[ARRef]
     sw_axis_index: Optional[AxisIndexType]
     unit_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", CalprmAxisCategoryEnum.deserialize(elem)),
+        "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", any (RuleBasedValue).deserialize(elem)),
+        "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
+        "SW-AXIS-INDEX": lambda obj, elem: setattr(obj, "sw_axis_index", elem.text),
+        "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RuleBasedAxisCont."""
         super().__init__()
@@ -59,9 +71,8 @@ class RuleBasedAxisCont(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RuleBasedAxisCont, self).serialize()

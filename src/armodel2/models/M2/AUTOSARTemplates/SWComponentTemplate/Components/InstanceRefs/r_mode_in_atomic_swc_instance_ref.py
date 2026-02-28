@@ -42,10 +42,21 @@ class RModeInAtomicSwcInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "R-MODE-IN-ATOMIC-SWC-INSTANCE-REF"
+
+
     base_ref: Optional[ARRef]
     context_port_ref: Optional[ARRef]
     context_mode_declaration_group_prototype_ref: Optional[ARRef]
     target_mode_declaration_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "CONTEXT-PORT-REF": lambda obj, elem: setattr(obj, "context_port_ref", ARRef.deserialize(elem)),
+        "CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "context_mode_declaration_group_prototype_ref", ARRef.deserialize(elem)),
+        "TARGET-MODE-DECLARATION-REF": lambda obj, elem: setattr(obj, "target_mode_declaration_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RModeInAtomicSwcInstanceRef."""
         super().__init__()
@@ -60,9 +71,8 @@ class RModeInAtomicSwcInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RModeInAtomicSwcInstanceRef, self).serialize()

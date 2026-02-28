@@ -82,6 +82,9 @@ class BswInternalBehavior(InternalBehavior):
         """
         return False
 
+    _XML_TAG = "BSW-INTERNAL-BEHAVIOR"
+
+
     ar_typed_per_instance_memories: list[VariableDataPrototype]
     bsw_per_instance_memory_policies: list[BswPerInstanceMemoryPolicy]
     client_policies: list[BswClientPolicy]
@@ -104,6 +107,32 @@ class BswInternalBehavior(InternalBehavior):
     service_dependencies: list[BswServiceDependency]
     trigger_direct_implementations: list[BswTriggerDirectImplementation]
     variation_point_proxies: list[VariationPointProxy]
+    _DESERIALIZE_DISPATCH = {
+        "AR-TYPED-PER-INSTANCE-MEMORIES": lambda obj, elem: obj.ar_typed_per_instance_memories.append(VariableDataPrototype.deserialize(elem)),
+        "BSW-PER-INSTANCE-MEMORY-POLICIES": lambda obj, elem: obj.bsw_per_instance_memory_policies.append(BswPerInstanceMemoryPolicy.deserialize(elem)),
+        "CLIENT-POLICIES": lambda obj, elem: obj.client_policies.append(BswClientPolicy.deserialize(elem)),
+        "DISTINGUISHED-PARTITIONS": lambda obj, elem: obj.distinguished_partitions.append(BswDistinguishedPartition.deserialize(elem)),
+        "ENTITIES": lambda obj, elem: obj.entities.append(BswModuleEntity.deserialize(elem)),
+        "EVENTS": lambda obj, elem: obj.events.append(BswEvent.deserialize(elem)),
+        "EXCLUSIVE-AREA-POLICIES": lambda obj, elem: obj.exclusive_area_policies.append(BswExclusiveAreaPolicy.deserialize(elem)),
+        "INCLUDED-DATA-TYPE-SETS": lambda obj, elem: obj.included_data_type_sets.append(IncludedDataTypeSet.deserialize(elem)),
+        "INCLUDED-MODE-DECLARATION-GROUP-SETS": lambda obj, elem: obj.included_mode_declaration_group_sets.append(IncludedModeDeclarationGroupSet.deserialize(elem)),
+        "INTERNAL-TRIGGERING-POINTS": lambda obj, elem: obj.internal_triggering_points.append(BswInternalTriggeringPoint.deserialize(elem)),
+        "INTERNAL-TRIGGERING-POINT-POLICIES": lambda obj, elem: obj.internal_triggering_point_policies.append(BswInternalTriggeringPointPolicy.deserialize(elem)),
+        "MODE-RECEIVER-POLICIES": lambda obj, elem: obj.mode_receiver_policies.append(BswModeReceiverPolicy.deserialize(elem)),
+        "MODE-SENDER-POLICIES": lambda obj, elem: obj.mode_sender_policies.append(BswModeSenderPolicy.deserialize(elem)),
+        "PARAMETER-POLICIES": lambda obj, elem: obj.parameter_policies.append(BswParameterPolicy.deserialize(elem)),
+        "PER-INSTANCE-PARAMETERS": lambda obj, elem: obj.per_instance_parameters.append(ParameterDataPrototype.deserialize(elem)),
+        "RECEPTION-POLICIES": lambda obj, elem: obj.reception_policies.append(BswDataReceptionPolicy.deserialize(elem)),
+        "RELEASED-TRIGGER-POLICIES": lambda obj, elem: obj.released_trigger_policies.append(BswReleasedTriggerPolicy.deserialize(elem)),
+        "SCHEDULER-NAME-PREFIXES": lambda obj, elem: obj.scheduler_name_prefixes.append(BswSchedulerNamePrefix.deserialize(elem)),
+        "SEND-POLICIES": lambda obj, elem: obj.send_policies.append(BswDataSendPolicy.deserialize(elem)),
+        "SERVICE-DEPENDENCIES": lambda obj, elem: obj.service_dependencies.append(BswServiceDependency.deserialize(elem)),
+        "TRIGGER-DIRECT-IMPLEMENTATIONS": lambda obj, elem: obj.trigger_direct_implementations.append(BswTriggerDirectImplementation.deserialize(elem)),
+        "VARIATION-POINT-PROXIES": lambda obj, elem: obj.variation_point_proxies.append(VariationPointProxy.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswInternalBehavior."""
         super().__init__()
@@ -136,9 +165,8 @@ class BswInternalBehavior(InternalBehavior):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswInternalBehavior, self).serialize()

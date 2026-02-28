@@ -35,9 +35,19 @@ class BuildEngineeringObject(EngineeringObject):
         """
         return False
 
+    _XML_TAG = "BUILD-ENGINEERING-OBJECT"
+
+
     file_type: NameToken
     file_type_pattern: RegularExpression
     intended: Optional[UriString]
+    _DESERIALIZE_DISPATCH = {
+        "FILE-TYPE": lambda obj, elem: setattr(obj, "file_type", elem.text),
+        "FILE-TYPE-PATTERN": lambda obj, elem: setattr(obj, "file_type_pattern", elem.text),
+        "INTENDED": lambda obj, elem: setattr(obj, "intended", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BuildEngineeringObject."""
         super().__init__()
@@ -51,9 +61,8 @@ class BuildEngineeringObject(EngineeringObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BuildEngineeringObject, self).serialize()

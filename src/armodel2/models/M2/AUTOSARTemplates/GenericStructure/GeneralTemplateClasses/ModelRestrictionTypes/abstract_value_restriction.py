@@ -38,6 +38,15 @@ class AbstractValueRestriction(ARObject, ABC):
     min: Optional[Limit]
     min_length: Optional[PositiveInteger]
     pattern: Optional[RegularExpression]
+    _DESERIALIZE_DISPATCH = {
+        "MAX": lambda obj, elem: setattr(obj, "max", elem.text),
+        "MAX-LENGTH": lambda obj, elem: setattr(obj, "max_length", elem.text),
+        "MIN": lambda obj, elem: setattr(obj, "min", elem.text),
+        "MIN-LENGTH": lambda obj, elem: setattr(obj, "min_length", elem.text),
+        "PATTERN": lambda obj, elem: setattr(obj, "pattern", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AbstractValueRestriction."""
         super().__init__()
@@ -53,9 +62,8 @@ class AbstractValueRestriction(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AbstractValueRestriction, self).serialize()

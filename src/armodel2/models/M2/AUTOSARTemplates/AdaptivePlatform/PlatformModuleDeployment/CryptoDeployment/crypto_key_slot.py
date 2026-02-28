@@ -35,6 +35,9 @@ class CryptoKeySlot(Identifiable):
         """
         return False
 
+    _XML_TAG = "CRYPTO-KEY-SLOT"
+
+
     allocate_shadow_copy: Optional[Boolean]
     crypto_alg_id: Optional[String]
     crypto_object_type: Optional[CryptoObjectTypeEnum]
@@ -42,6 +45,17 @@ class CryptoKeySlot(Identifiable):
     key_slot_content_allowed_usages: list[CryptoKeySlotContentAllowedUsage]
     slot_capacity: Optional[PositiveInteger]
     slot_type: Optional[CryptoKeySlotTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "ALLOCATE-SHADOW-COPY": lambda obj, elem: setattr(obj, "allocate_shadow_copy", elem.text),
+        "CRYPTO-ALG-ID": lambda obj, elem: setattr(obj, "crypto_alg_id", elem.text),
+        "CRYPTO-OBJECT-TYPE": lambda obj, elem: setattr(obj, "crypto_object_type", CryptoObjectTypeEnum.deserialize(elem)),
+        "KEY-SLOT-ALLOWED-MODIFICATION": lambda obj, elem: setattr(obj, "key_slot_allowed_modification", CryptoKeySlotAllowedModification.deserialize(elem)),
+        "KEY-SLOT-CONTENT-ALLOWED-USAGES": lambda obj, elem: obj.key_slot_content_allowed_usages.append(CryptoKeySlotContentAllowedUsage.deserialize(elem)),
+        "SLOT-CAPACITY": lambda obj, elem: setattr(obj, "slot_capacity", elem.text),
+        "SLOT-TYPE": lambda obj, elem: setattr(obj, "slot_type", CryptoKeySlotTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CryptoKeySlot."""
         super().__init__()
@@ -59,9 +73,8 @@ class CryptoKeySlot(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CryptoKeySlot, self).serialize()

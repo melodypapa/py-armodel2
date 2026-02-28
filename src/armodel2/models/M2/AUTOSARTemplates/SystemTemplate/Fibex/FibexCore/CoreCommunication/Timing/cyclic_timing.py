@@ -33,8 +33,17 @@ class CyclicTiming(Describable):
         """
         return False
 
+    _XML_TAG = "CYCLIC-TIMING"
+
+
     time_offset: Optional[TimeRangeType]
     time_period: Optional[TimeRangeType]
+    _DESERIALIZE_DISPATCH = {
+        "TIME-OFFSET": lambda obj, elem: setattr(obj, "time_offset", TimeRangeType.deserialize(elem)),
+        "TIME-PERIOD": lambda obj, elem: setattr(obj, "time_period", TimeRangeType.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CyclicTiming."""
         super().__init__()
@@ -47,9 +56,8 @@ class CyclicTiming(Describable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CyclicTiming, self).serialize()

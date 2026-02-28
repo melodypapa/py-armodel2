@@ -40,6 +40,12 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
 
     access_ref: Optional[ARRef]
     service_class_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESS-REF": lambda obj, elem: setattr(obj, "access_ref", ARRef.deserialize(elem)),
+        "SERVICE-CLASS-REF": lambda obj, elem: setattr(obj, "service_class_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticServiceInstance."""
         super().__init__()
@@ -52,9 +58,8 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticServiceInstance, self).serialize()

@@ -37,8 +37,17 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-J1939-SW-MAPPING"
+
+
     node_ref: Optional[ARRef]
     sw_component_prototype_composition_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "NODE-REF": lambda obj, elem: setattr(obj, "node_ref", ARRef.deserialize(elem)),
+        "SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "sw_component_prototype_composition_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939SwMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticJ1939SwMapping, self).serialize()

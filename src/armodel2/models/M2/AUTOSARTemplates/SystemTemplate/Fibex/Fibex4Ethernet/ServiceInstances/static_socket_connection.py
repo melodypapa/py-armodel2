@@ -46,10 +46,21 @@ class StaticSocketConnection(Identifiable):
         """
         return False
 
+    _XML_TAG = "STATIC-SOCKET-CONNECTION"
+
+
     i_pdu_identifier_refs: list[ARRef]
     remote_address_ref: Optional[ARRef]
     tcp_connect: Optional[TimeValue]
     tcp_role: Optional[TcpRoleEnum]
+    _DESERIALIZE_DISPATCH = {
+        "I-PDU-IDENTIFIERS": lambda obj, elem: obj.i_pdu_identifier_refs.append(ARRef.deserialize(elem)),
+        "REMOTE-ADDRESS-REF": lambda obj, elem: setattr(obj, "remote_address_ref", ARRef.deserialize(elem)),
+        "TCP-CONNECT": lambda obj, elem: setattr(obj, "tcp_connect", elem.text),
+        "TCP-ROLE": lambda obj, elem: setattr(obj, "tcp_role", TcpRoleEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StaticSocketConnection."""
         super().__init__()
@@ -64,9 +75,8 @@ class StaticSocketConnection(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StaticSocketConnection, self).serialize()

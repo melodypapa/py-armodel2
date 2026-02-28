@@ -35,6 +35,12 @@ class SwSystemconstDependentFormula(ARObject, ABC):
 
     sysc_ref: Optional[ARRef]
     sysc_string_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SYSC-REF": lambda obj, elem: setattr(obj, "sysc_ref", ARRef.deserialize(elem)),
+        "SYSC-STRING-REF": lambda obj, elem: setattr(obj, "sysc_string_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwSystemconstDependentFormula."""
         super().__init__()
@@ -47,9 +53,8 @@ class SwSystemconstDependentFormula(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwSystemconstDependentFormula, self).serialize()

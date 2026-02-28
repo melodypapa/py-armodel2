@@ -29,10 +29,21 @@ class CanXlFrameTriggeringProps(ARObject):
         """
         return False
 
+    _XML_TAG = "CAN-XL-FRAME-TRIGGERING-PROPS"
+
+
     acceptance_field: Optional[PositiveInteger]
     priority_id: Optional[PositiveInteger]
     sdu_type: Optional[PositiveInteger]
     vcid: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ACCEPTANCE-FIELD": lambda obj, elem: setattr(obj, "acceptance_field", elem.text),
+        "PRIORITY-ID": lambda obj, elem: setattr(obj, "priority_id", elem.text),
+        "SDU-TYPE": lambda obj, elem: setattr(obj, "sdu_type", elem.text),
+        "VCID": lambda obj, elem: setattr(obj, "vcid", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanXlFrameTriggeringProps."""
         super().__init__()
@@ -47,9 +58,8 @@ class CanXlFrameTriggeringProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanXlFrameTriggeringProps, self).serialize()

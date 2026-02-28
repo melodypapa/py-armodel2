@@ -37,8 +37,17 @@ class J1939ControllerApplication(ARElement):
         """
         return False
 
+    _XML_TAG = "J1939-CONTROLLER-APPLICATION"
+
+
     function_id: Optional[PositiveInteger]
     sw_component_prototype_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FUNCTION-ID": lambda obj, elem: setattr(obj, "function_id", elem.text),
+        "SW-COMPONENT-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "sw_component_prototype_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939ControllerApplication."""
         super().__init__()
@@ -51,9 +60,8 @@ class J1939ControllerApplication(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939ControllerApplication, self).serialize()

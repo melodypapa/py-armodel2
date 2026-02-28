@@ -37,8 +37,17 @@ class DdsCpTopic(Identifiable):
         """
         return False
 
+    _XML_TAG = "DDS-CP-TOPIC"
+
+
     dds_partition_ref: Optional[ARRef]
     topic_name: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "DDS-PARTITION-REF": lambda obj, elem: setattr(obj, "dds_partition_ref", ARRef.deserialize(elem)),
+        "TOPIC-NAME": lambda obj, elem: setattr(obj, "topic_name", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpTopic."""
         super().__init__()
@@ -51,9 +60,8 @@ class DdsCpTopic(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpTopic, self).serialize()

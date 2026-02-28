@@ -34,7 +34,15 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
         """
         return False
 
+    _XML_TAG = "SECURITY-EVENT-CONTEXT-MAPPING-COMM-CONNECTOR"
+
+
     comm_connector_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMM-CONNECTORS": lambda obj, elem: obj.comm_connector_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecurityEventContextMappingCommConnector."""
         super().__init__()
@@ -46,9 +54,8 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecurityEventContextMappingCommConnector, self).serialize()

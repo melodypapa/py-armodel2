@@ -46,12 +46,25 @@ class ISignalToIPduMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "I-SIGNAL-TO-I-PDU-MAPPING"
+
+
     i_signal_ref: Optional[ARRef]
     i_signal_group_ref: Optional[ARRef]
     packing_byte_order: Optional[ByteOrderEnum]
     start_position: Optional[UnlimitedInteger]
     transfer_property: Optional[TransferPropertyEnum]
     update_indication_bit_position: Optional[UnlimitedInteger]
+    _DESERIALIZE_DISPATCH = {
+        "I-SIGNAL-REF": lambda obj, elem: setattr(obj, "i_signal_ref", ARRef.deserialize(elem)),
+        "I-SIGNAL-GROUP-REF": lambda obj, elem: setattr(obj, "i_signal_group_ref", ARRef.deserialize(elem)),
+        "PACKING-BYTE-ORDER": lambda obj, elem: setattr(obj, "packing_byte_order", ByteOrderEnum.deserialize(elem)),
+        "START-POSITION": lambda obj, elem: setattr(obj, "start_position", elem.text),
+        "TRANSFER-PROPERTY": lambda obj, elem: setattr(obj, "transfer_property", TransferPropertyEnum.deserialize(elem)),
+        "UPDATE-INDICATION-BIT-POSITION": lambda obj, elem: setattr(obj, "update_indication_bit_position", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ISignalToIPduMapping."""
         super().__init__()
@@ -68,9 +81,8 @@ class ISignalToIPduMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ISignalToIPduMapping, self).serialize()

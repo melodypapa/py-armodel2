@@ -34,9 +34,19 @@ class CanCommunicationConnector(AbstractCanCommunicationConnector):
         """
         return False
 
+    _XML_TAG = "CAN-COMMUNICATION-CONNECTOR"
+
+
     pnc_wakeup_can: Optional[PositiveInteger]
     pnc_wakeup: Optional[PositiveUnlimitedInteger]
     pnc_wakeup_dlc: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "PNC-WAKEUP-CAN": lambda obj, elem: setattr(obj, "pnc_wakeup_can", elem.text),
+        "PNC-WAKEUP": lambda obj, elem: setattr(obj, "pnc_wakeup", elem.text),
+        "PNC-WAKEUP-DLC": lambda obj, elem: setattr(obj, "pnc_wakeup_dlc", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanCommunicationConnector."""
         super().__init__()
@@ -50,9 +60,8 @@ class CanCommunicationConnector(AbstractCanCommunicationConnector):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanCommunicationConnector, self).serialize()

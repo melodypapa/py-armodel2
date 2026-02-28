@@ -36,9 +36,19 @@ class MultiplexedIPdu(IPdu):
         """
         return False
 
+    _XML_TAG = "MULTIPLEXED-I-PDU"
+
+
     dynamic_part: Optional[DynamicPart]
     selector_field: Optional[Integer]
     unused_bit: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "DYNAMIC-PART": lambda obj, elem: setattr(obj, "dynamic_part", DynamicPart.deserialize(elem)),
+        "SELECTOR-FIELD": lambda obj, elem: setattr(obj, "selector_field", elem.text),
+        "UNUSED-BIT": lambda obj, elem: setattr(obj, "unused_bit", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MultiplexedIPdu."""
         super().__init__()
@@ -52,9 +62,8 @@ class MultiplexedIPdu(IPdu):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MultiplexedIPdu, self).serialize()

@@ -39,6 +39,9 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
         """
         return False
 
+    _XML_TAG = "END-TO-END-TRANSFORMATION-COM-SPEC-PROPS"
+
+
     clear_from_valid: Optional[Boolean]
     disable_end_to: Optional[Boolean]
     e2e_profile_ref: Optional[ARRef]
@@ -50,6 +53,21 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
     sync_counter_init: Optional[PositiveInteger]
     window_size_init: Optional[PositiveInteger]
     window_size: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CLEAR-FROM-VALID": lambda obj, elem: setattr(obj, "clear_from_valid", elem.text),
+        "DISABLE-END-TO": lambda obj, elem: setattr(obj, "disable_end_to", elem.text),
+        "E2E-PROFILE-REF": lambda obj, elem: setattr(obj, "e2e_profile_ref", ARRef.deserialize(elem)),
+        "MAX-DELTA": lambda obj, elem: setattr(obj, "max_delta", elem.text),
+        "MAX-ERROR-STATE": lambda obj, elem: setattr(obj, "max_error_state", elem.text),
+        "MAX-NO-NEW-OR": lambda obj, elem: setattr(obj, "max_no_new_or", elem.text),
+        "MIN-OK-STATE-INIT": lambda obj, elem: setattr(obj, "min_ok_state_init", elem.text),
+        "MIN-OK-STATE": lambda obj, elem: setattr(obj, "min_ok_state", elem.text),
+        "SYNC-COUNTER-INIT": lambda obj, elem: setattr(obj, "sync_counter_init", elem.text),
+        "WINDOW-SIZE-INIT": lambda obj, elem: setattr(obj, "window_size_init", elem.text),
+        "WINDOW-SIZE": lambda obj, elem: setattr(obj, "window_size", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EndToEndTransformationComSpecProps."""
         super().__init__()
@@ -71,9 +89,8 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EndToEndTransformationComSpecProps, self).serialize()

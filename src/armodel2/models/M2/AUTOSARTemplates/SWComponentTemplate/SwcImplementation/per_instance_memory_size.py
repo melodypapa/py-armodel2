@@ -33,9 +33,19 @@ class PerInstanceMemorySize(ARObject):
         """
         return False
 
+    _XML_TAG = "PER-INSTANCE-MEMORY-SIZE"
+
+
     alignment: Optional[PositiveInteger]
     per_instance_memory_memory_ref: Optional[ARRef]
     size: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ALIGNMENT": lambda obj, elem: setattr(obj, "alignment", elem.text),
+        "PER-INSTANCE-MEMORY-MEMORY-REF": lambda obj, elem: setattr(obj, "per_instance_memory_memory_ref", ARRef.deserialize(elem)),
+        "SIZE": lambda obj, elem: setattr(obj, "size", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PerInstanceMemorySize."""
         super().__init__()
@@ -49,9 +59,8 @@ class PerInstanceMemorySize(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PerInstanceMemorySize, self).serialize()

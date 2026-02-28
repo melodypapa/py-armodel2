@@ -36,8 +36,17 @@ class LinPhysicalChannel(PhysicalChannel):
         """
         return False
 
+    _XML_TAG = "LIN-PHYSICAL-CHANNEL"
+
+
     bus_idle_timeout: Optional[TimeValue]
     schedule_tables: list[LinScheduleTable]
+    _DESERIALIZE_DISPATCH = {
+        "BUS-IDLE-TIMEOUT": lambda obj, elem: setattr(obj, "bus_idle_timeout", elem.text),
+        "SCHEDULE-TABLES": lambda obj, elem: obj.schedule_tables.append(LinScheduleTable.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinPhysicalChannel."""
         super().__init__()
@@ -50,9 +59,8 @@ class LinPhysicalChannel(PhysicalChannel):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinPhysicalChannel, self).serialize()

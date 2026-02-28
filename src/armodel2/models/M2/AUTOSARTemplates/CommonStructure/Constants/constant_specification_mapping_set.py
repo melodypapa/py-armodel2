@@ -33,7 +33,15 @@ class ConstantSpecificationMappingSet(ARElement):
         """
         return False
 
+    _XML_TAG = "CONSTANT-SPECIFICATION-MAPPING-SET"
+
+
     mappings: list[ConstantSpecification]
+    _DESERIALIZE_DISPATCH = {
+        "MAPPINGS": lambda obj, elem: obj.mappings.append(ConstantSpecification.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConstantSpecificationMappingSet."""
         super().__init__()
@@ -45,9 +53,8 @@ class ConstantSpecificationMappingSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConstantSpecificationMappingSet, self).serialize()

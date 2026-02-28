@@ -35,9 +35,19 @@ class Ipv6Props(ARObject):
         """
         return False
 
+    _XML_TAG = "IPV6-PROPS"
+
+
     dhcp_props: Optional[Dhcpv6Props]
     fragmentation: Optional[Ipv6FragmentationProps]
     ndp_props: Optional[Ipv6NdpProps]
+    _DESERIALIZE_DISPATCH = {
+        "DHCP-PROPS": lambda obj, elem: setattr(obj, "dhcp_props", Dhcpv6Props.deserialize(elem)),
+        "FRAGMENTATION": lambda obj, elem: setattr(obj, "fragmentation", Ipv6FragmentationProps.deserialize(elem)),
+        "NDP-PROPS": lambda obj, elem: setattr(obj, "ndp_props", Ipv6NdpProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ipv6Props."""
         super().__init__()
@@ -51,9 +61,8 @@ class Ipv6Props(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ipv6Props, self).serialize()

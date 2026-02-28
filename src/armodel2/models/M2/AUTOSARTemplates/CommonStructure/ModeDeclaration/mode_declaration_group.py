@@ -47,12 +47,25 @@ class ModeDeclarationGroup(ARElement):
         """
         return False
 
+    _XML_TAG = "MODE-DECLARATION-GROUP"
+
+
     initial_mode_ref: Optional[ARRef]
     mode_declarations: list[ModeDeclaration]
     mode_manager_error_behavior: Optional[ModeErrorBehavior]
     mode_transitions: list[ModeTransition]
     mode_user_error_behavior: Optional[ModeErrorBehavior]
     on_transition_value: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "INITIAL-MODE-REF": lambda obj, elem: setattr(obj, "initial_mode_ref", ARRef.deserialize(elem)),
+        "MODE-DECLARATIONS": lambda obj, elem: obj.mode_declarations.append(ModeDeclaration.deserialize(elem)),
+        "MODE-MANAGER-ERROR-BEHAVIOR": lambda obj, elem: setattr(obj, "mode_manager_error_behavior", ModeErrorBehavior.deserialize(elem)),
+        "MODE-TRANSITIONS": lambda obj, elem: obj.mode_transitions.append(ModeTransition.deserialize(elem)),
+        "MODE-USER-ERROR-BEHAVIOR": lambda obj, elem: setattr(obj, "mode_user_error_behavior", ModeErrorBehavior.deserialize(elem)),
+        "ON-TRANSITION-VALUE": lambda obj, elem: setattr(obj, "on_transition_value", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroup."""
         super().__init__()
@@ -69,9 +82,8 @@ class ModeDeclarationGroup(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeDeclarationGroup, self).serialize()

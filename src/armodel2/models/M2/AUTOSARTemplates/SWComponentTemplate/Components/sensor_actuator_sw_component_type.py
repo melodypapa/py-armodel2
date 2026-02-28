@@ -36,7 +36,15 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
         """
         return False
 
+    _XML_TAG = "SENSOR-ACTUATOR-SW-COMPONENT-TYPE"
+
+
     sensor_actuator_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SENSOR-ACTUATOR-REF": lambda obj, elem: setattr(obj, "sensor_actuator_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SensorActuatorSwComponentType."""
         super().__init__()
@@ -48,9 +56,8 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SensorActuatorSwComponentType, self).serialize()

@@ -42,6 +42,9 @@ class SocketConnection(Describable):
         """
         return False
 
+    _XML_TAG = "SOCKET-CONNECTION"
+
+
     client_ip_addr: Optional[Boolean]
     client_port_ref: Optional[ARRef]
     client_port_from: Optional[Boolean]
@@ -50,6 +53,18 @@ class SocketConnection(Describable):
     runtime_ip: Optional[Any]
     runtime_port: Optional[Any]
     short_label: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "CLIENT-IP-ADDR": lambda obj, elem: setattr(obj, "client_ip_addr", elem.text),
+        "CLIENT-PORT-REF": lambda obj, elem: setattr(obj, "client_port_ref", ARRef.deserialize(elem)),
+        "CLIENT-PORT-FROM": lambda obj, elem: setattr(obj, "client_port_from", elem.text),
+        "PDUS": lambda obj, elem: obj.pdus.append(SocketConnectionIpduIdentifierSet.deserialize(elem)),
+        "PDU-COLLECTION": lambda obj, elem: setattr(obj, "pdu_collection", elem.text),
+        "RUNTIME-IP": lambda obj, elem: setattr(obj, "runtime_ip", any (RuntimeAddress).deserialize(elem)),
+        "RUNTIME-PORT": lambda obj, elem: setattr(obj, "runtime_port", any (RuntimeAddress).deserialize(elem)),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SocketConnection."""
         super().__init__()
@@ -68,9 +83,8 @@ class SocketConnection(Describable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SocketConnection, self).serialize()

@@ -33,8 +33,17 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-CP-I-SIGNAL-TO-DDS-TOPIC-MAPPING"
+
+
     dds_topic_ref: Optional[ARRef]
     i_signal_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DDS-TOPIC-REF": lambda obj, elem: setattr(obj, "dds_topic_ref", ARRef.deserialize(elem)),
+        "I-SIGNAL-REF": lambda obj, elem: setattr(obj, "i_signal_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpISignalToDdsTopicMapping."""
         super().__init__()
@@ -47,9 +56,8 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpISignalToDdsTopicMapping, self).serialize()

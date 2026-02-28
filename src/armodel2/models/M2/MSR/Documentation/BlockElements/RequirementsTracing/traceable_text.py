@@ -38,7 +38,15 @@ class TraceableText(Paginateable):
         """
         return False
 
+    _XML_TAG = "TRACEABLE-TEXT"
+
+
     text: DocumentationBlock
+    _DESERIALIZE_DISPATCH = {
+        "TEXT": lambda obj, elem: setattr(obj, "text", DocumentationBlock.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TraceableText."""
         super().__init__()
@@ -50,9 +58,8 @@ class TraceableText(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TraceableText, self).serialize()

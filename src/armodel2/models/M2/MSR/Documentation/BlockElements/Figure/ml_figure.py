@@ -47,12 +47,25 @@ class MlFigure(Paginateable):
         """
         return False
 
+    _XML_TAG = "ML-FIGURE"
+
+
     figure_caption: Optional[Caption]
     frame: Optional[FrameEnum]
     help_entry: Optional[String]
     _l_graphics: list[LGraphic]
     pgwide: Optional[PgwideEnum]
     verbatim: Optional[MultiLanguageVerbatim]
+    _DESERIALIZE_DISPATCH = {
+        "FIGURE-CAPTION": lambda obj, elem: setattr(obj, "figure_caption", Caption.deserialize(elem)),
+        "FRAME": lambda obj, elem: setattr(obj, "frame", FrameEnum.deserialize(elem)),
+        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", elem.text),
+        "L-GRAPHICS": lambda obj, elem: obj._l_graphics.append(LGraphic.deserialize(elem)),
+        "PGWIDE": lambda obj, elem: setattr(obj, "pgwide", PgwideEnum.deserialize(elem)),
+        "VERBATIM": lambda obj, elem: setattr(obj, "verbatim", MultiLanguageVerbatim.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MlFigure."""
         super().__init__()
@@ -80,9 +93,8 @@ class MlFigure(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MlFigure, self).serialize()

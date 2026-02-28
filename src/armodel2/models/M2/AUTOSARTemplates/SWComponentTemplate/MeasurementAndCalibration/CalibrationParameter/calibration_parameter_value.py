@@ -37,9 +37,19 @@ class CalibrationParameterValue(ARObject):
         """
         return False
 
+    _XML_TAG = "CALIBRATION-PARAMETER-VALUE"
+
+
     appl_init_value: Optional[ValueSpecification]
     impl_init_value: Optional[ValueSpecification]
     initialized_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPL-INIT-VALUE": lambda obj, elem: setattr(obj, "appl_init_value", ValueSpecification.deserialize(elem)),
+        "IMPL-INIT-VALUE": lambda obj, elem: setattr(obj, "impl_init_value", ValueSpecification.deserialize(elem)),
+        "INITIALIZED-REF": lambda obj, elem: setattr(obj, "initialized_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CalibrationParameterValue."""
         super().__init__()
@@ -53,9 +63,8 @@ class CalibrationParameterValue(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CalibrationParameterValue, self).serialize()

@@ -37,8 +37,17 @@ class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-ECU-INSTANCE-PROPS"
+
+
     ecu_instance_refs: list[ARRef]
     obd_support: Optional[DiagnosticObdSupportEnum]
+    _DESERIALIZE_DISPATCH = {
+        "ECU-INSTANCES": lambda obj, elem: obj.ecu_instance_refs.append(ARRef.deserialize(elem)),
+        "OBD-SUPPORT": lambda obj, elem: setattr(obj, "obd_support", DiagnosticObdSupportEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEcuInstanceProps."""
         super().__init__()
@@ -51,9 +60,8 @@ class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEcuInstanceProps, self).serialize()

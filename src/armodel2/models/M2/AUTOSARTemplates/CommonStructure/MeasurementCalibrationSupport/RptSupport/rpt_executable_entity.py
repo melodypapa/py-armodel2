@@ -36,10 +36,21 @@ class RptExecutableEntity(Identifiable):
         """
         return False
 
+    _XML_TAG = "RPT-EXECUTABLE-ENTITY"
+
+
     rpt_executable_entities: list[RptExecutableEntity]
     rpt_reads: list[RoleBasedMcDataAssignment]
     rpt_writes: list[RoleBasedMcDataAssignment]
     symbol: Optional[CIdentifier]
+    _DESERIALIZE_DISPATCH = {
+        "RPT-EXECUTABLE-ENTITIES": lambda obj, elem: obj.rpt_executable_entities.append(RptExecutableEntity.deserialize(elem)),
+        "RPT-READS": lambda obj, elem: obj.rpt_reads.append(RoleBasedMcDataAssignment.deserialize(elem)),
+        "RPT-WRITES": lambda obj, elem: obj.rpt_writes.append(RoleBasedMcDataAssignment.deserialize(elem)),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptExecutableEntity."""
         super().__init__()
@@ -54,9 +65,8 @@ class RptExecutableEntity(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptExecutableEntity, self).serialize()

@@ -26,7 +26,15 @@ class DdsDestinationOrder(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-DESTINATION-ORDER"
+
+
     destination: Optional[DdsDestinationOrder]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION": lambda obj, elem: setattr(obj, "destination", DdsDestinationOrder.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsDestinationOrder."""
         super().__init__()
@@ -38,9 +46,8 @@ class DdsDestinationOrder(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsDestinationOrder, self).serialize()

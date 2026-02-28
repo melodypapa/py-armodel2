@@ -39,12 +39,25 @@ class SecurityEventContextProps(Identifiable):
         """
         return False
 
+    _XML_TAG = "SECURITY-EVENT-CONTEXT-PROPS"
+
+
     context_data: Optional[Any]
     default: Optional[Any]
     persistent: Optional[Boolean]
     security_event_ref: Optional[ARRef]
     sensor_instance: Optional[PositiveInteger]
     severity: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXT-DATA": lambda obj, elem: setattr(obj, "context_data", any (SecurityEventContext).deserialize(elem)),
+        "DEFAULT": lambda obj, elem: setattr(obj, "default", any (SecurityEventReporting).deserialize(elem)),
+        "PERSISTENT": lambda obj, elem: setattr(obj, "persistent", elem.text),
+        "SECURITY-EVENT-REF": lambda obj, elem: setattr(obj, "security_event_ref", ARRef.deserialize(elem)),
+        "SENSOR-INSTANCE": lambda obj, elem: setattr(obj, "sensor_instance", elem.text),
+        "SEVERITY": lambda obj, elem: setattr(obj, "severity", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecurityEventContextProps."""
         super().__init__()
@@ -61,9 +74,8 @@ class SecurityEventContextProps(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecurityEventContextProps, self).serialize()

@@ -30,8 +30,17 @@ class DiagnosticParameterElementAccess(ARObject):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-PARAMETER-ELEMENT-ACCESS"
+
+
     context_element_refs: list[ARRef]
     target_element_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXT-ELEMENTS": lambda obj, elem: obj.context_element_refs.append(ARRef.deserialize(elem)),
+        "TARGET-ELEMENT-REF": lambda obj, elem: setattr(obj, "target_element_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticParameterElementAccess."""
         super().__init__()
@@ -44,9 +53,8 @@ class DiagnosticParameterElementAccess(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticParameterElementAccess, self).serialize()

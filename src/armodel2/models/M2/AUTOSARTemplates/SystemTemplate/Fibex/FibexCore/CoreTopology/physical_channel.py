@@ -52,6 +52,15 @@ class PhysicalChannel(Identifiable, ABC):
     i_signal_triggerings: list[ISignalTriggering]
     managed_physical_channel_refs: list[ARRef]
     pdu_triggerings: list[PduTriggering]
+    _DESERIALIZE_DISPATCH = {
+        "COMM-CONNECTORS": lambda obj, elem: obj._comm_connector_refs.append(ARRef.deserialize(elem)),
+        "FRAME-TRIGGERINGS": lambda obj, elem: obj.frame_triggerings.append(FrameTriggering.deserialize(elem)),
+        "I-SIGNAL-TRIGGERINGS": lambda obj, elem: obj.i_signal_triggerings.append(ISignalTriggering.deserialize(elem)),
+        "MANAGED-PHYSICAL-CHANNELS": lambda obj, elem: obj.managed_physical_channel_refs.append(ARRef.deserialize(elem)),
+        "PDU-TRIGGERINGS": lambda obj, elem: obj.pdu_triggerings.append(PduTriggering.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PhysicalChannel."""
         super().__init__()
@@ -78,9 +87,8 @@ class PhysicalChannel(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PhysicalChannel, self).serialize()

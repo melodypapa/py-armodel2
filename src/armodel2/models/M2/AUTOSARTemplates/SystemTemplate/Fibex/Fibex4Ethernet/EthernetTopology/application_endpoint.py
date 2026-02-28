@@ -43,6 +43,9 @@ class ApplicationEndpoint(Identifiable):
         """
         return False
 
+    _XML_TAG = "APPLICATION-ENDPOINT"
+
+
     consumed_services: list[Any]
     max_number_of: Optional[PositiveInteger]
     network_endpoint_endpoint_ref: Optional[ARRef]
@@ -50,6 +53,17 @@ class ApplicationEndpoint(Identifiable):
     provided_services: list[Any]
     tls_crypto_service_ref: Optional[ARRef]
     tp_configuration_configuration: Optional[TransportProtocolConfiguration]
+    _DESERIALIZE_DISPATCH = {
+        "CONSUMED-SERVICES": lambda obj, elem: obj.consumed_services.append(any (ConsumedService).deserialize(elem)),
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
+        "NETWORK-ENDPOINT-ENDPOINT-REF": lambda obj, elem: setattr(obj, "network_endpoint_endpoint_ref", ARRef.deserialize(elem)),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "PROVIDED-SERVICES": lambda obj, elem: obj.provided_services.append(any (ProvidedService).deserialize(elem)),
+        "TLS-CRYPTO-SERVICE-REF": lambda obj, elem: setattr(obj, "tls_crypto_service_ref", ARRef.deserialize(elem)),
+        "TP-CONFIGURATION-CONFIGURATION": lambda obj, elem: setattr(obj, "tp_configuration_configuration", TransportProtocolConfiguration.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationEndpoint."""
         super().__init__()
@@ -67,9 +81,8 @@ class ApplicationEndpoint(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationEndpoint, self).serialize()

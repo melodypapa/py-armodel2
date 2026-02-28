@@ -39,9 +39,19 @@ class SwitchStreamFilterRule(Identifiable):
         """
         return False
 
+    _XML_TAG = "SWITCH-STREAM-FILTER-RULE"
+
+
     data_link_layer: Optional[StreamFilterRuleDataLinkLayer]
     ieee1722_tp: Optional[StreamFilterIEEE1722Tp]
     ip_tp_rule: Optional[StreamFilterRuleIpTp]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-LINK-LAYER": lambda obj, elem: setattr(obj, "data_link_layer", StreamFilterRuleDataLinkLayer.deserialize(elem)),
+        "IEEE1722-TP": lambda obj, elem: setattr(obj, "ieee1722_tp", StreamFilterIEEE1722Tp.deserialize(elem)),
+        "IP-TP-RULE": lambda obj, elem: setattr(obj, "ip_tp_rule", StreamFilterRuleIpTp.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwitchStreamFilterRule."""
         super().__init__()
@@ -55,9 +65,8 @@ class SwitchStreamFilterRule(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwitchStreamFilterRule, self).serialize()

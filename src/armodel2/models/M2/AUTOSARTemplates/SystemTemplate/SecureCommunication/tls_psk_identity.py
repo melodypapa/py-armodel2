@@ -33,9 +33,19 @@ class TlsPskIdentity(ARObject):
         """
         return False
 
+    _XML_TAG = "TLS-PSK-IDENTITY"
+
+
     pre_shared_key_ref: Optional[ARRef]
     psk_identity: Optional[String]
     psk_identity_hint: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "PRE-SHARED-KEY-REF": lambda obj, elem: setattr(obj, "pre_shared_key_ref", ARRef.deserialize(elem)),
+        "PSK-IDENTITY": lambda obj, elem: setattr(obj, "psk_identity", elem.text),
+        "PSK-IDENTITY-HINT": lambda obj, elem: setattr(obj, "psk_identity_hint", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TlsPskIdentity."""
         super().__init__()
@@ -49,9 +59,8 @@ class TlsPskIdentity(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TlsPskIdentity, self).serialize()

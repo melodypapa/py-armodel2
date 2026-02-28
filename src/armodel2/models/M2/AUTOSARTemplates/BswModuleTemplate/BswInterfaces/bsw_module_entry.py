@@ -54,6 +54,9 @@ class BswModuleEntry(ARElement):
         """
         return False
 
+    _XML_TAG = "BSW-MODULE-ENTRY"
+
+
     arguments: list[SwServiceArg]
     bsw_entry_kind: Optional[BswEntryKindEnum]
     call_type: Optional[BswCallType]
@@ -65,6 +68,21 @@ class BswModuleEntry(ARElement):
     role: Optional[Identifier]
     service_id: Optional[PositiveInteger]
     sw_service_impl_policy: Optional[SwServiceImplPolicyEnum]
+    _DESERIALIZE_DISPATCH = {
+        "ARGUMENTS": lambda obj, elem: obj.arguments.append(SwServiceArg.deserialize(elem)),
+        "BSW-ENTRY-KIND": lambda obj, elem: setattr(obj, "bsw_entry_kind", BswEntryKindEnum.deserialize(elem)),
+        "CALL-TYPE": lambda obj, elem: setattr(obj, "call_type", BswCallType.deserialize(elem)),
+        "EXECUTION-CONTEXT": lambda obj, elem: setattr(obj, "execution_context", BswExecutionContext.deserialize(elem)),
+        "FUNCTION-PROTOTYPE-EMITTER": lambda obj, elem: setattr(obj, "function_prototype_emitter", elem.text),
+        "IS-REENTRANT": lambda obj, elem: setattr(obj, "is_reentrant", elem.text),
+        "IS-SYNCHRONOUS": lambda obj, elem: setattr(obj, "is_synchronous", elem.text),
+        "RETURN-TYPE": lambda obj, elem: setattr(obj, "return_type", SwServiceArg.deserialize(elem)),
+        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+        "SERVICE-ID": lambda obj, elem: setattr(obj, "service_id", elem.text),
+        "SW-SERVICE-IMPL-POLICY": lambda obj, elem: setattr(obj, "sw_service_impl_policy", SwServiceImplPolicyEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswModuleEntry."""
         super().__init__()
@@ -86,9 +104,8 @@ class BswModuleEntry(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswModuleEntry, self).serialize()

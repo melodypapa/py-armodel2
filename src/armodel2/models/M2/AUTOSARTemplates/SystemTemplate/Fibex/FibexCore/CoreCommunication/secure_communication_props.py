@@ -29,6 +29,9 @@ class SecureCommunicationProps(ARObject):
         """
         return False
 
+    _XML_TAG = "SECURE-COMMUNICATION-PROPS"
+
+
     auth_data: Optional[PositiveInteger]
     authentication: Optional[PositiveInteger]
     data_id: Optional[PositiveInteger]
@@ -36,6 +39,17 @@ class SecureCommunicationProps(ARObject):
     message_link: Optional[PositiveInteger]
     secondary: Optional[PositiveInteger]
     secured_area: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "AUTH-DATA": lambda obj, elem: setattr(obj, "auth_data", elem.text),
+        "AUTHENTICATION": lambda obj, elem: setattr(obj, "authentication", elem.text),
+        "DATA-ID": lambda obj, elem: setattr(obj, "data_id", elem.text),
+        "FRESHNESS-VALUE": lambda obj, elem: setattr(obj, "freshness_value", elem.text),
+        "MESSAGE-LINK": lambda obj, elem: setattr(obj, "message_link", elem.text),
+        "SECONDARY": lambda obj, elem: setattr(obj, "secondary", elem.text),
+        "SECURED-AREA": lambda obj, elem: setattr(obj, "secured_area", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecureCommunicationProps."""
         super().__init__()
@@ -53,9 +67,8 @@ class SecureCommunicationProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecureCommunicationProps, self).serialize()

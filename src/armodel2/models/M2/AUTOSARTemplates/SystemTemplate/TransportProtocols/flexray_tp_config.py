@@ -45,11 +45,23 @@ class FlexrayTpConfig(TpConfig):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-TP-CONFIG"
+
+
     pdu_pools: list[FlexrayTpPduPool]
     tp_addresses: list[TpAddress]
     tp_connections: list[FlexrayTpConnection]
     tp_ecus: list[FlexrayTpEcu]
     tp_nodes: list[FlexrayTpNode]
+    _DESERIALIZE_DISPATCH = {
+        "PDU-POOLS": lambda obj, elem: obj.pdu_pools.append(FlexrayTpPduPool.deserialize(elem)),
+        "TP-ADDRESSES": lambda obj, elem: obj.tp_addresses.append(TpAddress.deserialize(elem)),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(FlexrayTpConnection.deserialize(elem)),
+        "TP-ECUS": lambda obj, elem: obj.tp_ecus.append(FlexrayTpEcu.deserialize(elem)),
+        "TP-NODES": lambda obj, elem: obj.tp_nodes.append(FlexrayTpNode.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayTpConfig."""
         super().__init__()
@@ -65,9 +77,8 @@ class FlexrayTpConfig(TpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayTpConfig, self).serialize()

@@ -26,7 +26,15 @@ class DiagnosticEventWindow(ARObject):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-EVENT-WINDOW"
+
+
     event_window: Optional[DiagnosticEventWindow]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-WINDOW": lambda obj, elem: setattr(obj, "event_window", DiagnosticEventWindow.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEventWindow."""
         super().__init__()
@@ -38,9 +46,8 @@ class DiagnosticEventWindow(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEventWindow, self).serialize()

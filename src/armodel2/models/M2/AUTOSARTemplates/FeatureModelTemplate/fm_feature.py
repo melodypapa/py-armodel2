@@ -46,12 +46,25 @@ class FMFeature(ARElement):
         """
         return False
 
+    _XML_TAG = "F-M-FEATURE"
+
+
     attribute_defs: list[FMAttributeDef]
     decomposition_decompositions: list[FMFeature]
     maximum: Optional[BindingTimeEnum]
     minimum: Optional[BindingTimeEnum]
     relations: list[FMFeatureRelation]
     restrictions: list[FMFeatureRestriction]
+    _DESERIALIZE_DISPATCH = {
+        "ATTRIBUTE-DEFS": lambda obj, elem: obj.attribute_defs.append(FMAttributeDef.deserialize(elem)),
+        "DECOMPOSITION-DECOMPOSITIONS": lambda obj, elem: obj.decomposition_decompositions.append(FMFeature.deserialize(elem)),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", BindingTimeEnum.deserialize(elem)),
+        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", BindingTimeEnum.deserialize(elem)),
+        "RELATIONS": lambda obj, elem: obj.relations.append(FMFeatureRelation.deserialize(elem)),
+        "RESTRICTIONS": lambda obj, elem: obj.restrictions.append(FMFeatureRestriction.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FMFeature."""
         super().__init__()
@@ -68,9 +81,8 @@ class FMFeature(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FMFeature, self).serialize()

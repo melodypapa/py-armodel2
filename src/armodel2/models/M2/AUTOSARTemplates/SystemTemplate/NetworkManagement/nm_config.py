@@ -39,9 +39,19 @@ class NmConfig(FibexElement):
         """
         return False
 
+    _XML_TAG = "NM-CONFIG"
+
+
     nm_clusters: list[NmCluster]
     nm_cluster_couplings: list[NmClusterCoupling]
     nm_if_ecus: list[NmEcu]
+    _DESERIALIZE_DISPATCH = {
+        "NM-CLUSTERS": lambda obj, elem: obj.nm_clusters.append(NmCluster.deserialize(elem)),
+        "NM-CLUSTER-COUPLINGS": lambda obj, elem: obj.nm_cluster_couplings.append(NmClusterCoupling.deserialize(elem)),
+        "NM-IF-ECUS": lambda obj, elem: obj.nm_if_ecus.append(NmEcu.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NmConfig."""
         super().__init__()
@@ -55,9 +65,8 @@ class NmConfig(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NmConfig, self).serialize()

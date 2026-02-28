@@ -33,7 +33,15 @@ class DiagnosticReadDataByIdentifierClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-READ-DATA-BY-IDENTIFIER-CLASS"
+
+
     max_did_to_read: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-DID-TO-READ": lambda obj, elem: setattr(obj, "max_did_to_read", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticReadDataByIdentifierClass."""
         super().__init__()
@@ -45,9 +53,8 @@ class DiagnosticReadDataByIdentifierClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticReadDataByIdentifierClass, self).serialize()

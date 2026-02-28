@@ -43,11 +43,23 @@ class MlFormula(Paginateable):
         """
         return False
 
+    _XML_TAG = "ML-FORMULA"
+
+
     formula_caption: Optional[Caption]
     generic_math: Optional[MultiLanguagePlainText]
     l_graphics: list[LGraphic]
     tex_math: Optional[MultiLanguagePlainText]
     verbatim: Optional[MultiLanguageVerbatim]
+    _DESERIALIZE_DISPATCH = {
+        "FORMULA-CAPTION": lambda obj, elem: setattr(obj, "formula_caption", Caption.deserialize(elem)),
+        "GENERIC-MATH": lambda obj, elem: setattr(obj, "generic_math", MultiLanguagePlainText.deserialize(elem)),
+        "L-GRAPHICS": lambda obj, elem: obj.l_graphics.append(LGraphic.deserialize(elem)),
+        "TEX-MATH": lambda obj, elem: setattr(obj, "tex_math", MultiLanguagePlainText.deserialize(elem)),
+        "VERBATIM": lambda obj, elem: setattr(obj, "verbatim", MultiLanguageVerbatim.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MlFormula."""
         super().__init__()
@@ -63,9 +75,8 @@ class MlFormula(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MlFormula, self).serialize()

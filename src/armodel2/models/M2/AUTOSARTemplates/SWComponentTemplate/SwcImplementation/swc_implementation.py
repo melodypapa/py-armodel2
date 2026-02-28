@@ -42,9 +42,19 @@ class SwcImplementation(Implementation):
         """
         return False
 
+    _XML_TAG = "SWC-IMPLEMENTATION"
+
+
     behavior_ref: Optional[ARRef]
     per_instance_memory_sizes: list[PerInstanceMemorySize]
     required_rte_vendor: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "BEHAVIOR-REF": lambda obj, elem: setattr(obj, "behavior_ref", ARRef.deserialize(elem)),
+        "PER-INSTANCE-MEMORY-SIZES": lambda obj, elem: obj.per_instance_memory_sizes.append(PerInstanceMemorySize.deserialize(elem)),
+        "REQUIRED-RTE-VENDOR": lambda obj, elem: setattr(obj, "required_rte_vendor", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcImplementation."""
         super().__init__()
@@ -58,9 +68,8 @@ class SwcImplementation(Implementation):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcImplementation, self).serialize()

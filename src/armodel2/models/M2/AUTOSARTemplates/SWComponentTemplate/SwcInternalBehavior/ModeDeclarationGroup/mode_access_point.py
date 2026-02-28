@@ -34,8 +34,17 @@ class ModeAccessPoint(ARObject):
         """
         return False
 
+    _XML_TAG = "MODE-ACCESS-POINT"
+
+
     ident: Optional[ModeAccessPointIdent]
     mode_group_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "IDENT": lambda obj, elem: setattr(obj, "ident", ModeAccessPointIdent.deserialize(elem)),
+        "MODE-GROUP-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "mode_group_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeAccessPoint."""
         super().__init__()
@@ -48,9 +57,8 @@ class ModeAccessPoint(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeAccessPoint, self).serialize()

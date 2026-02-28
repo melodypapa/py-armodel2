@@ -32,6 +32,9 @@ class CanControllerFdConfigurationRequirements(ARObject):
         """
         return False
 
+    _XML_TAG = "CAN-CONTROLLER-FD-CONFIGURATION-REQUIREMENTS"
+
+
     max_number_of_time_quanta_per: Optional[Any]
     max_sample: Optional[Float]
     max_sync_jump: Optional[Float]
@@ -42,6 +45,20 @@ class CanControllerFdConfigurationRequirements(ARObject):
     min_trcv_delay: Optional[TimeValue]
     padding_value: Optional[PositiveInteger]
     tx_bit_rate_switch: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-NUMBER-OF-TIME-QUANTA-PER": lambda obj, elem: setattr(obj, "max_number_of_time_quanta_per", any (IntegerBit).deserialize(elem)),
+        "MAX-SAMPLE": lambda obj, elem: setattr(obj, "max_sample", elem.text),
+        "MAX-SYNC-JUMP": lambda obj, elem: setattr(obj, "max_sync_jump", elem.text),
+        "MAX-TRCV-DELAY": lambda obj, elem: setattr(obj, "max_trcv_delay", elem.text),
+        "MIN-NUMBER-OF-TIME-QUANTA-PER": lambda obj, elem: setattr(obj, "min_number_of_time_quanta_per", any (IntegerBit).deserialize(elem)),
+        "MIN-SAMPLE-POINT": lambda obj, elem: setattr(obj, "min_sample_point", elem.text),
+        "MIN-SYNC-JUMP": lambda obj, elem: setattr(obj, "min_sync_jump", elem.text),
+        "MIN-TRCV-DELAY": lambda obj, elem: setattr(obj, "min_trcv_delay", elem.text),
+        "PADDING-VALUE": lambda obj, elem: setattr(obj, "padding_value", elem.text),
+        "TX-BIT-RATE-SWITCH": lambda obj, elem: setattr(obj, "tx_bit_rate_switch", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanControllerFdConfigurationRequirements."""
         super().__init__()
@@ -62,9 +79,8 @@ class CanControllerFdConfigurationRequirements(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanControllerFdConfigurationRequirements, self).serialize()

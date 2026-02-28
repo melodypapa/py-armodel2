@@ -41,10 +41,21 @@ class PerInstanceMemory(Identifiable):
         """
         return False
 
+    _XML_TAG = "PER-INSTANCE-MEMORY"
+
+
     _init_value: Optional[String]
     sw_data_def_props: Optional[SwDataDefProps]
     type: Optional[CIdentifier]
     type_definition: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "INIT-VALUE": lambda obj, elem: setattr(obj, "_init_value", elem.text),
+        "SW-DATA-DEF-PROPS": lambda obj, elem: setattr(obj, "sw_data_def_props", SwDataDefProps.deserialize(elem)),
+        "TYPE": lambda obj, elem: setattr(obj, "type", elem.text),
+        "TYPE-DEFINITION": lambda obj, elem: setattr(obj, "type_definition", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PerInstanceMemory."""
         super().__init__()
@@ -70,9 +81,8 @@ class PerInstanceMemory(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PerInstanceMemory, self).serialize()

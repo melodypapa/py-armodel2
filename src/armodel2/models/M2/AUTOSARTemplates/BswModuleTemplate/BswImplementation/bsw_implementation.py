@@ -51,12 +51,25 @@ class BswImplementation(Implementation):
         """
         return False
 
+    _XML_TAG = "BSW-IMPLEMENTATION"
+
+
     ar_release_version: Optional[RevisionLabelString]
     behavior_ref: Optional[ARRef]
     preconfigured_configuration_refs: list[ARRef]
     recommended_configuration_refs: list[ARRef]
     vendor_api_infix: Optional[Identifier]
     vendor_specific_module_def_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AR-RELEASE-VERSION": lambda obj, elem: setattr(obj, "ar_release_version", elem.text),
+        "BEHAVIOR-REF": lambda obj, elem: setattr(obj, "behavior_ref", ARRef.deserialize(elem)),
+        "PRECONFIGURED-CONFIGURATIONS": lambda obj, elem: obj.preconfigured_configuration_refs.append(ARRef.deserialize(elem)),
+        "RECOMMENDED-CONFIGURATIONS": lambda obj, elem: obj.recommended_configuration_refs.append(ARRef.deserialize(elem)),
+        "VENDOR-API-INFIX": lambda obj, elem: setattr(obj, "vendor_api_infix", elem.text),
+        "VENDOR-SPECIFIC-MODULE-DEFS": lambda obj, elem: obj.vendor_specific_module_def_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswImplementation."""
         super().__init__()
@@ -73,9 +86,8 @@ class BswImplementation(Implementation):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswImplementation, self).serialize()

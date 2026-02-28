@@ -36,9 +36,19 @@ class ModeInBswInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "MODE-IN-BSW-INSTANCE-REF"
+
+
     context_bsw_ref: Optional[ARRef]
     context_mode_ref: Optional[ARRef]
     target_mode_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXT-BSW-REF": lambda obj, elem: setattr(obj, "context_bsw_ref", ARRef.deserialize(elem)),
+        "CONTEXT-MODE-REF": lambda obj, elem: setattr(obj, "context_mode_ref", ARRef.deserialize(elem)),
+        "TARGET-MODE-REF": lambda obj, elem: setattr(obj, "target_mode_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeInBswInstanceRef."""
         super().__init__()
@@ -52,9 +62,8 @@ class ModeInBswInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeInBswInstanceRef, self).serialize()

@@ -36,9 +36,19 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
         """
         return False
 
+    _XML_TAG = "ARBITRARY-EVENT-TRIGGERING"
+
+
     confidence_intervals: list[ConfidenceInterval]
     maximums: list[MultidimensionalTime]
     minimums: list[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "CONFIDENCE-INTERVALS": lambda obj, elem: obj.confidence_intervals.append(ConfidenceInterval.deserialize(elem)),
+        "MAXIMUMS": lambda obj, elem: obj.maximums.append(MultidimensionalTime.deserialize(elem)),
+        "MINIMUMS": lambda obj, elem: obj.minimums.append(MultidimensionalTime.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ArbitraryEventTriggering."""
         super().__init__()
@@ -52,9 +62,8 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ArbitraryEventTriggering, self).serialize()

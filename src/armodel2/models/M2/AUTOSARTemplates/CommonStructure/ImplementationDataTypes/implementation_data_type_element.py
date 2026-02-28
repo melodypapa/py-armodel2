@@ -49,12 +49,25 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         """
         return False
 
+    _XML_TAG = "IMPLEMENTATION-DATA-TYPE-ELEMENT"
+
+
     array_impl_policy_enum: Optional[ArrayImplPolicyEnum]
     array_size: Optional[ArraySizeSemanticsEnum]
     array_size_handling: Optional[ArraySizeHandlingEnum]
     is_optional: Optional[Boolean]
     sub_elements: list[Any]
     sw_data_def: Optional[SwDataDefProps]
+    _DESERIALIZE_DISPATCH = {
+        "ARRAY-IMPL-POLICY-ENUM": lambda obj, elem: setattr(obj, "array_impl_policy_enum", ArrayImplPolicyEnum.deserialize(elem)),
+        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(elem)),
+        "ARRAY-SIZE-HANDLING": lambda obj, elem: setattr(obj, "array_size_handling", ArraySizeHandlingEnum.deserialize(elem)),
+        "IS-OPTIONAL": lambda obj, elem: setattr(obj, "is_optional", elem.text),
+        "SUB-ELEMENTS": lambda obj, elem: obj.sub_elements.append(any (ImplementationData).deserialize(elem)),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SwDataDefProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ImplementationDataTypeElement."""
         super().__init__()
@@ -71,9 +84,8 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ImplementationDataTypeElement, self).serialize()

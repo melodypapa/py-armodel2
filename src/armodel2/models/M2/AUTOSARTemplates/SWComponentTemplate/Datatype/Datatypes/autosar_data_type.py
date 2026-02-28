@@ -44,6 +44,11 @@ class AutosarDataType(ARElement, ABC):
         return True
 
     sw_data_def_props: Optional[SwDataDefProps]
+    _DESERIALIZE_DISPATCH = {
+        "SW-DATA-DEF-PROPS": lambda obj, elem: setattr(obj, "sw_data_def_props", SwDataDefProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AutosarDataType."""
         super().__init__()
@@ -55,9 +60,8 @@ class AutosarDataType(ARElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AutosarDataType, self).serialize()

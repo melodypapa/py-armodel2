@@ -49,12 +49,25 @@ class EcucModuleConfigurationValues(ARElement):
         """
         return False
 
+    _XML_TAG = "ECUC-MODULE-CONFIGURATION-VALUES"
+
+
     containers: list[EcucContainerValue]
     definition_ref: Optional[ARRef]
     ecuc_def_edition: Optional[RevisionLabelString]
     implementation: Optional[Any]
     module_ref: Optional[ARRef]
     post_build_variant: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CONTAINERS": lambda obj, elem: obj.containers.append(EcucContainerValue.deserialize(elem)),
+        "DEFINITION-REF": lambda obj, elem: setattr(obj, "definition_ref", ARRef.deserialize(elem)),
+        "ECUC-DEF-EDITION": lambda obj, elem: setattr(obj, "ecuc_def_edition", elem.text),
+        "IMPLEMENTATION": lambda obj, elem: setattr(obj, "implementation", any (EcucConfiguration).deserialize(elem)),
+        "MODULE-REF": lambda obj, elem: setattr(obj, "module_ref", ARRef.deserialize(elem)),
+        "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucModuleConfigurationValues."""
         super().__init__()
@@ -71,9 +84,8 @@ class EcucModuleConfigurationValues(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucModuleConfigurationValues, self).serialize()

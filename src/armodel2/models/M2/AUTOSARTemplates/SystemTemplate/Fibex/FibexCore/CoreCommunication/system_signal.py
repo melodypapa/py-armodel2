@@ -41,8 +41,17 @@ class SystemSignal(ARElement):
         """
         return False
 
+    _XML_TAG = "SYSTEM-SIGNAL"
+
+
     dynamic_length: Optional[Boolean]
     physical_props: Optional[SwDataDefProps]
+    _DESERIALIZE_DISPATCH = {
+        "DYNAMIC-LENGTH": lambda obj, elem: setattr(obj, "dynamic_length", elem.text),
+        "PHYSICAL-PROPS": lambda obj, elem: setattr(obj, "physical_props", SwDataDefProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SystemSignal."""
         super().__init__()
@@ -55,9 +64,8 @@ class SystemSignal(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SystemSignal, self).serialize()

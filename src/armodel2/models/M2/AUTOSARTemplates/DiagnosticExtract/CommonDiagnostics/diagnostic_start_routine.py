@@ -33,8 +33,17 @@ class DiagnosticStartRoutine(DiagnosticRoutineSubfunction):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-START-ROUTINE"
+
+
     requests: list[DiagnosticParameter]
     responses: list[DiagnosticParameter]
+    _DESERIALIZE_DISPATCH = {
+        "REQUESTS": lambda obj, elem: obj.requests.append(DiagnosticParameter.deserialize(elem)),
+        "RESPONSES": lambda obj, elem: obj.responses.append(DiagnosticParameter.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticStartRoutine."""
         super().__init__()
@@ -47,9 +56,8 @@ class DiagnosticStartRoutine(DiagnosticRoutineSubfunction):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticStartRoutine, self).serialize()

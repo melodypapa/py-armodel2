@@ -35,7 +35,15 @@ class TriggerInterface(PortInterface):
         """
         return False
 
+    _XML_TAG = "TRIGGER-INTERFACE"
+
+
     trigger_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TRIGGERS": lambda obj, elem: obj.trigger_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TriggerInterface."""
         super().__init__()
@@ -47,9 +55,8 @@ class TriggerInterface(PortInterface):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TriggerInterface, self).serialize()

@@ -36,8 +36,17 @@ class Topic1(Paginateable):
         """
         return False
 
+    _XML_TAG = "TOPIC1"
+
+
     help_entry: Optional[String]
     topic_content_or_msr: Optional[TopicContentOrMsrQuery]
+    _DESERIALIZE_DISPATCH = {
+        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", elem.text),
+        "TOPIC-CONTENT-OR-MSR": lambda obj, elem: setattr(obj, "topic_content_or_msr", TopicContentOrMsrQuery.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Topic1."""
         super().__init__()
@@ -50,9 +59,8 @@ class Topic1(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Topic1, self).serialize()

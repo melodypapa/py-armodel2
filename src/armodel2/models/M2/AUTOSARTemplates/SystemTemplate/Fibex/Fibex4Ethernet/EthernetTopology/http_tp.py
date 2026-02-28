@@ -37,11 +37,23 @@ class HttpTp(TransportProtocolConfiguration):
         """
         return False
 
+    _XML_TAG = "HTTP-TP"
+
+
     content_type: Optional[String]
     protocol_version: Optional[String]
     request_method_enum: Optional[Any]
     tcp_tp_config: Optional[TcpTp]
     uri: Optional[UriString]
+    _DESERIALIZE_DISPATCH = {
+        "CONTENT-TYPE": lambda obj, elem: setattr(obj, "content_type", elem.text),
+        "PROTOCOL-VERSION": lambda obj, elem: setattr(obj, "protocol_version", elem.text),
+        "REQUEST-METHOD-ENUM": lambda obj, elem: setattr(obj, "request_method_enum", any (RequestMethodEnum).deserialize(elem)),
+        "TCP-TP-CONFIG": lambda obj, elem: setattr(obj, "tcp_tp_config", TcpTp.deserialize(elem)),
+        "URI": lambda obj, elem: setattr(obj, "uri", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize HttpTp."""
         super().__init__()
@@ -57,9 +69,8 @@ class HttpTp(TransportProtocolConfiguration):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(HttpTp, self).serialize()

@@ -55,6 +55,9 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         """
         return False
 
+    _XML_TAG = "SW-AXIS-INDIVIDUAL"
+
+
     compu_method_ref: Optional[ARRef]
     data_constr_ref: Optional[ARRef]
     input_variable_ref: Optional[ARRef]
@@ -63,6 +66,18 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
     sw_min_axis: Optional[Integer]
     sw_variable_ref_proxy_refs: list[ARRef]
     unit_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMPU-METHOD-REF": lambda obj, elem: setattr(obj, "compu_method_ref", ARRef.deserialize(elem)),
+        "DATA-CONSTR-REF": lambda obj, elem: setattr(obj, "data_constr_ref", ARRef.deserialize(elem)),
+        "INPUT-VARIABLE-REF": lambda obj, elem: setattr(obj, "input_variable_ref", ARRef.deserialize(elem)),
+        "SW-AXIS-GENERIC": lambda obj, elem: setattr(obj, "sw_axis_generic", SwAxisGeneric.deserialize(elem)),
+        "SW-MAX-AXIS": lambda obj, elem: setattr(obj, "sw_max_axis", elem.text),
+        "SW-MIN-AXIS": lambda obj, elem: setattr(obj, "sw_min_axis", elem.text),
+        "SW-VARIABLE-REF-PROXIES": lambda obj, elem: obj.sw_variable_ref_proxy_refs.append(ARRef.deserialize(elem)),
+        "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwAxisIndividual."""
         super().__init__()
@@ -81,9 +96,8 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwAxisIndividual, self).serialize()

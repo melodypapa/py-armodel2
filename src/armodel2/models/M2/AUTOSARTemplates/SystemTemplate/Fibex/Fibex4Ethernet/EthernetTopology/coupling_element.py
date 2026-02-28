@@ -46,12 +46,25 @@ class CouplingElement(FibexElement):
         """
         return False
 
+    _XML_TAG = "COUPLING-ELEMENT"
+
+
     communication_ref: Optional[ARRef]
     coupling: Optional[CouplingElement]
     coupling_ports: list[CouplingPort]
     coupling_type: Optional[CouplingElementEnum]
     ecu_instance_ref: Optional[ARRef]
     firewall_rule_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-REF": lambda obj, elem: setattr(obj, "communication_ref", ARRef.deserialize(elem)),
+        "COUPLING": lambda obj, elem: setattr(obj, "coupling", CouplingElement.deserialize(elem)),
+        "COUPLING-PORTS": lambda obj, elem: obj.coupling_ports.append(CouplingPort.deserialize(elem)),
+        "COUPLING-TYPE": lambda obj, elem: setattr(obj, "coupling_type", CouplingElementEnum.deserialize(elem)),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+        "FIREWALL-RULES": lambda obj, elem: obj.firewall_rule_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingElement."""
         super().__init__()
@@ -68,9 +81,8 @@ class CouplingElement(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingElement, self).serialize()

@@ -44,11 +44,23 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-ACF-CAN-PART"
+
+
     can_addressing: Optional[CanAddressingModeType]
     can_bit_rate_switch: Optional[Boolean]
     can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum]
     can_identifier: Optional[RxIdentifierRange]
     sdu_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CAN-ADDRESSING": lambda obj, elem: setattr(obj, "can_addressing", CanAddressingModeType.deserialize(elem)),
+        "CAN-BIT-RATE-SWITCH": lambda obj, elem: setattr(obj, "can_bit_rate_switch", elem.text),
+        "CAN-FRAME-TX-BEHAVIOR": lambda obj, elem: setattr(obj, "can_frame_tx_behavior", CanFrameTxBehaviorEnum.deserialize(elem)),
+        "CAN-IDENTIFIER": lambda obj, elem: setattr(obj, "can_identifier", RxIdentifierRange.deserialize(elem)),
+        "SDU-REF": lambda obj, elem: setattr(obj, "sdu_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfCanPart."""
         super().__init__()
@@ -64,9 +76,8 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpAcfCanPart, self).serialize()

@@ -39,11 +39,23 @@ class TimingConditionFormula(ARObject):
         """
         return False
 
+    _XML_TAG = "TIMING-CONDITION-FORMULA"
+
+
     timing_argument_argument_instance_ref: Optional[ARRef]
     timing_condition_ref: Optional[ARRef]
     timing_event_ref: Optional[ARRef]
     timing_mode_ref: Optional[ARRef]
     timing_variable_instance_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF": lambda obj, elem: setattr(obj, "timing_argument_argument_instance_ref", ARRef.deserialize(elem)),
+        "TIMING-CONDITION-REF": lambda obj, elem: setattr(obj, "timing_condition_ref", ARRef.deserialize(elem)),
+        "TIMING-EVENT-REF": lambda obj, elem: setattr(obj, "timing_event_ref", ARRef.deserialize(elem)),
+        "TIMING-MODE-REF": lambda obj, elem: setattr(obj, "timing_mode_ref", ARRef.deserialize(elem)),
+        "TIMING-VARIABLE-INSTANCE-REF": lambda obj, elem: setattr(obj, "timing_variable_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimingConditionFormula."""
         super().__init__()
@@ -59,9 +71,8 @@ class TimingConditionFormula(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimingConditionFormula, self).serialize()

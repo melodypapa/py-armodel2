@@ -50,6 +50,9 @@ class IPSecRule(Identifiable):
         """
         return False
 
+    _XML_TAG = "I-P-SEC-RULE"
+
+
     direction: Optional[Any]
     header_type: Optional[IPsecHeaderTypeEnum]
     ip_protocol: Optional[IPsecIpProtocolEnum]
@@ -64,6 +67,24 @@ class IPSecRule(Identifiable):
     remote_id: Optional[String]
     remote_ip_refs: list[ARRef]
     remote_port: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DIRECTION": lambda obj, elem: setattr(obj, "direction", any (Communication).deserialize(elem)),
+        "HEADER-TYPE": lambda obj, elem: setattr(obj, "header_type", IPsecHeaderTypeEnum.deserialize(elem)),
+        "IP-PROTOCOL": lambda obj, elem: setattr(obj, "ip_protocol", IPsecIpProtocolEnum.deserialize(elem)),
+        "LOCAL-CERTIFICATES": lambda obj, elem: obj.local_certificate_refs.append(ARRef.deserialize(elem)),
+        "LOCAL-ID": lambda obj, elem: setattr(obj, "local_id", elem.text),
+        "LOCAL-PORT-RANGE": lambda obj, elem: setattr(obj, "local_port_range", elem.text),
+        "MODE": lambda obj, elem: setattr(obj, "mode", IPsecModeEnum.deserialize(elem)),
+        "POLICY": lambda obj, elem: setattr(obj, "policy", IPsecPolicyEnum.deserialize(elem)),
+        "PRE-SHARED-KEY-REF": lambda obj, elem: setattr(obj, "pre_shared_key_ref", ARRef.deserialize(elem)),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "REMOTES": lambda obj, elem: obj.remote_refs.append(ARRef.deserialize(elem)),
+        "REMOTE-ID": lambda obj, elem: setattr(obj, "remote_id", elem.text),
+        "REMOTE-IPS": lambda obj, elem: obj.remote_ip_refs.append(ARRef.deserialize(elem)),
+        "REMOTE-PORT": lambda obj, elem: setattr(obj, "remote_port", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IPSecRule."""
         super().__init__()
@@ -88,9 +109,8 @@ class IPSecRule(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IPSecRule, self).serialize()

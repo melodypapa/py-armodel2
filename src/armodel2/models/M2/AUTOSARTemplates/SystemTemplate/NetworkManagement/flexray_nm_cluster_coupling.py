@@ -37,8 +37,17 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-NM-CLUSTER-COUPLING"
+
+
     coupled_cluster_refs: list[ARRef]
     nm_schedule: Optional[FlexrayNmScheduleVariant]
+    _DESERIALIZE_DISPATCH = {
+        "COUPLED-CLUSTERS": lambda obj, elem: obj.coupled_cluster_refs.append(ARRef.deserialize(elem)),
+        "NM-SCHEDULE": lambda obj, elem: setattr(obj, "nm_schedule", FlexrayNmScheduleVariant.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayNmClusterCoupling."""
         super().__init__()
@@ -51,9 +60,8 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayNmClusterCoupling, self).serialize()

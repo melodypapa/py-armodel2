@@ -34,8 +34,17 @@ class InterpolationRoutineMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "INTERPOLATION-ROUTINE-MAPPING"
+
+
     interpolation_routines: list[InterpolationRoutine]
     sw_record_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "INTERPOLATION-ROUTINES": lambda obj, elem: obj.interpolation_routines.append(InterpolationRoutine.deserialize(elem)),
+        "SW-RECORD-REF": lambda obj, elem: setattr(obj, "sw_record_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InterpolationRoutineMapping."""
         super().__init__()
@@ -48,9 +57,8 @@ class InterpolationRoutineMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InterpolationRoutineMapping, self).serialize()

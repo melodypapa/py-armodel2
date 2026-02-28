@@ -40,6 +40,13 @@ class ServiceDependency(ARObject, ABC):
     assigned_data: Optional[RoleBasedDataTypeAssignment]
     diagnostic: Optional[ServiceDiagnosticRelevanceEnum]
     symbolic_name_props: Optional[SymbolicNameProps]
+    _DESERIALIZE_DISPATCH = {
+        "ASSIGNED-DATA": lambda obj, elem: setattr(obj, "assigned_data", RoleBasedDataTypeAssignment.deserialize(elem)),
+        "DIAGNOSTIC": lambda obj, elem: setattr(obj, "diagnostic", ServiceDiagnosticRelevanceEnum.deserialize(elem)),
+        "SYMBOLIC-NAME-PROPS": lambda obj, elem: setattr(obj, "symbolic_name_props", SymbolicNameProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ServiceDependency."""
         super().__init__()
@@ -53,9 +60,8 @@ class ServiceDependency(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ServiceDependency, self).serialize()

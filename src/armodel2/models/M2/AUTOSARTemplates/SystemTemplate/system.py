@@ -72,6 +72,9 @@ class System(ARElement):
         """
         return False
 
+    _XML_TAG = "SYSTEM"
+
+
     client_id_definition_set_refs: list[ARRef]
     container_i_pdu_header_byte_order: Optional[ByteOrderEnum]
     ecu_extract_version: Optional[RevisionLabelString]
@@ -85,6 +88,23 @@ class System(ARElement):
     sw_cluster_refs: list[ARRef]
     system_documentations: list[Chapter]
     system_version: Optional[RevisionLabelString]
+    _DESERIALIZE_DISPATCH = {
+        "CLIENT-ID-DEFINITION-SETS": lambda obj, elem: obj.client_id_definition_set_refs.append(ARRef.deserialize(elem)),
+        "CONTAINER-I-PDU-HEADER-BYTE-ORDER": lambda obj, elem: setattr(obj, "container_i_pdu_header_byte_order", ByteOrderEnum.deserialize(elem)),
+        "ECU-EXTRACT-VERSION": lambda obj, elem: setattr(obj, "ecu_extract_version", elem.text),
+        "FIBEX-ELEMENTS": lambda obj, elem: obj._fibex_element_refs.append(ARRef.deserialize(elem)),
+        "INTERPOLATION-ROUTINE-MAPPING-SETS": lambda obj, elem: obj.interpolation_routine_mapping_set_refs.append(ARRef.deserialize(elem)),
+        "J1939-SHARED-ADDRESS-CLUSTERS": lambda obj, elem: obj.j1939_shared_address_clusters.append(J1939SharedAddressCluster.deserialize(elem)),
+        "MAPPINGS": lambda obj, elem: obj.mappings.append(SystemMapping.deserialize(elem)),
+        "PNC-VECTOR-LENGTH": lambda obj, elem: setattr(obj, "pnc_vector_length", elem.text),
+        "PNC-VECTOR-OFFSET": lambda obj, elem: setattr(obj, "pnc_vector_offset", elem.text),
+        "ROOT-SOFTWARE-COMPOSITIONS": lambda obj, elem: obj.root_software_compositions.append(RootSwCompositionPrototype.deserialize(elem)),
+        "SW-CLUSTERS": lambda obj, elem: obj.sw_cluster_refs.append(ARRef.deserialize(elem)),
+        "SYSTEM-DOCUMENTATIONS": lambda obj, elem: obj.system_documentations.append(Chapter.deserialize(elem)),
+        "SYSTEM-VERSION": lambda obj, elem: setattr(obj, "system_version", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize System."""
         super().__init__()
@@ -119,9 +139,8 @@ class System(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(System, self).serialize()

@@ -37,10 +37,21 @@ class TDEventModeDeclaration(TDEventVfbPort):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-MODE-DECLARATION"
+
+
     entry_mode_ref: Optional[ARRef]
     exit_mode_ref: Optional[ARRef]
     mode_ref: Optional[ARRef]
     td_event_mode: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ENTRY-MODE-REF": lambda obj, elem: setattr(obj, "entry_mode_ref", ARRef.deserialize(elem)),
+        "EXIT-MODE-REF": lambda obj, elem: setattr(obj, "exit_mode_ref", ARRef.deserialize(elem)),
+        "MODE-REF": lambda obj, elem: setattr(obj, "mode_ref", ARRef.deserialize(elem)),
+        "TD-EVENT-MODE": lambda obj, elem: setattr(obj, "td_event_mode", any (TDEventMode).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventModeDeclaration."""
         super().__init__()
@@ -55,9 +66,8 @@ class TDEventModeDeclaration(TDEventVfbPort):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventModeDeclaration, self).serialize()

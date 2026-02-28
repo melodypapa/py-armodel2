@@ -36,6 +36,9 @@ class UdpNmCluster(NmCluster):
         """
         return False
 
+    _XML_TAG = "UDP-NM-CLUSTER"
+
+
     nm_cbv_position: Optional[Integer]
     nm_immediate: Optional[PositiveInteger]
     nm_message: Optional[TimeValue]
@@ -46,6 +49,20 @@ class UdpNmCluster(NmCluster):
     nm_repeat: Optional[TimeValue]
     nm_wait_bus: Optional[TimeValue]
     vlan_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "NM-CBV-POSITION": lambda obj, elem: setattr(obj, "nm_cbv_position", elem.text),
+        "NM-IMMEDIATE": lambda obj, elem: setattr(obj, "nm_immediate", elem.text),
+        "NM-MESSAGE": lambda obj, elem: setattr(obj, "nm_message", elem.text),
+        "NM-MSG-CYCLE": lambda obj, elem: setattr(obj, "nm_msg_cycle", elem.text),
+        "NM-NETWORK": lambda obj, elem: setattr(obj, "nm_network", elem.text),
+        "NM-NID-POSITION": lambda obj, elem: setattr(obj, "nm_nid_position", elem.text),
+        "NM-REMOTE": lambda obj, elem: setattr(obj, "nm_remote", elem.text),
+        "NM-REPEAT": lambda obj, elem: setattr(obj, "nm_repeat", elem.text),
+        "NM-WAIT-BUS": lambda obj, elem: setattr(obj, "nm_wait_bus", elem.text),
+        "VLAN-REF": lambda obj, elem: setattr(obj, "vlan_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize UdpNmCluster."""
         super().__init__()
@@ -66,9 +83,8 @@ class UdpNmCluster(NmCluster):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(UdpNmCluster, self).serialize()

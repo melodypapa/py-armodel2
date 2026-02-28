@@ -33,9 +33,19 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "MODE-DECLARATION-GROUP-PROTOTYPE-MAPPING"
+
+
     first_mode_group_prototype_ref: Optional[ARRef]
     mode_ref: Optional[ARRef]
     second_mode_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FIRST-MODE-GROUP-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "first_mode_group_prototype_ref", ARRef.deserialize(elem)),
+        "MODE-REF": lambda obj, elem: setattr(obj, "mode_ref", ARRef.deserialize(elem)),
+        "SECOND-MODE-REF": lambda obj, elem: setattr(obj, "second_mode_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroupPrototypeMapping."""
         super().__init__()
@@ -49,9 +59,8 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeDeclarationGroupPrototypeMapping, self).serialize()

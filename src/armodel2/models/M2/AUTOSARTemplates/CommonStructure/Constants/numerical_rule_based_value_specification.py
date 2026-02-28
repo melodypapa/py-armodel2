@@ -30,7 +30,15 @@ class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         """
         return False
 
+    _XML_TAG = "NUMERICAL-RULE-BASED-VALUE-SPECIFICATION"
+
+
     rule_based: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", any (RuleBasedValue).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NumericalRuleBasedValueSpecification."""
         super().__init__()
@@ -42,9 +50,8 @@ class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NumericalRuleBasedValueSpecification, self).serialize()

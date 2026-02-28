@@ -36,8 +36,17 @@ class AssignFrameIdRange(LinConfigurationEntry):
         """
         return False
 
+    _XML_TAG = "ASSIGN-FRAME-ID-RANGE"
+
+
     frame_pid: FramePid
     start_index: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "FRAME-PID": lambda obj, elem: setattr(obj, "frame_pid", FramePid.deserialize(elem)),
+        "START-INDEX": lambda obj, elem: setattr(obj, "start_index", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AssignFrameIdRange."""
         super().__init__()
@@ -50,9 +59,8 @@ class AssignFrameIdRange(LinConfigurationEntry):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AssignFrameIdRange, self).serialize()

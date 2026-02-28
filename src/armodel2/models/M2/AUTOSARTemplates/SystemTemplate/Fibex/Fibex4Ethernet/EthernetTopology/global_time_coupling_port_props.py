@@ -29,7 +29,15 @@ class GlobalTimeCouplingPortProps(ARObject):
         """
         return False
 
+    _XML_TAG = "GLOBAL-TIME-COUPLING-PORT-PROPS"
+
+
     propagation: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "PROPAGATION": lambda obj, elem: setattr(obj, "propagation", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeCouplingPortProps."""
         super().__init__()
@@ -41,9 +49,8 @@ class GlobalTimeCouplingPortProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeCouplingPortProps, self).serialize()

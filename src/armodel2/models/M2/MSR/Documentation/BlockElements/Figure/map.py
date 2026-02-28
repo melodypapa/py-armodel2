@@ -33,6 +33,9 @@ class Map(ARObject):
         """
         return False
 
+    _XML_TAG = "MAP"
+
+
     area: Area
     class_: Optional[String]
     name: Optional[NameToken]
@@ -47,6 +50,24 @@ class Map(ARObject):
     onmouseover: Optional[String]
     onmouseup: Optional[String]
     title: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "AREA": lambda obj, elem: setattr(obj, "area", Area.deserialize(elem)),
+        "CLASS": lambda obj, elem: setattr(obj, "class_", elem.text),
+        "NAME": lambda obj, elem: setattr(obj, "name", elem.text),
+        "ONCLICK": lambda obj, elem: setattr(obj, "onclick", elem.text),
+        "ONDBLCLICK": lambda obj, elem: setattr(obj, "ondblclick", elem.text),
+        "ONKEYDOWN": lambda obj, elem: setattr(obj, "onkeydown", elem.text),
+        "ONKEYPRESS": lambda obj, elem: setattr(obj, "onkeypress", elem.text),
+        "ONKEYUP": lambda obj, elem: setattr(obj, "onkeyup", elem.text),
+        "ONMOUSEDOWN": lambda obj, elem: setattr(obj, "onmousedown", elem.text),
+        "ONMOUSEMOVE": lambda obj, elem: setattr(obj, "onmousemove", elem.text),
+        "ONMOUSEOUT": lambda obj, elem: setattr(obj, "onmouseout", elem.text),
+        "ONMOUSEOVER": lambda obj, elem: setattr(obj, "onmouseover", elem.text),
+        "ONMOUSEUP": lambda obj, elem: setattr(obj, "onmouseup", elem.text),
+        "TITLE": lambda obj, elem: setattr(obj, "title", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Map."""
         super().__init__()
@@ -71,9 +92,8 @@ class Map(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Map, self).serialize()

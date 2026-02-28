@@ -34,10 +34,21 @@ class Linker(Identifiable):
         """
         return False
 
+    _XML_TAG = "LINKER"
+
+
     name: Optional[String]
     options: Optional[String]
     vendor: Optional[String]
     version: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "NAME": lambda obj, elem: setattr(obj, "name", elem.text),
+        "OPTIONS": lambda obj, elem: setattr(obj, "options", elem.text),
+        "VENDOR": lambda obj, elem: setattr(obj, "vendor", elem.text),
+        "VERSION": lambda obj, elem: setattr(obj, "version", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Linker."""
         super().__init__()
@@ -52,9 +63,8 @@ class Linker(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Linker, self).serialize()

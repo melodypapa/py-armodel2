@@ -41,6 +41,12 @@ class Frame(FibexElement, ABC):
 
     frame_length: Optional[Integer]
     pdu_to_frame_mappings: list[PduToFrameMapping]
+    _DESERIALIZE_DISPATCH = {
+        "FRAME-LENGTH": lambda obj, elem: setattr(obj, "frame_length", elem.text),
+        "PDU-TO-FRAME-MAPPINGS": lambda obj, elem: obj.pdu_to_frame_mappings.append(PduToFrameMapping.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Frame."""
         super().__init__()
@@ -53,9 +59,8 @@ class Frame(FibexElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Frame, self).serialize()

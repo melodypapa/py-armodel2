@@ -30,8 +30,17 @@ class FramePid(ARObject):
         """
         return False
 
+    _XML_TAG = "FRAME-PID"
+
+
     index: Optional[Integer]
     pid: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "INDEX": lambda obj, elem: setattr(obj, "index", elem.text),
+        "PID": lambda obj, elem: setattr(obj, "pid", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FramePid."""
         super().__init__()
@@ -44,9 +53,8 @@ class FramePid(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FramePid, self).serialize()

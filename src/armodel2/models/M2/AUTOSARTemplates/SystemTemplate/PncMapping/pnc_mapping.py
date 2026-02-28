@@ -60,6 +60,9 @@ class PncMapping(Describable):
         """
         return False
 
+    _XML_TAG = "PNC-MAPPING"
+
+
     dynamic_pnc_refs: list[ARRef]
     ident_ref: Optional[ARRef]
     physical_channel_refs: list[ARRef]
@@ -72,6 +75,22 @@ class PncMapping(Describable):
     short_label: Optional[Identifier]
     vfc_refs: list[ARRef]
     wakeup_frame_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DYNAMIC-PNCS": lambda obj, elem: obj.dynamic_pnc_refs.append(ARRef.deserialize(elem)),
+        "IDENT-REF": lambda obj, elem: setattr(obj, "ident_ref", ARRef.deserialize(elem)),
+        "PHYSICAL-CHANNELS": lambda obj, elem: obj.physical_channel_refs.append(ARRef.deserialize(elem)),
+        "PNC-CONSUMEDS": lambda obj, elem: obj.pnc_consumed_refs.append(ARRef.deserialize(elem)),
+        "PNC-GROUPS": lambda obj, elem: obj.pnc_group_refs.append(ARRef.deserialize(elem)),
+        "PNC-IDENTIFIER": lambda obj, elem: setattr(obj, "pnc_identifier", elem.text),
+        "PNC-PDUR-GROUPS": lambda obj, elem: obj.pnc_pdur_group_refs.append(ARRef.deserialize(elem)),
+        "PNC-WAKEUP": lambda obj, elem: setattr(obj, "pnc_wakeup", elem.text),
+        "RELEVANT-FORS": lambda obj, elem: obj.relevant_for_refs.append(ARRef.deserialize(elem)),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "VFCS": lambda obj, elem: obj.vfc_refs.append(ARRef.deserialize(elem)),
+        "WAKEUP-FRAMES": lambda obj, elem: obj.wakeup_frame_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PncMapping."""
         super().__init__()
@@ -94,9 +113,8 @@ class PncMapping(Describable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PncMapping, self).serialize()

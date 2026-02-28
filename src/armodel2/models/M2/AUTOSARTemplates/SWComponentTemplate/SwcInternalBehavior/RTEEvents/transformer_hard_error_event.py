@@ -37,8 +37,17 @@ class TransformerHardErrorEvent(RTEEvent):
         """
         return False
 
+    _XML_TAG = "TRANSFORMER-HARD-ERROR-EVENT"
+
+
     operation: Optional[ClientServerOperation]
     required_trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "OPERATION": lambda obj, elem: setattr(obj, "operation", ClientServerOperation.deserialize(elem)),
+        "REQUIRED-TRIGGER-REF": lambda obj, elem: setattr(obj, "required_trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TransformerHardErrorEvent."""
         super().__init__()
@@ -51,9 +60,8 @@ class TransformerHardErrorEvent(RTEEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TransformerHardErrorEvent, self).serialize()

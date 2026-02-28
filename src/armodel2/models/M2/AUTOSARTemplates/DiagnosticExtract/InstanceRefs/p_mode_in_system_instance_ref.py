@@ -42,11 +42,23 @@ class PModeInSystemInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "P-MODE-IN-SYSTEM-INSTANCE-REF"
+
+
     base_ref: Optional[ARRef]
     context_ref: Optional[ARRef]
     context_mode_group_ref: Optional[ARRef]
     context_p_port_prototype_ref: Optional[ARRef]
     target_mode_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "CONTEXT-REF": lambda obj, elem: setattr(obj, "context_ref", ARRef.deserialize(elem)),
+        "CONTEXT-MODE-GROUP-REF": lambda obj, elem: setattr(obj, "context_mode_group_ref", ARRef.deserialize(elem)),
+        "CONTEXT-P-PORT-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "context_p_port_prototype_ref", ARRef.deserialize(elem)),
+        "TARGET-MODE-REF": lambda obj, elem: setattr(obj, "target_mode_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PModeInSystemInstanceRef."""
         super().__init__()
@@ -62,9 +74,8 @@ class PModeInSystemInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PModeInSystemInstanceRef, self).serialize()

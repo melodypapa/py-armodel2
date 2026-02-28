@@ -40,6 +40,12 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
 
     max_transit_time: Optional[TimeValue]
     sdu_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-TRANSIT-TIME": lambda obj, elem: setattr(obj, "max_transit_time", elem.text),
+        "SDUS": lambda obj, elem: obj.sdu_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpAvConnection."""
         super().__init__()
@@ -52,9 +58,8 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpAvConnection, self).serialize()

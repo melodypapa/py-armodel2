@@ -39,9 +39,19 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
         """
         return False
 
+    _XML_TAG = "GLOBAL-TIME-ETH-MASTER"
+
+
     crc_secured: Optional[GlobalTimeCrcSupportEnum]
     hold_over_time: Optional[TimeValue]
     sub_tlv_config: Optional[EthTSynSubTlvConfig]
+    _DESERIALIZE_DISPATCH = {
+        "CRC-SECURED": lambda obj, elem: setattr(obj, "crc_secured", GlobalTimeCrcSupportEnum.deserialize(elem)),
+        "HOLD-OVER-TIME": lambda obj, elem: setattr(obj, "hold_over_time", elem.text),
+        "SUB-TLV-CONFIG": lambda obj, elem: setattr(obj, "sub_tlv_config", EthTSynSubTlvConfig.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeEthMaster."""
         super().__init__()
@@ -55,9 +65,8 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeEthMaster, self).serialize()

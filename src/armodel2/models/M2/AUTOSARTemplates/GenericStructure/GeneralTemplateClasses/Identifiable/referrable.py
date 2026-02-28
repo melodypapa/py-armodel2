@@ -48,6 +48,12 @@ class Referrable(ARObject, ABC):
 
     short_name: Identifier
     short_name_fragments: list[ShortNameFragment]
+    _DESERIALIZE_DISPATCH = {
+        "SHORT-NAME": lambda obj, elem: setattr(obj, "short_name", elem.text),
+        "SHORT-NAME-FRAGMENTS": lambda obj, elem: obj.short_name_fragments.append(ShortNameFragment.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Referrable."""
         super().__init__()
@@ -60,9 +66,8 @@ class Referrable(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Referrable, self).serialize()

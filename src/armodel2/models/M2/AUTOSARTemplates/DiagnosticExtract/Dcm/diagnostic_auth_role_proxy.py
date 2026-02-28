@@ -30,7 +30,15 @@ class DiagnosticAuthRoleProxy(ARObject):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-AUTH-ROLE-PROXY"
+
+
     authentication_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AUTHENTICATIONS": lambda obj, elem: obj.authentication_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticAuthRoleProxy."""
         super().__init__()
@@ -42,9 +50,8 @@ class DiagnosticAuthRoleProxy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticAuthRoleProxy, self).serialize()

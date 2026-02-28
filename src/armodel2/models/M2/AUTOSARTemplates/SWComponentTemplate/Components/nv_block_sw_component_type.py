@@ -37,8 +37,17 @@ class NvBlockSwComponentType(AtomicSwComponentType):
         """
         return False
 
+    _XML_TAG = "NV-BLOCK-SW-COMPONENT-TYPE"
+
+
     bulk_nv_datas: list[BulkNvDataDescriptor]
     nv_blocks: list[NvBlockDescriptor]
+    _DESERIALIZE_DISPATCH = {
+        "BULK-NV-DATAS": lambda obj, elem: obj.bulk_nv_datas.append(BulkNvDataDescriptor.deserialize(elem)),
+        "NV-BLOCKS": lambda obj, elem: obj.nv_blocks.append(NvBlockDescriptor.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NvBlockSwComponentType."""
         super().__init__()
@@ -51,9 +60,8 @@ class NvBlockSwComponentType(AtomicSwComponentType):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NvBlockSwComponentType, self).serialize()

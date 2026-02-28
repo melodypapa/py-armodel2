@@ -42,6 +42,13 @@ class CpSoftwareClusterResource(Identifiable, ABC):
     dependents: list[RoleBasedResourceDependency]
     global_resource: Optional[PositiveInteger]
     is_mandatory: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "DEPENDENTS": lambda obj, elem: obj.dependents.append(RoleBasedResourceDependency.deserialize(elem)),
+        "GLOBAL-RESOURCE": lambda obj, elem: setattr(obj, "global_resource", elem.text),
+        "IS-MANDATORY": lambda obj, elem: setattr(obj, "is_mandatory", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterResource."""
         super().__init__()
@@ -55,9 +62,8 @@ class CpSoftwareClusterResource(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSoftwareClusterResource, self).serialize()

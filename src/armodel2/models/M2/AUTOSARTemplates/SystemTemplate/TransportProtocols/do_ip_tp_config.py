@@ -36,8 +36,17 @@ class DoIpTpConfig(TpConfig):
         """
         return False
 
+    _XML_TAG = "DO-IP-TP-CONFIG"
+
+
     do_ip_logic_address_addresses: list[DoIpLogicAddress]
     tp_connections: list[DoIpTpConnection]
+    _DESERIALIZE_DISPATCH = {
+        "DO-IP-LOGIC-ADDRESS-ADDRESSES": lambda obj, elem: obj.do_ip_logic_address_addresses.append(DoIpLogicAddress.deserialize(elem)),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(DoIpTpConnection.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DoIpTpConfig."""
         super().__init__()
@@ -50,9 +59,8 @@ class DoIpTpConfig(TpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DoIpTpConfig, self).serialize()

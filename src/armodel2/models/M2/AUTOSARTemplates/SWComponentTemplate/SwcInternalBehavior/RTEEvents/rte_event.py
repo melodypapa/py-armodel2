@@ -50,6 +50,12 @@ class RTEEvent(AbstractEvent, ABC):
 
     _disabled_mode_irefs: list[RModeInAtomicSwcInstanceRef]
     start_on_event_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DISABLED-MODES": lambda obj, elem: obj._disabled_mode_irefs.append(ARRef.deserialize(elem)),
+        "START-ON-EVENT-REF": lambda obj, elem: setattr(obj, "start_on_event_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RTEEvent."""
         super().__init__()
@@ -73,9 +79,8 @@ class RTEEvent(AbstractEvent, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RTEEvent, self).serialize()

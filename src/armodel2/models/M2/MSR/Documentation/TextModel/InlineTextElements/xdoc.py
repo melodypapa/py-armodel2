@@ -34,12 +34,25 @@ class Xdoc(SingleLanguageReferrable):
         """
         return False
 
+    _XML_TAG = "XDOC"
+
+
     date: Optional[DateTime]
     number: Optional[String]
     position: Optional[String]
     publisher: Optional[String]
     state: Optional[String]
     url: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DATE": lambda obj, elem: setattr(obj, "date", elem.text),
+        "NUMBER": lambda obj, elem: setattr(obj, "number", elem.text),
+        "POSITION": lambda obj, elem: setattr(obj, "position", elem.text),
+        "PUBLISHER": lambda obj, elem: setattr(obj, "publisher", elem.text),
+        "STATE": lambda obj, elem: setattr(obj, "state", elem.text),
+        "URL": lambda obj, elem: setattr(obj, "url", any (Url).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Xdoc."""
         super().__init__()
@@ -56,9 +69,8 @@ class Xdoc(SingleLanguageReferrable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Xdoc, self).serialize()

@@ -33,7 +33,15 @@ class TransformationPropsSet(ARElement):
         """
         return False
 
+    _XML_TAG = "TRANSFORMATION-PROPS-SET"
+
+
     transformation_props_propses: list[TransformationProps]
+    _DESERIALIZE_DISPATCH = {
+        "TRANSFORMATION-PROPS-PROPSES": lambda obj, elem: obj.transformation_props_propses.append(TransformationProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TransformationPropsSet."""
         super().__init__()
@@ -45,9 +53,8 @@ class TransformationPropsSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TransformationPropsSet, self).serialize()

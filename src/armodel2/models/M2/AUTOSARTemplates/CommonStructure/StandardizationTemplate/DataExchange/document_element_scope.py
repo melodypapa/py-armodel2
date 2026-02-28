@@ -31,8 +31,17 @@ class DocumentElementScope(SpecElementReference):
         """
         return False
 
+    _XML_TAG = "DOCUMENT-ELEMENT-SCOPE"
+
+
     custom_document_ref: Optional[Any]
     tailoring_refs: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CUSTOM-DOCUMENT-REF": lambda obj, elem: setattr(obj, "custom_document_ref", ARRef.deserialize(elem)),
+        "TAILORINGS": lambda obj, elem: obj.tailoring_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DocumentElementScope."""
         super().__init__()
@@ -45,9 +54,8 @@ class DocumentElementScope(SpecElementReference):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DocumentElementScope, self).serialize()

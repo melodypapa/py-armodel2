@@ -75,6 +75,22 @@ class ReceiverComSpec(RPortComSpec, ABC):
     sync_counter_init: Optional[PositiveInteger]
     transformation_com_spec_propses: list[TransformationComSpecProps]
     uses_end_to_end_protection: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "COMPOSITE-NETWORK-REPRESENTATIONS": lambda obj, elem: obj.composite_network_representations.append(CompositeNetworkRepresentation.deserialize(elem)),
+        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "HANDLE-OUT-OF-RANGE": lambda obj, elem: setattr(obj, "handle_out_of_range", HandleOutOfRangeEnum.deserialize(elem)),
+        "HANDLE-OUT-OF-RANGE-STATUS": lambda obj, elem: setattr(obj, "handle_out_of_range_status", HandleOutOfRangeEnum.deserialize(elem)),
+        "MAX-DELTA-COUNTER-INIT": lambda obj, elem: setattr(obj, "max_delta_counter_init", elem.text),
+        "MAX-NO-NEW-OR-REPEATED-DATA": lambda obj, elem: setattr(obj, "max_no_new_or_repeated_data", elem.text),
+        "NETWORK-REPRESENTATION": lambda obj, elem: setattr(obj, "network_representation", SwDataDefProps.deserialize(elem)),
+        "RECEPTION-PROPS": lambda obj, elem: setattr(obj, "reception_props", ReceptionComSpecProps.deserialize(elem)),
+        "REPLACE-WITH": lambda obj, elem: setattr(obj, "replace_with", VariableAccess.deserialize(elem)),
+        "SYNC-COUNTER-INIT": lambda obj, elem: setattr(obj, "sync_counter_init", elem.text),
+        "TRANSFORMATION-COM-SPEC-PROPSES": lambda obj, elem: obj.transformation_com_spec_propses.append(TransformationComSpecProps.deserialize(elem)),
+        "USES-END-TO-END-PROTECTION": lambda obj, elem: setattr(obj, "uses_end_to_end_protection", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ReceiverComSpec."""
         super().__init__()
@@ -97,9 +113,8 @@ class ReceiverComSpec(RPortComSpec, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ReceiverComSpec, self).serialize()

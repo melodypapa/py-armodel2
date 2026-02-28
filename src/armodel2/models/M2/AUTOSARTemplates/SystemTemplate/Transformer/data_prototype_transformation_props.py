@@ -39,9 +39,19 @@ class DataPrototypeTransformationProps(ARObject):
         """
         return False
 
+    _XML_TAG = "DATA-PROTOTYPE-TRANSFORMATION-PROPS"
+
+
     data_prototype_in_ref: Optional[ARRef]
     network: Optional[SwDataDefProps]
     transformation_props_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-PROTOTYPE-IN-REF": lambda obj, elem: setattr(obj, "data_prototype_in_ref", ARRef.deserialize(elem)),
+        "NETWORK": lambda obj, elem: setattr(obj, "network", SwDataDefProps.deserialize(elem)),
+        "TRANSFORMATION-PROPS-REF": lambda obj, elem: setattr(obj, "transformation_props_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataPrototypeTransformationProps."""
         super().__init__()
@@ -55,9 +65,8 @@ class DataPrototypeTransformationProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataPrototypeTransformationProps, self).serialize()

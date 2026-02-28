@@ -34,8 +34,17 @@ class BinaryManifestMetaDataField(BinaryManifestAddressableObject):
         """
         return False
 
+    _XML_TAG = "BINARY-MANIFEST-META-DATA-FIELD"
+
+
     size: Optional[PositiveInteger]
     value: Optional[VerbatimString]
+    _DESERIALIZE_DISPATCH = {
+        "SIZE": lambda obj, elem: setattr(obj, "size", elem.text),
+        "VALUE": lambda obj, elem: setattr(obj, "value", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BinaryManifestMetaDataField."""
         super().__init__()
@@ -48,9 +57,8 @@ class BinaryManifestMetaDataField(BinaryManifestAddressableObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BinaryManifestMetaDataField, self).serialize()

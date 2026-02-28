@@ -52,6 +52,16 @@ class CommunicationConnector(Identifiable, ABC):
     ecu_comm_port_instances: list[CommConnectorPort]
     pnc_filter_array_masks: list[PositiveInteger]
     pnc_gateway_type: Optional[PncGatewayTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "COMM-CONTROLLER-REF": lambda obj, elem: setattr(obj, "comm_controller_ref", ARRef.deserialize(elem)),
+        "CREATE-ECU-WAKEUP-SOURCE": lambda obj, elem: setattr(obj, "create_ecu_wakeup_source", elem.text),
+        "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED": lambda obj, elem: setattr(obj, "dynamic_pnc_to_channel_mapping_enabled", elem.text),
+        "ECU-COMM-PORT-INSTANCES": lambda obj, elem: obj.ecu_comm_port_instances.append(CommConnectorPort.deserialize(elem)),
+        "PNC-FILTER-ARRAY-MASKS": lambda obj, elem: obj.pnc_filter_array_masks.append(elem.text),
+        "PNC-GATEWAY-TYPE": lambda obj, elem: setattr(obj, "pnc_gateway_type", PncGatewayTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CommunicationConnector."""
         super().__init__()
@@ -68,9 +78,8 @@ class CommunicationConnector(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CommunicationConnector, self).serialize()

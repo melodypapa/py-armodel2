@@ -37,8 +37,17 @@ class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "SYSTEM-SIGNAL-GROUP-TO-COMMUNICATION-RESOURCE-MAPPING"
+
+
     software_cluster_ref: Optional[ARRef]
     system_signal_group_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SOFTWARE-CLUSTER-REF": lambda obj, elem: setattr(obj, "software_cluster_ref", ARRef.deserialize(elem)),
+        "SYSTEM-SIGNAL-GROUP-REF": lambda obj, elem: setattr(obj, "system_signal_group_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SystemSignalGroupToCommunicationResourceMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SystemSignalGroupToCommunicationResourceMapping, self).serialize()

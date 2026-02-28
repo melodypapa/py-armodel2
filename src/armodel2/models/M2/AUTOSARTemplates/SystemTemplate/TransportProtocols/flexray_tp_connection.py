@@ -46,6 +46,9 @@ class FlexrayTpConnection(TpConnection):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-TP-CONNECTION"
+
+
     bandwidth: Optional[Boolean]
     direct_tp_sdu_ref: Optional[ARRef]
     multicast_ref: Optional[ARRef]
@@ -55,6 +58,19 @@ class FlexrayTpConnection(TpConnection):
     tp_connection_ref: Optional[ARRef]
     transmitter_ref: Optional[ARRef]
     tx_pdu_pool_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BANDWIDTH": lambda obj, elem: setattr(obj, "bandwidth", elem.text),
+        "DIRECT-TP-SDU-REF": lambda obj, elem: setattr(obj, "direct_tp_sdu_ref", ARRef.deserialize(elem)),
+        "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
+        "RECEIVERS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
+        "REVERSED-TP-SDU-REF": lambda obj, elem: setattr(obj, "reversed_tp_sdu_ref", ARRef.deserialize(elem)),
+        "RX-PDU-POOL-REF": lambda obj, elem: setattr(obj, "rx_pdu_pool_ref", ARRef.deserialize(elem)),
+        "TP-CONNECTION-REF": lambda obj, elem: setattr(obj, "tp_connection_ref", ARRef.deserialize(elem)),
+        "TRANSMITTER-REF": lambda obj, elem: setattr(obj, "transmitter_ref", ARRef.deserialize(elem)),
+        "TX-PDU-POOL-REF": lambda obj, elem: setattr(obj, "tx_pdu_pool_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayTpConnection."""
         super().__init__()
@@ -74,9 +90,8 @@ class FlexrayTpConnection(TpConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayTpConnection, self).serialize()

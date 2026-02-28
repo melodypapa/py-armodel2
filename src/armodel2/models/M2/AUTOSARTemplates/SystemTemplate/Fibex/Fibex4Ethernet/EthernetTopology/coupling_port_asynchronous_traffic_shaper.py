@@ -37,9 +37,19 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT-ASYNCHRONOUS-TRAFFIC-SHAPER"
+
+
     committed_burst: Optional[PositiveInteger]
     committed: Optional[PositiveInteger]
     traffic_shaper_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMMITTED-BURST": lambda obj, elem: setattr(obj, "committed_burst", elem.text),
+        "COMMITTED": lambda obj, elem: setattr(obj, "committed", elem.text),
+        "TRAFFIC-SHAPER-REF": lambda obj, elem: setattr(obj, "traffic_shaper_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPortAsynchronousTrafficShaper."""
         super().__init__()
@@ -53,9 +63,8 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPortAsynchronousTrafficShaper, self).serialize()

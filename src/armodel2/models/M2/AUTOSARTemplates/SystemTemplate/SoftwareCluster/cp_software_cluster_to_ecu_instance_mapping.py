@@ -40,9 +40,19 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "CP-SOFTWARE-CLUSTER-TO-ECU-INSTANCE-MAPPING"
+
+
     ecu_instance_ref: Optional[ARRef]
     machine_id: Optional[PositiveInteger]
     sw_cluster_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+        "MACHINE-ID": lambda obj, elem: setattr(obj, "machine_id", elem.text),
+        "SW-CLUSTERS": lambda obj, elem: obj.sw_cluster_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterToEcuInstanceMapping."""
         super().__init__()
@@ -56,9 +66,8 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSoftwareClusterToEcuInstanceMapping, self).serialize()

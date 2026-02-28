@@ -35,11 +35,23 @@ class TransmissionModeDeclaration(ARObject):
         """
         return False
 
+    _XML_TAG = "TRANSMISSION-MODE-DECLARATION"
+
+
     mode_driven_false_conditions: list[ModeDrivenTransmissionModeCondition]
     mode_driven_true_conditions: list[ModeDrivenTransmissionModeCondition]
     transmission_mode_conditions: list[TransmissionModeCondition]
     transmission_mode_false_timing: Optional[TransmissionModeTiming]
     transmission_mode_true_timing: Optional[TransmissionModeTiming]
+    _DESERIALIZE_DISPATCH = {
+        "MODE-DRIVEN-FALSE-CONDITIONS": lambda obj, elem: obj.mode_driven_false_conditions.append(ModeDrivenTransmissionModeCondition.deserialize(elem)),
+        "MODE-DRIVEN-TRUE-CONDITIONS": lambda obj, elem: obj.mode_driven_true_conditions.append(ModeDrivenTransmissionModeCondition.deserialize(elem)),
+        "TRANSMISSION-MODE-CONDITIONS": lambda obj, elem: obj.transmission_mode_conditions.append(TransmissionModeCondition.deserialize(elem)),
+        "TRANSMISSION-MODE-FALSE-TIMING": lambda obj, elem: setattr(obj, "transmission_mode_false_timing", TransmissionModeTiming.deserialize(elem)),
+        "TRANSMISSION-MODE-TRUE-TIMING": lambda obj, elem: setattr(obj, "transmission_mode_true_timing", TransmissionModeTiming.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TransmissionModeDeclaration."""
         super().__init__()
@@ -55,9 +67,8 @@ class TransmissionModeDeclaration(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TransmissionModeDeclaration, self).serialize()

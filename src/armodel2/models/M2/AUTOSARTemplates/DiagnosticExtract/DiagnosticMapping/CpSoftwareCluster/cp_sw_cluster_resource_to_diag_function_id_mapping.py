@@ -34,8 +34,17 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "CP-SW-CLUSTER-RESOURCE-TO-DIAG-FUNCTION-ID-MAPPING"
+
+
     cp_software_cluster_ref: Optional[ARRef]
     function_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CP-SOFTWARE-CLUSTER-REF": lambda obj, elem: setattr(obj, "cp_software_cluster_ref", ARRef.deserialize(elem)),
+        "FUNCTION-REF": lambda obj, elem: setattr(obj, "function_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSwClusterResourceToDiagFunctionIdMapping."""
         super().__init__()
@@ -48,9 +57,8 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSwClusterResourceToDiagFunctionIdMapping, self).serialize()

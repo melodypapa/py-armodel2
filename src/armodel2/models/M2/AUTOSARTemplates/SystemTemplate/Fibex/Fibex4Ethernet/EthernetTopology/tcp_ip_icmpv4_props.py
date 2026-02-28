@@ -30,8 +30,17 @@ class TcpIpIcmpv4Props(ARObject):
         """
         return False
 
+    _XML_TAG = "TCP-IP-ICMPV4-PROPS"
+
+
     tcp_ip_icmp: Optional[Boolean]
     tcp_ip_icmp_v4_ttl: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "TCP-IP-ICMP": lambda obj, elem: setattr(obj, "tcp_ip_icmp", elem.text),
+        "TCP-IP-ICMP-V4-TTL": lambda obj, elem: setattr(obj, "tcp_ip_icmp_v4_ttl", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TcpIpIcmpv4Props."""
         super().__init__()
@@ -44,9 +53,8 @@ class TcpIpIcmpv4Props(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TcpIpIcmpv4Props, self).serialize()

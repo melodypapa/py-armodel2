@@ -33,10 +33,21 @@ class EcucDestinationUriPolicy(ARObject):
         """
         return False
 
+    _XML_TAG = "ECUC-DESTINATION-URI-POLICY"
+
+
     containers: list[EcucContainerDef]
     destination_uri: Optional[Any]
     parameters: list[EcucParameterDef]
     reference_refs: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CONTAINERS": lambda obj, elem: obj.containers.append(EcucContainerDef.deserialize(elem)),
+        "DESTINATION-URI": lambda obj, elem: setattr(obj, "destination_uri", any (EcucDestinationUri).deserialize(elem)),
+        "PARAMETERS": lambda obj, elem: obj.parameters.append(EcucParameterDef.deserialize(elem)),
+        "REFERENCES": lambda obj, elem: obj.reference_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucDestinationUriPolicy."""
         super().__init__()
@@ -51,9 +62,8 @@ class EcucDestinationUriPolicy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucDestinationUriPolicy, self).serialize()

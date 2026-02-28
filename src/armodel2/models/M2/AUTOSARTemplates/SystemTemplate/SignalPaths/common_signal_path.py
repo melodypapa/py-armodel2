@@ -33,8 +33,17 @@ class CommonSignalPath(SignalPathConstraint):
         """
         return False
 
+    _XML_TAG = "COMMON-SIGNAL-PATH"
+
+
     operations: list[Any]
     signals: list[SwcToSwcSignal]
+    _DESERIALIZE_DISPATCH = {
+        "OPERATIONS": lambda obj, elem: obj.operations.append(any (SwcToSwcOperation).deserialize(elem)),
+        "SIGNALS": lambda obj, elem: obj.signals.append(SwcToSwcSignal.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CommonSignalPath."""
         super().__init__()
@@ -47,9 +56,8 @@ class CommonSignalPath(SignalPathConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CommonSignalPath, self).serialize()

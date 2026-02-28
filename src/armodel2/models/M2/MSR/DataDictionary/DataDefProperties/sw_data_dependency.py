@@ -29,7 +29,15 @@ class SwDataDependency(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-DATA-DEPENDENCY"
+
+
     sw_data: Optional[CompuGenericMath]
+    _DESERIALIZE_DISPATCH = {
+        "SW-DATA": lambda obj, elem: setattr(obj, "sw_data", CompuGenericMath.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwDataDependency."""
         super().__init__()
@@ -41,9 +49,8 @@ class SwDataDependency(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwDataDependency, self).serialize()

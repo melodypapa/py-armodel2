@@ -31,6 +31,9 @@ class DiagnosticUploadDownloadNeeds(DiagnosticCapabilityElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-UPLOAD-DOWNLOAD-NEEDS"
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticUploadDownloadNeeds."""
         super().__init__()
@@ -41,9 +44,8 @@ class DiagnosticUploadDownloadNeeds(DiagnosticCapabilityElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticUploadDownloadNeeds, self).serialize()

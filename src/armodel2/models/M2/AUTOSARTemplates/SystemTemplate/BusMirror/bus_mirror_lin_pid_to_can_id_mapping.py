@@ -33,8 +33,17 @@ class BusMirrorLinPidToCanIdMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "BUS-MIRROR-LIN-PID-TO-CAN-ID-MAPPING"
+
+
     remapped_can_id: Optional[PositiveInteger]
     source_lin_pid_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "REMAPPED-CAN-ID": lambda obj, elem: setattr(obj, "remapped_can_id", elem.text),
+        "SOURCE-LIN-PID-REF": lambda obj, elem: setattr(obj, "source_lin_pid_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BusMirrorLinPidToCanIdMapping."""
         super().__init__()
@@ -47,9 +56,8 @@ class BusMirrorLinPidToCanIdMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BusMirrorLinPidToCanIdMapping, self).serialize()

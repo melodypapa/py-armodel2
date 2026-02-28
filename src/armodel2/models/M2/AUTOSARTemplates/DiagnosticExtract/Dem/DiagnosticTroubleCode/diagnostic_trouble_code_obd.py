@@ -38,10 +38,21 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-TROUBLE-CODE-OBD"
+
+
     consider_pto: Optional[Boolean]
     dtc_props_props_ref: Optional[ARRef]
     event_readiness: Optional[EventObdReadinessGroup]
     obd_dtc_value: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CONSIDER-PTO": lambda obj, elem: setattr(obj, "consider_pto", elem.text),
+        "DTC-PROPS-PROPS-REF": lambda obj, elem: setattr(obj, "dtc_props_props_ref", ARRef.deserialize(elem)),
+        "EVENT-READINESS": lambda obj, elem: setattr(obj, "event_readiness", EventObdReadinessGroup.deserialize(elem)),
+        "OBD-DTC-VALUE": lambda obj, elem: setattr(obj, "obd_dtc_value", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeObd."""
         super().__init__()
@@ -56,9 +67,8 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticTroubleCodeObd, self).serialize()

@@ -61,6 +61,17 @@ class ExecutableEntity(Identifiable, ABC):
     reentrancy_level: Optional[ReentrancyLevelEnum]
     runs_inside_refs: list[ARRef]
     sw_addr_method_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ACTIVATION-REASONS": lambda obj, elem: obj.activation_reasons.append(ExecutableEntityActivationReason.deserialize(elem)),
+        "CAN-ENTERS": lambda obj, elem: obj._can_enter_refs.append(ARRef.deserialize(elem)),
+        "EXCLUSIVE-AREA-NESTING-ORDERS": lambda obj, elem: obj.exclusive_area_nesting_order_refs.append(ARRef.deserialize(elem)),
+        "MINIMUM-START-INTERVAL": lambda obj, elem: setattr(obj, "minimum_start_interval", elem.text),
+        "REENTRANCY-LEVEL": lambda obj, elem: setattr(obj, "reentrancy_level", ReentrancyLevelEnum.deserialize(elem)),
+        "RUNS-INSIDES": lambda obj, elem: obj.runs_inside_refs.append(ARRef.deserialize(elem)),
+        "SW-ADDR-METHOD-REF": lambda obj, elem: setattr(obj, "sw_addr_method_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ExecutableEntity."""
         super().__init__()
@@ -89,9 +100,8 @@ class ExecutableEntity(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ExecutableEntity, self).serialize()

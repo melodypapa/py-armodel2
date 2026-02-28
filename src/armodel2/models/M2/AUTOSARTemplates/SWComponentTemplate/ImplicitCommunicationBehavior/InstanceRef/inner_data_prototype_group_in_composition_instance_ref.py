@@ -33,9 +33,19 @@ class InnerDataPrototypeGroupInCompositionInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "INNER-DATA-PROTOTYPE-GROUP-IN-COMPOSITION-INSTANCE-REF"
+
+
     base_ref: Optional[ARRef]
     context_sw_refs: list[Any]
     target_data_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "CONTEXT-SWS": lambda obj, elem: obj.context_sw_refs.append(ARRef.deserialize(elem)),
+        "TARGET-DATA-REF": lambda obj, elem: setattr(obj, "target_data_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InnerDataPrototypeGroupInCompositionInstanceRef."""
         super().__init__()
@@ -49,9 +59,8 @@ class InnerDataPrototypeGroupInCompositionInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InnerDataPrototypeGroupInCompositionInstanceRef, self).serialize()

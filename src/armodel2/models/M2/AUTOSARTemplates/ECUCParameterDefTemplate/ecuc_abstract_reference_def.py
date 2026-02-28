@@ -35,6 +35,11 @@ class EcucAbstractReferenceDef(EcucCommonAttributes, ABC):
         return True
 
     with_auto: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "WITH-AUTO": lambda obj, elem: setattr(obj, "with_auto", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucAbstractReferenceDef."""
         super().__init__()
@@ -46,9 +51,8 @@ class EcucAbstractReferenceDef(EcucCommonAttributes, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucAbstractReferenceDef, self).serialize()

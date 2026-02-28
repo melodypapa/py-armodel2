@@ -30,9 +30,19 @@ class LifeCyclePeriod(ARObject):
         """
         return False
 
+    _XML_TAG = "LIFE-CYCLE-PERIOD"
+
+
     ar_release_version: Optional[RevisionLabelString]
     date: Optional[DateTime]
     product_release: Optional[RevisionLabelString]
+    _DESERIALIZE_DISPATCH = {
+        "AR-RELEASE-VERSION": lambda obj, elem: setattr(obj, "ar_release_version", elem.text),
+        "DATE": lambda obj, elem: setattr(obj, "date", elem.text),
+        "PRODUCT-RELEASE": lambda obj, elem: setattr(obj, "product_release", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LifeCyclePeriod."""
         super().__init__()
@@ -46,9 +56,8 @@ class LifeCyclePeriod(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LifeCyclePeriod, self).serialize()

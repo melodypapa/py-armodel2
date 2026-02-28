@@ -39,11 +39,23 @@ class EthernetCommunicationConnector(CommunicationConnector):
         """
         return False
 
+    _XML_TAG = "ETHERNET-COMMUNICATION-CONNECTOR"
+
+
     eth_ip_props_ref: Optional[ARRef]
     maximum: Optional[PositiveInteger]
     neighbor_cache: Optional[PositiveInteger]
     path_mtu: Optional[Boolean]
     path_mtu_timeout: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "ETH-IP-PROPS-REF": lambda obj, elem: setattr(obj, "eth_ip_props_ref", ARRef.deserialize(elem)),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", elem.text),
+        "NEIGHBOR-CACHE": lambda obj, elem: setattr(obj, "neighbor_cache", elem.text),
+        "PATH-MTU": lambda obj, elem: setattr(obj, "path_mtu", elem.text),
+        "PATH-MTU-TIMEOUT": lambda obj, elem: setattr(obj, "path_mtu_timeout", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthernetCommunicationConnector."""
         super().__init__()
@@ -59,9 +71,8 @@ class EthernetCommunicationConnector(CommunicationConnector):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthernetCommunicationConnector, self).serialize()

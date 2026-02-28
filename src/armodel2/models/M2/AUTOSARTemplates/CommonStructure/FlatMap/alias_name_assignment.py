@@ -40,10 +40,21 @@ class AliasNameAssignment(ARObject):
         """
         return False
 
+    _XML_TAG = "ALIAS-NAME-ASSIGNMENT"
+
+
     flat_instance_ref: Optional[ARRef]
     identifiable_ref: Optional[ARRef]
     label: Optional[MultilanguageLongName]
     short_label: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "FLAT-INSTANCE-REF": lambda obj, elem: setattr(obj, "flat_instance_ref", ARRef.deserialize(elem)),
+        "IDENTIFIABLE-REF": lambda obj, elem: setattr(obj, "identifiable_ref", ARRef.deserialize(elem)),
+        "LABEL": lambda obj, elem: setattr(obj, "label", MultilanguageLongName.deserialize(elem)),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AliasNameAssignment."""
         super().__init__()
@@ -58,9 +69,8 @@ class AliasNameAssignment(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AliasNameAssignment, self).serialize()

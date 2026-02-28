@@ -35,7 +35,15 @@ class FunctionInhibitionAvailabilityNeeds(ServiceNeeds):
         """
         return False
 
+    _XML_TAG = "FUNCTION-INHIBITION-AVAILABILITY-NEEDS"
+
+
     controlled_fid_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONTROLLED-FID-REF": lambda obj, elem: setattr(obj, "controlled_fid_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FunctionInhibitionAvailabilityNeeds."""
         super().__init__()
@@ -47,9 +55,8 @@ class FunctionInhibitionAvailabilityNeeds(ServiceNeeds):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FunctionInhibitionAvailabilityNeeds, self).serialize()

@@ -36,10 +36,21 @@ class DltConfig(ARObject):
         """
         return False
 
+    _XML_TAG = "DLT-CONFIG"
+
+
     dlt_ecu_ref: Optional[ARRef]
     dlt_log_channels: list[DltLogChannel]
     session_id: Optional[Boolean]
     timestamp: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "DLT-ECU-REF": lambda obj, elem: setattr(obj, "dlt_ecu_ref", ARRef.deserialize(elem)),
+        "DLT-LOG-CHANNELS": lambda obj, elem: obj.dlt_log_channels.append(DltLogChannel.deserialize(elem)),
+        "SESSION-ID": lambda obj, elem: setattr(obj, "session_id", elem.text),
+        "TIMESTAMP": lambda obj, elem: setattr(obj, "timestamp", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DltConfig."""
         super().__init__()
@@ -54,9 +65,8 @@ class DltConfig(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DltConfig, self).serialize()

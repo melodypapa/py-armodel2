@@ -29,10 +29,21 @@ class EthTSynSubTlvConfig(ARObject):
         """
         return False
 
+    _XML_TAG = "ETH-T-SYN-SUB-TLV-CONFIG"
+
+
     ofs_sub_tlv: Optional[Boolean]
     status_sub_tlv: Optional[Boolean]
     time_sub_tlv: Optional[Boolean]
     user_data_sub_tlv: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "OFS-SUB-TLV": lambda obj, elem: setattr(obj, "ofs_sub_tlv", elem.text),
+        "STATUS-SUB-TLV": lambda obj, elem: setattr(obj, "status_sub_tlv", elem.text),
+        "TIME-SUB-TLV": lambda obj, elem: setattr(obj, "time_sub_tlv", elem.text),
+        "USER-DATA-SUB-TLV": lambda obj, elem: setattr(obj, "user_data_sub_tlv", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthTSynSubTlvConfig."""
         super().__init__()
@@ -47,9 +58,8 @@ class EthTSynSubTlvConfig(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthTSynSubTlvConfig, self).serialize()

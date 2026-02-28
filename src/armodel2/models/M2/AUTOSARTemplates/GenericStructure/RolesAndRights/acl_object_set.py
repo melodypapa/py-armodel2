@@ -47,11 +47,23 @@ class AclObjectSet(ARElement):
         """
         return False
 
+    _XML_TAG = "ACL-OBJECT-SET"
+
+
     acl_object_clas_refs: list[ReferrableSubtypesEnum]
     acl_scope: AclScopeEnum
     collection_ref: Optional[ARRef]
     derived_from_refs: list[ARRef]
     engineerings: list[AutosarEngineeringObject]
+    _DESERIALIZE_DISPATCH = {
+        "ACL-OBJECT-CLASSES": lambda obj, elem: obj.acl_object_clas_refs.append(elem.text),
+        "ACL-SCOPE": lambda obj, elem: setattr(obj, "acl_scope", AclScopeEnum.deserialize(elem)),
+        "COLLECTION-REF": lambda obj, elem: setattr(obj, "collection_ref", ARRef.deserialize(elem)),
+        "DERIVED-FROMS": lambda obj, elem: obj.derived_from_refs.append(ARRef.deserialize(elem)),
+        "ENGINEERINGS": lambda obj, elem: obj.engineerings.append(AutosarEngineeringObject.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AclObjectSet."""
         super().__init__()
@@ -67,9 +79,8 @@ class AclObjectSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AclObjectSet, self).serialize()

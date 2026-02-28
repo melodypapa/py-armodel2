@@ -41,8 +41,17 @@ class ArrayValueSpecification(CompositeValueSpecification):
         """
         return False
 
+    _XML_TAG = "ARRAY-VALUE-SPECIFICATION"
+
+
     elements: list[ValueSpecification]
     intended_partial: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ELEMENTS": lambda obj, elem: obj.elements.append(ValueSpecification.deserialize(elem)),
+        "INTENDED-PARTIAL": lambda obj, elem: setattr(obj, "intended_partial", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ArrayValueSpecification."""
         super().__init__()
@@ -55,9 +64,8 @@ class ArrayValueSpecification(CompositeValueSpecification):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ArrayValueSpecification, self).serialize()

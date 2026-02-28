@@ -32,8 +32,17 @@ class FlexrayAbsolutelyScheduledTiming(ARObject):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-ABSOLUTELY-SCHEDULED-TIMING"
+
+
     communication_cycle_cycle: Optional[CommunicationCycle]
     slot_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CYCLE-CYCLE": lambda obj, elem: setattr(obj, "communication_cycle_cycle", CommunicationCycle.deserialize(elem)),
+        "SLOT-ID": lambda obj, elem: setattr(obj, "slot_id", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayAbsolutelyScheduledTiming."""
         super().__init__()
@@ -46,9 +55,8 @@ class FlexrayAbsolutelyScheduledTiming(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayAbsolutelyScheduledTiming, self).serialize()

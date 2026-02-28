@@ -43,9 +43,19 @@ class RootSwCompositionPrototype(Identifiable):
         """
         return False
 
+    _XML_TAG = "ROOT-SW-COMPOSITION-PROTOTYPE"
+
+
     calibration_parameter_value_set_refs: list[ARRef]
     flat_map_ref: Optional[ARRef]
     software_composition_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CALIBRATION-PARAMETER-VALUE-SETS": lambda obj, elem: obj.calibration_parameter_value_set_refs.append(ARRef.deserialize(elem)),
+        "FLAT-MAP-REF": lambda obj, elem: setattr(obj, "flat_map_ref", ARRef.deserialize(elem)),
+        "SOFTWARE-COMPOSITION-TREF": lambda obj, elem: setattr(obj, "software_composition_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RootSwCompositionPrototype."""
         super().__init__()
@@ -59,9 +69,8 @@ class RootSwCompositionPrototype(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RootSwCompositionPrototype, self).serialize()

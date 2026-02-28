@@ -34,8 +34,17 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-RESPONSE-ON-EVENT"
+
+
     event_windows: list[DiagnosticEventWindow]
     response_on_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-WINDOWS": lambda obj, elem: obj.event_windows.append(DiagnosticEventWindow.deserialize(elem)),
+        "RESPONSE-ON-REF": lambda obj, elem: setattr(obj, "response_on_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticResponseOnEvent."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticResponseOnEvent, self).serialize()

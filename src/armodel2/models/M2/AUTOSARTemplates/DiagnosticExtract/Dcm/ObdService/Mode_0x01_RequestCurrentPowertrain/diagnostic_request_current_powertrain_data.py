@@ -34,8 +34,17 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-REQUEST-CURRENT-POWERTRAIN-DATA"
+
+
     pid_ref: Optional[ARRef]
     request_current_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "PID-REF": lambda obj, elem: setattr(obj, "pid_ref", ARRef.deserialize(elem)),
+        "REQUEST-CURRENT-REF": lambda obj, elem: setattr(obj, "request_current_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticRequestCurrentPowertrainData."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticRequestCurrentPowertrainData, self).serialize()

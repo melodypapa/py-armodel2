@@ -44,12 +44,25 @@ class SwitchStreamFilterEntry(Identifiable):
         """
         return False
 
+    _XML_TAG = "SWITCH-STREAM-FILTER-ENTRY"
+
+
     asynchronous_ref: Optional[ARRef]
     filter_priority: Optional[PositiveInteger]
     flow_metering_ref: Optional[ARRef]
     max_sdu_size: Optional[PositiveInteger]
     stream_gate_ref: Optional[ARRef]
     stream: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ASYNCHRONOUS-REF": lambda obj, elem: setattr(obj, "asynchronous_ref", ARRef.deserialize(elem)),
+        "FILTER-PRIORITY": lambda obj, elem: setattr(obj, "filter_priority", elem.text),
+        "FLOW-METERING-REF": lambda obj, elem: setattr(obj, "flow_metering_ref", ARRef.deserialize(elem)),
+        "MAX-SDU-SIZE": lambda obj, elem: setattr(obj, "max_sdu_size", elem.text),
+        "STREAM-GATE-REF": lambda obj, elem: setattr(obj, "stream_gate_ref", ARRef.deserialize(elem)),
+        "STREAM": lambda obj, elem: setattr(obj, "stream", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwitchStreamFilterEntry."""
         super().__init__()
@@ -66,9 +79,8 @@ class SwitchStreamFilterEntry(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwitchStreamFilterEntry, self).serialize()

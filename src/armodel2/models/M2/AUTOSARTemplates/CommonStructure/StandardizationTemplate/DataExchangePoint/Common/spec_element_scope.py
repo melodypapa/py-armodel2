@@ -35,6 +35,11 @@ class SpecElementScope(SpecElementReference, ABC):
         return True
 
     in_scope: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "IN-SCOPE": lambda obj, elem: setattr(obj, "in_scope", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SpecElementScope."""
         super().__init__()
@@ -46,9 +51,8 @@ class SpecElementScope(SpecElementReference, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SpecElementScope, self).serialize()

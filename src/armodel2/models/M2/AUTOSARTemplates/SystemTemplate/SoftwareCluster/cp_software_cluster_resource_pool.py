@@ -37,8 +37,17 @@ class CpSoftwareClusterResourcePool(ARElement):
         """
         return False
 
+    _XML_TAG = "CP-SOFTWARE-CLUSTER-RESOURCE-POOL"
+
+
     ecu_scope_refs: list[ARRef]
     resources: list[CpSoftwareCluster]
+    _DESERIALIZE_DISPATCH = {
+        "ECU-SCOPES": lambda obj, elem: obj.ecu_scope_refs.append(ARRef.deserialize(elem)),
+        "RESOURCES": lambda obj, elem: obj.resources.append(CpSoftwareCluster.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterResourcePool."""
         super().__init__()
@@ -51,9 +60,8 @@ class CpSoftwareClusterResourcePool(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSoftwareClusterResourcePool, self).serialize()

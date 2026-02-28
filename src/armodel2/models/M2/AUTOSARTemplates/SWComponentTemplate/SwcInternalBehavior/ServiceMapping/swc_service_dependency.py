@@ -44,10 +44,21 @@ class SwcServiceDependency(ServiceDependency):
         """
         return False
 
+    _XML_TAG = "SWC-SERVICE-DEPENDENCY"
+
+
     assigned_datas: list[Any]
     assigned_ports: list[RoleBasedPortAssignment]
     represented_port_ref: Optional[ARRef]
     service_needs: Optional[ServiceNeeds]
+    _DESERIALIZE_DISPATCH = {
+        "ASSIGNED-DATAS": lambda obj, elem: obj.assigned_datas.append(any (RoleBasedData).deserialize(elem)),
+        "ASSIGNED-PORTS": lambda obj, elem: obj.assigned_ports.append(RoleBasedPortAssignment.deserialize(elem)),
+        "REPRESENTED-PORT-REF": lambda obj, elem: setattr(obj, "represented_port_ref", ARRef.deserialize(elem)),
+        "SERVICE-NEEDS": lambda obj, elem: setattr(obj, "service_needs", ServiceNeeds.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcServiceDependency."""
         super().__init__()
@@ -62,9 +73,8 @@ class SwcServiceDependency(ServiceDependency):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcServiceDependency, self).serialize()

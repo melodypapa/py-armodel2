@@ -41,11 +41,23 @@ class CryptoServiceKey(ARElement):
         """
         return False
 
+    _XML_TAG = "CRYPTO-SERVICE-KEY"
+
+
     algorithm_family: Optional[String]
     development: Optional[ValueSpecification]
     key_generation: Optional[CryptoServiceKey]
     key_storage_type: Optional[String]
     length: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ALGORITHM-FAMILY": lambda obj, elem: setattr(obj, "algorithm_family", elem.text),
+        "DEVELOPMENT": lambda obj, elem: setattr(obj, "development", ValueSpecification.deserialize(elem)),
+        "KEY-GENERATION": lambda obj, elem: setattr(obj, "key_generation", CryptoServiceKey.deserialize(elem)),
+        "KEY-STORAGE-TYPE": lambda obj, elem: setattr(obj, "key_storage_type", elem.text),
+        "LENGTH": lambda obj, elem: setattr(obj, "length", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CryptoServiceKey."""
         super().__init__()
@@ -61,9 +73,8 @@ class CryptoServiceKey(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CryptoServiceKey, self).serialize()

@@ -31,8 +31,17 @@ class RptImplPolicy(ARObject):
         """
         return False
 
+    _XML_TAG = "RPT-IMPL-POLICY"
+
+
     rpt_enabler_impl: Optional[RptEnablerImplTypeEnum]
     rpt_preparation_enum: Optional[RptPreparationEnum]
+    _DESERIALIZE_DISPATCH = {
+        "RPT-ENABLER-IMPL": lambda obj, elem: setattr(obj, "rpt_enabler_impl", RptEnablerImplTypeEnum.deserialize(elem)),
+        "RPT-PREPARATION-ENUM": lambda obj, elem: setattr(obj, "rpt_preparation_enum", RptPreparationEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptImplPolicy."""
         super().__init__()
@@ -45,9 +54,8 @@ class RptImplPolicy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptImplPolicy, self).serialize()

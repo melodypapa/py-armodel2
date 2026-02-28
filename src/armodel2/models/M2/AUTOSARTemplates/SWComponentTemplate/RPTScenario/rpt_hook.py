@@ -36,10 +36,21 @@ class RptHook(ARObject):
         """
         return False
 
+    _XML_TAG = "RPT-HOOK"
+
+
     code_label: Optional[CIdentifier]
     mcd_identifier: Optional[NameToken]
     rpt_ar_hook: Optional[AtpFeature]
     sdgs: list[Sdg]
+    _DESERIALIZE_DISPATCH = {
+        "CODE-LABEL": lambda obj, elem: setattr(obj, "code_label", elem.text),
+        "MCD-IDENTIFIER": lambda obj, elem: setattr(obj, "mcd_identifier", elem.text),
+        "RPT-AR-HOOK": lambda obj, elem: setattr(obj, "rpt_ar_hook", AtpFeature.deserialize(elem)),
+        "SDGS": lambda obj, elem: obj.sdgs.append(Sdg.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptHook."""
         super().__init__()
@@ -54,9 +65,8 @@ class RptHook(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptHook, self).serialize()

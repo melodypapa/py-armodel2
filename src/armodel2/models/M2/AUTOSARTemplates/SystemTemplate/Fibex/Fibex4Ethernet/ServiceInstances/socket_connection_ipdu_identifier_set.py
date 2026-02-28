@@ -33,7 +33,15 @@ class SocketConnectionIpduIdentifierSet(FibexElement):
         """
         return False
 
+    _XML_TAG = "SOCKET-CONNECTION-IPDU-IDENTIFIER-SET"
+
+
     i_pdu_identifiers: list[SoConIPduIdentifier]
+    _DESERIALIZE_DISPATCH = {
+        "I-PDU-IDENTIFIERS": lambda obj, elem: obj.i_pdu_identifiers.append(SoConIPduIdentifier.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SocketConnectionIpduIdentifierSet."""
         super().__init__()
@@ -45,9 +53,8 @@ class SocketConnectionIpduIdentifierSet(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SocketConnectionIpduIdentifierSet, self).serialize()

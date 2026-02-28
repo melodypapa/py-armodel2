@@ -37,10 +37,21 @@ class OffsetTimingConstraint(TimingConstraint):
         """
         return False
 
+    _XML_TAG = "OFFSET-TIMING-CONSTRAINT"
+
+
     maximum: Optional[MultidimensionalTime]
     minimum: Optional[MultidimensionalTime]
     source_ref: Optional[ARRef]
     target_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", MultidimensionalTime.deserialize(elem)),
+        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", MultidimensionalTime.deserialize(elem)),
+        "SOURCE-REF": lambda obj, elem: setattr(obj, "source_ref", ARRef.deserialize(elem)),
+        "TARGET-REF": lambda obj, elem: setattr(obj, "target_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize OffsetTimingConstraint."""
         super().__init__()
@@ -55,9 +66,8 @@ class OffsetTimingConstraint(TimingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(OffsetTimingConstraint, self).serialize()

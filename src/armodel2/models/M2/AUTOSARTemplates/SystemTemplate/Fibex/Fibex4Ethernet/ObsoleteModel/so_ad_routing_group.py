@@ -34,7 +34,15 @@ class SoAdRoutingGroup(FibexElement):
         """
         return False
 
+    _XML_TAG = "SO-AD-ROUTING-GROUP"
+
+
     event_group_ref: Optional[EventGroupControlTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-GROUP-REF": lambda obj, elem: setattr(obj, "event_group_ref", EventGroupControlTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SoAdRoutingGroup."""
         super().__init__()
@@ -46,9 +54,8 @@ class SoAdRoutingGroup(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SoAdRoutingGroup, self).serialize()

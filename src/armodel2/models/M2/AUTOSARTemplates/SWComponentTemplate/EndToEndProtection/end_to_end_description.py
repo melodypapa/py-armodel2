@@ -31,6 +31,9 @@ class EndToEndDescription(ARObject):
         """
         return False
 
+    _XML_TAG = "END-TO-END-DESCRIPTION"
+
+
     category: Optional[NameToken]
     counter_offset: Optional[PositiveInteger]
     crc_offset: Optional[PositiveInteger]
@@ -38,6 +41,17 @@ class EndToEndDescription(ARObject):
     data_id_nibble: Optional[PositiveInteger]
     data_length: Optional[PositiveInteger]
     max_delta: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
+        "COUNTER-OFFSET": lambda obj, elem: setattr(obj, "counter_offset", elem.text),
+        "CRC-OFFSET": lambda obj, elem: setattr(obj, "crc_offset", elem.text),
+        "DATA-ID-MODE": lambda obj, elem: setattr(obj, "data_id_mode", elem.text),
+        "DATA-ID-NIBBLE": lambda obj, elem: setattr(obj, "data_id_nibble", elem.text),
+        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", elem.text),
+        "MAX-DELTA": lambda obj, elem: setattr(obj, "max_delta", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EndToEndDescription."""
         super().__init__()
@@ -55,9 +69,8 @@ class EndToEndDescription(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EndToEndDescription, self).serialize()

@@ -32,8 +32,17 @@ class IndentSample(ARObject):
         """
         return False
 
+    _XML_TAG = "INDENT-SAMPLE"
+
+
     item_label_pos_enum: Optional[ItemLabelPosEnum]
     l2: LOverviewParagraph
+    _DESERIALIZE_DISPATCH = {
+        "ITEM-LABEL-POS-ENUM": lambda obj, elem: setattr(obj, "item_label_pos_enum", ItemLabelPosEnum.deserialize(elem)),
+        "L2": lambda obj, elem: setattr(obj, "l2", LOverviewParagraph.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IndentSample."""
         super().__init__()
@@ -46,9 +55,8 @@ class IndentSample(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IndentSample, self).serialize()

@@ -37,8 +37,17 @@ class LinEventTriggeredFrame(LinFrame):
         """
         return False
 
+    _XML_TAG = "LIN-EVENT-TRIGGERED-FRAME"
+
+
     collision_schedule_ref: Optional[ARRef]
     lin_unconditional_frame_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COLLISION-SCHEDULE-REF": lambda obj, elem: setattr(obj, "collision_schedule_ref", ARRef.deserialize(elem)),
+        "LIN-UNCONDITIONAL-FRAMES": lambda obj, elem: obj.lin_unconditional_frame_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinEventTriggeredFrame."""
         super().__init__()
@@ -51,9 +60,8 @@ class LinEventTriggeredFrame(LinFrame):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinEventTriggeredFrame, self).serialize()

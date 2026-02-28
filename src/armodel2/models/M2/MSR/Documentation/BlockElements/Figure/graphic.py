@@ -39,6 +39,9 @@ class Graphic(EngineeringObject):
         """
         return False
 
+    _XML_TAG = "GRAPHIC"
+
+
     editfit: Optional[GraphicFitEnum]
     edit_height: Optional[String]
     editscale: Optional[String]
@@ -54,6 +57,24 @@ class Graphic(EngineeringObject):
     notation: Optional[GraphicNotationEnum]
     scale: Optional[String]
     width: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "EDITFIT": lambda obj, elem: setattr(obj, "editfit", GraphicFitEnum.deserialize(elem)),
+        "EDIT-HEIGHT": lambda obj, elem: setattr(obj, "edit_height", elem.text),
+        "EDITSCALE": lambda obj, elem: setattr(obj, "editscale", elem.text),
+        "EDIT-WIDTH": lambda obj, elem: setattr(obj, "edit_width", elem.text),
+        "FIT": lambda obj, elem: setattr(obj, "fit", GraphicFitEnum.deserialize(elem)),
+        "GENERATOR": lambda obj, elem: setattr(obj, "generator", elem.text),
+        "HEIGHT": lambda obj, elem: setattr(obj, "height", elem.text),
+        "HTML-FIT": lambda obj, elem: setattr(obj, "html_fit", GraphicFitEnum.deserialize(elem)),
+        "HTML-HEIGHT": lambda obj, elem: setattr(obj, "html_height", elem.text),
+        "HTML-SCALE": lambda obj, elem: setattr(obj, "html_scale", elem.text),
+        "HTML-WIDTH": lambda obj, elem: setattr(obj, "html_width", elem.text),
+        "NOTATION": lambda obj, elem: setattr(obj, "notation", GraphicNotationEnum.deserialize(elem)),
+        "SCALE": lambda obj, elem: setattr(obj, "scale", elem.text),
+        "WIDTH": lambda obj, elem: setattr(obj, "width", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Graphic."""
         super().__init__()
@@ -90,9 +111,8 @@ class Graphic(EngineeringObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Graphic, self).serialize()

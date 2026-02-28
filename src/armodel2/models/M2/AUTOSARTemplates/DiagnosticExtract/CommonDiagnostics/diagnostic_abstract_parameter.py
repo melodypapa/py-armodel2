@@ -36,6 +36,13 @@ class DiagnosticAbstractParameter(ARObject, ABC):
     bit_offset: Optional[PositiveInteger]
     data_element: Optional[DiagnosticDataElement]
     parameter_size: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "BIT-OFFSET": lambda obj, elem: setattr(obj, "bit_offset", elem.text),
+        "DATA-ELEMENT": lambda obj, elem: setattr(obj, "data_element", DiagnosticDataElement.deserialize(elem)),
+        "PARAMETER-SIZE": lambda obj, elem: setattr(obj, "parameter_size", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticAbstractParameter."""
         super().__init__()
@@ -49,9 +56,8 @@ class DiagnosticAbstractParameter(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticAbstractParameter, self).serialize()

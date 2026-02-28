@@ -42,8 +42,17 @@ class AssemblySwConnector(SwConnector):
         """
         return False
 
+    _XML_TAG = "ASSEMBLY-SW-CONNECTOR"
+
+
     _provider_iref: Optional[PPortInCompositionInstanceRef]
     _requester_iref: Optional[RPortInCompositionInstanceRef]
+    _DESERIALIZE_DISPATCH = {
+        "PROVIDER": lambda obj, elem: setattr(obj, "_provider_iref", ARRef.deserialize(elem)),
+        "REQUESTER": lambda obj, elem: setattr(obj, "_requester_iref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AssemblySwConnector."""
         super().__init__()
@@ -78,9 +87,8 @@ class AssemblySwConnector(SwConnector):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AssemblySwConnector, self).serialize()

@@ -55,6 +55,9 @@ class CanTpConnection(TpConnection):
         """
         return False
 
+    _XML_TAG = "CAN-TP-CONNECTION"
+
+
     addressing: Optional[CanTpAddressingFormatType]
     cancellation: Optional[Boolean]
     can_tp_channel_ref: Optional[ARRef]
@@ -71,6 +74,26 @@ class CanTpConnection(TpConnection):
     timeout_cs: Optional[TimeValue]
     tp_sdu_ref: Optional[ARRef]
     transmitter_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ADDRESSING": lambda obj, elem: setattr(obj, "addressing", CanTpAddressingFormatType.deserialize(elem)),
+        "CANCELLATION": lambda obj, elem: setattr(obj, "cancellation", elem.text),
+        "CAN-TP-CHANNEL-REF": lambda obj, elem: setattr(obj, "can_tp_channel_ref", ARRef.deserialize(elem)),
+        "DATA-PDU-REF": lambda obj, elem: setattr(obj, "data_pdu_ref", ARRef.deserialize(elem)),
+        "FLOW-CONTROL-PDU-REF": lambda obj, elem: setattr(obj, "flow_control_pdu_ref", ARRef.deserialize(elem)),
+        "MAX-BLOCK-SIZE": lambda obj, elem: setattr(obj, "max_block_size", elem.text),
+        "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
+        "PADDING": lambda obj, elem: setattr(obj, "padding", elem.text),
+        "RECEIVERS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
+        "TA-TYPE-TYPE": lambda obj, elem: setattr(obj, "ta_type_type", NetworkTargetAddressType.deserialize(elem)),
+        "TIMEOUT-BR": lambda obj, elem: setattr(obj, "timeout_br", elem.text),
+        "TIMEOUT-BS": lambda obj, elem: setattr(obj, "timeout_bs", elem.text),
+        "TIMEOUT-CR": lambda obj, elem: setattr(obj, "timeout_cr", elem.text),
+        "TIMEOUT-CS": lambda obj, elem: setattr(obj, "timeout_cs", elem.text),
+        "TP-SDU-REF": lambda obj, elem: setattr(obj, "tp_sdu_ref", ARRef.deserialize(elem)),
+        "TRANSMITTER-REF": lambda obj, elem: setattr(obj, "transmitter_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanTpConnection."""
         super().__init__()
@@ -97,9 +120,8 @@ class CanTpConnection(TpConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanTpConnection, self).serialize()

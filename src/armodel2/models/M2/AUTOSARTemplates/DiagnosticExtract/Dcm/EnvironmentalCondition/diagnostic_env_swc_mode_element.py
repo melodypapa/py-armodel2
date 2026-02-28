@@ -33,7 +33,15 @@ class DiagnosticEnvSwcModeElement(DiagnosticEnvModeElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-ENV-SWC-MODE-ELEMENT"
+
+
     mode: Optional[ModeDeclaration]
+    _DESERIALIZE_DISPATCH = {
+        "MODE": lambda obj, elem: setattr(obj, "mode", ModeDeclaration.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEnvSwcModeElement."""
         super().__init__()
@@ -45,9 +53,8 @@ class DiagnosticEnvSwcModeElement(DiagnosticEnvModeElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEnvSwcModeElement, self).serialize()

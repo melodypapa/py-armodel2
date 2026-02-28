@@ -33,7 +33,15 @@ class ConcreteClassTailoring(DataFormatElementScope):
         """
         return False
 
+    _XML_TAG = "CONCRETE-CLASS-TAILORING"
+
+
     validation_root: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "VALIDATION-ROOT": lambda obj, elem: setattr(obj, "validation_root", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConcreteClassTailoring."""
         super().__init__()
@@ -45,9 +53,8 @@ class ConcreteClassTailoring(DataFormatElementScope):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConcreteClassTailoring, self).serialize()

@@ -37,12 +37,25 @@ class SwitchFlowMeteringEntry(Identifiable):
         """
         return False
 
+    _XML_TAG = "SWITCH-FLOW-METERING-ENTRY"
+
+
     color_mode: Optional[FlowMeteringColorModeEnum]
     committed_burst: Optional[PositiveInteger]
     committed: Optional[PositiveInteger]
     coupling_flag: Optional[Boolean]
     excess_burst: Optional[PositiveInteger]
     excess: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "COLOR-MODE": lambda obj, elem: setattr(obj, "color_mode", FlowMeteringColorModeEnum.deserialize(elem)),
+        "COMMITTED-BURST": lambda obj, elem: setattr(obj, "committed_burst", elem.text),
+        "COMMITTED": lambda obj, elem: setattr(obj, "committed", elem.text),
+        "COUPLING-FLAG": lambda obj, elem: setattr(obj, "coupling_flag", elem.text),
+        "EXCESS-BURST": lambda obj, elem: setattr(obj, "excess_burst", elem.text),
+        "EXCESS": lambda obj, elem: setattr(obj, "excess", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwitchFlowMeteringEntry."""
         super().__init__()
@@ -59,9 +72,8 @@ class SwitchFlowMeteringEntry(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwitchFlowMeteringEntry, self).serialize()

@@ -37,6 +37,9 @@ class FlexrayFifoConfiguration(ARObject):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-FIFO-CONFIGURATION"
+
+
     admit_without: Optional[Boolean]
     base_cycle: Optional[Integer]
     channel_ref: Optional[ARRef]
@@ -45,6 +48,18 @@ class FlexrayFifoConfiguration(ARObject):
     fifo_ranges: list[FlexrayFifoRange]
     msg_id_mask: Optional[Integer]
     msg_id_match: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "ADMIT-WITHOUT": lambda obj, elem: setattr(obj, "admit_without", elem.text),
+        "BASE-CYCLE": lambda obj, elem: setattr(obj, "base_cycle", elem.text),
+        "CHANNEL-REF": lambda obj, elem: setattr(obj, "channel_ref", ARRef.deserialize(elem)),
+        "CYCLE-REPETITION": lambda obj, elem: setattr(obj, "cycle_repetition", elem.text),
+        "FIFO-DEPTH": lambda obj, elem: setattr(obj, "fifo_depth", elem.text),
+        "FIFO-RANGES": lambda obj, elem: obj.fifo_ranges.append(FlexrayFifoRange.deserialize(elem)),
+        "MSG-ID-MASK": lambda obj, elem: setattr(obj, "msg_id_mask", elem.text),
+        "MSG-ID-MATCH": lambda obj, elem: setattr(obj, "msg_id_match", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayFifoConfiguration."""
         super().__init__()
@@ -63,9 +78,8 @@ class FlexrayFifoConfiguration(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayFifoConfiguration, self).serialize()

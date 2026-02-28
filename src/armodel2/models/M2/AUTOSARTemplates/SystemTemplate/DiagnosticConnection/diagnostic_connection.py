@@ -38,11 +38,23 @@ class DiagnosticConnection(ARElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-CONNECTION"
+
+
     functional_request_refs: list[ARRef]
     periodic_response_uudt_refs: list[ARRef]
     physical_request_ref: Optional[ARRef]
     response_ref: Optional[ARRef]
     response_on_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FUNCTIONAL-REQUESTS": lambda obj, elem: obj.functional_request_refs.append(ARRef.deserialize(elem)),
+        "PERIODIC-RESPONSE-UUDTS": lambda obj, elem: obj.periodic_response_uudt_refs.append(ARRef.deserialize(elem)),
+        "PHYSICAL-REQUEST-REF": lambda obj, elem: setattr(obj, "physical_request_ref", ARRef.deserialize(elem)),
+        "RESPONSE-REF": lambda obj, elem: setattr(obj, "response_ref", ARRef.deserialize(elem)),
+        "RESPONSE-ON-REF": lambda obj, elem: setattr(obj, "response_on_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticConnection."""
         super().__init__()
@@ -58,9 +70,8 @@ class DiagnosticConnection(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticConnection, self).serialize()

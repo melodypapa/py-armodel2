@@ -44,6 +44,9 @@ class Xref(ARObject):
         """
         return False
 
+    _XML_TAG = "XREF"
+
+
     label1: Optional[SingleLanguageLongName]
     referrable_ref: Optional[ARRef]
     resolution_policy_enum: Optional[ResolutionPolicyEnum]
@@ -55,6 +58,21 @@ class Xref(ARObject):
     show_resource_page: Optional[ShowResourcePageEnum]
     show_resource_short: Optional[ShowResourceShortNameEnum]
     show_see: Optional[ShowSeeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "LABEL1": lambda obj, elem: setattr(obj, "label1", SingleLanguageLongName.deserialize(elem)),
+        "REFERRABLE-REF": lambda obj, elem: setattr(obj, "referrable_ref", ARRef.deserialize(elem)),
+        "RESOLUTION-POLICY-ENUM": lambda obj, elem: setattr(obj, "resolution_policy_enum", ResolutionPolicyEnum.deserialize(elem)),
+        "SHOW-CONTENT-ENUM": lambda obj, elem: setattr(obj, "show_content_enum", ShowContentEnum.deserialize(elem)),
+        "SHOW-RESOURCE-ALIAS": lambda obj, elem: setattr(obj, "show_resource_alias", ShowResourceAliasNameEnum.deserialize(elem)),
+        "SHOW-RESOURCE": lambda obj, elem: setattr(obj, "show_resource", ShowResourceTypeEnum.deserialize(elem)),
+        "SHOW-RESOURCE-LONG": lambda obj, elem: setattr(obj, "show_resource_long", ShowResourceLongNameEnum.deserialize(elem)),
+        "SHOW-RESOURCE-NUMBER": lambda obj, elem: setattr(obj, "show_resource_number", ShowResourceNumberEnum.deserialize(elem)),
+        "SHOW-RESOURCE-PAGE": lambda obj, elem: setattr(obj, "show_resource_page", ShowResourcePageEnum.deserialize(elem)),
+        "SHOW-RESOURCE-SHORT": lambda obj, elem: setattr(obj, "show_resource_short", ShowResourceShortNameEnum.deserialize(elem)),
+        "SHOW-SEE": lambda obj, elem: setattr(obj, "show_see", ShowSeeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Xref."""
         super().__init__()
@@ -76,9 +94,8 @@ class Xref(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Xref, self).serialize()

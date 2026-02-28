@@ -34,9 +34,19 @@ class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-ACF-LIN"
+
+
     base_frequency: Optional[PositiveInteger]
     frame_sync_enabled: Optional[Boolean]
     timestamp: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-FREQUENCY": lambda obj, elem: setattr(obj, "base_frequency", elem.text),
+        "FRAME-SYNC-ENABLED": lambda obj, elem: setattr(obj, "frame_sync_enabled", elem.text),
+        "TIMESTAMP": lambda obj, elem: setattr(obj, "timestamp", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfLin."""
         super().__init__()
@@ -50,9 +60,8 @@ class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpAcfLin, self).serialize()

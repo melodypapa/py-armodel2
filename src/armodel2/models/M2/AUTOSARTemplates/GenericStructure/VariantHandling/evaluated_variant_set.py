@@ -37,8 +37,17 @@ class EvaluatedVariantSet(ARElement):
         """
         return False
 
+    _XML_TAG = "EVALUATED-VARIANT-SET"
+
+
     approval_status: NameToken
     evaluated_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPROVAL-STATUS": lambda obj, elem: setattr(obj, "approval_status", elem.text),
+        "EVALUATEDS": lambda obj, elem: obj.evaluated_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EvaluatedVariantSet."""
         super().__init__()
@@ -51,9 +60,8 @@ class EvaluatedVariantSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EvaluatedVariantSet, self).serialize()

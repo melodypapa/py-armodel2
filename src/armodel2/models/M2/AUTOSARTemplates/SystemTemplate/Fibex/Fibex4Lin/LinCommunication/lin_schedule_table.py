@@ -37,9 +37,19 @@ class LinScheduleTable(Identifiable):
         """
         return False
 
+    _XML_TAG = "LIN-SCHEDULE-TABLE"
+
+
     resume_position: Optional[ResumePosition]
     run_mode: Optional[RunMode]
     table_entries: list[ScheduleTableEntry]
+    _DESERIALIZE_DISPATCH = {
+        "RESUME-POSITION": lambda obj, elem: setattr(obj, "resume_position", ResumePosition.deserialize(elem)),
+        "RUN-MODE": lambda obj, elem: setattr(obj, "run_mode", RunMode.deserialize(elem)),
+        "TABLE-ENTRIES": lambda obj, elem: obj.table_entries.append(ScheduleTableEntry.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinScheduleTable."""
         super().__init__()
@@ -53,9 +63,8 @@ class LinScheduleTable(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinScheduleTable, self).serialize()

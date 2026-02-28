@@ -49,6 +49,9 @@ class EventHandler(Identifiable):
         """
         return False
 
+    _XML_TAG = "EVENT-HANDLER"
+
+
     consumed_event_group_refs: list[ARRef]
     event_group: Optional[PositiveInteger]
     event_multicast_ref: Optional[ARRef]
@@ -57,6 +60,18 @@ class EventHandler(Identifiable):
     routing_group_refs: list[ARRef]
     sd_server_config: Optional[Any]
     sd_server_eg_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONSUMED-EVENT-GROUPS": lambda obj, elem: obj.consumed_event_group_refs.append(ARRef.deserialize(elem)),
+        "EVENT-GROUP": lambda obj, elem: setattr(obj, "event_group", elem.text),
+        "EVENT-MULTICAST-REF": lambda obj, elem: setattr(obj, "event_multicast_ref", ARRef.deserialize(elem)),
+        "MULTICAST": lambda obj, elem: setattr(obj, "multicast", elem.text),
+        "PDU-ACTIVATION-ROUTINGS": lambda obj, elem: obj.pdu_activation_routings.append(PduActivationRoutingGroup.deserialize(elem)),
+        "ROUTING-GROUPS": lambda obj, elem: obj.routing_group_refs.append(ARRef.deserialize(elem)),
+        "SD-SERVER-CONFIG": lambda obj, elem: setattr(obj, "sd_server_config", any (SdServerConfig).deserialize(elem)),
+        "SD-SERVER-EG-REF": lambda obj, elem: setattr(obj, "sd_server_eg_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EventHandler."""
         super().__init__()
@@ -75,9 +90,8 @@ class EventHandler(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EventHandler, self).serialize()

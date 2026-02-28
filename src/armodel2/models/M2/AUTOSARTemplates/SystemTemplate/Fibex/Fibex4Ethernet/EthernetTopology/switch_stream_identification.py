@@ -41,6 +41,9 @@ class SwitchStreamIdentification(Identifiable):
         """
         return False
 
+    _XML_TAG = "SWITCH-STREAM-IDENTIFICATION"
+
+
     egress_port_refs: list[ARRef]
     filter_action_block: Optional[Boolean]
     filter_action_dest: Optional[Any]
@@ -48,6 +51,17 @@ class SwitchStreamIdentification(Identifiable):
     filter_action_vlan: Optional[PositiveInteger]
     ingress_port_refs: list[ARRef]
     stream_filter: Optional[SwitchStreamFilterRule]
+    _DESERIALIZE_DISPATCH = {
+        "EGRESS-PORTS": lambda obj, elem: obj.egress_port_refs.append(ARRef.deserialize(elem)),
+        "FILTER-ACTION-BLOCK": lambda obj, elem: setattr(obj, "filter_action_block", elem.text),
+        "FILTER-ACTION-DEST": lambda obj, elem: setattr(obj, "filter_action_dest", any (SwitchStreamFilter).deserialize(elem)),
+        "FILTER-ACTION-DROP": lambda obj, elem: setattr(obj, "filter_action_drop", elem.text),
+        "FILTER-ACTION-VLAN": lambda obj, elem: setattr(obj, "filter_action_vlan", elem.text),
+        "INGRESS-PORTS": lambda obj, elem: obj.ingress_port_refs.append(ARRef.deserialize(elem)),
+        "STREAM-FILTER": lambda obj, elem: setattr(obj, "stream_filter", SwitchStreamFilterRule.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwitchStreamIdentification."""
         super().__init__()
@@ -65,9 +79,8 @@ class SwitchStreamIdentification(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwitchStreamIdentification, self).serialize()

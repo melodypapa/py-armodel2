@@ -34,8 +34,17 @@ class Keyword(Identifiable):
         """
         return False
 
+    _XML_TAG = "KEYWORD"
+
+
     abbr_name: NameToken
     classifications: list[NameToken]
+    _DESERIALIZE_DISPATCH = {
+        "ABBR-NAME": lambda obj, elem: setattr(obj, "abbr_name", elem.text),
+        "CLASSIFICATIONS": lambda obj, elem: obj.classifications.append(elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Keyword."""
         super().__init__()
@@ -48,9 +57,8 @@ class Keyword(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Keyword, self).serialize()

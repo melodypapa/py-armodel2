@@ -35,8 +35,17 @@ class ValueGroup(ARObject):
         """
         return False
 
+    _XML_TAG = "VALUE-GROUP"
+
+
     label: Optional[MultilanguageLongName]
     vg_contents: Optional[SwValues]
+    _DESERIALIZE_DISPATCH = {
+        "LABEL": lambda obj, elem: setattr(obj, "label", MultilanguageLongName.deserialize(elem)),
+        "VG-CONTENTS": lambda obj, elem: setattr(obj, "vg_contents", SwValues.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ValueGroup."""
         super().__init__()
@@ -49,9 +58,8 @@ class ValueGroup(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ValueGroup, self).serialize()

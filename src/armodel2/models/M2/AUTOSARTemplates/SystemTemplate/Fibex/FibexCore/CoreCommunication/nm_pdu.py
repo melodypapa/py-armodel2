@@ -39,10 +39,21 @@ class NmPdu(Pdu):
         """
         return False
 
+    _XML_TAG = "NM-PDU"
+
+
     i_signal_to_i_pdu_refs: list[ARRef]
     nm_data: Optional[Boolean]
     nm_vote_information: Optional[Boolean]
     unused_bit: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "I-SIGNAL-TO-I-PDUS": lambda obj, elem: obj.i_signal_to_i_pdu_refs.append(ARRef.deserialize(elem)),
+        "NM-DATA": lambda obj, elem: setattr(obj, "nm_data", elem.text),
+        "NM-VOTE-INFORMATION": lambda obj, elem: setattr(obj, "nm_vote_information", elem.text),
+        "UNUSED-BIT": lambda obj, elem: setattr(obj, "unused_bit", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NmPdu."""
         super().__init__()
@@ -57,9 +68,8 @@ class NmPdu(Pdu):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NmPdu, self).serialize()

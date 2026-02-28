@@ -42,9 +42,19 @@ class SwPointerTargetProps(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-POINTER-TARGET-PROPS"
+
+
     function_pointer_ref: Optional[ARRef]
     sw_data_def: Optional[SwDataDefProps]
     target_category: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "FUNCTION-POINTER-REF": lambda obj, elem: setattr(obj, "function_pointer_ref", ARRef.deserialize(elem)),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SwDataDefProps.deserialize(elem)),
+        "TARGET-CATEGORY": lambda obj, elem: setattr(obj, "target_category", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwPointerTargetProps."""
         super().__init__()
@@ -58,9 +68,8 @@ class SwPointerTargetProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwPointerTargetProps, self).serialize()

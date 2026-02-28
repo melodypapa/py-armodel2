@@ -32,9 +32,19 @@ class MsrQueryProps(ARObject):
         """
         return False
 
+    _XML_TAG = "MSR-QUERY-PROPS"
+
+
     comment: Optional[String]
     msr_query_args: list[MsrQueryArg]
     msr_query_name: String
+    _DESERIALIZE_DISPATCH = {
+        "COMMENT": lambda obj, elem: setattr(obj, "comment", elem.text),
+        "MSR-QUERY-ARGS": lambda obj, elem: obj.msr_query_args.append(MsrQueryArg.deserialize(elem)),
+        "MSR-QUERY-NAME": lambda obj, elem: setattr(obj, "msr_query_name", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MsrQueryProps."""
         super().__init__()
@@ -48,9 +58,8 @@ class MsrQueryProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MsrQueryProps, self).serialize()

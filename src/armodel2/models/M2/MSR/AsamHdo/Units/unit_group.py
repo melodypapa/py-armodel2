@@ -35,7 +35,15 @@ class UnitGroup(ARElement):
         """
         return False
 
+    _XML_TAG = "UNIT-GROUP"
+
+
     unit_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "UNITS": lambda obj, elem: obj.unit_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize UnitGroup."""
         super().__init__()
@@ -47,9 +55,8 @@ class UnitGroup(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(UnitGroup, self).serialize()

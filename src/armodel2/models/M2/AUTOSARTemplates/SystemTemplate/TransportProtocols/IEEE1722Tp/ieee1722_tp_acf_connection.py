@@ -37,9 +37,19 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-ACF-CONNECTION"
+
+
     acf_transporteds: list[IEEE1722TpAcfBus]
     collection: Optional[TimeValue]
     mixed_bus_type: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ACF-TRANSPORTEDS": lambda obj, elem: obj.acf_transporteds.append(IEEE1722TpAcfBus.deserialize(elem)),
+        "COLLECTION": lambda obj, elem: setattr(obj, "collection", elem.text),
+        "MIXED-BUS-TYPE": lambda obj, elem: setattr(obj, "mixed_bus_type", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfConnection."""
         super().__init__()
@@ -53,9 +63,8 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpAcfConnection, self).serialize()

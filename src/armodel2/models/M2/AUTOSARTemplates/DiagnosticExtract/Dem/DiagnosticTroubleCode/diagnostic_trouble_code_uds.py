@@ -42,6 +42,9 @@ class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-TROUBLE-CODE-UDS"
+
+
     consider_pto: Optional[Boolean]
     dtc_props_props_ref: Optional[ARRef]
     event_readiness: Optional[EventObdReadinessGroup]
@@ -50,6 +53,18 @@ class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
     severity: Optional[DiagnosticUdsSeverityEnum]
     uds_dtc_value: Optional[PositiveInteger]
     wwh_obd_dtc: Optional[DiagnosticWwhObdDtcClassEnum]
+    _DESERIALIZE_DISPATCH = {
+        "CONSIDER-PTO": lambda obj, elem: setattr(obj, "consider_pto", elem.text),
+        "DTC-PROPS-PROPS-REF": lambda obj, elem: setattr(obj, "dtc_props_props_ref", ARRef.deserialize(elem)),
+        "EVENT-READINESS": lambda obj, elem: setattr(obj, "event_readiness", EventObdReadinessGroup.deserialize(elem)),
+        "FUNCTIONAL-UNIT": lambda obj, elem: setattr(obj, "functional_unit", elem.text),
+        "OBD-DTC": lambda obj, elem: setattr(obj, "obd_dtc", elem.text),
+        "SEVERITY": lambda obj, elem: setattr(obj, "severity", DiagnosticUdsSeverityEnum.deserialize(elem)),
+        "UDS-DTC-VALUE": lambda obj, elem: setattr(obj, "uds_dtc_value", elem.text),
+        "WWH-OBD-DTC": lambda obj, elem: setattr(obj, "wwh_obd_dtc", DiagnosticWwhObdDtcClassEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeUds."""
         super().__init__()
@@ -68,9 +83,8 @@ class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticTroubleCodeUds, self).serialize()

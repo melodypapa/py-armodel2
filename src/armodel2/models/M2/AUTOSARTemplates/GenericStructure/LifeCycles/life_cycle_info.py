@@ -40,12 +40,25 @@ class LifeCycleInfo(ARObject):
         """
         return False
 
+    _XML_TAG = "LIFE-CYCLE-INFO"
+
+
     lc_object_ref: ARRef
     lc_state_ref: Optional[ARRef]
     period_begin: Optional[LifeCyclePeriod]
     period_end: Optional[LifeCyclePeriod]
     remark: Optional[DocumentationBlock]
     use_instead_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "LC-OBJECT-REF": lambda obj, elem: setattr(obj, "lc_object_ref", ARRef.deserialize(elem)),
+        "LC-STATE-REF": lambda obj, elem: setattr(obj, "lc_state_ref", ARRef.deserialize(elem)),
+        "PERIOD-BEGIN": lambda obj, elem: setattr(obj, "period_begin", LifeCyclePeriod.deserialize(elem)),
+        "PERIOD-END": lambda obj, elem: setattr(obj, "period_end", LifeCyclePeriod.deserialize(elem)),
+        "REMARK": lambda obj, elem: setattr(obj, "remark", DocumentationBlock.deserialize(elem)),
+        "USE-INSTEADS": lambda obj, elem: obj.use_instead_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LifeCycleInfo."""
         super().__init__()
@@ -62,9 +75,8 @@ class LifeCycleInfo(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LifeCycleInfo, self).serialize()

@@ -36,8 +36,17 @@ class EventControlledTiming(Describable):
         """
         return False
 
+    _XML_TAG = "EVENT-CONTROLLED-TIMING"
+
+
     number_of_repetitions: Optional[Integer]
     repetition_period: Optional[TimeRangeType]
+    _DESERIALIZE_DISPATCH = {
+        "NUMBER-OF-REPETITIONS": lambda obj, elem: setattr(obj, "number_of_repetitions", elem.text),
+        "REPETITION-PERIOD": lambda obj, elem: setattr(obj, "repetition_period", TimeRangeType.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EventControlledTiming."""
         super().__init__()
@@ -50,9 +59,8 @@ class EventControlledTiming(Describable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EventControlledTiming, self).serialize()

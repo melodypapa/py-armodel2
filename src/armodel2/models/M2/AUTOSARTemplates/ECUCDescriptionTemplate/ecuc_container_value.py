@@ -40,10 +40,21 @@ class EcucContainerValue(Identifiable):
         """
         return False
 
+    _XML_TAG = "ECUC-CONTAINER-VALUE"
+
+
     definition_ref: Optional[ARRef]
     parameter_values: list[EcucParameterValue]
     reference_value_refs: list[Any]
     sub_containers: list[EcucContainerValue]
+    _DESERIALIZE_DISPATCH = {
+        "DEFINITION-REF": lambda obj, elem: setattr(obj, "definition_ref", ARRef.deserialize(elem)),
+        "PARAMETER-VALUES": lambda obj, elem: obj.parameter_values.append(EcucParameterValue.deserialize(elem)),
+        "REFERENCE-VALUES": lambda obj, elem: obj.reference_value_refs.append(ARRef.deserialize(elem)),
+        "SUB-CONTAINERS": lambda obj, elem: obj.sub_containers.append(EcucContainerValue.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucContainerValue."""
         super().__init__()
@@ -58,9 +69,8 @@ class EcucContainerValue(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucContainerValue, self).serialize()

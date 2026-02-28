@@ -39,10 +39,21 @@ class DataExchangePoint(ARElement):
         """
         return False
 
+    _XML_TAG = "DATA-EXCHANGE-POINT"
+
+
     data_format: Optional[DataFormatTailoring]
     kind: DataExchangePoint
     referenced: Baseline
     specification_scope: Optional[SpecificationScope]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-FORMAT": lambda obj, elem: setattr(obj, "data_format", DataFormatTailoring.deserialize(elem)),
+        "KIND": lambda obj, elem: setattr(obj, "kind", DataExchangePoint.deserialize(elem)),
+        "REFERENCED": lambda obj, elem: setattr(obj, "referenced", Baseline.deserialize(elem)),
+        "SPECIFICATION-SCOPE": lambda obj, elem: setattr(obj, "specification_scope", SpecificationScope.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataExchangePoint."""
         super().__init__()
@@ -57,9 +68,8 @@ class DataExchangePoint(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataExchangePoint, self).serialize()

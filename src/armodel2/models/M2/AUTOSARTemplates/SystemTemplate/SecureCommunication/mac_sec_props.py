@@ -33,10 +33,21 @@ class MacSecProps(ARObject):
         """
         return False
 
+    _XML_TAG = "MAC-SEC-PROPS"
+
+
     auto_start: Optional[Boolean]
     mac_sec_kay: Optional[MacSecLocalKayProps]
     on_fail: Optional[TimeValue]
     sak_rekey_time: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "AUTO-START": lambda obj, elem: setattr(obj, "auto_start", elem.text),
+        "MAC-SEC-KAY": lambda obj, elem: setattr(obj, "mac_sec_kay", MacSecLocalKayProps.deserialize(elem)),
+        "ON-FAIL": lambda obj, elem: setattr(obj, "on_fail", elem.text),
+        "SAK-REKEY-TIME": lambda obj, elem: setattr(obj, "sak_rekey_time", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MacSecProps."""
         super().__init__()
@@ -51,9 +62,8 @@ class MacSecProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MacSecProps, self).serialize()

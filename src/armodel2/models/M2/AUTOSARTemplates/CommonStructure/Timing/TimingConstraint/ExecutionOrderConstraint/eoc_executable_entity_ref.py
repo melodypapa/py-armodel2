@@ -37,10 +37,21 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
         """
         return False
 
+    _XML_TAG = "E-O-C-EXECUTABLE-ENTITY-REF"
+
+
     bsw_module_ref: Optional[ARRef]
     component: Optional[Any]
     executable_entity_ref: Optional[ARRef]
     successor_refs: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "BSW-MODULE-REF": lambda obj, elem: setattr(obj, "bsw_module_ref", ARRef.deserialize(elem)),
+        "COMPONENT": lambda obj, elem: setattr(obj, "component", any (SwComponent).deserialize(elem)),
+        "EXECUTABLE-ENTITY-REF": lambda obj, elem: setattr(obj, "executable_entity_ref", ARRef.deserialize(elem)),
+        "SUCCESSORS": lambda obj, elem: obj.successor_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EOCExecutableEntityRef."""
         super().__init__()
@@ -55,9 +66,8 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EOCExecutableEntityRef, self).serialize()

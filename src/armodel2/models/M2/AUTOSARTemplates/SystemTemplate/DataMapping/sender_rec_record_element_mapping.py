@@ -36,12 +36,25 @@ class SenderRecRecordElementMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "SENDER-REC-RECORD-ELEMENT-MAPPING"
+
+
     application_record_ref: Optional[Any]
     complex_type: Optional[SenderRecCompositeTypeMapping]
     implementation_ref: Optional[Any]
     sender_to_signal_ref: Optional[ARRef]
     signal_to_ref: Optional[ARRef]
     system_signal_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATION-RECORD-REF": lambda obj, elem: setattr(obj, "application_record_ref", ARRef.deserialize(elem)),
+        "COMPLEX-TYPE": lambda obj, elem: setattr(obj, "complex_type", SenderRecCompositeTypeMapping.deserialize(elem)),
+        "IMPLEMENTATION-REF": lambda obj, elem: setattr(obj, "implementation_ref", ARRef.deserialize(elem)),
+        "SENDER-TO-SIGNAL-REF": lambda obj, elem: setattr(obj, "sender_to_signal_ref", ARRef.deserialize(elem)),
+        "SIGNAL-TO-REF": lambda obj, elem: setattr(obj, "signal_to_ref", ARRef.deserialize(elem)),
+        "SYSTEM-SIGNAL-REF": lambda obj, elem: setattr(obj, "system_signal_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SenderRecRecordElementMapping."""
         super().__init__()
@@ -58,9 +71,8 @@ class SenderRecRecordElementMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SenderRecRecordElementMapping, self).serialize()

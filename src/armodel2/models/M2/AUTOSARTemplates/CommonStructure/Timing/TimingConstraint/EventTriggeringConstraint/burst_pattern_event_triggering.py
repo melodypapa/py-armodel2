@@ -36,12 +36,25 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
         """
         return False
 
+    _XML_TAG = "BURST-PATTERN-EVENT-TRIGGERING"
+
+
     max_number_of: Optional[PositiveInteger]
     minimum_inter: Optional[MultidimensionalTime]
     min_number_of: Optional[PositiveInteger]
     pattern_jitter: Optional[MultidimensionalTime]
     pattern_length: Optional[MultidimensionalTime]
     pattern_period: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
+        "MINIMUM-INTER": lambda obj, elem: setattr(obj, "minimum_inter", MultidimensionalTime.deserialize(elem)),
+        "MIN-NUMBER-OF": lambda obj, elem: setattr(obj, "min_number_of", elem.text),
+        "PATTERN-JITTER": lambda obj, elem: setattr(obj, "pattern_jitter", MultidimensionalTime.deserialize(elem)),
+        "PATTERN-LENGTH": lambda obj, elem: setattr(obj, "pattern_length", MultidimensionalTime.deserialize(elem)),
+        "PATTERN-PERIOD": lambda obj, elem: setattr(obj, "pattern_period", MultidimensionalTime.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BurstPatternEventTriggering."""
         super().__init__()
@@ -58,9 +71,8 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BurstPatternEventTriggering, self).serialize()

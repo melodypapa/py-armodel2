@@ -62,6 +62,9 @@ class McDataInstance(Identifiable):
         """
         return False
 
+    _XML_TAG = "MC-DATA-INSTANCE"
+
+
     array_size: Optional[PositiveInteger]
     display_identifier: Optional[McdIdentifier]
     flat_map_entry_ref: Optional[ARRef]
@@ -74,6 +77,22 @@ class McDataInstance(Identifiable):
     rpt_impl_policy: Optional[RptImplPolicy]
     sub_elements: list[McDataInstance]
     symbol: Optional[SymbolString]
+    _DESERIALIZE_DISPATCH = {
+        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", elem.text),
+        "DISPLAY-IDENTIFIER": lambda obj, elem: setattr(obj, "display_identifier", elem.text),
+        "FLAT-MAP-ENTRY-REF": lambda obj, elem: setattr(obj, "flat_map_entry_ref", ARRef.deserialize(elem)),
+        "INSTANCE-IN": lambda obj, elem: setattr(obj, "instance_in", ImplementationElementInParameterInstanceRef.deserialize(elem)),
+        "MC-DATA-ACCESS-DETAILS": lambda obj, elem: setattr(obj, "mc_data_access_details", McDataAccessDetails.deserialize(elem)),
+        "MC-DATAS": lambda obj, elem: obj.mc_datas.append(RoleBasedMcDataAssignment.deserialize(elem)),
+        "RESULTING": lambda obj, elem: setattr(obj, "resulting", SwDataDefProps.deserialize(elem)),
+        "RESULTING-RPT-SW": lambda obj, elem: setattr(obj, "resulting_rpt_sw", RptSwPrototypingAccess.deserialize(elem)),
+        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+        "RPT-IMPL-POLICY": lambda obj, elem: setattr(obj, "rpt_impl_policy", RptImplPolicy.deserialize(elem)),
+        "SUB-ELEMENTS": lambda obj, elem: obj.sub_elements.append(McDataInstance.deserialize(elem)),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize McDataInstance."""
         super().__init__()
@@ -96,9 +115,8 @@ class McDataInstance(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(McDataInstance, self).serialize()

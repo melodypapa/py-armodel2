@@ -37,10 +37,21 @@ class DiagnosticConnectedIndicator(Identifiable):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-CONNECTED-INDICATOR"
+
+
     behavior_indicator_behavior_enum: Optional[Any]
     healing_cycle: Optional[PositiveInteger]
     indicator_ref: Optional[ARRef]
     indicator_failure: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "BEHAVIOR-INDICATOR-BEHAVIOR-ENUM": lambda obj, elem: setattr(obj, "behavior_indicator_behavior_enum", any (DiagnosticConnected).deserialize(elem)),
+        "HEALING-CYCLE": lambda obj, elem: setattr(obj, "healing_cycle", elem.text),
+        "INDICATOR-REF": lambda obj, elem: setattr(obj, "indicator_ref", ARRef.deserialize(elem)),
+        "INDICATOR-FAILURE": lambda obj, elem: setattr(obj, "indicator_failure", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticConnectedIndicator."""
         super().__init__()
@@ -55,9 +66,8 @@ class DiagnosticConnectedIndicator(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticConnectedIndicator, self).serialize()

@@ -39,9 +39,19 @@ class ChapterModel(ARObject):
         """
         return False
 
+    _XML_TAG = "CHAPTER-MODEL"
+
+
     chapter: Optional[ChapterOrMsrQuery]
     chapter_content: Optional[ChapterContent]
     topic1: Optional[TopicOrMsrQuery]
+    _DESERIALIZE_DISPATCH = {
+        "CHAPTER": lambda obj, elem: setattr(obj, "chapter", ChapterOrMsrQuery.deserialize(elem)),
+        "CHAPTER-CONTENT": lambda obj, elem: setattr(obj, "chapter_content", ChapterContent.deserialize(elem)),
+        "TOPIC1": lambda obj, elem: setattr(obj, "topic1", TopicOrMsrQuery.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ChapterModel."""
         super().__init__()
@@ -55,9 +65,8 @@ class ChapterModel(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ChapterModel, self).serialize()

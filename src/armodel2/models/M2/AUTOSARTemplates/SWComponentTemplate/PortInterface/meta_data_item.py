@@ -33,8 +33,17 @@ class MetaDataItem(ARObject):
         """
         return False
 
+    _XML_TAG = "META-DATA-ITEM"
+
+
     length: Optional[PositiveInteger]
     meta_data_item: Optional[TextValueSpecification]
+    _DESERIALIZE_DISPATCH = {
+        "LENGTH": lambda obj, elem: setattr(obj, "length", elem.text),
+        "META-DATA-ITEM": lambda obj, elem: setattr(obj, "meta_data_item", TextValueSpecification.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MetaDataItem."""
         super().__init__()
@@ -47,9 +56,8 @@ class MetaDataItem(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MetaDataItem, self).serialize()

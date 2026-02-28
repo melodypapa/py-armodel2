@@ -48,6 +48,15 @@ class TimingExtension(ARElement, ABC):
     timing_conditions: list[TimingCondition]
     timings: list[TimingConstraint]
     timing_resource: Optional[TimingExtension]
+    _DESERIALIZE_DISPATCH = {
+        "TIMING-CLOCKS": lambda obj, elem: obj.timing_clocks.append(TimingClock.deserialize(elem)),
+        "TIMING-CLOCK-SYNCS": lambda obj, elem: obj.timing_clock_syncs.append(TimingClockSyncAccuracy.deserialize(elem)),
+        "TIMING-CONDITIONS": lambda obj, elem: obj.timing_conditions.append(TimingCondition.deserialize(elem)),
+        "TIMINGS": lambda obj, elem: obj.timings.append(TimingConstraint.deserialize(elem)),
+        "TIMING-RESOURCE": lambda obj, elem: setattr(obj, "timing_resource", TimingExtension.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimingExtension."""
         super().__init__()
@@ -63,9 +72,8 @@ class TimingExtension(ARElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimingExtension, self).serialize()

@@ -46,6 +46,9 @@ class ContainerIPdu(IPdu):
         """
         return False
 
+    _XML_TAG = "CONTAINER-I-PDU"
+
+
     contained_i_pdu_propses: list[ContainedIPduProps]
     contained_pdu_refs: list[ARRef]
     container: Optional[TimeValue]
@@ -56,6 +59,20 @@ class ContainerIPdu(IPdu):
     rx_accept: Optional[RxAcceptContainedIPduEnum]
     threshold_size: Optional[PositiveInteger]
     unused_bit: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CONTAINED-I-PDU-PROPSES": lambda obj, elem: obj.contained_i_pdu_propses.append(ContainedIPduProps.deserialize(elem)),
+        "CONTAINED-PDUS": lambda obj, elem: obj.contained_pdu_refs.append(ARRef.deserialize(elem)),
+        "CONTAINER": lambda obj, elem: setattr(obj, "container", elem.text),
+        "CONTAINER-TRIGGER-REF": lambda obj, elem: setattr(obj, "container_trigger_ref", ContainerIPduTriggerEnum.deserialize(elem)),
+        "HEADER-TYPE": lambda obj, elem: setattr(obj, "header_type", ContainerIPduHeaderTypeEnum.deserialize(elem)),
+        "MINIMUM-RX": lambda obj, elem: setattr(obj, "minimum_rx", elem.text),
+        "MINIMUM-TX": lambda obj, elem: setattr(obj, "minimum_tx", elem.text),
+        "RX-ACCEPT": lambda obj, elem: setattr(obj, "rx_accept", RxAcceptContainedIPduEnum.deserialize(elem)),
+        "THRESHOLD-SIZE": lambda obj, elem: setattr(obj, "threshold_size", elem.text),
+        "UNUSED-BIT": lambda obj, elem: setattr(obj, "unused_bit", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ContainerIPdu."""
         super().__init__()
@@ -76,9 +93,8 @@ class ContainerIPdu(IPdu):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ContainerIPdu, self).serialize()

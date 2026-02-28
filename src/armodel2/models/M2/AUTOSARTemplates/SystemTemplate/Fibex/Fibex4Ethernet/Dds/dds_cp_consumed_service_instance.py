@@ -37,10 +37,21 @@ class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
         """
         return False
 
+    _XML_TAG = "DDS-CP-CONSUMED-SERVICE-INSTANCE"
+
+
     consumed_ddses: list[DdsCpServiceInstance]
     local_unicast_ref: Optional[ARRef]
     minor_version: Optional[AnyVersionString]
     static_remote_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONSUMED-DDSES": lambda obj, elem: obj.consumed_ddses.append(DdsCpServiceInstance.deserialize(elem)),
+        "LOCAL-UNICAST-REF": lambda obj, elem: setattr(obj, "local_unicast_ref", ARRef.deserialize(elem)),
+        "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", elem.text),
+        "STATIC-REMOTE-REF": lambda obj, elem: setattr(obj, "static_remote_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpConsumedServiceInstance."""
         super().__init__()
@@ -55,9 +66,8 @@ class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpConsumedServiceInstance, self).serialize()

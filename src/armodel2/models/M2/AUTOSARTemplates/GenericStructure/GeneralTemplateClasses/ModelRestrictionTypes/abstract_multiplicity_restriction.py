@@ -34,6 +34,12 @@ class AbstractMultiplicityRestriction(ARObject, ABC):
 
     lower_multiplicity: Optional[PositiveInteger]
     upper_multiplicity: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "LOWER-MULTIPLICITY": lambda obj, elem: setattr(obj, "lower_multiplicity", elem.text),
+        "UPPER-MULTIPLICITY": lambda obj, elem: setattr(obj, "upper_multiplicity", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AbstractMultiplicityRestriction."""
         super().__init__()
@@ -46,9 +52,8 @@ class AbstractMultiplicityRestriction(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AbstractMultiplicityRestriction, self).serialize()

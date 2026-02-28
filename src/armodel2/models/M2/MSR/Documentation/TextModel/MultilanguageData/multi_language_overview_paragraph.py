@@ -33,7 +33,15 @@ class MultiLanguageOverviewParagraph(ARObject):
         """
         return False
 
+    _XML_TAG = "MULTI-LANGUAGE-OVERVIEW-PARAGRAPH"
+
+
     _l2: list[LOverviewParagraph]
+    _DESERIALIZE_DISPATCH = {
+        "L2": lambda obj, elem: obj._l2.append(LOverviewParagraph.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MultiLanguageOverviewParagraph."""
         super().__init__()
@@ -56,9 +64,8 @@ class MultiLanguageOverviewParagraph(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MultiLanguageOverviewParagraph, self).serialize()

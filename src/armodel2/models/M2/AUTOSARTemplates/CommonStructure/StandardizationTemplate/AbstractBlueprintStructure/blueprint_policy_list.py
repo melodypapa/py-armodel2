@@ -33,8 +33,17 @@ class BlueprintPolicyList(BlueprintPolicy):
         """
         return False
 
+    _XML_TAG = "BLUEPRINT-POLICY-LIST"
+
+
     max_number_of: PositiveInteger
     min_number_of: PositiveInteger
+    _DESERIALIZE_DISPATCH = {
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
+        "MIN-NUMBER-OF": lambda obj, elem: setattr(obj, "min_number_of", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BlueprintPolicyList."""
         super().__init__()
@@ -47,9 +56,8 @@ class BlueprintPolicyList(BlueprintPolicy):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BlueprintPolicyList, self).serialize()

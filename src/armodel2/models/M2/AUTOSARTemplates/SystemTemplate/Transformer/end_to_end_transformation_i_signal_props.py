@@ -32,10 +32,21 @@ class EndToEndTransformationISignalProps(ARObject):
         """
         return False
 
+    _XML_TAG = "END-TO-END-TRANSFORMATION-I-SIGNAL-PROPS"
+
+
     data_length: Optional[PositiveInteger]
     max_data_length: Optional[PositiveInteger]
     min_data_length: Optional[PositiveInteger]
     source_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", elem.text),
+        "MAX-DATA-LENGTH": lambda obj, elem: setattr(obj, "max_data_length", elem.text),
+        "MIN-DATA-LENGTH": lambda obj, elem: setattr(obj, "min_data_length", elem.text),
+        "SOURCE-ID": lambda obj, elem: setattr(obj, "source_id", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EndToEndTransformationISignalProps."""
         super().__init__()

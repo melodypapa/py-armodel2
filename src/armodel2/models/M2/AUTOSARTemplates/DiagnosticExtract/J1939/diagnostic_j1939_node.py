@@ -34,7 +34,15 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-J1939-NODE"
+
+
     nm_node_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "NM-NODE-REF": lambda obj, elem: setattr(obj, "nm_node_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939Node."""
         super().__init__()
@@ -46,9 +54,8 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticJ1939Node, self).serialize()

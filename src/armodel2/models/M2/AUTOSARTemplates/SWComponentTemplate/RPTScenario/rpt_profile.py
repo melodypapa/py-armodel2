@@ -37,10 +37,21 @@ class RptProfile(Identifiable):
         """
         return False
 
+    _XML_TAG = "RPT-PROFILE"
+
+
     max_service: Optional[PositiveInteger]
     min_service_point: Optional[PositiveInteger]
     service_point: Optional[CIdentifier]
     stim_enabler: Optional[RptEnablerImplTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-SERVICE": lambda obj, elem: setattr(obj, "max_service", elem.text),
+        "MIN-SERVICE-POINT": lambda obj, elem: setattr(obj, "min_service_point", elem.text),
+        "SERVICE-POINT": lambda obj, elem: setattr(obj, "service_point", elem.text),
+        "STIM-ENABLER": lambda obj, elem: setattr(obj, "stim_enabler", RptEnablerImplTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptProfile."""
         super().__init__()
@@ -55,9 +66,8 @@ class RptProfile(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptProfile, self).serialize()

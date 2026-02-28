@@ -34,7 +34,15 @@ class SdgTailoring(RestrictionWithSeverity):
         """
         return False
 
+    _XML_TAG = "SDG-TAILORING"
+
+
     sdg_class_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SDG-CLASS-REF": lambda obj, elem: setattr(obj, "sdg_class_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SdgTailoring."""
         super().__init__()
@@ -46,9 +54,8 @@ class SdgTailoring(RestrictionWithSeverity):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SdgTailoring, self).serialize()

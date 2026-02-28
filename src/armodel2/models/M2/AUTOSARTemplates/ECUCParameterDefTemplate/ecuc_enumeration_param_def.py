@@ -37,8 +37,17 @@ class EcucEnumerationParamDef(EcucParameterDef):
         """
         return False
 
+    _XML_TAG = "ECUC-ENUMERATION-PARAM-DEF"
+
+
     default_value: Optional[Identifier]
     literals: list[EcucEnumerationLiteralDef]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", elem.text),
+        "LITERALS": lambda obj, elem: obj.literals.append(EcucEnumerationLiteralDef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucEnumerationParamDef."""
         super().__init__()
@@ -51,9 +60,8 @@ class EcucEnumerationParamDef(EcucParameterDef):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucEnumerationParamDef, self).serialize()

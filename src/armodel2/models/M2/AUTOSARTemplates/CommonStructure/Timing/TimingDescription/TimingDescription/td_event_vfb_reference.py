@@ -31,7 +31,15 @@ class TDEventVfbReference(TDEventVfb):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-VFB-REFERENCE"
+
+
     referenced_td_event_vfb_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "REFERENCED-TD-EVENT-VFB-REF": lambda obj, elem: setattr(obj, "referenced_td_event_vfb_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventVfbReference."""
         super().__init__()
@@ -43,9 +51,8 @@ class TDEventVfbReference(TDEventVfb):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventVfbReference, self).serialize()

@@ -37,9 +37,19 @@ class DoIpTpConnection(TpConnection):
         """
         return False
 
+    _XML_TAG = "DO-IP-TP-CONNECTION"
+
+
     do_ip_source_ref: Optional[ARRef]
     do_ip_target_ref: Optional[ARRef]
     tp_sdu_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DO-IP-SOURCE-REF": lambda obj, elem: setattr(obj, "do_ip_source_ref", ARRef.deserialize(elem)),
+        "DO-IP-TARGET-REF": lambda obj, elem: setattr(obj, "do_ip_target_ref", ARRef.deserialize(elem)),
+        "TP-SDU-REF": lambda obj, elem: setattr(obj, "tp_sdu_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DoIpTpConnection."""
         super().__init__()
@@ -53,9 +63,8 @@ class DoIpTpConnection(TpConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DoIpTpConnection, self).serialize()

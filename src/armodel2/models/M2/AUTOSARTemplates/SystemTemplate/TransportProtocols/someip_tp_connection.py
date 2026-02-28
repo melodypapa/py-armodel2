@@ -33,9 +33,19 @@ class SomeipTpConnection(ARObject):
         """
         return False
 
+    _XML_TAG = "SOMEIP-TP-CONNECTION"
+
+
     tp_channel_ref: Optional[ARRef]
     tp_sdu_ref: Optional[ARRef]
     transport_pdu_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TP-CHANNEL-REF": lambda obj, elem: setattr(obj, "tp_channel_ref", ARRef.deserialize(elem)),
+        "TP-SDU-REF": lambda obj, elem: setattr(obj, "tp_sdu_ref", ARRef.deserialize(elem)),
+        "TRANSPORT-PDU-REF": lambda obj, elem: setattr(obj, "transport_pdu_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SomeipTpConnection."""
         super().__init__()
@@ -49,9 +59,8 @@ class SomeipTpConnection(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SomeipTpConnection, self).serialize()

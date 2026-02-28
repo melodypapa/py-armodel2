@@ -34,6 +34,9 @@ class DataFilter(ARObject):
         """
         return False
 
+    _XML_TAG = "DATA-FILTER"
+
+
     data_filter_type: Optional[DataFilterTypeEnum]
     mask: Optional[UnlimitedInteger]
     max: Optional[UnlimitedInteger]
@@ -41,6 +44,17 @@ class DataFilter(ARObject):
     offset: Optional[PositiveInteger]
     period: Optional[PositiveInteger]
     x: Optional[UnlimitedInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-FILTER-TYPE": lambda obj, elem: setattr(obj, "data_filter_type", DataFilterTypeEnum.deserialize(elem)),
+        "MASK": lambda obj, elem: setattr(obj, "mask", elem.text),
+        "MAX": lambda obj, elem: setattr(obj, "max", elem.text),
+        "MIN": lambda obj, elem: setattr(obj, "min", elem.text),
+        "OFFSET": lambda obj, elem: setattr(obj, "offset", elem.text),
+        "PERIOD": lambda obj, elem: setattr(obj, "period", elem.text),
+        "X": lambda obj, elem: setattr(obj, "x", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataFilter."""
         super().__init__()
@@ -58,9 +72,8 @@ class DataFilter(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataFilter, self).serialize()

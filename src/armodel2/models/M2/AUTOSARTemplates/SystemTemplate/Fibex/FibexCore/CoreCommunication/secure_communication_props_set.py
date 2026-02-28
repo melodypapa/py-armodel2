@@ -30,8 +30,17 @@ class SecureCommunicationPropsSet(FibexElement):
         """
         return False
 
+    _XML_TAG = "SECURE-COMMUNICATION-PROPS-SET"
+
+
     authentications: list[Any]
     freshness_propses: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "AUTHENTICATIONS": lambda obj, elem: obj.authentications.append(any (SecureCommunication).deserialize(elem)),
+        "FRESHNESS-PROPSES": lambda obj, elem: obj.freshness_propses.append(any (SecureCommunication).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecureCommunicationPropsSet."""
         super().__init__()
@@ -44,9 +53,8 @@ class SecureCommunicationPropsSet(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecureCommunicationPropsSet, self).serialize()

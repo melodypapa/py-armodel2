@@ -38,8 +38,17 @@ class ChapterOrMsrQuery(ARObject):
         """
         return False
 
+    _XML_TAG = "CHAPTER-OR-MSR-QUERY"
+
+
     chapter: Chapter
     msr_query_chapter: MsrQueryChapter
+    _DESERIALIZE_DISPATCH = {
+        "CHAPTER": lambda obj, elem: setattr(obj, "chapter", Chapter.deserialize(elem)),
+        "MSR-QUERY-CHAPTER": lambda obj, elem: setattr(obj, "msr_query_chapter", MsrQueryChapter.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ChapterOrMsrQuery."""
         super().__init__()

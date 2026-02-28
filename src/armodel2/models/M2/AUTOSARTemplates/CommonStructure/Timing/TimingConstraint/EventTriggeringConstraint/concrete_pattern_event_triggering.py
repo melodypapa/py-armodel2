@@ -33,10 +33,21 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
         """
         return False
 
+    _XML_TAG = "CONCRETE-PATTERN-EVENT-TRIGGERING"
+
+
     offsets: list[MultidimensionalTime]
     pattern_jitter: Optional[MultidimensionalTime]
     pattern_length: Optional[MultidimensionalTime]
     pattern_period: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "OFFSETS": lambda obj, elem: obj.offsets.append(MultidimensionalTime.deserialize(elem)),
+        "PATTERN-JITTER": lambda obj, elem: setattr(obj, "pattern_jitter", MultidimensionalTime.deserialize(elem)),
+        "PATTERN-LENGTH": lambda obj, elem: setattr(obj, "pattern_length", MultidimensionalTime.deserialize(elem)),
+        "PATTERN-PERIOD": lambda obj, elem: setattr(obj, "pattern_period", MultidimensionalTime.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConcretePatternEventTriggering."""
         super().__init__()
@@ -51,9 +62,8 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConcretePatternEventTriggering, self).serialize()

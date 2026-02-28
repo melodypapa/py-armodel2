@@ -37,6 +37,9 @@ class ContainedIPduProps(ARObject):
         """
         return False
 
+    _XML_TAG = "CONTAINED-I-PDU-PROPS"
+
+
     collection: Optional[Any]
     contained_pdu_ref: Optional[ARRef]
     header_id_long: Optional[PositiveInteger]
@@ -46,6 +49,19 @@ class ContainedIPduProps(ARObject):
     timeout: Optional[TimeValue]
     trigger_ref: Optional[PduCollectionTriggerEnum]
     update: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "COLLECTION": lambda obj, elem: setattr(obj, "collection", any (ContainedIPdu).deserialize(elem)),
+        "CONTAINED-PDU-REF": lambda obj, elem: setattr(obj, "contained_pdu_ref", ARRef.deserialize(elem)),
+        "HEADER-ID-LONG": lambda obj, elem: setattr(obj, "header_id_long", elem.text),
+        "HEADER-ID-SHORT": lambda obj, elem: setattr(obj, "header_id_short", elem.text),
+        "OFFSET": lambda obj, elem: setattr(obj, "offset", elem.text),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", elem.text),
+        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", PduCollectionTriggerEnum.deserialize(elem)),
+        "UPDATE": lambda obj, elem: setattr(obj, "update", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ContainedIPduProps."""
         super().__init__()
@@ -65,9 +81,8 @@ class ContainedIPduProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ContainedIPduProps, self).serialize()

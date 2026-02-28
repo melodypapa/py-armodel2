@@ -37,6 +37,9 @@ class FlexrayTpConnectionControl(Identifiable):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-TP-CONNECTION-CONTROL"
+
+
     ack_type: Optional[FrArTpAckType]
     max_fc_wait: Optional[Integer]
     max_number_of: Optional[Integer]
@@ -49,6 +52,22 @@ class FlexrayTpConnectionControl(Identifiable):
     timeout_as: Optional[TimeValue]
     timeout_bs: Optional[TimeValue]
     timeout_cr: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "ACK-TYPE": lambda obj, elem: setattr(obj, "ack_type", FrArTpAckType.deserialize(elem)),
+        "MAX-FC-WAIT": lambda obj, elem: setattr(obj, "max_fc_wait", elem.text),
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
+        "MAX-RETRIES": lambda obj, elem: setattr(obj, "max_retries", elem.text),
+        "SEPARATION-CYCLE": lambda obj, elem: setattr(obj, "separation_cycle", elem.text),
+        "TIME-BR": lambda obj, elem: setattr(obj, "time_br", elem.text),
+        "TIME-BUFFER": lambda obj, elem: setattr(obj, "time_buffer", elem.text),
+        "TIME-CS": lambda obj, elem: setattr(obj, "time_cs", elem.text),
+        "TIMEOUT-AR": lambda obj, elem: setattr(obj, "timeout_ar", elem.text),
+        "TIMEOUT-AS": lambda obj, elem: setattr(obj, "timeout_as", elem.text),
+        "TIMEOUT-BS": lambda obj, elem: setattr(obj, "timeout_bs", elem.text),
+        "TIMEOUT-CR": lambda obj, elem: setattr(obj, "timeout_cr", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayTpConnectionControl."""
         super().__init__()
@@ -71,9 +90,8 @@ class FlexrayTpConnectionControl(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayTpConnectionControl, self).serialize()

@@ -43,11 +43,23 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
         """
         return False
 
+    _XML_TAG = "BASE-TYPE-DIRECT-DEFINITION"
+
+
     base_type_encoding: Optional[BaseTypeEncodingString]
     base_type_size: Optional[PositiveInteger]
     byte_order: Optional[ByteOrderEnum]
     mem_alignment: Optional[PositiveInteger]
     native: Optional[NativeDeclarationString]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-TYPE-ENCODING": lambda obj, elem: setattr(obj, "base_type_encoding", elem.text),
+        "BASE-TYPE-SIZE": lambda obj, elem: setattr(obj, "base_type_size", elem.text),
+        "BYTE-ORDER": lambda obj, elem: setattr(obj, "byte_order", ByteOrderEnum.deserialize(elem)),
+        "MEM-ALIGNMENT": lambda obj, elem: setattr(obj, "mem_alignment", elem.text),
+        "NATIVE": lambda obj, elem: setattr(obj, "native", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BaseTypeDirectDefinition."""
         super().__init__()
@@ -63,9 +75,8 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BaseTypeDirectDefinition, self).serialize()

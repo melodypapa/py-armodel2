@@ -42,11 +42,23 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
         """
         return False
 
+    _XML_TAG = "BUS-MIRROR-CHANNEL-MAPPING-CAN"
+
+
     can_id_ranges: list[BusMirrorCanIdRangeMapping]
     can_id_to_can_ids: list[BusMirrorCanIdToCanIdMapping]
     lin_pid_to_can_ids: list[BusMirrorLinPidToCanIdMapping]
     mirror_source_lin: Optional[PositiveInteger]
     mirror_status: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CAN-ID-RANGES": lambda obj, elem: obj.can_id_ranges.append(BusMirrorCanIdRangeMapping.deserialize(elem)),
+        "CAN-ID-TO-CAN-IDS": lambda obj, elem: obj.can_id_to_can_ids.append(BusMirrorCanIdToCanIdMapping.deserialize(elem)),
+        "LIN-PID-TO-CAN-IDS": lambda obj, elem: obj.lin_pid_to_can_ids.append(BusMirrorLinPidToCanIdMapping.deserialize(elem)),
+        "MIRROR-SOURCE-LIN": lambda obj, elem: setattr(obj, "mirror_source_lin", elem.text),
+        "MIRROR-STATUS": lambda obj, elem: setattr(obj, "mirror_status", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BusMirrorChannelMappingCan."""
         super().__init__()
@@ -62,9 +74,8 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BusMirrorChannelMappingCan, self).serialize()

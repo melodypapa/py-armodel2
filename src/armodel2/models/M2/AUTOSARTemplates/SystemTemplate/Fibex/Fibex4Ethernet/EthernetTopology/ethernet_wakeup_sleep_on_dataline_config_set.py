@@ -30,7 +30,15 @@ class EthernetWakeupSleepOnDatalineConfigSet(FibexElement):
         """
         return False
 
+    _XML_TAG = "ETHERNET-WAKEUP-SLEEP-ON-DATALINE-CONFIG-SET"
+
+
     ethernets: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ETHERNETS": lambda obj, elem: obj.ethernets.append(any (EthernetWakeupSleep).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthernetWakeupSleepOnDatalineConfigSet."""
         super().__init__()
@@ -42,9 +50,8 @@ class EthernetWakeupSleepOnDatalineConfigSet(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthernetWakeupSleepOnDatalineConfigSet, self).serialize()

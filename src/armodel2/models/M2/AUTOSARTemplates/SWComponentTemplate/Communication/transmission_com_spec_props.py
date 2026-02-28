@@ -30,9 +30,19 @@ class TransmissionComSpecProps(ARObject):
         """
         return False
 
+    _XML_TAG = "TRANSMISSION-COM-SPEC-PROPS"
+
+
     data_update: Optional[TimeValue]
     minimum_send: Optional[TimeValue]
     transmission: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-UPDATE": lambda obj, elem: setattr(obj, "data_update", elem.text),
+        "MINIMUM-SEND": lambda obj, elem: setattr(obj, "minimum_send", elem.text),
+        "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", any (TransmissionMode).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TransmissionComSpecProps."""
         super().__init__()
@@ -46,9 +56,8 @@ class TransmissionComSpecProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TransmissionComSpecProps, self).serialize()

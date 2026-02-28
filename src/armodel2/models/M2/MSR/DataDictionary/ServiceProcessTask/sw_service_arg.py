@@ -47,9 +47,19 @@ class SwServiceArg(Identifiable):
         """
         return False
 
+    _XML_TAG = "SW-SERVICE-ARG"
+
+
     direction: Optional[ArgumentDirectionEnum]
     sw_arraysize_ref: Optional[ARRef]
     sw_data_def: Optional[SwDataDefProps]
+    _DESERIALIZE_DISPATCH = {
+        "DIRECTION": lambda obj, elem: setattr(obj, "direction", ArgumentDirectionEnum.deserialize(elem)),
+        "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SwDataDefProps.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwServiceArg."""
         super().__init__()
@@ -63,9 +73,8 @@ class SwServiceArg(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwServiceArg, self).serialize()

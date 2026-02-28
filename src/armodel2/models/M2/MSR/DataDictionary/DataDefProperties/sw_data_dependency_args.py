@@ -36,8 +36,17 @@ class SwDataDependencyArgs(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-DATA-DEPENDENCY-ARGS"
+
+
     sw_calprm_ref_proxy_ref: Optional[ARRef]
     sw_variable_ref_proxy_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SW-CALPRM-REF-PROXY-REF": lambda obj, elem: setattr(obj, "sw_calprm_ref_proxy_ref", ARRef.deserialize(elem)),
+        "SW-VARIABLE-REF-PROXY-REF": lambda obj, elem: setattr(obj, "sw_variable_ref_proxy_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwDataDependencyArgs."""
         super().__init__()

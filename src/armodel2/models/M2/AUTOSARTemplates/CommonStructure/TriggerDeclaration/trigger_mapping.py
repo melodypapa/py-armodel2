@@ -30,8 +30,17 @@ class TriggerMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "TRIGGER-MAPPING"
+
+
     first_trigger_ref: Optional[ARRef]
     second_trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FIRST-TRIGGER-REF": lambda obj, elem: setattr(obj, "first_trigger_ref", ARRef.deserialize(elem)),
+        "SECOND-TRIGGER-REF": lambda obj, elem: setattr(obj, "second_trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TriggerMapping."""
         super().__init__()
@@ -44,9 +53,8 @@ class TriggerMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TriggerMapping, self).serialize()

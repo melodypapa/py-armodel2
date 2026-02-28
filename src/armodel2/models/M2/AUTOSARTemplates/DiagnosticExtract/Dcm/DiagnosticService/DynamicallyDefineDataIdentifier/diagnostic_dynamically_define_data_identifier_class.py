@@ -36,9 +36,19 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-DYNAMICALLY-DEFINE-DATA-IDENTIFIER-CLASS"
+
+
     check_per: Optional[Boolean]
     configuration: Optional[DiagnosticHandleDDDIConfigurationEnum]
     subfunctions: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CHECK-PER": lambda obj, elem: setattr(obj, "check_per", elem.text),
+        "CONFIGURATION": lambda obj, elem: setattr(obj, "configuration", DiagnosticHandleDDDIConfigurationEnum.deserialize(elem)),
+        "SUBFUNCTIONS": lambda obj, elem: obj.subfunctions.append(any (DiagnosticDynamically).deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticDynamicallyDefineDataIdentifierClass."""
         super().__init__()
@@ -52,9 +62,8 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticDynamicallyDefineDataIdentifierClass, self).serialize()

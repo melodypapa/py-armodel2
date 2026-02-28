@@ -30,11 +30,23 @@ class CanClusterBusOffRecovery(ARObject):
         """
         return False
 
+    _XML_TAG = "CAN-CLUSTER-BUS-OFF-RECOVERY"
+
+
     bor_counter_l1_to: Optional[PositiveInteger]
     bor_time_l1: Optional[TimeValue]
     bor_time_l2: Optional[TimeValue]
     bor_time_tx: Optional[TimeValue]
     main_function: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "BOR-COUNTER-L1-TO": lambda obj, elem: setattr(obj, "bor_counter_l1_to", elem.text),
+        "BOR-TIME-L1": lambda obj, elem: setattr(obj, "bor_time_l1", elem.text),
+        "BOR-TIME-L2": lambda obj, elem: setattr(obj, "bor_time_l2", elem.text),
+        "BOR-TIME-TX": lambda obj, elem: setattr(obj, "bor_time_tx", elem.text),
+        "MAIN-FUNCTION": lambda obj, elem: setattr(obj, "main_function", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanClusterBusOffRecovery."""
         super().__init__()
@@ -50,9 +62,8 @@ class CanClusterBusOffRecovery(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanClusterBusOffRecovery, self).serialize()

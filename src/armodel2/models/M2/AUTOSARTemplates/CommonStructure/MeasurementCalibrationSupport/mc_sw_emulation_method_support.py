@@ -36,11 +36,23 @@ class McSwEmulationMethodSupport(ARObject):
         """
         return False
 
+    _XML_TAG = "MC-SW-EMULATION-METHOD-SUPPORT"
+
+
     base_reference_ref: Optional[ARRef]
     category: Optional[Identifier]
     element_groups: list[McParameterElementGroup]
     reference_table_ref: Optional[ARRef]
     short_label: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REFERENCE-REF": lambda obj, elem: setattr(obj, "base_reference_ref", ARRef.deserialize(elem)),
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
+        "ELEMENT-GROUPS": lambda obj, elem: obj.element_groups.append(McParameterElementGroup.deserialize(elem)),
+        "REFERENCE-TABLE-REF": lambda obj, elem: setattr(obj, "reference_table_ref", ARRef.deserialize(elem)),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize McSwEmulationMethodSupport."""
         super().__init__()
@@ -56,9 +68,8 @@ class McSwEmulationMethodSupport(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(McSwEmulationMethodSupport, self).serialize()

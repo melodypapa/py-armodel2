@@ -56,6 +56,9 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         """
         return False
 
+    _XML_TAG = "IO-HW-ABSTRACTION-SERVER-ANNOTATION"
+
+
     age: Optional[MultidimensionalTime]
     argument_ref: Optional[ARRef]
     bsw_resolution: Optional[Float]
@@ -64,6 +67,18 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
     filtering: Optional[FilterDebouncingEnum]
     pulse_test: Optional[PulseTestEnum]
     trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AGE": lambda obj, elem: setattr(obj, "age", MultidimensionalTime.deserialize(elem)),
+        "ARGUMENT-REF": lambda obj, elem: setattr(obj, "argument_ref", ARRef.deserialize(elem)),
+        "BSW-RESOLUTION": lambda obj, elem: setattr(obj, "bsw_resolution", elem.text),
+        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "FAILURE-REF": lambda obj, elem: setattr(obj, "failure_ref", ARRef.deserialize(elem)),
+        "FILTERING": lambda obj, elem: setattr(obj, "filtering", FilterDebouncingEnum.deserialize(elem)),
+        "PULSE-TEST": lambda obj, elem: setattr(obj, "pulse_test", PulseTestEnum.deserialize(elem)),
+        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IoHwAbstractionServerAnnotation."""
         super().__init__()
@@ -82,9 +97,8 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IoHwAbstractionServerAnnotation, self).serialize()

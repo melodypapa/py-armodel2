@@ -33,10 +33,21 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
         """
         return False
 
+    _XML_TAG = "BINARY-MANIFEST-ITEM"
+
+
     auxiliary_fields: list[BinaryManifestItem]
     default_value: Optional[BinaryManifestItem]
     is_unused: Optional[Boolean]
     value: Optional[BinaryManifestItem]
+    _DESERIALIZE_DISPATCH = {
+        "AUXILIARY-FIELDS": lambda obj, elem: obj.auxiliary_fields.append(BinaryManifestItem.deserialize(elem)),
+        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", BinaryManifestItem.deserialize(elem)),
+        "IS-UNUSED": lambda obj, elem: setattr(obj, "is_unused", elem.text),
+        "VALUE": lambda obj, elem: setattr(obj, "value", BinaryManifestItem.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BinaryManifestItem."""
         super().__init__()
@@ -51,9 +62,8 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BinaryManifestItem, self).serialize()

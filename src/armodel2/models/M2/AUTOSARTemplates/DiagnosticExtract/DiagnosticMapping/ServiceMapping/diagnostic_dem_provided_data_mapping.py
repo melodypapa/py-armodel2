@@ -37,8 +37,17 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-DEM-PROVIDED-DATA-MAPPING"
+
+
     data_element_ref: Optional[ARRef]
     data_provider: Optional[NameToken]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "DATA-PROVIDER": lambda obj, elem: setattr(obj, "data_provider", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticDemProvidedDataMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticDemProvidedDataMapping, self).serialize()

@@ -39,9 +39,19 @@ class CpSoftwareCluster(ARElement):
         """
         return False
 
+    _XML_TAG = "CP-SOFTWARE-CLUSTER"
+
+
     software_cluster: Optional[PositiveInteger]
     sw_components: list[Any]
     sw_composition_component_type_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SOFTWARE-CLUSTER": lambda obj, elem: setattr(obj, "software_cluster", elem.text),
+        "SW-COMPONENTS": lambda obj, elem: obj.sw_components.append(any (SwComponent).deserialize(elem)),
+        "SW-COMPOSITION-COMPONENT-TYPES": lambda obj, elem: obj.sw_composition_component_type_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSoftwareCluster."""
         super().__init__()
@@ -55,9 +65,8 @@ class CpSoftwareCluster(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSoftwareCluster, self).serialize()

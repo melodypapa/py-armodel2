@@ -40,9 +40,19 @@ class ApplicationValueSpecification(ValueSpecification):
         """
         return False
 
+    _XML_TAG = "APPLICATION-VALUE-SPECIFICATION"
+
+
     category: Optional[Identifier]
     sw_axis_conts: list[SwAxisCont]
     sw_value_cont: Optional[SwValueCont]
+    _DESERIALIZE_DISPATCH = {
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
+        "SW-AXIS-CONTS": lambda obj, elem: obj.sw_axis_conts.append(SwAxisCont.deserialize(elem)),
+        "SW-VALUE-CONT": lambda obj, elem: setattr(obj, "sw_value_cont", SwValueCont.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationValueSpecification."""
         super().__init__()
@@ -56,9 +66,8 @@ class ApplicationValueSpecification(ValueSpecification):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationValueSpecification, self).serialize()

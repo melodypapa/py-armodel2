@@ -29,7 +29,15 @@ class PduMappingDefaultValue(ARObject):
         """
         return False
 
+    _XML_TAG = "PDU-MAPPING-DEFAULT-VALUE"
+
+
     default_values: list[DefaultValueElement]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-VALUES": lambda obj, elem: obj.default_values.append(DefaultValueElement.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PduMappingDefaultValue."""
         super().__init__()
@@ -41,9 +49,8 @@ class PduMappingDefaultValue(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PduMappingDefaultValue, self).serialize()

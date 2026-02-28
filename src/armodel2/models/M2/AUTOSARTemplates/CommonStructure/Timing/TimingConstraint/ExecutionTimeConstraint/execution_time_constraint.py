@@ -40,11 +40,23 @@ class ExecutionTimeConstraint(TimingConstraint):
         """
         return False
 
+    _XML_TAG = "EXECUTION-TIME-CONSTRAINT"
+
+
     component: Optional[Any]
     executable_entity_ref: Optional[ARRef]
     execution_time: Optional[ExecutionTimeTypeEnum]
     maximum: Optional[MultidimensionalTime]
     minimum: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "COMPONENT": lambda obj, elem: setattr(obj, "component", any (SwComponent).deserialize(elem)),
+        "EXECUTABLE-ENTITY-REF": lambda obj, elem: setattr(obj, "executable_entity_ref", ARRef.deserialize(elem)),
+        "EXECUTION-TIME": lambda obj, elem: setattr(obj, "execution_time", ExecutionTimeTypeEnum.deserialize(elem)),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", MultidimensionalTime.deserialize(elem)),
+        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", MultidimensionalTime.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ExecutionTimeConstraint."""
         super().__init__()
@@ -60,9 +72,8 @@ class ExecutionTimeConstraint(TimingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ExecutionTimeConstraint, self).serialize()

@@ -33,6 +33,9 @@ class Area(ARObject):
         """
         return False
 
+    _XML_TAG = "AREA"
+
+
     accesskey: Optional[String]
     alt: Optional[String]
     class_: Optional[String]
@@ -55,6 +58,32 @@ class Area(ARObject):
     style: Optional[String]
     tabindex: Optional[String]
     title: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESSKEY": lambda obj, elem: setattr(obj, "accesskey", elem.text),
+        "ALT": lambda obj, elem: setattr(obj, "alt", elem.text),
+        "CLASS": lambda obj, elem: setattr(obj, "class_", elem.text),
+        "COORDS": lambda obj, elem: setattr(obj, "coords", elem.text),
+        "HREF": lambda obj, elem: setattr(obj, "href", elem.text),
+        "NOHREF": lambda obj, elem: setattr(obj, "nohref", AreaEnumNohref.deserialize(elem)),
+        "ONBLUR": lambda obj, elem: setattr(obj, "onblur", elem.text),
+        "ONCLICK": lambda obj, elem: setattr(obj, "onclick", elem.text),
+        "ONDBLCLICK": lambda obj, elem: setattr(obj, "ondblclick", elem.text),
+        "ONFOCUS": lambda obj, elem: setattr(obj, "onfocus", elem.text),
+        "ONKEYDOWN": lambda obj, elem: setattr(obj, "onkeydown", elem.text),
+        "ONKEYPRESS": lambda obj, elem: setattr(obj, "onkeypress", elem.text),
+        "ONKEYUP": lambda obj, elem: setattr(obj, "onkeyup", elem.text),
+        "ONMOUSEDOWN": lambda obj, elem: setattr(obj, "onmousedown", elem.text),
+        "ONMOUSEMOVE": lambda obj, elem: setattr(obj, "onmousemove", elem.text),
+        "ONMOUSEOUT": lambda obj, elem: setattr(obj, "onmouseout", elem.text),
+        "ONMOUSEOVER": lambda obj, elem: setattr(obj, "onmouseover", elem.text),
+        "ONMOUSEUP": lambda obj, elem: setattr(obj, "onmouseup", elem.text),
+        "SHAPE": lambda obj, elem: setattr(obj, "shape", AreaEnumShape.deserialize(elem)),
+        "STYLE": lambda obj, elem: setattr(obj, "style", elem.text),
+        "TABINDEX": lambda obj, elem: setattr(obj, "tabindex", elem.text),
+        "TITLE": lambda obj, elem: setattr(obj, "title", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Area."""
         super().__init__()
@@ -87,9 +116,8 @@ class Area(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Area, self).serialize()

@@ -33,7 +33,15 @@ class SecureOnBoardCommunicationNeeds(ServiceNeeds):
         """
         return False
 
+    _XML_TAG = "SECURE-ON-BOARD-COMMUNICATION-NEEDS"
+
+
     verification: Optional[VerificationStatusIndicationModeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "VERIFICATION": lambda obj, elem: setattr(obj, "verification", VerificationStatusIndicationModeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecureOnBoardCommunicationNeeds."""
         super().__init__()
@@ -45,9 +53,8 @@ class SecureOnBoardCommunicationNeeds(ServiceNeeds):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecureOnBoardCommunicationNeeds, self).serialize()

@@ -38,8 +38,17 @@ class ApplicationArrayDataType(ApplicationCompositeDataType):
         """
         return False
 
+    _XML_TAG = "APPLICATION-ARRAY-DATA-TYPE"
+
+
     dynamic_array_size_profile: Optional[String]
     element: Optional[ApplicationArrayElement]
+    _DESERIALIZE_DISPATCH = {
+        "DYNAMIC-ARRAY-SIZE-PROFILE": lambda obj, elem: setattr(obj, "dynamic_array_size_profile", elem.text),
+        "ELEMENT": lambda obj, elem: setattr(obj, "element", ApplicationArrayElement.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationArrayDataType."""
         super().__init__()
@@ -52,9 +61,8 @@ class ApplicationArrayDataType(ApplicationCompositeDataType):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationArrayDataType, self).serialize()

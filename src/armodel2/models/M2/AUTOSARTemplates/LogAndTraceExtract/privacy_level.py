@@ -33,8 +33,17 @@ class PrivacyLevel(ARObject):
         """
         return False
 
+    _XML_TAG = "PRIVACY-LEVEL"
+
+
     compu_method_ref: Optional[ARRef]
     privacy_level: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "COMPU-METHOD-REF": lambda obj, elem: setattr(obj, "compu_method_ref", ARRef.deserialize(elem)),
+        "PRIVACY-LEVEL": lambda obj, elem: setattr(obj, "privacy_level", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PrivacyLevel."""
         super().__init__()
@@ -47,9 +56,8 @@ class PrivacyLevel(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PrivacyLevel, self).serialize()

@@ -36,8 +36,17 @@ class IPSecConfig(ARObject):
         """
         return False
 
+    _XML_TAG = "I-P-SEC-CONFIG"
+
+
     ip_sec_config_ref: Optional[ARRef]
     ip_sec_rules: list[IPSecRule]
+    _DESERIALIZE_DISPATCH = {
+        "IP-SEC-CONFIG-REF": lambda obj, elem: setattr(obj, "ip_sec_config_ref", ARRef.deserialize(elem)),
+        "IP-SEC-RULES": lambda obj, elem: obj.ip_sec_rules.append(IPSecRule.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IPSecConfig."""
         super().__init__()
@@ -50,9 +59,8 @@ class IPSecConfig(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IPSecConfig, self).serialize()

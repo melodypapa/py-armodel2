@@ -38,8 +38,17 @@ class PortGroup(Identifiable):
         """
         return False
 
+    _XML_TAG = "PORT-GROUP"
+
+
     inner_group_refs: list[ARRef]
     outer_port_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "INNER-GROUPS": lambda obj, elem: obj.inner_group_refs.append(ARRef.deserialize(elem)),
+        "OUTER-PORTS": lambda obj, elem: obj.outer_port_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PortGroup."""
         super().__init__()
@@ -52,9 +61,8 @@ class PortGroup(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PortGroup, self).serialize()

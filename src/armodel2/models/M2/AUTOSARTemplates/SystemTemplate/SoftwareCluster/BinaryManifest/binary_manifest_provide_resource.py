@@ -34,8 +34,17 @@ class BinaryManifestProvideResource(BinaryManifestResource):
         """
         return False
 
+    _XML_TAG = "BINARY-MANIFEST-PROVIDE-RESOURCE"
+
+
     number_of: Optional[PositiveInteger]
     supports: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "NUMBER-OF": lambda obj, elem: setattr(obj, "number_of", elem.text),
+        "SUPPORTS": lambda obj, elem: setattr(obj, "supports", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BinaryManifestProvideResource."""
         super().__init__()
@@ -48,9 +57,8 @@ class BinaryManifestProvideResource(BinaryManifestResource):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BinaryManifestProvideResource, self).serialize()

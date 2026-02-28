@@ -34,7 +34,15 @@ class ViewMapSet(ARElement):
         """
         return False
 
+    _XML_TAG = "VIEW-MAP-SET"
+
+
     view_maps: list[ViewMap]
+    _DESERIALIZE_DISPATCH = {
+        "VIEW-MAPS": lambda obj, elem: obj.view_maps.append(ViewMap.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ViewMapSet."""
         super().__init__()
@@ -46,9 +54,8 @@ class ViewMapSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ViewMapSet, self).serialize()

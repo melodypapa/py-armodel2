@@ -38,6 +38,9 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-RVF-CONNECTION"
+
+
     rvf_active_pixels: Optional[PositiveInteger]
     rvf_color_space: Optional[IEEE1722TpRvfColorSpaceEnum]
     rvf_event_default: Optional[PositiveInteger]
@@ -46,6 +49,18 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
     rvf_pixel_depth: Optional[Any]
     rvf_pixel_format: Optional[Any]
     rvf_total_lines: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "RVF-ACTIVE-PIXELS": lambda obj, elem: setattr(obj, "rvf_active_pixels", elem.text),
+        "RVF-COLOR-SPACE": lambda obj, elem: setattr(obj, "rvf_color_space", IEEE1722TpRvfColorSpaceEnum.deserialize(elem)),
+        "RVF-EVENT-DEFAULT": lambda obj, elem: setattr(obj, "rvf_event_default", elem.text),
+        "RVF-FRAME-RATE": lambda obj, elem: setattr(obj, "rvf_frame_rate", IEEE1722TpRvfFrameRateEnum.deserialize(elem)),
+        "RVF-INTERLACED": lambda obj, elem: setattr(obj, "rvf_interlaced", elem.text),
+        "RVF-PIXEL-DEPTH": lambda obj, elem: setattr(obj, "rvf_pixel_depth", any (IEEE1722TpRvfPixel).deserialize(elem)),
+        "RVF-PIXEL-FORMAT": lambda obj, elem: setattr(obj, "rvf_pixel_format", any (IEEE1722TpRvfPixel).deserialize(elem)),
+        "RVF-TOTAL-LINES": lambda obj, elem: setattr(obj, "rvf_total_lines", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpRvfConnection."""
         super().__init__()
@@ -64,9 +79,8 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpRvfConnection, self).serialize()

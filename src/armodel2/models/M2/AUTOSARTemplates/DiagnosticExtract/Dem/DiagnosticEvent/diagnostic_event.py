@@ -39,6 +39,9 @@ class DiagnosticEvent(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-EVENT"
+
+
     associated: Optional[PositiveInteger]
     clear_event: Optional[DiagnosticClearEventAllowedBehaviorEnum]
     confirmation: Optional[PositiveInteger]
@@ -48,6 +51,19 @@ class DiagnosticEvent(DiagnosticCommonElement):
     prestorage: Optional[Boolean]
     prestored: Optional[Boolean]
     recoverable_in: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ASSOCIATED": lambda obj, elem: setattr(obj, "associated", elem.text),
+        "CLEAR-EVENT": lambda obj, elem: setattr(obj, "clear_event", DiagnosticClearEventAllowedBehaviorEnum.deserialize(elem)),
+        "CONFIRMATION": lambda obj, elem: setattr(obj, "confirmation", elem.text),
+        "CONNECTEDS": lambda obj, elem: obj.connecteds.append(any (DiagnosticConnected).deserialize(elem)),
+        "EVENT-CLEAR": lambda obj, elem: setattr(obj, "event_clear", DiagnosticEventClearAllowedEnum.deserialize(elem)),
+        "EVENT-KIND": lambda obj, elem: setattr(obj, "event_kind", DiagnosticEventKindEnum.deserialize(elem)),
+        "PRESTORAGE": lambda obj, elem: setattr(obj, "prestorage", elem.text),
+        "PRESTORED": lambda obj, elem: setattr(obj, "prestored", elem.text),
+        "RECOVERABLE-IN": lambda obj, elem: setattr(obj, "recoverable_in", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEvent."""
         super().__init__()
@@ -67,9 +83,8 @@ class DiagnosticEvent(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEvent, self).serialize()

@@ -47,6 +47,15 @@ class GlobalTimeMaster(Identifiable, ABC):
     immediate: Optional[TimeValue]
     is_system_wide: Optional[Boolean]
     sync_period: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CONNECTOR-REF": lambda obj, elem: setattr(obj, "communication_connector_ref", ARRef.deserialize(elem)),
+        "ICV-SECURED": lambda obj, elem: setattr(obj, "icv_secured", GlobalTimeIcvSupportEnum.deserialize(elem)),
+        "IMMEDIATE": lambda obj, elem: setattr(obj, "immediate", elem.text),
+        "IS-SYSTEM-WIDE": lambda obj, elem: setattr(obj, "is_system_wide", elem.text),
+        "SYNC-PERIOD": lambda obj, elem: setattr(obj, "sync_period", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeMaster."""
         super().__init__()
@@ -62,9 +71,8 @@ class GlobalTimeMaster(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeMaster, self).serialize()

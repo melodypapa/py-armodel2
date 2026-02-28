@@ -29,8 +29,17 @@ class TDHeaderIdRange(ARObject):
         """
         return False
 
+    _XML_TAG = "T-D-HEADER-ID-RANGE"
+
+
     max_header_id: Optional[Integer]
     min_header_id: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-HEADER-ID": lambda obj, elem: setattr(obj, "max_header_id", elem.text),
+        "MIN-HEADER-ID": lambda obj, elem: setattr(obj, "min_header_id", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDHeaderIdRange."""
         super().__init__()
@@ -43,9 +52,8 @@ class TDHeaderIdRange(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDHeaderIdRange, self).serialize()

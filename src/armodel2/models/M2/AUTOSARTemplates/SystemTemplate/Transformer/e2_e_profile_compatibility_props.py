@@ -34,7 +34,15 @@ class E2EProfileCompatibilityProps(ARElement):
         """
         return False
 
+    _XML_TAG = "E2-E-PROFILE-COMPATIBILITY-PROPS"
+
+
     transit_to_invalid: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "TRANSIT-TO-INVALID": lambda obj, elem: setattr(obj, "transit_to_invalid", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize E2EProfileCompatibilityProps."""
         super().__init__()
@@ -46,9 +54,8 @@ class E2EProfileCompatibilityProps(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(E2EProfileCompatibilityProps, self).serialize()

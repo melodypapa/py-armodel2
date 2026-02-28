@@ -29,7 +29,15 @@ class StreamFilterIEEE1722Tp(ARObject):
         """
         return False
 
+    _XML_TAG = "STREAM-FILTER-I-E-E-E1722-TP"
+
+
     stream_id: Optional[PositiveUnlimitedInteger]
+    _DESERIALIZE_DISPATCH = {
+        "STREAM-ID": lambda obj, elem: setattr(obj, "stream_id", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StreamFilterIEEE1722Tp."""
         super().__init__()
@@ -41,9 +49,8 @@ class StreamFilterIEEE1722Tp(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StreamFilterIEEE1722Tp, self).serialize()

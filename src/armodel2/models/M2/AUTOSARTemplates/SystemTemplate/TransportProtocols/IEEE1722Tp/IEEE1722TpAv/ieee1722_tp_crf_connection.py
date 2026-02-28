@@ -38,11 +38,23 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-CRF-CONNECTION"
+
+
     base_frequency: Optional[PositiveInteger]
     crf_pull_enum: Optional[IEEE1722TpCrfPullEnum]
     crf_type_enum: Optional[IEEE1722TpCrfTypeEnum]
     frame_sync: Optional[Boolean]
     timestamp: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-FREQUENCY": lambda obj, elem: setattr(obj, "base_frequency", elem.text),
+        "CRF-PULL-ENUM": lambda obj, elem: setattr(obj, "crf_pull_enum", IEEE1722TpCrfPullEnum.deserialize(elem)),
+        "CRF-TYPE-ENUM": lambda obj, elem: setattr(obj, "crf_type_enum", IEEE1722TpCrfTypeEnum.deserialize(elem)),
+        "FRAME-SYNC": lambda obj, elem: setattr(obj, "frame_sync", elem.text),
+        "TIMESTAMP": lambda obj, elem: setattr(obj, "timestamp", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpCrfConnection."""
         super().__init__()
@@ -58,9 +70,8 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpCrfConnection, self).serialize()

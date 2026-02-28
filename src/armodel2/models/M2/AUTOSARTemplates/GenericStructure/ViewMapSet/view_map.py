@@ -37,9 +37,19 @@ class ViewMap(Identifiable):
         """
         return False
 
+    _XML_TAG = "VIEW-MAP"
+
+
     first_elements: list[AtpFeature]
     role: Optional[Identifier]
     second_elements: list[AtpFeature]
+    _DESERIALIZE_DISPATCH = {
+        "FIRST-ELEMENTS": lambda obj, elem: obj.first_elements.append(AtpFeature.deserialize(elem)),
+        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+        "SECOND-ELEMENTS": lambda obj, elem: obj.second_elements.append(AtpFeature.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ViewMap."""
         super().__init__()
@@ -53,9 +63,8 @@ class ViewMap(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ViewMap, self).serialize()

@@ -67,6 +67,9 @@ class BswModuleDescription(ARElement):
         """
         return False
 
+    _XML_TAG = "BSW-MODULE-DESCRIPTION"
+
+
     bsw_modules_dependencies: list[BswModuleDependency]
     bsw_module_documentation: Optional[SwComponentDocumentation]
     expected_entry_refs: list[ARRef]
@@ -81,6 +84,24 @@ class BswModuleDescription(ARElement):
     required_datas: list[VariableDataPrototype]
     required_mode_groups: list[ModeDeclarationGroup]
     required_triggers: list[Trigger]
+    _DESERIALIZE_DISPATCH = {
+        "BSW-MODULES-DEPENDENCIES": lambda obj, elem: obj.bsw_modules_dependencies.append(BswModuleDependency.deserialize(elem)),
+        "BSW-MODULE-DOCUMENTATION": lambda obj, elem: setattr(obj, "bsw_module_documentation", SwComponentDocumentation.deserialize(elem)),
+        "EXPECTED-ENTRIES": lambda obj, elem: obj.expected_entry_refs.append(ARRef.deserialize(elem)),
+        "IMPLEMENTED-ENTRIES": lambda obj, elem: obj.implemented_entry_refs.append(ARRef.deserialize(elem)),
+        "INTERNAL-BEHAVIORS": lambda obj, elem: obj.internal_behaviors.append(BswInternalBehavior.deserialize(elem)),
+        "MODULE-ID": lambda obj, elem: setattr(obj, "module_id", elem.text),
+        "PROVIDED-CLIENT-SERVER-ENTRIES": lambda obj, elem: obj._provided_client_server_entries.append(BswModuleClientServerEntry.deserialize(elem)),
+        "PROVIDED-DATAS": lambda obj, elem: obj.provided_datas.append(VariableDataPrototype.deserialize(elem)),
+        "PROVIDED-MODE-GROUPS": lambda obj, elem: obj.provided_mode_groups.append(ModeDeclarationGroup.deserialize(elem)),
+        "RELEASED-TRIGGERS": lambda obj, elem: obj.released_triggers.append(Trigger.deserialize(elem)),
+        "REQUIRED-CLIENT-SERVER-ENTRIES": lambda obj, elem: obj._required_client_server_entries.append(BswModuleClientServerEntry.deserialize(elem)),
+        "REQUIRED-DATAS": lambda obj, elem: obj.required_datas.append(VariableDataPrototype.deserialize(elem)),
+        "REQUIRED-MODE-GROUPS": lambda obj, elem: obj.required_mode_groups.append(ModeDeclarationGroup.deserialize(elem)),
+        "REQUIRED-TRIGGERS": lambda obj, elem: obj.required_triggers.append(Trigger.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswModuleDescription."""
         super().__init__()
@@ -127,9 +148,8 @@ class BswModuleDescription(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswModuleDescription, self).serialize()

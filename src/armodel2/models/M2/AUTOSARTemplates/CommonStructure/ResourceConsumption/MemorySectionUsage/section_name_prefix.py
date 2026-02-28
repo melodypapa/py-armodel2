@@ -35,7 +35,15 @@ class SectionNamePrefix(ImplementationProps):
         """
         return False
 
+    _XML_TAG = "SECTION-NAME-PREFIX"
+
+
     implemented_in_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "IMPLEMENTED-IN-REF": lambda obj, elem: setattr(obj, "implemented_in_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SectionNamePrefix."""
         super().__init__()
@@ -47,9 +55,8 @@ class SectionNamePrefix(ImplementationProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SectionNamePrefix, self).serialize()

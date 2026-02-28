@@ -48,11 +48,23 @@ class PduTriggering(Identifiable):
         """
         return False
 
+    _XML_TAG = "PDU-TRIGGERING"
+
+
     i_pdu_port_refs: list[ARRef]
     i_pdu_ref: Optional[ARRef]
     i_signal_refs: list[ARRef]
     sec_oc_crypto_service_ref: Optional[ARRef]
     trigger_i_pdu_send_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "I-PDU-PORTS": lambda obj, elem: obj.i_pdu_port_refs.append(ARRef.deserialize(elem)),
+        "I-PDU-REF": lambda obj, elem: setattr(obj, "i_pdu_ref", ARRef.deserialize(elem)),
+        "I-SIGNALS": lambda obj, elem: obj.i_signal_refs.append(ARRef.deserialize(elem)),
+        "SEC-OC-CRYPTO-SERVICE-REF": lambda obj, elem: setattr(obj, "sec_oc_crypto_service_ref", ARRef.deserialize(elem)),
+        "TRIGGER-I-PDU-SENDS": lambda obj, elem: obj.trigger_i_pdu_send_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PduTriggering."""
         super().__init__()
@@ -68,9 +80,8 @@ class PduTriggering(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PduTriggering, self).serialize()

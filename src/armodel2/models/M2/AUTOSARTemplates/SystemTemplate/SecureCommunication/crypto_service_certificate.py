@@ -39,11 +39,23 @@ class CryptoServiceCertificate(ARElement):
         """
         return False
 
+    _XML_TAG = "CRYPTO-SERVICE-CERTIFICATE"
+
+
     algorithm_family: Optional[Any]
     format: Optional[CryptoCertificateFormatEnum]
     maximum: Optional[PositiveInteger]
     next_higher_ref: Optional[Any]
     server_name: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "ALGORITHM-FAMILY": lambda obj, elem: setattr(obj, "algorithm_family", any (CryptoCertificate).deserialize(elem)),
+        "FORMAT": lambda obj, elem: setattr(obj, "format", CryptoCertificateFormatEnum.deserialize(elem)),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", elem.text),
+        "NEXT-HIGHER-REF": lambda obj, elem: setattr(obj, "next_higher_ref", ARRef.deserialize(elem)),
+        "SERVER-NAME": lambda obj, elem: setattr(obj, "server_name", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CryptoServiceCertificate."""
         super().__init__()
@@ -59,9 +71,8 @@ class CryptoServiceCertificate(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CryptoServiceCertificate, self).serialize()

@@ -33,12 +33,25 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
         """
         return False
 
+    _XML_TAG = "CAN-CONTROLLER-CONFIGURATION-REQUIREMENTS"
+
+
     max_number_of_time_quanta_per: Optional[Any]
     max_sample: Optional[Float]
     max_sync_jump: Optional[Float]
     min_number_of_time_quanta_per: Optional[Any]
     min_sample_point: Optional[Float]
     min_sync_jump: Optional[Float]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-NUMBER-OF-TIME-QUANTA-PER": lambda obj, elem: setattr(obj, "max_number_of_time_quanta_per", any (IntegerBit).deserialize(elem)),
+        "MAX-SAMPLE": lambda obj, elem: setattr(obj, "max_sample", elem.text),
+        "MAX-SYNC-JUMP": lambda obj, elem: setattr(obj, "max_sync_jump", elem.text),
+        "MIN-NUMBER-OF-TIME-QUANTA-PER": lambda obj, elem: setattr(obj, "min_number_of_time_quanta_per", any (IntegerBit).deserialize(elem)),
+        "MIN-SAMPLE-POINT": lambda obj, elem: setattr(obj, "min_sample_point", elem.text),
+        "MIN-SYNC-JUMP": lambda obj, elem: setattr(obj, "min_sync_jump", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanControllerConfigurationRequirements."""
         super().__init__()
@@ -55,9 +68,8 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanControllerConfigurationRequirements, self).serialize()

@@ -34,8 +34,17 @@ class DiagnosticAging(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-AGING"
+
+
     aging_cycle_ref: Optional[Any]
     threshold: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "AGING-CYCLE-REF": lambda obj, elem: setattr(obj, "aging_cycle_ref", ARRef.deserialize(elem)),
+        "THRESHOLD": lambda obj, elem: setattr(obj, "threshold", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticAging."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticAging(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticAging, self).serialize()

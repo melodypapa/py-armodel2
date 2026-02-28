@@ -37,12 +37,25 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-I-O-CONTROL"
+
+
     control_enables: list[Any]
     data_identifier_identifier_ref: Optional[ARRef]
     freeze_current: Optional[Boolean]
     io_control_class_ref: Optional[ARRef]
     reset_to_default: Optional[Boolean]
     short_term: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CONTROL-ENABLES": lambda obj, elem: obj.control_enables.append(any (DiagnosticControl).deserialize(elem)),
+        "DATA-IDENTIFIER-IDENTIFIER-REF": lambda obj, elem: setattr(obj, "data_identifier_identifier_ref", ARRef.deserialize(elem)),
+        "FREEZE-CURRENT": lambda obj, elem: setattr(obj, "freeze_current", elem.text),
+        "IO-CONTROL-CLASS-REF": lambda obj, elem: setattr(obj, "io_control_class_ref", ARRef.deserialize(elem)),
+        "RESET-TO-DEFAULT": lambda obj, elem: setattr(obj, "reset_to_default", elem.text),
+        "SHORT-TERM": lambda obj, elem: setattr(obj, "short_term", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticIOControl."""
         super().__init__()
@@ -59,9 +72,8 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticIOControl, self).serialize()

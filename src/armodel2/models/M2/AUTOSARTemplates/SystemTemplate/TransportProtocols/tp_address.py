@@ -33,7 +33,15 @@ class TpAddress(Identifiable):
         """
         return False
 
+    _XML_TAG = "TP-ADDRESS"
+
+
     tp_address: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "TP-ADDRESS": lambda obj, elem: setattr(obj, "tp_address", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TpAddress."""
         super().__init__()
@@ -45,9 +53,8 @@ class TpAddress(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TpAddress, self).serialize()

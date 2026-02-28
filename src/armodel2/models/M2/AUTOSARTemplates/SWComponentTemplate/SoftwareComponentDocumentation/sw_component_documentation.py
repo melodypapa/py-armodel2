@@ -31,6 +31,9 @@ class SwComponentDocumentation(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-COMPONENT-DOCUMENTATION"
+
+
     chapters: list[Chapter]
     sw_calibration: Optional[Chapter]
     sw_carb_doc: Optional[Chapter]
@@ -39,6 +42,18 @@ class SwComponentDocumentation(ARObject):
     sw_feature_desc: Optional[Chapter]
     sw_maintenance: Optional[Chapter]
     sw_test_desc: Optional[Chapter]
+    _DESERIALIZE_DISPATCH = {
+        "CHAPTERS": lambda obj, elem: obj.chapters.append(Chapter.deserialize(elem)),
+        "SW-CALIBRATION": lambda obj, elem: setattr(obj, "sw_calibration", Chapter.deserialize(elem)),
+        "SW-CARB-DOC": lambda obj, elem: setattr(obj, "sw_carb_doc", Chapter.deserialize(elem)),
+        "SW-DIAGNOSTICS": lambda obj, elem: setattr(obj, "sw_diagnostics", Chapter.deserialize(elem)),
+        "SW-FEATURE-DEF": lambda obj, elem: setattr(obj, "sw_feature_def", Chapter.deserialize(elem)),
+        "SW-FEATURE-DESC": lambda obj, elem: setattr(obj, "sw_feature_desc", Chapter.deserialize(elem)),
+        "SW-MAINTENANCE": lambda obj, elem: setattr(obj, "sw_maintenance", Chapter.deserialize(elem)),
+        "SW-TEST-DESC": lambda obj, elem: setattr(obj, "sw_test_desc", Chapter.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwComponentDocumentation."""
         super().__init__()
@@ -57,9 +72,8 @@ class SwComponentDocumentation(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwComponentDocumentation, self).serialize()

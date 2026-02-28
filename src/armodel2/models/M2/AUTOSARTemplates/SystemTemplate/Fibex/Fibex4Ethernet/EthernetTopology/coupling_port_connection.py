@@ -33,11 +33,23 @@ class CouplingPortConnection(ARObject):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT-CONNECTION"
+
+
     first_port_ref: Optional[ARRef]
     node_port_refs: list[ARRef]
     plca_local_node: Optional[PositiveInteger]
     plca_transmit: Optional[PositiveInteger]
     second_port_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FIRST-PORT-REF": lambda obj, elem: setattr(obj, "first_port_ref", ARRef.deserialize(elem)),
+        "NODE-PORTS": lambda obj, elem: obj.node_port_refs.append(ARRef.deserialize(elem)),
+        "PLCA-LOCAL-NODE": lambda obj, elem: setattr(obj, "plca_local_node", elem.text),
+        "PLCA-TRANSMIT": lambda obj, elem: setattr(obj, "plca_transmit", elem.text),
+        "SECOND-PORT-REF": lambda obj, elem: setattr(obj, "second_port_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPortConnection."""
         super().__init__()
@@ -53,9 +65,8 @@ class CouplingPortConnection(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPortConnection, self).serialize()

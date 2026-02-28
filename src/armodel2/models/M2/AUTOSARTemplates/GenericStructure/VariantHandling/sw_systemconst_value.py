@@ -38,9 +38,19 @@ class SwSystemconstValue(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-SYSTEMCONST-VALUE"
+
+
     annotations: list[Annotation]
     sw_systemconst_ref: ARRef
     value: Numerical
+    _DESERIALIZE_DISPATCH = {
+        "ANNOTATIONS": lambda obj, elem: obj.annotations.append(Annotation.deserialize(elem)),
+        "SW-SYSTEMCONST-REF": lambda obj, elem: setattr(obj, "sw_systemconst_ref", ARRef.deserialize(elem)),
+        "VALUE": lambda obj, elem: setattr(obj, "value", elem.text),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwSystemconstValue."""
         super().__init__()
@@ -54,9 +64,8 @@ class SwSystemconstValue(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwSystemconstValue, self).serialize()

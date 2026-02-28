@@ -41,10 +41,21 @@ class ConsistencyNeeds(Identifiable):
         """
         return False
 
+    _XML_TAG = "CONSISTENCY-NEEDS"
+
+
     dpg_does_not_refs: list[ARRef]
     dpg_require_refs: list[ARRef]
     reg_does_not_refs: list[ARRef]
     reg_require_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DPG-DOES-NOTS": lambda obj, elem: obj.dpg_does_not_refs.append(ARRef.deserialize(elem)),
+        "DPG-REQUIRESES": lambda obj, elem: obj.dpg_require_refs.append(ARRef.deserialize(elem)),
+        "REG-DOES-NOTS": lambda obj, elem: obj.reg_does_not_refs.append(ARRef.deserialize(elem)),
+        "REG-REQUIRESES": lambda obj, elem: obj.reg_require_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConsistencyNeeds."""
         super().__init__()
@@ -59,9 +70,8 @@ class ConsistencyNeeds(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConsistencyNeeds, self).serialize()

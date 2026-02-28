@@ -49,12 +49,25 @@ class RptExecutableEntityEvent(Identifiable):
         """
         return False
 
+    _XML_TAG = "RPT-EXECUTABLE-ENTITY-EVENT"
+
+
     execution_refs: list[ARRef]
     mc_datas: list[RoleBasedMcDataAssignment]
     rpt_event_id: Optional[PositiveInteger]
     rpt_executable_entity: Optional[RptExecutableEntity]
     rpt_impl_policy: Optional[RptImplPolicy]
     rpt_service_point_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "EXECUTIONS": lambda obj, elem: obj.execution_refs.append(ARRef.deserialize(elem)),
+        "MC-DATAS": lambda obj, elem: obj.mc_datas.append(RoleBasedMcDataAssignment.deserialize(elem)),
+        "RPT-EVENT-ID": lambda obj, elem: setattr(obj, "rpt_event_id", elem.text),
+        "RPT-EXECUTABLE-ENTITY": lambda obj, elem: setattr(obj, "rpt_executable_entity", RptExecutableEntity.deserialize(elem)),
+        "RPT-IMPL-POLICY": lambda obj, elem: setattr(obj, "rpt_impl_policy", RptImplPolicy.deserialize(elem)),
+        "RPT-SERVICE-POINTS": lambda obj, elem: obj.rpt_service_point_refs.append(ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptExecutableEntityEvent."""
         super().__init__()
@@ -71,9 +84,8 @@ class RptExecutableEntityEvent(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptExecutableEntityEvent, self).serialize()

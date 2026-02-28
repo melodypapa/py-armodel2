@@ -39,10 +39,21 @@ class SecurityEventFilterChain(IdsCommonElement):
         """
         return False
 
+    _XML_TAG = "SECURITY-EVENT-FILTER-CHAIN"
+
+
     aggregation: Optional[Any]
     one_every_n: Optional[SecurityEventOneEveryNFilter]
     state: Optional[SecurityEventStateFilter]
     threshold: Optional[SecurityEventThresholdFilter]
+    _DESERIALIZE_DISPATCH = {
+        "AGGREGATION": lambda obj, elem: setattr(obj, "aggregation", any (SecurityEvent).deserialize(elem)),
+        "ONE-EVERY-N": lambda obj, elem: setattr(obj, "one_every_n", SecurityEventOneEveryNFilter.deserialize(elem)),
+        "STATE": lambda obj, elem: setattr(obj, "state", SecurityEventStateFilter.deserialize(elem)),
+        "THRESHOLD": lambda obj, elem: setattr(obj, "threshold", SecurityEventThresholdFilter.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecurityEventFilterChain."""
         super().__init__()
@@ -57,9 +68,8 @@ class SecurityEventFilterChain(IdsCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecurityEventFilterChain, self).serialize()
