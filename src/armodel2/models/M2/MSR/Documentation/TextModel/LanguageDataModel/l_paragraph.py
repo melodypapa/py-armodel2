@@ -20,6 +20,8 @@ from armodel2.serialization.decorators import lang_prefix
 class LParagraph(LanguageSpecific):
     """AUTOSAR LParagraph."""
 
+    _XML_TAG = "L-PARAGRAPH"
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -75,9 +77,7 @@ class LParagraph(LanguageSpecific):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LParagraph, self).serialize()

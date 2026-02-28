@@ -31,6 +31,8 @@ from armodel2.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_verbatim
 class MultiLanguageVerbatim(Paginateable):
     """AUTOSAR MultiLanguageVerbatim."""
 
+    _XML_TAG = "MULTI-LANGUAGE-VERBATIM"
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -71,9 +73,7 @@ class MultiLanguageVerbatim(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MultiLanguageVerbatim, self).serialize()

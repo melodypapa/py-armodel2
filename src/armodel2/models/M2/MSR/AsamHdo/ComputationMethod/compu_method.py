@@ -36,10 +36,52 @@ from armodel2.serialization import SerializationHelper
 class CompuMethod(ARElement):
     """AUTOSAR CompuMethod."""
 
+    _XML_TAG = "COMPU-METHOD"
+
+    _DESERIALIZE_DISPATCH = {
+        "COMPU-INTERNAL-TO-PHYS": lambda obj, elem: setattr(
+            obj, '_compu_internal_to_phys', CompuMethod._deserialize_compu_content(elem)
+        ),
+        "COMPU-PHYS-TO-INTERNAL": lambda obj, elem: setattr(
+            obj, '_compu_phys_to_internal', CompuMethod._deserialize_compu_content(elem)
+        ),
+        "DISPLAY-FORMAT": lambda obj, elem: setattr(
+            obj, 'display_format', elem.text
+        ),
+        "UNIT-REF": lambda obj, elem: setattr(
+            obj, 'unit', ARRef.deserialize(elem)
+        ),
+    }
+
     compu_internal_to_phys: Optional[Compu]
     compu_phys_to_internal: Optional[Compu]
     display_format: Optional[DisplayFormatString]
     unit: Optional[ARRef]
+
+    @staticmethod
+    def _deserialize_compu_content(elem: ET.Element) -> Compu:
+        """Helper to deserialize Compu content from wrapper element."""
+        from armodel2.serialization import SerializationHelper
+        from armodel2.serialization.model_factory import ModelFactory
+        from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_content import CompuContent
+        from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import CompuConst
+
+        compu_obj = Compu()
+        factory = ModelFactory()
+        if not factory.is_initialized():
+            factory.load_mappings()
+
+        for child in elem:
+            child_tag = SerializationHelper.strip_namespace(child.tag)
+            concrete_class = factory.get_class(child_tag)
+
+            if concrete_class:
+                if isinstance(concrete_class, type) and issubclass(concrete_class, CompuContent):
+                    compu_obj.compu_content = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
+                elif isinstance(concrete_class, type) and issubclass(concrete_class, CompuConst):
+                    compu_obj.compu_default = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
+
+        return compu_obj
 
     @property
     def is_abstract(self) -> bool:
@@ -67,11 +109,7 @@ class CompuMethod(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this CompuMethod
         """
-        from armodel2.serialization.name_converter import NameConverter
-
-        # Get XML tag name for this class
-        tag = NameConverter.to_xml_tag(self.__class__.__name__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompuMethod, self).serialize()
@@ -125,8 +163,11 @@ class CompuMethod(ARElement):
     def deserialize(cls, element: ET.Element):
         """Deserialize XML element to CompuMethod.
 
+        Uses static dispatch table for O(1) tag-to-handler lookup.
         Handles the COMPU-INTERNAL-TO-PHYS and COMPU-PHYS-TO-INTERNAL elements
         by using the factory pattern to properly deserialize them as Compu objects.
+        Calls super().deserialize() first to handle inherited attributes from
+        the chain: CompuMethod -> ARElement -> PackageableElement -> ... -> Referrable.
 
         Args:
             element: XML element to deserialize from
@@ -134,89 +175,17 @@ class CompuMethod(ARElement):
         Returns:
             Deserialized CompuMethod instance
         """
-        # Local imports to avoid circular dependencies
-        from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-        from armodel2.serialization.model_factory import ModelFactory
-        from armodel2.serialization.name_converter import NameConverter
-
-        # First, call parent's deserialize to handle inherited attributes
-        # This handles: long_name, short_name, desc, category, etc.
+        # First, deserialize inherited attributes from parent chain
+        # The parent chain will create and return the object
         obj = super(CompuMethod, cls).deserialize(element)
 
-        # Initialize ModelFactory for polymorphic type resolution
-        factory = ModelFactory()
-        if not factory.is_initialized():
-            factory.load_mappings()
-
-        # Deserialize compu_internal_to_phys from COMPU-INTERNAL-TO-PHYS element
-        compu_internal_elem = None
+        # Then process CompuMethod-specific elements with dispatch table
+        ns_split = '}'
         for child in element:
-            if SerializationHelper.strip_namespace(child.tag) == "COMPU-INTERNAL-TO-PHYS":
-                compu_internal_elem = child
-                break
-
-        if compu_internal_elem is not None:
-            # The COMPU-INTERNAL-TO-PHYS element contains children that should be
-            # deserialized as a Compu object. We need to find the CompuContent subclass.
-            obj._compu_internal_to_phys = Compu()
-            compu_obj = obj._compu_internal_to_phys
-
-            # Find CompuContent or CompuConst subclasses in the children
-            for child in compu_internal_elem:
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                concrete_class = factory.get_class(child_tag)
-
-                if concrete_class:
-                    from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_content import CompuContent
-                    from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import CompuConst
-
-                    if isinstance(concrete_class, type) and issubclass(concrete_class, CompuContent):
-                        compu_obj.compu_content = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
-                    elif isinstance(concrete_class, type) and issubclass(concrete_class, CompuConst):
-                        compu_obj.compu_default = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
-
-        # Deserialize compu_phys_to_internal from COMPU-PHYS-TO-INTERNAL element
-        compu_phys_elem = None
-        for child in element:
-            if SerializationHelper.strip_namespace(child.tag) == "COMPU-PHYS-TO-INTERNAL":
-                compu_phys_elem = child
-                break
-
-        if compu_phys_elem is not None:
-            # Same logic as compu_internal_to_phys
-            obj._compu_phys_to_internal = Compu()
-            compu_obj = obj._compu_phys_to_internal
-
-            for child in compu_phys_elem:
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                concrete_class = factory.get_class(child_tag)
-
-                if concrete_class:
-                    from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_content import CompuContent
-                    from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import CompuConst
-
-                    if isinstance(concrete_class, type) and issubclass(concrete_class, CompuContent):
-                        compu_obj.compu_content = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
-                    elif isinstance(concrete_class, type) and issubclass(concrete_class, CompuConst):
-                        compu_obj.compu_default = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
-
-        # Deserialize display_format
-        display_format_elem = None
-        for child in element:
-            if SerializationHelper.strip_namespace(child.tag) == "DISPLAY-FORMAT":
-                display_format_elem = child
-                break
-        if display_format_elem is not None:
-            obj.display_format = display_format_elem.text
-
-        # Deserialize unit (UNIT-REF is a reference, not a UNIT element)
-        unit_elem = None
-        for child in element:
-            if SerializationHelper.strip_namespace(child.tag) == "UNIT-REF":
-                unit_elem = child
-                break
-        if unit_elem is not None:
-            obj.unit = ARRef.deserialize(unit_elem)
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            handler = cls._DESERIALIZE_DISPATCH.get(tag)
+            if handler is not None:
+                handler(obj, child)
 
         return obj
 

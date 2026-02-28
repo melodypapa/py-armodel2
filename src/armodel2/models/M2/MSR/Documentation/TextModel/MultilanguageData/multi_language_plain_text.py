@@ -20,6 +20,8 @@ from armodel2.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_plain_te
 class MultiLanguagePlainText(ARObject):
     """AUTOSAR MultiLanguagePlainText."""
 
+    _XML_TAG = "MULTI-LANGUAGE-PLAIN-TEXT"
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -54,9 +56,7 @@ class MultiLanguagePlainText(ARObject):
         # First, call parent's serialize to handle inherited attributes (timestamp and checksum)
         parent_elem = super(MultiLanguagePlainText, self).serialize()
 
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # Copy all attributes from parent element
         elem.attrib.update(parent_elem.attrib)

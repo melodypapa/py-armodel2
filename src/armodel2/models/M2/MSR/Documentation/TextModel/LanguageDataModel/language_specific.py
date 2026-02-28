@@ -20,6 +20,8 @@ from abc import ABC, abstractmethod
 class LanguageSpecific(ARObject, ABC):
     """AUTOSAR LanguageSpecific."""
 
+    _XML_TAG = "LANGUAGE-SPECIFIC"
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -42,9 +44,7 @@ class LanguageSpecific(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
         parent_elem = super(LanguageSpecific, self).serialize()
@@ -80,8 +80,11 @@ class LanguageSpecific(ARObject, ABC):
         Returns:
             Deserialized LanguageSpecific object
         """
-        # First, call parent's deserialize to handle inherited attributes (checksum, timestamp)
-        obj = super(LanguageSpecific, cls).deserialize(element)
+        obj = cls.__new__(cls)  # type: ignore
+        obj.__init__()
+
+        # Call parent deserialize for common fields
+        super(LanguageSpecific, cls).deserialize(element)
 
         # Parse l from XML attribute (not child element)
         l_value = element.get("L")

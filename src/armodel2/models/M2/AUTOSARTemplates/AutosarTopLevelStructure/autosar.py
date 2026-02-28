@@ -23,7 +23,6 @@ import threading
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
-from armodel2.serialization.name_converter import NameConverter
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
@@ -49,12 +48,26 @@ class AUTOSAR(ARObject):
     This class implements the singleton pattern to ensure only one AUTOSAR instance
     exists throughout the application. Use AUTOSAR.reset() to clear the singleton
     for testing purposes.
+
+    Optimized with:
+    - _DESERIALIZE_DISPATCH table for O(1) tag-to-handler lookup
+    - Pre-computed XML tag constant
     """
 
     # Singleton instance variables
     _instance: Optional["AUTOSAR"] = None
     _initialized: bool = False
     _lock: threading.Lock = threading.Lock()
+
+    # Pre-computed XML tag constant
+    _XML_TAG = "AUTOSAR"
+
+    # Static dispatch table for O(1) deserialization lookup
+    _DESERIALIZE_DISPATCH = {
+        "ADMIN-DATA": lambda obj, elem: setattr(obj, 'admin_data', AdminData.deserialize(elem)),
+        "FILE-INFO-COMMENT": lambda obj, elem: setattr(obj, 'file_info_comment', FileInfoComment.deserialize(elem)),
+        "INTRODUCTION": lambda obj, elem: setattr(obj, 'introduction', DocumentationBlock.deserialize(elem)),
+    }
 
     @property
     def is_abstract(self) -> bool:
@@ -151,8 +164,7 @@ class AUTOSAR(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # Add AUTOSAR namespace attributes if this is an AUTOSAR instance (root element only)
         elem.set("xmlns", "http://autosar.org/schema/r4.0")
@@ -198,6 +210,8 @@ class AUTOSAR(ARObject):
 
         Override base class to extract schema location from xsi:schemaLocation attribute.
 
+        Uses static dispatch table for O(1) tag-to-handler lookup.
+
         Args:
             element: XML element to deserialize from
 
@@ -212,35 +226,21 @@ class AUTOSAR(ARObject):
         if schema_loc is not None:
             obj.schema_location = schema_loc
 
-        # Parse admin_data
-        child = SerializationHelper.find_child_element(element, "ADMIN-DATA")
-        if child is not None:
-            from armodel2.models.M2.MSR.AsamHdo.AdminData.admin_data import AdminData
-            admin_data_value = AdminData.deserialize(child)
-            obj.admin_data = admin_data_value
+        # Single-pass deserialization with O(1) dispatch for child elements
+        # Inline namespace stripping for performance
+        for child in element:
+            tag = child.tag.split('}', 1)[1] if child.tag.startswith('{') else child.tag
+            handler = cls._DESERIALIZE_DISPATCH.get(tag)
+            if handler is not None:
+                handler(obj, child)
 
-        # Parse file_info_comment
-        child = SerializationHelper.find_child_element(element, "FILE-INFO-COMMENT")
-        if child is not None:
-            from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.file_info_comment import FileInfoComment
-            file_info_comment_value = FileInfoComment.deserialize(child)
-            obj.file_info_comment = file_info_comment_value
-
-        # Parse introduction
-        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
-        if child is not None:
-            from armodel2.models.M2.MSR.Documentation.BlockElements.documentation_block import DocumentationBlock
-            introduction_value = DocumentationBlock.deserialize(child)
-            obj.introduction = introduction_value
-
-        # Parse ar_packages (list from container "AR-PACKAGES")
+        # Parse ar_packages (list from container "AR-PACKAGES") - handled separately due to polymorphic nature
         obj.ar_packages = []
         container = SerializationHelper.find_child_element(element, "AR-PACKAGES")
         if container is not None:
+            from armodel2.serialization.model_factory import ModelFactory
+            factory = ModelFactory()
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                from armodel2.serialization.model_factory import ModelFactory
-                factory = ModelFactory()
                 tag = SerializationHelper.strip_namespace(child.tag)
                 child_class = factory.get_class(tag)
                 if child_class is not None:

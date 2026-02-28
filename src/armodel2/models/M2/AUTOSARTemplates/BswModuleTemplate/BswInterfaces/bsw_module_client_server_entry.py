@@ -26,6 +26,8 @@ from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_mod
 class BswModuleClientServerEntry(Referrable):
     """AUTOSAR BswModuleClientServerEntry."""
 
+    _XML_TAG = "BSW-MODULE-ENTRY-REF-CONDITIONAL"
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -55,7 +57,7 @@ class BswModuleClientServerEntry(Referrable):
             xml.etree.ElementTree.Element representing this object
         """
         # Serialize as BSW-MODULE-ENTRY-REF-CONDITIONAL element
-        elem = ET.Element("BSW-MODULE-ENTRY-REF-CONDITIONAL")
+        elem = ET.Element(self._XML_TAG)
 
         # Serialize encapsulated_entry_ref as BSW-MODULE-ENTRY-REF
         if self.encapsulated_entry_ref is not None:
@@ -90,10 +92,12 @@ class BswModuleClientServerEntry(Referrable):
         obj.__init__()
 
         # Extract BSW-MODULE-ENTRY-REF from the wrapper
-        inner_ref = SerializationHelper.find_child_element(element, "BSW-MODULE-ENTRY-REF")
-        if inner_ref is not None:
-            encapsulated_entry_ref_value = ARRef.deserialize(inner_ref)
-            obj.encapsulated_entry_ref = encapsulated_entry_ref_value
+        for child in element:
+            child_tag = child.tag.split('}', 1)[1] if child.tag.startswith('{') else child.tag
+            if child_tag == "BSW-MODULE-ENTRY-REF":
+                encapsulated_entry_ref_value = ARRef.deserialize(child)
+                obj.encapsulated_entry_ref = encapsulated_entry_ref_value
+                break
 
         return obj
 

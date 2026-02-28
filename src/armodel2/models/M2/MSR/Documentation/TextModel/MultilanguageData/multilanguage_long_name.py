@@ -22,6 +22,8 @@ from armodel2.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_long_nam
 class MultilanguageLongName(ARObject):
     """AUTOSAR MultilanguageLongName."""
 
+    _XML_TAG = "MULTILANGUAGE-LONG-NAME"
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -56,9 +58,7 @@ class MultilanguageLongName(ARObject):
         # First, call parent's serialize to handle inherited attributes (timestamp and checksum)
         parent_elem = super(MultilanguageLongName, self).serialize()
 
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # Copy all attributes from parent element
         elem.attrib.update(parent_elem.attrib)

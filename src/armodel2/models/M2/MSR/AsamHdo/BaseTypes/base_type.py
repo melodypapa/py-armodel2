@@ -24,6 +24,26 @@ class BaseType(ARElement):
     """AUTOSAR BaseType."""
     """Abstract base class - do not instantiate directly."""
 
+    _XML_TAG = "BASE-TYPE"
+
+    _DESERIALIZE_DISPATCH = {
+        "BASE-TYPE-SIZE": lambda obj, elem: setattr(
+            obj.base_type_definition, 'base_type_size', elem.text
+        ),
+        "BASE-TYPE-ENCODING": lambda obj, elem: setattr(
+            obj.base_type_definition, 'base_type_encoding', elem.text
+        ),
+        "MEM-ALIGNMENT": lambda obj, elem: setattr(
+            obj.base_type_definition, 'mem_alignment', elem.text
+        ),
+        "BYTE-ORDER": lambda obj, elem: setattr(
+            obj.base_type_definition, 'byte_order', elem.text
+        ),
+        "NATIVE-DECLARATION": lambda obj, elem: setattr(
+            obj.base_type_definition, 'native', elem.text
+        ),
+    }
+
     base_type_definition: BaseTypeDefinition
     def __init__(self) -> None:
         """Initialize BaseType."""
@@ -51,7 +71,7 @@ class BaseType(ARElement):
             if tag == 'BASE-TYPE-DIRECT-DEFINITION':
                 elem.remove(child)
 
-        # Flatten base_type_definition fields as direct children
+        # Flatten base_type_definition fields as direct children using pre-computed tags
         if self.base_type_definition is not None:
             defn = self.base_type_definition
             SerializationHelper.add_text_element(elem, 'BASE-TYPE-SIZE', getattr(defn, 'base_type_size', None))
@@ -66,6 +86,7 @@ class BaseType(ARElement):
     def deserialize(cls, element: ET.Element) -> "BaseType":
         """Deserialize XML element to BaseType with flat structure.
 
+        Uses static dispatch table for O(1) tag-to-handler lookup.
         Expects BASE-TYPE-SIZE, BASE-TYPE-ENCODING, etc. as direct children
         of the element (not wrapped in BASE-TYPE-DEFINITION).
 
@@ -75,22 +96,47 @@ class BaseType(ARElement):
         Returns:
             Deserialized BaseType object
         """
-        from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
         from armodel2.models.M2.MSR.AsamHdo.BaseTypes.base_type_direct_definition import BaseTypeDirectDefinition
 
-        # Use parent's standard deserialize for common fields (short_name, category, etc.)
-        obj = super(BaseType, cls).deserialize(element)
+        # Create object
+        obj = cls.__new__(cls)
+        obj.__init__()
 
-        # Create BaseTypeDirectDefinition and populate from direct children
-        # Using _extract_text with tag parameter for namespace-aware element finding
+        # Create BaseTypeDirectDefinition
         defn = BaseTypeDirectDefinition()
-        defn.base_type_size = SerializationHelper.extract_text(element, 'BASE-TYPE-SIZE')
-        defn.base_type_encoding = SerializationHelper.extract_text(element, 'BASE-TYPE-ENCODING')
-        defn.mem_alignment = SerializationHelper.extract_text(element, 'MEM-ALIGNMENT')
-        defn.byte_order = SerializationHelper.extract_text(element, 'BYTE-ORDER')
-        defn.native = SerializationHelper.extract_text(element, 'NATIVE-DECLARATION')
-
         obj.base_type_definition = defn
+
+        # Process all children in a single pass
+        for child in element:
+            tag = child.tag.split('}', 1)[1] if child.tag.startswith('{') else child.tag
+
+            # Check our dispatch table first for base_type_definition fields
+            handler = cls._DESERIALIZE_DISPATCH.get(tag)
+            if handler is not None:
+                handler(obj, child)
+                continue
+
+            # Handle inherited fields using property setters
+            if tag == "SHORT-NAME":
+                obj.short_name = child.text
+            elif tag == "LONG-NAME":
+                from armodel2.models.M2.MSR.Documentation.BlockElements.documentation_block import DocumentationBlock
+                obj.long_name = DocumentationBlock.deserialize(child)
+            elif tag == "DESC":
+                from armodel2.models.M2.MSR.Documentation.BlockElements.documentation_block import DocumentationBlock
+                obj.desc = DocumentationBlock.deserialize(child)
+            elif tag == "CATEGORY":
+                obj.category = child.text
+            elif tag == "CHECKSUM":
+                obj.checksum = child.text
+            elif tag == "ADMIN-DATA":
+                # Handle admin data if needed
+                pass
+
+        # Handle XML attributes (timestamp)
+        timestamp_str = element.get("T")
+        if timestamp_str is not None:
+            obj.timestamp = timestamp_str
 
         return obj
 

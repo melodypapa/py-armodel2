@@ -23,6 +23,14 @@ from armodel2.serialization.name_converter import NameConverter
 class CompuScales(CompuContent):
     """AUTOSAR CompuScales."""
 
+    _XML_TAG = "COMPU-SCALES"
+
+    _DESERIALIZE_DISPATCH = {
+        "COMPU-SCALE": lambda obj, elem: obj.compu_scales.append(
+            SerializationHelper.unwrap_primitive(CompuScale.deserialize(elem))
+        ),
+    }
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -46,9 +54,7 @@ class CompuScales(CompuContent):
         Returns:
             xml.etree.ElementTree.Element representing this CompuScales
         """
-        # Get XML tag name
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
         parent_elem = super(CompuScales, self).serialize()
@@ -68,10 +74,12 @@ class CompuScales(CompuContent):
         return elem
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> Self:
+    def deserialize(cls, element: ET.Element) -> "CompuScales":
         """Deserialize XML element to CompuScales.
 
         AUTOSAR schema uses flat structure: COMPU-SCALES contains COMPU-SCALE items directly.
+        Uses static dispatch table for O(1) tag-to-handler lookup.
+        Calls super().deserialize() first to handle inherited attributes from CompuContent -> ARObject.
 
         Args:
             element: XML element to deserialize from
@@ -79,16 +87,16 @@ class CompuScales(CompuContent):
         Returns:
             Deserialized CompuScales instance
         """
-        # First, call parent's deserialize to handle inherited attributes
+        # First, deserialize inherited attributes from parent chain (CompuContent -> ARObject)
         obj = super(CompuScales, cls).deserialize(element)
 
-        # Find all COMPU-SCALE child elements directly
+        # Then process CompuScales-specific elements with dispatch table
+        ns_split = '}'
         for child in element:
-            child_tag = SerializationHelper.strip_namespace(child.tag)
-            if child_tag == "COMPU-SCALE":
-                if hasattr(CompuScale, 'deserialize'):
-                    scale = SerializationHelper.unwrap_primitive(CompuScale.deserialize(child))
-                    obj.compu_scales.append(scale)
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            handler = cls._DESERIALIZE_DISPATCH.get(tag)
+            if handler is not None:
+                handler(obj, child)
 
         return obj
 
