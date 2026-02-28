@@ -39,6 +39,8 @@ from armodel2.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_lang
 class CompuScale(ARObject):
     """AUTOSAR CompuScale."""
 
+    _XML_TAG = "COMPU-SCALE"
+
     # Polymorphic flattened mapping for compu_scale_contents attribute
     # Maps flattened child XML tags to wrapper class names
     _polymorphic_flattened_mapping = {
@@ -47,6 +49,51 @@ class CompuScale(ARObject):
             "COMPU-RATIONAL-COEFFS": "CompuScaleRationalFormula"
         }
     }
+
+    _DESERIALIZE_DISPATCH = {
+        "DESC": lambda obj, elem: setattr(obj, 'desc', CompuScale._deserialize_desc(elem)),
+        "LOWER-LIMIT": lambda obj, elem: setattr(obj, 'lower_limit', SerializationHelper.deserialize_by_tag(elem, "Limit")),
+        "UPPER-LIMIT": lambda obj, elem: setattr(obj, 'upper_limit', SerializationHelper.deserialize_by_tag(elem, "Limit")),
+        "COMPU-CONST": lambda obj, elem: CompuScale._deserialize_compu_const(obj, elem),
+        "COMPU-RATIONAL-COEFFS": lambda obj, elem: CompuScale._deserialize_compu_rational(obj, elem),
+        "COMPU-INVERSE-VALUE": lambda obj, elem: setattr(obj, 'compu_inverse_value', SerializationHelper.unwrap_primitive(SerializationHelper.deserialize_by_tag(elem, "CompuConst"))),
+        "A2L-DISPLAY-TEXT": lambda obj, elem: setattr(obj, 'a2l_display_text', SerializationHelper.deserialize_by_tag(elem, "String")),
+        "MASK": lambda obj, elem: setattr(obj, 'mask', SerializationHelper.deserialize_by_tag(elem, "PositiveUnlimitedInteger")),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, 'short_label', SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "SYMBOL": lambda obj, elem: setattr(obj, 'symbol', SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
+    }
+
+    @staticmethod
+    def _deserialize_desc(elem: ET.Element) -> Optional[MultiLanguageOverviewParagraph]:
+        """Deserialize DESC element with L-2 children."""
+        from armodel2.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import MultiLanguageOverviewParagraph
+        from armodel2.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_paragraph import LParagraph
+
+        wrapped = MultiLanguageOverviewParagraph()
+        for sub_child in elem:
+            sub_child_tag = SerializationHelper.strip_namespace(sub_child.tag)
+            if sub_child_tag == "L-2":
+                l2_value = SerializationHelper.deserialize_by_tag(sub_child, "LParagraph")
+                if hasattr(wrapped, '_l2'):
+                    wrapped._l2.append(l2_value)
+        return wrapped if len(wrapped._l2) > 0 else None
+
+    @staticmethod
+    def _deserialize_compu_const(obj: "CompuScale", elem: ET.Element) -> None:
+        """Deserialize COMPU-CONST for compu_scale_contents."""
+        from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_constant_contents import CompuScaleConstantContents
+        const_contents = CompuScaleConstantContents()
+        const_contents.compu_const = SerializationHelper.unwrap_primitive(CompuConst.deserialize(elem))
+        obj.compu_scale_contents = const_contents
+
+    @staticmethod
+    def _deserialize_compu_rational(obj: "CompuScale", elem: ET.Element) -> None:
+        """Deserialize COMPU-RATIONAL-COEFFS for compu_scale_contents."""
+        from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_rational_formula import CompuScaleRationalFormula
+        from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_rational_coeffs import CompuRationalCoeffs
+        rational_formula = CompuScaleRationalFormula()
+        rational_formula.compu_rational_coeffs = SerializationHelper.unwrap_primitive(CompuRationalCoeffs.deserialize(elem))
+        obj.compu_scale_contents = rational_formula
 
     @property
     def is_abstract(self) -> bool:
@@ -85,9 +132,7 @@ class CompuScale(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this CompuScale
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
         parent_elem = super(CompuScale, self).serialize()
@@ -267,82 +312,24 @@ class CompuScale(ARObject):
     def deserialize(cls, element: ET.Element) -> Self:
         """Deserialize XML element to CompuScale.
 
+        Uses static dispatch table for O(1) tag-to-handler lookup.
+
         Args:
             element: XML element to deserialize from
 
         Returns:
             Deserialized CompuScale instance
         """
-        # First, call parent's deserialize to handle inherited attributes (checksum, timestamp)
-        obj = super(CompuScale, cls).deserialize(element)
+        obj = cls.__new__(cls)
+        obj.__init__()
 
-        # Parse desc
-        child = SerializationHelper.find_child_element(element, "DESC")
-        if child is not None:
-            # DESC contains L-2 children directly, wrap in MultiLanguageOverviewParagraph
-            from armodel2.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import MultiLanguageOverviewParagraph
-            wrapped = MultiLanguageOverviewParagraph()
-            for sub_child in child:
-                sub_child_tag = SerializationHelper.strip_namespace(sub_child.tag)
-                if sub_child_tag == "L-2":
-                    l2_value = SerializationHelper.deserialize_by_tag(sub_child, "LParagraph")
-                    if hasattr(wrapped, '_l2'):
-                        wrapped._l2.append(l2_value)
-            obj.desc = wrapped
-
-        # Parse lower_limit
-        child = SerializationHelper.find_child_element(element, "LOWER-LIMIT")
-        if child is not None:
-            obj.lower_limit = SerializationHelper.deserialize_by_tag(child, "Limit")
-
-        # Parse upper_limit
-        child = SerializationHelper.find_child_element(element, "UPPER-LIMIT")
-        if child is not None:
-            obj.upper_limit = SerializationHelper.deserialize_by_tag(child, "Limit")
-
-        # Parse compu_scale_contents (flattened structure)
-        # Check for COMPU-CONST
-        child = SerializationHelper.find_child_element(element, "COMPU-CONST")
-        if child is not None:
-            from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_constant_contents import CompuScaleConstantContents
-            from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import CompuConst
-            const_contents = CompuScaleConstantContents()
-            const_contents.compu_const = SerializationHelper.unwrap_primitive(CompuConst.deserialize(child))
-            obj.compu_scale_contents = const_contents
-
-        # Check for COMPU-RATIONAL-COEFFS
-        child = SerializationHelper.find_child_element(element, "COMPU-RATIONAL-COEFFS")
-        if child is not None:
-            from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_rational_formula import CompuScaleRationalFormula
-            from armodel2.models.M2.MSR.AsamHdo.ComputationMethod.compu_rational_coeffs import CompuRationalCoeffs
-            rational_formula = CompuScaleRationalFormula()
-            rational_formula.compu_rational_coeffs = SerializationHelper.unwrap_primitive(CompuRationalCoeffs.deserialize(child))
-            obj.compu_scale_contents = rational_formula
-
-        # Parse compu_inverse_value
-        child = SerializationHelper.find_child_element(element, "COMPU-INVERSE-VALUE")
-        if child is not None:
-            obj.compu_inverse_value = SerializationHelper.unwrap_primitive(SerializationHelper.deserialize_by_tag(child, "CompuConst"))
-
-        # Parse a2l_display_text
-        child = SerializationHelper.find_child_element(element, "A2L-DISPLAY-TEXT")
-        if child is not None:
-            obj.a2l_display_text = SerializationHelper.deserialize_by_tag(child, "String")
-
-        # Parse mask
-        child = SerializationHelper.find_child_element(element, "MASK")
-        if child is not None:
-            obj.mask = SerializationHelper.deserialize_by_tag(child, "PositiveUnlimitedInteger")
-
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            obj.short_label = SerializationHelper.deserialize_by_tag(child, "Identifier")
-
-        # Parse symbol
-        child = SerializationHelper.find_child_element(element, "SYMBOL")
-        if child is not None:
-            obj.symbol = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
+        # Single-pass deserialization with dispatch table
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            handler = cls._DESERIALIZE_DISPATCH.get(tag)
+            if handler is not None:
+                handler(obj, child)
 
         return obj
 

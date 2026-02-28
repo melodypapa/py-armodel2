@@ -21,6 +21,10 @@ from armodel2.serialization.model_factory import ModelFactory
 class CompuConst(ARObject):
     """AUTOSAR CompuConst."""
 
+    _XML_TAG = "COMPU-CONST"
+
+    _DESERIALIZE_DISPATCH = {}  # Polymorphic content handled by ModelFactory in deserialize
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -46,8 +50,7 @@ class CompuConst(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this CompuConst
         """
-        tag = NameConverter.to_xml_tag(self.__class__.__name__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
         parent_elem = super(CompuConst, self).serialize()
@@ -86,8 +89,8 @@ class CompuConst(ARObject):
         Returns:
             Deserialized CompuConst instance with compu_const_content_type properly set
         """
-        # First, call parent's deserialize to handle inherited attributes (checksum, timestamp)
-        obj = super(CompuConst, cls).deserialize(element)
+        obj = cls.__new__(cls)
+        obj.__init__()
 
         # Use ModelFactory for polymorphic type resolution
         factory = ModelFactory()
@@ -95,8 +98,9 @@ class CompuConst(ARObject):
             factory.load_mappings()
 
         # Find child elements that are CompuConstContent subclasses
+        ns_split = '}'
         for child in element:
-            child_tag = SerializationHelper.strip_namespace(child.tag)
+            child_tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             concrete_class = factory.get_class(child_tag)
 
             if concrete_class:

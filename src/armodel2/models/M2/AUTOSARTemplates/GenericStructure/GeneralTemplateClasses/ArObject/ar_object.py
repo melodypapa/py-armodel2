@@ -28,8 +28,19 @@ class ARObject:
     It only serializes checksum and timestamp attributes. Child classes must call
     super().serialize() and super().deserialize() to properly inherit these attributes.
 
-    All serialization helper methods have been extracted to SerializationHelper class.
+    Optimized with:
+    - _DESERIALIZE_DISPATCH table for O(1) tag-to-handler lookup
+    - Pre-computed XML tag constant
+    - Inline namespace stripping for performance
     """
+
+    # Pre-computed XML tag constant
+    _XML_TAG = "AR-OBJECT"
+
+    # Static dispatch table for O(1) deserialization lookup
+    _DESERIALIZE_DISPATCH = {
+        "CHECKSUM": lambda obj, elem: setattr(obj, '_checksum', elem.text if elem.text else None),
+    }
 
     checksum: Optional["String"]
     timestamp: Optional["DateTime"]
@@ -69,8 +80,7 @@ class ARObject:
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # Serialize timestamp (XML attribute)
         if self._timestamp is not None:
@@ -91,6 +101,9 @@ class ARObject:
         Only deserializes checksum and timestamp attributes.
         Child classes must call super().deserialize() to inherit these attributes.
 
+        Uses static dispatch table for O(1) tag-to-handler lookup for child elements,
+        and direct attribute access for XML attributes.
+
         Args:
             element: XML element to deserialize from
 
@@ -100,15 +113,18 @@ class ARObject:
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Deserialize timestamp (XML attribute)
+        # Deserialize timestamp from XML attribute 'T'
         timestamp_str = element.get("T")
         if timestamp_str is not None:
-            obj.timestamp = timestamp_str
+            obj._timestamp = timestamp_str
 
-        # Deserialize checksum (child element)
-        checksum_elem = SerializationHelper.find_child_element(element, "CHECKSUM")
-        if checksum_elem is not None and checksum_elem.text:
-            obj.checksum = checksum_elem.text
+        # Single-pass deserialization with O(1) dispatch for child elements
+        # Inline namespace stripping for performance
+        for child in element:
+            tag = child.tag.split('}', 1)[1] if child.tag.startswith('{') else child.tag
+            handler = cls._DESERIALIZE_DISPATCH.get(tag)
+            if handler is not None:
+                handler(obj, child)
 
         return obj
 

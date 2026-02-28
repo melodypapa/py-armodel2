@@ -25,6 +25,8 @@ if TYPE_CHECKING:
 class Item(Paginateable):
     """AUTOSAR Item."""
 
+    _XML_TAG = "ITEM"
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -46,9 +48,7 @@ class Item(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Item, self).serialize()

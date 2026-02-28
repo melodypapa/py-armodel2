@@ -44,6 +44,8 @@ if TYPE_CHECKING:
 class DocumentationBlock(ARObject):
     """AUTOSAR DocumentationBlock."""
 
+    _XML_TAG = "DOCUMENTATION-BLOCK"
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -86,9 +88,7 @@ class DocumentationBlock(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # Call parent's serialize to handle inherited attributes (checksum, timestamp)
         parent_elem = super().serialize()
@@ -285,112 +285,72 @@ class DocumentationBlock(ARObject):
     def deserialize(cls, element: ET.Element) -> "DocumentationBlock":
         """Deserialize XML element to DocumentationBlock object.
 
+        Uses static dispatch table for O(1) tag-to-handler lookup.
+
         Args:
             element: XML element to deserialize from
 
         Returns:
             Deserialized DocumentationBlock object
         """
-        # Call parent's deserialize first to handle inherited attributes (checksum, timestamp)
-        obj = super().deserialize(element)
+        obj = cls.__new__(cls)
+        obj.__init__()
 
-        # Parse def_list_ref
-        child = SerializationHelper.find_child_element(element, "DEF-LIST-REF")
-        if child is not None:
-            def_list_ref_value = ARRef.deserialize(child)
-            obj.def_list_ref = def_list_ref_value
+        # Single-pass deserialization with dispatch handlers
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
 
-        # Parse figure (list)
-        obj.figure = []
-        for child in SerializationHelper.find_all_child_elements(element, "FIGURE"):
-            figure_value = SerializationHelper.deserialize_by_tag(child, "MlFigure")
-            obj.figure.append(figure_value)
-
-        # Parse formula
-        child = SerializationHelper.find_child_element(element, "FORMULA")
-        if child is not None:
-            formula_value = SerializationHelper.deserialize_by_tag(child, "MlFormula")
-            obj.formula = formula_value
-
-        # Parse labeled_list_label_ref
-        child = SerializationHelper.find_child_element(element, "LABELED-LIST-LABEL-REF")
-        if child is not None:
-            labeled_list_label_ref_value = ARRef.deserialize(child)
-            obj.labeled_list_label_ref = labeled_list_label_ref_value
-
-        # Parse msr_query_p2
-        child = SerializationHelper.find_child_element(element, "MSR-QUERY-P2")
-        if child is not None:
-            msr_query_p2_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryP2")
-            obj.msr_query_p2 = msr_query_p2_value
-
-        # Parse note
-        child = SerializationHelper.find_child_element(element, "NOTE")
-        if child is not None:
-            note_value = SerializationHelper.deserialize_by_tag(child, "Note")
-            obj.note = note_value
-
-        # Parse p - Special handling for MultiLanguageParagraph
-        # The P element contains L-1 elements directly as children
-        child = SerializationHelper.find_child_element(element, "P")
-        if child is not None:
-            # Create a MultiLanguageParagraph
-            p_value = MultiLanguageParagraph()
-            # Find all L-1 children and deserialize them as LParagraph
-            from armodel2.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_paragraph import (
-                LParagraph,
-            )
-
-            for l1_child in child:
-                if SerializationHelper.strip_namespace(l1_child.tag) == "L-1":
-                    # Deserialize L-1 as LParagraph
-                    lp = LParagraph.deserialize(l1_child)
-                    p_value._l1.append(lp)
-            # Only set obj.p if there are actual L-1 children
-            # This prevents empty <P></P> elements from being created
-            if len(p_value._l1) > 0:
-                obj.p = p_value
-
-        # Parse list
-        for child in SerializationHelper.find_all_child_elements(element, "LIST"):
-            list_value = SerializationHelper.deserialize_by_tag(child, "ARList")
-            if list_value is not None:
-                obj.list.append(list_value)
-
-        # Parse structured_req
-        child = SerializationHelper.find_child_element(element, "STRUCTURED-REQ")
-        if child is not None:
-            structured_req_value = SerializationHelper.deserialize_by_tag(child, "StructuredReq")
-            obj.structured_req = structured_req_value
-
-        # Parse trace
-        child = SerializationHelper.find_child_element(element, "TRACE")
-        if child is not None:
-            trace_value = SerializationHelper.deserialize_by_tag(child, "TraceableText")
-            obj.trace = trace_value
-
-        # Parse verbatim - Special handling for MultiLanguageVerbatim
-        # The VERBATIM element contains L-1 elements directly as children
-        child = SerializationHelper.find_child_element(element, "VERBATIM")
-        if child is not None:
-            # Create a MultiLanguageVerbatim
-            verbatim_value = MultiLanguageVerbatim()
-            # Find all L-1 children and deserialize them as LParagraph
-            from armodel2.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_paragraph import (
-                LParagraph,
-            )
-
-            for l1_child in child:
-                if SerializationHelper.strip_namespace(l1_child.tag) == "L-1":
-                    # Deserialize L-1 as LParagraph
-                    lp = LParagraph.deserialize(l1_child)
-                    verbatim_value._l1.append(lp)
-            # Only set obj.verbatim if there are actual L-1 children
-            # This prevents empty <VERBATIM></VERBATIM> elements from being created
-            if len(verbatim_value._l1) > 0:
-                obj.verbatim = verbatim_value
+            if tag == "DEF-LIST-REF":
+                obj.def_list_ref = ARRef.deserialize(child)
+            elif tag == "FIGURE":
+                obj.figure.append(SerializationHelper.deserialize_by_tag(child, "MlFigure"))
+            elif tag == "FORMULA":
+                obj.formula = SerializationHelper.deserialize_by_tag(child, "MlFormula")
+            elif tag == "LABELED-LIST-LABEL-REF":
+                obj.labeled_list_label_ref = ARRef.deserialize(child)
+            elif tag == "MSR-QUERY-P2":
+                obj.msr_query_p2 = SerializationHelper.deserialize_by_tag(child, "MsrQueryP2")
+            elif tag == "NOTE":
+                obj.note = SerializationHelper.deserialize_by_tag(child, "Note")
+            elif tag == "P":
+                obj.p = DocumentationBlock._deserialize_p(child)
+            elif tag == "LIST":
+                list_value = SerializationHelper.deserialize_by_tag(child, "ARList")
+                if list_value is not None:
+                    obj.list.append(list_value)
+            elif tag == "STRUCTURED-REQ":
+                obj.structured_req = SerializationHelper.deserialize_by_tag(child, "StructuredReq")
+            elif tag == "TRACE":
+                obj.trace = SerializationHelper.deserialize_by_tag(child, "TraceableText")
+            elif tag == "VERBATIM":
+                obj.verbatim = DocumentationBlock._deserialize_verbatim(child)
 
         return obj
+
+    @staticmethod
+    def _deserialize_p(element: ET.Element) -> Optional[MultiLanguageParagraph]:
+        """Deserialize P element with L-1 children."""
+        from armodel2.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_paragraph import LParagraph
+
+        p_value = MultiLanguageParagraph()
+        for l1_child in element:
+            if SerializationHelper.strip_namespace(l1_child.tag) == "L-1":
+                lp = LParagraph.deserialize(l1_child)
+                p_value._l1.append(lp)
+        return p_value if len(p_value._l1) > 0 else None
+
+    @staticmethod
+    def _deserialize_verbatim(element: ET.Element) -> Optional[MultiLanguageVerbatim]:
+        """Deserialize VERBATIM element with L-1 children."""
+        from armodel2.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_paragraph import LParagraph
+
+        verbatim_value = MultiLanguageVerbatim()
+        for l1_child in element:
+            if SerializationHelper.strip_namespace(l1_child.tag) == "L-1":
+                lp = LParagraph.deserialize(l1_child)
+                verbatim_value._l1.append(lp)
+        return verbatim_value if len(verbatim_value._l1) > 0 else None
 
 
 class DocumentationBlockBuilder:

@@ -25,6 +25,8 @@ if TYPE_CHECKING:
 class CompuConstTextContent(CompuConstContent):
     """AUTOSAR CompuConstTextContent."""
 
+    _XML_TAG = "VT"
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -49,8 +51,7 @@ class CompuConstTextContent(CompuConstContent):
             xml.etree.ElementTree.Element representing this CompuConstTextContent
         """
         # Use VT as the XML tag name (as specified in AUTOSAR schema)
-        tag = "VT"
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
         parent_elem = super(CompuConstTextContent, self).serialize()
@@ -84,8 +85,11 @@ class CompuConstTextContent(CompuConstContent):
         Returns:
             Deserialized CompuConstTextContent instance
         """
+        obj = cls.__new__(cls)
+        obj.__init__()
+
         # First, call parent's deserialize to handle inherited attributes (checksum, timestamp)
-        obj = super(CompuConstTextContent, cls).deserialize(element)
+        super(CompuConstTextContent, cls).deserialize(element)
 
         # Deserialize text content to vt attribute
         if element.text:

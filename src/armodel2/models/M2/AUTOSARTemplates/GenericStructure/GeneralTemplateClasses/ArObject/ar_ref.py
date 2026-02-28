@@ -27,11 +27,18 @@ class ARRef(ARObject):
     - A DEST attribute specifying the target type
     - Text content containing the target path (e.g., "/Package/Element")
 
+    Optimized with:
+    - Pre-computed XML tag constant
+    - Direct attribute access for serialization
+
     Attributes:
         dest: The target type (e.g., "SW-ADDR-METHOD")
         value: The target path reference
         base: The base package/type for the reference (e.g., "DataTypes")
     """
+
+    # Pre-computed XML tag constant - used by parent serialize methods
+    _XML_TAG = "ARREF"
 
     def __init__(self, dest: Optional[str] = None, value: Optional[str] = None, base: Optional[str] = None) -> None:
         """Initialize an ARRef with target type and path.

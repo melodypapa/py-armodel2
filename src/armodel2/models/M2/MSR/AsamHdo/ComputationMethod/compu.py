@@ -24,6 +24,10 @@ from armodel2.serialization.model_factory import ModelFactory
 class Compu(ARObject):
     """AUTOSAR Compu."""
 
+    _XML_TAG = "COMPU"
+
+    _DESERIALIZE_DISPATCH = {}  # Polymorphic content handled by ModelFactory in deserialize
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -47,9 +51,7 @@ class Compu(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this Compu
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
         parent_elem = super(Compu, self).serialize()
@@ -89,8 +91,8 @@ class Compu(ARObject):
         Returns:
             Deserialized Compu instance with compu_content properly set
         """
-        # First, call parent's deserialize to handle inherited attributes
-        obj = super(Compu, cls).deserialize(element)
+        obj = cls.__new__(cls)
+        obj.__init__()
 
         # Use ModelFactory for polymorphic type resolution
         factory = ModelFactory()
@@ -98,8 +100,9 @@ class Compu(ARObject):
             factory.load_mappings()
 
         # Find child elements that are CompuContent or CompuConst subclasses
+        ns_split = '}'
         for child in element:
-            child_tag = SerializationHelper.strip_namespace(child.tag)
+            child_tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             concrete_class = factory.get_class(child_tag)
 
             if concrete_class:

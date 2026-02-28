@@ -37,6 +37,23 @@ if TYPE_CHECKING:
 class ARPackage(CollectableElement):
     """AUTOSAR ARPackage."""
 
+    _XML_TAG = "AR-PACKAGE"
+
+    _DESERIALIZE_DISPATCH = {
+        "REFERENCE-BASES": lambda obj, elem: setattr(
+            obj, "_reference_bases",
+            [SerializationHelper.deserialize_by_tag(child, None) for child in elem if child.tag not in ("{http://www.w3.org/2001/XMLSchema-instance}", "{http://www.w3.org/2001/XMLSchema}")]
+        ),
+        "ELEMENTS": lambda obj, elem: setattr(
+            obj, "_elements",
+            [SerializationHelper.deserialize_by_tag(child, None) for child in elem if child.tag not in ("{http://www.w3.org/2001/XMLSchema-instance}", "{http://www.w3.org/2001/XMLSchema}")]
+        ),
+        "AR-PACKAGES": lambda obj, elem: setattr(
+            obj, "_ar_packages",
+            [SerializationHelper.deserialize_by_tag(child, None) for child in elem if child.tag not in ("{http://www.w3.org/2001/XMLSchema-instance}", "{http://www.w3.org/2001/XMLSchema}")]
+        ),
+    }
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -52,18 +69,16 @@ class ARPackage(CollectableElement):
     def __init__(self) -> None:
         """Initialize ARPackage."""
         super().__init__()
-        self.reference_bases: list[ReferenceBase] = []
-        self.elements: list[PackageableElement] = []
-        self.ar_packages: list[ARPackage] = []
+        self._reference_bases: list[ReferenceBase] = []
+        self._elements: list[PackageableElement] = []
+        self._ar_packages: list[ARPackage] = []
     def serialize(self) -> ET.Element:
         """Serialize ARPackage to XML element.
 
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ARPackage, self).serialize()
@@ -76,9 +91,9 @@ class ARPackage(CollectableElement):
             elem.append(child)
 
         # Serialize reference_bases (list to container "REFERENCE-BASES")
-        if self.reference_bases:
+        if self._reference_bases:
             wrapper = ET.Element("REFERENCE-BASES")
-            for item in self.reference_bases:
+            for item in self._reference_bases:
                 serialized = SerializationHelper.serialize_item(item, "ReferenceBase")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -86,9 +101,9 @@ class ARPackage(CollectableElement):
                 elem.append(wrapper)
 
         # Serialize elements (list to container "ELEMENTS")
-        if self.elements:
+        if self._elements:
             wrapper = ET.Element("ELEMENTS")
-            for item in self.elements:
+            for item in self._elements:
                 serialized = SerializationHelper.serialize_item(item, "PackageableElement")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -96,9 +111,9 @@ class ARPackage(CollectableElement):
                 elem.append(wrapper)
 
         # Serialize ar_packages (list to container "AR-PACKAGES")
-        if self.ar_packages:
+        if self._ar_packages:
             wrapper = ET.Element("AR-PACKAGES")
-            for item in self.ar_packages:
+            for item in self._ar_packages:
                 serialized = SerializationHelper.serialize_item(item, "ARPackage")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -111,47 +126,26 @@ class ARPackage(CollectableElement):
     def deserialize(cls, element: ET.Element) -> "ARPackage":
         """Deserialize XML element to ARPackage object.
 
+        Uses static dispatch table for O(1) tag-to-handler lookup.
+
         Args:
             element: XML element to deserialize from
 
         Returns:
             Deserialized ARPackage object
         """
-        # First, call parent's deserialize to handle inherited attributes
-        obj = super(ARPackage, cls).deserialize(element)
+        obj = cls.__new__(cls)
+        obj.__init__()
 
-        # Parse reference_bases (list from container "REFERENCE-BASES")
-        obj.reference_bases = []
-        container = SerializationHelper.find_child_element(element, "REFERENCE-BASES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.reference_bases.append(child_value)
-
-        # Parse elements (list from container "ELEMENTS")
-        obj.elements = []
-        container = SerializationHelper.find_child_element(element, "ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.elements.append(child_value)
-
-        # Parse ar_packages (list from container "AR-PACKAGES")
-        obj.ar_packages = []
-        container = SerializationHelper.find_child_element(element, "AR-PACKAGES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ar_packages.append(child_value)
+        # Single-pass deserialization with dispatch table
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            handler = cls._DESERIALIZE_DISPATCH.get(tag)
+            if handler is not None:
+                handler(obj, child)
 
         return obj
-
 
 
 class ARPackageBuilder:
@@ -169,3 +163,27 @@ class ARPackageBuilder:
         """
         # TODO: Add validation
         return self._obj
+
+
+# Add property getters and setters for ARPackage
+def _get_reference_bases(self) -> list[ReferenceBase]:
+    return self._reference_bases
+
+def _set_reference_bases(self, value: list[ReferenceBase]) -> None:
+    self._reference_bases = value
+
+def _get_elements(self) -> list[PackageableElement]:
+    return self._elements
+
+def _set_elements(self, value: list[PackageableElement]) -> None:
+    self._elements = value
+
+def _get_ar_packages(self) -> list[ARPackage]:
+    return self._ar_packages
+
+def _set_ar_packages(self, value: list[ARPackage]) -> None:
+    self._ar_packages = value
+
+ARPackage.reference_bases = property(_get_reference_bases, _set_reference_bases)
+ARPackage.elements = property(_get_elements, _set_elements)
+ARPackage.ar_packages = property(_get_ar_packages, _set_ar_packages)
