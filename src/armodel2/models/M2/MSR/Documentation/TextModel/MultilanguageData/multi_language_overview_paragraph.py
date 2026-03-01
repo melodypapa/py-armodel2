@@ -110,11 +110,6 @@ class MultiLanguageOverviewParagraph(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MultiLanguageOverviewParagraph, cls).deserialize(element)
 
-        # Single-pass deserialization with if-elif-else chain
-        ns_split = '}'
-        for child in element:
-            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-
         # Parse l2 (list with lang_prefix "L-2")
         for child in SerializationHelper.find_all_child_elements(element, "L-2"):
             l2_item = SerializationHelper.deserialize_by_tag(child, "LOverviewParagraph")
