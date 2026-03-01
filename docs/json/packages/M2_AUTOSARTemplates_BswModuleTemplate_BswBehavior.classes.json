@@ -94,6 +94,7 @@
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
+          "decorator": "xml_element_name:ENTITYS/BSW-SCHEDULABLE-ENTITY",
           "note": "A code entity for which the behavior is described atpVariation"
         },
         "event": {
