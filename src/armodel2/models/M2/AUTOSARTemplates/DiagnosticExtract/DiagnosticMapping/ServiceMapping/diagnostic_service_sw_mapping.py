@@ -52,7 +52,7 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
     parameter: Optional[DiagnosticParameter]
     service_instance_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "ACCESSED-DATA-REF": ("_POLYMORPHIC", "accessed_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "ACCESSED-DATA-REF": ("_POLYMORPHIC", "accessed_data_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "DIAGNOSTIC-DATA-REF": lambda obj, elem: setattr(obj, "diagnostic_data_ref", ARRef.deserialize(elem)),
         "DIAGNOSTIC-REF": lambda obj, elem: setattr(obj, "diagnostic_ref", ARRef.deserialize(elem)),
         "MAPPED-BSW-REF": lambda obj, elem: setattr(obj, "mapped_bsw_ref", ARRef.deserialize(elem)),

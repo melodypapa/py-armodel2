@@ -45,7 +45,7 @@ class AutosarDataPrototype(DataPrototype, ABC):
 
     type_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TYPE-TREF": ("_POLYMORPHIC", "type_ref", ["AbstractImplementationDataType", "ApplicationDataType"]),
+        "TYPE-TREF": ("_POLYMORPHIC", "type_ref", ["AbstractImplementationDataType", "ApplicationArrayDataType", "ApplicationDataType", "ApplicationPrimitiveDataType", "ApplicationRecordDataType", "ImplementationDataType"]),
     }
 
 

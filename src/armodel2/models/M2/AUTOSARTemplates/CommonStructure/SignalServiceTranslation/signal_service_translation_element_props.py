@@ -47,7 +47,7 @@ class SignalServiceTranslationElementProps(Identifiable):
     filter: Optional[DataFilter]
     transmission: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "ELEMENT-REF": ("_POLYMORPHIC", "element_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "ELEMENT-REF": ("_POLYMORPHIC", "element_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "FILTER": lambda obj, elem: setattr(obj, "filter", SerializationHelper.deserialize_by_tag(elem, "DataFilter")),
         "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }

@@ -38,7 +38,7 @@ class AbstractEvent(Identifiable, ABC):
 
     activation_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ACTIVATION-REF": ("_POLYMORPHIC", "activation_ref", ["BswModuleEntity", "RunnableEntity"]),
+        "ACTIVATION-REF": ("_POLYMORPHIC", "activation_ref", ["BswCalledEntity", "BswInterruptEntity", "BswModuleEntity", "BswSchedulableEntity", "RunnableEntity"]),
     }
 
 

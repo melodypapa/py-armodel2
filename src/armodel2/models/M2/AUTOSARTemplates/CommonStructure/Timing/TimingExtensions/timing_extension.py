@@ -52,7 +52,7 @@ class TimingExtension(ARElement, ABC):
         "TIMING-CLOCKS": ("_POLYMORPHIC_LIST", "timing_clocks", ["TDLETZoneClock"]),
         "TIMING-CLOCK-SYNCS": lambda obj, elem: obj.timing_clock_syncs.append(SerializationHelper.deserialize_by_tag(elem, "TimingClockSyncAccuracy")),
         "TIMING-CONDITIONS": lambda obj, elem: obj.timing_conditions.append(SerializationHelper.deserialize_by_tag(elem, "TimingCondition")),
-        "TIMINGS": ("_POLYMORPHIC_LIST", "timings", ["AgeConstraint", "EventTriggeringConstraint", "ExecutionOrderConstraint", "ExecutionTimeConstraint", "LatencyTimingConstraint", "OffsetTimingConstraint", "SynchronizationPointConstraint", "SynchronizationTiming"]),
+        "TIMINGS": ("_POLYMORPHIC_LIST", "timings", ["AgeConstraint", "ArbitraryEventTriggering", "BurstPatternEventTriggering", "ConcretePatternEventTriggering", "EventTriggeringConstraint", "ExecutionOrderConstraint", "ExecutionTimeConstraint", "LatencyTimingConstraint", "OffsetTimingConstraint", "PeriodicEventTriggering", "SporadicEventTriggering", "SynchronizationPointConstraint", "SynchronizationTiming"]),
         "TIMING-RESOURCE": ("_POLYMORPHIC", "timing_resource", ["BswCompositionTiming", "BswModuleTiming", "EcuTiming", "SwcTiming", "SystemTiming", "VfbTiming"]),
     }
 
@@ -182,6 +182,12 @@ class TimingExtension(ARElement, ABC):
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "AGE-CONSTRAINT":
                         obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "AgeConstraint"))
+                    elif concrete_tag == "ARBITRARY-EVENT-TRIGGERING":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "ArbitraryEventTriggering"))
+                    elif concrete_tag == "BURST-PATTERN-EVENT-TRIGGERING":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "BurstPatternEventTriggering"))
+                    elif concrete_tag == "CONCRETE-PATTERN-EVENT-TRIGGERING":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "ConcretePatternEventTriggering"))
                     elif concrete_tag == "EVENT-TRIGGERING-CONSTRAINT":
                         obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "EventTriggeringConstraint"))
                     elif concrete_tag == "EXECUTION-ORDER-CONSTRAINT":
@@ -192,6 +198,10 @@ class TimingExtension(ARElement, ABC):
                         obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "LatencyTimingConstraint"))
                     elif concrete_tag == "OFFSET-TIMING-CONSTRAINT":
                         obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "OffsetTimingConstraint"))
+                    elif concrete_tag == "PERIODIC-EVENT-TRIGGERING":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "PeriodicEventTriggering"))
+                    elif concrete_tag == "SPORADIC-EVENT-TRIGGERING":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "SporadicEventTriggering"))
                     elif concrete_tag == "SYNCHRONIZATION-POINT-CONSTRAINT":
                         obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "SynchronizationPointConstraint"))
                     elif concrete_tag == "SYNCHRONIZATION-TIMING":

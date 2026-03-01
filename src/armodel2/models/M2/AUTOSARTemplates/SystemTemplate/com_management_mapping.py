@@ -44,7 +44,7 @@ class ComManagementMapping(Identifiable):
     physical_channel_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "COM-REFS": lambda obj, elem: [obj.com_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "physical_channel_refs", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "physical_channel_refs", ["AbstractCanPhysicalChannel", "CanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel", "TtcanPhysicalChannel"]),
     }
 
 

@@ -148,7 +148,7 @@ class SwDataDefProps(ARObject):
         "DISPLAY-FORMAT": lambda obj, elem: setattr(obj, "display_format", SerializationHelper.deserialize_by_tag(elem, "DisplayFormatString")),
         "DISPLAY-PRESENTATION": lambda obj, elem: setattr(obj, "display_presentation", DisplayPresentationEnum.deserialize(elem)),
         "IMPLEMENTATION-DATA-TYPE-REF": ("_POLYMORPHIC", "implementation_data_type_ref", ["ImplementationDataType"]),
-        "INVALID-VALUE": ("_POLYMORPHIC", "invalid_value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "INVALID-VALUE": ("_POLYMORPHIC", "invalid_value", ["AbstractRuleBasedValueSpecification", "ApplicationRuleBasedValueSpecification", "ApplicationValueSpecification", "ArrayValueSpecification", "CompositeRuleBasedValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "RecordValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
         "STEP-SIZE": lambda obj, elem: setattr(obj, "step_size", SerializationHelper.deserialize_by_tag(elem, "Float")),
         "SW-ADDR-METHOD-REF": lambda obj, elem: setattr(obj, "sw_addr_method_ref", ARRef.deserialize(elem)),
         "SW-ALIGNMENT": lambda obj, elem: setattr(obj, "sw_alignment", SerializationHelper.deserialize_by_tag(elem, "AlignmentType")),

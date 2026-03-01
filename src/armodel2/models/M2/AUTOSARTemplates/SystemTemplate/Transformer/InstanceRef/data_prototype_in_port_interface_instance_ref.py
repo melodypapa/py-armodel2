@@ -42,10 +42,10 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
     root_data_ref: Optional[ARRef]
     target_data_ref: ARRef
     _DESERIALIZE_DISPATCH = {
-        "ABSTRACT-BASE-REF": ("_POLYMORPHIC", "abstract_base_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
+        "ABSTRACT-BASE-REF": ("_POLYMORPHIC", "abstract_base_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "NvDataInterface", "ParameterInterface", "SenderReceiverInterface", "TriggerInterface"]),
         "CONTEXT-DATA-REFS": lambda obj, elem: [obj.context_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ROOT-DATA-REF": ("_POLYMORPHIC", "root_data_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
-        "TARGET-DATA-REF": ("_POLYMORPHIC", "target_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "TARGET-DATA-REF": ("_POLYMORPHIC", "target_data_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
     }
 
 

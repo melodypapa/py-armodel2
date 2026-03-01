@@ -44,7 +44,7 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
     timing_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "RESOURCE-REF": lambda obj, elem: setattr(obj, "resource_ref", ARRef.deserialize(elem)),
-        "TIMING-REF": ("_POLYMORPHIC", "timing_ref", ["TimingDescriptionEvent", "TimingDescriptionEventChain"]),
+        "TIMING-REF": ("_POLYMORPHIC", "timing_ref", ["TDEventBswInternalBehavior", "TDEventBswModeDeclaration", "TDEventBswModule", "TDEventComplex", "TDEventFrClusterCycleStart", "TDEventFrame", "TDEventFrameEthernet", "TDEventIPdu", "TDEventISignal", "TDEventModeDeclaration", "TDEventOperation", "TDEventSLLETPort", "TDEventSwcInternalBehavior", "TDEventSwcInternalBehaviorReference", "TDEventTTCanCycleStart", "TDEventTrigger", "TDEventVariableDataPrototype", "TDEventVfbReference", "TimingDescriptionEvent", "TimingDescriptionEventChain"]),
     }
 
 

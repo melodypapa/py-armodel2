@@ -46,7 +46,7 @@ class LinScheduleTable(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "RESUME-POSITION": lambda obj, elem: setattr(obj, "resume_position", ResumePosition.deserialize(elem)),
         "RUN-MODE": lambda obj, elem: setattr(obj, "run_mode", RunMode.deserialize(elem)),
-        "TABLE-ENTRIES": ("_POLYMORPHIC_LIST", "table_entries", ["ApplicationEntry", "FreeFormatEntry", "LinConfigurationEntry"]),
+        "TABLE-ENTRIES": ("_POLYMORPHIC_LIST", "table_entries", ["ApplicationEntry", "AssignFrameId", "AssignFrameIdRange", "AssignNad", "ConditionalChangeNad", "DataDumpEntry", "FreeFormat", "FreeFormatEntry", "LinConfigurationEntry", "SaveConfigurationEntry", "UnassignFrameId"]),
     }
 
 
@@ -147,10 +147,26 @@ class LinScheduleTable(Identifiable):
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "APPLICATION-ENTRY":
                         obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationEntry"))
+                    elif concrete_tag == "ASSIGN-FRAME-ID":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "AssignFrameId"))
+                    elif concrete_tag == "ASSIGN-FRAME-ID-RANGE":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "AssignFrameIdRange"))
+                    elif concrete_tag == "ASSIGN-NAD":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "AssignNad"))
+                    elif concrete_tag == "CONDITIONAL-CHANGE-NAD":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "ConditionalChangeNad"))
+                    elif concrete_tag == "DATA-DUMP-ENTRY":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "DataDumpEntry"))
+                    elif concrete_tag == "FREE-FORMAT":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "FreeFormat"))
                     elif concrete_tag == "FREE-FORMAT-ENTRY":
                         obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "FreeFormatEntry"))
                     elif concrete_tag == "LIN-CONFIGURATION-ENTRY":
                         obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "LinConfigurationEntry"))
+                    elif concrete_tag == "SAVE-CONFIGURATION-ENTRY":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "SaveConfigurationEntry"))
+                    elif concrete_tag == "UNASSIGN-FRAME-ID":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "UnassignFrameId"))
 
         return obj
 

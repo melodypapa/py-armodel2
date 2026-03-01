@@ -52,7 +52,7 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
     unit_and_scaling_id: Optional[PositiveInteger]
     update_kind: Optional[DiagnosticMonitorUpdateKindEnum]
     _DESERIALIZE_DISPATCH = {
-        "APPLICATION-DATA-REF": ("_POLYMORPHIC", "application_data_ref", ["ApplicationCompositeDataType", "ApplicationPrimitiveDataType"]),
+        "APPLICATION-DATA-REF": ("_POLYMORPHIC", "application_data_ref", ["ApplicationArrayDataType", "ApplicationCompositeDataType", "ApplicationPrimitiveDataType", "ApplicationRecordDataType"]),
         "EVENT-NEEDS-REF": lambda obj, elem: setattr(obj, "event_needs_ref", ARRef.deserialize(elem)),
         "UNIT-AND-SCALING-ID": lambda obj, elem: setattr(obj, "unit_and_scaling_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "UPDATE-KIND": lambda obj, elem: setattr(obj, "update_kind", DiagnosticMonitorUpdateKindEnum.deserialize(elem)),

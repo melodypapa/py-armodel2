@@ -55,14 +55,14 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
     triggering_event_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "LET-DATA-EXCHANGE": lambda obj, elem: setattr(obj, "let_data_exchange", LetDataExchangeParadigmEnum.deserialize(elem)),
-        "LET-INTERVAL-REFS": ("_POLYMORPHIC_LIST", "let_interval_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "LET-INTERVAL-REFS": ("_POLYMORPHIC_LIST", "let_interval_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventBswModeDeclaration", "TDEventBswModule", "TDEventCom", "TDEventComplex", "TDEventFrClusterCycleStart", "TDEventFrame", "TDEventFrameEthernet", "TDEventIPdu", "TDEventISignal", "TDEventModeDeclaration", "TDEventOperation", "TDEventSLLET", "TDEventSLLETPort", "TDEventSwc", "TDEventSwcInternalBehavior", "TDEventSwcInternalBehaviorReference", "TDEventTTCanCycleStart", "TDEventTrigger", "TDEventVariableDataPrototype", "TDEventVfb", "TDEventVfbReference"]),
         "MAX-CYCLE": lambda obj, elem: setattr(obj, "max_cycle", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "MAX-CYCLES": lambda obj, elem: setattr(obj, "max_cycles", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "MAX-SLOTS": lambda obj, elem: setattr(obj, "max_slots", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "MAX-SLOTS-PER": lambda obj, elem: setattr(obj, "max_slots_per", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "NESTED-ELEMENT-REFS": lambda obj, elem: [obj.nested_element_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SUCCESSOR-REFS": lambda obj, elem: [obj.successor_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "TRIGGERING-EVENT-REF": ("_POLYMORPHIC", "triggering_event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "TRIGGERING-EVENT-REF": ("_POLYMORPHIC", "triggering_event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventBswModeDeclaration", "TDEventBswModule", "TDEventCom", "TDEventComplex", "TDEventFrClusterCycleStart", "TDEventFrame", "TDEventFrameEthernet", "TDEventIPdu", "TDEventISignal", "TDEventModeDeclaration", "TDEventOperation", "TDEventSLLET", "TDEventSLLETPort", "TDEventSwc", "TDEventSwcInternalBehavior", "TDEventSwcInternalBehaviorReference", "TDEventTTCanCycleStart", "TDEventTrigger", "TDEventVariableDataPrototype", "TDEventVfb", "TDEventVfbReference"]),
     }
 
 

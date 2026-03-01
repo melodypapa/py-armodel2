@@ -48,7 +48,7 @@ class PduToFrameMapping(Identifiable):
     update_indication_bit_position: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
         "PACKING-BYTE-ORDER": lambda obj, elem: setattr(obj, "packing_byte_order", ByteOrderEnum.deserialize(elem)),
-        "PDU-REF": ("_POLYMORPHIC", "pdu_ref", ["GeneralPurposePdu", "IPdu", "NmPdu", "UserDefinedPdu"]),
+        "PDU-REF": ("_POLYMORPHIC", "pdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "GeneralPurposePdu", "IPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "NmPdu", "SecuredIPdu", "UserDefinedIPdu", "UserDefinedPdu"]),
         "START-POSITION": lambda obj, elem: setattr(obj, "start_position", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "UPDATE-INDICATION-BIT-POSITION": lambda obj, elem: setattr(obj, "update_indication_bit_position", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }

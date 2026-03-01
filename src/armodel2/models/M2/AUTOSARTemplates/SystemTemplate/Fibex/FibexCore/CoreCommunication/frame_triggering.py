@@ -48,7 +48,7 @@ class FrameTriggering(Identifiable, ABC):
     pdu_triggering_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "FRAME-PORT-REFS": lambda obj, elem: [obj.frame_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "FRAME-REF": ("_POLYMORPHIC", "frame_ref", ["AbstractEthernetFrame", "CanFrame", "FlexrayFrame", "LinFrame"]),
+        "FRAME-REF": ("_POLYMORPHIC", "frame_ref", ["AbstractEthernetFrame", "CanFrame", "FlexrayFrame", "GenericEthernetFrame", "Ieee1722TpEthernetFrame", "LinEventTriggeredFrame", "LinFrame", "LinSporadicFrame", "LinUnconditionalFrame", "UserDefinedEthernetFrame"]),
         "PDU-TRIGGERING-REFS": lambda obj, elem: [obj.pdu_triggering_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 

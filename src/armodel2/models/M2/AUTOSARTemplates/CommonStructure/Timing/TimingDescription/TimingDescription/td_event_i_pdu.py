@@ -48,7 +48,7 @@ class TDEventIPdu(TDEventCom):
     td_event_type: Optional[TDEventIPduTypeEnum]
     _DESERIALIZE_DISPATCH = {
         "I-PDU-REF": ("_POLYMORPHIC", "i_pdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
-        "PHYSICAL-CHANNEL-REF": ("_POLYMORPHIC", "physical_channel_ref", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "PHYSICAL-CHANNEL-REF": ("_POLYMORPHIC", "physical_channel_ref", ["AbstractCanPhysicalChannel", "CanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel", "TtcanPhysicalChannel"]),
         "TD-EVENT-TYPE": lambda obj, elem: setattr(obj, "td_event_type", TDEventIPduTypeEnum.deserialize(elem)),
     }
 

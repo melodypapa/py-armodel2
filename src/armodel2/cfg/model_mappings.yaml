@@ -1,6 +1,6 @@
 version: 1.0.0
 generated_from: docs/json/mapping.json
-generated_at: '2026-02-27T21:40:42.345727'
+generated_at: '2026-03-01T17:47:29.531989'
 metadata:
   total_classes: 1938
   total_packages: 638
@@ -8,7 +8,6 @@ metadata:
 xml_tag_mappings:
   AR-ELEMENT: ARElement
   AR-PACKAGE: ARPackage
-  PORT-API-OPTION: PortAPIOption
   AR-OBJECT: ARObject
   AR-LIST: ARList
   AR-VARIABLE-IN-IMPLEMENTATION-DATA-INSTANCE-REF: ArVariableInImplementationDataInstanceRef
@@ -22,13 +21,9 @@ xml_tag_mappings:
   V2X-DATA-MANAGER-NEEDS: V2xDataManagerNeeds
   VT: CompuConstTextContent
   BSW-MODULE-ENTRY-REF-CONDITIONAL: BswModuleClientServerEntry
-  LIMIT: Limit
-  INTERVAL-TYPE-ENUM: IntervalTypeEnum
-  NUMERICAL: Numerical
+  PORT-API-OPTION: PortAPIOption
+  RTE-EVENT: RTEEvent
 class_import_paths:
-  Limit: armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.limit
-  IntervalTypeEnum: armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.interval_type_enum
-  Numerical: armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.numerical
   BswModuleDescription: armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description
   ModeInBswModuleDescriptionInstanceRef: armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.InstanceRefs.mode_in_bsw_module_description_instance_ref
   BswModuleEntry: armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry
@@ -1677,13 +1672,36 @@ polymorphic_types:
   - TraceableTable
   - TraceableText
   DocumentViewSelectable:
+  - Chapter
+  - DefItem
+  - DefList
+  - Item
+  - LabeledItem
+  - LabeledList
+  - MlFigure
+  - MlFormula
+  - MsrQueryChapter
+  - MsrQueryP1
+  - MsrQueryTopic1
+  - MultiLanguageParagraph
+  - MultiLanguageVerbatim
+  - Note
   - Paginateable
+  - Prms
+  - Row
+  - StructuredReq
+  - Table
+  - Topic1
+  - TraceableText
   TimingClock:
   - TDLETZoneClock
   IdsPlatformInstantiation:
   - IdsmModuleInstantiation
   Describable:
   - CyclicTiming
+  - EndToEndTransformationComSpecProps
+  - EndToEndTransformationDescription
+  - EndToEndTransformationISignalProps
   - EventControlledTiming
   - HwElementConnector
   - HwPinConnector
@@ -1692,10 +1710,13 @@ polymorphic_types:
   - Ipv4DhcpServerConfiguration
   - Ipv6DhcpServerConfiguration
   - PncMapping
+  - SOMEIPTransformationDescription
+  - SOMEIPTransformationISignalProps
   - SocketConnection
   - TransformationComSpecProps
   - TransformationDescription
   - TransformationISignalProps
+  - UserDefinedTransformationComSpecProps
   Identifiable:
   - ARPackage
   - AbstractDoIpLogicAddressProps
@@ -1704,154 +1725,645 @@ polymorphic_types:
   - AbstractSecurityEventFilter
   - AbstractSecurityIdsmInstanceFilter
   - AbstractServiceInstance
+  - AclObjectSet
+  - AclOperation
+  - AclPermission
+  - AclRole
+  - AgeConstraint
+  - AggregationTailoring
+  - AliasNameSet
+  - AnalyzedExecutionTime
   - AppOsTaskProxyToEcuTaskProxyMapping
+  - ApplicationArrayDataType
+  - ApplicationArrayElement
   - ApplicationEndpoint
   - ApplicationError
+  - ApplicationPartition
   - ApplicationPartitionToEcuPartitionMapping
+  - ApplicationPrimitiveDataType
+  - ApplicationRecordDataType
+  - ApplicationRecordElement
+  - ApplicationSwComponentType
   - AppliedStandard
+  - ArbitraryEventTriggering
+  - ArgumentDataPrototype
+  - AssemblySwConnector
+  - AsynchronousServerCallPoint
   - AsynchronousServerCallResultPoint
+  - AsynchronousServerCallReturnsEvent
   - AtpBlueprint
   - AtpBlueprintable
   - AtpClassifier
   - AtpFeature
   - AutosarOperationArgumentInstance
   - AutosarVariableInstance
+  - BackgroundEvent
   - BinaryManifestAddressableObject
+  - BinaryManifestItem
   - BinaryManifestItemDefinition
+  - BinaryManifestMetaDataField
+  - BinaryManifestProvideResource
+  - BinaryManifestRequireResource
   - BinaryManifestResource
   - BinaryManifestResourceDefinition
   - BlockState
+  - BlueprintMappingSet
+  - BswAsynchronousServerCallReturnsEvent
+  - BswBackgroundEvent
+  - BswCalledEntity
+  - BswCompositionTiming
+  - BswDataReceivedEvent
+  - BswEntryRelationshipSet
+  - BswExternalTriggerOccurredEvent
+  - BswImplementation
+  - BswInternalBehavior
+  - BswInternalTriggerOccurredEvent
   - BswInternalTriggeringPoint
+  - BswInterruptEntity
+  - BswInterruptEvent
+  - BswMgrNeeds
+  - BswModeManagerErrorEvent
+  - BswModeSwitchEvent
+  - BswModeSwitchedAckEvent
   - BswModuleDependency
+  - BswModuleDescription
+  - BswModuleEntry
+  - BswModuleTiming
+  - BswOperationInvokedEvent
+  - BswOsTaskExecutionEvent
+  - BswSchedulableEntity
+  - BswServiceDependencyIdent
+  - BswTimingEvent
+  - BuildAction
   - BuildActionEntity
   - BuildActionEnvironment
+  - BuildActionManifest
+  - BulkNvDataDescriptor
+  - BurstPatternEventTriggering
+  - BusMirrorChannelMappingCan
+  - BusMirrorChannelMappingFlexray
+  - BusMirrorChannelMappingIp
+  - CalibrationParameterValueSet
+  - CanCluster
+  - CanCommunicationConnector
+  - CanCommunicationController
+  - CanFrame
+  - CanFrameTriggering
+  - CanNmCluster
+  - CanNmNode
+  - CanPhysicalChannel
   - CanTpAddress
   - CanTpChannel
+  - CanTpConfig
   - CanTpNode
   - Chapter
   - ClassContentConditional
   - ClientIdDefinition
+  - ClientIdDefinitionSet
+  - ClientServerInterface
+  - ClientServerInterfaceMapping
+  - ClientServerInterfaceToBswModuleEntryBlueprintMapping
   - ClientServerOperation
   - Code
   - CollectableElement
+  - Collection
   - ComManagementMapping
+  - ComMgrUserNeeds
   - CommConnectorPort
   - CommunicationConnector
   - CommunicationController
   - Compiler
+  - ComplexDeviceDriverSwComponentType
+  - CompositionSwComponentType
+  - CompuMethod
+  - ConcreteClassTailoring
+  - ConcretePatternEventTriggering
   - ConsistencyNeeds
+  - ConsistencyNeedsBlueprintSet
+  - ConstantSpecification
+  - ConstantSpecificationMappingSet
+  - ConstraintTailoring
   - ConsumedEventGroup
+  - ConsumedProvidedServiceInstanceGroup
+  - ConsumedServiceInstance
+  - ContainerIPdu
+  - CouplingElement
   - CouplingElementAbstractDetails
+  - CouplingElementSwitchDetails
   - CouplingPort
   - CouplingPortAbstractShaper
+  - CouplingPortFifo
+  - CouplingPortScheduler
+  - CouplingPortShaper
   - CouplingPortStructuralElement
+  - CpSoftwareCluster
+  - CpSoftwareClusterBinaryManifestDescriptor
+  - CpSoftwareClusterCommunicationResource
+  - CpSoftwareClusterMappingSet
   - CpSoftwareClusterResource
+  - CpSoftwareClusterResourcePool
   - CpSoftwareClusterResourceToApplicationPartitionMapping
+  - CpSoftwareClusterServiceResource
   - CpSoftwareClusterToApplicationPartitionMapping
   - CpSoftwareClusterToEcuInstanceMapping
   - CpSoftwareClusterToResourceMapping
+  - CpSwClusterResourceToDiagDataElemMapping
+  - CpSwClusterResourceToDiagFunctionIdMapping
+  - CpSwClusterToDiagEventMapping
+  - CpSwClusterToDiagRoutineSubfunctionMapping
+  - CryptoEllipticCurveProps
+  - CryptoKeyManagementNeeds
+  - CryptoServiceCertificate
+  - CryptoServiceJobNeeds
+  - CryptoServiceKey
   - CryptoServiceMapping
-  - DataPrototypeGroup
+  - CryptoServiceNeeds
+  - CryptoServicePrimitive
+  - CryptoServiceQueue
+  - CryptoSignatureScheme
   - Data
-  - Transformation
+  - DataConstr
+  - DataExchangePoint
+  - DataPrototypeGroup
+  - DataReceiveErrorEvent
+  - DataReceivedEvent
+  - DataSendCompletedEvent
+  - DataTransformationSet
+  - DataTypeMappingSet
+  - DataWriteCompletedEvent
+  - DcmIPdu
+  - DdsCpConfig
+  - DdsCpConsumedServiceInstance
   - DdsCpDomain
   - DdsCpPartition
+  - DdsCpProvidedServiceInstance
   - DdsCpQosProfile
   - DdsCpTopic
+  - DelegationSwConnector
   - DependencyOnArtifact
+  - DevelopmentError
   - DiagEventDebounceAlgorithm
+  - DiagEventDebounceCounterBased
+  - DiagEventDebounceMonitorInternal
+  - DiagnosticAccessPermission
+  - DiagnosticAging
+  - DiagnosticAuthRole
+  - DiagnosticAuthTransmitCertificate
   - DiagnosticAuthTransmitCertificateEvaluation
+  - DiagnosticAuthTransmitCertificateMapping
+  - DiagnosticAuthenticationClass
+  - DiagnosticAuthenticationConfiguration
+  - DiagnosticClearDiagnosticInformation
+  - DiagnosticClearDiagnosticInformationClass
+  - DiagnosticClearResetEmissionRelatedInfo
+  - DiagnosticClearResetEmissionRelatedInfoClass
+  - DiagnosticComControl
+  - DiagnosticComControlClass
+  - DiagnosticCommunicationManagerNeeds
+  - DiagnosticComponentNeeds
   - DiagnosticConnectedIndicator
+  - DiagnosticConnection
+  - DiagnosticContributionSet
+  - DiagnosticControlDTCSetting
+  - DiagnosticControlDTCSettingClass
+  - DiagnosticControlNeeds
+  - DiagnosticCustomServiceClass
+  - DiagnosticCustomServiceInstance
   - DiagnosticDataElement
+  - DiagnosticDataIdentifier
+  - DiagnosticDataIdentifierSet
+  - DiagnosticDataTransfer
+  - DiagnosticDataTransferClass
+  - DiagnosticDeAuthentication
   - DiagnosticDebounceAlgorithmProps
+  - DiagnosticDemProvidedDataMapping
+  - DiagnosticDynamicDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifierClass
+  - DiagnosticEcuInstanceProps
+  - DiagnosticEcuReset
+  - DiagnosticEcuResetClass
+  - DiagnosticEnableCondition
+  - DiagnosticEnableConditionGroup
+  - DiagnosticEnableConditionNeeds
+  - DiagnosticEnableConditionPortMapping
+  - DiagnosticEnvironmentalCondition
+  - DiagnosticEvent
+  - DiagnosticEventInfoNeeds
+  - DiagnosticEventManagerNeeds
+  - DiagnosticEventNeeds
+  - DiagnosticEventPortMapping
+  - DiagnosticEventToDebounceAlgorithmMapping
+  - DiagnosticEventToEnableConditionGroupMapping
+  - DiagnosticEventToOperationCycleMapping
+  - DiagnosticEventToSecurityEventMapping
+  - DiagnosticEventToStorageConditionGroupMapping
+  - DiagnosticEventToTroubleCodeJ1939Mapping
+  - DiagnosticEventToTroubleCodeUdsMapping
+  - DiagnosticExtendedDataRecord
+  - DiagnosticFimAliasEvent
+  - DiagnosticFimAliasEventGroup
+  - DiagnosticFimAliasEventGroupMapping
+  - DiagnosticFimAliasEventMapping
+  - DiagnosticFimEventGroup
+  - DiagnosticFimFunctionMapping
+  - DiagnosticFreezeFrame
+  - DiagnosticFunctionIdentifier
+  - DiagnosticFunctionIdentifierInhibit
   - DiagnosticFunctionInhibitSource
+  - DiagnosticIOControl
+  - DiagnosticIndicator
+  - DiagnosticInfoType
+  - DiagnosticInhibitSourceEventMapping
+  - DiagnosticIoControlClass
+  - DiagnosticIoControlNeeds
+  - DiagnosticIumpr
+  - DiagnosticIumprDenominatorGroup
+  - DiagnosticIumprGroup
+  - DiagnosticIumprToFunctionIdentifierMapping
+  - DiagnosticJ1939ExpandedFreezeFrame
+  - DiagnosticJ1939FreezeFrame
+  - DiagnosticJ1939Node
+  - DiagnosticJ1939Spn
+  - DiagnosticJ1939SpnMapping
+  - DiagnosticJ1939SwMapping
+  - DiagnosticMasterToSlaveEventMapping
+  - DiagnosticMeasurementIdentifier
+  - DiagnosticMemoryDestinationPrimary
+  - DiagnosticMemoryDestinationUserDefined
+  - DiagnosticMemoryIdentifier
+  - DiagnosticOperationCycle
+  - DiagnosticOperationCycleNeeds
+  - DiagnosticOperationCyclePortMapping
   - DiagnosticParameterElement
+  - DiagnosticParameterIdent
+  - DiagnosticParameterIdentifier
+  - DiagnosticPowertrainFreezeFrame
+  - DiagnosticProofOfOwnership
+  - DiagnosticProtocol
+  - DiagnosticReadDTCInformation
+  - DiagnosticReadDTCInformationClass
+  - DiagnosticReadDataByIdentifier
+  - DiagnosticReadDataByIdentifierClass
+  - DiagnosticReadDataByPeriodicID
+  - DiagnosticReadDataByPeriodicIDClass
+  - DiagnosticReadMemoryByAddress
+  - DiagnosticReadMemoryByAddressClass
+  - DiagnosticReadScalingDataByIdentifier
+  - DiagnosticReadScalingDataByIdentifierClass
+  - DiagnosticRequestControlOfOnBoardDevice
+  - DiagnosticRequestControlOfOnBoardDeviceClass
+  - DiagnosticRequestCurrentPowertrainData
+  - DiagnosticRequestCurrentPowertrainDataClass
+  - DiagnosticRequestDownload
+  - DiagnosticRequestDownloadClass
+  - DiagnosticRequestEmissionRelatedDTC
+  - DiagnosticRequestEmissionRelatedDTCClass
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatus
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatusClass
+  - DiagnosticRequestFileTransfer
+  - DiagnosticRequestFileTransferClass
+  - DiagnosticRequestFileTransferNeeds
+  - DiagnosticRequestOnBoardMonitoringTestResults
+  - DiagnosticRequestOnBoardMonitoringTestResultsClass
+  - DiagnosticRequestPowertrainFreezeFrameData
+  - DiagnosticRequestPowertrainFreezeFrameDataClass
+  - DiagnosticRequestRoutineResults
+  - DiagnosticRequestUpload
+  - DiagnosticRequestUploadClass
+  - DiagnosticRequestVehicleInfo
+  - DiagnosticRequestVehicleInfoClass
+  - DiagnosticResponseOnEvent
+  - DiagnosticResponseOnEventClass
+  - DiagnosticRoutine
+  - DiagnosticRoutineControl
+  - DiagnosticRoutineControlClass
+  - DiagnosticRoutineNeeds
   - DiagnosticRoutineSubfunction
+  - DiagnosticSecureCodingMapping
+  - DiagnosticSecurityAccess
+  - DiagnosticSecurityAccessClass
+  - DiagnosticSecurityEventReportingModeMapping
+  - DiagnosticSecurityLevel
+  - DiagnosticServiceDataMapping
+  - DiagnosticServiceSwMapping
+  - DiagnosticServiceTable
+  - DiagnosticSession
+  - DiagnosticSessionControl
+  - DiagnosticSessionControlClass
+  - DiagnosticStartRoutine
+  - DiagnosticStopRoutine
+  - DiagnosticStorageCondition
+  - DiagnosticStorageConditionGroup
+  - DiagnosticStorageConditionNeeds
+  - DiagnosticStorageConditionPortMapping
+  - DiagnosticTestResult
+  - DiagnosticTestRoutineIdentifier
+  - DiagnosticTransferExit
+  - DiagnosticTransferExitClass
+  - DiagnosticTroubleCodeGroup
+  - DiagnosticTroubleCodeJ1939
+  - DiagnosticTroubleCodeObd
+  - DiagnosticTroubleCodeProps
+  - DiagnosticTroubleCodeUds
+  - DiagnosticTroubleCodeUdsToTroubleCodeObdMapping
+  - DiagnosticUploadDownloadNeeds
+  - DiagnosticValueNeeds
+  - DiagnosticVerifyCertificateBidirectional
+  - DiagnosticWriteDataByIdentifierClass
+  - DiagnosticWriteMemoryByAddressClass
+  - DiagnosticsCommunicationSecurityNeeds
   - DltApplication
   - DltArgument
+  - DltContext
+  - DltEcu
   - DltLogChannel
   - DltMessage
+  - DltUserNeeds
+  - DoIpActivationLineNeeds
+  - DoIpGidNeeds
+  - DoIpGidSynchronizationNeeds
   - DoIpInterface
   - DoIpLogicAddress
+  - DoIpLogicTargetAddressProps
+  - DoIpLogicTesterAddressProps
+  - DoIpPowerModeStatusNeeds
   - DoIpRoutingActivation
+  - DoIpRoutingActivationAuthenticationNeeds
+  - DoIpRoutingActivationConfirmationNeeds
+  - DoIpTpConfig
+  - DocumentElementScope
+  - Documentation
+  - DtcStatusChangeNotificationNeeds
+  - E2EProfileCompatibilityProps
   - ECUMapping
+  - EOCEventRef
+  - EOCExecutableEntityRef
   - EOCExecutableEntityRefAbstract
+  - EOCExecutableEntityRefGroup
+  - EcuAbstractionSwComponentType
+  - EcuInstance
   - EcuPartition
+  - EcuStateMgrUserNeeds
+  - EcuTiming
+  - EcucAddInfoParamDef
+  - EcucBooleanParamDef
+  - EcucChoiceContainerDef
+  - EcucChoiceReferenceDef
   - EcucContainerValue
+  - EcucDefinitionCollection
   - EcucDefinitionElement
   - EcucDestinationUriDef
+  - EcucDestinationUriDefSet
   - EcucEnumerationLiteralDef
+  - EcucEnumerationParamDef
+  - EcucFloatParamDef
+  - EcucForeignReferenceDef
+  - EcucFunctionNameDef
+  - EcucInstanceReferenceDef
+  - EcucIntegerParamDef
+  - EcucLinkerSymbolDef
+  - EcucModuleConfigurationValues
+  - EcucModuleDef
+  - EcucMultilineStringParamDef
+  - EcucParamConfContainerDef
   - EcucQuery
+  - EcucReferenceDef
+  - EcucStringParamDef
+  - EcucUriReferenceDef
   - EcucValidationCondition
+  - EcucValueCollection
   - EndToEndProtection
+  - EndToEndProtectionSet
+  - EnumerationMappingTable
+  - ErrorTracerNeeds
+  - EthIpProps
+  - EthTcpIpIcmpProps
+  - EthTcpIpProps
+  - EthTpConfig
+  - EthernetCluster
+  - EthernetCommunicationConnector
+  - EthernetCommunicationController
+  - EthernetFrameTriggering
+  - EthernetPhysicalChannel
   - EthernetWakeupSleepOnDatalineConfig
+  - EthernetWakeupSleepOnDatalineConfigSet
+  - EvaluatedVariantSet
   - EventHandler
   - ExclusiveArea
   - ExecutableEntity
+  - ExecutionOrderConstraint
   - ExecutionTime
+  - ExecutionTimeConstraint
+  - ExternalTriggerOccurredEvent
+  - ExternalTriggeringPointIdent
   - FMAttributeDef
+  - FMFeature
+  - FMFeatureMap
   - FMFeatureMapAssertion
   - FMFeatureMapCondition
   - FMFeatureMapElement
+  - FMFeatureModel
   - FMFeatureRelation
   - FMFeatureRestriction
   - FMFeatureSelection
+  - FMFeatureSelectionSet
+  - FirewallRule
   - FlatInstanceDescriptor
+  - FlatMap
+  - FlexrayArTpConfig
   - FlexrayArTpNode
+  - FlexrayCluster
+  - FlexrayCommunicationConnector
+  - FlexrayCommunicationController
+  - FlexrayFrame
+  - FlexrayFrameTriggering
+  - FlexrayNmCluster
+  - FlexrayNmNode
+  - FlexrayPhysicalChannel
+  - FlexrayTpConfig
   - FlexrayTpConnectionControl
   - FlexrayTpNode
   - FlexrayTpPduPool
+  - FramePort
   - FrameTriggering
+  - FunctionInhibitionAvailabilityNeeds
+  - FunctionInhibitionNeeds
+  - Gateway
   - GeneralParameter
+  - GeneralPurposeConnection
+  - GeneralPurposeIPdu
+  - GeneralPurposePdu
+  - GenericEthernetFrame
+  - GlobalSupervisionNeeds
+  - GlobalTimeCanMaster
+  - GlobalTimeCanSlave
+  - GlobalTimeDomain
+  - GlobalTimeEthMaster
+  - GlobalTimeEthSlave
+  - GlobalTimeFrMaster
+  - GlobalTimeFrSlave
   - GlobalTimeGateway
   - GlobalTimeMaster
   - GlobalTimeSlave
+  - HardwareTestNeeds
   - HeapUsage
   - HwAttributeDef
   - HwAttributeLiteralDef
+  - HwCategory
+  - HwElement
   - HwPin
   - HwPinGroup
+  - HwType
+  - IEEE1722TpAafConnection
   - IEEE1722TpAcfBus
   - IEEE1722TpAcfBusPart
+  - IEEE1722TpAcfCan
+  - IEEE1722TpAcfCanPart
+  - IEEE1722TpAcfConnection
+  - IEEE1722TpAcfLin
+  - IEEE1722TpAcfLinPart
+  - IEEE1722TpConfig
+  - IEEE1722TpCrfConnection
+  - IEEE1722TpIidcConnection
+  - IPSecConfigProps
   - IPSecRule
+  - IPduPort
   - IPv6ExtHeaderFilterList
+  - IPv6ExtHeaderFilterSet
+  - ISignal
+  - ISignalGroup
+  - ISignalIPdu
+  - ISignalIPduGroup
+  - ISignalPort
   - ISignalToIPduMapping
   - ISignalTriggering
   - IdentCaption
+  - IdsDesign
+  - IdsMgrCustomTimestampNeeds
+  - IdsMgrNeeds
+  - IdsmInstance
+  - IdsmProperties
+  - Ieee1722TpEthernetFrame
+  - ImplementationDataType
+  - ImplementationDataTypeElement
   - ImpositionTime
+  - IndicatorStatusNeeds
+  - InitEvent
+  - InternalTriggerOccurredEvent
   - InternalTriggeringPoint
+  - InterpolationRoutineMappingSet
+  - J1939Cluster
+  - J1939ControllerApplication
+  - J1939DcmDm19Support
+  - J1939DcmIPdu
+  - J1939NmCluster
+  - J1939NmNode
+  - J1939RmIncomingRequestServiceNeeds
+  - J1939RmOutgoingRequestServiceNeeds
   - J1939SharedAddressCluster
+  - J1939TpConfig
   - J1939TpNode
   - Keyword
+  - KeywordSet
+  - LatencyTimingConstraint
+  - LifeCycleInfoSet
   - LifeCycleState
+  - LifeCycleStateDefinitionGroup
+  - LinCluster
+  - LinCommunicationConnector
+  - LinEventTriggeredFrame
+  - LinFrameTriggering
+  - LinMaster
+  - LinPhysicalChannel
   - LinScheduleTable
+  - LinSlave
+  - LinSporadicFrame
+  - LinTpConfig
   - LinTpNode
+  - LinUnconditionalFrame
   - Linker
+  - LogAndTraceMessageCollectionSet
   - MacMulticastGroup
+  - MacSecGlobalKayProps
   - MacSecKayParticipant
+  - MacSecParticipantSet
   - McDataInstance
+  - McFunction
+  - McGroup
+  - MeasuredExecutionTime
+  - MeasuredHeapUsage
+  - MeasuredStackUsage
   - MemorySection
+  - ModeAccessPointIdent
   - ModeDeclaration
+  - ModeDeclarationGroup
+  - ModeDeclarationGroupPrototype
   - ModeDeclarationMapping
+  - ModeDeclarationMappingSet
+  - ModeInterfaceMapping
+  - ModeSwitchInterface
   - ModeSwitchPoint
+  - ModeSwitchedAckEvent
+  - ModeTransition
+  - MultiplexedIPdu
+  - NPdu
   - NetworkEndpoint
   - NmCluster
+  - NmConfig
   - NmEcu
   - NmNode
+  - NmPdu
   - NvBlockDescriptor
+  - NvBlockNeeds
+  - NvBlockSwComponentType
+  - NvDataInterface
+  - ObdControlServiceNeeds
+  - ObdInfoServiceNeeds
+  - ObdMonitorServiceNeeds
+  - ObdPidServiceNeeds
+  - ObdRatioDenominatorNeeds
+  - ObdRatioServiceNeeds
+  - OffsetTimingConstraint
+  - OperationInvokedEvent
+  - OsTaskExecutionEvent
+  - OsTaskProxy
+  - PPortPrototype
+  - PRPortPrototype
   - PackageableElement
   - ParameterAccess
+  - ParameterDataPrototype
+  - ParameterInterface
+  - ParameterSwComponentType
+  - PassThroughSwConnector
   - PduActivationRoutingGroup
   - PduToFrameMapping
   - PduTriggering
+  - PdurIPduGroup
   - PerInstanceMemory
+  - PeriodicEventTriggering
   - PhysicalChannel
+  - PhysicalDimension
+  - PhysicalDimensionMappingSet
   - PortElementToCommunicationResourceMapping
   - PortGroup
   - PortInterfaceMapping
+  - PortInterfaceMappingSet
+  - PortPrototypeBlueprint
   - PossibleErrorReaction
+  - PostBuildVariantCriterion
+  - PostBuildVariantCriterionValueSet
+  - PredefinedVariant
+  - PrimitiveAttributeTailoring
+  - ProvidedServiceInstance
+  - RPortPrototype
+  - RapidPrototypingScenario
+  - ReferenceTailoring
   - ResourceConsumption
   - RootSwCompositionPrototype
+  - RoughEstimateHeapUsage
+  - RoughEstimateOfExecutionTime
+  - RoughEstimateStackUsage
   - RptComponent
   - RptContainer
   - RptExecutableEntity
@@ -1863,26 +2375,78 @@ polymorphic_types:
   - RteEventInCompositionToOsTaskProxyMapping
   - RteEventInSystemSeparation
   - RteEventInSystemToOsTaskProxyMapping
+  - RunnableEntity
   - RunnableEntityGroup
+  - RuntimeError
+  - SOMEIPTransformationProps
+  - Sdg
+  - SdgAggregationWithVariation
   - SdgAttribute
   - SdgClass
+  - SdgDef
+  - SdgForeignReference
+  - SdgForeignReferenceWithVariation
+  - SdgPrimitiveAttribute
+  - SdgPrimitiveAttributeWithVariation
+  - SdgTailoring
+  - SecOcCryptoServiceMapping
   - SecureCommunicationAuthenticationProps
   - SecureCommunicationFreshnessProps
+  - SecureCommunicationPropsSet
+  - SecureOnBoardCommunicationNeeds
+  - SecuredIPdu
+  - SecurityEventAggregationFilter
+  - SecurityEventContextMappingApplication
+  - SecurityEventContextMappingBswModule
+  - SecurityEventContextMappingCommConnector
+  - SecurityEventContextMappingFunctionalCluster
   - SecurityEventContextProps
+  - SecurityEventDefinition
+  - SecurityEventFilterChain
+  - SecurityEventOneEveryNFilter
+  - SecurityEventStateFilter
+  - SenderReceiverInterface
+  - SensorActuatorSwComponentType
   - ServerCallPoint
+  - ServiceInstanceCollectionSet
   - ServiceNeeds
+  - ServiceProxySwComponentType
+  - ServiceSwComponentType
   - SignalServiceTranslationElementProps
   - SignalServiceTranslationEventProps
   - SignalServiceTranslationProps
+  - SignalServiceTranslationPropsSet
+  - SoAdRoutingGroup
   - SocketAddress
+  - SocketConnectionIpduIdentifierSet
+  - SomeipSdClientServiceInstanceConfig
+  - SomeipSdServerEventGroupTimingConfig
+  - SomeipSdServerServiceInstanceConfig
   - SomeipTpChannel
+  - SomeipTpConfig
   - SpecElementReference
+  - SpecificationDocumentScope
+  - SporadicEventTriggering
   - StackUsage
   - StaticSocketConnection
   - StructuredReq
+  - SupervisedEntityCheckpointNeeds
+  - SupervisedEntityNeeds
+  - SwAddrMethod
+  - SwAxisType
+  - SwBaseType
   - SwGenericAxisParamType
+  - SwRecordLayout
   - SwServiceArg
+  - SwSystemconst
+  - SwSystemconstantValueSet
+  - SwcBswMapping
+  - SwcImplementation
+  - SwcInternalBehavior
+  - SwcModeManagerErrorEvent
+  - SwcModeSwitchEvent
   - SwcServiceDependency
+  - SwcTiming
   - SwcToApplicationPartitionMapping
   - SwcToEcuMapping
   - SwcToImplMapping
@@ -1893,63 +2457,1693 @@ polymorphic_types:
   - SwitchStreamFilterRule
   - SwitchStreamGateEntry
   - SwitchStreamIdentification
+  - SyncTimeBaseMgrUserNeeds
+  - SynchronizationPointConstraint
+  - SynchronousServerCallPoint
+  - System
   - SystemMapping
+  - SystemSignal
+  - SystemSignalGroup
   - SystemSignalGroupToCommunicationResourceMapping
   - SystemSignalToCommunicationResourceMapping
+  - SystemTiming
   - TDCpSoftwareClusterMapping
+  - TDCpSoftwareClusterMappingSet
   - TDCpSoftwareClusterResourceMapping
+  - TDEventBswInternalBehavior
+  - TDEventBswModeDeclaration
+  - TDEventBswModule
+  - TDEventComplex
+  - TDEventFrClusterCycleStart
+  - TDEventFrame
+  - TDEventFrameEthernet
+  - TDEventIPdu
+  - TDEventISignal
+  - TDEventModeDeclaration
+  - TDEventOperation
+  - TDEventSLLETPort
+  - TDEventSwcInternalBehavior
+  - TDEventSwcInternalBehaviorReference
+  - TDEventTTCanCycleStart
+  - TDEventTrigger
+  - TDEventVariableDataPrototype
+  - TDEventVfbReference
+  - TDLETZoneClock
   - TcpOptionFilterList
+  - TcpOptionFilterSet
   - TimingClock
   - TimingClockSyncAccuracy
   - TimingCondition
   - TimingConstraint
   - TimingDescription
+  - TimingDescriptionEventChain
+  - TimingEvent
   - TimingExtensionResource
   - TimingModeInstance
   - TlsCryptoCipherSuite
   - TlsCryptoCipherSuiteProps
+  - TlsCryptoServiceMapping
+  - TlvDataIdDefinitionSet
   - Topic1
   - TpAddress
   - TraceableTable
   - TraceableText
   - TracedFailure
+  - Transformation
   - TransformationProps
+  - TransformationPropsSet
   - TransformationTechnology
+  - TransformerHardErrorEvent
+  - TransientFault
   - Trigger
+  - TriggerInterface
+  - TriggerInterfaceMapping
+  - TtcanCluster
+  - TtcanCommunicationConnector
+  - TtcanCommunicationController
+  - TtcanPhysicalChannel
+  - UdpNmCluster
+  - UdpNmNode
+  - Unit
+  - UnitGroup
+  - UserDefinedCluster
+  - UserDefinedCommunicationConnector
+  - UserDefinedCommunicationController
+  - UserDefinedEthernetFrame
+  - UserDefinedGlobalTimeMaster
+  - UserDefinedGlobalTimeSlave
+  - UserDefinedIPdu
+  - UserDefinedPdu
+  - UserDefinedTransformationProps
+  - V2xDataManagerNeeds
+  - V2xFacUserNeeds
+  - V2xMUserNeeds
   - VariableAccess
+  - VariableDataPrototype
   - VariationPointProxy
+  - VendorSpecificServiceNeeds
+  - VfbTiming
   - ViewMap
+  - ViewMapSet
   - VlanConfig
   - WaitPoint
+  - WorstCaseHeapUsage
+  - WorstCaseStackUsage
   Referrable:
+  - ARPackage
+  - AclObjectSet
+  - AclOperation
+  - AclPermission
+  - AclRole
+  - AgeConstraint
+  - AggregationTailoring
+  - AliasNameSet
+  - AnalyzedExecutionTime
+  - AppOsTaskProxyToEcuTaskProxyMapping
+  - ApplicationArrayDataType
+  - ApplicationArrayElement
+  - ApplicationEndpoint
+  - ApplicationError
+  - ApplicationPartition
+  - ApplicationPartitionToEcuPartitionMapping
+  - ApplicationPrimitiveDataType
+  - ApplicationRecordDataType
+  - ApplicationRecordElement
+  - ApplicationSwComponentType
+  - ArbitraryEventTriggering
+  - ArgumentDataPrototype
+  - AssemblySwConnector
+  - AsynchronousServerCallPoint
+  - AsynchronousServerCallResultPoint
+  - AsynchronousServerCallReturnsEvent
   - AtpDefinition
+  - AutosarOperationArgumentInstance
+  - AutosarVariableInstance
+  - BackgroundEvent
+  - BinaryManifestItem
+  - BinaryManifestItemDefinition
+  - BinaryManifestMetaDataField
+  - BinaryManifestProvideResource
+  - BinaryManifestRequireResource
+  - BinaryManifestResourceDefinition
+  - BlockState
+  - BlueprintMappingSet
+  - BswAsynchronousServerCallPoint
+  - BswAsynchronousServerCallResultPoint
+  - BswAsynchronousServerCallReturnsEvent
+  - BswBackgroundEvent
+  - BswCalledEntity
+  - BswCompositionTiming
+  - BswDataReceivedEvent
+  - BswDirectCallPoint
   - BswDistinguishedPartition
+  - BswEntryRelationshipSet
+  - BswExternalTriggerOccurredEvent
+  - BswImplementation
+  - BswInternalBehavior
+  - BswInternalTriggerOccurredEvent
+  - BswInternalTriggeringPoint
+  - BswInterruptEntity
+  - BswInterruptEvent
+  - BswMgrNeeds
+  - BswModeManagerErrorEvent
+  - BswModeSwitchEvent
+  - BswModeSwitchedAckEvent
   - BswModuleCallPoint
   - BswModuleClientServerEntry
+  - BswModuleDependency
+  - BswModuleDescription
+  - BswModuleEntry
+  - BswModuleTiming
+  - BswOperationInvokedEvent
+  - BswOsTaskExecutionEvent
+  - BswSchedulableEntity
+  - BswSchedulerNamePrefix
+  - BswServiceDependencyIdent
+  - BswTimingEvent
   - BswVariableAccess
+  - BuildAction
+  - BuildActionEnvironment
+  - BuildActionManifest
+  - BulkNvDataDescriptor
+  - BurstPatternEventTriggering
+  - BusMirrorChannelMappingCan
+  - BusMirrorChannelMappingFlexray
+  - BusMirrorChannelMappingIp
+  - CalibrationParameterValueSet
+  - CanCluster
+  - CanCommunicationConnector
+  - CanCommunicationController
+  - CanFrame
+  - CanFrameTriggering
+  - CanNmCluster
+  - CanNmNode
+  - CanPhysicalChannel
+  - CanTpAddress
+  - CanTpChannel
+  - CanTpConfig
+  - CanTpNode
+  - Caption
+  - Chapter
+  - ClassContentConditional
+  - ClientIdDefinition
+  - ClientIdDefinitionSet
+  - ClientServerInterface
+  - ClientServerInterfaceMapping
+  - ClientServerInterfaceToBswModuleEntryBlueprintMapping
+  - ClientServerOperation
+  - Code
+  - Collection
+  - ComManagementMapping
+  - ComMgrUserNeeds
+  - Compiler
+  - ComplexDeviceDriverSwComponentType
+  - CompositionSwComponentType
+  - CompuMethod
+  - ConcreteClassTailoring
+  - ConcretePatternEventTriggering
+  - ConsistencyNeeds
+  - ConsistencyNeedsBlueprintSet
+  - ConstantSpecification
+  - ConstantSpecificationMappingSet
+  - ConstraintTailoring
+  - ConsumedEventGroup
+  - ConsumedProvidedServiceInstanceGroup
+  - ConsumedServiceInstance
+  - ContainerIPdu
+  - CouplingElement
+  - CouplingElementSwitchDetails
+  - CouplingPort
+  - CouplingPortFifo
+  - CouplingPortScheduler
+  - CouplingPortShaper
   - CouplingPortTrafficClassAssignment
+  - CpSoftwareCluster
+  - CpSoftwareClusterBinaryManifestDescriptor
+  - CpSoftwareClusterCommunicationResource
+  - CpSoftwareClusterMappingSet
+  - CpSoftwareClusterResourcePool
+  - CpSoftwareClusterResourceToApplicationPartitionMapping
+  - CpSoftwareClusterServiceResource
+  - CpSoftwareClusterToApplicationPartitionMapping
+  - CpSoftwareClusterToEcuInstanceMapping
+  - CpSoftwareClusterToResourceMapping
+  - CpSwClusterResourceToDiagDataElemMapping
+  - CpSwClusterResourceToDiagFunctionIdMapping
+  - CpSwClusterToDiagEventMapping
+  - CpSwClusterToDiagRoutineSubfunctionMapping
+  - CryptoEllipticCurveProps
+  - CryptoKeyManagementNeeds
+  - CryptoServiceCertificate
+  - CryptoServiceJobNeeds
+  - CryptoServiceKey
+  - CryptoServiceNeeds
+  - CryptoServicePrimitive
+  - CryptoServiceQueue
+  - CryptoSignatureScheme
+  - DataConstr
+  - DataExchangePoint
+  - DataPrototypeGroup
+  - DataReceiveErrorEvent
+  - DataReceivedEvent
+  - DataSendCompletedEvent
+  - DataTransformationSet
+  - DataTypeMappingSet
+  - DataWriteCompletedEvent
+  - DcmIPdu
+  - DdsCpConfig
+  - DdsCpConsumedServiceInstance
+  - DdsCpDomain
+  - DdsCpPartition
+  - DdsCpProvidedServiceInstance
+  - DdsCpQosProfile
+  - DdsCpTopic
+  - DefItem
+  - DelegationSwConnector
+  - DependencyOnArtifact
+  - DevelopmentError
+  - DiagEventDebounceCounterBased
+  - DiagEventDebounceMonitorInternal
+  - DiagnosticAccessPermission
+  - DiagnosticAging
+  - DiagnosticAuthRole
+  - DiagnosticAuthTransmitCertificate
+  - DiagnosticAuthTransmitCertificateEvaluation
+  - DiagnosticAuthTransmitCertificateMapping
+  - DiagnosticAuthenticationClass
+  - DiagnosticAuthenticationConfiguration
+  - DiagnosticClearDiagnosticInformation
+  - DiagnosticClearDiagnosticInformationClass
+  - DiagnosticClearResetEmissionRelatedInfo
+  - DiagnosticClearResetEmissionRelatedInfoClass
+  - DiagnosticComControl
+  - DiagnosticComControlClass
+  - DiagnosticCommunicationManagerNeeds
+  - DiagnosticComponentNeeds
+  - DiagnosticConnectedIndicator
+  - DiagnosticConnection
+  - DiagnosticContributionSet
+  - DiagnosticControlDTCSetting
+  - DiagnosticControlDTCSettingClass
+  - DiagnosticControlNeeds
+  - DiagnosticCustomServiceClass
+  - DiagnosticCustomServiceInstance
+  - DiagnosticDataElement
+  - DiagnosticDataIdentifier
+  - DiagnosticDataIdentifierSet
+  - DiagnosticDataTransfer
+  - DiagnosticDataTransferClass
+  - DiagnosticDeAuthentication
+  - DiagnosticDebounceAlgorithmProps
+  - DiagnosticDemProvidedDataMapping
+  - DiagnosticDynamicDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifierClass
+  - DiagnosticEcuInstanceProps
+  - DiagnosticEcuReset
+  - DiagnosticEcuResetClass
+  - DiagnosticEnableCondition
+  - DiagnosticEnableConditionGroup
+  - DiagnosticEnableConditionNeeds
+  - DiagnosticEnableConditionPortMapping
+  - DiagnosticEnvBswModeElement
   - DiagnosticEnvModeElement
+  - DiagnosticEnvSwcModeElement
+  - DiagnosticEnvironmentalCondition
+  - DiagnosticEvent
+  - DiagnosticEventInfoNeeds
+  - DiagnosticEventManagerNeeds
+  - DiagnosticEventNeeds
+  - DiagnosticEventPortMapping
+  - DiagnosticEventToDebounceAlgorithmMapping
+  - DiagnosticEventToEnableConditionGroupMapping
+  - DiagnosticEventToOperationCycleMapping
+  - DiagnosticEventToSecurityEventMapping
+  - DiagnosticEventToStorageConditionGroupMapping
+  - DiagnosticEventToTroubleCodeJ1939Mapping
+  - DiagnosticEventToTroubleCodeUdsMapping
+  - DiagnosticExtendedDataRecord
+  - DiagnosticFimAliasEvent
+  - DiagnosticFimAliasEventGroup
+  - DiagnosticFimAliasEventGroupMapping
+  - DiagnosticFimAliasEventMapping
+  - DiagnosticFimEventGroup
+  - DiagnosticFimFunctionMapping
+  - DiagnosticFreezeFrame
+  - DiagnosticFunctionIdentifier
+  - DiagnosticFunctionIdentifierInhibit
+  - DiagnosticFunctionInhibitSource
+  - DiagnosticIOControl
+  - DiagnosticIndicator
+  - DiagnosticInfoType
+  - DiagnosticInhibitSourceEventMapping
+  - DiagnosticIoControlClass
+  - DiagnosticIoControlNeeds
+  - DiagnosticIumpr
+  - DiagnosticIumprDenominatorGroup
+  - DiagnosticIumprGroup
+  - DiagnosticIumprToFunctionIdentifierMapping
+  - DiagnosticJ1939ExpandedFreezeFrame
+  - DiagnosticJ1939FreezeFrame
+  - DiagnosticJ1939Node
+  - DiagnosticJ1939Spn
+  - DiagnosticJ1939SpnMapping
+  - DiagnosticJ1939SwMapping
+  - DiagnosticMasterToSlaveEventMapping
+  - DiagnosticMeasurementIdentifier
+  - DiagnosticMemoryDestinationPrimary
+  - DiagnosticMemoryDestinationUserDefined
+  - DiagnosticMemoryIdentifier
+  - DiagnosticOperationCycle
+  - DiagnosticOperationCycleNeeds
+  - DiagnosticOperationCyclePortMapping
+  - DiagnosticParameterElement
+  - DiagnosticParameterIdent
+  - DiagnosticParameterIdentifier
+  - DiagnosticPowertrainFreezeFrame
+  - DiagnosticProofOfOwnership
+  - DiagnosticProtocol
+  - DiagnosticReadDTCInformation
+  - DiagnosticReadDTCInformationClass
+  - DiagnosticReadDataByIdentifier
+  - DiagnosticReadDataByIdentifierClass
+  - DiagnosticReadDataByPeriodicID
+  - DiagnosticReadDataByPeriodicIDClass
+  - DiagnosticReadMemoryByAddress
+  - DiagnosticReadMemoryByAddressClass
+  - DiagnosticReadScalingDataByIdentifier
+  - DiagnosticReadScalingDataByIdentifierClass
+  - DiagnosticRequestControlOfOnBoardDevice
+  - DiagnosticRequestControlOfOnBoardDeviceClass
+  - DiagnosticRequestCurrentPowertrainData
+  - DiagnosticRequestCurrentPowertrainDataClass
+  - DiagnosticRequestDownload
+  - DiagnosticRequestDownloadClass
+  - DiagnosticRequestEmissionRelatedDTC
+  - DiagnosticRequestEmissionRelatedDTCClass
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatus
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatusClass
+  - DiagnosticRequestFileTransfer
+  - DiagnosticRequestFileTransferClass
+  - DiagnosticRequestFileTransferNeeds
+  - DiagnosticRequestOnBoardMonitoringTestResults
+  - DiagnosticRequestOnBoardMonitoringTestResultsClass
+  - DiagnosticRequestPowertrainFreezeFrameData
+  - DiagnosticRequestPowertrainFreezeFrameDataClass
+  - DiagnosticRequestRoutineResults
+  - DiagnosticRequestUpload
+  - DiagnosticRequestUploadClass
+  - DiagnosticRequestVehicleInfo
+  - DiagnosticRequestVehicleInfoClass
+  - DiagnosticResponseOnEvent
+  - DiagnosticResponseOnEventClass
+  - DiagnosticRoutine
+  - DiagnosticRoutineControl
+  - DiagnosticRoutineControlClass
+  - DiagnosticRoutineNeeds
+  - DiagnosticSecureCodingMapping
+  - DiagnosticSecurityAccess
+  - DiagnosticSecurityAccessClass
+  - DiagnosticSecurityEventReportingModeMapping
+  - DiagnosticSecurityLevel
+  - DiagnosticServiceDataMapping
+  - DiagnosticServiceSwMapping
+  - DiagnosticServiceTable
+  - DiagnosticSession
+  - DiagnosticSessionControl
+  - DiagnosticSessionControlClass
+  - DiagnosticStartRoutine
+  - DiagnosticStopRoutine
+  - DiagnosticStorageCondition
+  - DiagnosticStorageConditionGroup
+  - DiagnosticStorageConditionNeeds
+  - DiagnosticStorageConditionPortMapping
+  - DiagnosticTestResult
+  - DiagnosticTestRoutineIdentifier
+  - DiagnosticTransferExit
+  - DiagnosticTransferExitClass
+  - DiagnosticTroubleCodeGroup
+  - DiagnosticTroubleCodeJ1939
+  - DiagnosticTroubleCodeObd
+  - DiagnosticTroubleCodeProps
+  - DiagnosticTroubleCodeUds
+  - DiagnosticTroubleCodeUdsToTroubleCodeObdMapping
+  - DiagnosticUploadDownloadNeeds
+  - DiagnosticValueNeeds
+  - DiagnosticVerifyCertificateBidirectional
+  - DiagnosticWriteDataByIdentifierClass
+  - DiagnosticWriteMemoryByAddressClass
+  - DiagnosticsCommunicationSecurityNeeds
+  - DltApplication
+  - DltArgument
+  - DltContext
+  - DltEcu
+  - DltLogChannel
+  - DltMessage
+  - DltUserNeeds
+  - DoIpActivationLineNeeds
+  - DoIpGidNeeds
+  - DoIpGidSynchronizationNeeds
+  - DoIpInterface
+  - DoIpLogicAddress
+  - DoIpLogicTargetAddressProps
+  - DoIpLogicTesterAddressProps
+  - DoIpPowerModeStatusNeeds
+  - DoIpRoutingActivation
+  - DoIpRoutingActivationAuthenticationNeeds
+  - DoIpRoutingActivationConfirmationNeeds
+  - DoIpTpConfig
+  - DocumentElementScope
+  - Documentation
+  - DocumentationContext
+  - DtcStatusChangeNotificationNeeds
+  - E2EProfileCompatibilityProps
+  - ECUMapping
+  - EOCEventRef
+  - EOCExecutableEntityRef
+  - EOCExecutableEntityRefGroup
+  - EcuAbstractionSwComponentType
+  - EcuInstance
+  - EcuPartition
+  - EcuStateMgrUserNeeds
+  - EcuTiming
+  - EcucAddInfoParamDef
+  - EcucBooleanParamDef
+  - EcucChoiceContainerDef
+  - EcucChoiceReferenceDef
+  - EcucContainerValue
+  - EcucDefinitionCollection
+  - EcucDestinationUriDef
+  - EcucDestinationUriDefSet
+  - EcucEnumerationLiteralDef
+  - EcucEnumerationParamDef
+  - EcucFloatParamDef
+  - EcucForeignReferenceDef
+  - EcucFunctionNameDef
+  - EcucInstanceReferenceDef
+  - EcucIntegerParamDef
+  - EcucLinkerSymbolDef
+  - EcucModuleConfigurationValues
+  - EcucModuleDef
+  - EcucMultilineStringParamDef
+  - EcucParamConfContainerDef
+  - EcucQuery
+  - EcucReferenceDef
+  - EcucStringParamDef
+  - EcucUriReferenceDef
+  - EcucValidationCondition
+  - EcucValueCollection
+  - EndToEndProtection
+  - EndToEndProtectionSet
+  - EnumerationMappingTable
+  - ErrorTracerNeeds
+  - EthIpProps
+  - EthTcpIpIcmpProps
+  - EthTcpIpProps
+  - EthTpConfig
+  - EthernetCluster
+  - EthernetCommunicationConnector
+  - EthernetCommunicationController
+  - EthernetFrameTriggering
+  - EthernetPhysicalChannel
   - EthernetPriorityRegeneration
+  - EthernetWakeupSleepOnDatalineConfig
+  - EthernetWakeupSleepOnDatalineConfigSet
+  - EvaluatedVariantSet
+  - EventHandler
+  - ExclusiveArea
   - ExclusiveAreaNestingOrder
+  - ExecutableEntityActivationReason
+  - ExecutionOrderConstraint
+  - ExecutionTimeConstraint
+  - ExternalTriggerOccurredEvent
+  - ExternalTriggeringPointIdent
+  - FMAttributeDef
+  - FMFeature
+  - FMFeatureMap
+  - FMFeatureMapAssertion
+  - FMFeatureMapCondition
+  - FMFeatureMapElement
+  - FMFeatureModel
+  - FMFeatureRelation
+  - FMFeatureRestriction
+  - FMFeatureSelection
+  - FMFeatureSelectionSet
+  - FirewallRule
+  - FlatInstanceDescriptor
+  - FlatMap
+  - FlexrayArTpConfig
+  - FlexrayArTpNode
+  - FlexrayCluster
+  - FlexrayCommunicationConnector
+  - FlexrayCommunicationController
+  - FlexrayFrame
+  - FlexrayFrameTriggering
+  - FlexrayNmCluster
+  - FlexrayNmNode
+  - FlexrayPhysicalChannel
+  - FlexrayTpConfig
+  - FlexrayTpConnectionControl
+  - FlexrayTpNode
+  - FlexrayTpPduPool
+  - FramePort
+  - FunctionInhibitionAvailabilityNeeds
+  - FunctionInhibitionNeeds
+  - Gateway
+  - GeneralPurposeConnection
+  - GeneralPurposeIPdu
+  - GeneralPurposePdu
+  - GenericEthernetFrame
+  - GlobalSupervisionNeeds
+  - GlobalTimeCanMaster
+  - GlobalTimeCanSlave
+  - GlobalTimeDomain
+  - GlobalTimeEthMaster
+  - GlobalTimeEthSlave
+  - GlobalTimeFrMaster
+  - GlobalTimeFrSlave
+  - GlobalTimeGateway
+  - HardwareTestNeeds
+  - HwAttributeDef
+  - HwAttributeLiteralDef
+  - HwCategory
   - HwDescriptionEntity
+  - HwElement
+  - HwPin
+  - HwPinGroup
+  - HwType
+  - IEEE1722TpAafConnection
+  - IEEE1722TpAcfCan
+  - IEEE1722TpAcfCanPart
+  - IEEE1722TpAcfConnection
+  - IEEE1722TpAcfLin
+  - IEEE1722TpAcfLinPart
+  - IEEE1722TpConfig
+  - IEEE1722TpCrfConnection
+  - IEEE1722TpIidcConnection
+  - IPSecConfigProps
+  - IPSecRule
+  - IPduPort
+  - IPv6ExtHeaderFilterList
+  - IPv6ExtHeaderFilterSet
+  - ISignal
+  - ISignalGroup
+  - ISignalIPdu
+  - ISignalIPduGroup
+  - ISignalPort
+  - ISignalToIPduMapping
+  - ISignalTriggering
+  - IdsDesign
+  - IdsMgrCustomTimestampNeeds
+  - IdsMgrNeeds
+  - IdsmInstance
+  - IdsmProperties
+  - Ieee1722TpEthernetFrame
+  - ImplementationDataType
+  - ImplementationDataTypeElement
   - ImplementationProps
+  - ImpositionTime
+  - IndicatorStatusNeeds
+  - InitEvent
+  - InternalTriggerOccurredEvent
+  - InternalTriggeringPoint
+  - InterpolationRoutineMappingSet
+  - J1939Cluster
+  - J1939ControllerApplication
+  - J1939DcmDm19Support
+  - J1939DcmIPdu
+  - J1939NmCluster
+  - J1939NmNode
+  - J1939RmIncomingRequestServiceNeeds
+  - J1939RmOutgoingRequestServiceNeeds
+  - J1939SharedAddressCluster
+  - J1939TpConfig
+  - J1939TpNode
+  - Keyword
+  - KeywordSet
+  - LatencyTimingConstraint
+  - LifeCycleInfoSet
+  - LifeCycleState
+  - LifeCycleStateDefinitionGroup
+  - LinCluster
+  - LinCommunicationConnector
+  - LinEventTriggeredFrame
+  - LinFrameTriggering
+  - LinMaster
+  - LinPhysicalChannel
+  - LinScheduleTable
+  - LinSlave
   - LinSlaveConfigIdent
+  - LinSporadicFrame
+  - LinTpConfig
+  - LinTpNode
+  - LinUnconditionalFrame
+  - Linker
+  - LogAndTraceMessageCollectionSet
+  - MacMulticastGroup
+  - MacSecGlobalKayProps
+  - MacSecKayParticipant
+  - MacSecParticipantSet
+  - McDataInstance
+  - McFunction
+  - McGroup
+  - MeasuredExecutionTime
+  - MeasuredHeapUsage
+  - MeasuredStackUsage
+  - MemorySection
+  - ModeAccessPointIdent
+  - ModeDeclaration
+  - ModeDeclarationGroup
+  - ModeDeclarationGroupPrototype
+  - ModeDeclarationMapping
+  - ModeDeclarationMappingSet
+  - ModeInterfaceMapping
+  - ModeSwitchInterface
+  - ModeSwitchPoint
+  - ModeSwitchedAckEvent
   - ModeTransition
   - MultilanguageReferrable
+  - MultiplexedIPdu
+  - NPdu
+  - NetworkEndpoint
+  - NmConfig
+  - NmEcu
+  - NmPdu
+  - NvBlockDescriptor
+  - NvBlockNeeds
+  - NvBlockSwComponentType
+  - NvDataInterface
+  - ObdControlServiceNeeds
+  - ObdInfoServiceNeeds
+  - ObdMonitorServiceNeeds
+  - ObdPidServiceNeeds
+  - ObdRatioDenominatorNeeds
+  - ObdRatioServiceNeeds
+  - OffsetTimingConstraint
+  - OperationInvokedEvent
+  - OsTaskExecutionEvent
+  - OsTaskProxy
+  - PPortPrototype
+  - PRPortPrototype
+  - ParameterAccess
+  - ParameterDataPrototype
+  - ParameterInterface
+  - ParameterSwComponentType
+  - PassThroughSwConnector
+  - PduActivationRoutingGroup
+  - PduToFrameMapping
+  - PduTriggering
+  - PdurIPduGroup
+  - PerInstanceMemory
+  - PeriodicEventTriggering
+  - PhysicalDimension
+  - PhysicalDimensionMappingSet
   - PncMappingIdent
-  - SingleLanguageReferrable
-  - SoConIPduIdentifier
-  - SocketConnectionBundle
-  - TimeSyncServerConfiguration
-  - TpConnectionIdent
-  MultilanguageReferrable:
-  - Caption
-  - DefItem
-  - DocumentationContext
-  - Identifiable
+  - PortElementToCommunicationResourceMapping
+  - PortGroup
+  - PortInterfaceMappingSet
+  - PortPrototypeBlueprint
+  - PostBuildVariantCriterion
+  - PostBuildVariantCriterionValueSet
+  - PredefinedVariant
+  - PrimitiveAttributeTailoring
+  - ProvidedServiceInstance
+  - RPortPrototype
+  - RapidPrototypingScenario
+  - ReferenceTailoring
+  - ResourceConsumption
+  - RootSwCompositionPrototype
+  - RoughEstimateHeapUsage
+  - RoughEstimateOfExecutionTime
+  - RoughEstimateStackUsage
+  - RptComponent
+  - RptContainer
+  - RptExecutableEntity
+  - RptExecutableEntityEvent
+  - RptExecutionContext
+  - RptProfile
+  - RptServicePoint
+  - RteEventInCompositionSeparation
+  - RteEventInCompositionToOsTaskProxyMapping
+  - RteEventInSystemSeparation
+  - RteEventInSystemToOsTaskProxyMapping
+  - RunnableEntity
+  - RunnableEntityGroup
+  - RuntimeError
+  - SOMEIPTransformationProps
+  - Sdg
+  - SdgAggregationWithVariation
   - SdgCaption
+  - SdgClass
+  - SdgDef
+  - SdgForeignReference
+  - SdgForeignReferenceWithVariation
+  - SdgPrimitiveAttribute
+  - SdgPrimitiveAttributeWithVariation
+  - SdgTailoring
+  - SecOcCryptoServiceMapping
+  - SectionNamePrefix
+  - SecureCommunicationAuthenticationProps
+  - SecureCommunicationFreshnessProps
+  - SecureCommunicationPropsSet
+  - SecureOnBoardCommunicationNeeds
+  - SecuredIPdu
+  - SecurityEventAggregationFilter
+  - SecurityEventContextMappingApplication
+  - SecurityEventContextMappingBswModule
+  - SecurityEventContextMappingCommConnector
+  - SecurityEventContextMappingFunctionalCluster
+  - SecurityEventContextProps
+  - SecurityEventDefinition
+  - SecurityEventFilterChain
+  - SecurityEventOneEveryNFilter
+  - SecurityEventStateFilter
+  - SenderReceiverInterface
+  - SensorActuatorSwComponentType
+  - ServiceInstanceCollectionSet
+  - ServiceProxySwComponentType
+  - ServiceSwComponentType
+  - SignalServiceTranslationElementProps
+  - SignalServiceTranslationEventProps
+  - SignalServiceTranslationProps
+  - SignalServiceTranslationPropsSet
+  - SingleLanguageReferrable
+  - SoAdRoutingGroup
+  - SoConIPduIdentifier
+  - SocketAddress
+  - SocketConnectionBundle
+  - SocketConnectionIpduIdentifierSet
+  - SomeipSdClientServiceInstanceConfig
+  - SomeipSdServerEventGroupTimingConfig
+  - SomeipSdServerServiceInstanceConfig
+  - SomeipTpChannel
+  - SomeipTpConfig
+  - SpecificationDocumentScope
+  - SporadicEventTriggering
+  - StaticSocketConnection
+  - Std
+  - StructuredReq
+  - SupervisedEntityCheckpointNeeds
+  - SupervisedEntityNeeds
+  - SwAddrMethod
+  - SwAxisType
+  - SwBaseType
+  - SwGenericAxisParamType
+  - SwRecordLayout
+  - SwServiceArg
+  - SwSystemconst
+  - SwSystemconstantValueSet
+  - SwcBswMapping
+  - SwcImplementation
+  - SwcInternalBehavior
+  - SwcModeManagerErrorEvent
+  - SwcModeSwitchEvent
+  - SwcServiceDependency
+  - SwcTiming
+  - SwcToApplicationPartitionMapping
+  - SwcToEcuMapping
+  - SwcToImplMapping
+  - SwitchAsynchronousTrafficShaperGroupEntry
+  - SwitchFlowMeteringEntry
+  - SwitchStreamFilterActionDestPortModification
+  - SwitchStreamFilterEntry
+  - SwitchStreamFilterRule
+  - SwitchStreamGateEntry
+  - SwitchStreamIdentification
+  - SymbolProps
+  - SyncTimeBaseMgrUserNeeds
+  - SynchronizationPointConstraint
+  - SynchronousServerCallPoint
+  - System
+  - SystemMapping
+  - SystemSignal
+  - SystemSignalGroup
+  - SystemSignalGroupToCommunicationResourceMapping
+  - SystemSignalToCommunicationResourceMapping
+  - SystemTiming
+  - TDCpSoftwareClusterMapping
+  - TDCpSoftwareClusterMappingSet
+  - TDCpSoftwareClusterResourceMapping
+  - TDEventBswInternalBehavior
+  - TDEventBswModeDeclaration
+  - TDEventBswModule
+  - TDEventComplex
+  - TDEventFrClusterCycleStart
+  - TDEventFrame
+  - TDEventFrameEthernet
+  - TDEventIPdu
+  - TDEventISignal
+  - TDEventModeDeclaration
+  - TDEventOperation
+  - TDEventSLLETPort
+  - TDEventSwcInternalBehavior
+  - TDEventSwcInternalBehaviorReference
+  - TDEventTTCanCycleStart
+  - TDEventTrigger
+  - TDEventVariableDataPrototype
+  - TDEventVfbReference
+  - TDLETZoneClock
+  - TcpOptionFilterList
+  - TcpOptionFilterSet
+  - TimeSyncServerConfiguration
+  - TimingClockSyncAccuracy
+  - TimingCondition
+  - TimingDescriptionEventChain
+  - TimingEvent
+  - TimingExtensionResource
+  - TimingModeInstance
+  - TlsCryptoCipherSuite
+  - TlsCryptoCipherSuiteProps
+  - TlsCryptoServiceMapping
+  - TlvDataIdDefinitionSet
+  - Topic1
+  - TpAddress
+  - TpConnectionIdent
+  - TraceableText
+  - TransformationPropsSet
+  - TransformationTechnology
+  - TransformerHardErrorEvent
+  - TransientFault
+  - Trigger
+  - TriggerInterface
+  - TriggerInterfaceMapping
+  - TtcanCluster
+  - TtcanCommunicationConnector
+  - TtcanCommunicationController
+  - TtcanPhysicalChannel
+  - UdpNmCluster
+  - UdpNmNode
+  - Unit
+  - UnitGroup
+  - UserDefinedCluster
+  - UserDefinedCommunicationConnector
+  - UserDefinedCommunicationController
+  - UserDefinedEthernetFrame
+  - UserDefinedGlobalTimeMaster
+  - UserDefinedGlobalTimeSlave
+  - UserDefinedIPdu
+  - UserDefinedPdu
+  - UserDefinedTransformationProps
+  - V2xDataManagerNeeds
+  - V2xFacUserNeeds
+  - V2xMUserNeeds
+  - VariableAccess
+  - VariableDataPrototype
+  - VariationPointProxy
+  - VendorSpecificServiceNeeds
+  - VfbTiming
+  - ViewMap
+  - ViewMapSet
+  - VlanConfig
+  - WaitPoint
+  - WorstCaseHeapUsage
+  - WorstCaseStackUsage
+  - Xdoc
+  - Xfile
+  - XrefTarget
+  MultilanguageReferrable:
+  - ARPackage
+  - AclObjectSet
+  - AclOperation
+  - AclPermission
+  - AclRole
+  - AgeConstraint
+  - AggregationTailoring
+  - AliasNameSet
+  - AnalyzedExecutionTime
+  - AppOsTaskProxyToEcuTaskProxyMapping
+  - ApplicationArrayDataType
+  - ApplicationArrayElement
+  - ApplicationEndpoint
+  - ApplicationError
+  - ApplicationPartition
+  - ApplicationPartitionToEcuPartitionMapping
+  - ApplicationPrimitiveDataType
+  - ApplicationRecordDataType
+  - ApplicationRecordElement
+  - ApplicationSwComponentType
+  - ArbitraryEventTriggering
+  - ArgumentDataPrototype
+  - AssemblySwConnector
+  - AsynchronousServerCallPoint
+  - AsynchronousServerCallResultPoint
+  - AsynchronousServerCallReturnsEvent
+  - AutosarOperationArgumentInstance
+  - AutosarVariableInstance
+  - BackgroundEvent
+  - BinaryManifestItem
+  - BinaryManifestItemDefinition
+  - BinaryManifestMetaDataField
+  - BinaryManifestProvideResource
+  - BinaryManifestRequireResource
+  - BinaryManifestResourceDefinition
+  - BlockState
+  - BlueprintMappingSet
+  - BswAsynchronousServerCallReturnsEvent
+  - BswBackgroundEvent
+  - BswCalledEntity
+  - BswCompositionTiming
+  - BswDataReceivedEvent
+  - BswEntryRelationshipSet
+  - BswExternalTriggerOccurredEvent
+  - BswImplementation
+  - BswInternalBehavior
+  - BswInternalTriggerOccurredEvent
+  - BswInternalTriggeringPoint
+  - BswInterruptEntity
+  - BswInterruptEvent
+  - BswMgrNeeds
+  - BswModeManagerErrorEvent
+  - BswModeSwitchEvent
+  - BswModeSwitchedAckEvent
+  - BswModuleDependency
+  - BswModuleDescription
+  - BswModuleEntry
+  - BswModuleTiming
+  - BswOperationInvokedEvent
+  - BswOsTaskExecutionEvent
+  - BswSchedulableEntity
+  - BswServiceDependencyIdent
+  - BswTimingEvent
+  - BuildAction
+  - BuildActionEnvironment
+  - BuildActionManifest
+  - BulkNvDataDescriptor
+  - BurstPatternEventTriggering
+  - BusMirrorChannelMappingCan
+  - BusMirrorChannelMappingFlexray
+  - BusMirrorChannelMappingIp
+  - CalibrationParameterValueSet
+  - CanCluster
+  - CanCommunicationConnector
+  - CanCommunicationController
+  - CanFrame
+  - CanFrameTriggering
+  - CanNmCluster
+  - CanNmNode
+  - CanPhysicalChannel
+  - CanTpAddress
+  - CanTpChannel
+  - CanTpConfig
+  - CanTpNode
+  - Caption
+  - Chapter
+  - ClassContentConditional
+  - ClientIdDefinition
+  - ClientIdDefinitionSet
+  - ClientServerInterface
+  - ClientServerInterfaceMapping
+  - ClientServerInterfaceToBswModuleEntryBlueprintMapping
+  - ClientServerOperation
+  - Code
+  - Collection
+  - ComManagementMapping
+  - ComMgrUserNeeds
+  - Compiler
+  - ComplexDeviceDriverSwComponentType
+  - CompositionSwComponentType
+  - CompuMethod
+  - ConcreteClassTailoring
+  - ConcretePatternEventTriggering
+  - ConsistencyNeeds
+  - ConsistencyNeedsBlueprintSet
+  - ConstantSpecification
+  - ConstantSpecificationMappingSet
+  - ConstraintTailoring
+  - ConsumedEventGroup
+  - ConsumedProvidedServiceInstanceGroup
+  - ConsumedServiceInstance
+  - ContainerIPdu
+  - CouplingElement
+  - CouplingElementSwitchDetails
+  - CouplingPort
+  - CouplingPortFifo
+  - CouplingPortScheduler
+  - CouplingPortShaper
+  - CpSoftwareCluster
+  - CpSoftwareClusterBinaryManifestDescriptor
+  - CpSoftwareClusterCommunicationResource
+  - CpSoftwareClusterMappingSet
+  - CpSoftwareClusterResourcePool
+  - CpSoftwareClusterResourceToApplicationPartitionMapping
+  - CpSoftwareClusterServiceResource
+  - CpSoftwareClusterToApplicationPartitionMapping
+  - CpSoftwareClusterToEcuInstanceMapping
+  - CpSoftwareClusterToResourceMapping
+  - CpSwClusterResourceToDiagDataElemMapping
+  - CpSwClusterResourceToDiagFunctionIdMapping
+  - CpSwClusterToDiagEventMapping
+  - CpSwClusterToDiagRoutineSubfunctionMapping
+  - CryptoEllipticCurveProps
+  - CryptoKeyManagementNeeds
+  - CryptoServiceCertificate
+  - CryptoServiceJobNeeds
+  - CryptoServiceKey
+  - CryptoServiceNeeds
+  - CryptoServicePrimitive
+  - CryptoServiceQueue
+  - CryptoSignatureScheme
+  - DataConstr
+  - DataExchangePoint
+  - DataPrototypeGroup
+  - DataReceiveErrorEvent
+  - DataReceivedEvent
+  - DataSendCompletedEvent
+  - DataTransformationSet
+  - DataTypeMappingSet
+  - DataWriteCompletedEvent
+  - DcmIPdu
+  - DdsCpConfig
+  - DdsCpConsumedServiceInstance
+  - DdsCpDomain
+  - DdsCpPartition
+  - DdsCpProvidedServiceInstance
+  - DdsCpQosProfile
+  - DdsCpTopic
+  - DefItem
+  - DelegationSwConnector
+  - DependencyOnArtifact
+  - DevelopmentError
+  - DiagEventDebounceCounterBased
+  - DiagEventDebounceMonitorInternal
+  - DiagnosticAccessPermission
+  - DiagnosticAging
+  - DiagnosticAuthRole
+  - DiagnosticAuthTransmitCertificate
+  - DiagnosticAuthTransmitCertificateEvaluation
+  - DiagnosticAuthTransmitCertificateMapping
+  - DiagnosticAuthenticationClass
+  - DiagnosticAuthenticationConfiguration
+  - DiagnosticClearDiagnosticInformation
+  - DiagnosticClearDiagnosticInformationClass
+  - DiagnosticClearResetEmissionRelatedInfo
+  - DiagnosticClearResetEmissionRelatedInfoClass
+  - DiagnosticComControl
+  - DiagnosticComControlClass
+  - DiagnosticCommunicationManagerNeeds
+  - DiagnosticComponentNeeds
+  - DiagnosticConnectedIndicator
+  - DiagnosticConnection
+  - DiagnosticContributionSet
+  - DiagnosticControlDTCSetting
+  - DiagnosticControlDTCSettingClass
+  - DiagnosticControlNeeds
+  - DiagnosticCustomServiceClass
+  - DiagnosticCustomServiceInstance
+  - DiagnosticDataElement
+  - DiagnosticDataIdentifier
+  - DiagnosticDataIdentifierSet
+  - DiagnosticDataTransfer
+  - DiagnosticDataTransferClass
+  - DiagnosticDeAuthentication
+  - DiagnosticDebounceAlgorithmProps
+  - DiagnosticDemProvidedDataMapping
+  - DiagnosticDynamicDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifierClass
+  - DiagnosticEcuInstanceProps
+  - DiagnosticEcuReset
+  - DiagnosticEcuResetClass
+  - DiagnosticEnableCondition
+  - DiagnosticEnableConditionGroup
+  - DiagnosticEnableConditionNeeds
+  - DiagnosticEnableConditionPortMapping
+  - DiagnosticEnvironmentalCondition
+  - DiagnosticEvent
+  - DiagnosticEventInfoNeeds
+  - DiagnosticEventManagerNeeds
+  - DiagnosticEventNeeds
+  - DiagnosticEventPortMapping
+  - DiagnosticEventToDebounceAlgorithmMapping
+  - DiagnosticEventToEnableConditionGroupMapping
+  - DiagnosticEventToOperationCycleMapping
+  - DiagnosticEventToSecurityEventMapping
+  - DiagnosticEventToStorageConditionGroupMapping
+  - DiagnosticEventToTroubleCodeJ1939Mapping
+  - DiagnosticEventToTroubleCodeUdsMapping
+  - DiagnosticExtendedDataRecord
+  - DiagnosticFimAliasEvent
+  - DiagnosticFimAliasEventGroup
+  - DiagnosticFimAliasEventGroupMapping
+  - DiagnosticFimAliasEventMapping
+  - DiagnosticFimEventGroup
+  - DiagnosticFimFunctionMapping
+  - DiagnosticFreezeFrame
+  - DiagnosticFunctionIdentifier
+  - DiagnosticFunctionIdentifierInhibit
+  - DiagnosticFunctionInhibitSource
+  - DiagnosticIOControl
+  - DiagnosticIndicator
+  - DiagnosticInfoType
+  - DiagnosticInhibitSourceEventMapping
+  - DiagnosticIoControlClass
+  - DiagnosticIoControlNeeds
+  - DiagnosticIumpr
+  - DiagnosticIumprDenominatorGroup
+  - DiagnosticIumprGroup
+  - DiagnosticIumprToFunctionIdentifierMapping
+  - DiagnosticJ1939ExpandedFreezeFrame
+  - DiagnosticJ1939FreezeFrame
+  - DiagnosticJ1939Node
+  - DiagnosticJ1939Spn
+  - DiagnosticJ1939SpnMapping
+  - DiagnosticJ1939SwMapping
+  - DiagnosticMasterToSlaveEventMapping
+  - DiagnosticMeasurementIdentifier
+  - DiagnosticMemoryDestinationPrimary
+  - DiagnosticMemoryDestinationUserDefined
+  - DiagnosticMemoryIdentifier
+  - DiagnosticOperationCycle
+  - DiagnosticOperationCycleNeeds
+  - DiagnosticOperationCyclePortMapping
+  - DiagnosticParameterElement
+  - DiagnosticParameterIdent
+  - DiagnosticParameterIdentifier
+  - DiagnosticPowertrainFreezeFrame
+  - DiagnosticProofOfOwnership
+  - DiagnosticProtocol
+  - DiagnosticReadDTCInformation
+  - DiagnosticReadDTCInformationClass
+  - DiagnosticReadDataByIdentifier
+  - DiagnosticReadDataByIdentifierClass
+  - DiagnosticReadDataByPeriodicID
+  - DiagnosticReadDataByPeriodicIDClass
+  - DiagnosticReadMemoryByAddress
+  - DiagnosticReadMemoryByAddressClass
+  - DiagnosticReadScalingDataByIdentifier
+  - DiagnosticReadScalingDataByIdentifierClass
+  - DiagnosticRequestControlOfOnBoardDevice
+  - DiagnosticRequestControlOfOnBoardDeviceClass
+  - DiagnosticRequestCurrentPowertrainData
+  - DiagnosticRequestCurrentPowertrainDataClass
+  - DiagnosticRequestDownload
+  - DiagnosticRequestDownloadClass
+  - DiagnosticRequestEmissionRelatedDTC
+  - DiagnosticRequestEmissionRelatedDTCClass
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatus
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatusClass
+  - DiagnosticRequestFileTransfer
+  - DiagnosticRequestFileTransferClass
+  - DiagnosticRequestFileTransferNeeds
+  - DiagnosticRequestOnBoardMonitoringTestResults
+  - DiagnosticRequestOnBoardMonitoringTestResultsClass
+  - DiagnosticRequestPowertrainFreezeFrameData
+  - DiagnosticRequestPowertrainFreezeFrameDataClass
+  - DiagnosticRequestRoutineResults
+  - DiagnosticRequestUpload
+  - DiagnosticRequestUploadClass
+  - DiagnosticRequestVehicleInfo
+  - DiagnosticRequestVehicleInfoClass
+  - DiagnosticResponseOnEvent
+  - DiagnosticResponseOnEventClass
+  - DiagnosticRoutine
+  - DiagnosticRoutineControl
+  - DiagnosticRoutineControlClass
+  - DiagnosticRoutineNeeds
+  - DiagnosticSecureCodingMapping
+  - DiagnosticSecurityAccess
+  - DiagnosticSecurityAccessClass
+  - DiagnosticSecurityEventReportingModeMapping
+  - DiagnosticSecurityLevel
+  - DiagnosticServiceDataMapping
+  - DiagnosticServiceSwMapping
+  - DiagnosticServiceTable
+  - DiagnosticSession
+  - DiagnosticSessionControl
+  - DiagnosticSessionControlClass
+  - DiagnosticStartRoutine
+  - DiagnosticStopRoutine
+  - DiagnosticStorageCondition
+  - DiagnosticStorageConditionGroup
+  - DiagnosticStorageConditionNeeds
+  - DiagnosticStorageConditionPortMapping
+  - DiagnosticTestResult
+  - DiagnosticTestRoutineIdentifier
+  - DiagnosticTransferExit
+  - DiagnosticTransferExitClass
+  - DiagnosticTroubleCodeGroup
+  - DiagnosticTroubleCodeJ1939
+  - DiagnosticTroubleCodeObd
+  - DiagnosticTroubleCodeProps
+  - DiagnosticTroubleCodeUds
+  - DiagnosticTroubleCodeUdsToTroubleCodeObdMapping
+  - DiagnosticUploadDownloadNeeds
+  - DiagnosticValueNeeds
+  - DiagnosticVerifyCertificateBidirectional
+  - DiagnosticWriteDataByIdentifierClass
+  - DiagnosticWriteMemoryByAddressClass
+  - DiagnosticsCommunicationSecurityNeeds
+  - DltApplication
+  - DltArgument
+  - DltContext
+  - DltEcu
+  - DltLogChannel
+  - DltMessage
+  - DltUserNeeds
+  - DoIpActivationLineNeeds
+  - DoIpGidNeeds
+  - DoIpGidSynchronizationNeeds
+  - DoIpInterface
+  - DoIpLogicAddress
+  - DoIpLogicTargetAddressProps
+  - DoIpLogicTesterAddressProps
+  - DoIpPowerModeStatusNeeds
+  - DoIpRoutingActivation
+  - DoIpRoutingActivationAuthenticationNeeds
+  - DoIpRoutingActivationConfirmationNeeds
+  - DoIpTpConfig
+  - DocumentElementScope
+  - Documentation
+  - DocumentationContext
+  - DtcStatusChangeNotificationNeeds
+  - E2EProfileCompatibilityProps
+  - ECUMapping
+  - EOCEventRef
+  - EOCExecutableEntityRef
+  - EOCExecutableEntityRefGroup
+  - EcuAbstractionSwComponentType
+  - EcuInstance
+  - EcuPartition
+  - EcuStateMgrUserNeeds
+  - EcuTiming
+  - EcucAddInfoParamDef
+  - EcucBooleanParamDef
+  - EcucChoiceContainerDef
+  - EcucChoiceReferenceDef
+  - EcucContainerValue
+  - EcucDefinitionCollection
+  - EcucDestinationUriDef
+  - EcucDestinationUriDefSet
+  - EcucEnumerationLiteralDef
+  - EcucEnumerationParamDef
+  - EcucFloatParamDef
+  - EcucForeignReferenceDef
+  - EcucFunctionNameDef
+  - EcucInstanceReferenceDef
+  - EcucIntegerParamDef
+  - EcucLinkerSymbolDef
+  - EcucModuleConfigurationValues
+  - EcucModuleDef
+  - EcucMultilineStringParamDef
+  - EcucParamConfContainerDef
+  - EcucQuery
+  - EcucReferenceDef
+  - EcucStringParamDef
+  - EcucUriReferenceDef
+  - EcucValidationCondition
+  - EcucValueCollection
+  - EndToEndProtection
+  - EndToEndProtectionSet
+  - EnumerationMappingTable
+  - ErrorTracerNeeds
+  - EthIpProps
+  - EthTcpIpIcmpProps
+  - EthTcpIpProps
+  - EthTpConfig
+  - EthernetCluster
+  - EthernetCommunicationConnector
+  - EthernetCommunicationController
+  - EthernetFrameTriggering
+  - EthernetPhysicalChannel
+  - EthernetWakeupSleepOnDatalineConfig
+  - EthernetWakeupSleepOnDatalineConfigSet
+  - EvaluatedVariantSet
+  - EventHandler
+  - ExclusiveArea
+  - ExecutionOrderConstraint
+  - ExecutionTimeConstraint
+  - ExternalTriggerOccurredEvent
+  - ExternalTriggeringPointIdent
+  - FMAttributeDef
+  - FMFeature
+  - FMFeatureMap
+  - FMFeatureMapAssertion
+  - FMFeatureMapCondition
+  - FMFeatureMapElement
+  - FMFeatureModel
+  - FMFeatureRelation
+  - FMFeatureRestriction
+  - FMFeatureSelection
+  - FMFeatureSelectionSet
+  - FirewallRule
+  - FlatInstanceDescriptor
+  - FlatMap
+  - FlexrayArTpConfig
+  - FlexrayArTpNode
+  - FlexrayCluster
+  - FlexrayCommunicationConnector
+  - FlexrayCommunicationController
+  - FlexrayFrame
+  - FlexrayFrameTriggering
+  - FlexrayNmCluster
+  - FlexrayNmNode
+  - FlexrayPhysicalChannel
+  - FlexrayTpConfig
+  - FlexrayTpConnectionControl
+  - FlexrayTpNode
+  - FlexrayTpPduPool
+  - FramePort
+  - FunctionInhibitionAvailabilityNeeds
+  - FunctionInhibitionNeeds
+  - Gateway
+  - GeneralPurposeConnection
+  - GeneralPurposeIPdu
+  - GeneralPurposePdu
+  - GenericEthernetFrame
+  - GlobalSupervisionNeeds
+  - GlobalTimeCanMaster
+  - GlobalTimeCanSlave
+  - GlobalTimeDomain
+  - GlobalTimeEthMaster
+  - GlobalTimeEthSlave
+  - GlobalTimeFrMaster
+  - GlobalTimeFrSlave
+  - GlobalTimeGateway
+  - HardwareTestNeeds
+  - HwAttributeDef
+  - HwAttributeLiteralDef
+  - HwCategory
+  - HwElement
+  - HwPin
+  - HwPinGroup
+  - HwType
+  - IEEE1722TpAafConnection
+  - IEEE1722TpAcfCan
+  - IEEE1722TpAcfCanPart
+  - IEEE1722TpAcfConnection
+  - IEEE1722TpAcfLin
+  - IEEE1722TpAcfLinPart
+  - IEEE1722TpConfig
+  - IEEE1722TpCrfConnection
+  - IEEE1722TpIidcConnection
+  - IPSecConfigProps
+  - IPSecRule
+  - IPduPort
+  - IPv6ExtHeaderFilterList
+  - IPv6ExtHeaderFilterSet
+  - ISignal
+  - ISignalGroup
+  - ISignalIPdu
+  - ISignalIPduGroup
+  - ISignalPort
+  - ISignalToIPduMapping
+  - ISignalTriggering
+  - Identifiable
+  - IdsDesign
+  - IdsMgrCustomTimestampNeeds
+  - IdsMgrNeeds
+  - IdsmInstance
+  - IdsmProperties
+  - Ieee1722TpEthernetFrame
+  - ImplementationDataType
+  - ImplementationDataTypeElement
+  - ImpositionTime
+  - IndicatorStatusNeeds
+  - InitEvent
+  - InternalTriggerOccurredEvent
+  - InternalTriggeringPoint
+  - InterpolationRoutineMappingSet
+  - J1939Cluster
+  - J1939ControllerApplication
+  - J1939DcmDm19Support
+  - J1939DcmIPdu
+  - J1939NmCluster
+  - J1939NmNode
+  - J1939RmIncomingRequestServiceNeeds
+  - J1939RmOutgoingRequestServiceNeeds
+  - J1939SharedAddressCluster
+  - J1939TpConfig
+  - J1939TpNode
+  - Keyword
+  - KeywordSet
+  - LatencyTimingConstraint
+  - LifeCycleInfoSet
+  - LifeCycleState
+  - LifeCycleStateDefinitionGroup
+  - LinCluster
+  - LinCommunicationConnector
+  - LinEventTriggeredFrame
+  - LinFrameTriggering
+  - LinMaster
+  - LinPhysicalChannel
+  - LinScheduleTable
+  - LinSlave
+  - LinSporadicFrame
+  - LinTpConfig
+  - LinTpNode
+  - LinUnconditionalFrame
+  - Linker
+  - LogAndTraceMessageCollectionSet
+  - MacMulticastGroup
+  - MacSecGlobalKayProps
+  - MacSecKayParticipant
+  - MacSecParticipantSet
+  - McDataInstance
+  - McFunction
+  - McGroup
+  - MeasuredExecutionTime
+  - MeasuredHeapUsage
+  - MeasuredStackUsage
+  - MemorySection
+  - ModeAccessPointIdent
+  - ModeDeclaration
+  - ModeDeclarationGroup
+  - ModeDeclarationGroupPrototype
+  - ModeDeclarationMapping
+  - ModeDeclarationMappingSet
+  - ModeInterfaceMapping
+  - ModeSwitchInterface
+  - ModeSwitchPoint
+  - ModeSwitchedAckEvent
+  - ModeTransition
+  - MultiplexedIPdu
+  - NPdu
+  - NetworkEndpoint
+  - NmConfig
+  - NmEcu
+  - NmPdu
+  - NvBlockDescriptor
+  - NvBlockNeeds
+  - NvBlockSwComponentType
+  - NvDataInterface
+  - ObdControlServiceNeeds
+  - ObdInfoServiceNeeds
+  - ObdMonitorServiceNeeds
+  - ObdPidServiceNeeds
+  - ObdRatioDenominatorNeeds
+  - ObdRatioServiceNeeds
+  - OffsetTimingConstraint
+  - OperationInvokedEvent
+  - OsTaskExecutionEvent
+  - OsTaskProxy
+  - PPortPrototype
+  - PRPortPrototype
+  - ParameterAccess
+  - ParameterDataPrototype
+  - ParameterInterface
+  - ParameterSwComponentType
+  - PassThroughSwConnector
+  - PduActivationRoutingGroup
+  - PduToFrameMapping
+  - PduTriggering
+  - PdurIPduGroup
+  - PerInstanceMemory
+  - PeriodicEventTriggering
+  - PhysicalDimension
+  - PhysicalDimensionMappingSet
+  - PortElementToCommunicationResourceMapping
+  - PortGroup
+  - PortInterfaceMappingSet
+  - PortPrototypeBlueprint
+  - PostBuildVariantCriterion
+  - PostBuildVariantCriterionValueSet
+  - PredefinedVariant
+  - PrimitiveAttributeTailoring
+  - ProvidedServiceInstance
+  - RPortPrototype
+  - RapidPrototypingScenario
+  - ReferenceTailoring
+  - ResourceConsumption
+  - RootSwCompositionPrototype
+  - RoughEstimateHeapUsage
+  - RoughEstimateOfExecutionTime
+  - RoughEstimateStackUsage
+  - RptComponent
+  - RptContainer
+  - RptExecutableEntity
+  - RptExecutableEntityEvent
+  - RptExecutionContext
+  - RptProfile
+  - RptServicePoint
+  - RteEventInCompositionSeparation
+  - RteEventInCompositionToOsTaskProxyMapping
+  - RteEventInSystemSeparation
+  - RteEventInSystemToOsTaskProxyMapping
+  - RunnableEntity
+  - RunnableEntityGroup
+  - RuntimeError
+  - SOMEIPTransformationProps
+  - Sdg
+  - SdgAggregationWithVariation
+  - SdgCaption
+  - SdgClass
+  - SdgDef
+  - SdgForeignReference
+  - SdgForeignReferenceWithVariation
+  - SdgPrimitiveAttribute
+  - SdgPrimitiveAttributeWithVariation
+  - SdgTailoring
+  - SecOcCryptoServiceMapping
+  - SecureCommunicationAuthenticationProps
+  - SecureCommunicationFreshnessProps
+  - SecureCommunicationPropsSet
+  - SecureOnBoardCommunicationNeeds
+  - SecuredIPdu
+  - SecurityEventAggregationFilter
+  - SecurityEventContextMappingApplication
+  - SecurityEventContextMappingBswModule
+  - SecurityEventContextMappingCommConnector
+  - SecurityEventContextMappingFunctionalCluster
+  - SecurityEventContextProps
+  - SecurityEventDefinition
+  - SecurityEventFilterChain
+  - SecurityEventOneEveryNFilter
+  - SecurityEventStateFilter
+  - SenderReceiverInterface
+  - SensorActuatorSwComponentType
+  - ServiceInstanceCollectionSet
+  - ServiceProxySwComponentType
+  - ServiceSwComponentType
+  - SignalServiceTranslationElementProps
+  - SignalServiceTranslationEventProps
+  - SignalServiceTranslationProps
+  - SignalServiceTranslationPropsSet
+  - SoAdRoutingGroup
+  - SocketAddress
+  - SocketConnectionIpduIdentifierSet
+  - SomeipSdClientServiceInstanceConfig
+  - SomeipSdServerEventGroupTimingConfig
+  - SomeipSdServerServiceInstanceConfig
+  - SomeipTpChannel
+  - SomeipTpConfig
+  - SpecificationDocumentScope
+  - SporadicEventTriggering
+  - StaticSocketConnection
+  - StructuredReq
+  - SupervisedEntityCheckpointNeeds
+  - SupervisedEntityNeeds
+  - SwAddrMethod
+  - SwAxisType
+  - SwBaseType
+  - SwGenericAxisParamType
+  - SwRecordLayout
+  - SwServiceArg
+  - SwSystemconst
+  - SwSystemconstantValueSet
+  - SwcBswMapping
+  - SwcImplementation
+  - SwcInternalBehavior
+  - SwcModeManagerErrorEvent
+  - SwcModeSwitchEvent
+  - SwcServiceDependency
+  - SwcTiming
+  - SwcToApplicationPartitionMapping
+  - SwcToEcuMapping
+  - SwcToImplMapping
+  - SwitchAsynchronousTrafficShaperGroupEntry
+  - SwitchFlowMeteringEntry
+  - SwitchStreamFilterActionDestPortModification
+  - SwitchStreamFilterEntry
+  - SwitchStreamFilterRule
+  - SwitchStreamGateEntry
+  - SwitchStreamIdentification
+  - SyncTimeBaseMgrUserNeeds
+  - SynchronizationPointConstraint
+  - SynchronousServerCallPoint
+  - System
+  - SystemMapping
+  - SystemSignal
+  - SystemSignalGroup
+  - SystemSignalGroupToCommunicationResourceMapping
+  - SystemSignalToCommunicationResourceMapping
+  - SystemTiming
+  - TDCpSoftwareClusterMapping
+  - TDCpSoftwareClusterMappingSet
+  - TDCpSoftwareClusterResourceMapping
+  - TDEventBswInternalBehavior
+  - TDEventBswModeDeclaration
+  - TDEventBswModule
+  - TDEventComplex
+  - TDEventFrClusterCycleStart
+  - TDEventFrame
+  - TDEventFrameEthernet
+  - TDEventIPdu
+  - TDEventISignal
+  - TDEventModeDeclaration
+  - TDEventOperation
+  - TDEventSLLETPort
+  - TDEventSwcInternalBehavior
+  - TDEventSwcInternalBehaviorReference
+  - TDEventTTCanCycleStart
+  - TDEventTrigger
+  - TDEventVariableDataPrototype
+  - TDEventVfbReference
+  - TDLETZoneClock
+  - TcpOptionFilterList
+  - TcpOptionFilterSet
+  - TimingClockSyncAccuracy
+  - TimingCondition
+  - TimingDescriptionEventChain
+  - TimingEvent
+  - TimingExtensionResource
+  - TimingModeInstance
+  - TlsCryptoCipherSuite
+  - TlsCryptoCipherSuiteProps
+  - TlsCryptoServiceMapping
+  - TlvDataIdDefinitionSet
+  - Topic1
+  - TpAddress
   - TraceReferrable
   - Traceable
+  - TraceableText
+  - TransformationPropsSet
+  - TransformationTechnology
+  - TransformerHardErrorEvent
+  - TransientFault
+  - Trigger
+  - TriggerInterface
+  - TriggerInterfaceMapping
+  - TtcanCluster
+  - TtcanCommunicationConnector
+  - TtcanCommunicationController
+  - TtcanPhysicalChannel
+  - UdpNmCluster
+  - UdpNmNode
+  - Unit
+  - UnitGroup
+  - UserDefinedCluster
+  - UserDefinedCommunicationConnector
+  - UserDefinedCommunicationController
+  - UserDefinedEthernetFrame
+  - UserDefinedGlobalTimeMaster
+  - UserDefinedGlobalTimeSlave
+  - UserDefinedIPdu
+  - UserDefinedPdu
+  - UserDefinedTransformationProps
+  - V2xDataManagerNeeds
+  - V2xFacUserNeeds
+  - V2xMUserNeeds
+  - VariableAccess
+  - VariableDataPrototype
+  - VariationPointProxy
+  - VendorSpecificServiceNeeds
+  - VfbTiming
+  - ViewMap
+  - ViewMapSet
+  - VlanConfig
+  - WaitPoint
+  - WorstCaseHeapUsage
+  - WorstCaseStackUsage
   SingleLanguageReferrable:
   - Std
   - Xdoc
@@ -1988,16 +4182,31 @@ polymorphic_types:
   - AbstractEthernetFrame
   - CanFrame
   - FlexrayFrame
+  - GenericEthernetFrame
+  - Ieee1722TpEthernetFrame
+  - LinEventTriggeredFrame
   - LinFrame
+  - LinSporadicFrame
+  - LinUnconditionalFrame
+  - UserDefinedEthernetFrame
   FrameTriggering:
   - CanFrameTriggering
   - EthernetFrameTriggering
   - FlexrayFrameTriggering
   - LinFrameTriggering
   Pdu:
+  - ContainerIPdu
+  - DcmIPdu
+  - GeneralPurposeIPdu
   - GeneralPurposePdu
   - IPdu
+  - ISignalIPdu
+  - J1939DcmIPdu
+  - MultiplexedIPdu
+  - NPdu
   - NmPdu
+  - SecuredIPdu
+  - UserDefinedIPdu
   - UserDefinedPdu
   IPdu:
   - ContainerIPdu
@@ -2022,13 +4231,19 @@ polymorphic_types:
   - SenderRecArrayTypeMapping
   - SenderRecRecordTypeMapping
   DataFormatElementScope:
+  - AggregationTailoring
   - AttributeTailoring
   - ConcreteClassTailoring
   - ConstraintTailoring
+  - PrimitiveAttributeTailoring
+  - ReferenceTailoring
   - SdgTailoring
   AbstractCondition:
+  - AggregationCondition
   - AttributeCondition
   - InvertCondition
+  - PrimitiveAttributeCondition
+  - ReferenceCondition
   - TextualCondition
   AttributeCondition:
   - AggregationCondition
@@ -2042,21 +4257,52 @@ polymorphic_types:
   - PrimitiveAttributeTailoring
   - ReferenceTailoring
   AtpDefinition:
+  - EcucAddInfoParamDef
+  - EcucBooleanParamDef
+  - EcucChoiceContainerDef
+  - EcucChoiceReferenceDef
   - EcucDefinitionElement
+  - EcucEnumerationParamDef
+  - EcucFloatParamDef
+  - EcucForeignReferenceDef
+  - EcucFunctionNameDef
+  - EcucInstanceReferenceDef
+  - EcucIntegerParamDef
+  - EcucLinkerSymbolDef
+  - EcucModuleDef
+  - EcucMultilineStringParamDef
+  - EcucParamConfContainerDef
+  - EcucReferenceDef
+  - EcucStringParamDef
+  - EcucUriReferenceDef
   - HwCategory
   - PostBuildVariantCriterion
   - SwSystemconst
   SwSystemconstDependentFormula:
   - AttributeValueVariationPoint
   - BlueprintFormula
+  - BooleanValueVariationPoint
   - ConditionByFormula
   - FMFormulaByFeaturesAndSw
+  - FloatValueVariationPoint
+  - IntegerValueVariationPoint
+  - LimitValueVariationPoint
+  - NumericalValueVariationPoint
+  - PositiveIntegerValueVariationPoint
+  - TimeValueValueVariationPoint
+  - UnlimitedIntegerValueVariationPoint
   ApplicationDataType:
+  - ApplicationArrayDataType
   - ApplicationCompositeDataType
   - ApplicationPrimitiveDataType
+  - ApplicationRecordDataType
   AutosarDataType:
   - AbstractImplementationDataType
+  - ApplicationArrayDataType
   - ApplicationDataType
+  - ApplicationPrimitiveDataType
+  - ApplicationRecordDataType
+  - ImplementationDataType
   ApplicationCompositeDataType:
   - ApplicationArrayDataType
   - ApplicationRecordDataType
@@ -2065,23 +4311,23 @@ polymorphic_types:
   - BswInterruptEntity
   - BswSchedulableEntity
   BswModuleCallPoint:
+  - Bsw
   - BswAsynchronousServerCallPoint
   - BswAsynchronousServerCallResultPoint
   - BswDirectCallPoint
-  - Bsw
   BswEvent:
-  - BswInterruptEvent
-  - BswOperationInvokedEvent
-  - BswScheduleEvent
   - BswAsynchronousServerCallReturnsEvent
   - BswBackgroundEvent
   - BswDataReceivedEvent
   - BswExternalTriggerOccurredEvent
   - BswInternalTriggerOccurredEvent
+  - BswInterruptEvent
   - BswModeManagerErrorEvent
   - BswModeSwitchEvent
   - BswModeSwitchedAckEvent
+  - BswOperationInvokedEvent
   - BswOsTaskExecutionEvent
+  - BswScheduleEvent
   - BswTimingEvent
   BswScheduleEvent:
   - BswAsynchronousServerCallReturnsEvent
@@ -2149,31 +4395,43 @@ polymorphic_types:
   - DiagnosticWriteDataByIdentifierClass
   - DiagnosticWriteMemoryByAddressClass
   DiagnosticServiceInstance:
+  - DiagnosticAuthTransmitCertificate
   - DiagnosticAuthentication
+  - DiagnosticAuthenticationConfiguration
   - DiagnosticClearDiagnosticInformation
   - DiagnosticClearResetEmissionRelatedInfo
   - DiagnosticComControl
   - DiagnosticControlDTCSetting
   - DiagnosticCustomServiceInstance
   - DiagnosticDataByIdentifier
+  - DiagnosticDataTransfer
+  - DiagnosticDeAuthentication
   - DiagnosticDynamicallyDefineDataIdentifier
   - DiagnosticEcuReset
   - DiagnosticIOControl
   - DiagnosticMemoryByAddress
+  - DiagnosticProofOfOwnership
   - DiagnosticReadDTCInformation
+  - DiagnosticReadDataByIdentifier
   - DiagnosticReadDataByPeriodicID
+  - DiagnosticReadMemoryByAddress
+  - DiagnosticReadScalingDataByIdentifier
   - DiagnosticRequestControlOfOnBoardDevice
   - DiagnosticRequestCurrentPowertrainData
+  - DiagnosticRequestDownload
   - DiagnosticRequestEmissionRelatedDTC
   - DiagnosticRequestEmissionRelatedDTCPermanentStatus
   - DiagnosticRequestFileTransfer
   - DiagnosticRequestOnBoardMonitoringTestResults
   - DiagnosticRequestPowertrainFreezeFrameData
+  - DiagnosticRequestUpload
   - DiagnosticRequestVehicleInfo
   - DiagnosticResponseOnEvent
   - DiagnosticRoutineControl
   - DiagnosticSecurityAccess
   - DiagnosticSessionControl
+  - DiagnosticTransferExit
+  - DiagnosticVerifyCertificateBidirectional
   DiagnosticServiceMappingDiagTarget:
   - DiagnosticDataElement
   - DiagnosticParameterElement
@@ -2186,51 +4444,159 @@ polymorphic_types:
   - SystemTiming
   - VfbTiming
   DiagnosticCommonElement:
+  - CpSwClusterResourceToDiagDataElemMapping
+  - CpSwClusterResourceToDiagFunctionIdMapping
+  - CpSwClusterToDiagEventMapping
+  - CpSwClusterToDiagRoutineSubfunctionMapping
   - DiagnosticAbstractAliasEvent
   - DiagnosticAbstractDataIdentifier
   - DiagnosticAccessPermission
   - DiagnosticAging
   - DiagnosticAuthRole
+  - DiagnosticAuthTransmitCertificate
+  - DiagnosticAuthTransmitCertificateMapping
+  - DiagnosticAuthenticationClass
+  - DiagnosticAuthenticationConfiguration
+  - DiagnosticClearDiagnosticInformation
+  - DiagnosticClearDiagnosticInformationClass
+  - DiagnosticClearResetEmissionRelatedInfo
+  - DiagnosticClearResetEmissionRelatedInfoClass
+  - DiagnosticComControl
+  - DiagnosticComControlClass
   - DiagnosticCondition
   - DiagnosticConditionGroup
+  - DiagnosticControlDTCSetting
+  - DiagnosticControlDTCSettingClass
   - DiagnosticCustomServiceClass
+  - DiagnosticCustomServiceInstance
+  - DiagnosticDataIdentifier
   - DiagnosticDataIdentifierSet
+  - DiagnosticDataTransfer
+  - DiagnosticDataTransferClass
+  - DiagnosticDeAuthentication
+  - DiagnosticDemProvidedDataMapping
+  - DiagnosticDynamicDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifierClass
   - DiagnosticEcuInstanceProps
+  - DiagnosticEcuReset
+  - DiagnosticEcuResetClass
+  - DiagnosticEnableCondition
+  - DiagnosticEnableConditionGroup
+  - DiagnosticEnableConditionPortMapping
   - DiagnosticEnvironmentalCondition
   - DiagnosticEvent
+  - DiagnosticEventPortMapping
+  - DiagnosticEventToDebounceAlgorithmMapping
+  - DiagnosticEventToEnableConditionGroupMapping
+  - DiagnosticEventToOperationCycleMapping
+  - DiagnosticEventToSecurityEventMapping
+  - DiagnosticEventToStorageConditionGroupMapping
+  - DiagnosticEventToTroubleCodeJ1939Mapping
+  - DiagnosticEventToTroubleCodeUdsMapping
   - DiagnosticExtendedDataRecord
+  - DiagnosticFimAliasEvent
+  - DiagnosticFimAliasEventGroup
+  - DiagnosticFimAliasEventGroupMapping
+  - DiagnosticFimAliasEventMapping
   - DiagnosticFimEventGroup
+  - DiagnosticFimFunctionMapping
   - DiagnosticFreezeFrame
   - DiagnosticFunctionIdentifier
   - DiagnosticFunctionIdentifierInhibit
+  - DiagnosticIOControl
   - DiagnosticIndicator
   - DiagnosticInfoType
+  - DiagnosticInhibitSourceEventMapping
+  - DiagnosticIoControlClass
   - DiagnosticIumpr
   - DiagnosticIumprDenominatorGroup
   - DiagnosticIumprGroup
+  - DiagnosticIumprToFunctionIdentifierMapping
   - DiagnosticJ1939ExpandedFreezeFrame
   - DiagnosticJ1939FreezeFrame
   - DiagnosticJ1939Node
   - DiagnosticJ1939Spn
+  - DiagnosticJ1939SpnMapping
+  - DiagnosticJ1939SwMapping
   - DiagnosticMapping
+  - DiagnosticMasterToSlaveEventMapping
   - DiagnosticMeasurementIdentifier
   - DiagnosticMemoryDestination
+  - DiagnosticMemoryDestinationPrimary
+  - DiagnosticMemoryDestinationUserDefined
   - DiagnosticMemoryIdentifier
   - DiagnosticOperationCycle
+  - DiagnosticOperationCyclePortMapping
   - DiagnosticParameterIdentifier
   - DiagnosticPowertrainFreezeFrame
+  - DiagnosticProofOfOwnership
   - DiagnosticProtocol
+  - DiagnosticReadDTCInformation
+  - DiagnosticReadDTCInformationClass
+  - DiagnosticReadDataByIdentifier
+  - DiagnosticReadDataByIdentifierClass
+  - DiagnosticReadDataByPeriodicID
+  - DiagnosticReadDataByPeriodicIDClass
+  - DiagnosticReadMemoryByAddress
+  - DiagnosticReadMemoryByAddressClass
+  - DiagnosticReadScalingDataByIdentifier
+  - DiagnosticReadScalingDataByIdentifierClass
+  - DiagnosticRequestControlOfOnBoardDevice
+  - DiagnosticRequestControlOfOnBoardDeviceClass
+  - DiagnosticRequestCurrentPowertrainData
+  - DiagnosticRequestCurrentPowertrainDataClass
+  - DiagnosticRequestDownload
+  - DiagnosticRequestDownloadClass
+  - DiagnosticRequestEmissionRelatedDTC
+  - DiagnosticRequestEmissionRelatedDTCClass
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatus
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatusClass
+  - DiagnosticRequestFileTransfer
+  - DiagnosticRequestFileTransferClass
+  - DiagnosticRequestOnBoardMonitoringTestResults
+  - DiagnosticRequestOnBoardMonitoringTestResultsClass
+  - DiagnosticRequestPowertrainFreezeFrameData
+  - DiagnosticRequestPowertrainFreezeFrameDataClass
+  - DiagnosticRequestUpload
+  - DiagnosticRequestUploadClass
+  - DiagnosticRequestVehicleInfo
+  - DiagnosticRequestVehicleInfoClass
+  - DiagnosticResponseOnEvent
+  - DiagnosticResponseOnEventClass
   - DiagnosticRoutine
+  - DiagnosticRoutineControl
+  - DiagnosticRoutineControlClass
+  - DiagnosticSecureCodingMapping
+  - DiagnosticSecurityAccess
+  - DiagnosticSecurityAccessClass
+  - DiagnosticSecurityEventReportingModeMapping
   - DiagnosticSecurityLevel
   - DiagnosticServiceClass
+  - DiagnosticServiceDataMapping
   - DiagnosticServiceInstance
+  - DiagnosticServiceSwMapping
   - DiagnosticServiceTable
   - DiagnosticSession
+  - DiagnosticSessionControl
+  - DiagnosticSessionControlClass
+  - DiagnosticStorageCondition
+  - DiagnosticStorageConditionGroup
+  - DiagnosticStorageConditionPortMapping
   - DiagnosticTestResult
   - DiagnosticTestRoutineIdentifier
+  - DiagnosticTransferExit
+  - DiagnosticTransferExitClass
   - DiagnosticTroubleCode
   - DiagnosticTroubleCodeGroup
+  - DiagnosticTroubleCodeJ1939
+  - DiagnosticTroubleCodeObd
   - DiagnosticTroubleCodeProps
+  - DiagnosticTroubleCodeUds
+  - DiagnosticTroubleCodeUdsToTroubleCodeObdMapping
+  - DiagnosticVerifyCertificateBidirectional
+  - DiagnosticWriteDataByIdentifierClass
+  - DiagnosticWriteMemoryByAddressClass
   DiagnosticAbstractDataIdentifier:
   - DiagnosticDataIdentifier
   - DiagnosticDynamicDataIdentifier
@@ -2258,7 +4624,9 @@ polymorphic_types:
   - HttpTp
   - Ieee1722Tp
   - RtpTp
+  - TcpTp
   - TcpUdpConfig
+  - UdpTp
   TcpUdpConfig:
   - TcpTp
   - UdpTp
@@ -2269,6 +4637,9 @@ polymorphic_types:
   DiagnosticEnvConditionFormulaPart:
   - DiagnosticEnvCompareCondition
   - DiagnosticEnvConditionFormula
+  - DiagnosticEnvDataCondition
+  - DiagnosticEnvDataElementCondition
+  - DiagnosticEnvModeCondition
   DiagnosticEnvCompareCondition:
   - DiagnosticEnvDataCondition
   - DiagnosticEnvDataElementCondition
@@ -2283,6 +4654,8 @@ polymorphic_types:
   - CpSwClusterToDiagRoutineSubfunctionMapping
   - DiagnosticAuthTransmitCertificateMapping
   - DiagnosticDemProvidedDataMapping
+  - DiagnosticEnableConditionPortMapping
+  - DiagnosticEventPortMapping
   - DiagnosticEventToDebounceAlgorithmMapping
   - DiagnosticEventToEnableConditionGroupMapping
   - DiagnosticEventToOperationCycleMapping
@@ -2292,12 +4665,18 @@ polymorphic_types:
   - DiagnosticEventToTroubleCodeUdsMapping
   - DiagnosticFimAliasEventGroupMapping
   - DiagnosticFimAliasEventMapping
+  - DiagnosticFimFunctionMapping
   - DiagnosticInhibitSourceEventMapping
   - DiagnosticIumprToFunctionIdentifierMapping
   - DiagnosticJ1939SpnMapping
+  - DiagnosticJ1939SwMapping
   - DiagnosticMasterToSlaveEventMapping
+  - DiagnosticOperationCyclePortMapping
   - DiagnosticSecureCodingMapping
   - DiagnosticSecurityEventReportingModeMapping
+  - DiagnosticServiceDataMapping
+  - DiagnosticServiceSwMapping
+  - DiagnosticStorageConditionPortMapping
   - DiagnosticSwMapping
   - DiagnosticTroubleCodeUdsToTroubleCodeObdMapping
   DiagnosticSwMapping:
@@ -2320,15 +4699,22 @@ polymorphic_types:
   - DataComProps
   TimingConstraint:
   - AgeConstraint
+  - ArbitraryEventTriggering
+  - BurstPatternEventTriggering
+  - ConcretePatternEventTriggering
   - EventTriggeringConstraint
   - ExecutionOrderConstraint
   - ExecutionTimeConstraint
   - LatencyTimingConstraint
   - OffsetTimingConstraint
+  - PeriodicEventTriggering
+  - SporadicEventTriggering
   - SynchronizationPointConstraint
   - SynchronizationTiming
   AbstractServiceInstance:
   - ConsumedServiceInstance
+  - DdsCpConsumedServiceInstance
+  - DdsCpProvidedServiceInstance
   - DdsCpServiceInstance
   - ProvidedServiceInstance
   TpConnection:
@@ -2342,23 +4728,30 @@ polymorphic_types:
   DiagnosticMemoryByAddress:
   - DiagnosticDataTransfer
   - DiagnosticMemoryAddressableRangeAccess
-  - DiagnosticTransferExit
-  DiagnosticMemoryAddressableRangeAccess:
   - DiagnosticReadMemoryByAddress
   - DiagnosticRequestDownload
   - DiagnosticRequestUpload
+  - DiagnosticTransferExit
+  DiagnosticMemoryAddressableRangeAccess:
   - Diagnostic
+  - DiagnosticReadMemoryByAddress
+  - DiagnosticRequestDownload
+  - DiagnosticRequestUpload
   DiagnosticDataByIdentifier:
   - DiagnosticReadDataByIdentifier
   - DiagnosticReadScalingDataByIdentifier
   - DiagnosticWriteDataBy
   ValueSpecification:
   - AbstractRuleBasedValueSpecification
+  - ApplicationRuleBasedValueSpecification
   - ApplicationValueSpecification
+  - ArrayValueSpecification
+  - CompositeRuleBasedValueSpecification
   - CompositeValueSpecification
   - ConstantReference
   - NotAvailableValueSpecification
   - NumericalValueSpecification
+  - RecordValueSpecification
   - ReferenceValueSpecification
   - TextValueSpecification
   CompositeValueSpecification:
@@ -2379,35 +4772,58 @@ polymorphic_types:
   - AclPermission
   - AclRole
   - AliasNameSet
+  - ApplicationArrayDataType
   - ApplicationDataType
+  - ApplicationPrimitiveDataType
+  - ApplicationRecordDataType
+  - ApplicationSwComponentType
   - BswEntryRelationshipSet
   - BswModuleDescription
   - BswModuleEntry
+  - BuildAction
   - BuildActionEntity
   - BuildActionEnvironment
   - BuildActionManifest
+  - ClientServerInterface
+  - ClientServerInterfaceMapping
   - ClientServerInterfaceToBswModuleEntryBlueprintMapping
+  - ComplexDeviceDriverSwComponentType
+  - CompositionSwComponentType
   - CompuMethod
   - ConsistencyNeeds
   - DataConstr
   - DataTypeMappingSet
+  - EcuAbstractionSwComponentType
   - EcucDefinitionCollection
   - EcucDestinationUriDefSet
   - EcucModuleDef
   - FlatMap
+  - ImplementationDataType
   - ImpositionTime
   - ImpositionTimeDefinitionGroup
   - KeywordSet
   - LifeCycleState
   - LifeCycleStateDefinitionGroup
   - ModeDeclarationGroup
+  - ModeInterfaceMapping
+  - ModeSwitchInterface
+  - NvBlockSwComponentType
+  - NvDataInterface
+  - ParameterInterface
+  - ParameterSwComponentType
   - PortInterface
   - PortInterfaceMapping
   - PortInterfaceMappingSet
   - PortPrototypeBlueprint
+  - SenderReceiverInterface
+  - SensorActuatorSwComponentType
+  - ServiceProxySwComponentType
+  - ServiceSwComponentType
   - SwAddrMethod
   - SwBaseType
   - SwComponentType
+  - TriggerInterface
+  - TriggerInterfaceMapping
   - VfbTiming
   AtpBlueprintable:
   - ARPackage
@@ -2417,34 +4833,60 @@ polymorphic_types:
   - AclPermission
   - AclRole
   - AliasNameSet
+  - ApplicationArrayDataType
   - ApplicationDataType
+  - ApplicationPrimitiveDataType
+  - ApplicationRecordDataType
+  - ApplicationSwComponentType
   - BswEntryRelationshipSet
   - BswModuleDescription
   - BswModuleEntry
+  - BuildAction
   - BuildActionEntity
   - BuildActionEnvironment
   - BuildActionManifest
+  - ClientServerInterface
+  - ClientServerInterfaceMapping
+  - ComplexDeviceDriverSwComponentType
+  - CompositionSwComponentType
   - CompuMethod
   - ConsistencyNeeds
   - DataConstr
   - DataTypeMappingSet
+  - EcuAbstractionSwComponentType
   - EcucDefinitionCollection
   - EcucDestinationUriDefSet
   - EcucModuleDef
   - FlatMap
+  - ImplementationDataType
   - ImpositionTime
   - ImpositionTimeDefinitionGroup
   - KeywordSet
   - LifeCycleState
   - LifeCycleStateDefinitionGroup
   - ModeDeclarationGroup
+  - ModeInterfaceMapping
+  - ModeSwitchInterface
+  - NvBlockSwComponentType
+  - NvDataInterface
+  - PPortPrototype
+  - PRPortPrototype
+  - ParameterInterface
+  - ParameterSwComponentType
   - PortInterface
   - PortInterfaceMapping
   - PortInterfaceMappingSet
   - PortPrototype
+  - RPortPrototype
+  - SenderReceiverInterface
+  - SensorActuatorSwComponentType
+  - ServiceProxySwComponentType
+  - ServiceSwComponentType
   - SwAddrMethod
   - SwBaseType
   - SwComponentType
+  - TriggerInterface
+  - TriggerInterfaceMapping
   - VfbTiming
   AtpBlueprintMapping:
   - BlueprintMapping
@@ -2469,8 +4911,30 @@ polymorphic_types:
   - CryptoServiceJobNeeds
   - CryptoServiceNeeds
   - DiagnosticCapabilityElement
+  - DiagnosticCommunicationManagerNeeds
+  - DiagnosticComponentNeeds
+  - DiagnosticControlNeeds
+  - DiagnosticEnableConditionNeeds
+  - DiagnosticEventInfoNeeds
+  - DiagnosticEventManagerNeeds
+  - DiagnosticEventNeeds
+  - DiagnosticIoControlNeeds
+  - DiagnosticOperationCycleNeeds
+  - DiagnosticRequestFileTransferNeeds
+  - DiagnosticRoutineNeeds
+  - DiagnosticStorageConditionNeeds
+  - DiagnosticUploadDownloadNeeds
+  - DiagnosticValueNeeds
+  - DiagnosticsCommunicationSecurityNeeds
   - DltUserNeeds
+  - DoIpActivationLineNeeds
+  - DoIpGidNeeds
+  - DoIpGidSynchronizationNeeds
+  - DoIpPowerModeStatusNeeds
+  - DoIpRoutingActivationAuthenticationNeeds
+  - DoIpRoutingActivationConfirmationNeeds
   - DoIpServiceNeeds
+  - DtcStatusChangeNotificationNeeds
   - EcuStateMgrUserNeeds
   - ErrorTracerNeeds
   - FunctionInhibitionAvailabilityNeeds
@@ -2484,6 +4948,12 @@ polymorphic_types:
   - J1939RmIncomingRequestServiceNeeds
   - J1939RmOutgoingRequestServiceNeeds
   - NvBlockNeeds
+  - ObdControlServiceNeeds
+  - ObdInfoServiceNeeds
+  - ObdMonitorServiceNeeds
+  - ObdPidServiceNeeds
+  - ObdRatioDenominatorNeeds
+  - ObdRatioServiceNeeds
   - SecureOnBoardCommunicationNeeds
   - SupervisedEntityCheckpointNeeds
   - SupervisedEntityNeeds
@@ -2553,26 +5023,69 @@ polymorphic_types:
   - DdsCpProvidedServiceInstance
   FibexElement:
   - BusMirrorChannelMapping
+  - BusMirrorChannelMappingCan
+  - BusMirrorChannelMappingFlexray
+  - BusMirrorChannelMappingIp
+  - CanCluster
+  - CanFrame
+  - CanTpConfig
   - CommunicationCluster
   - ConsumedProvidedServiceInstanceGroup
+  - ContainerIPdu
   - CouplingElement
+  - DcmIPdu
+  - DoIpTpConfig
   - EcuInstance
+  - EthTpConfig
+  - EthernetCluster
   - EthernetWakeupSleepOnDatalineConfigSet
+  - FlexrayArTpConfig
+  - FlexrayCluster
+  - FlexrayFrame
+  - FlexrayTpConfig
   - Frame
   - Gateway
+  - GeneralPurposeIPdu
+  - GeneralPurposePdu
+  - GenericEthernetFrame
   - GlobalTimeDomain
+  - IEEE1722TpConfig
   - ISignal
   - ISignalGroup
+  - ISignalIPdu
   - ISignalIPduGroup
+  - Ieee1722TpEthernetFrame
+  - J1939Cluster
+  - J1939DcmIPdu
+  - J1939TpConfig
+  - LinCluster
+  - LinEventTriggeredFrame
+  - LinSporadicFrame
+  - LinTpConfig
+  - LinUnconditionalFrame
+  - MultiplexedIPdu
+  - NPdu
   - NmConfig
+  - NmPdu
   - Pdu
   - PdurIPduGroup
   - SecureCommunicationPropsSet
+  - SecuredIPdu
   - ServiceInstanceCollectionSet
   - SoAdRoutingGroup
   - SocketConnectionIpduIdentifierSet
+  - SomeipTpConfig
   - TpConfig
+  - TtcanCluster
+  - UserDefinedCluster
+  - UserDefinedEthernetFrame
+  - UserDefinedIPdu
+  - UserDefinedPdu
   TDEventVfb:
+  - TDEventModeDeclaration
+  - TDEventOperation
+  - TDEventTrigger
+  - TDEventVariableDataPrototype
   - TDEventVfbPort
   - TDEventVfbReference
   TDEventVfbPort:
@@ -2585,10 +5098,12 @@ polymorphic_types:
   - TDEventSwcInternalBehaviorReference
   TDEventCom:
   - TDEventCycleStart
+  - TDEventFrClusterCycleStart
   - TDEventFrame
   - TDEventFrameEthernet
   - TDEventIPdu
   - TDEventISignal
+  - TDEventTTCanCycleStart
   TDEventCycleStart:
   - TDEventFrClusterCycleStart
   - TDEventTTCanCycleStart
@@ -2611,7 +5126,9 @@ polymorphic_types:
   - ApplicationCompositeElementInPortInterfaceInstanceRef
   - ComponentInCompositionInstanceRef
   - ComponentInSystemInstanceRef
+  - DataPrototypeInClientServerInterfaceInstanceRef
   - DataPrototypeInPortInterfaceInstanceRef
+  - DataPrototypeInSenderReceiverInterfaceInstanceRef
   - DataPrototypeInSystemInstanceRef
   - InnerDataPrototypeGroupInCompositionInstanceRef
   - InnerPortGroupInCompositionInstanceRef
@@ -2624,12 +5141,21 @@ polymorphic_types:
   - OperationArgumentInComponentInstanceRef
   - OperationInAtomicSwcInstanceRef
   - OperationInSystemInstanceRef
+  - PModeGroupInAtomicSwcInstanceRef
   - PModeInSystemInstanceRef
+  - POperationInAtomicSwcInstanceRef
+  - PPortInCompositionInstanceRef
+  - PTriggerInAtomicSwcTypeInstanceRef
   - ParameterDataPrototypeInSystemInstanceRef
   - ParameterInAtomicSWCTypeInstanceRef
   - PortGroupInSystemInstanceRef
   - PortInCompositionTypeInstanceRef
+  - RModeGroupInAtomicSWCInstanceRef
   - RModeInAtomicSwcInstanceRef
+  - ROperationInAtomicSwcInstanceRef
+  - RPortInCompositionInstanceRef
+  - RTriggerInAtomicSwcInstanceRef
+  - RVariableInAtomicSwcInstanceRef
   - RteEventInCompositionInstanceRef
   - RteEventInEcuInstanceRef
   - RteEventInSystemInstanceRef
@@ -2644,34 +5170,195 @@ polymorphic_types:
   - VariableInAtomicSwcInstanceRef
   - VariableInComponent
   AtpClassifier:
+  - ApplicationArrayDataType
+  - ApplicationPrimitiveDataType
+  - ApplicationRecordDataType
+  - ApplicationSwComponentType
+  - AssemblySwConnector
+  - AsynchronousServerCallPoint
+  - AsynchronousServerCallResultPoint
+  - AsynchronousServerCallReturnsEvent
   - AtpStructureElement
   - AtpType
+  - BackgroundEvent
+  - BswInternalBehavior
+  - BswModuleDescription
+  - BswServiceDependencyIdent
+  - BulkNvDataDescriptor
+  - ClientServerInterface
+  - ClientServerOperation
+  - ComplexDeviceDriverSwComponentType
+  - CompositionSwComponentType
+  - DataPrototypeGroup
+  - DataReceiveErrorEvent
+  - DataReceivedEvent
+  - DataSendCompletedEvent
+  - DataWriteCompletedEvent
+  - DelegationSwConnector
+  - DiagnosticParameterIdent
+  - EcuAbstractionSwComponentType
+  - ExternalTriggerOccurredEvent
+  - ExternalTriggeringPointIdent
+  - ImplementationDataType
+  - ImplementationDataTypeElement
+  - InitEvent
+  - InternalTriggerOccurredEvent
+  - InternalTriggeringPoint
+  - ModeAccessPointIdent
+  - ModeDeclaration
+  - ModeDeclarationGroup
+  - ModeDeclarationMapping
+  - ModeDeclarationMappingSet
+  - ModeSwitchInterface
+  - ModeSwitchPoint
+  - ModeSwitchedAckEvent
+  - ModeTransition
+  - NvBlockDescriptor
+  - NvBlockSwComponentType
+  - NvDataInterface
+  - OperationInvokedEvent
+  - OsTaskExecutionEvent
+  - ParameterAccess
+  - ParameterInterface
+  - ParameterSwComponentType
+  - PassThroughSwConnector
+  - PerInstanceMemory
+  - PortGroup
+  - PortPrototypeBlueprint
+  - RunnableEntity
+  - RunnableEntityGroup
+  - SenderReceiverInterface
+  - SensorActuatorSwComponentType
+  - ServiceProxySwComponentType
+  - ServiceSwComponentType
+  - SwcBswMapping
+  - SwcInternalBehavior
+  - SwcModeManagerErrorEvent
+  - SwcModeSwitchEvent
+  - SwcServiceDependency
+  - SynchronousServerCallPoint
+  - System
+  - TimingEvent
+  - TransformerHardErrorEvent
+  - Trigger
+  - TriggerInterface
+  - VariableAccess
   AtpFeature:
+  - ApplicationArrayElement
+  - ApplicationRecordElement
+  - ArgumentDataPrototype
+  - AssemblySwConnector
+  - AsynchronousServerCallPoint
+  - AsynchronousServerCallResultPoint
+  - AsynchronousServerCallReturnsEvent
   - AtpPrototype
   - AtpStructureElement
-  AtpPrototype:
-  - DataPrototype
-  - ModeDeclarationGroupPrototype
-  - PortPrototype
-  - RootSwCompositionPrototype
-  - Sw
-  AtpStructureElement:
-  - AbstractAccessPoint
-  - AbstractImplementationDataTypeElement
-  - AsynchronousServerCallResultPoint
+  - BackgroundEvent
+  - BswInternalBehavior
   - BswModuleDescription
+  - BswServiceDependencyIdent
   - BulkNvDataDescriptor
   - ClientServerOperation
   - DataPrototypeGroup
-  - IdentCaption
-  - InternalBehavior
+  - DataReceiveErrorEvent
+  - DataReceivedEvent
+  - DataSendCompletedEvent
+  - DataWriteCompletedEvent
+  - DelegationSwConnector
+  - DiagnosticParameterIdent
+  - ExternalTriggerOccurredEvent
+  - ExternalTriggeringPointIdent
+  - ImplementationDataTypeElement
+  - InitEvent
+  - InternalTriggerOccurredEvent
   - InternalTriggeringPoint
+  - ModeAccessPointIdent
+  - ModeDeclaration
+  - ModeDeclarationGroupPrototype
+  - ModeDeclarationMapping
+  - ModeSwitchPoint
+  - ModeSwitchedAckEvent
+  - ModeTransition
+  - NvBlockDescriptor
+  - OperationInvokedEvent
+  - OsTaskExecutionEvent
+  - PPortPrototype
+  - PRPortPrototype
+  - ParameterAccess
+  - ParameterDataPrototype
+  - PassThroughSwConnector
+  - PerInstanceMemory
+  - PortGroup
+  - PortPrototypeBlueprint
+  - RPortPrototype
+  - RootSwCompositionPrototype
+  - RunnableEntity
+  - RunnableEntityGroup
+  - SwcBswMapping
+  - SwcInternalBehavior
+  - SwcModeManagerErrorEvent
+  - SwcModeSwitchEvent
+  - SwcServiceDependency
+  - SynchronousServerCallPoint
+  - System
+  - TimingEvent
+  - TransformerHardErrorEvent
+  - Trigger
+  - VariableAccess
+  - VariableDataPrototype
+  AtpPrototype:
+  - ApplicationArrayElement
+  - ApplicationRecordElement
+  - ArgumentDataPrototype
+  - DataPrototype
+  - ModeDeclarationGroupPrototype
+  - PPortPrototype
+  - PRPortPrototype
+  - ParameterDataPrototype
+  - PortPrototype
+  - RPortPrototype
+  - RootSwCompositionPrototype
+  - Sw
+  - VariableDataPrototype
+  AtpStructureElement:
+  - AbstractAccessPoint
+  - AbstractImplementationDataTypeElement
+  - AssemblySwConnector
+  - AsynchronousServerCallPoint
+  - AsynchronousServerCallResultPoint
+  - AsynchronousServerCallReturnsEvent
+  - BackgroundEvent
+  - BswInternalBehavior
+  - BswModuleDescription
+  - BswServiceDependencyIdent
+  - BulkNvDataDescriptor
+  - ClientServerOperation
+  - DataPrototypeGroup
+  - DataReceiveErrorEvent
+  - DataReceivedEvent
+  - DataSendCompletedEvent
+  - DataWriteCompletedEvent
+  - DelegationSwConnector
+  - DiagnosticParameterIdent
+  - ExternalTriggerOccurredEvent
+  - ExternalTriggeringPointIdent
+  - IdentCaption
+  - ImplementationDataTypeElement
+  - InitEvent
+  - InternalBehavior
+  - InternalTriggerOccurredEvent
+  - InternalTriggeringPoint
+  - ModeAccessPointIdent
   - ModeDeclaration
   - ModeDeclarationMapping
   - ModeSwitchPoint
+  - ModeSwitchedAckEvent
   - ModeTransition
   - NvBlockDescriptor
+  - OperationInvokedEvent
+  - OsTaskExecutionEvent
   - ParameterAccess
+  - PassThroughSwConnector
   - PerInstanceMemory
   - PortGroup
   - PortPrototypeBlueprint
@@ -2681,16 +5368,41 @@ polymorphic_types:
   - ServerCallPoint
   - SwConnector
   - SwcBswMapping
+  - SwcInternalBehavior
+  - SwcModeManagerErrorEvent
+  - SwcModeSwitchEvent
   - SwcServiceDependency
+  - SynchronousServerCallPoint
   - System
+  - TimingEvent
+  - TransformerHardErrorEvent
   - Trigger
   - VariableAccess
   AtpType:
+  - ApplicationArrayDataType
+  - ApplicationPrimitiveDataType
+  - ApplicationRecordDataType
+  - ApplicationSwComponentType
   - AutosarDataType
+  - ClientServerInterface
+  - ComplexDeviceDriverSwComponentType
+  - CompositionSwComponentType
+  - EcuAbstractionSwComponentType
+  - ImplementationDataType
   - ModeDeclarationGroup
   - ModeDeclarationMappingSet
+  - ModeSwitchInterface
+  - NvBlockSwComponentType
+  - NvDataInterface
+  - ParameterInterface
+  - ParameterSwComponentType
   - PortInterface
+  - SenderReceiverInterface
+  - SensorActuatorSwComponentType
+  - ServiceProxySwComponentType
+  - ServiceSwComponentType
   - SwComponentType
+  - TriggerInterface
   EventTriggeringConstraint:
   - ArbitraryEventTriggering
   - BurstPatternEventTriggering
@@ -2726,8 +5438,11 @@ polymorphic_types:
   - DataPrototypeInClientServerInterfaceInstanceRef
   - DataPrototypeInSenderReceiverInterfaceInstanceRef
   IEEE1722TpConnection:
+  - IEEE1722TpAafConnection
   - IEEE1722TpAcfConnection
   - IEEE1722TpAvConnection
+  - IEEE1722TpCrfConnection
+  - IEEE1722TpIidcConnection
   IEEE1722TpAvConnection:
   - IEEE1722TpAafConnection
   - IEEE1722TpCrfConnection
@@ -2754,7 +5469,18 @@ polymorphic_types:
   - PPortInCompositionInstanceRef
   - RPortInCompositionInstanceRef
   Traceable:
+  - AgeConstraint
+  - ArbitraryEventTriggering
+  - BurstPatternEventTriggering
+  - ConcretePatternEventTriggering
+  - ExecutionOrderConstraint
+  - ExecutionTimeConstraint
+  - LatencyTimingConstraint
+  - OffsetTimingConstraint
+  - PeriodicEventTriggering
+  - SporadicEventTriggering
   - StructuredReq
+  - SynchronizationPointConstraint
   - TimingConstraint
   - TraceableTable
   - TraceableText
@@ -2771,13 +5497,22 @@ polymorphic_types:
   - ServiceProxySwComponentType
   - ServiceSwComponentType
   PortPrototype:
+  - AbstractProvidedPortPrototype
+  - AbstractRequiredPortPrototype
   - PPortPrototype
-  - RPortPrototype
   - PRPortPrototype
+  - RPortPrototype
   SwComponentType:
+  - ApplicationSwComponentType
   - AtomicSwComponentType
+  - ComplexDeviceDriverSwComponentType
   - CompositionSwComponentType
+  - EcuAbstractionSwComponentType
+  - NvBlockSwComponentType
   - ParameterSwComponentType
+  - SensorActuatorSwComponentType
+  - ServiceProxySwComponentType
+  - ServiceSwComponentType
   AbstractRequiredPortPrototype:
   - PRPortPrototype
   - RPortPrototype
@@ -2786,8 +5521,13 @@ polymorphic_types:
   - PRPortPrototype
   EcucIndexableValue:
   - EcucAbstractReferenceValue
+  - EcucAddInfoParamValue
   - EcucContainerValue
+  - EcucInstanceReferenceValue
+  - EcucNumericalParamValue
   - EcucParameterValue
+  - EcucReferenceValue
+  - EcucTextualParamValue
   EcucParameterValue:
   - EcucAddInfoParamValue
   - EcucNumericalParamValue
@@ -2801,26 +5541,90 @@ polymorphic_types:
   - ExternalTriggeringPointIdent
   - ModeAccess
   TimingDescription:
+  - TDEventBswInternalBehavior
+  - TDEventBswModeDeclaration
+  - TDEventBswModule
+  - TDEventComplex
+  - TDEventFrClusterCycleStart
+  - TDEventFrame
+  - TDEventFrameEthernet
+  - TDEventIPdu
+  - TDEventISignal
+  - TDEventModeDeclaration
+  - TDEventOperation
+  - TDEventSLLETPort
+  - TDEventSwcInternalBehavior
+  - TDEventSwcInternalBehaviorReference
+  - TDEventTTCanCycleStart
+  - TDEventTrigger
+  - TDEventVariableDataPrototype
+  - TDEventVfbReference
   - TimingDescriptionEvent
   - TimingDescriptionEventChain
   TimingDescriptionEvent:
   - TDEventBsw
   - TDEventBswInternalBehavior
+  - TDEventBswModeDeclaration
+  - TDEventBswModule
   - TDEventCom
   - TDEventComplex
+  - TDEventFrClusterCycleStart
+  - TDEventFrame
+  - TDEventFrameEthernet
+  - TDEventIPdu
+  - TDEventISignal
+  - TDEventModeDeclaration
+  - TDEventOperation
   - TDEventSLLET
+  - TDEventSLLETPort
   - TDEventSwc
+  - TDEventSwcInternalBehavior
+  - TDEventSwcInternalBehaviorReference
+  - TDEventTTCanCycleStart
+  - TDEventTrigger
+  - TDEventVariableDataPrototype
   - TDEventVfb
+  - TDEventVfbReference
   EcucContainerDef:
   - EcucChoiceContainerDef
   - EcucParamConfContainerDef
   EcucDefinitionElement:
+  - EcucAddInfoParamDef
+  - EcucBooleanParamDef
+  - EcucChoiceContainerDef
+  - EcucChoiceReferenceDef
   - EcucCommonAttributes
   - EcucContainerDef
+  - EcucEnumerationParamDef
+  - EcucFloatParamDef
+  - EcucForeignReferenceDef
+  - EcucFunctionNameDef
+  - EcucInstanceReferenceDef
+  - EcucIntegerParamDef
+  - EcucLinkerSymbolDef
   - EcucModuleDef
+  - EcucMultilineStringParamDef
+  - EcucParamConfContainerDef
+  - EcucReferenceDef
+  - EcucStringParamDef
+  - EcucUriReferenceDef
   EcucCommonAttributes:
   - EcucAbstractReferenceDef
+  - EcucAddInfoParamDef
+  - EcucBooleanParamDef
+  - EcucChoiceReferenceDef
+  - EcucEnumerationParamDef
+  - EcucFloatParamDef
+  - EcucForeignReferenceDef
+  - EcucFunctionNameDef
+  - EcucInstanceReferenceDef
+  - EcucIntegerParamDef
+  - EcucLinkerSymbolDef
+  - EcucMultilineStringParamDef
   - EcucParameterDef
+  - EcucReferenceDef
+  - EcucStringParamDef
+  - EcucUriReferenceDef
   EcucAbstractConfigurationClass:
   - EcucMultiplicityConfigurationClass
   - EcucValueConfigurationClass
@@ -2830,7 +5634,11 @@ polymorphic_types:
   - EcucBooleanParamDef
   - EcucEnumerationParamDef
   - EcucFloatParamDef
+  - EcucFunctionNameDef
   - EcucIntegerParamDef
+  - EcucLinkerSymbolDef
+  - EcucMultilineStringParamDef
+  - EcucStringParamDef
   EcucAbstractStringParamDef:
   - EcucFunctionNameDef
   - EcucLinkerSymbolDef
@@ -2839,6 +5647,11 @@ polymorphic_types:
   EcucAbstractReferenceDef:
   - EcucAbstractExternalReferenceDef
   - EcucAbstractInternalReferenceDef
+  - EcucChoiceReferenceDef
+  - EcucForeignReferenceDef
+  - EcucInstanceReferenceDef
+  - EcucReferenceDef
+  - EcucUriReferenceDef
   EcucAbstractInternalReferenceDef:
   - EcucChoiceReferenceDef
   - EcucReferenceDef
@@ -2857,6 +5670,9 @@ polymorphic_types:
   - ClientServerInterface
   - DataInterface
   - ModeSwitchInterface
+  - NvDataInterface
+  - ParameterInterface
+  - SenderReceiverInterface
   - TriggerInterface
   PortInterfaceMapping:
   - ClientServerInterfaceMapping
@@ -2868,8 +5684,10 @@ polymorphic_types:
   - ImplementationDataTypeSubElementRef
   PPortComSpec:
   - ModeSwitchSenderComSpec
+  - NonqueuedSenderComSpec
   - NvProvideComSpec
   - ParameterProvideComSpec
+  - QueuedSenderComSpec
   - SenderComSpec
   RPortComSpec:
   - ClientComSpec
@@ -2894,10 +5712,10 @@ polymorphic_types:
   - BswImplementation
   - SwcImplementation
   BusMirrorChannelMapping:
+  - Bus
   - BusMirrorChannelMappingCan
   - BusMirrorChannelMappingFlexray
   - BusMirrorChannelMappingIp
-  - Bus
   AbstractDoIpLogicAddressProps:
   - DoIpLogicTargetAddressProps
   - DoIpLogicTesterAddressProps
@@ -2921,6 +5739,7 @@ polymorphic_types:
   - FlexrayNmClusterCoupling
   - UdpNmClusterCoupling
   AbstractAccessPoint:
+  - AsynchronousServerCallPoint
   - AsynchronousServerCallResultPoint
   - ExternalTriggeringPointIdent
   - InternalTriggeringPoint
@@ -2928,18 +5747,371 @@ polymorphic_types:
   - ModeSwitchPoint
   - ParameterAccess
   - ServerCallPoint
+  - SynchronousServerCallPoint
   - VariableAccess
   CollectableElement:
   - ARPackage
+  - AclObjectSet
+  - AclOperation
+  - AclPermission
+  - AclRole
+  - AliasNameSet
+  - ApplicationArrayDataType
+  - ApplicationPartition
+  - ApplicationPrimitiveDataType
+  - ApplicationRecordDataType
+  - ApplicationSwComponentType
+  - BlueprintMappingSet
+  - BswCompositionTiming
+  - BswEntryRelationshipSet
+  - BswImplementation
+  - BswModuleDescription
+  - BswModuleEntry
+  - BswModuleTiming
+  - BuildActionManifest
+  - BusMirrorChannelMappingCan
+  - BusMirrorChannelMappingFlexray
+  - BusMirrorChannelMappingIp
+  - CalibrationParameterValueSet
+  - CanCluster
+  - CanFrame
+  - CanTpConfig
+  - ClientIdDefinitionSet
+  - ClientServerInterface
+  - ClientServerInterfaceToBswModuleEntryBlueprintMapping
+  - Collection
+  - ComplexDeviceDriverSwComponentType
+  - CompositionSwComponentType
+  - CompuMethod
+  - ConsistencyNeedsBlueprintSet
+  - ConstantSpecification
+  - ConstantSpecificationMappingSet
+  - ConsumedProvidedServiceInstanceGroup
+  - ContainerIPdu
+  - CouplingElement
+  - CpSoftwareCluster
+  - CpSoftwareClusterBinaryManifestDescriptor
+  - CpSoftwareClusterMappingSet
+  - CpSoftwareClusterResourcePool
+  - CpSwClusterResourceToDiagDataElemMapping
+  - CpSwClusterResourceToDiagFunctionIdMapping
+  - CpSwClusterToDiagEventMapping
+  - CpSwClusterToDiagRoutineSubfunctionMapping
+  - CryptoEllipticCurveProps
+  - CryptoServiceCertificate
+  - CryptoServiceKey
+  - CryptoServicePrimitive
+  - CryptoServiceQueue
+  - CryptoSignatureScheme
+  - DataConstr
+  - DataExchangePoint
+  - DataTransformationSet
+  - DataTypeMappingSet
+  - DcmIPdu
+  - DdsCpConfig
+  - DiagnosticAccessPermission
+  - DiagnosticAging
+  - DiagnosticAuthRole
+  - DiagnosticAuthTransmitCertificate
+  - DiagnosticAuthTransmitCertificateMapping
+  - DiagnosticAuthenticationClass
+  - DiagnosticAuthenticationConfiguration
+  - DiagnosticClearDiagnosticInformation
+  - DiagnosticClearDiagnosticInformationClass
+  - DiagnosticClearResetEmissionRelatedInfo
+  - DiagnosticClearResetEmissionRelatedInfoClass
+  - DiagnosticComControl
+  - DiagnosticComControlClass
+  - DiagnosticConnection
+  - DiagnosticContributionSet
+  - DiagnosticControlDTCSetting
+  - DiagnosticControlDTCSettingClass
+  - DiagnosticCustomServiceClass
+  - DiagnosticCustomServiceInstance
+  - DiagnosticDataIdentifier
+  - DiagnosticDataIdentifierSet
+  - DiagnosticDataTransfer
+  - DiagnosticDataTransferClass
+  - DiagnosticDeAuthentication
+  - DiagnosticDemProvidedDataMapping
+  - DiagnosticDynamicDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifierClass
+  - DiagnosticEcuInstanceProps
+  - DiagnosticEcuReset
+  - DiagnosticEcuResetClass
+  - DiagnosticEnableCondition
+  - DiagnosticEnableConditionGroup
+  - DiagnosticEnableConditionPortMapping
+  - DiagnosticEnvironmentalCondition
+  - DiagnosticEvent
+  - DiagnosticEventPortMapping
+  - DiagnosticEventToDebounceAlgorithmMapping
+  - DiagnosticEventToEnableConditionGroupMapping
+  - DiagnosticEventToOperationCycleMapping
+  - DiagnosticEventToSecurityEventMapping
+  - DiagnosticEventToStorageConditionGroupMapping
+  - DiagnosticEventToTroubleCodeJ1939Mapping
+  - DiagnosticEventToTroubleCodeUdsMapping
+  - DiagnosticExtendedDataRecord
+  - DiagnosticFimAliasEvent
+  - DiagnosticFimAliasEventGroup
+  - DiagnosticFimAliasEventGroupMapping
+  - DiagnosticFimAliasEventMapping
+  - DiagnosticFimEventGroup
+  - DiagnosticFimFunctionMapping
+  - DiagnosticFreezeFrame
+  - DiagnosticFunctionIdentifier
+  - DiagnosticFunctionIdentifierInhibit
+  - DiagnosticIOControl
+  - DiagnosticIndicator
+  - DiagnosticInfoType
+  - DiagnosticInhibitSourceEventMapping
+  - DiagnosticIoControlClass
+  - DiagnosticIumpr
+  - DiagnosticIumprDenominatorGroup
+  - DiagnosticIumprGroup
+  - DiagnosticIumprToFunctionIdentifierMapping
+  - DiagnosticJ1939ExpandedFreezeFrame
+  - DiagnosticJ1939FreezeFrame
+  - DiagnosticJ1939Node
+  - DiagnosticJ1939Spn
+  - DiagnosticJ1939SpnMapping
+  - DiagnosticJ1939SwMapping
+  - DiagnosticMasterToSlaveEventMapping
+  - DiagnosticMeasurementIdentifier
+  - DiagnosticMemoryDestinationPrimary
+  - DiagnosticMemoryDestinationUserDefined
+  - DiagnosticMemoryIdentifier
+  - DiagnosticOperationCycle
+  - DiagnosticOperationCyclePortMapping
+  - DiagnosticParameterIdentifier
+  - DiagnosticPowertrainFreezeFrame
+  - DiagnosticProofOfOwnership
+  - DiagnosticProtocol
+  - DiagnosticReadDTCInformation
+  - DiagnosticReadDTCInformationClass
+  - DiagnosticReadDataByIdentifier
+  - DiagnosticReadDataByIdentifierClass
+  - DiagnosticReadDataByPeriodicID
+  - DiagnosticReadDataByPeriodicIDClass
+  - DiagnosticReadMemoryByAddress
+  - DiagnosticReadMemoryByAddressClass
+  - DiagnosticReadScalingDataByIdentifier
+  - DiagnosticReadScalingDataByIdentifierClass
+  - DiagnosticRequestControlOfOnBoardDevice
+  - DiagnosticRequestControlOfOnBoardDeviceClass
+  - DiagnosticRequestCurrentPowertrainData
+  - DiagnosticRequestCurrentPowertrainDataClass
+  - DiagnosticRequestDownload
+  - DiagnosticRequestDownloadClass
+  - DiagnosticRequestEmissionRelatedDTC
+  - DiagnosticRequestEmissionRelatedDTCClass
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatus
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatusClass
+  - DiagnosticRequestFileTransfer
+  - DiagnosticRequestFileTransferClass
+  - DiagnosticRequestOnBoardMonitoringTestResults
+  - DiagnosticRequestOnBoardMonitoringTestResultsClass
+  - DiagnosticRequestPowertrainFreezeFrameData
+  - DiagnosticRequestPowertrainFreezeFrameDataClass
+  - DiagnosticRequestUpload
+  - DiagnosticRequestUploadClass
+  - DiagnosticRequestVehicleInfo
+  - DiagnosticRequestVehicleInfoClass
+  - DiagnosticResponseOnEvent
+  - DiagnosticResponseOnEventClass
+  - DiagnosticRoutine
+  - DiagnosticRoutineControl
+  - DiagnosticRoutineControlClass
+  - DiagnosticSecureCodingMapping
+  - DiagnosticSecurityAccess
+  - DiagnosticSecurityAccessClass
+  - DiagnosticSecurityEventReportingModeMapping
+  - DiagnosticSecurityLevel
+  - DiagnosticServiceDataMapping
+  - DiagnosticServiceSwMapping
+  - DiagnosticServiceTable
+  - DiagnosticSession
+  - DiagnosticSessionControl
+  - DiagnosticSessionControlClass
+  - DiagnosticStorageCondition
+  - DiagnosticStorageConditionGroup
+  - DiagnosticStorageConditionPortMapping
+  - DiagnosticTestResult
+  - DiagnosticTestRoutineIdentifier
+  - DiagnosticTransferExit
+  - DiagnosticTransferExitClass
+  - DiagnosticTroubleCodeGroup
+  - DiagnosticTroubleCodeJ1939
+  - DiagnosticTroubleCodeObd
+  - DiagnosticTroubleCodeProps
+  - DiagnosticTroubleCodeUds
+  - DiagnosticTroubleCodeUdsToTroubleCodeObdMapping
+  - DiagnosticVerifyCertificateBidirectional
+  - DiagnosticWriteDataByIdentifierClass
+  - DiagnosticWriteMemoryByAddressClass
+  - DltContext
+  - DltEcu
+  - DoIpTpConfig
+  - Documentation
+  - E2EProfileCompatibilityProps
+  - EcuAbstractionSwComponentType
+  - EcuInstance
+  - EcuTiming
+  - EcucDefinitionCollection
+  - EcucDestinationUriDefSet
+  - EcucModuleConfigurationValues
+  - EcucModuleDef
+  - EcucValueCollection
+  - EndToEndProtectionSet
+  - EnumerationMappingTable
+  - EthIpProps
+  - EthTcpIpIcmpProps
+  - EthTcpIpProps
+  - EthTpConfig
+  - EthernetCluster
+  - EthernetWakeupSleepOnDatalineConfigSet
+  - EvaluatedVariantSet
+  - FMFeature
+  - FMFeatureMap
+  - FMFeatureModel
+  - FMFeatureSelectionSet
+  - FirewallRule
+  - FlatMap
+  - FlexrayArTpConfig
+  - FlexrayCluster
+  - FlexrayFrame
+  - FlexrayTpConfig
+  - Gateway
+  - GeneralPurposeConnection
+  - GeneralPurposeIPdu
+  - GeneralPurposePdu
+  - GenericEthernetFrame
+  - GlobalTimeDomain
+  - HwCategory
+  - HwElement
+  - HwType
+  - IEEE1722TpAafConnection
+  - IEEE1722TpAcfConnection
+  - IEEE1722TpConfig
+  - IEEE1722TpCrfConnection
+  - IEEE1722TpIidcConnection
+  - IPSecConfigProps
+  - IPv6ExtHeaderFilterSet
+  - ISignal
+  - ISignalGroup
+  - ISignalIPdu
+  - ISignalIPduGroup
+  - IdsDesign
+  - IdsmInstance
+  - IdsmProperties
+  - Ieee1722TpEthernetFrame
+  - ImplementationDataType
+  - InterpolationRoutineMappingSet
+  - J1939Cluster
+  - J1939ControllerApplication
+  - J1939DcmIPdu
+  - J1939TpConfig
+  - KeywordSet
+  - LifeCycleInfoSet
+  - LifeCycleStateDefinitionGroup
+  - LinCluster
+  - LinEventTriggeredFrame
+  - LinSporadicFrame
+  - LinTpConfig
+  - LinUnconditionalFrame
+  - LogAndTraceMessageCollectionSet
+  - MacSecGlobalKayProps
+  - MacSecParticipantSet
+  - McFunction
+  - McGroup
+  - ModeDeclarationGroup
+  - ModeDeclarationMappingSet
+  - ModeSwitchInterface
+  - MultiplexedIPdu
+  - NPdu
+  - NmConfig
+  - NmPdu
+  - NvBlockSwComponentType
+  - NvDataInterface
+  - OsTaskProxy
   - PackageableElement
+  - ParameterInterface
+  - ParameterSwComponentType
+  - PdurIPduGroup
+  - PhysicalDimension
+  - PhysicalDimensionMappingSet
+  - PortInterfaceMappingSet
+  - PortPrototypeBlueprint
+  - PostBuildVariantCriterion
+  - PostBuildVariantCriterionValueSet
+  - PredefinedVariant
+  - RapidPrototypingScenario
+  - SdgDef
+  - SecureCommunicationPropsSet
+  - SecuredIPdu
+  - SecurityEventContextMappingApplication
+  - SecurityEventContextMappingBswModule
+  - SecurityEventContextMappingCommConnector
+  - SecurityEventContextMappingFunctionalCluster
+  - SecurityEventDefinition
+  - SecurityEventFilterChain
+  - SenderReceiverInterface
+  - SensorActuatorSwComponentType
+  - ServiceInstanceCollectionSet
+  - ServiceProxySwComponentType
+  - ServiceSwComponentType
+  - SignalServiceTranslationPropsSet
+  - SoAdRoutingGroup
+  - SocketConnectionIpduIdentifierSet
+  - SomeipSdClientServiceInstanceConfig
+  - SomeipSdServerEventGroupTimingConfig
+  - SomeipSdServerServiceInstanceConfig
+  - SomeipTpConfig
+  - SwAddrMethod
+  - SwAxisType
+  - SwBaseType
+  - SwRecordLayout
+  - SwSystemconst
+  - SwSystemconstantValueSet
+  - SwcBswMapping
+  - SwcImplementation
+  - SwcTiming
+  - System
+  - SystemSignal
+  - SystemSignalGroup
+  - SystemTiming
+  - TDCpSoftwareClusterMappingSet
+  - TcpOptionFilterSet
+  - TlvDataIdDefinitionSet
+  - TransformationPropsSet
+  - TriggerInterface
+  - TtcanCluster
+  - Unit
+  - UnitGroup
+  - UserDefinedCluster
+  - UserDefinedEthernetFrame
+  - UserDefinedIPdu
+  - UserDefinedPdu
+  - VfbTiming
+  - ViewMapSet
   LinFrame:
   - LinEventTriggeredFrame
   - LinSporadicFrame
   - LinUnconditionalFrame
   ScheduleTableEntry:
   - ApplicationEntry
+  - AssignFrameId
+  - AssignFrameIdRange
+  - AssignNad
+  - ConditionalChangeNad
+  - DataDumpEntry
+  - FreeFormat
   - FreeFormatEntry
   - LinConfigurationEntry
+  - SaveConfigurationEntry
+  - UnassignFrameId
   FreeFormatEntry:
   - FreeFormat
   LinConfigurationEntry:
@@ -2955,8 +6127,8 @@ polymorphic_types:
   - DiagnosticAuthenticationConfiguration
   - DiagnosticDeAuthentication
   - DiagnosticProofOfOwnership
-  - DiagnosticVerifyCertificateBidirectional
   - DiagnosticVerifyCertificate
+  - DiagnosticVerifyCertificateBidirectional
   VariableInAtomicSwcInstanceRef:
   - RVariableInAtomicSwcInstanceRef
   TriggerInAtomicSwcInstanceRef:
@@ -2969,13 +6141,24 @@ polymorphic_types:
   - PModeGroupInAtomicSwcInstanceRef
   - RModeGroupInAtomicSWCInstanceRef
   FormulaExpression:
+  - BlueprintFormula
+  - BooleanValueVariationPoint
   - CompuGenericMath
+  - ConditionByFormula
   - EcucConditionFormula
   - EcucParameterDerivationFormula
+  - FMConditionByFeaturesAndAttributes
   - FMFormulaByFeaturesAndAttributes
+  - FloatValueVariationPoint
+  - IntegerValueVariationPoint
+  - LimitValueVariationPoint
+  - NumericalValueVariationPoint
+  - PositiveIntegerValueVariationPoint
   - SwSystemconstDependentFormula
   - TDEventOccurrenceExpressionFormula
+  - TimeValueValueVariationPoint
   - Timing
+  - UnlimitedIntegerValueVariationPoint
   AbstractGlobalTimeDomainProps:
   - CanGlobalTimeDomainProps
   - EthGlobalTimeDomainProps
@@ -2992,29 +6175,37 @@ polymorphic_types:
   - UserDefinedGlobalTimeSlave
   CommunicationCluster:
   - AbstractCanCluster
+  - CanCluster
   - EthernetCluster
   - FlexrayCluster
+  - J1939Cluster
   - LinCluster
+  - TtcanCluster
   - UserDefinedCluster
   PhysicalChannel:
+  - AbstractCanPhysicalChannel
   - CanPhysicalChannel
-  - TtcanPhysicalChannel
   - EthernetPhysicalChannel
   - FlexrayPhysicalChannel
   - LinPhysicalChannel
+  - TtcanPhysicalChannel
   CommunicationController:
+  - AbstractCanCommunicationController
   - CanCommunicationController
-  - TtcanCommunicationController
   - EthernetCommunicationController
   - FlexrayCommunicationController
   - LinCommunicationController
+  - LinMaster
+  - LinSlave
+  - TtcanCommunicationController
   - UserDefinedCommunicationController
   CommunicationConnector:
+  - AbstractCanCommunicationConnector
   - CanCommunicationConnector
-  - TtcanCommunicationConnector
   - EthernetCommunicationConnector
   - FlexrayCommunicationConnector
   - LinCommunicationConnector
+  - TtcanCommunicationConnector
   - UserDefinedCommunicationConnector
   CommConnectorPort:
   - FramePort
@@ -3026,21 +6217,46 @@ polymorphic_types:
   AbstractValueRestriction:
   - PrimitiveAttributeCondition
   - SdgAbstractPrimitiveAttribute
+  - SdgPrimitiveAttribute
+  - SdgPrimitiveAttributeWithVariation
   - ValueRestrictionWithSeverity
   AbstractVariationRestriction:
   - SdgAggregationWithVariation
   - SdgForeignReferenceWithVariation
   - SdgPrimitiveAttributeWithVariation
   AbstractMultiplicityRestriction:
+  - AggregationCondition
   - AttributeCondition
   - MultiplicityRestrictionWithSeverity
+  - PrimitiveAttributeCondition
+  - ReferenceCondition
+  - Sdg
+  - SdgAggregationWithVariation
   - SdgAttribute
+  - SdgForeignReference
+  - SdgForeignReferenceWithVariation
+  - SdgPrimitiveAttribute
+  - SdgPrimitiveAttributeWithVariation
   SpecElementReference:
+  - AggregationTailoring
+  - ConcreteClassTailoring
+  - ConstraintTailoring
   - DataFormatElementReference
+  - DocumentElementScope
+  - PrimitiveAttributeTailoring
+  - ReferenceTailoring
+  - SdgTailoring
   - SpecElementScope
+  - SpecificationDocumentScope
   SpecElementScope:
+  - AggregationTailoring
+  - ConcreteClassTailoring
+  - ConstraintTailoring
   - DataFormatElementScope
   - DocumentElementScope
+  - PrimitiveAttributeTailoring
+  - ReferenceTailoring
+  - SdgTailoring
   - SpecificationDocumentScope
   RestrictionWithSeverity:
   - ConstraintTailoring
@@ -3051,8 +6267,16 @@ polymorphic_types:
   - VariationRestrictionWithSeverity
   DataFormatElementReference:
   - AbstractClassTailoring
+  - AggregationTailoring
+  - ConcreteClassTailoring
+  - ConstraintTailoring
   - DataFormatElementScope
+  - PrimitiveAttributeTailoring
+  - ReferenceTailoring
+  - SdgTailoring
   WhitespaceControlled:
+  - LPlainText
+  - LVerbatim
   - MixedContentForPlainText
   - MixedContentForVerbatim
   LanguageSpecific:
@@ -3091,8 +6315,13 @@ polymorphic_types:
   - ParameterDataPrototype
   - VariableDataPrototype
   DataPrototype:
+  - ApplicationArrayElement
   - ApplicationCompositeElementDataPrototype
+  - ApplicationRecordElement
+  - ArgumentDataPrototype
   - AutosarDataPrototype
+  - ParameterDataPrototype
+  - VariableDataPrototype
   ApplicationCompositeElementDataPrototype:
   - ApplicationArrayElement
   - ApplicationRecordElement
@@ -3106,21 +6335,60 @@ polymorphic_types:
   - BswInternalBehavior
   - SwcInternalBehavior
   ExecutableEntity:
+  - BswCalledEntity
+  - BswInterruptEntity
   - BswModuleEntity
+  - BswSchedulableEntity
   - RunnableEntity
   AbstractEvent:
+  - AsynchronousServerCallReturnsEvent
+  - BackgroundEvent
+  - BswAsynchronousServerCallReturnsEvent
+  - BswBackgroundEvent
+  - BswDataReceivedEvent
   - BswEvent
+  - BswExternalTriggerOccurredEvent
+  - BswInternalTriggerOccurredEvent
+  - BswInterruptEvent
+  - BswModeManagerErrorEvent
+  - BswModeSwitchEvent
+  - BswModeSwitchedAckEvent
+  - BswOperationInvokedEvent
+  - BswOsTaskExecutionEvent
+  - BswTimingEvent
+  - DataReceiveErrorEvent
+  - DataReceivedEvent
+  - DataSendCompletedEvent
+  - DataWriteCompletedEvent
+  - ExternalTriggerOccurredEvent
+  - InitEvent
+  - InternalTriggerOccurredEvent
+  - ModeSwitchedAckEvent
+  - OperationInvokedEvent
+  - OsTaskExecutionEvent
   - RTEEvent
+  - SwcModeManagerErrorEvent
+  - SwcModeSwitchEvent
+  - TimingEvent
+  - TransformerHardErrorEvent
   SdgElementWithGid:
   - SdgAbstractForeignReference
   - SdgAbstractPrimitiveAttribute
   - SdgAggregationWithVariation
   - SdgClass
+  - SdgForeignReference
+  - SdgForeignReferenceWithVariation
+  - SdgPrimitiveAttribute
+  - SdgPrimitiveAttributeWithVariation
   SdgAttribute:
+  - Sdg
   - SdgAbstractForeignReference
   - SdgAbstractPrimitiveAttribute
   - SdgAggregationWithVariation
-  - Sdg
+  - SdgForeignReference
+  - SdgForeignReferenceWithVariation
+  - SdgPrimitiveAttribute
+  - SdgPrimitiveAttributeWithVariation
   SdgAbstractPrimitiveAttribute:
   - SdgPrimitiveAttribute
   - SdgPrimitiveAttributeWithVariation
@@ -3142,10 +6410,10 @@ polymorphic_types:
   - BinaryManifestItemNumericalValue
   - BinaryManifestItemPointerValue
   AbstractSecurityEventFilter:
+  - SecurityEvent
   - SecurityEventAggregationFilter
   - SecurityEventOneEveryNFilter
   - SecurityEventStateFilter
-  - SecurityEvent
   SecurityEventContextMapping:
   - SecurityEventContextMappingApplication
   - SecurityEventContextMappingBswModule
@@ -3155,10 +6423,18 @@ polymorphic_types:
   - IdsMapping
   - IdsmInstance
   - IdsmProperties
+  - SecurityEventContextMappingApplication
+  - SecurityEventContextMappingBswModule
+  - SecurityEventContextMappingCommConnector
+  - SecurityEventContextMappingFunctionalCluster
   - SecurityEventDefinition
   - SecurityEventFilterChain
   IdsMapping:
   - SecurityEventContextMapping
+  - SecurityEventContextMappingApplication
+  - SecurityEventContextMappingBswModule
+  - SecurityEventContextMappingCommConnector
+  - SecurityEventContextMappingFunctionalCluster
   BuildActionEntity:
   - BuildAction
   GeneralAnnotation:
@@ -3169,6 +6445,8 @@ polymorphic_types:
   - ModePortAnnotation
   - NvDataPortAnnotation
   - ParameterPortAnnotation
+  - ReceiverAnnotation
+  - SenderAnnotation
   - SenderReceiverAnnotation
   - Trigger
   ARElement:
@@ -3178,18 +6456,28 @@ polymorphic_types:
   - AclRole
   - AliasNameSet
   - ApplicabilityInfoSet
+  - ApplicationArrayDataType
   - ApplicationPartition
+  - ApplicationPrimitiveDataType
+  - ApplicationRecordDataType
+  - ApplicationSwComponentType
   - AutosarDataType
   - BaseType
   - BlueprintMappingSet
+  - BswCompositionTiming
   - BswEntryRelationshipSet
+  - BswImplementation
   - BswModuleDescription
   - BswModuleEntry
+  - BswModuleTiming
   - BuildActionManifest
   - CalibrationParameterValueSet
   - ClientIdDefinitionSet
+  - ClientServerInterface
   - ClientServerInterfaceToBswModuleEntryBlueprintMapping
   - Collection
+  - ComplexDeviceDriverSwComponentType
+  - CompositionSwComponentType
   - CompuMethod
   - ConsistencyNeedsBlueprintSet
   - ConstantSpecification
@@ -3198,6 +6486,10 @@ polymorphic_types:
   - CpSoftwareClusterBinaryManifestDescriptor
   - CpSoftwareClusterMappingSet
   - CpSoftwareClusterResourcePool
+  - CpSwClusterResourceToDiagDataElemMapping
+  - CpSwClusterResourceToDiagFunctionIdMapping
+  - CpSwClusterToDiagEventMapping
+  - CpSwClusterToDiagRoutineSubfunctionMapping
   - CryptoEllipticCurveProps
   - CryptoServiceCertificate
   - CryptoServiceKey
@@ -3209,13 +6501,155 @@ polymorphic_types:
   - DataTransformationSet
   - DataTypeMappingSet
   - DdsCpConfig
+  - DiagnosticAccessPermission
+  - DiagnosticAging
+  - DiagnosticAuthRole
+  - DiagnosticAuthTransmitCertificate
+  - DiagnosticAuthTransmitCertificateMapping
+  - DiagnosticAuthenticationClass
+  - DiagnosticAuthenticationConfiguration
+  - DiagnosticClearDiagnosticInformation
+  - DiagnosticClearDiagnosticInformationClass
+  - DiagnosticClearResetEmissionRelatedInfo
+  - DiagnosticClearResetEmissionRelatedInfoClass
+  - DiagnosticComControl
+  - DiagnosticComControlClass
   - DiagnosticCommonElement
   - DiagnosticConnection
   - DiagnosticContributionSet
+  - DiagnosticControlDTCSetting
+  - DiagnosticControlDTCSettingClass
+  - DiagnosticCustomServiceClass
+  - DiagnosticCustomServiceInstance
+  - DiagnosticDataIdentifier
+  - DiagnosticDataIdentifierSet
+  - DiagnosticDataTransfer
+  - DiagnosticDataTransferClass
+  - DiagnosticDeAuthentication
+  - DiagnosticDemProvidedDataMapping
+  - DiagnosticDynamicDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifierClass
+  - DiagnosticEcuInstanceProps
+  - DiagnosticEcuReset
+  - DiagnosticEcuResetClass
+  - DiagnosticEnableCondition
+  - DiagnosticEnableConditionGroup
+  - DiagnosticEnableConditionPortMapping
+  - DiagnosticEnvironmentalCondition
+  - DiagnosticEvent
+  - DiagnosticEventPortMapping
+  - DiagnosticEventToDebounceAlgorithmMapping
+  - DiagnosticEventToEnableConditionGroupMapping
+  - DiagnosticEventToOperationCycleMapping
+  - DiagnosticEventToSecurityEventMapping
+  - DiagnosticEventToStorageConditionGroupMapping
+  - DiagnosticEventToTroubleCodeJ1939Mapping
+  - DiagnosticEventToTroubleCodeUdsMapping
+  - DiagnosticExtendedDataRecord
+  - DiagnosticFimAliasEvent
+  - DiagnosticFimAliasEventGroup
+  - DiagnosticFimAliasEventGroupMapping
+  - DiagnosticFimAliasEventMapping
+  - DiagnosticFimEventGroup
+  - DiagnosticFimFunctionMapping
+  - DiagnosticFreezeFrame
+  - DiagnosticFunctionIdentifier
+  - DiagnosticFunctionIdentifierInhibit
+  - DiagnosticIOControl
+  - DiagnosticIndicator
+  - DiagnosticInfoType
+  - DiagnosticInhibitSourceEventMapping
+  - DiagnosticIoControlClass
+  - DiagnosticIumpr
+  - DiagnosticIumprDenominatorGroup
+  - DiagnosticIumprGroup
+  - DiagnosticIumprToFunctionIdentifierMapping
+  - DiagnosticJ1939ExpandedFreezeFrame
+  - DiagnosticJ1939FreezeFrame
+  - DiagnosticJ1939Node
+  - DiagnosticJ1939Spn
+  - DiagnosticJ1939SpnMapping
+  - DiagnosticJ1939SwMapping
+  - DiagnosticMasterToSlaveEventMapping
+  - DiagnosticMeasurementIdentifier
+  - DiagnosticMemoryDestinationPrimary
+  - DiagnosticMemoryDestinationUserDefined
+  - DiagnosticMemoryIdentifier
+  - DiagnosticOperationCycle
+  - DiagnosticOperationCyclePortMapping
+  - DiagnosticParameterIdentifier
+  - DiagnosticPowertrainFreezeFrame
+  - DiagnosticProofOfOwnership
+  - DiagnosticProtocol
+  - DiagnosticReadDTCInformation
+  - DiagnosticReadDTCInformationClass
+  - DiagnosticReadDataByIdentifier
+  - DiagnosticReadDataByIdentifierClass
+  - DiagnosticReadDataByPeriodicID
+  - DiagnosticReadDataByPeriodicIDClass
+  - DiagnosticReadMemoryByAddress
+  - DiagnosticReadMemoryByAddressClass
+  - DiagnosticReadScalingDataByIdentifier
+  - DiagnosticReadScalingDataByIdentifierClass
+  - DiagnosticRequestControlOfOnBoardDevice
+  - DiagnosticRequestControlOfOnBoardDeviceClass
+  - DiagnosticRequestCurrentPowertrainData
+  - DiagnosticRequestCurrentPowertrainDataClass
+  - DiagnosticRequestDownload
+  - DiagnosticRequestDownloadClass
+  - DiagnosticRequestEmissionRelatedDTC
+  - DiagnosticRequestEmissionRelatedDTCClass
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatus
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatusClass
+  - DiagnosticRequestFileTransfer
+  - DiagnosticRequestFileTransferClass
+  - DiagnosticRequestOnBoardMonitoringTestResults
+  - DiagnosticRequestOnBoardMonitoringTestResultsClass
+  - DiagnosticRequestPowertrainFreezeFrameData
+  - DiagnosticRequestPowertrainFreezeFrameDataClass
+  - DiagnosticRequestUpload
+  - DiagnosticRequestUploadClass
+  - DiagnosticRequestVehicleInfo
+  - DiagnosticRequestVehicleInfoClass
+  - DiagnosticResponseOnEvent
+  - DiagnosticResponseOnEventClass
+  - DiagnosticRoutine
+  - DiagnosticRoutineControl
+  - DiagnosticRoutineControlClass
+  - DiagnosticSecureCodingMapping
+  - DiagnosticSecurityAccess
+  - DiagnosticSecurityAccessClass
+  - DiagnosticSecurityEventReportingModeMapping
+  - DiagnosticSecurityLevel
+  - DiagnosticServiceDataMapping
+  - DiagnosticServiceSwMapping
+  - DiagnosticServiceTable
+  - DiagnosticSession
+  - DiagnosticSessionControl
+  - DiagnosticSessionControlClass
+  - DiagnosticStorageCondition
+  - DiagnosticStorageConditionGroup
+  - DiagnosticStorageConditionPortMapping
+  - DiagnosticTestResult
+  - DiagnosticTestRoutineIdentifier
+  - DiagnosticTransferExit
+  - DiagnosticTransferExitClass
+  - DiagnosticTroubleCodeGroup
+  - DiagnosticTroubleCodeJ1939
+  - DiagnosticTroubleCodeObd
+  - DiagnosticTroubleCodeProps
+  - DiagnosticTroubleCodeUds
+  - DiagnosticTroubleCodeUdsToTroubleCodeObdMapping
+  - DiagnosticVerifyCertificateBidirectional
+  - DiagnosticWriteDataByIdentifierClass
+  - DiagnosticWriteMemoryByAddressClass
   - DltContext
   - DltEcu
   - Documentation
   - E2EProfileCompatibilityProps
+  - EcuAbstractionSwComponentType
+  - EcuTiming
   - EcucDefinitionCollection
   - EcucDestinationUriDefSet
   - EcucModuleConfigurationValues
@@ -3236,12 +6670,19 @@ polymorphic_types:
   - HwCategory
   - HwElement
   - HwType
+  - IEEE1722TpAafConnection
+  - IEEE1722TpAcfConnection
   - IEEE1722TpConnection
+  - IEEE1722TpCrfConnection
+  - IEEE1722TpIidcConnection
   - IPSecConfigProps
   - IPv6ExtHeaderFilterSet
   - IdsCommonElement
   - IdsDesign
+  - IdsmInstance
+  - IdsmProperties
   - Implementation
+  - ImplementationDataType
   - ImpositionTimeDefinitionGroup
   - InterpolationRoutineMappingSet
   - J1939ControllerApplication
@@ -3255,7 +6696,12 @@ polymorphic_types:
   - McGroup
   - ModeDeclarationGroup
   - ModeDeclarationMappingSet
+  - ModeSwitchInterface
+  - NvBlockSwComponentType
+  - NvDataInterface
   - OsTaskProxy
+  - ParameterInterface
+  - ParameterSwComponentType
   - PhysicalDimension
   - PhysicalDimensionMappingSet
   - PortInterface
@@ -3266,43 +6712,404 @@ polymorphic_types:
   - PredefinedVariant
   - RapidPrototypingScenario
   - SdgDef
+  - SecurityEventContextMappingApplication
+  - SecurityEventContextMappingBswModule
+  - SecurityEventContextMappingCommConnector
+  - SecurityEventContextMappingFunctionalCluster
+  - SecurityEventDefinition
+  - SecurityEventFilterChain
+  - SenderReceiverInterface
+  - SensorActuatorSwComponentType
+  - ServiceProxySwComponentType
+  - ServiceSwComponentType
   - SignalServiceTranslationPropsSet
   - SomeipSdClientEventGroup
-  - TimingConfig
   - SomeipSdClientServiceInstanceConfig
   - SomeipSdServerEventGroupTimingConfig
   - SomeipSdServerServiceInstanceConfig
   - SwAddrMethod
   - SwAxisType
+  - SwBaseType
   - SwComponentMappingConstraints
   - SwComponentType
   - SwRecordLayout
   - SwSystemconst
   - SwSystemconstantValueSet
   - SwcBswMapping
+  - SwcImplementation
+  - SwcTiming
   - System
   - SystemSignal
   - SystemSignalGroup
+  - SystemTiming
   - TDCpSoftwareClusterMappingSet
   - TcpOptionFilterSet
+  - TimingConfig
   - TimingExtension
   - TlsConnectionGroup
   - TlvDataIdDefinitionSet
   - TransformationPropsSet
+  - TriggerInterface
   - Unit
   - UnitGroup
   - UploadablePackageElement
+  - VfbTiming
   - ViewMapSet
   PackageableElement:
   - ARElement
+  - AclObjectSet
+  - AclOperation
+  - AclPermission
+  - AclRole
+  - AliasNameSet
+  - ApplicationArrayDataType
+  - ApplicationPartition
+  - ApplicationPrimitiveDataType
+  - ApplicationRecordDataType
+  - ApplicationSwComponentType
+  - BlueprintMappingSet
+  - BswCompositionTiming
+  - BswEntryRelationshipSet
+  - BswImplementation
+  - BswModuleDescription
+  - BswModuleEntry
+  - BswModuleTiming
+  - BuildActionManifest
+  - BusMirrorChannelMappingCan
+  - BusMirrorChannelMappingFlexray
+  - BusMirrorChannelMappingIp
+  - CalibrationParameterValueSet
+  - CanCluster
+  - CanFrame
+  - CanTpConfig
+  - ClientIdDefinitionSet
+  - ClientServerInterface
+  - ClientServerInterfaceToBswModuleEntryBlueprintMapping
+  - Collection
+  - ComplexDeviceDriverSwComponentType
+  - CompositionSwComponentType
+  - CompuMethod
+  - ConsistencyNeedsBlueprintSet
+  - ConstantSpecification
+  - ConstantSpecificationMappingSet
+  - ConsumedProvidedServiceInstanceGroup
+  - ContainerIPdu
+  - CouplingElement
+  - CpSoftwareCluster
+  - CpSoftwareClusterBinaryManifestDescriptor
+  - CpSoftwareClusterMappingSet
+  - CpSoftwareClusterResourcePool
+  - CpSwClusterResourceToDiagDataElemMapping
+  - CpSwClusterResourceToDiagFunctionIdMapping
+  - CpSwClusterToDiagEventMapping
+  - CpSwClusterToDiagRoutineSubfunctionMapping
+  - CryptoEllipticCurveProps
+  - CryptoServiceCertificate
+  - CryptoServiceKey
+  - CryptoServicePrimitive
+  - CryptoServiceQueue
+  - CryptoSignatureScheme
+  - DataConstr
+  - DataExchangePoint
+  - DataTransformationSet
+  - DataTypeMappingSet
+  - DcmIPdu
+  - DdsCpConfig
+  - DiagnosticAccessPermission
+  - DiagnosticAging
+  - DiagnosticAuthRole
+  - DiagnosticAuthTransmitCertificate
+  - DiagnosticAuthTransmitCertificateMapping
+  - DiagnosticAuthenticationClass
+  - DiagnosticAuthenticationConfiguration
+  - DiagnosticClearDiagnosticInformation
+  - DiagnosticClearDiagnosticInformationClass
+  - DiagnosticClearResetEmissionRelatedInfo
+  - DiagnosticClearResetEmissionRelatedInfoClass
+  - DiagnosticComControl
+  - DiagnosticComControlClass
+  - DiagnosticConnection
+  - DiagnosticContributionSet
+  - DiagnosticControlDTCSetting
+  - DiagnosticControlDTCSettingClass
+  - DiagnosticCustomServiceClass
+  - DiagnosticCustomServiceInstance
+  - DiagnosticDataIdentifier
+  - DiagnosticDataIdentifierSet
+  - DiagnosticDataTransfer
+  - DiagnosticDataTransferClass
+  - DiagnosticDeAuthentication
+  - DiagnosticDemProvidedDataMapping
+  - DiagnosticDynamicDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifier
+  - DiagnosticDynamicallyDefineDataIdentifierClass
+  - DiagnosticEcuInstanceProps
+  - DiagnosticEcuReset
+  - DiagnosticEcuResetClass
+  - DiagnosticEnableCondition
+  - DiagnosticEnableConditionGroup
+  - DiagnosticEnableConditionPortMapping
+  - DiagnosticEnvironmentalCondition
+  - DiagnosticEvent
+  - DiagnosticEventPortMapping
+  - DiagnosticEventToDebounceAlgorithmMapping
+  - DiagnosticEventToEnableConditionGroupMapping
+  - DiagnosticEventToOperationCycleMapping
+  - DiagnosticEventToSecurityEventMapping
+  - DiagnosticEventToStorageConditionGroupMapping
+  - DiagnosticEventToTroubleCodeJ1939Mapping
+  - DiagnosticEventToTroubleCodeUdsMapping
+  - DiagnosticExtendedDataRecord
+  - DiagnosticFimAliasEvent
+  - DiagnosticFimAliasEventGroup
+  - DiagnosticFimAliasEventGroupMapping
+  - DiagnosticFimAliasEventMapping
+  - DiagnosticFimEventGroup
+  - DiagnosticFimFunctionMapping
+  - DiagnosticFreezeFrame
+  - DiagnosticFunctionIdentifier
+  - DiagnosticFunctionIdentifierInhibit
+  - DiagnosticIOControl
+  - DiagnosticIndicator
+  - DiagnosticInfoType
+  - DiagnosticInhibitSourceEventMapping
+  - DiagnosticIoControlClass
+  - DiagnosticIumpr
+  - DiagnosticIumprDenominatorGroup
+  - DiagnosticIumprGroup
+  - DiagnosticIumprToFunctionIdentifierMapping
+  - DiagnosticJ1939ExpandedFreezeFrame
+  - DiagnosticJ1939FreezeFrame
+  - DiagnosticJ1939Node
+  - DiagnosticJ1939Spn
+  - DiagnosticJ1939SpnMapping
+  - DiagnosticJ1939SwMapping
+  - DiagnosticMasterToSlaveEventMapping
+  - DiagnosticMeasurementIdentifier
+  - DiagnosticMemoryDestinationPrimary
+  - DiagnosticMemoryDestinationUserDefined
+  - DiagnosticMemoryIdentifier
+  - DiagnosticOperationCycle
+  - DiagnosticOperationCyclePortMapping
+  - DiagnosticParameterIdentifier
+  - DiagnosticPowertrainFreezeFrame
+  - DiagnosticProofOfOwnership
+  - DiagnosticProtocol
+  - DiagnosticReadDTCInformation
+  - DiagnosticReadDTCInformationClass
+  - DiagnosticReadDataByIdentifier
+  - DiagnosticReadDataByIdentifierClass
+  - DiagnosticReadDataByPeriodicID
+  - DiagnosticReadDataByPeriodicIDClass
+  - DiagnosticReadMemoryByAddress
+  - DiagnosticReadMemoryByAddressClass
+  - DiagnosticReadScalingDataByIdentifier
+  - DiagnosticReadScalingDataByIdentifierClass
+  - DiagnosticRequestControlOfOnBoardDevice
+  - DiagnosticRequestControlOfOnBoardDeviceClass
+  - DiagnosticRequestCurrentPowertrainData
+  - DiagnosticRequestCurrentPowertrainDataClass
+  - DiagnosticRequestDownload
+  - DiagnosticRequestDownloadClass
+  - DiagnosticRequestEmissionRelatedDTC
+  - DiagnosticRequestEmissionRelatedDTCClass
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatus
+  - DiagnosticRequestEmissionRelatedDTCPermanentStatusClass
+  - DiagnosticRequestFileTransfer
+  - DiagnosticRequestFileTransferClass
+  - DiagnosticRequestOnBoardMonitoringTestResults
+  - DiagnosticRequestOnBoardMonitoringTestResultsClass
+  - DiagnosticRequestPowertrainFreezeFrameData
+  - DiagnosticRequestPowertrainFreezeFrameDataClass
+  - DiagnosticRequestUpload
+  - DiagnosticRequestUploadClass
+  - DiagnosticRequestVehicleInfo
+  - DiagnosticRequestVehicleInfoClass
+  - DiagnosticResponseOnEvent
+  - DiagnosticResponseOnEventClass
+  - DiagnosticRoutine
+  - DiagnosticRoutineControl
+  - DiagnosticRoutineControlClass
+  - DiagnosticSecureCodingMapping
+  - DiagnosticSecurityAccess
+  - DiagnosticSecurityAccessClass
+  - DiagnosticSecurityEventReportingModeMapping
+  - DiagnosticSecurityLevel
+  - DiagnosticServiceDataMapping
+  - DiagnosticServiceSwMapping
+  - DiagnosticServiceTable
+  - DiagnosticSession
+  - DiagnosticSessionControl
+  - DiagnosticSessionControlClass
+  - DiagnosticStorageCondition
+  - DiagnosticStorageConditionGroup
+  - DiagnosticStorageConditionPortMapping
+  - DiagnosticTestResult
+  - DiagnosticTestRoutineIdentifier
+  - DiagnosticTransferExit
+  - DiagnosticTransferExitClass
+  - DiagnosticTroubleCodeGroup
+  - DiagnosticTroubleCodeJ1939
+  - DiagnosticTroubleCodeObd
+  - DiagnosticTroubleCodeProps
+  - DiagnosticTroubleCodeUds
+  - DiagnosticTroubleCodeUdsToTroubleCodeObdMapping
+  - DiagnosticVerifyCertificateBidirectional
+  - DiagnosticWriteDataByIdentifierClass
+  - DiagnosticWriteMemoryByAddressClass
+  - DltContext
+  - DltEcu
+  - DoIpTpConfig
+  - Documentation
+  - E2EProfileCompatibilityProps
+  - EcuAbstractionSwComponentType
+  - EcuInstance
+  - EcuTiming
+  - EcucDefinitionCollection
+  - EcucDestinationUriDefSet
+  - EcucModuleConfigurationValues
+  - EcucModuleDef
+  - EcucValueCollection
+  - EndToEndProtectionSet
   - EnumerationMappingTable
+  - EthIpProps
+  - EthTcpIpIcmpProps
+  - EthTcpIpProps
+  - EthTpConfig
+  - EthernetCluster
+  - EthernetWakeupSleepOnDatalineConfigSet
+  - EvaluatedVariantSet
+  - FMFeature
+  - FMFeatureMap
+  - FMFeatureModel
+  - FMFeatureSelectionSet
   - FibexElement
+  - FirewallRule
+  - FlatMap
+  - FlexrayArTpConfig
+  - FlexrayCluster
+  - FlexrayFrame
+  - FlexrayTpConfig
+  - Gateway
+  - GeneralPurposeConnection
+  - GeneralPurposeIPdu
+  - GeneralPurposePdu
+  - GenericEthernetFrame
+  - GlobalTimeDomain
+  - HwCategory
+  - HwElement
+  - HwType
+  - IEEE1722TpAafConnection
+  - IEEE1722TpAcfConnection
+  - IEEE1722TpConfig
+  - IEEE1722TpCrfConnection
+  - IEEE1722TpIidcConnection
+  - IPSecConfigProps
+  - IPv6ExtHeaderFilterSet
+  - ISignal
+  - ISignalGroup
+  - ISignalIPdu
+  - ISignalIPduGroup
+  - IdsDesign
+  - IdsmInstance
+  - IdsmProperties
+  - Ieee1722TpEthernetFrame
+  - ImplementationDataType
+  - InterpolationRoutineMappingSet
+  - J1939Cluster
+  - J1939ControllerApplication
+  - J1939DcmIPdu
+  - J1939TpConfig
+  - KeywordSet
+  - LifeCycleInfoSet
+  - LifeCycleStateDefinitionGroup
+  - LinCluster
+  - LinEventTriggeredFrame
+  - LinSporadicFrame
+  - LinTpConfig
+  - LinUnconditionalFrame
+  - LogAndTraceMessageCollectionSet
+  - MacSecGlobalKayProps
+  - MacSecParticipantSet
+  - McFunction
+  - McGroup
+  - ModeDeclarationGroup
+  - ModeDeclarationMappingSet
+  - ModeSwitchInterface
+  - MultiplexedIPdu
+  - NPdu
+  - NmConfig
+  - NmPdu
+  - NvBlockSwComponentType
+  - NvDataInterface
+  - OsTaskProxy
+  - ParameterInterface
+  - ParameterSwComponentType
+  - PdurIPduGroup
+  - PhysicalDimension
+  - PhysicalDimensionMappingSet
+  - PortInterfaceMappingSet
+  - PortPrototypeBlueprint
+  - PostBuildVariantCriterion
+  - PostBuildVariantCriterionValueSet
+  - PredefinedVariant
+  - RapidPrototypingScenario
+  - SdgDef
+  - SecureCommunicationPropsSet
+  - SecuredIPdu
+  - SecurityEventContextMappingApplication
+  - SecurityEventContextMappingBswModule
+  - SecurityEventContextMappingCommConnector
+  - SecurityEventContextMappingFunctionalCluster
+  - SecurityEventDefinition
+  - SecurityEventFilterChain
+  - SenderReceiverInterface
+  - SensorActuatorSwComponentType
+  - ServiceInstanceCollectionSet
+  - ServiceProxySwComponentType
+  - ServiceSwComponentType
+  - SignalServiceTranslationPropsSet
+  - SoAdRoutingGroup
+  - SocketConnectionIpduIdentifierSet
+  - SomeipSdClientServiceInstanceConfig
+  - SomeipSdServerEventGroupTimingConfig
+  - SomeipSdServerServiceInstanceConfig
+  - SomeipTpConfig
+  - SwAddrMethod
+  - SwAxisType
+  - SwBaseType
+  - SwRecordLayout
+  - SwSystemconst
+  - SwSystemconstantValueSet
+  - SwcBswMapping
+  - SwcImplementation
+  - SwcTiming
+  - System
+  - SystemSignal
+  - SystemSignalGroup
+  - SystemTiming
+  - TDCpSoftwareClusterMappingSet
+  - TcpOptionFilterSet
+  - TlvDataIdDefinitionSet
+  - TransformationPropsSet
+  - TriggerInterface
+  - TtcanCluster
+  - Unit
+  - UnitGroup
+  - UserDefinedCluster
+  - UserDefinedEthernetFrame
+  - UserDefinedIPdu
+  - UserDefinedPdu
+  - VfbTiming
+  - ViewMapSet
   AttributeValueVariationPoint:
   - AbstractEnumerationValueVariationPoint
   - AbstractNumericalVariationPoint
   - BooleanValueVariationPoint
   - FloatValueVariationPoint
   - IntegerValueVariationPoint
+  - LimitValueVariationPoint
+  - NumericalValueVariationPoint
   - PositiveIntegerValueVariationPoint
   - TimeValueValueVariationPoint
   - UnlimitedIntegerValueVariationPoint

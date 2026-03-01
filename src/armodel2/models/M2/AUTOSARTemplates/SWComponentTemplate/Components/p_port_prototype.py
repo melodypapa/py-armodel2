@@ -43,7 +43,7 @@ class PPortPrototype(AbstractProvidedPortPrototype):
 
     provided_interface_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "PROVIDED-INTERFACE-TREF": ("_POLYMORPHIC", "provided_interface_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
+        "PROVIDED-INTERFACE-TREF": ("_POLYMORPHIC", "provided_interface_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "NvDataInterface", "ParameterInterface", "SenderReceiverInterface", "TriggerInterface"]),
     }
 
 

@@ -39,7 +39,7 @@ class TransformationISignalProps(ARObject, ABC):
     transformer_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
         "CS-ERROR-REACTION": lambda obj, elem: setattr(obj, "cs_error_reaction", CSTransformerErrorReactionEnum.deserialize(elem)),
-        "DATA-PROTOTYPE-REFS": ("_POLYMORPHIC_LIST", "data_prototype_refs", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "DATA-PROTOTYPE-REFS": ("_POLYMORPHIC_LIST", "data_prototype_refs", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "TRANSFORMER-REF": lambda obj, elem: setattr(obj, "transformer_ref", ARRef.deserialize(elem)),
     }
 

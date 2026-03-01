@@ -38,7 +38,7 @@ class EcucQueryExpression(ARObject):
 
     config_element_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONFIG-ELEMENT-REF": ("_POLYMORPHIC", "config_element_ref", ["EcucCommonAttributes", "EcucContainerDef", "EcucModuleDef"]),
+        "CONFIG-ELEMENT-REF": ("_POLYMORPHIC", "config_element_ref", ["EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucChoiceContainerDef", "EcucChoiceReferenceDef", "EcucCommonAttributes", "EcucContainerDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucForeignReferenceDef", "EcucFunctionNameDef", "EcucInstanceReferenceDef", "EcucIntegerParamDef", "EcucLinkerSymbolDef", "EcucModuleDef", "EcucMultilineStringParamDef", "EcucParamConfContainerDef", "EcucReferenceDef", "EcucStringParamDef", "EcucUriReferenceDef"]),
     }
 
 

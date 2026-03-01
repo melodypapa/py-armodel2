@@ -40,8 +40,8 @@ class AutosarParameterRef(ARObject):
     autosar_ref: Optional[ARRef]
     local_parameter_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "AUTOSAR-REF": ("_POLYMORPHIC", "autosar_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
-        "LOCAL-PARAMETER-REF": ("_POLYMORPHIC", "local_parameter_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "AUTOSAR-REF": ("_POLYMORPHIC", "autosar_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
+        "LOCAL-PARAMETER-REF": ("_POLYMORPHIC", "local_parameter_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
     }
 
 

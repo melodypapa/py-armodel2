@@ -55,7 +55,7 @@ class SwcServiceDependency(ServiceDependency):
         "ASSIGNED-DATAS": lambda obj, elem: obj.assigned_datas.append(SerializationHelper.deserialize_by_tag(elem, "any (RoleBasedData)")),
         "ASSIGNED-PORTS": lambda obj, elem: obj.assigned_ports.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedPortAssignment")),
         "REPRESENTED-PORT-REF": lambda obj, elem: setattr(obj, "represented_port_ref", ARRef.deserialize(elem)),
-        "SERVICE-NEEDS": ("_POLYMORPHIC", "service_needs", ["BswMgrNeeds", "ComMgrUserNeeds", "CryptoKeyManagementNeeds", "CryptoServiceJobNeeds", "CryptoServiceNeeds", "DiagnosticCapabilityElement", "DltUserNeeds", "DoIpServiceNeeds", "EcuStateMgrUserNeeds", "ErrorTracerNeeds", "FunctionInhibitionAvailabilityNeeds", "FunctionInhibitionNeeds", "GlobalSupervisionNeeds", "HardwareTestNeeds", "IdsMgrCustomTimestampNeeds", "IdsMgrNeeds", "IndicatorStatusNeeds", "J1939DcmDm19Support", "J1939RmIncomingRequestServiceNeeds", "J1939RmOutgoingRequestServiceNeeds", "NvBlockNeeds", "SecureOnBoardCommunicationNeeds", "SupervisedEntityCheckpointNeeds", "SupervisedEntityNeeds", "SyncTimeBaseMgrUserNeeds", "V2xDataManagerNeeds", "V2xFacUserNeeds", "V2xMUserNeeds", "VendorSpecificServiceNeeds"]),
+        "SERVICE-NEEDS": ("_POLYMORPHIC", "service_needs", ["BswMgrNeeds", "ComMgrUserNeeds", "CryptoKeyManagementNeeds", "CryptoServiceJobNeeds", "CryptoServiceNeeds", "DiagnosticCapabilityElement", "DiagnosticCommunicationManagerNeeds", "DiagnosticComponentNeeds", "DiagnosticControlNeeds", "DiagnosticEnableConditionNeeds", "DiagnosticEventInfoNeeds", "DiagnosticEventManagerNeeds", "DiagnosticEventNeeds", "DiagnosticIoControlNeeds", "DiagnosticOperationCycleNeeds", "DiagnosticRequestFileTransferNeeds", "DiagnosticRoutineNeeds", "DiagnosticStorageConditionNeeds", "DiagnosticUploadDownloadNeeds", "DiagnosticValueNeeds", "DiagnosticsCommunicationSecurityNeeds", "DltUserNeeds", "DoIpActivationLineNeeds", "DoIpGidNeeds", "DoIpGidSynchronizationNeeds", "DoIpPowerModeStatusNeeds", "DoIpRoutingActivationAuthenticationNeeds", "DoIpRoutingActivationConfirmationNeeds", "DoIpServiceNeeds", "DtcStatusChangeNotificationNeeds", "EcuStateMgrUserNeeds", "ErrorTracerNeeds", "FunctionInhibitionAvailabilityNeeds", "FunctionInhibitionNeeds", "GlobalSupervisionNeeds", "HardwareTestNeeds", "IdsMgrCustomTimestampNeeds", "IdsMgrNeeds", "IndicatorStatusNeeds", "J1939DcmDm19Support", "J1939RmIncomingRequestServiceNeeds", "J1939RmOutgoingRequestServiceNeeds", "NvBlockNeeds", "ObdControlServiceNeeds", "ObdInfoServiceNeeds", "ObdMonitorServiceNeeds", "ObdPidServiceNeeds", "ObdRatioDenominatorNeeds", "ObdRatioServiceNeeds", "SecureOnBoardCommunicationNeeds", "SupervisedEntityCheckpointNeeds", "SupervisedEntityNeeds", "SyncTimeBaseMgrUserNeeds", "V2xDataManagerNeeds", "V2xFacUserNeeds", "V2xMUserNeeds", "VendorSpecificServiceNeeds"]),
     }
 
 
@@ -183,10 +183,54 @@ class SwcServiceDependency(ServiceDependency):
                         setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "CryptoServiceNeeds"))
                     elif concrete_tag == "DIAGNOSTIC-CAPABILITY-ELEMENT":
                         setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticCapabilityElement"))
+                    elif concrete_tag == "DIAGNOSTIC-COMMUNICATION-MANAGER-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticCommunicationManagerNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-COMPONENT-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticComponentNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-CONTROL-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticControlNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-ENABLE-CONDITION-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEnableConditionNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-EVENT-INFO-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEventInfoNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-EVENT-MANAGER-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEventManagerNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-EVENT-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEventNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-IO-CONTROL-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticIoControlNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-OPERATION-CYCLE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticOperationCycleNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-REQUEST-FILE-TRANSFER-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRequestFileTransferNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-ROUTINE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRoutineNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-STORAGE-CONDITION-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticStorageConditionNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-UPLOAD-DOWNLOAD-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticUploadDownloadNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-VALUE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticValueNeeds"))
+                    elif concrete_tag == "DIAGNOSTICS-COMMUNICATION-SECURITY-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticsCommunicationSecurityNeeds"))
                     elif concrete_tag == "DLT-USER-NEEDS":
                         setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DltUserNeeds"))
+                    elif concrete_tag == "DO-IP-ACTIVATION-LINE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DoIpActivationLineNeeds"))
+                    elif concrete_tag == "DO-IP-GID-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DoIpGidNeeds"))
+                    elif concrete_tag == "DO-IP-GID-SYNCHRONIZATION-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DoIpGidSynchronizationNeeds"))
+                    elif concrete_tag == "DO-IP-POWER-MODE-STATUS-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DoIpPowerModeStatusNeeds"))
+                    elif concrete_tag == "DO-IP-ROUTING-ACTIVATION-AUTHENTICATION-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DoIpRoutingActivationAuthenticationNeeds"))
+                    elif concrete_tag == "DO-IP-ROUTING-ACTIVATION-CONFIRMATION-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DoIpRoutingActivationConfirmationNeeds"))
                     elif concrete_tag == "DO-IP-SERVICE-NEEDS":
                         setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DoIpServiceNeeds"))
+                    elif concrete_tag == "DTC-STATUS-CHANGE-NOTIFICATION-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DtcStatusChangeNotificationNeeds"))
                     elif concrete_tag == "ECU-STATE-MGR-USER-NEEDS":
                         setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "EcuStateMgrUserNeeds"))
                     elif concrete_tag == "ERROR-TRACER-NEEDS":
@@ -213,6 +257,18 @@ class SwcServiceDependency(ServiceDependency):
                         setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "J1939RmOutgoingRequestServiceNeeds"))
                     elif concrete_tag == "NV-BLOCK-NEEDS":
                         setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "NvBlockNeeds"))
+                    elif concrete_tag == "OBD-CONTROL-SERVICE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "ObdControlServiceNeeds"))
+                    elif concrete_tag == "OBD-INFO-SERVICE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "ObdInfoServiceNeeds"))
+                    elif concrete_tag == "OBD-MONITOR-SERVICE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "ObdMonitorServiceNeeds"))
+                    elif concrete_tag == "OBD-PID-SERVICE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "ObdPidServiceNeeds"))
+                    elif concrete_tag == "OBD-RATIO-DENOMINATOR-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "ObdRatioDenominatorNeeds"))
+                    elif concrete_tag == "OBD-RATIO-SERVICE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "ObdRatioServiceNeeds"))
                     elif concrete_tag == "SECURE-ON-BOARD-COMMUNICATION-NEEDS":
                         setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "SecureOnBoardCommunicationNeeds"))
                     elif concrete_tag == "SUPERVISED-ENTITY-CHECKPOINT-NEEDS":

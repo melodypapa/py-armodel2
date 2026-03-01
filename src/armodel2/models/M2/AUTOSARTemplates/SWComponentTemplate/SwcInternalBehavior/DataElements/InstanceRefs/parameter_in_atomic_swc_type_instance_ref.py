@@ -47,9 +47,9 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": ("_POLYMORPHIC", "base_ref", ["ApplicationSwComponentType", "ComplexDeviceDriverSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
         "CONTEXT-DATA-REFS": lambda obj, elem: [obj.context_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
-        "ROOT-PARAMETER-REF": ("_POLYMORPHIC", "root_parameter_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
-        "TARGET-DATA-REF": ("_POLYMORPHIC", "target_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
+        "ROOT-PARAMETER-REF": ("_POLYMORPHIC", "root_parameter_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
+        "TARGET-DATA-REF": ("_POLYMORPHIC", "target_data_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
     }
 
 

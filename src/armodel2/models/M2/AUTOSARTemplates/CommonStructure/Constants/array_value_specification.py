@@ -47,7 +47,7 @@ class ArrayValueSpecification(CompositeValueSpecification):
     elements: list[ValueSpecification]
     intended_partial: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ELEMENTS": ("_POLYMORPHIC_LIST", "elements", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "ELEMENTS": ("_POLYMORPHIC_LIST", "elements", ["AbstractRuleBasedValueSpecification", "ApplicationRuleBasedValueSpecification", "ApplicationValueSpecification", "ArrayValueSpecification", "CompositeRuleBasedValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "RecordValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
         "INTENDED-PARTIAL": lambda obj, elem: setattr(obj, "intended_partial", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
@@ -130,8 +130,14 @@ class ArrayValueSpecification(CompositeValueSpecification):
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
                         obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-RULE-BASED-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationRuleBasedValueSpecification"))
                     elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
                         obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationValueSpecification"))
+                    elif concrete_tag == "ARRAY-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ArrayValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-RULE-BASED-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "CompositeRuleBasedValueSpecification"))
                     elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
                         obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "CompositeValueSpecification"))
                     elif concrete_tag == "CONSTANT-REFERENCE":
@@ -140,6 +146,8 @@ class ArrayValueSpecification(CompositeValueSpecification):
                         obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "NotAvailableValueSpecification"))
                     elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
                         obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "NumericalValueSpecification"))
+                    elif concrete_tag == "RECORD-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "RecordValueSpecification"))
                     elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
                         obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ReferenceValueSpecification"))
                     elif concrete_tag == "TEXT-VALUE-SPECIFICATION":

@@ -40,7 +40,7 @@ class DiagnosticComControlSpecificChannel(ARObject):
     specific_physical_ref: Optional[Any]
     subnet_number: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "SPECIFIC-CHANNEL-REF": ("_POLYMORPHIC", "specific_channel_ref", ["AbstractCanCluster", "EthernetCluster", "FlexrayCluster", "LinCluster", "UserDefinedCluster"]),
+        "SPECIFIC-CHANNEL-REF": ("_POLYMORPHIC", "specific_channel_ref", ["AbstractCanCluster", "CanCluster", "EthernetCluster", "FlexrayCluster", "J1939Cluster", "LinCluster", "TtcanCluster", "UserDefinedCluster"]),
         "SPECIFIC-PHYSICAL-REF": lambda obj, elem: setattr(obj, "specific_physical_ref", ARRef.deserialize(elem)),
         "SUBNET-NUMBER": lambda obj, elem: setattr(obj, "subnet_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }

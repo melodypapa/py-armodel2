@@ -48,7 +48,7 @@ class EcucParameterValue(EcucIndexableValue, ABC):
     is_auto_value: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
         "ANNOTATIONS": lambda obj, elem: obj.annotations.append(SerializationHelper.deserialize_by_tag(elem, "Annotation")),
-        "DEFINITION-REF": ("_POLYMORPHIC", "definition_ref", ["EcucAbstractStringParamDef", "EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucIntegerParamDef"]),
+        "DEFINITION-REF": ("_POLYMORPHIC", "definition_ref", ["EcucAbstractStringParamDef", "EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucFunctionNameDef", "EcucIntegerParamDef", "EcucLinkerSymbolDef", "EcucMultilineStringParamDef", "EcucStringParamDef"]),
         "IS-AUTO-VALUE": lambda obj, elem: setattr(obj, "is_auto_value", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 

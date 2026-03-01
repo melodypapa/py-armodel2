@@ -61,7 +61,7 @@ class PortAPIOption(ARObject):
         "ENABLE-TAKE-ADDRESS": lambda obj, elem: setattr(obj, "enable_take_address", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "ERROR-HANDLING": lambda obj, elem: setattr(obj, "error_handling", DataTransformationErrorHandlingEnum.deserialize(elem)),
         "INDIRECT-API": lambda obj, elem: setattr(obj, "indirect_api", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
         "PORT-ARG-VALUES": lambda obj, elem: obj.port_arg_values.append(SerializationHelper.deserialize_by_tag(elem, "PortDefinedArgumentValue")),
         "SUPPORTED-FEATURES": ("_POLYMORPHIC_LIST", "supported_features", ["CommunicationBufferLocking"]),
         "TRANSFORMER-STATUS-FORWARDING": lambda obj, elem: setattr(obj, "transformer_status_forwarding", DataTransformationStatusForwardingEnum.deserialize(elem)),

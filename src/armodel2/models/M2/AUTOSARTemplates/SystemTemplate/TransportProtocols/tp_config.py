@@ -37,7 +37,7 @@ class TpConfig(FibexElement, ABC):
 
     communication_cluster_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CLUSTER-REF": ("_POLYMORPHIC", "communication_cluster_ref", ["AbstractCanCluster", "EthernetCluster", "FlexrayCluster", "LinCluster", "UserDefinedCluster"]),
+        "COMMUNICATION-CLUSTER-REF": ("_POLYMORPHIC", "communication_cluster_ref", ["AbstractCanCluster", "CanCluster", "EthernetCluster", "FlexrayCluster", "J1939Cluster", "LinCluster", "TtcanCluster", "UserDefinedCluster"]),
     }
 
 

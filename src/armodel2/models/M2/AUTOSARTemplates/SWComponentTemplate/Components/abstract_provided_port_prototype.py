@@ -36,7 +36,7 @@ class AbstractProvidedPortPrototype(PortPrototype, ABC):
 
     provided_com_specs: list[PPortComSpec]
     _DESERIALIZE_DISPATCH = {
-        "PROVIDED-COM-SPECS": ("_POLYMORPHIC_LIST", "provided_com_specs", ["ModeSwitchSenderComSpec", "NvProvideComSpec", "ParameterProvideComSpec", "SenderComSpec"]),
+        "PROVIDED-COM-SPECS": ("_POLYMORPHIC_LIST", "provided_com_specs", ["ModeSwitchSenderComSpec", "NonqueuedSenderComSpec", "NvProvideComSpec", "ParameterProvideComSpec", "QueuedSenderComSpec", "SenderComSpec"]),
     }
 
 
@@ -103,10 +103,14 @@ class AbstractProvidedPortPrototype(PortPrototype, ABC):
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "MODE-SWITCH-SENDER-COM-SPEC":
                         obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchSenderComSpec"))
+                    elif concrete_tag == "NONQUEUED-SENDER-COM-SPEC":
+                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NonqueuedSenderComSpec"))
                     elif concrete_tag == "NV-PROVIDE-COM-SPEC":
                         obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvProvideComSpec"))
                     elif concrete_tag == "PARAMETER-PROVIDE-COM-SPEC":
                         obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterProvideComSpec"))
+                    elif concrete_tag == "QUEUED-SENDER-COM-SPEC":
+                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "QueuedSenderComSpec"))
                     elif concrete_tag == "SENDER-COM-SPEC":
                         obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderComSpec"))
 

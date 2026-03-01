@@ -38,7 +38,7 @@ class ServiceInstanceCollectionSet(FibexElement):
 
     service_instances: list[AbstractServiceInstance]
     _DESERIALIZE_DISPATCH = {
-        "SERVICE-INSTANCES": ("_POLYMORPHIC_LIST", "service_instances", ["ConsumedServiceInstance", "DdsCpServiceInstance", "ProvidedServiceInstance"]),
+        "SERVICE-INSTANCES": ("_POLYMORPHIC_LIST", "service_instances", ["ConsumedServiceInstance", "DdsCpConsumedServiceInstance", "DdsCpProvidedServiceInstance", "DdsCpServiceInstance", "ProvidedServiceInstance"]),
     }
 
 
@@ -105,6 +105,10 @@ class ServiceInstanceCollectionSet(FibexElement):
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "CONSUMED-SERVICE-INSTANCE":
                         obj.service_instances.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsumedServiceInstance"))
+                    elif concrete_tag == "DDS-CP-CONSUMED-SERVICE-INSTANCE":
+                        obj.service_instances.append(SerializationHelper.deserialize_by_tag(item_elem, "DdsCpConsumedServiceInstance"))
+                    elif concrete_tag == "DDS-CP-PROVIDED-SERVICE-INSTANCE":
+                        obj.service_instances.append(SerializationHelper.deserialize_by_tag(item_elem, "DdsCpProvidedServiceInstance"))
                     elif concrete_tag == "DDS-CP-SERVICE-INSTANCE":
                         obj.service_instances.append(SerializationHelper.deserialize_by_tag(item_elem, "DdsCpServiceInstance"))
                     elif concrete_tag == "PROVIDED-SERVICE-INSTANCE":

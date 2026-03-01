@@ -47,7 +47,7 @@ class DelegationSwConnector(SwConnector):
     outer_port_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "INNER-PORT-IREF": ("_POLYMORPHIC", "_inner_port_iref", ["PPortInCompositionInstanceRef", "RPortInCompositionInstanceRef"]),
-        "OUTER-PORT-REF": ("_POLYMORPHIC", "outer_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "OUTER-PORT-REF": ("_POLYMORPHIC", "outer_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
     }
 
 

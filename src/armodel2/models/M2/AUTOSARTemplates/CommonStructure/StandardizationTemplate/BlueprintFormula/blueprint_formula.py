@@ -39,7 +39,7 @@ class BlueprintFormula(ARObject):
     ecuc_ref: ARRef
     verbatim: MultiLanguageVerbatim
     _DESERIALIZE_DISPATCH = {
-        "ECUC-REF": ("_POLYMORPHIC", "ecuc_ref", ["EcucCommonAttributes", "EcucContainerDef", "EcucModuleDef"]),
+        "ECUC-REF": ("_POLYMORPHIC", "ecuc_ref", ["EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucChoiceContainerDef", "EcucChoiceReferenceDef", "EcucCommonAttributes", "EcucContainerDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucForeignReferenceDef", "EcucFunctionNameDef", "EcucInstanceReferenceDef", "EcucIntegerParamDef", "EcucLinkerSymbolDef", "EcucModuleDef", "EcucMultilineStringParamDef", "EcucParamConfContainerDef", "EcucReferenceDef", "EcucStringParamDef", "EcucUriReferenceDef"]),
         "VERBATIM": lambda obj, elem: setattr(obj, "verbatim", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageVerbatim")),
     }
 

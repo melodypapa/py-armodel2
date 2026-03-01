@@ -51,7 +51,7 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
         "CONTEXT-DATA-REFS": lambda obj, elem: [obj.context_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ROOT-DATA-PROTOTYPE-IN-CS-REF": ("_POLYMORPHIC", "root_data_prototype_in_cs_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
-        "TARGET-DATA-PROTOTYPE-IN-CS-REF": ("_POLYMORPHIC", "target_data_prototype_in_cs_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "TARGET-DATA-PROTOTYPE-IN-CS-REF": ("_POLYMORPHIC", "target_data_prototype_in_cs_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
     }
 
 

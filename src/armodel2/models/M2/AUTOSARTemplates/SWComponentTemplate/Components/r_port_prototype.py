@@ -48,7 +48,7 @@ class RPortPrototype(AbstractRequiredPortPrototype):
     required_interface_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "MAY-BE-UNCONNECTED": lambda obj, elem: setattr(obj, "may_be_unconnected", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "REQUIRED-INTERFACE-TREF": ("_POLYMORPHIC", "required_interface_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
+        "REQUIRED-INTERFACE-TREF": ("_POLYMORPHIC", "required_interface_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "NvDataInterface", "ParameterInterface", "SenderReceiverInterface", "TriggerInterface"]),
     }
 
 

@@ -40,7 +40,7 @@ class VfbTiming(TimingExtension):
 
     component_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMPONENT-REF": ("_POLYMORPHIC", "component_ref", ["AtomicSwComponentType", "CompositionSwComponentType", "ParameterSwComponentType"]),
+        "COMPONENT-REF": ("_POLYMORPHIC", "component_ref", ["ApplicationSwComponentType", "AtomicSwComponentType", "ComplexDeviceDriverSwComponentType", "CompositionSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "ParameterSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
     }
 
 

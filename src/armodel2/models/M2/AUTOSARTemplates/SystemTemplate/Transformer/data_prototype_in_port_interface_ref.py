@@ -39,7 +39,7 @@ class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
 
     data_prototype_in_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DATA-PROTOTYPE-IN-REF": ("_POLYMORPHIC", "data_prototype_in_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "DATA-PROTOTYPE-IN-REF": ("_POLYMORPHIC", "data_prototype_in_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
     }
 
 

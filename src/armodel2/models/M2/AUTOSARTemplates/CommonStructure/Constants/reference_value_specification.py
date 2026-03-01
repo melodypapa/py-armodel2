@@ -39,7 +39,7 @@ class ReferenceValueSpecification(ValueSpecification):
 
     reference_value_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "REFERENCE-VALUE-REF": ("_POLYMORPHIC", "reference_value_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "REFERENCE-VALUE-REF": ("_POLYMORPHIC", "reference_value_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
     }
 
 

@@ -61,7 +61,7 @@ class EcucDefinitionElement(Identifiable, ABC):
         "ECUC-COND": lambda obj, elem: setattr(obj, "ecuc_cond", SerializationHelper.deserialize_by_tag(elem, "any (EcucCondition)")),
         "ECUC-VALIDATIONS": lambda obj, elem: obj.ecuc_validations.append(SerializationHelper.deserialize_by_tag(elem, "EcucValidationCondition")),
         "LOWER-MULTIPLICITY": lambda obj, elem: setattr(obj, "lower_multiplicity", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "RELATED-TRACE-REF": ("_POLYMORPHIC", "related_trace_ref", ["StructuredReq", "TimingConstraint", "TraceableTable", "TraceableText"]),
+        "RELATED-TRACE-REF": ("_POLYMORPHIC", "related_trace_ref", ["AgeConstraint", "ArbitraryEventTriggering", "BurstPatternEventTriggering", "ConcretePatternEventTriggering", "ExecutionOrderConstraint", "ExecutionTimeConstraint", "LatencyTimingConstraint", "OffsetTimingConstraint", "PeriodicEventTriggering", "SporadicEventTriggering", "StructuredReq", "SynchronizationPointConstraint", "TimingConstraint", "TraceableTable", "TraceableText"]),
         "SCOPE": lambda obj, elem: setattr(obj, "scope", EcucScopeEnum.deserialize(elem)),
         "UPPER-MULTIPLICITY": lambda obj, elem: setattr(obj, "upper_multiplicity", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }

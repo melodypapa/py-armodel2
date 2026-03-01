@@ -46,7 +46,7 @@ class TDCpSoftwareClusterMapping(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "PROVIDER-REF": lambda obj, elem: setattr(obj, "provider_ref", ARRef.deserialize(elem)),
         "REQUESTOR-REFS": lambda obj, elem: [obj.requestor_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "TIMING-REF": ("_POLYMORPHIC", "timing_ref", ["TimingDescriptionEvent", "TimingDescriptionEventChain"]),
+        "TIMING-REF": ("_POLYMORPHIC", "timing_ref", ["TDEventBswInternalBehavior", "TDEventBswModeDeclaration", "TDEventBswModule", "TDEventComplex", "TDEventFrClusterCycleStart", "TDEventFrame", "TDEventFrameEthernet", "TDEventIPdu", "TDEventISignal", "TDEventModeDeclaration", "TDEventOperation", "TDEventSLLETPort", "TDEventSwcInternalBehavior", "TDEventSwcInternalBehaviorReference", "TDEventTTCanCycleStart", "TDEventTrigger", "TDEventVariableDataPrototype", "TDEventVfbReference", "TimingDescriptionEvent", "TimingDescriptionEventChain"]),
     }
 
 

@@ -47,7 +47,7 @@ class SwComponentPrototype(Identifiable):
 
     type_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TYPE-TREF": ("_POLYMORPHIC", "type_ref", ["AtomicSwComponentType", "CompositionSwComponentType", "ParameterSwComponentType"]),
+        "TYPE-TREF": ("_POLYMORPHIC", "type_ref", ["ApplicationSwComponentType", "AtomicSwComponentType", "ComplexDeviceDriverSwComponentType", "CompositionSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "ParameterSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
     }
 
 

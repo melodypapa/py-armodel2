@@ -48,10 +48,10 @@ class ModeInSwcInstanceRef(ARObject):
     context_port_ref: Optional[ARRef]
     target_mode_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "BASE-REF": ("_POLYMORPHIC", "base_ref", ["AtomicSwComponentType", "CompositionSwComponentType", "ParameterSwComponentType"]),
+        "BASE-REF": ("_POLYMORPHIC", "base_ref", ["ApplicationSwComponentType", "AtomicSwComponentType", "ComplexDeviceDriverSwComponentType", "CompositionSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "ParameterSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
         "CONTEXT-REFS": lambda obj, elem: [obj.context_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "CONTEXT-MODE-REF": lambda obj, elem: setattr(obj, "context_mode_ref", ARRef.deserialize(elem)),
-        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
         "TARGET-MODE-REF": lambda obj, elem: setattr(obj, "target_mode_ref", ARRef.deserialize(elem)),
     }
 

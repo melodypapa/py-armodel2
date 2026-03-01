@@ -45,7 +45,7 @@ class RoleBasedPortAssignment(ARObject):
     port_prototype_ref: Optional[ARRef]
     role: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
         "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 

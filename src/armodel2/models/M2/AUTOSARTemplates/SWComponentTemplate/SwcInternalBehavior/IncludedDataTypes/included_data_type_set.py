@@ -42,7 +42,7 @@ class IncludedDataTypeSet(ARObject):
     data_type_refs: list[ARRef]
     literal_prefix: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "DATA-TYPE-REFS": ("_POLYMORPHIC_LIST", "data_type_refs", ["AbstractImplementationDataType", "ApplicationDataType"]),
+        "DATA-TYPE-REFS": ("_POLYMORPHIC_LIST", "data_type_refs", ["AbstractImplementationDataType", "ApplicationArrayDataType", "ApplicationDataType", "ApplicationPrimitiveDataType", "ApplicationRecordDataType", "ImplementationDataType"]),
         "LITERAL-PREFIX": lambda obj, elem: setattr(obj, "literal_prefix", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
