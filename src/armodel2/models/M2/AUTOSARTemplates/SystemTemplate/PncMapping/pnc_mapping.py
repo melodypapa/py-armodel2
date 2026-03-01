@@ -76,17 +76,17 @@ class PncMapping(Describable):
     vfc_refs: list[ARRef]
     wakeup_frame_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DYNAMIC-PNC-REFS": lambda obj, elem: obj.dynamic_pnc_refs.append(ARRef.deserialize(elem)),
+        "DYNAMIC-PNC-REFS": lambda obj, elem: [obj.dynamic_pnc_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "IDENT-REF": lambda obj, elem: setattr(obj, "ident_ref", ARRef.deserialize(elem)),
         "PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "physical_channel_refs", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
-        "PNC-CONSUMED-REFS": lambda obj, elem: obj.pnc_consumed_refs.append(ARRef.deserialize(elem)),
-        "PNC-GROUP-REFS": lambda obj, elem: obj.pnc_group_refs.append(ARRef.deserialize(elem)),
+        "PNC-CONSUMED-REFS": lambda obj, elem: [obj.pnc_consumed_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "PNC-GROUP-REFS": lambda obj, elem: [obj.pnc_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PNC-IDENTIFIER": lambda obj, elem: setattr(obj, "pnc_identifier", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "PNC-PDUR-GROUP-REFS": lambda obj, elem: obj.pnc_pdur_group_refs.append(ARRef.deserialize(elem)),
+        "PNC-PDUR-GROUP-REFS": lambda obj, elem: [obj.pnc_pdur_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PNC-WAKEUP": lambda obj, elem: setattr(obj, "pnc_wakeup", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "RELEVANT-FOR-REFS": lambda obj, elem: obj.relevant_for_refs.append(ARRef.deserialize(elem)),
+        "RELEVANT-FOR-REFS": lambda obj, elem: [obj.relevant_for_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
-        "VFC-REFS": lambda obj, elem: obj.vfc_refs.append(ARRef.deserialize(elem)),
+        "VFC-REFS": lambda obj, elem: [obj.vfc_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "WAKEUP-FRAME-REFS": ("_POLYMORPHIC_LIST", "wakeup_frame_refs", ["CanFrameTriggering", "EthernetFrameTriggering", "FlexrayFrameTriggering", "LinFrameTriggering"]),
     }
 
@@ -344,7 +344,7 @@ class PncMapping(Describable):
             if tag == "DYNAMIC-PNC-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.dynamic_pnc_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalIPduGroup"))
+                    obj.dynamic_pnc_refs.append(ARRef.deserialize(item_elem))
             elif tag == "IDENT-REF":
                 setattr(obj, "ident_ref", ARRef.deserialize(child))
             elif tag == "PHYSICAL-CHANNEL-REFS":
@@ -353,29 +353,29 @@ class PncMapping(Describable):
             elif tag == "PNC-CONSUMED-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.pnc_consumed_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsumedProvidedServiceInstanceGroup"))
+                    obj.pnc_consumed_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PNC-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.pnc_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalIPduGroup"))
+                    obj.pnc_group_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PNC-IDENTIFIER":
                 setattr(obj, "pnc_identifier", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "PNC-PDUR-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.pnc_pdur_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PdurIPduGroup"))
+                    obj.pnc_pdur_group_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PNC-WAKEUP":
                 setattr(obj, "pnc_wakeup", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "RELEVANT-FOR-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.relevant_for_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcuInstance"))
+                    obj.relevant_for_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SHORT-LABEL":
                 setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "VFC-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.vfc_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PortGroup"))
+                    obj.vfc_refs.append(ARRef.deserialize(item_elem))
             elif tag == "WAKEUP-FRAME-REFS":
                 for item_elem in child:
                     obj.wakeup_frame_refs.append(ARRef.deserialize(item_elem))

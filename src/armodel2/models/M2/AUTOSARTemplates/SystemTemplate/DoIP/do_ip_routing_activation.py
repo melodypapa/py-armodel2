@@ -39,7 +39,7 @@ class DoIpRoutingActivation(Identifiable):
 
     do_ip_target_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DO-IP-TARGET-REFS": lambda obj, elem: obj.do_ip_target_refs.append(ARRef.deserialize(elem)),
+        "DO-IP-TARGET-REFS": lambda obj, elem: [obj.do_ip_target_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class DoIpRoutingActivation(Identifiable):
             if tag == "DO-IP-TARGET-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.do_ip_target_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DoIpLogicTargetAddressProps"))
+                    obj.do_ip_target_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

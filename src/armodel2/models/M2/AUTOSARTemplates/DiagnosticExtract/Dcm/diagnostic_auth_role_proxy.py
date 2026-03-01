@@ -35,7 +35,7 @@ class DiagnosticAuthRoleProxy(ARObject):
 
     authentication_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "AUTHENTICATION-REFS": lambda obj, elem: obj.authentication_refs.append(ARRef.deserialize(elem)),
+        "AUTHENTICATION-REFS": lambda obj, elem: [obj.authentication_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -106,7 +106,7 @@ class DiagnosticAuthRoleProxy(ARObject):
             if tag == "AUTHENTICATION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.authentication_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticAuthRole"))
+                    obj.authentication_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

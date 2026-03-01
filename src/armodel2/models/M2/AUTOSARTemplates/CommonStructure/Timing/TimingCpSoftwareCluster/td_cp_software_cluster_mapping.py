@@ -45,7 +45,7 @@ class TDCpSoftwareClusterMapping(Identifiable):
     timing_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "PROVIDER-REF": lambda obj, elem: setattr(obj, "provider_ref", ARRef.deserialize(elem)),
-        "REQUESTOR-REFS": lambda obj, elem: obj.requestor_refs.append(ARRef.deserialize(elem)),
+        "REQUESTOR-REFS": lambda obj, elem: [obj.requestor_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TIMING-REF": ("_POLYMORPHIC", "timing_ref", ["TimingDescriptionEvent", "TimingDescriptionEventChain"]),
     }
 
@@ -149,7 +149,7 @@ class TDCpSoftwareClusterMapping(Identifiable):
             elif tag == "REQUESTOR-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.requestor_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareCluster"))
+                    obj.requestor_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TIMING-REF":
                 setattr(obj, "timing_ref", ARRef.deserialize(child))
 

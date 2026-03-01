@@ -252,11 +252,12 @@ def _generate_dispatch_table(
                 handler = f'lambda obj, elem: setattr(obj, "{target_attr}", {value_code})'
         elif is_ref and kind != "iref":
             # For iref kind, deserialize as the specific type, not as ARRef
-            value_code = "ARRef.deserialize(elem)"
             if is_list:
-                handler = f'lambda obj, elem: obj.{target_attr}.append({value_code})'
+                # For reference lists, elem is the container (e.g., DATA-TYPE-MAPPING-REFS)
+                # Need to iterate through children and deserialize each as ARRef
+                handler = f'lambda obj, elem: [obj.{target_attr}.append(ARRef.deserialize(item_elem)) for item_elem in elem]'
             else:
-                handler = f'lambda obj, elem: setattr(obj, "{target_attr}", {value_code})'
+                handler = f'lambda obj, elem: setattr(obj, "{target_attr}", ARRef.deserialize(elem))'
         else:
             # Use SerializationHelper.deserialize_by_tag for all other types
             # This handles ARPrimitive subclasses (like Identifier) and complex types
@@ -1340,6 +1341,10 @@ def _generate_deserialize_method(
             if kind == "iref":
                 xml_tag = f"{xml_tag}-IREF"
 
+            # For tag comparison in deserialize, extract container tag from multi-level paths
+            # e.g., "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA-REF" -> "CAN-ENTER-EXCLUSIVE-AREA-REFS"
+            compare_tag = xml_tag.split("/")[0] if isinstance(xml_tag, str) and "/" in xml_tag else xml_tag
+
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
             target_attr = f"_{python_name}" if decorator_name in (
                 "xml_attribute", "lang_prefix", "lang_abbr", "xml_element_name",
@@ -1363,7 +1368,7 @@ def _generate_deserialize_method(
                         handler_code = f'for item_elem in child:\n                    obj.{target_attr}.append(ARRef.deserialize(item_elem))'
                     else:
                         handler_code = f'setattr(obj, "{target_attr}", ARRef.deserialize(child))'
-                    all_branches.append((xml_tag, handler_code, False))
+                    all_branches.append((compare_tag, handler_code, False))
                 else:
                     # Generate if-elif-else chain for polymorphic types
                     # For polymorphic types, the XML tag may be a multi-level path (e.g., "ENTITYS/BSW-SCHEDULABLE-ENTITY")
@@ -1422,24 +1427,34 @@ def _generate_deserialize_method(
                     # Check if this is a "direct child" tag (no wrapper container)
                     # Same logic as serialize: known direct children like ITEM, ENTRY, V, etc.
                     # or short singular tags that don't end with "S"
+                    # For multi-level paths, always use wrapper container logic
+                    is_multi_level = isinstance(xml_tag, str) and "/" in xml_tag
+                    check_tag = compare_tag if is_multi_level else xml_tag
                     known_direct_children = {"ITEM", "ENTRY", "V", "VALUE", "NAME", "TYPE", "REF"}
                     is_direct_child = (
-                        decorator_name == "xml_element_name" and (
-                            xml_tag in known_direct_children or
-                            (len(xml_tag) <= 4 and xml_tag.endswith("S")) or
-                            not xml_tag.endswith("S")
+                        not is_multi_level and decorator_name == "xml_element_name" and (
+                            check_tag in known_direct_children or
+                            (len(check_tag) <= 4 and check_tag.endswith("S")) or
+                            not check_tag.endswith("S")
                         )
                     )
                     if is_direct_child:
                         # Direct child tag (e.g., ITEM) - deserialize the element directly
-                        handler_code = f'obj.{target_attr}.append(SerializationHelper.deserialize_by_tag(child, "{attr_type}"))'
+                        if is_ref and kind != "iref":
+                            handler_code = f'obj.{target_attr}.append(ARRef.deserialize(child))'
+                        else:
+                            handler_code = f'obj.{target_attr}.append(SerializationHelper.deserialize_by_tag(child, "{attr_type}"))'
                     else:
                         # Wrapper container (e.g., DATA-CONSTR-RULES) - iterate through children
-                        handler_code = f'# Iterate through wrapper children\n                for item_elem in child:\n                    obj.{target_attr}.append(SerializationHelper.deserialize_by_tag(item_elem, "{attr_type}"))'
+                        if is_ref and kind != "iref":
+                            # For reference lists, each child is a -REF element that should be deserialized as ARRef
+                            handler_code = f'# Iterate through wrapper children\n                for item_elem in child:\n                    obj.{target_attr}.append(ARRef.deserialize(item_elem))'
+                        else:
+                            handler_code = f'# Iterate through wrapper children\n                for item_elem in child:\n                    obj.{target_attr}.append(SerializationHelper.deserialize_by_tag(item_elem, "{attr_type}"))'
                 else:
                     handler_code = f'setattr(obj, "{target_attr}", {value_code})'
 
-                all_branches.append((xml_tag, handler_code, False))  # False = not polymorphic
+                all_branches.append((compare_tag, handler_code, False))  # False = not polymorphic
 
     # Generate the dispatch code
     code += """        # Single-pass deserialization with if-elif-else chain
@@ -1449,7 +1464,7 @@ def _generate_deserialize_method(
 """
 
     # Add all branches with proper if/elif (indented to be inside the for loop)
-    for i, (xml_tag, branch_code, is_polymorphic) in enumerate(all_branches):
+    for i, (branch_xml_tag, branch_code, is_polymorphic) in enumerate(all_branches):
         if is_polymorphic:
             # Polymorphic branch already has its own if statement structure
             # Need to change first 'if' to 'elif' if not first branch
@@ -1466,11 +1481,11 @@ def _generate_deserialize_method(
             # Simple handler - use if for first, elif for rest
             # Add extra indentation since we're inside the for loop
             if i == 0:
-                code += f"""            if tag == "{xml_tag}":
+                code += f"""            if tag == "{branch_xml_tag}":
                 {branch_code}
 """
             else:
-                code += f"""            elif tag == "{xml_tag}":
+                code += f"""            elif tag == "{branch_xml_tag}":
                 {branch_code}
 """
 

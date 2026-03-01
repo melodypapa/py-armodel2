@@ -78,11 +78,11 @@ class NvBlockDescriptor(Identifiable):
     writing_strategies: list[Any]
     _DESERIALIZE_DISPATCH = {
         "CLIENT-SERVER-PORTS": lambda obj, elem: obj.client_server_ports.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedPortAssignment")),
-        "CONSTANT-VALUE-REFS": lambda obj, elem: obj.constant_value_refs.append(ARRef.deserialize(elem)),
-        "DATA-TYPE-REFS": lambda obj, elem: obj.data_type_refs.append(ARRef.deserialize(elem)),
+        "CONSTANT-VALUE-REFS": lambda obj, elem: [obj.constant_value_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "DATA-TYPE-REFS": lambda obj, elem: [obj.data_type_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "INSTANTIATION-DATA-DEFS": lambda obj, elem: obj.instantiation_data_defs.append(SerializationHelper.deserialize_by_tag(elem, "InstantiationDataDefProps")),
         "MODE-SWITCH-EVENTS": lambda obj, elem: obj.mode_switch_events.append(SerializationHelper.deserialize_by_tag(elem, "any (ModeSwitchEvent)")),
-        "NV-BLOCK-DATA-REFS": lambda obj, elem: obj.nv_block_data_refs.append(ARRef.deserialize(elem)),
+        "NV-BLOCK-DATA-REFS": lambda obj, elem: [obj.nv_block_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "NV-BLOCK-NEEDS": lambda obj, elem: setattr(obj, "nv_block_needs", SerializationHelper.deserialize_by_tag(elem, "NvBlockNeeds")),
         "RAM-BLOCK-REF": lambda obj, elem: setattr(obj, "ram_block_ref", ARRef.deserialize(elem)),
         "ROM-BLOCK-REF": lambda obj, elem: setattr(obj, "rom_block_ref", ARRef.deserialize(elem)),
@@ -318,11 +318,11 @@ class NvBlockDescriptor(Identifiable):
             elif tag == "CONSTANT-VALUE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.constant_value_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstantSpecification"))
+                    obj.constant_value_refs.append(ARRef.deserialize(item_elem))
             elif tag == "DATA-TYPE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.data_type_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataTypeMappingSet"))
+                    obj.data_type_refs.append(ARRef.deserialize(item_elem))
             elif tag == "INSTANTIATION-DATA-DEFS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -334,7 +334,7 @@ class NvBlockDescriptor(Identifiable):
             elif tag == "NV-BLOCK-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.nv_block_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvBlockDataMapping"))
+                    obj.nv_block_data_refs.append(ARRef.deserialize(item_elem))
             elif tag == "NV-BLOCK-NEEDS":
                 setattr(obj, "nv_block_needs", SerializationHelper.deserialize_by_tag(child, "NvBlockNeeds"))
             elif tag == "RAM-BLOCK-REF":

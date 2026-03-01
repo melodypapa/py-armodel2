@@ -47,7 +47,7 @@ class DltContext(ARElement):
     _DESERIALIZE_DISPATCH = {
         "CONTEXT": lambda obj, elem: setattr(obj, "context", SerializationHelper.deserialize_by_tag(elem, "String")),
         "CONTEXT-ID": lambda obj, elem: setattr(obj, "context_id", SerializationHelper.deserialize_by_tag(elem, "String")),
-        "DLT-MESSAGE-REFS": lambda obj, elem: obj.dlt_message_refs.append(ARRef.deserialize(elem)),
+        "DLT-MESSAGE-REFS": lambda obj, elem: [obj.dlt_message_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -152,7 +152,7 @@ class DltContext(ARElement):
             elif tag == "DLT-MESSAGE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.dlt_message_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DltMessage"))
+                    obj.dlt_message_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

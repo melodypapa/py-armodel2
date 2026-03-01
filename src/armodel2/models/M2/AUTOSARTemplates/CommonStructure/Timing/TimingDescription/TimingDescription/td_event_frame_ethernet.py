@@ -51,7 +51,7 @@ class TDEventFrameEthernet(TDEventCom):
         "STATIC-SOCKET-REF": lambda obj, elem: setattr(obj, "static_socket_ref", ARRef.deserialize(elem)),
         "TD-EVENT-TYPE": lambda obj, elem: setattr(obj, "td_event_type", SerializationHelper.deserialize_by_tag(elem, "TDEventFrameEthernet")),
         "TD-HEADER-ID-FILTERS": lambda obj, elem: obj.td_header_id_filters.append(SerializationHelper.deserialize_by_tag(elem, "TDHeaderIdRange")),
-        "TD-PDU-TRIGGERING-REFS": lambda obj, elem: obj.td_pdu_triggering_refs.append(ARRef.deserialize(elem)),
+        "TD-PDU-TRIGGERING-REFS": lambda obj, elem: [obj.td_pdu_triggering_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -171,7 +171,7 @@ class TDEventFrameEthernet(TDEventCom):
             elif tag == "TD-PDU-TRIGGERING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.td_pdu_triggering_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
+                    obj.td_pdu_triggering_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

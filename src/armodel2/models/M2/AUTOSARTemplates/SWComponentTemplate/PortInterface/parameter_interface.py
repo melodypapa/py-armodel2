@@ -40,7 +40,7 @@ class ParameterInterface(DataInterface):
 
     parameter_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "PARAMETER-REFS": lambda obj, elem: obj.parameter_refs.append(ARRef.deserialize(elem)),
+        "PARAMETER-REFS": lambda obj, elem: [obj.parameter_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -111,7 +111,7 @@ class ParameterInterface(DataInterface):
             if tag == "PARAMETER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.parameter_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
+                    obj.parameter_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

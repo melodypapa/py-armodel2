@@ -49,7 +49,7 @@ class ApplicationInterface(PortInterface):
     _DESERIALIZE_DISPATCH = {
         "ATTRIBUTES": lambda obj, elem: obj.attributes.append(SerializationHelper.deserialize_by_tag(elem, "Field")),
         "COMMANDS": lambda obj, elem: obj.commands.append(SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
-        "INDICATION-REFS": lambda obj, elem: obj.indication_refs.append(ARRef.deserialize(elem)),
+        "INDICATION-REFS": lambda obj, elem: [obj.indication_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -150,7 +150,7 @@ class ApplicationInterface(PortInterface):
             elif tag == "INDICATION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.indication_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
+                    obj.indication_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

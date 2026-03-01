@@ -51,7 +51,7 @@ class PortPrototypeBlueprint(ARElement):
     provided_coms: list[PPortComSpec]
     required_coms: list[RPortComSpec]
     _DESERIALIZE_DISPATCH = {
-        "INIT-VALUE-REFS": lambda obj, elem: obj._init_value_refs.append(ARRef.deserialize(elem)),
+        "INIT-VALUE-REFS": lambda obj, elem: [obj._init_value_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "INTERFACE-REF": ("_POLYMORPHIC", "interface_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
         "PROVIDED-COMS": ("_POLYMORPHIC_LIST", "provided_coms", ["ModeSwitchSenderComSpec", "NvProvideComSpec", "ParameterProvideComSpec", "SenderComSpec"]),
         "REQUIRED-COMS": ("_POLYMORPHIC_LIST", "required_coms", ["ClientComSpec", "ModeSwitchReceiverComSpec", "NvRequireComSpec", "ParameterRequireComSpec"]),
@@ -173,7 +173,7 @@ class PortPrototypeBlueprint(ARElement):
             if tag == "INIT-VALUE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj._init_value_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PortPrototypeBlueprint"))
+                    obj._init_value_refs.append(ARRef.deserialize(item_elem))
             elif tag == "INTERFACE-REF":
                 setattr(obj, "interface_ref", ARRef.deserialize(child))
             elif tag == "PROVIDED-COMS":

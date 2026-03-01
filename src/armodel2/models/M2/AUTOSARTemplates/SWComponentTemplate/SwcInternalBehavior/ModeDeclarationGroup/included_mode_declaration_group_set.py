@@ -39,7 +39,7 @@ class IncludedModeDeclarationGroupSet(ARObject):
     mode_refs: list[ARRef]
     prefix: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "MODE-REFS": lambda obj, elem: obj.mode_refs.append(ARRef.deserialize(elem)),
+        "MODE-REFS": lambda obj, elem: [obj.mode_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PREFIX": lambda obj, elem: setattr(obj, "prefix", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
@@ -126,7 +126,7 @@ class IncludedModeDeclarationGroupSet(ARObject):
             if tag == "MODE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.mode_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroup"))
+                    obj.mode_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PREFIX":
                 setattr(obj, "prefix", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 

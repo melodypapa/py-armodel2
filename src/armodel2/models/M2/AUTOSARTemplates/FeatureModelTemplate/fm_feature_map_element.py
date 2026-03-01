@@ -50,8 +50,8 @@ class FMFeatureMapElement(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "ASSERTIONS": lambda obj, elem: obj.assertions.append(SerializationHelper.deserialize_by_tag(elem, "FMFeatureMap")),
         "CONDITIONS": lambda obj, elem: obj.conditions.append(SerializationHelper.deserialize_by_tag(elem, "FMFeatureMap")),
-        "POST-BUILD-VARIANT-REFS": lambda obj, elem: obj.post_build_variant_refs.append(ARRef.deserialize(elem)),
-        "SW-VALUE-SET-REFS": lambda obj, elem: obj.sw_value_set_refs.append(ARRef.deserialize(elem)),
+        "POST-BUILD-VARIANT-REFS": lambda obj, elem: [obj.post_build_variant_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "SW-VALUE-SET-REFS": lambda obj, elem: [obj.sw_value_set_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -170,11 +170,11 @@ class FMFeatureMapElement(Identifiable):
             elif tag == "POST-BUILD-VARIANT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.post_build_variant_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (PostBuildVariant)"))
+                    obj.post_build_variant_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SW-VALUE-SET-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.sw_value_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwSystemconstantValueSet"))
+                    obj.sw_value_set_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -42,7 +42,7 @@ class NvDataInterface(DataInterface):
 
     nv_data_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "NV-DATA-REFS": lambda obj, elem: obj.nv_data_refs.append(ARRef.deserialize(elem)),
+        "NV-DATA-REFS": lambda obj, elem: [obj.nv_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -113,7 +113,7 @@ class NvDataInterface(DataInterface):
             if tag == "NV-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.nv_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
+                    obj.nv_data_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

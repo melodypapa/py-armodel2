@@ -51,7 +51,7 @@ class DiagnosticProtocol(DiagnosticCommonElement):
     send_resp_pend: Optional[Boolean]
     service_table_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DIAGNOSTIC-REFS": lambda obj, elem: obj.diagnostic_refs.append(ARRef.deserialize(elem)),
+        "DIAGNOSTIC-REFS": lambda obj, elem: [obj.diagnostic_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PROTOCOL-KIND": lambda obj, elem: setattr(obj, "protocol_kind", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
         "SEND-RESP-PEND": lambda obj, elem: setattr(obj, "send_resp_pend", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
@@ -186,7 +186,7 @@ class DiagnosticProtocol(DiagnosticCommonElement):
             if tag == "DIAGNOSTIC-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.diagnostic_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticConnection"))
+                    obj.diagnostic_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PRIORITY":
                 setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "PROTOCOL-KIND":

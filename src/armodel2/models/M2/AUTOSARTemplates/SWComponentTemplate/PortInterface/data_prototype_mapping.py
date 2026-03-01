@@ -54,7 +54,7 @@ class DataPrototypeMapping(ARObject):
         "FIRST-TO-SECOND-REF": lambda obj, elem: setattr(obj, "first_to_second_ref", ARRef.deserialize(elem)),
         "SECOND-DATA-REF": ("_POLYMORPHIC", "second_data_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "SECOND-TO-FIRST-REF": lambda obj, elem: setattr(obj, "second_to_first_ref", ARRef.deserialize(elem)),
-        "SUB-ELEMENT-REFS": lambda obj, elem: obj.sub_element_refs.append(ARRef.deserialize(elem)),
+        "SUB-ELEMENT-REFS": lambda obj, elem: [obj.sub_element_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TEXT-TABLE-REF": lambda obj, elem: setattr(obj, "text_table_ref", ARRef.deserialize(elem)),
     }
 
@@ -209,7 +209,7 @@ class DataPrototypeMapping(ARObject):
             elif tag == "SUB-ELEMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.sub_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SubElementMapping"))
+                    obj.sub_element_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TEXT-TABLE-REF":
                 setattr(obj, "text_table_ref", ARRef.deserialize(child))
 

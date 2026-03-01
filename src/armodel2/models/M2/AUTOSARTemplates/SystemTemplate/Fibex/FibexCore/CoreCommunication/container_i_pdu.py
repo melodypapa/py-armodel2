@@ -61,7 +61,7 @@ class ContainerIPdu(IPdu):
     unused_bit: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
         "CONTAINED-I-PDU-PROPSES": lambda obj, elem: obj.contained_i_pdu_propses.append(SerializationHelper.deserialize_by_tag(elem, "ContainedIPduProps")),
-        "CONTAINED-PDU-REFS": lambda obj, elem: obj.contained_pdu_refs.append(ARRef.deserialize(elem)),
+        "CONTAINED-PDU-REFS": lambda obj, elem: [obj.contained_pdu_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "CONTAINER": lambda obj, elem: setattr(obj, "container", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "CONTAINER-TRIGGER-REF": lambda obj, elem: setattr(obj, "container_trigger_ref", ContainerIPduTriggerEnum.deserialize(elem)),
         "HEADER-TYPE": lambda obj, elem: setattr(obj, "header_type", ContainerIPduHeaderTypeEnum.deserialize(elem)),
@@ -275,7 +275,7 @@ class ContainerIPdu(IPdu):
             elif tag == "CONTAINED-PDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.contained_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
+                    obj.contained_pdu_refs.append(ARRef.deserialize(item_elem))
             elif tag == "CONTAINER":
                 setattr(obj, "container", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "CONTAINER-TRIGGER-REF":

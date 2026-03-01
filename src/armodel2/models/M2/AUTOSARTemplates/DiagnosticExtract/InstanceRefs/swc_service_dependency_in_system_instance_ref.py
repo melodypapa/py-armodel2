@@ -38,7 +38,7 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
     target_swc_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
         "CONTEXT-ROOT-SW-REF": lambda obj, elem: setattr(obj, "context_root_sw_ref", ARRef.deserialize(elem)),
-        "CONTEXT-SW-PROTOTYPE-REFS": lambda obj, elem: obj.context_sw_prototype_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-SW-PROTOTYPE-REFS": lambda obj, elem: [obj.context_sw_prototype_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TARGET-SWC-REF": lambda obj, elem: setattr(obj, "target_swc_ref", ARRef.deserialize(elem)),
     }
 
@@ -142,7 +142,7 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
             elif tag == "CONTEXT-SW-PROTOTYPE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_sw_prototype_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwComponent)"))
+                    obj.context_sw_prototype_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TARGET-SWC-REF":
                 setattr(obj, "target_swc_ref", ARRef.deserialize(child))
 

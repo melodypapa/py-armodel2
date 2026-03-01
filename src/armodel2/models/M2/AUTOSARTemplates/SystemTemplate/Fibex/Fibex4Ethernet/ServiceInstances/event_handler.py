@@ -61,12 +61,12 @@ class EventHandler(Identifiable):
     sd_server_config: Optional[Any]
     sd_server_eg_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONSUMED-EVENT-GROUP-REFS": lambda obj, elem: obj.consumed_event_group_refs.append(ARRef.deserialize(elem)),
+        "CONSUMED-EVENT-GROUP-REFS": lambda obj, elem: [obj.consumed_event_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "EVENT-GROUP": lambda obj, elem: setattr(obj, "event_group", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "EVENT-MULTICAST-REF": lambda obj, elem: setattr(obj, "event_multicast_ref", ARRef.deserialize(elem)),
         "MULTICAST": lambda obj, elem: setattr(obj, "multicast", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PDU-ACTIVATION-ROUTINGS": lambda obj, elem: obj.pdu_activation_routings.append(SerializationHelper.deserialize_by_tag(elem, "PduActivationRoutingGroup")),
-        "ROUTING-GROUP-REFS": lambda obj, elem: obj.routing_group_refs.append(ARRef.deserialize(elem)),
+        "ROUTING-GROUP-REFS": lambda obj, elem: [obj.routing_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SD-SERVER-CONFIG": lambda obj, elem: setattr(obj, "sd_server_config", SerializationHelper.deserialize_by_tag(elem, "any (SdServerConfig)")),
         "SD-SERVER-EG-REF": lambda obj, elem: setattr(obj, "sd_server_eg_ref", ARRef.deserialize(elem)),
     }
@@ -243,7 +243,7 @@ class EventHandler(Identifiable):
             if tag == "CONSUMED-EVENT-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.consumed_event_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsumedEventGroup"))
+                    obj.consumed_event_group_refs.append(ARRef.deserialize(item_elem))
             elif tag == "EVENT-GROUP":
                 setattr(obj, "event_group", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "EVENT-MULTICAST-REF":
@@ -257,7 +257,7 @@ class EventHandler(Identifiable):
             elif tag == "ROUTING-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.routing_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SoAdRoutingGroup"))
+                    obj.routing_group_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SD-SERVER-CONFIG":
                 setattr(obj, "sd_server_config", SerializationHelper.deserialize_by_tag(child, "any (SdServerConfig)"))
             elif tag == "SD-SERVER-EG-REF":

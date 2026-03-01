@@ -47,7 +47,7 @@ class NmPdu(Pdu):
     nm_vote_information: Optional[Boolean]
     unused_bit: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "I-SIGNAL-TO-I-PDU-REFS": lambda obj, elem: obj.i_signal_to_i_pdu_refs.append(ARRef.deserialize(elem)),
+        "I-SIGNAL-TO-I-PDU-REFS": lambda obj, elem: [obj.i_signal_to_i_pdu_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "NM-DATA": lambda obj, elem: setattr(obj, "nm_data", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "NM-VOTE-INFORMATION": lambda obj, elem: setattr(obj, "nm_vote_information", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "UNUSED-BIT": lambda obj, elem: setattr(obj, "unused_bit", SerializationHelper.deserialize_by_tag(elem, "Integer")),
@@ -166,7 +166,7 @@ class NmPdu(Pdu):
             if tag == "I-SIGNAL-TO-I-PDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.i_signal_to_i_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalToIPduMapping"))
+                    obj.i_signal_to_i_pdu_refs.append(ARRef.deserialize(item_elem))
             elif tag == "NM-DATA":
                 setattr(obj, "nm_data", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "NM-VOTE-INFORMATION":

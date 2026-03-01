@@ -83,7 +83,7 @@ class CanTpConnection(TpConnection):
         "MAX-BLOCK-SIZE": lambda obj, elem: setattr(obj, "max_block_size", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
         "PADDING": lambda obj, elem: setattr(obj, "padding", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "RECEIVER-REFS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
+        "RECEIVER-REFS": lambda obj, elem: [obj.receiver_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TA-TYPE-TYPE": lambda obj, elem: setattr(obj, "ta_type_type", NetworkTargetAddressType.deserialize(elem)),
         "TIMEOUT-BR": lambda obj, elem: setattr(obj, "timeout_br", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TIMEOUT-BS": lambda obj, elem: setattr(obj, "timeout_bs", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
@@ -402,7 +402,7 @@ class CanTpConnection(TpConnection):
             elif tag == "RECEIVER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.receiver_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CanTpNode"))
+                    obj.receiver_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TA-TYPE-TYPE":
                 setattr(obj, "ta_type_type", NetworkTargetAddressType.deserialize(child))
             elif tag == "TIMEOUT-BR":

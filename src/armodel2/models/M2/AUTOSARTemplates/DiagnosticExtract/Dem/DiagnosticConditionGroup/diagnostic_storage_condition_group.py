@@ -36,7 +36,7 @@ class DiagnosticStorageConditionGroup(DiagnosticConditionGroup):
 
     storage_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "STORAGE-REFS": lambda obj, elem: obj.storage_refs.append(ARRef.deserialize(elem)),
+        "STORAGE-REFS": lambda obj, elem: [obj.storage_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -107,7 +107,7 @@ class DiagnosticStorageConditionGroup(DiagnosticConditionGroup):
             if tag == "STORAGE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.storage_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticStorage)"))
+                    obj.storage_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

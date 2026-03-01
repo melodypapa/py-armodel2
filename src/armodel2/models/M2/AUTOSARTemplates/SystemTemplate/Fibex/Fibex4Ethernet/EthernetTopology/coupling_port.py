@@ -78,11 +78,11 @@ class CouplingPort(Identifiable):
         "COUPLING-PORT-ROLE-ENUM": lambda obj, elem: setattr(obj, "coupling_port_role_enum", CouplingPortRoleEnum.deserialize(elem)),
         "DEFAULT-VLAN-REF": lambda obj, elem: setattr(obj, "default_vlan_ref", ARRef.deserialize(elem)),
         "MAC-LAYER-TYPE-ENUM": lambda obj, elem: setattr(obj, "mac_layer_type_enum", EthernetMacLayerTypeEnum.deserialize(elem)),
-        "MAC-MULTICAST-GROUP-REFS": lambda obj, elem: obj.mac_multicast_group_refs.append(ARRef.deserialize(elem)),
+        "MAC-MULTICAST-GROUP-REFS": lambda obj, elem: [obj.mac_multicast_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "MAC-SEC-PROPSES": lambda obj, elem: obj.mac_sec_propses.append(SerializationHelper.deserialize_by_tag(elem, "MacSecProps")),
         "PHYSICAL-LAYER": lambda obj, elem: setattr(obj, "physical_layer", EthernetPhysicalLayerTypeEnum.deserialize(elem)),
         "PLCA-PROPS": lambda obj, elem: setattr(obj, "plca_props", SerializationHelper.deserialize_by_tag(elem, "PlcaProps")),
-        "PNC-MAPPING-IDENT-REFS": lambda obj, elem: obj.pnc_mapping_ident_refs.append(ARRef.deserialize(elem)),
+        "PNC-MAPPING-IDENT-REFS": lambda obj, elem: [obj.pnc_mapping_ident_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "RECEIVE-ACTIVITY": lambda obj, elem: setattr(obj, "receive_activity", SerializationHelper.deserialize_by_tag(elem, "any (EthernetSwitchVlan)")),
         "VLANS": lambda obj, elem: obj.vlans.append(SerializationHelper.deserialize_by_tag(elem, "VlanMembership")),
         "VLAN-MODIFIER-REF": lambda obj, elem: setattr(obj, "vlan_modifier_ref", ARRef.deserialize(elem)),
@@ -357,7 +357,7 @@ class CouplingPort(Identifiable):
             elif tag == "MAC-MULTICAST-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.mac_multicast_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "MacMulticastGroup"))
+                    obj.mac_multicast_group_refs.append(ARRef.deserialize(item_elem))
             elif tag == "MAC-SEC-PROPSES":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -369,7 +369,7 @@ class CouplingPort(Identifiable):
             elif tag == "PNC-MAPPING-IDENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.pnc_mapping_ident_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PncMappingIdent"))
+                    obj.pnc_mapping_ident_refs.append(ARRef.deserialize(item_elem))
             elif tag == "RECEIVE-ACTIVITY":
                 setattr(obj, "receive_activity", SerializationHelper.deserialize_by_tag(child, "any (EthernetSwitchVlan)"))
             elif tag == "VLANS":

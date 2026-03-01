@@ -42,7 +42,7 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
     sdu_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "MAX-TRANSIT-TIME": lambda obj, elem: setattr(obj, "max_transit_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
-        "SDU-REFS": lambda obj, elem: obj.sdu_refs.append(ARRef.deserialize(elem)),
+        "SDU-REFS": lambda obj, elem: [obj.sdu_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -130,7 +130,7 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
             elif tag == "SDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
+                    obj.sdu_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -40,7 +40,7 @@ class DiagnosticSecureCodingMapping(DiagnosticMapping):
     data_identifier_refs: list[Any]
     validation_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DATA-IDENTIFIER-REFS": lambda obj, elem: obj.data_identifier_refs.append(ARRef.deserialize(elem)),
+        "DATA-IDENTIFIER-REFS": lambda obj, elem: [obj.data_identifier_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "VALIDATION-REF": lambda obj, elem: setattr(obj, "validation_ref", ARRef.deserialize(elem)),
     }
 
@@ -127,7 +127,7 @@ class DiagnosticSecureCodingMapping(DiagnosticMapping):
             if tag == "DATA-IDENTIFIER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.data_identifier_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticWriteDataBy)"))
+                    obj.data_identifier_refs.append(ARRef.deserialize(item_elem))
             elif tag == "VALIDATION-REF":
                 setattr(obj, "validation_ref", ARRef.deserialize(child))
 

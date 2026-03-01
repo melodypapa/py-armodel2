@@ -43,8 +43,8 @@ class Baseline(ARObject):
     custom_refs: list[ARRef]
     standards: list[String]
     _DESERIALIZE_DISPATCH = {
-        "CUSTOM-SDG-DEF-REFS": lambda obj, elem: obj.custom_sdg_def_refs.append(ARRef.deserialize(elem)),
-        "CUSTOM-REFS": lambda obj, elem: obj.custom_refs.append(ARRef.deserialize(elem)),
+        "CUSTOM-SDG-DEF-REFS": lambda obj, elem: [obj.custom_sdg_def_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "CUSTOM-REFS": lambda obj, elem: [obj.custom_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "STANDARDS": lambda obj, elem: obj.standards.append(SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
@@ -152,11 +152,11 @@ class Baseline(ARObject):
             if tag == "CUSTOM-SDG-DEF-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.custom_sdg_def_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgDef"))
+                    obj.custom_sdg_def_refs.append(ARRef.deserialize(item_elem))
             elif tag == "CUSTOM-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.custom_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "Documentation"))
+                    obj.custom_refs.append(ARRef.deserialize(item_elem))
             elif tag == "STANDARDS":
                 # Iterate through wrapper children
                 for item_elem in child:

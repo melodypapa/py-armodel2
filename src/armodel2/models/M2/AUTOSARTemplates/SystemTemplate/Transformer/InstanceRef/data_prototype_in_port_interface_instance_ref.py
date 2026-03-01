@@ -43,7 +43,7 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
     target_data_ref: ARRef
     _DESERIALIZE_DISPATCH = {
         "ABSTRACT-BASE-REF": ("_POLYMORPHIC", "abstract_base_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
-        "CONTEXT-DATA-REFS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-DATA-REFS": lambda obj, elem: [obj.context_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ROOT-DATA-REF": ("_POLYMORPHIC", "root_data_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "TARGET-DATA-REF": ("_POLYMORPHIC", "target_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
     }
@@ -163,7 +163,7 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
             elif tag == "CONTEXT-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ApplicationComposite)"))
+                    obj.context_data_refs.append(ARRef.deserialize(item_elem))
             elif tag == "ROOT-DATA-REF":
                 setattr(obj, "root_data_ref", ARRef.deserialize(child))
             elif tag == "TARGET-DATA-REF":

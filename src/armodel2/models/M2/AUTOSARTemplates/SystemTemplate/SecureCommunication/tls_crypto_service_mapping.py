@@ -48,7 +48,7 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
     use_client: Optional[Boolean]
     use_security: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "KEY-EXCHANGE-REFS": lambda obj, elem: obj.key_exchange_refs.append(ARRef.deserialize(elem)),
+        "KEY-EXCHANGE-REFS": lambda obj, elem: [obj.key_exchange_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TLS-CIPHER-SUITES": lambda obj, elem: obj.tls_cipher_suites.append(SerializationHelper.deserialize_by_tag(elem, "TlsCryptoCipherSuite")),
         "USE-CLIENT": lambda obj, elem: setattr(obj, "use_client", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "USE-SECURITY": lambda obj, elem: setattr(obj, "use_security", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
@@ -163,7 +163,7 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
             if tag == "KEY-EXCHANGE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.key_exchange_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CryptoServicePrimitive"))
+                    obj.key_exchange_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TLS-CIPHER-SUITES":
                 # Iterate through wrapper children
                 for item_elem in child:

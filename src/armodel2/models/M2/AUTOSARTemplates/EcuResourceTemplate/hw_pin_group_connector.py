@@ -44,7 +44,7 @@ class HwPinGroupConnector(Describable):
     hw_pin_group_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "HW-PINS": lambda obj, elem: obj.hw_pins.append(SerializationHelper.deserialize_by_tag(elem, "HwPinConnector")),
-        "HW-PIN-GROUP-REFS": lambda obj, elem: obj.hw_pin_group_refs.append(ARRef.deserialize(elem)),
+        "HW-PIN-GROUP-REFS": lambda obj, elem: [obj.hw_pin_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -130,7 +130,7 @@ class HwPinGroupConnector(Describable):
             elif tag == "HW-PIN-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.hw_pin_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "HwPinGroup"))
+                    obj.hw_pin_group_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

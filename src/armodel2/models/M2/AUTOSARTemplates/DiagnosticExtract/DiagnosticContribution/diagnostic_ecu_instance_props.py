@@ -43,7 +43,7 @@ class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
     ecu_instance_refs: list[ARRef]
     obd_support: Optional[DiagnosticObdSupportEnum]
     _DESERIALIZE_DISPATCH = {
-        "ECU-INSTANCE-REFS": lambda obj, elem: obj.ecu_instance_refs.append(ARRef.deserialize(elem)),
+        "ECU-INSTANCE-REFS": lambda obj, elem: [obj.ecu_instance_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "OBD-SUPPORT": lambda obj, elem: setattr(obj, "obd_support", DiagnosticObdSupportEnum.deserialize(elem)),
     }
 
@@ -130,7 +130,7 @@ class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
             if tag == "ECU-INSTANCE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.ecu_instance_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcuInstance"))
+                    obj.ecu_instance_refs.append(ARRef.deserialize(item_elem))
             elif tag == "OBD-SUPPORT":
                 setattr(obj, "obd_support", DiagnosticObdSupportEnum.deserialize(child))
 

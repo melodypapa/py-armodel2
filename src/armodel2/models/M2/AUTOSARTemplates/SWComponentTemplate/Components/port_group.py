@@ -44,7 +44,7 @@ class PortGroup(Identifiable):
     inner_group_refs: list[ARRef]
     outer_port_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "INNER-GROUP-REFS": lambda obj, elem: obj.inner_group_refs.append(ARRef.deserialize(elem)),
+        "INNER-GROUP-REFS": lambda obj, elem: [obj.inner_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "OUTER-PORT-REFS": ("_POLYMORPHIC_LIST", "outer_port_refs", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
     }
 
@@ -134,7 +134,7 @@ class PortGroup(Identifiable):
             if tag == "INNER-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.inner_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PortGroup"))
+                    obj.inner_group_refs.append(ARRef.deserialize(item_elem))
             elif tag == "OUTER-PORT-REFS":
                 for item_elem in child:
                     obj.outer_port_refs.append(ARRef.deserialize(item_elem))

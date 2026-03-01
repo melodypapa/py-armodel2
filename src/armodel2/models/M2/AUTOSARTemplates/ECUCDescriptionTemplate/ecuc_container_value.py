@@ -50,7 +50,7 @@ class EcucContainerValue(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "DEFINITION-REF": ("_POLYMORPHIC", "definition_ref", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
         "PARAMETER-VALUES": ("_POLYMORPHIC_LIST", "parameter_values", ["EcucAddInfoParamValue", "EcucNumericalParamValue", "EcucTextualParamValue"]),
-        "REFERENCE-VALUE-REFS": lambda obj, elem: obj.reference_value_refs.append(ARRef.deserialize(elem)),
+        "REFERENCE-VALUE-REFS": lambda obj, elem: [obj.reference_value_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SUB-CONTAINERS": lambda obj, elem: obj.sub_containers.append(SerializationHelper.deserialize_by_tag(elem, "EcucContainerValue")),
     }
 
@@ -171,7 +171,7 @@ class EcucContainerValue(Identifiable):
             elif tag == "REFERENCE-VALUE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.reference_value_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EcucAbstractReference)"))
+                    obj.reference_value_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SUB-CONTAINERS":
                 # Iterate through wrapper children
                 for item_elem in child:

@@ -36,7 +36,7 @@ class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
 
     enable_condition_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "ENABLE-CONDITION-REFS": lambda obj, elem: obj.enable_condition_refs.append(ARRef.deserialize(elem)),
+        "ENABLE-CONDITION-REFS": lambda obj, elem: [obj.enable_condition_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -107,7 +107,7 @@ class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
             if tag == "ENABLE-CONDITION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.enable_condition_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticEnable)"))
+                    obj.enable_condition_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

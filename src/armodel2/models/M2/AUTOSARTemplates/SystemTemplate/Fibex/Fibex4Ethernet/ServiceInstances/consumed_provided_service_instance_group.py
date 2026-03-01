@@ -37,8 +37,8 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
     consumed_service_refs: list[Any]
     provided_service_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "CONSUMED-SERVICE-REFS": lambda obj, elem: obj.consumed_service_refs.append(ARRef.deserialize(elem)),
-        "PROVIDED-SERVICE-REFS": lambda obj, elem: obj.provided_service_refs.append(ARRef.deserialize(elem)),
+        "CONSUMED-SERVICE-REFS": lambda obj, elem: [obj.consumed_service_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "PROVIDED-SERVICE-REFS": lambda obj, elem: [obj.provided_service_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -127,11 +127,11 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
             if tag == "CONSUMED-SERVICE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.consumed_service_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ConsumedService)"))
+                    obj.consumed_service_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PROVIDED-SERVICE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.provided_service_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ProvidedService)"))
+                    obj.provided_service_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

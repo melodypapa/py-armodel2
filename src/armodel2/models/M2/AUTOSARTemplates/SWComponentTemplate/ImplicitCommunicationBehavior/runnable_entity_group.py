@@ -45,7 +45,7 @@ class RunnableEntityGroup(Identifiable):
     runnable_entity_group_group_in_composition_instance_ref: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "RUNNABLE-ENTITIES": lambda obj, elem: obj.runnable_entities.append(SerializationHelper.deserialize_by_tag(elem, "RunnableEntity")),
-        "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS": lambda obj, elem: obj.runnable_entity_group_group_in_composition_instance_ref.append(ARRef.deserialize(elem)),
+        "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS": lambda obj, elem: [obj.runnable_entity_group_group_in_composition_instance_ref.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -131,7 +131,7 @@ class RunnableEntityGroup(Identifiable):
             elif tag == "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.runnable_entity_group_group_in_composition_instance_ref.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntityGroup"))
+                    obj.runnable_entity_group_group_in_composition_instance_ref.append(ARRef.deserialize(item_elem))
 
         return obj
 

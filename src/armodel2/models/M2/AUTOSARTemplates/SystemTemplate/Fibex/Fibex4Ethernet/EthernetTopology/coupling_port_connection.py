@@ -43,7 +43,7 @@ class CouplingPortConnection(ARObject):
     second_port_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "FIRST-PORT-REF": lambda obj, elem: setattr(obj, "first_port_ref", ARRef.deserialize(elem)),
-        "NODE-PORT-REFS": lambda obj, elem: obj.node_port_refs.append(ARRef.deserialize(elem)),
+        "NODE-PORT-REFS": lambda obj, elem: [obj.node_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PLCA-LOCAL-NODE": lambda obj, elem: setattr(obj, "plca_local_node", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PLCA-TRANSMIT": lambda obj, elem: setattr(obj, "plca_transmit", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SECOND-PORT-REF": lambda obj, elem: setattr(obj, "second_port_ref", ARRef.deserialize(elem)),
@@ -179,7 +179,7 @@ class CouplingPortConnection(ARObject):
             elif tag == "NODE-PORT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.node_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPort"))
+                    obj.node_port_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PLCA-LOCAL-NODE":
                 setattr(obj, "plca_local_node", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "PLCA-TRANSMIT":

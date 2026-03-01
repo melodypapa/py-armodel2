@@ -52,7 +52,7 @@ class McSupportData(ARObject):
         "EMULATIONS": lambda obj, elem: obj.emulations.append(SerializationHelper.deserialize_by_tag(elem, "McSwEmulationMethodSupport")),
         "MC-PARAMETERS": lambda obj, elem: obj.mc_parameters.append(SerializationHelper.deserialize_by_tag(elem, "McDataInstance")),
         "MC-VARIABLES": lambda obj, elem: obj.mc_variables.append(SerializationHelper.deserialize_by_tag(elem, "McDataInstance")),
-        "MEASURABLE-REFS": lambda obj, elem: obj.measurable_refs.append(ARRef.deserialize(elem)),
+        "MEASURABLE-REFS": lambda obj, elem: [obj.measurable_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "RPT-SUPPORT-DATA": lambda obj, elem: setattr(obj, "rpt_support_data", SerializationHelper.deserialize_by_tag(elem, "RptSupportData")),
     }
 
@@ -184,7 +184,7 @@ class McSupportData(ARObject):
             elif tag == "MEASURABLE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.measurable_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwSystemconstantValueSet"))
+                    obj.measurable_refs.append(ARRef.deserialize(item_elem))
             elif tag == "RPT-SUPPORT-DATA":
                 setattr(obj, "rpt_support_data", SerializationHelper.deserialize_by_tag(child, "RptSupportData"))
 

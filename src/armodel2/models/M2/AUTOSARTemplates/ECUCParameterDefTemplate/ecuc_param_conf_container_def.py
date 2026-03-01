@@ -42,7 +42,7 @@ class EcucParamConfContainerDef(EcucContainerDef):
     sub_containers: list[EcucContainerDef]
     _DESERIALIZE_DISPATCH = {
         "PARAMETERS": ("_POLYMORPHIC_LIST", "parameters", ["EcucAbstractStringParamDef", "EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucIntegerParamDef"]),
-        "REFERENCE-REFS": lambda obj, elem: obj.reference_refs.append(ARRef.deserialize(elem)),
+        "REFERENCE-REFS": lambda obj, elem: [obj.reference_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SUB-CONTAINERS": ("_POLYMORPHIC_LIST", "sub_containers", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
     }
 
@@ -152,7 +152,7 @@ class EcucParamConfContainerDef(EcucContainerDef):
             elif tag == "REFERENCE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.reference_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EcucAbstractReference)"))
+                    obj.reference_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SUB-CONTAINERS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:

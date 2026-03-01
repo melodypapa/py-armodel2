@@ -48,7 +48,7 @@ class EOCEventRef(EOCExecutableEntityRefAbstract):
         "BSW-MODULE-REF": lambda obj, elem: setattr(obj, "bsw_module_ref", ARRef.deserialize(elem)),
         "COMPONENT": lambda obj, elem: setattr(obj, "component", SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
         "EVENT-REF": ("_POLYMORPHIC", "event_ref", ["BswEvent", "RTEEvent"]),
-        "SUCCESSOR-REFS": lambda obj, elem: obj.successor_refs.append(ARRef.deserialize(elem)),
+        "SUCCESSOR-REFS": lambda obj, elem: [obj.successor_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -170,7 +170,7 @@ class EOCEventRef(EOCExecutableEntityRefAbstract):
             elif tag == "SUCCESSOR-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.successor_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
+                    obj.successor_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

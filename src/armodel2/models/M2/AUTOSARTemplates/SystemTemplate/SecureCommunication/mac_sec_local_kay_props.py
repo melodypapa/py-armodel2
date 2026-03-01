@@ -53,7 +53,7 @@ class MacSecLocalKayProps(ARObject):
         "DESTINATION-MAC": lambda obj, elem: setattr(obj, "destination_mac", SerializationHelper.deserialize_by_tag(elem, "MacAddressString")),
         "GLOBAL-KAY-PROPS-REF": lambda obj, elem: setattr(obj, "global_kay_props_ref", ARRef.deserialize(elem)),
         "KEY-SERVER": lambda obj, elem: setattr(obj, "key_server", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "MKA-PARTICIPANT-REFS": lambda obj, elem: obj.mka_participant_refs.append(ARRef.deserialize(elem)),
+        "MKA-PARTICIPANT-REFS": lambda obj, elem: [obj.mka_participant_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ROLE": lambda obj, elem: setattr(obj, "role", MacSecRoleEnum.deserialize(elem)),
         "SOURCE-MAC": lambda obj, elem: setattr(obj, "source_mac", SerializationHelper.deserialize_by_tag(elem, "MacAddressString")),
     }
@@ -207,7 +207,7 @@ class MacSecLocalKayProps(ARObject):
             elif tag == "MKA-PARTICIPANT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.mka_participant_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "MacSecKayParticipant"))
+                    obj.mka_participant_refs.append(ARRef.deserialize(item_elem))
             elif tag == "ROLE":
                 setattr(obj, "role", MacSecRoleEnum.deserialize(child))
             elif tag == "SOURCE-MAC":

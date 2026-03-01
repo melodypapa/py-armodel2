@@ -2073,6 +2073,16 @@ polymorphic_types:
   - BswInterruptEvent
   - BswOperationInvokedEvent
   - BswScheduleEvent
+  - BswAsynchronousServerCallReturnsEvent
+  - BswBackgroundEvent
+  - BswDataReceivedEvent
+  - BswExternalTriggerOccurredEvent
+  - BswInternalTriggerOccurredEvent
+  - BswModeManagerErrorEvent
+  - BswModeSwitchEvent
+  - BswModeSwitchedAckEvent
+  - BswOsTaskExecutionEvent
+  - BswTimingEvent
   BswScheduleEvent:
   - BswAsynchronousServerCallReturnsEvent
   - BswBackgroundEvent

@@ -59,12 +59,12 @@ class RptExecutableEntityEvent(Identifiable):
     rpt_impl_policy: Optional[RptImplPolicy]
     rpt_service_point_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "EXECUTION-REFS": lambda obj, elem: obj.execution_refs.append(ARRef.deserialize(elem)),
+        "EXECUTION-REFS": lambda obj, elem: [obj.execution_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "MC-DATAS": lambda obj, elem: obj.mc_datas.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
         "RPT-EVENT-ID": lambda obj, elem: setattr(obj, "rpt_event_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "RPT-EXECUTABLE-ENTITY": lambda obj, elem: setattr(obj, "rpt_executable_entity", SerializationHelper.deserialize_by_tag(elem, "RptExecutableEntity")),
         "RPT-IMPL-POLICY": lambda obj, elem: setattr(obj, "rpt_impl_policy", SerializationHelper.deserialize_by_tag(elem, "RptImplPolicy")),
-        "RPT-SERVICE-POINT-REFS": lambda obj, elem: obj.rpt_service_point_refs.append(ARRef.deserialize(elem)),
+        "RPT-SERVICE-POINT-REFS": lambda obj, elem: [obj.rpt_service_point_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -209,7 +209,7 @@ class RptExecutableEntityEvent(Identifiable):
             if tag == "EXECUTION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.execution_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RptExecutionContext"))
+                    obj.execution_refs.append(ARRef.deserialize(item_elem))
             elif tag == "MC-DATAS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -223,7 +223,7 @@ class RptExecutableEntityEvent(Identifiable):
             elif tag == "RPT-SERVICE-POINT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.rpt_service_point_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RptServicePoint"))
+                    obj.rpt_service_point_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

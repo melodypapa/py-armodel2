@@ -68,7 +68,7 @@ class J1939TpConnection(TpConnection):
         "FLOW-CONTROL-PDU": lambda obj, elem: setattr(obj, "flow_control_pdu", SerializationHelper.deserialize_by_tag(elem, "NPdu")),
         "MAX-BS": lambda obj, elem: setattr(obj, "max_bs", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "MAX-EXP-BS": lambda obj, elem: setattr(obj, "max_exp_bs", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "RECEIVER-REFS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
+        "RECEIVER-REFS": lambda obj, elem: [obj.receiver_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "RETRY": lambda obj, elem: setattr(obj, "retry", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "TP-PGS": lambda obj, elem: obj.tp_pgs.append(SerializationHelper.deserialize_by_tag(elem, "J1939TpPg")),
         "TRANSMITTER-REF": lambda obj, elem: setattr(obj, "transmitter_ref", ARRef.deserialize(elem)),
@@ -319,7 +319,7 @@ class J1939TpConnection(TpConnection):
             elif tag == "RECEIVER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.receiver_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "J1939TpNode"))
+                    obj.receiver_refs.append(ARRef.deserialize(item_elem))
             elif tag == "RETRY":
                 setattr(obj, "retry", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "TP-PGS":

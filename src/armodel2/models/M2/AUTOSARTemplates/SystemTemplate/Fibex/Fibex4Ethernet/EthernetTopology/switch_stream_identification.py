@@ -52,12 +52,12 @@ class SwitchStreamIdentification(Identifiable):
     ingress_port_refs: list[ARRef]
     stream_filter: Optional[SwitchStreamFilterRule]
     _DESERIALIZE_DISPATCH = {
-        "EGRESS-PORT-REFS": lambda obj, elem: obj.egress_port_refs.append(ARRef.deserialize(elem)),
+        "EGRESS-PORT-REFS": lambda obj, elem: [obj.egress_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "FILTER-ACTION-BLOCK": lambda obj, elem: setattr(obj, "filter_action_block", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "FILTER-ACTION-DEST": lambda obj, elem: setattr(obj, "filter_action_dest", SerializationHelper.deserialize_by_tag(elem, "any (SwitchStreamFilter)")),
         "FILTER-ACTION-DROP": lambda obj, elem: setattr(obj, "filter_action_drop", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "FILTER-ACTION-VLAN": lambda obj, elem: setattr(obj, "filter_action_vlan", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "INGRESS-PORT-REFS": lambda obj, elem: obj.ingress_port_refs.append(ARRef.deserialize(elem)),
+        "INGRESS-PORT-REFS": lambda obj, elem: [obj.ingress_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "STREAM-FILTER": lambda obj, elem: setattr(obj, "stream_filter", SerializationHelper.deserialize_by_tag(elem, "SwitchStreamFilterRule")),
     }
 
@@ -222,7 +222,7 @@ class SwitchStreamIdentification(Identifiable):
             if tag == "EGRESS-PORT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.egress_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPort"))
+                    obj.egress_port_refs.append(ARRef.deserialize(item_elem))
             elif tag == "FILTER-ACTION-BLOCK":
                 setattr(obj, "filter_action_block", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "FILTER-ACTION-DEST":
@@ -234,7 +234,7 @@ class SwitchStreamIdentification(Identifiable):
             elif tag == "INGRESS-PORT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.ingress_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPort"))
+                    obj.ingress_port_refs.append(ARRef.deserialize(item_elem))
             elif tag == "STREAM-FILTER":
                 setattr(obj, "stream_filter", SerializationHelper.deserialize_by_tag(child, "SwitchStreamFilterRule"))
 

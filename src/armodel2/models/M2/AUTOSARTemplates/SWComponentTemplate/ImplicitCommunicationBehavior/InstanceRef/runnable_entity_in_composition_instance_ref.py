@@ -41,7 +41,7 @@ class RunnableEntityInCompositionInstanceRef(ARObject):
     target_runnable_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
-        "CONTEXT-SW-REFS": lambda obj, elem: obj.context_sw_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-SW-REFS": lambda obj, elem: [obj.context_sw_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TARGET-RUNNABLE-REF": lambda obj, elem: setattr(obj, "target_runnable_ref", ARRef.deserialize(elem)),
     }
 
@@ -145,7 +145,7 @@ class RunnableEntityInCompositionInstanceRef(ARObject):
             elif tag == "CONTEXT-SW-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_sw_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwComponent)"))
+                    obj.context_sw_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TARGET-RUNNABLE-REF":
                 setattr(obj, "target_runnable_ref", ARRef.deserialize(child))
 

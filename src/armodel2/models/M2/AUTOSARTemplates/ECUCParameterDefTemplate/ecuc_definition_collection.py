@@ -40,7 +40,7 @@ class EcucDefinitionCollection(ARElement):
 
     module_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "MODULE-REFS": lambda obj, elem: obj.module_refs.append(ARRef.deserialize(elem)),
+        "MODULE-REFS": lambda obj, elem: [obj.module_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -111,7 +111,7 @@ class EcucDefinitionCollection(ARElement):
             if tag == "MODULE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.module_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucModuleDef"))
+                    obj.module_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

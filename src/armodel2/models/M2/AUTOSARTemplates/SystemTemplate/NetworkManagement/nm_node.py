@@ -66,8 +66,8 @@ class NmNode(Identifiable, ABC):
         "NM-IF-ECU-REF": lambda obj, elem: setattr(obj, "nm_if_ecu_ref", ARRef.deserialize(elem)),
         "NM-NODE-ID": lambda obj, elem: setattr(obj, "nm_node_id", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "NM-PASSIVE": lambda obj, elem: setattr(obj, "nm_passive", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "RX-NM-PDU-REFS": lambda obj, elem: obj.rx_nm_pdu_refs.append(ARRef.deserialize(elem)),
-        "TX-NM-PDU-REFS": lambda obj, elem: obj.tx_nm_pdu_refs.append(ARRef.deserialize(elem)),
+        "RX-NM-PDU-REFS": lambda obj, elem: [obj.rx_nm_pdu_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "TX-NM-PDU-REFS": lambda obj, elem: [obj.tx_nm_pdu_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -258,11 +258,11 @@ class NmNode(Identifiable, ABC):
             elif tag == "RX-NM-PDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.rx_nm_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NmPdu"))
+                    obj.rx_nm_pdu_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TX-NM-PDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.tx_nm_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NmPdu"))
+                    obj.tx_nm_pdu_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -38,7 +38,7 @@ class DocumentElementScope(SpecElementReference):
     tailoring_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
         "CUSTOM-DOCUMENT-REF": lambda obj, elem: setattr(obj, "custom_document_ref", ARRef.deserialize(elem)),
-        "TAILORING-REFS": lambda obj, elem: obj.tailoring_refs.append(ARRef.deserialize(elem)),
+        "TAILORING-REFS": lambda obj, elem: [obj.tailoring_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -126,7 +126,7 @@ class DocumentElementScope(SpecElementReference):
             elif tag == "TAILORING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.tailoring_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DataFormatElement)"))
+                    obj.tailoring_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

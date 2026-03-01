@@ -47,7 +47,7 @@ class DltApplication(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "APPLICATION": lambda obj, elem: setattr(obj, "application", SerializationHelper.deserialize_by_tag(elem, "String")),
         "APPLICATION-ID": lambda obj, elem: setattr(obj, "application_id", SerializationHelper.deserialize_by_tag(elem, "String")),
-        "CONTEXT-REFS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-REFS": lambda obj, elem: [obj.context_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -152,7 +152,7 @@ class DltApplication(Identifiable):
             elif tag == "CONTEXT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DltContext"))
+                    obj.context_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

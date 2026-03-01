@@ -44,7 +44,7 @@ class ClientServerOperationMapping(ARObject):
     first_to_second_ref: Optional[ARRef]
     second_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ARGUMENT-REFS": lambda obj, elem: obj.argument_refs.append(ARRef.deserialize(elem)),
+        "ARGUMENT-REFS": lambda obj, elem: [obj.argument_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "FIRST-OPERATION-REF": lambda obj, elem: setattr(obj, "first_operation_ref", ARRef.deserialize(elem)),
         "FIRST-TO-SECOND-REF": lambda obj, elem: setattr(obj, "first_to_second_ref", ARRef.deserialize(elem)),
         "SECOND-REF": lambda obj, elem: setattr(obj, "second_ref", ARRef.deserialize(elem)),
@@ -163,7 +163,7 @@ class ClientServerOperationMapping(ARObject):
             if tag == "ARGUMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.argument_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataPrototypeMapping"))
+                    obj.argument_refs.append(ARRef.deserialize(item_elem))
             elif tag == "FIRST-OPERATION-REF":
                 setattr(obj, "first_operation_ref", ARRef.deserialize(child))
             elif tag == "FIRST-TO-SECOND-REF":

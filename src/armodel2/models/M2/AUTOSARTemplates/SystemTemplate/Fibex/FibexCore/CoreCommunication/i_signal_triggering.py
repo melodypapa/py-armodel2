@@ -49,7 +49,7 @@ class ISignalTriggering(Identifiable):
     i_signal_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "I-SIGNAL-GROUP-REF": lambda obj, elem: setattr(obj, "i_signal_group_ref", ARRef.deserialize(elem)),
-        "I-SIGNAL-PORT-REFS": lambda obj, elem: obj.i_signal_port_refs.append(ARRef.deserialize(elem)),
+        "I-SIGNAL-PORT-REFS": lambda obj, elem: [obj.i_signal_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "I-SIGNAL-REF": lambda obj, elem: setattr(obj, "i_signal_ref", ARRef.deserialize(elem)),
     }
 
@@ -153,7 +153,7 @@ class ISignalTriggering(Identifiable):
             elif tag == "I-SIGNAL-PORT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.i_signal_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalPort"))
+                    obj.i_signal_port_refs.append(ARRef.deserialize(item_elem))
             elif tag == "I-SIGNAL-REF":
                 setattr(obj, "i_signal_ref", ARRef.deserialize(child))
 

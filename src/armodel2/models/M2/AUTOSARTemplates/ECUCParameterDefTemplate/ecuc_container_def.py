@@ -50,7 +50,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
     post_build_variant: Optional[Boolean]
     requires_index: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "DESTINATION-URI-REFS": lambda obj, elem: obj.destination_uri_refs.append(ARRef.deserialize(elem)),
+        "DESTINATION-URI-REFS": lambda obj, elem: [obj.destination_uri_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "MULTIPLICITIES": lambda obj, elem: obj.multiplicities.append(SerializationHelper.deserialize_by_tag(elem, "EcucMultiplicityConfigurationClass")),
         "ORIGIN": lambda obj, elem: setattr(obj, "origin", SerializationHelper.deserialize_by_tag(elem, "String")),
         "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
@@ -181,7 +181,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
             if tag == "DESTINATION-URI-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.destination_uri_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucDestinationUriDef"))
+                    obj.destination_uri_refs.append(ARRef.deserialize(item_elem))
             elif tag == "MULTIPLICITIES":
                 # Iterate through wrapper children
                 for item_elem in child:

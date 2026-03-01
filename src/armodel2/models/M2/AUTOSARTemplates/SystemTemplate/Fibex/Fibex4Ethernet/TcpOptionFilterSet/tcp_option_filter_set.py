@@ -39,7 +39,7 @@ class TcpOptionFilterSet(ARElement):
 
     tcp_option_filter_list_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TCP-OPTION-FILTER-LIST-REFS": lambda obj, elem: obj.tcp_option_filter_list_refs.append(ARRef.deserialize(elem)),
+        "TCP-OPTION-FILTER-LIST-REFS": lambda obj, elem: [obj.tcp_option_filter_list_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class TcpOptionFilterSet(ARElement):
             if tag == "TCP-OPTION-FILTER-LIST-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.tcp_option_filter_list_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "TcpOptionFilterList"))
+                    obj.tcp_option_filter_list_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

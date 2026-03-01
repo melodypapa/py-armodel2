@@ -61,9 +61,9 @@ class DltLogChannel(Identifiable):
     segmentation: Optional[Boolean]
     tx_pdu_triggering_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "APPLICATION-REFS": lambda obj, elem: obj.application_refs.append(ARRef.deserialize(elem)),
+        "APPLICATION-REFS": lambda obj, elem: [obj.application_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "DEFAULT-TRACE": lambda obj, elem: setattr(obj, "default_trace", DltDefaultTraceStateEnum.deserialize(elem)),
-        "DLT-MESSAGE-REFS": lambda obj, elem: obj.dlt_message_refs.append(ARRef.deserialize(elem)),
+        "DLT-MESSAGE-REFS": lambda obj, elem: [obj.dlt_message_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "LOG-CHANNEL-ID": lambda obj, elem: setattr(obj, "log_channel_id", SerializationHelper.deserialize_by_tag(elem, "String")),
         "LOG-TRACE-DEFAULT-LOG": lambda obj, elem: setattr(obj, "log_trace_default_log", LogTraceDefaultLogLevelEnum.deserialize(elem)),
         "NON-VERBOSE": lambda obj, elem: setattr(obj, "non_verbose", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
@@ -263,13 +263,13 @@ class DltLogChannel(Identifiable):
             if tag == "APPLICATION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.application_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DltContext"))
+                    obj.application_refs.append(ARRef.deserialize(item_elem))
             elif tag == "DEFAULT-TRACE":
                 setattr(obj, "default_trace", DltDefaultTraceStateEnum.deserialize(child))
             elif tag == "DLT-MESSAGE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.dlt_message_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DltMessage"))
+                    obj.dlt_message_refs.append(ARRef.deserialize(item_elem))
             elif tag == "LOG-CHANNEL-ID":
                 setattr(obj, "log_channel_id", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "LOG-TRACE-DEFAULT-LOG":

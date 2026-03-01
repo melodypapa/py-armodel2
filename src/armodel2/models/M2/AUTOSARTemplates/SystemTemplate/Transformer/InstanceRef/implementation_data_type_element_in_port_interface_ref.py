@@ -47,7 +47,7 @@ class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
     root_data_ref: Optional[ARRef]
     target_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-REFS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-REFS": lambda obj, elem: [obj.context_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ROOT-DATA-REF": ("_POLYMORPHIC", "root_data_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "TARGET-REF": ("_POLYMORPHIC", "target_ref", ["ImplementationDataType"]),
     }
@@ -150,7 +150,7 @@ class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
             if tag == "CONTEXT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (AbstractImplementation)"))
+                    obj.context_refs.append(ARRef.deserialize(item_elem))
             elif tag == "ROOT-DATA-REF":
                 setattr(obj, "root_data_ref", ARRef.deserialize(child))
             elif tag == "TARGET-REF":

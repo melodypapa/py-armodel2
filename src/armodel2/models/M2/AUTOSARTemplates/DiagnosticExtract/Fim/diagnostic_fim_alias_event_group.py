@@ -36,7 +36,7 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
 
     grouped_alia_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "GROUPED-ALIAS-REFS": lambda obj, elem: obj.grouped_alia_refs.append(ARRef.deserialize(elem)),
+        "GROUPED-ALIAS-REFS": lambda obj, elem: [obj.grouped_alia_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -107,7 +107,7 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
             if tag == "GROUPED-ALIAS-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.grouped_alia_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticFimAlias)"))
+                    obj.grouped_alia_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

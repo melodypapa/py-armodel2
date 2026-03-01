@@ -52,9 +52,9 @@ class Gateway(FibexElement):
     signal_mapping_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "ECU-REF": lambda obj, elem: setattr(obj, "ecu_ref", ARRef.deserialize(elem)),
-        "FRAME-MAPPING-REFS": lambda obj, elem: obj.frame_mapping_refs.append(ARRef.deserialize(elem)),
-        "I-PDU-MAPPING-REFS": lambda obj, elem: obj.i_pdu_mapping_refs.append(ARRef.deserialize(elem)),
-        "SIGNAL-MAPPING-REFS": lambda obj, elem: obj.signal_mapping_refs.append(ARRef.deserialize(elem)),
+        "FRAME-MAPPING-REFS": lambda obj, elem: [obj.frame_mapping_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "I-PDU-MAPPING-REFS": lambda obj, elem: [obj.i_pdu_mapping_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "SIGNAL-MAPPING-REFS": lambda obj, elem: [obj.signal_mapping_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -178,15 +178,15 @@ class Gateway(FibexElement):
             elif tag == "FRAME-MAPPING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.frame_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FrameMapping"))
+                    obj.frame_mapping_refs.append(ARRef.deserialize(item_elem))
             elif tag == "I-PDU-MAPPING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.i_pdu_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "IPduMapping"))
+                    obj.i_pdu_mapping_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SIGNAL-MAPPING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.signal_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalMapping"))
+                    obj.signal_mapping_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

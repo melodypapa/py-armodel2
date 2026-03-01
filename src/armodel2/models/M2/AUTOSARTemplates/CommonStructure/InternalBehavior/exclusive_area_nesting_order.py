@@ -40,7 +40,7 @@ class ExclusiveAreaNestingOrder(Referrable):
 
     exclusive_area_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "EXCLUSIVE-AREA-REFS": lambda obj, elem: obj.exclusive_area_refs.append(ARRef.deserialize(elem)),
+        "EXCLUSIVE-AREA-REFS": lambda obj, elem: [obj.exclusive_area_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -111,7 +111,7 @@ class ExclusiveAreaNestingOrder(Referrable):
             if tag == "EXCLUSIVE-AREA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.exclusive_area_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveArea"))
+                    obj.exclusive_area_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

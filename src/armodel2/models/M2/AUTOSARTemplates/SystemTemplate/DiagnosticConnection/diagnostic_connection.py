@@ -47,8 +47,8 @@ class DiagnosticConnection(ARElement):
     response_ref: Optional[ARRef]
     response_on_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "FUNCTIONAL-REQUEST-REFS": lambda obj, elem: obj.functional_request_refs.append(ARRef.deserialize(elem)),
-        "PERIODIC-RESPONSE-UUDT-REFS": lambda obj, elem: obj.periodic_response_uudt_refs.append(ARRef.deserialize(elem)),
+        "FUNCTIONAL-REQUEST-REFS": lambda obj, elem: [obj.functional_request_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "PERIODIC-RESPONSE-UUDT-REFS": lambda obj, elem: [obj.periodic_response_uudt_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PHYSICAL-REQUEST-REF": lambda obj, elem: setattr(obj, "physical_request_ref", ARRef.deserialize(elem)),
         "RESPONSE-REF": lambda obj, elem: setattr(obj, "response_ref", ARRef.deserialize(elem)),
         "RESPONSE-ON-REF": lambda obj, elem: setattr(obj, "response_on_ref", ARRef.deserialize(elem)),
@@ -185,11 +185,11 @@ class DiagnosticConnection(ARElement):
             if tag == "FUNCTIONAL-REQUEST-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.functional_request_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "TpConnectionIdent"))
+                    obj.functional_request_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PERIODIC-RESPONSE-UUDT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.periodic_response_uudt_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
+                    obj.periodic_response_uudt_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PHYSICAL-REQUEST-REF":
                 setattr(obj, "physical_request_ref", ARRef.deserialize(child))
             elif tag == "RESPONSE-REF":

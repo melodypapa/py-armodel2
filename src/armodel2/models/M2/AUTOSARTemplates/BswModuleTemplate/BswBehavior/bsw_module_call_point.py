@@ -37,7 +37,7 @@ class BswModuleCallPoint(Referrable, ABC):
 
     context_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-REFS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-REFS": lambda obj, elem: [obj.context_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -108,7 +108,7 @@ class BswModuleCallPoint(Referrable, ABC):
             if tag == "CONTEXT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BswDistinguishedPartition"))
+                    obj.context_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

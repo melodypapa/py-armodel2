@@ -39,7 +39,7 @@ class LinSporadicFrame(LinFrame):
 
     substituted_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "SUBSTITUTED-REFS": lambda obj, elem: obj.substituted_refs.append(ARRef.deserialize(elem)),
+        "SUBSTITUTED-REFS": lambda obj, elem: [obj.substituted_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class LinSporadicFrame(LinFrame):
             if tag == "SUBSTITUTED-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.substituted_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "LinUnconditionalFrame"))
+                    obj.substituted_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

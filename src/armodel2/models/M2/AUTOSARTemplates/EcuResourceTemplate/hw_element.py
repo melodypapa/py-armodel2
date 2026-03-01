@@ -52,7 +52,7 @@ class HwElement(HwDescriptionEntity):
     _DESERIALIZE_DISPATCH = {
         "HW-ELEMENT-CONNECTIONS": lambda obj, elem: obj.hw_element_connections.append(SerializationHelper.deserialize_by_tag(elem, "HwElementConnector")),
         "HW-PIN-GROUPS": lambda obj, elem: obj.hw_pin_groups.append(SerializationHelper.deserialize_by_tag(elem, "HwPinGroup")),
-        "NESTED-ELEMENT-REFS": lambda obj, elem: obj.nested_element_refs.append(ARRef.deserialize(elem)),
+        "NESTED-ELEMENT-REFS": lambda obj, elem: [obj.nested_element_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -153,7 +153,7 @@ class HwElement(HwDescriptionEntity):
             elif tag == "NESTED-ELEMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.nested_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "HwElement"))
+                    obj.nested_element_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

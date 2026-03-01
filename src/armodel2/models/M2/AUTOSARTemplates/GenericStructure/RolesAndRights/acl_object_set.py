@@ -56,7 +56,7 @@ class AclObjectSet(ARElement):
     derived_from_refs: list[ARRef]
     engineerings: list[AutosarEngineeringObject]
     _DESERIALIZE_DISPATCH = {
-        "ACL-OBJECT-CLASS-REFS": lambda obj, elem: obj.acl_object_clas_refs.append(ARRef.deserialize(elem)),
+        "ACL-OBJECT-CLASS-REFS": lambda obj, elem: [obj.acl_object_clas_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ACL-SCOPE": lambda obj, elem: setattr(obj, "acl_scope", AclScopeEnum.deserialize(elem)),
         "COLLECTION-REF": lambda obj, elem: setattr(obj, "collection_ref", ARRef.deserialize(elem)),
         "DERIVED-FROM-REFS": ("_POLYMORPHIC_LIST", "derived_from_refs", ["ARPackage", "AbstractImplementationDataType", "AclObjectSet", "AclOperation", "AclPermission", "AclRole", "AliasNameSet", "ApplicationDataType", "BswEntryRelationshipSet", "BswModuleDescription", "BswModuleEntry", "BuildActionEntity", "BuildActionEnvironment", "BuildActionManifest", "ClientServerInterfaceToBswModuleEntryBlueprintMapping", "CompuMethod", "ConsistencyNeeds", "DataConstr", "DataTypeMappingSet", "EcucDefinitionCollection", "EcucDestinationUriDefSet", "EcucModuleDef", "FlatMap", "ImpositionTime", "ImpositionTimeDefinitionGroup", "KeywordSet", "LifeCycleState", "LifeCycleStateDefinitionGroup", "ModeDeclarationGroup", "PortInterface", "PortInterfaceMapping", "PortInterfaceMappingSet", "PortPrototypeBlueprint", "SwAddrMethod", "SwBaseType", "SwComponentType", "VfbTiming"]),
@@ -190,7 +190,7 @@ class AclObjectSet(ARElement):
             if tag == "ACL-OBJECT-CLASS-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.acl_object_clas_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ReferrableSubtypesEnum"))
+                    obj.acl_object_clas_refs.append(ARRef.deserialize(item_elem))
             elif tag == "ACL-SCOPE":
                 setattr(obj, "acl_scope", AclScopeEnum.deserialize(child))
             elif tag == "COLLECTION-REF":

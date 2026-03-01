@@ -39,7 +39,7 @@ class DiagnosticIumprDenominatorGroup(DiagnosticCommonElement):
 
     iumpr_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "IUMPR-REFS": lambda obj, elem: obj.iumpr_refs.append(ARRef.deserialize(elem)),
+        "IUMPR-REFS": lambda obj, elem: [obj.iumpr_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class DiagnosticIumprDenominatorGroup(DiagnosticCommonElement):
             if tag == "IUMPR-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.iumpr_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticIumpr"))
+                    obj.iumpr_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -43,7 +43,7 @@ class FMFeatureRelation(Identifiable):
     feature_refs: list[ARRef]
     restriction: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "FEATURE-REFS": lambda obj, elem: obj.feature_refs.append(ARRef.deserialize(elem)),
+        "FEATURE-REFS": lambda obj, elem: [obj.feature_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "RESTRICTION": lambda obj, elem: setattr(obj, "restriction", SerializationHelper.deserialize_by_tag(elem, "any (FMConditionByFeatures)")),
     }
 
@@ -130,7 +130,7 @@ class FMFeatureRelation(Identifiable):
             if tag == "FEATURE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.feature_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeature"))
+                    obj.feature_refs.append(ARRef.deserialize(item_elem))
             elif tag == "RESTRICTION":
                 setattr(obj, "restriction", SerializationHelper.deserialize_by_tag(child, "any (FMConditionByFeatures)"))
 

@@ -41,7 +41,7 @@ class EndToEndProtectionVariablePrototype(ARObject):
     sender_ref: Optional[ARRef]
     short_label: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "RECEIVER-REFS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
+        "RECEIVER-REFS": lambda obj, elem: [obj.receiver_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SENDER-REF": lambda obj, elem: setattr(obj, "sender_ref", ARRef.deserialize(elem)),
         "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
@@ -144,7 +144,7 @@ class EndToEndProtectionVariablePrototype(ARObject):
             if tag == "RECEIVER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.receiver_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
+                    obj.receiver_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SENDER-REF":
                 setattr(obj, "sender_ref", ARRef.deserialize(child))
             elif tag == "SHORT-LABEL":

@@ -40,7 +40,7 @@ class SwitchStreamFilterActionDestPortModification(Identifiable):
     egress_port_refs: list[ARRef]
     modification: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "EGRESS-PORT-REFS": lambda obj, elem: obj.egress_port_refs.append(ARRef.deserialize(elem)),
+        "EGRESS-PORT-REFS": lambda obj, elem: [obj.egress_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "MODIFICATION": lambda obj, elem: setattr(obj, "modification", SerializationHelper.deserialize_by_tag(elem, "any (SwitchStreamFilter)")),
     }
 
@@ -127,7 +127,7 @@ class SwitchStreamFilterActionDestPortModification(Identifiable):
             if tag == "EGRESS-PORT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.egress_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPort"))
+                    obj.egress_port_refs.append(ARRef.deserialize(item_elem))
             elif tag == "MODIFICATION":
                 setattr(obj, "modification", SerializationHelper.deserialize_by_tag(child, "any (SwitchStreamFilter)"))
 

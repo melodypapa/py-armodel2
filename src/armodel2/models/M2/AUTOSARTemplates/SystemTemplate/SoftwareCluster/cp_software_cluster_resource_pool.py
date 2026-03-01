@@ -43,7 +43,7 @@ class CpSoftwareClusterResourcePool(ARElement):
     ecu_scope_refs: list[ARRef]
     resources: list[CpSoftwareCluster]
     _DESERIALIZE_DISPATCH = {
-        "ECU-SCOPE-REFS": lambda obj, elem: obj.ecu_scope_refs.append(ARRef.deserialize(elem)),
+        "ECU-SCOPE-REFS": lambda obj, elem: [obj.ecu_scope_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "RESOURCES": lambda obj, elem: obj.resources.append(SerializationHelper.deserialize_by_tag(elem, "CpSoftwareCluster")),
     }
 
@@ -126,7 +126,7 @@ class CpSoftwareClusterResourcePool(ARElement):
             if tag == "ECU-SCOPE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.ecu_scope_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcuInstance"))
+                    obj.ecu_scope_refs.append(ARRef.deserialize(item_elem))
             elif tag == "RESOURCES":
                 # Iterate through wrapper children
                 for item_elem in child:

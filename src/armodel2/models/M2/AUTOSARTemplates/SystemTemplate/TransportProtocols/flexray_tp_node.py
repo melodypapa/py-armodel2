@@ -40,7 +40,7 @@ class FlexrayTpNode(Identifiable):
     connector_refs: list[Any]
     tp_address_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONNECTOR-REFS": lambda obj, elem: obj.connector_refs.append(ARRef.deserialize(elem)),
+        "CONNECTOR-REFS": lambda obj, elem: [obj.connector_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TP-ADDRESS-REF": lambda obj, elem: setattr(obj, "tp_address_ref", ARRef.deserialize(elem)),
     }
 
@@ -127,7 +127,7 @@ class FlexrayTpNode(Identifiable):
             if tag == "CONNECTOR-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.connector_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (Communication)"))
+                    obj.connector_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TP-ADDRESS-REF":
                 setattr(obj, "tp_address_ref", ARRef.deserialize(child))
 

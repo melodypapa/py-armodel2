@@ -62,7 +62,7 @@ class FlexrayTpConnection(TpConnection):
         "BANDWIDTH": lambda obj, elem: setattr(obj, "bandwidth", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "DIRECT-TP-SDU-REF": ("_POLYMORPHIC", "direct_tp_sdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
         "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
-        "RECEIVER-REFS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
+        "RECEIVER-REFS": lambda obj, elem: [obj.receiver_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "REVERSED-TP-SDU-REF": ("_POLYMORPHIC", "reversed_tp_sdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
         "RX-PDU-POOL-REF": lambda obj, elem: setattr(obj, "rx_pdu_pool_ref", ARRef.deserialize(elem)),
         "TP-CONNECTION-REF": lambda obj, elem: setattr(obj, "tp_connection_ref", ARRef.deserialize(elem)),
@@ -264,7 +264,7 @@ class FlexrayTpConnection(TpConnection):
             elif tag == "RECEIVER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.receiver_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayTpNode"))
+                    obj.receiver_refs.append(ARRef.deserialize(item_elem))
             elif tag == "REVERSED-TP-SDU-REF":
                 setattr(obj, "reversed_tp_sdu_ref", ARRef.deserialize(child))
             elif tag == "RX-PDU-POOL-REF":

@@ -58,7 +58,7 @@ class FlexrayArTpConnection(TpConnection):
         "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
         "REVERSED-TP-SDU-REF": ("_POLYMORPHIC", "reversed_tp_sdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
         "SOURCE-REF": lambda obj, elem: setattr(obj, "source_ref", ARRef.deserialize(elem)),
-        "TARGET-REFS": lambda obj, elem: obj.target_refs.append(ARRef.deserialize(elem)),
+        "TARGET-REFS": lambda obj, elem: [obj.target_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -214,7 +214,7 @@ class FlexrayArTpConnection(TpConnection):
             elif tag == "TARGET-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.target_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayArTpNode"))
+                    obj.target_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

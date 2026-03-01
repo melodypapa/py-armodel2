@@ -46,7 +46,7 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
     target_data_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": ("_POLYMORPHIC", "base_ref", ["ApplicationSwComponentType", "ComplexDeviceDriverSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
-        "CONTEXT-DATA-REFS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-DATA-REFS": lambda obj, elem: [obj.context_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "ROOT-PARAMETER-REF": ("_POLYMORPHIC", "root_parameter_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
         "TARGET-DATA-REF": ("_POLYMORPHIC", "target_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
@@ -182,7 +182,7 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
             elif tag == "CONTEXT-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ApplicationComposite)"))
+                    obj.context_data_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PORT-PROTOTYPE-REF":
                 setattr(obj, "port_prototype_ref", ARRef.deserialize(child))
             elif tag == "ROOT-PARAMETER-REF":

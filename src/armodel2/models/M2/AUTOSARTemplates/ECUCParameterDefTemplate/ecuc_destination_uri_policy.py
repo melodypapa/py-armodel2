@@ -44,7 +44,7 @@ class EcucDestinationUriPolicy(ARObject):
         "CONTAINERS": ("_POLYMORPHIC_LIST", "containers", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
         "DESTINATION-URI": lambda obj, elem: setattr(obj, "destination_uri", SerializationHelper.deserialize_by_tag(elem, "any (EcucDestinationUri)")),
         "PARAMETERS": ("_POLYMORPHIC_LIST", "parameters", ["EcucAbstractStringParamDef", "EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucIntegerParamDef"]),
-        "REFERENCE-REFS": lambda obj, elem: obj.reference_refs.append(ARRef.deserialize(elem)),
+        "REFERENCE-REFS": lambda obj, elem: [obj.reference_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -178,7 +178,7 @@ class EcucDestinationUriPolicy(ARObject):
             elif tag == "REFERENCE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.reference_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EcucAbstractReference)"))
+                    obj.reference_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

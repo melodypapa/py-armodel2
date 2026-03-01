@@ -46,10 +46,10 @@ class McGroup(ARElement):
     ref_ref: Optional[ARRef]
     sub_group_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "MC-FUNCTION-REFS": lambda obj, elem: obj.mc_function_refs.append(ARRef.deserialize(elem)),
+        "MC-FUNCTION-REFS": lambda obj, elem: [obj.mc_function_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "REF-CALPRM-SET-REF": lambda obj, elem: setattr(obj, "ref_calprm_set_ref", ARRef.deserialize(elem)),
         "REF-REF": lambda obj, elem: setattr(obj, "ref_ref", ARRef.deserialize(elem)),
-        "SUB-GROUP-REFS": lambda obj, elem: obj.sub_group_refs.append(ARRef.deserialize(elem)),
+        "SUB-GROUP-REFS": lambda obj, elem: [obj.sub_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -168,7 +168,7 @@ class McGroup(ARElement):
             if tag == "MC-FUNCTION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.mc_function_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "McFunction"))
+                    obj.mc_function_refs.append(ARRef.deserialize(item_elem))
             elif tag == "REF-CALPRM-SET-REF":
                 setattr(obj, "ref_calprm_set_ref", ARRef.deserialize(child))
             elif tag == "REF-REF":
@@ -176,7 +176,7 @@ class McGroup(ARElement):
             elif tag == "SUB-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.sub_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "McGroup"))
+                    obj.sub_group_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

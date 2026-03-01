@@ -63,7 +63,7 @@ class LinTpConnection(TpConnection):
         "FLOW-CONTROL-REF": lambda obj, elem: setattr(obj, "flow_control_ref", ARRef.deserialize(elem)),
         "LIN-TP-N-SDU-REF": ("_POLYMORPHIC", "lin_tp_n_sdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
         "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
-        "RECEIVER-REFS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
+        "RECEIVER-REFS": lambda obj, elem: [obj.receiver_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TIMEOUT-AS": lambda obj, elem: setattr(obj, "timeout_as", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TIMEOUT-CR": lambda obj, elem: setattr(obj, "timeout_cr", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TIMEOUT-CS": lambda obj, elem: setattr(obj, "timeout_cs", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
@@ -266,7 +266,7 @@ class LinTpConnection(TpConnection):
             elif tag == "RECEIVER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.receiver_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "LinTpNode"))
+                    obj.receiver_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TIMEOUT-AS":
                 setattr(obj, "timeout_as", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "TIMEOUT-CR":

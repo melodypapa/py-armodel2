@@ -54,8 +54,8 @@ class DataPrototypeInSystemInstanceRef(ARObject):
     target_data_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
-        "CONTEXT-REFS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
-        "CONTEXT-DATA-REFS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-REFS": lambda obj, elem: [obj.context_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "CONTEXT-DATA-REFS": lambda obj, elem: [obj.context_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "CONTEXT-ROOT-REF": lambda obj, elem: setattr(obj, "context_root_ref", ARRef.deserialize(elem)),
         "ROOT-DATA-PROTOTYPE-REF": ("_POLYMORPHIC", "root_data_prototype_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
@@ -225,11 +225,11 @@ class DataPrototypeInSystemInstanceRef(ARObject):
             elif tag == "CONTEXT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwComponent)"))
+                    obj.context_refs.append(ARRef.deserialize(item_elem))
             elif tag == "CONTEXT-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ApplicationComposite)"))
+                    obj.context_data_refs.append(ARRef.deserialize(item_elem))
             elif tag == "CONTEXT-PORT-REF":
                 setattr(obj, "context_port_ref", ARRef.deserialize(child))
             elif tag == "CONTEXT-ROOT-REF":

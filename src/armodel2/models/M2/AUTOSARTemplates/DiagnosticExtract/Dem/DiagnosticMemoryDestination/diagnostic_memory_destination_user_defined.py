@@ -43,7 +43,7 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
     auth_role_refs: list[ARRef]
     memory_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "AUTH-ROLE-REFS": lambda obj, elem: obj.auth_role_refs.append(ARRef.deserialize(elem)),
+        "AUTH-ROLE-REFS": lambda obj, elem: [obj.auth_role_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "MEMORY-ID": lambda obj, elem: setattr(obj, "memory_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
@@ -130,7 +130,7 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
             if tag == "AUTH-ROLE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.auth_role_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticAuthRole"))
+                    obj.auth_role_refs.append(ARRef.deserialize(item_elem))
             elif tag == "MEMORY-ID":
                 setattr(obj, "memory_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

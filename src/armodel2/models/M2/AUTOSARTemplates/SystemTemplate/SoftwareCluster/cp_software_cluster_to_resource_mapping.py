@@ -42,7 +42,7 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
     service_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "PROVIDER-REF": lambda obj, elem: setattr(obj, "provider_ref", ARRef.deserialize(elem)),
-        "REQUESTER-REFS": lambda obj, elem: obj.requester_refs.append(ARRef.deserialize(elem)),
+        "REQUESTER-REFS": lambda obj, elem: [obj.requester_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SERVICE-REF": lambda obj, elem: setattr(obj, "service_ref", ARRef.deserialize(elem)),
     }
 
@@ -146,7 +146,7 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
             elif tag == "REQUESTER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.requester_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareCluster"))
+                    obj.requester_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SERVICE-REF":
                 setattr(obj, "service_ref", ARRef.deserialize(child))
 

@@ -64,10 +64,10 @@ class ConsumedEventGroup(Identifiable):
         "APPLICATION-ENDPOINT-REF": lambda obj, elem: setattr(obj, "application_endpoint_ref", ARRef.deserialize(elem)),
         "AUTO-REQUIRE": lambda obj, elem: setattr(obj, "auto_require", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "EVENT-GROUP": lambda obj, elem: setattr(obj, "event_group", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "EVENT-MULTICAST-REFS": lambda obj, elem: obj.event_multicast_refs.append(ARRef.deserialize(elem)),
+        "EVENT-MULTICAST-REFS": lambda obj, elem: [obj.event_multicast_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PDU-ACTIVATION-ROUTINGS": lambda obj, elem: obj.pdu_activation_routings.append(SerializationHelper.deserialize_by_tag(elem, "PduActivationRoutingGroup")),
         "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "ROUTING-GROUP-REFS": lambda obj, elem: obj.routing_group_refs.append(ARRef.deserialize(elem)),
+        "ROUTING-GROUP-REFS": lambda obj, elem: [obj.routing_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SD-CLIENT-CONFIG": lambda obj, elem: setattr(obj, "sd_client_config", SerializationHelper.deserialize_by_tag(elem, "any (SdClientConfig)")),
         "SD-CLIENT-TIMER-REF": lambda obj, elem: setattr(obj, "sd_client_timer_ref", ARRef.deserialize(elem)),
     }
@@ -265,7 +265,7 @@ class ConsumedEventGroup(Identifiable):
             elif tag == "EVENT-MULTICAST-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.event_multicast_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationEndpoint"))
+                    obj.event_multicast_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PDU-ACTIVATION-ROUTINGS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -275,7 +275,7 @@ class ConsumedEventGroup(Identifiable):
             elif tag == "ROUTING-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.routing_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SoAdRoutingGroup"))
+                    obj.routing_group_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SD-CLIENT-CONFIG":
                 setattr(obj, "sd_client_config", SerializationHelper.deserialize_by_tag(child, "any (SdClientConfig)"))
             elif tag == "SD-CLIENT-TIMER-REF":

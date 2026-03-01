@@ -61,7 +61,7 @@ class SOMEIPTransformationISignalProps(ARObject):
         "SIZE-OF-STRING": lambda obj, elem: setattr(obj, "size_of_string", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SIZE-OF-STRUCT": lambda obj, elem: setattr(obj, "size_of_struct", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SIZE-OF-UNION": lambda obj, elem: setattr(obj, "size_of_union", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "TLV-DATA-ID-REFS": lambda obj, elem: obj.tlv_data_id_refs.append(ARRef.deserialize(elem)),
+        "TLV-DATA-ID-REFS": lambda obj, elem: [obj.tlv_data_id_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 

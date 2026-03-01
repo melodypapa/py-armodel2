@@ -47,9 +47,9 @@ class FrameTriggering(Identifiable, ABC):
     frame_ref: Optional[ARRef]
     pdu_triggering_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "FRAME-PORT-REFS": lambda obj, elem: obj.frame_port_refs.append(ARRef.deserialize(elem)),
+        "FRAME-PORT-REFS": lambda obj, elem: [obj.frame_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "FRAME-REF": ("_POLYMORPHIC", "frame_ref", ["AbstractEthernetFrame", "CanFrame", "FlexrayFrame", "LinFrame"]),
-        "PDU-TRIGGERING-REFS": lambda obj, elem: obj.pdu_triggering_refs.append(ARRef.deserialize(elem)),
+        "PDU-TRIGGERING-REFS": lambda obj, elem: [obj.pdu_triggering_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -153,13 +153,13 @@ class FrameTriggering(Identifiable, ABC):
             if tag == "FRAME-PORT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.frame_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FramePort"))
+                    obj.frame_port_refs.append(ARRef.deserialize(item_elem))
             elif tag == "FRAME-REF":
                 setattr(obj, "frame_ref", ARRef.deserialize(child))
             elif tag == "PDU-TRIGGERING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.pdu_triggering_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
+                    obj.pdu_triggering_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

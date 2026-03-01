@@ -40,7 +40,7 @@ class TriggerInterface(PortInterface):
 
     trigger_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TRIGGER-REFS": lambda obj, elem: obj.trigger_refs.append(ARRef.deserialize(elem)),
+        "TRIGGER-REFS": lambda obj, elem: [obj.trigger_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -111,7 +111,7 @@ class TriggerInterface(PortInterface):
             if tag == "TRIGGER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.trigger_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
+                    obj.trigger_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

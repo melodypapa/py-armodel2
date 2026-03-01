@@ -34,7 +34,7 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
 
     direct_successor_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "DIRECT-SUCCESSOR-REFS": lambda obj, elem: obj.direct_successor_refs.append(ARRef.deserialize(elem)),
+        "DIRECT-SUCCESSOR-REFS": lambda obj, elem: [obj.direct_successor_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -105,7 +105,7 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
             if tag == "DIRECT-SUCCESSOR-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.direct_successor_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
+                    obj.direct_successor_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -71,16 +71,16 @@ class IPSecRule(Identifiable):
         "DIRECTION": lambda obj, elem: setattr(obj, "direction", SerializationHelper.deserialize_by_tag(elem, "any (Communication)")),
         "HEADER-TYPE": lambda obj, elem: setattr(obj, "header_type", IPsecHeaderTypeEnum.deserialize(elem)),
         "IP-PROTOCOL": lambda obj, elem: setattr(obj, "ip_protocol", IPsecIpProtocolEnum.deserialize(elem)),
-        "LOCAL-CERTIFICATE-REFS": lambda obj, elem: obj.local_certificate_refs.append(ARRef.deserialize(elem)),
+        "LOCAL-CERTIFICATE-REFS": lambda obj, elem: [obj.local_certificate_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "LOCAL-ID": lambda obj, elem: setattr(obj, "local_id", SerializationHelper.deserialize_by_tag(elem, "String")),
         "LOCAL-PORT-RANGE": lambda obj, elem: setattr(obj, "local_port_range", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "MODE": lambda obj, elem: setattr(obj, "mode", IPsecModeEnum.deserialize(elem)),
         "POLICY": lambda obj, elem: setattr(obj, "policy", IPsecPolicyEnum.deserialize(elem)),
         "PRE-SHARED-KEY-REF": lambda obj, elem: setattr(obj, "pre_shared_key_ref", ARRef.deserialize(elem)),
         "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "REMOTE-REFS": lambda obj, elem: obj.remote_refs.append(ARRef.deserialize(elem)),
+        "REMOTE-REFS": lambda obj, elem: [obj.remote_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "REMOTE-ID": lambda obj, elem: setattr(obj, "remote_id", SerializationHelper.deserialize_by_tag(elem, "String")),
-        "REMOTE-IP-REFS": lambda obj, elem: obj.remote_ip_refs.append(ARRef.deserialize(elem)),
+        "REMOTE-IP-REFS": lambda obj, elem: [obj.remote_ip_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "REMOTE-PORT": lambda obj, elem: setattr(obj, "remote_port", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
@@ -359,7 +359,7 @@ class IPSecRule(Identifiable):
             elif tag == "LOCAL-CERTIFICATE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.local_certificate_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CryptoService)"))
+                    obj.local_certificate_refs.append(ARRef.deserialize(item_elem))
             elif tag == "LOCAL-ID":
                 setattr(obj, "local_id", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "LOCAL-PORT-RANGE":
@@ -375,13 +375,13 @@ class IPSecRule(Identifiable):
             elif tag == "REMOTE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.remote_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CryptoService)"))
+                    obj.remote_refs.append(ARRef.deserialize(item_elem))
             elif tag == "REMOTE-ID":
                 setattr(obj, "remote_id", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "REMOTE-IP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.remote_ip_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NetworkEndpoint"))
+                    obj.remote_ip_refs.append(ARRef.deserialize(item_elem))
             elif tag == "REMOTE-PORT":
                 setattr(obj, "remote_port", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

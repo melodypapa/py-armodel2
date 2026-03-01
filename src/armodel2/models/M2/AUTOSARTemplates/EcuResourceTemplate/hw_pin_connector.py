@@ -39,7 +39,7 @@ class HwPinConnector(Describable):
 
     hw_pin_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "HW-PIN-REFS": lambda obj, elem: obj.hw_pin_refs.append(ARRef.deserialize(elem)),
+        "HW-PIN-REFS": lambda obj, elem: [obj.hw_pin_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class HwPinConnector(Describable):
             if tag == "HW-PIN-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.hw_pin_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "HwPin"))
+                    obj.hw_pin_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -49,10 +49,10 @@ class ConsistencyNeeds(Identifiable):
     reg_does_not_refs: list[ARRef]
     reg_require_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DPG-DOES-NOT-REFS": lambda obj, elem: obj.dpg_does_not_refs.append(ARRef.deserialize(elem)),
-        "DPG-REQUIRES-REFS": lambda obj, elem: obj.dpg_require_refs.append(ARRef.deserialize(elem)),
-        "REG-DOES-NOT-REFS": lambda obj, elem: obj.reg_does_not_refs.append(ARRef.deserialize(elem)),
-        "REG-REQUIRES-REFS": lambda obj, elem: obj.reg_require_refs.append(ARRef.deserialize(elem)),
+        "DPG-DOES-NOT-REFS": lambda obj, elem: [obj.dpg_does_not_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "DPG-REQUIRES-REFS": lambda obj, elem: [obj.dpg_require_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "REG-DOES-NOT-REFS": lambda obj, elem: [obj.reg_does_not_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "REG-REQUIRES-REFS": lambda obj, elem: [obj.reg_require_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -177,19 +177,19 @@ class ConsistencyNeeds(Identifiable):
             if tag == "DPG-DOES-NOT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.dpg_does_not_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataPrototypeGroup"))
+                    obj.dpg_does_not_refs.append(ARRef.deserialize(item_elem))
             elif tag == "DPG-REQUIRES-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.dpg_require_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataPrototypeGroup"))
+                    obj.dpg_require_refs.append(ARRef.deserialize(item_elem))
             elif tag == "REG-DOES-NOT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.reg_does_not_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntityGroup"))
+                    obj.reg_does_not_refs.append(ARRef.deserialize(item_elem))
             elif tag == "REG-REQUIRES-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.reg_require_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntityGroup"))
+                    obj.reg_require_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

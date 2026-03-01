@@ -41,7 +41,7 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
     root_variable_ref: Optional[ARRef]
     target_data_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-DATA-REFS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-DATA-REFS": lambda obj, elem: [obj.context_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "ROOT-VARIABLE-REF": lambda obj, elem: setattr(obj, "root_variable_ref", ARRef.deserialize(elem)),
         "TARGET-DATA-REF": lambda obj, elem: setattr(obj, "target_data_ref", ARRef.deserialize(elem)),
@@ -160,7 +160,7 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
             if tag == "CONTEXT-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (AbstractImplementation)"))
+                    obj.context_data_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PORT-PROTOTYPE-REF":
                 setattr(obj, "port_prototype_ref", ARRef.deserialize(child))
             elif tag == "ROOT-VARIABLE-REF":

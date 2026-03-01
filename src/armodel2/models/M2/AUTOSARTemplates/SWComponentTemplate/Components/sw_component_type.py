@@ -68,9 +68,9 @@ class SwComponentType(ARElement, ABC):
         "CONSISTENCY-NEEDSES": lambda obj, elem: obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(elem, "ConsistencyNeeds")),
         "PORTS": ("_POLYMORPHIC_LIST", "ports", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "PORT-GROUPS": lambda obj, elem: obj.port_groups.append(SerializationHelper.deserialize_by_tag(elem, "PortGroup")),
-        "SWC-MAPPING-CONSTRAINT-REFS": lambda obj, elem: obj.swc_mapping_constraint_refs.append(ARRef.deserialize(elem)),
+        "SWC-MAPPING-CONSTRAINT-REFS": lambda obj, elem: [obj.swc_mapping_constraint_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SW-COMPONENT-DOCUMENTATION": lambda obj, elem: setattr(obj, "sw_component_documentation", SerializationHelper.deserialize_by_tag(elem, "SwComponentDocumentation")),
-        "UNIT-GROUP-REFS": lambda obj, elem: obj.unit_group_refs.append(ARRef.deserialize(elem)),
+        "UNIT-GROUP-REFS": lambda obj, elem: [obj.unit_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -225,13 +225,13 @@ class SwComponentType(ARElement, ABC):
             elif tag == "SWC-MAPPING-CONSTRAINT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.swc_mapping_constraint_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwComponentMappingConstraints"))
+                    obj.swc_mapping_constraint_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SW-COMPONENT-DOCUMENTATION":
                 setattr(obj, "sw_component_documentation", SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation"))
             elif tag == "UNIT-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.unit_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "UnitGroup"))
+                    obj.unit_group_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

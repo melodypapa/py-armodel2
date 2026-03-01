@@ -35,7 +35,7 @@ class SwcToSwcSignal(ARObject):
 
     data_element_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DATA-ELEMENT-REFS": lambda obj, elem: obj.data_element_refs.append(ARRef.deserialize(elem)),
+        "DATA-ELEMENT-REFS": lambda obj, elem: [obj.data_element_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -106,7 +106,7 @@ class SwcToSwcSignal(ARObject):
             if tag == "DATA-ELEMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.data_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
+                    obj.data_element_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

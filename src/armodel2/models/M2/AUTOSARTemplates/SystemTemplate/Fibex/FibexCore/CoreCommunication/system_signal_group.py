@@ -40,7 +40,7 @@ class SystemSignalGroup(ARElement):
     system_signal_refs: list[ARRef]
     transforming_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "SYSTEM-SIGNAL-REFS": lambda obj, elem: obj.system_signal_refs.append(ARRef.deserialize(elem)),
+        "SYSTEM-SIGNAL-REFS": lambda obj, elem: [obj.system_signal_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TRANSFORMING-REF": lambda obj, elem: setattr(obj, "transforming_ref", ARRef.deserialize(elem)),
     }
 
@@ -127,7 +127,7 @@ class SystemSignalGroup(ARElement):
             if tag == "SYSTEM-SIGNAL-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.system_signal_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SystemSignal"))
+                    obj.system_signal_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TRANSFORMING-REF":
                 setattr(obj, "transforming_ref", ARRef.deserialize(child))
 

@@ -63,11 +63,11 @@ class ExecutableEntity(Identifiable, ABC):
     sw_addr_method_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "ACTIVATION-REASONS": lambda obj, elem: obj.activation_reasons.append(SerializationHelper.deserialize_by_tag(elem, "ExecutableEntityActivationReason")),
-        "CAN-ENTER-EXCLUSIVE-AREA-REFS": lambda obj, elem: obj._can_enter_refs.append(ARRef.deserialize(elem)),
-        "EXCLUSIVE-AREA-NESTING-ORDER-REFS": lambda obj, elem: obj.exclusive_area_nesting_order_refs.append(ARRef.deserialize(elem)),
+        "CAN-ENTER-EXCLUSIVE-AREA-REFS": lambda obj, elem: [obj._can_enter_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "EXCLUSIVE-AREA-NESTING-ORDER-REFS": lambda obj, elem: [obj.exclusive_area_nesting_order_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "MINIMUM-START-INTERVAL": lambda obj, elem: setattr(obj, "minimum_start_interval", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "REENTRANCY-LEVEL": lambda obj, elem: setattr(obj, "reentrancy_level", ReentrancyLevelEnum.deserialize(elem)),
-        "RUNS-INSIDE-REFS": lambda obj, elem: obj.runs_inside_refs.append(ARRef.deserialize(elem)),
+        "RUNS-INSIDE-REFS": lambda obj, elem: [obj.runs_inside_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SW-ADDR-METHOD-REF": lambda obj, elem: setattr(obj, "sw_addr_method_ref", ARRef.deserialize(elem)),
     }
 
@@ -243,12 +243,14 @@ class ExecutableEntity(Identifiable, ABC):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.activation_reasons.append(SerializationHelper.deserialize_by_tag(item_elem, "ExecutableEntityActivationReason"))
-            elif tag == "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA-REF":
-                obj._can_enter_refs.append(SerializationHelper.deserialize_by_tag(child, "ExclusiveArea"))
+            elif tag == "CAN-ENTER-EXCLUSIVE-AREA-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj._can_enter_refs.append(ARRef.deserialize(item_elem))
             elif tag == "EXCLUSIVE-AREA-NESTING-ORDER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.exclusive_area_nesting_order_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveAreaNestingOrder"))
+                    obj.exclusive_area_nesting_order_refs.append(ARRef.deserialize(item_elem))
             elif tag == "MINIMUM-START-INTERVAL":
                 setattr(obj, "minimum_start_interval", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "REENTRANCY-LEVEL":
@@ -256,7 +258,7 @@ class ExecutableEntity(Identifiable, ABC):
             elif tag == "RUNS-INSIDE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.runs_inside_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveArea"))
+                    obj.runs_inside_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SW-ADDR-METHOD-REF":
                 setattr(obj, "sw_addr_method_ref", ARRef.deserialize(child))
 

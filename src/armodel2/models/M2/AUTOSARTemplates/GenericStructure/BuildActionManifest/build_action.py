@@ -49,10 +49,10 @@ class BuildAction(BuildActionEntity):
     required_ref: ARRef
     _DESERIALIZE_DISPATCH = {
         "CREATED-DATAS": lambda obj, elem: obj.created_datas.append(SerializationHelper.deserialize_by_tag(elem, "BuildActionIoElement")),
-        "FOLLOW-UP-ACTION-REFS": lambda obj, elem: obj.follow_up_action_refs.append(ARRef.deserialize(elem)),
+        "FOLLOW-UP-ACTION-REFS": lambda obj, elem: [obj.follow_up_action_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "INPUT-DATAS": lambda obj, elem: obj.input_datas.append(SerializationHelper.deserialize_by_tag(elem, "BuildActionIoElement")),
         "MODIFIED-DATAS": lambda obj, elem: obj.modified_datas.append(SerializationHelper.deserialize_by_tag(elem, "BuildActionIoElement")),
-        "PREDECESSOR-REFS": lambda obj, elem: obj.predecessor_refs.append(ARRef.deserialize(elem)),
+        "PREDECESSOR-REFS": lambda obj, elem: [obj.predecessor_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "REQUIRED-REF": lambda obj, elem: setattr(obj, "required_ref", ARRef.deserialize(elem)),
     }
 
@@ -194,7 +194,7 @@ class BuildAction(BuildActionEntity):
             elif tag == "FOLLOW-UP-ACTION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.follow_up_action_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildAction"))
+                    obj.follow_up_action_refs.append(ARRef.deserialize(item_elem))
             elif tag == "INPUT-DATAS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -206,7 +206,7 @@ class BuildAction(BuildActionEntity):
             elif tag == "PREDECESSOR-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.predecessor_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildAction"))
+                    obj.predecessor_refs.append(ARRef.deserialize(item_elem))
             elif tag == "REQUIRED-REF":
                 setattr(obj, "required_ref", ARRef.deserialize(child))
 

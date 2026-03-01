@@ -41,7 +41,7 @@ class FMFeatureModel(ARElement):
     feature_refs: list[ARRef]
     root_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "FEATURE-REFS": lambda obj, elem: obj.feature_refs.append(ARRef.deserialize(elem)),
+        "FEATURE-REFS": lambda obj, elem: [obj.feature_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ROOT-REF": lambda obj, elem: setattr(obj, "root_ref", ARRef.deserialize(elem)),
     }
 
@@ -128,7 +128,7 @@ class FMFeatureModel(ARElement):
             if tag == "FEATURE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.feature_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeature"))
+                    obj.feature_refs.append(ARRef.deserialize(item_elem))
             elif tag == "ROOT-REF":
                 setattr(obj, "root_ref", ARRef.deserialize(child))
 

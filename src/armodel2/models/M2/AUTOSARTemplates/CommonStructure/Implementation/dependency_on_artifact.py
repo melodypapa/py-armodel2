@@ -133,7 +133,7 @@ class DependencyOnArtifact(Identifiable):
             elif tag == "USAGE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.usage_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyUsageEnum"))
+                    obj.usage_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -46,7 +46,7 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
     sub_nodes: list[DiagnosticComControl]
     _DESERIALIZE_DISPATCH = {
         "ALL-CHANNELS-REFS": ("_POLYMORPHIC_LIST", "all_channel_refs", ["AbstractCanCluster", "EthernetCluster", "FlexrayCluster", "LinCluster", "UserDefinedCluster"]),
-        "ALL-PHYSICAL-REFS": lambda obj, elem: obj.all_physical_refs.append(ARRef.deserialize(elem)),
+        "ALL-PHYSICAL-REFS": lambda obj, elem: [obj.all_physical_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SPECIFIC-CHANNELS": lambda obj, elem: obj.specific_channels.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticComControl")),
         "SUB-NODES": lambda obj, elem: obj.sub_nodes.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticComControl")),
     }
@@ -162,7 +162,7 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
             elif tag == "ALL-PHYSICAL-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.all_physical_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EthernetPhysical)"))
+                    obj.all_physical_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SPECIFIC-CHANNELS":
                 # Iterate through wrapper children
                 for item_elem in child:

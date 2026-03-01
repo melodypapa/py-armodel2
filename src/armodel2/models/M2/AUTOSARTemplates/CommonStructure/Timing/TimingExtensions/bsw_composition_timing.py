@@ -39,7 +39,7 @@ class BswCompositionTiming(TimingExtension):
 
     implementation_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "IMPLEMENTATION-REFS": lambda obj, elem: obj.implementation_refs.append(ARRef.deserialize(elem)),
+        "IMPLEMENTATION-REFS": lambda obj, elem: [obj.implementation_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class BswCompositionTiming(TimingExtension):
             if tag == "IMPLEMENTATION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.implementation_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BswImplementation"))
+                    obj.implementation_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -49,10 +49,10 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
     prestored: Optional[Boolean]
     uses_monitor: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "DEFERRING-FID-REFS": lambda obj, elem: obj.deferring_fid_refs.append(ARRef.deserialize(elem)),
+        "DEFERRING-FID-REFS": lambda obj, elem: [obj.deferring_fid_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "DIAG-EVENT-DEBOUNCE": lambda obj, elem: setattr(obj, "diag_event_debounce", SerializationHelper.deserialize_by_tag(elem, "any (DiagEventDebounce)")),
         "INHIBITING-FID-REF": lambda obj, elem: setattr(obj, "inhibiting_fid_ref", ARRef.deserialize(elem)),
-        "INHIBITING-REFS": lambda obj, elem: obj.inhibiting_refs.append(ARRef.deserialize(elem)),
+        "INHIBITING-REFS": lambda obj, elem: [obj.inhibiting_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PRESTORED": lambda obj, elem: setattr(obj, "prestored", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "USES-MONITOR": lambda obj, elem: setattr(obj, "uses_monitor", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
@@ -203,7 +203,7 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
             if tag == "DEFERRING-FID-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.deferring_fid_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FunctionInhibitionNeeds"))
+                    obj.deferring_fid_refs.append(ARRef.deserialize(item_elem))
             elif tag == "DIAG-EVENT-DEBOUNCE":
                 setattr(obj, "diag_event_debounce", SerializationHelper.deserialize_by_tag(child, "any (DiagEventDebounce)"))
             elif tag == "INHIBITING-FID-REF":
@@ -211,7 +211,7 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
             elif tag == "INHIBITING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.inhibiting_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FunctionInhibitionNeeds"))
+                    obj.inhibiting_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PRESTORED":
                 setattr(obj, "prestored", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "USES-MONITOR":

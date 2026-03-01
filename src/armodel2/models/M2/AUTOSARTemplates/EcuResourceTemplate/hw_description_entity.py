@@ -52,7 +52,7 @@ class HwDescriptionEntity(Identifiable, ABC):
     hw_type_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "HW-ATTRIBUTE-VALUES": lambda obj, elem: obj.hw_attribute_values.append(SerializationHelper.deserialize_by_tag(elem, "HwAttributeValue")),
-        "HW-CATEGORY-REFS": lambda obj, elem: obj.hw_category_refs.append(ARRef.deserialize(elem)),
+        "HW-CATEGORY-REFS": lambda obj, elem: [obj.hw_category_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "HW-TYPE-REF": lambda obj, elem: setattr(obj, "hw_type_ref", ARRef.deserialize(elem)),
     }
 
@@ -154,7 +154,7 @@ class HwDescriptionEntity(Identifiable, ABC):
             elif tag == "HW-CATEGORY-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.hw_category_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "HwCategory"))
+                    obj.hw_category_refs.append(ARRef.deserialize(item_elem))
             elif tag == "HW-TYPE-REF":
                 setattr(obj, "hw_type_ref", ARRef.deserialize(child))
 

@@ -48,9 +48,9 @@ class BuildActionManifest(ARElement):
     tear_down_action_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BUILD-ACTIONS": lambda obj, elem: obj.build_actions.append(SerializationHelper.deserialize_by_tag(elem, "BuildActionEnvironment")),
-        "DYNAMIC-ACTION-REFS": lambda obj, elem: obj.dynamic_action_refs.append(ARRef.deserialize(elem)),
-        "START-ACTION-REFS": lambda obj, elem: obj.start_action_refs.append(ARRef.deserialize(elem)),
-        "TEAR-DOWN-ACTION-REFS": lambda obj, elem: obj.tear_down_action_refs.append(ARRef.deserialize(elem)),
+        "DYNAMIC-ACTION-REFS": lambda obj, elem: [obj.dynamic_action_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "START-ACTION-REFS": lambda obj, elem: [obj.start_action_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "TEAR-DOWN-ACTION-REFS": lambda obj, elem: [obj.tear_down_action_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -172,15 +172,15 @@ class BuildActionManifest(ARElement):
             elif tag == "DYNAMIC-ACTION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.dynamic_action_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildAction"))
+                    obj.dynamic_action_refs.append(ARRef.deserialize(item_elem))
             elif tag == "START-ACTION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.start_action_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildAction"))
+                    obj.start_action_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TEAR-DOWN-ACTION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.tear_down_action_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildAction"))
+                    obj.tear_down_action_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -39,7 +39,7 @@ class TriggerInterfaceMapping(PortInterfaceMapping):
 
     trigger_mapping_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TRIGGER-MAPPING-REFS": lambda obj, elem: obj.trigger_mapping_refs.append(ARRef.deserialize(elem)),
+        "TRIGGER-MAPPING-REFS": lambda obj, elem: [obj.trigger_mapping_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class TriggerInterfaceMapping(PortInterfaceMapping):
             if tag == "TRIGGER-MAPPING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.trigger_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "TriggerMapping"))
+                    obj.trigger_mapping_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

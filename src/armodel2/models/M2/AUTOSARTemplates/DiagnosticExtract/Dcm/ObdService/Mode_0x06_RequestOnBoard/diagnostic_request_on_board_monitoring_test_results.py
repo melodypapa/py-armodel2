@@ -40,7 +40,7 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
     diagnostic_test_result_refs: list[ARRef]
     request_on_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "DIAGNOSTIC-TEST-RESULT-REFS": lambda obj, elem: obj.diagnostic_test_result_refs.append(ARRef.deserialize(elem)),
+        "DIAGNOSTIC-TEST-RESULT-REFS": lambda obj, elem: [obj.diagnostic_test_result_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "REQUEST-ON-REF": lambda obj, elem: setattr(obj, "request_on_ref", ARRef.deserialize(elem)),
     }
 
@@ -127,7 +127,7 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
             if tag == "DIAGNOSTIC-TEST-RESULT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.diagnostic_test_result_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticTestResult"))
+                    obj.diagnostic_test_result_refs.append(ARRef.deserialize(item_elem))
             elif tag == "REQUEST-ON-REF":
                 setattr(obj, "request_on_ref", ARRef.deserialize(child))
 

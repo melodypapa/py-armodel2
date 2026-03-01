@@ -39,7 +39,7 @@ class DoIpLogicTesterAddressProps(AbstractDoIpLogicAddressProps):
 
     do_ip_tester_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DO-IP-TESTER-REFS": lambda obj, elem: obj.do_ip_tester_refs.append(ARRef.deserialize(elem)),
+        "DO-IP-TESTER-REFS": lambda obj, elem: [obj.do_ip_tester_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class DoIpLogicTesterAddressProps(AbstractDoIpLogicAddressProps):
             if tag == "DO-IP-TESTER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.do_ip_tester_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DoIpRoutingActivation"))
+                    obj.do_ip_tester_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

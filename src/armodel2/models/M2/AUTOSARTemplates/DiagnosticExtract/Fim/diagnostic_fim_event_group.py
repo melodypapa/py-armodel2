@@ -39,7 +39,7 @@ class DiagnosticFimEventGroup(DiagnosticCommonElement):
 
     event_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "EVENT-REFS": lambda obj, elem: obj.event_refs.append(ARRef.deserialize(elem)),
+        "EVENT-REFS": lambda obj, elem: [obj.event_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class DiagnosticFimEventGroup(DiagnosticCommonElement):
             if tag == "EVENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticEvent"))
+                    obj.event_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

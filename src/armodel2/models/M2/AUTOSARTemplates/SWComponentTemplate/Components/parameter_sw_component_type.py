@@ -48,8 +48,8 @@ class ParameterSwComponentType(SwComponentType):
     data_type_refs: list[ARRef]
     instantiation_data_defs: list[InstantiationDataDefProps]
     _DESERIALIZE_DISPATCH = {
-        "CONSTANT-REFS": lambda obj, elem: obj.constant_refs.append(ARRef.deserialize(elem)),
-        "DATA-TYPE-REFS": lambda obj, elem: obj.data_type_refs.append(ARRef.deserialize(elem)),
+        "CONSTANT-REFS": lambda obj, elem: [obj.constant_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "DATA-TYPE-REFS": lambda obj, elem: [obj.data_type_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "INSTANTIATION-DATA-DEFS": lambda obj, elem: obj.instantiation_data_defs.append(SerializationHelper.deserialize_by_tag(elem, "InstantiationDataDefProps")),
     }
 
@@ -150,11 +150,11 @@ class ParameterSwComponentType(SwComponentType):
             if tag == "CONSTANT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.constant_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstantSpecification"))
+                    obj.constant_refs.append(ARRef.deserialize(item_elem))
             elif tag == "DATA-TYPE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.data_type_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataTypeMappingSet"))
+                    obj.data_type_refs.append(ARRef.deserialize(item_elem))
             elif tag == "INSTANTIATION-DATA-DEFS":
                 # Iterate through wrapper children
                 for item_elem in child:

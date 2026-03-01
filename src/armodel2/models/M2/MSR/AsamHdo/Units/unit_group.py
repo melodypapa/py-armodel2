@@ -40,7 +40,7 @@ class UnitGroup(ARElement):
 
     unit_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "UNIT-REFS": lambda obj, elem: obj.unit_refs.append(ARRef.deserialize(elem)),
+        "UNIT-REFS": lambda obj, elem: [obj.unit_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -111,7 +111,7 @@ class UnitGroup(ARElement):
             if tag == "UNIT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.unit_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "Unit"))
+                    obj.unit_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

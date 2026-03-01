@@ -39,7 +39,7 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
 
     resource_need_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "RESOURCE-NEEDS-REFS": lambda obj, elem: obj.resource_need_refs.append(ARRef.deserialize(elem)),
+        "RESOURCE-NEEDS-REFS": lambda obj, elem: [obj.resource_need_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
             if tag == "RESOURCE-NEEDS-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.resource_need_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucContainerValue"))
+                    obj.resource_need_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

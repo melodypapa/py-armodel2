@@ -40,7 +40,7 @@ class MetaDataItemSet(ARObject):
     data_element_refs: list[ARRef]
     meta_data_items: list[MetaDataItem]
     _DESERIALIZE_DISPATCH = {
-        "DATA-ELEMENT-REFS": lambda obj, elem: obj.data_element_refs.append(ARRef.deserialize(elem)),
+        "DATA-ELEMENT-REFS": lambda obj, elem: [obj.data_element_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "META-DATA-ITEMS": lambda obj, elem: obj.meta_data_items.append(SerializationHelper.deserialize_by_tag(elem, "MetaDataItem")),
     }
 
@@ -123,7 +123,7 @@ class MetaDataItemSet(ARObject):
             if tag == "DATA-ELEMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.data_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
+                    obj.data_element_refs.append(ARRef.deserialize(item_elem))
             elif tag == "META-DATA-ITEMS":
                 # Iterate through wrapper children
                 for item_elem in child:

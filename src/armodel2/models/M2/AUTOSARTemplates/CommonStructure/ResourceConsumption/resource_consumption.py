@@ -61,7 +61,7 @@ class ResourceConsumption(Identifiable):
     section_name_prefixes: list[SectionNamePrefix]
     stack_usages: list[StackUsage]
     _DESERIALIZE_DISPATCH = {
-        "ACCESS-COUNT-SET-REFS": lambda obj, elem: obj.access_count_set_refs.append(ARRef.deserialize(elem)),
+        "ACCESS-COUNT-SET-REFS": lambda obj, elem: [obj.access_count_set_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "EXECUTION-TIMES": ("_POLYMORPHIC_LIST", "execution_times", ["AnalyzedExecutionTime", "MeasuredExecutionTime", "RoughEstimateOfExecutionTime", "Simulated"]),
         "HEAP-USAGES": ("_POLYMORPHIC_LIST", "heap_usages", ["MeasuredHeapUsage", "RoughEstimateHeapUsage", "WorstCaseHeapUsage"]),
         "MEMORY-SECTIONS": lambda obj, elem: obj.memory_sections.append(SerializationHelper.deserialize_by_tag(elem, "MemorySection")),
@@ -192,7 +192,7 @@ class ResourceConsumption(Identifiable):
             if tag == "ACCESS-COUNT-SET-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.access_count_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "AccessCountSet"))
+                    obj.access_count_set_refs.append(ARRef.deserialize(item_elem))
             elif tag == "EXECUTION-TIMES":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:

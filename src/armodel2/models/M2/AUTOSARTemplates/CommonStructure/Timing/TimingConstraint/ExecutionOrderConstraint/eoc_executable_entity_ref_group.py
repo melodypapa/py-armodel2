@@ -60,8 +60,8 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         "MAX-CYCLES": lambda obj, elem: setattr(obj, "max_cycles", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "MAX-SLOTS": lambda obj, elem: setattr(obj, "max_slots", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "MAX-SLOTS-PER": lambda obj, elem: setattr(obj, "max_slots_per", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "NESTED-ELEMENT-REFS": lambda obj, elem: obj.nested_element_refs.append(ARRef.deserialize(elem)),
-        "SUCCESSOR-REFS": lambda obj, elem: obj.successor_refs.append(ARRef.deserialize(elem)),
+        "NESTED-ELEMENT-REFS": lambda obj, elem: [obj.nested_element_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "SUCCESSOR-REFS": lambda obj, elem: [obj.successor_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TRIGGERING-EVENT-REF": ("_POLYMORPHIC", "triggering_event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
     }
 
@@ -272,11 +272,11 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
             elif tag == "NESTED-ELEMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.nested_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
+                    obj.nested_element_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SUCCESSOR-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.successor_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
+                    obj.successor_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TRIGGERING-EVENT-REF":
                 setattr(obj, "triggering_event_ref", ARRef.deserialize(child))
 

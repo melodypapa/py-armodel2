@@ -36,7 +36,7 @@ class DiagnosticParameterElementAccess(ARObject):
     context_element_refs: list[ARRef]
     target_element_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-ELEMENT-REFS": lambda obj, elem: obj.context_element_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-ELEMENT-REFS": lambda obj, elem: [obj.context_element_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TARGET-ELEMENT-REF": lambda obj, elem: setattr(obj, "target_element_ref", ARRef.deserialize(elem)),
     }
 
@@ -123,7 +123,7 @@ class DiagnosticParameterElementAccess(ARObject):
             if tag == "CONTEXT-ELEMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticParameter"))
+                    obj.context_element_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TARGET-ELEMENT-REF":
                 setattr(obj, "target_element_ref", ARRef.deserialize(child))
 

@@ -39,7 +39,7 @@ class EthTpConnection(TpConnection):
 
     tp_sdu_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TP-SDU-REFS": lambda obj, elem: obj.tp_sdu_refs.append(ARRef.deserialize(elem)),
+        "TP-SDU-REFS": lambda obj, elem: [obj.tp_sdu_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class EthTpConnection(TpConnection):
             if tag == "TP-SDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.tp_sdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
+                    obj.tp_sdu_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

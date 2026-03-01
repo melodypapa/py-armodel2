@@ -90,7 +90,7 @@ class Implementation(ARElement, ABC):
         "CODE-DESCRIPTORS": lambda obj, elem: obj.code_descriptors.append(SerializationHelper.deserialize_by_tag(elem, "Code")),
         "COMPILERS": lambda obj, elem: obj.compilers.append(SerializationHelper.deserialize_by_tag(elem, "Compiler")),
         "GENERATED-ARTIFACTS": lambda obj, elem: obj.generated_artifacts.append(SerializationHelper.deserialize_by_tag(elem, "DependencyOnArtifact")),
-        "HW-ELEMENT-REFS": lambda obj, elem: obj.hw_element_refs.append(ARRef.deserialize(elem)),
+        "HW-ELEMENT-REFS": lambda obj, elem: [obj.hw_element_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "LINKERS": lambda obj, elem: obj.linkers.append(SerializationHelper.deserialize_by_tag(elem, "Linker")),
         "MC-SUPPORT": lambda obj, elem: setattr(obj, "mc_support", SerializationHelper.deserialize_by_tag(elem, "McSupportData")),
         "PROGRAMMING-LANGUAGE": lambda obj, elem: setattr(obj, "programming_language", ProgramminglanguageEnum.deserialize(elem)),
@@ -371,7 +371,7 @@ class Implementation(ARElement, ABC):
             elif tag == "HW-ELEMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.hw_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "HwElement"))
+                    obj.hw_element_refs.append(ARRef.deserialize(item_elem))
             elif tag == "LINKERS":
                 # Iterate through wrapper children
                 for item_elem in child:

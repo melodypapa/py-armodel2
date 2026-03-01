@@ -73,7 +73,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         "SW-AXIS-GENERIC": lambda obj, elem: setattr(obj, "sw_axis_generic", SerializationHelper.deserialize_by_tag(elem, "SwAxisGeneric")),
         "SW-MAX-AXIS": lambda obj, elem: setattr(obj, "sw_max_axis", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "SW-MIN-AXIS": lambda obj, elem: setattr(obj, "sw_min_axis", SerializationHelper.deserialize_by_tag(elem, "Integer")),
-        "SW-VARIABLE-REF-PROXY-REFS": lambda obj, elem: obj.sw_variable_ref_proxy_refs.append(ARRef.deserialize(elem)),
+        "SW-VARIABLE-REF-PROXY-REFS": lambda obj, elem: [obj.sw_variable_ref_proxy_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
     }
 
@@ -262,7 +262,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
             elif tag == "SW-VARIABLE-REF-PROXY-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.sw_variable_ref_proxy_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwVariableRefProxy"))
+                    obj.sw_variable_ref_proxy_refs.append(ARRef.deserialize(item_elem))
             elif tag == "UNIT-REF":
                 setattr(obj, "unit_ref", ARRef.deserialize(child))
 

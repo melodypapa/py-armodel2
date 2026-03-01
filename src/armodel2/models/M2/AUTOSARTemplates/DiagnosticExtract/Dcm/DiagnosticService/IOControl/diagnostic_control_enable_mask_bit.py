@@ -40,7 +40,7 @@ class DiagnosticControlEnableMaskBit(ARObject):
     controlled_data_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BIT-NUMBER": lambda obj, elem: setattr(obj, "bit_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "CONTROLLED-DATA-REFS": lambda obj, elem: obj.controlled_data_refs.append(ARRef.deserialize(elem)),
+        "CONTROLLED-DATA-REFS": lambda obj, elem: [obj.controlled_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -128,7 +128,7 @@ class DiagnosticControlEnableMaskBit(ARObject):
             elif tag == "CONTROLLED-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.controlled_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticDataElement"))
+                    obj.controlled_data_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

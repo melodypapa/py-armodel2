@@ -62,7 +62,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
     sd_server_timer_ref: Optional[Any]
     service_identifier: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ALLOWED-SERVICE-REFS": lambda obj, elem: obj.allowed_service_refs.append(ARRef.deserialize(elem)),
+        "ALLOWED-SERVICE-REFS": lambda obj, elem: [obj.allowed_service_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "AUTO-AVAILABLE": lambda obj, elem: setattr(obj, "auto_available", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "EVENT-HANDLERS": lambda obj, elem: obj.event_handlers.append(SerializationHelper.deserialize_by_tag(elem, "EventHandler")),
         "INSTANCE": lambda obj, elem: setattr(obj, "instance", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
@@ -70,8 +70,8 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         "LOCAL-UNICAST": lambda obj, elem: setattr(obj, "local_unicast", SerializationHelper.deserialize_by_tag(elem, "ApplicationEndpoint")),
         "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "REMOTE-MULTICAST-REFS": lambda obj, elem: obj.remote_multicast_refs.append(ARRef.deserialize(elem)),
-        "REMOTE-UNICAST-REFS": lambda obj, elem: obj.remote_unicast_refs.append(ARRef.deserialize(elem)),
+        "REMOTE-MULTICAST-REFS": lambda obj, elem: [obj.remote_multicast_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "REMOTE-UNICAST-REFS": lambda obj, elem: [obj.remote_unicast_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SD-SERVER-CONFIG": lambda obj, elem: setattr(obj, "sd_server_config", SerializationHelper.deserialize_by_tag(elem, "any (SdServerConfig)")),
         "SD-SERVER-TIMER-REF": lambda obj, elem: setattr(obj, "sd_server_timer_ref", ARRef.deserialize(elem)),
         "SERVICE-IDENTIFIER": lambda obj, elem: setattr(obj, "service_identifier", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
@@ -327,7 +327,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
             if tag == "ALLOWED-SERVICE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.allowed_service_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NetworkEndpoint"))
+                    obj.allowed_service_refs.append(ARRef.deserialize(item_elem))
             elif tag == "AUTO-AVAILABLE":
                 setattr(obj, "auto_available", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "EVENT-HANDLERS":
@@ -347,11 +347,11 @@ class ProvidedServiceInstance(AbstractServiceInstance):
             elif tag == "REMOTE-MULTICAST-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.remote_multicast_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationEndpoint"))
+                    obj.remote_multicast_refs.append(ARRef.deserialize(item_elem))
             elif tag == "REMOTE-UNICAST-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.remote_unicast_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationEndpoint"))
+                    obj.remote_unicast_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SD-SERVER-CONFIG":
                 setattr(obj, "sd_server_config", SerializationHelper.deserialize_by_tag(child, "any (SdServerConfig)"))
             elif tag == "SD-SERVER-TIMER-REF":

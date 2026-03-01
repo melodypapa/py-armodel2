@@ -51,9 +51,9 @@ class SignalServiceTranslationProps(Identifiable):
     service_control: Optional[Any]
     signal_service_event_propses: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "CONTROL-REFS": lambda obj, elem: obj.control_refs.append(ARRef.deserialize(elem)),
-        "CONTROL-PNC-REFS": lambda obj, elem: obj.control_pnc_refs.append(ARRef.deserialize(elem)),
-        "CONTROL-PROVIDED-REFS": lambda obj, elem: obj.control_provided_refs.append(ARRef.deserialize(elem)),
+        "CONTROL-REFS": lambda obj, elem: [obj.control_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "CONTROL-PNC-REFS": lambda obj, elem: [obj.control_pnc_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "CONTROL-PROVIDED-REFS": lambda obj, elem: [obj.control_provided_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SERVICE-CONTROL": lambda obj, elem: setattr(obj, "service_control", SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
         "SIGNAL-SERVICE-EVENT-PROPSES": lambda obj, elem: obj.signal_service_event_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
     }
@@ -188,15 +188,15 @@ class SignalServiceTranslationProps(Identifiable):
             if tag == "CONTROL-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.control_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsumedEventGroup"))
+                    obj.control_refs.append(ARRef.deserialize(item_elem))
             elif tag == "CONTROL-PNC-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.control_pnc_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PncMappingIdent"))
+                    obj.control_pnc_refs.append(ARRef.deserialize(item_elem))
             elif tag == "CONTROL-PROVIDED-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.control_provided_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EventHandler"))
+                    obj.control_provided_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SERVICE-CONTROL":
                 setattr(obj, "service_control", SerializationHelper.deserialize_by_tag(child, "any (SignalService)"))
             elif tag == "SIGNAL-SERVICE-EVENT-PROPSES":

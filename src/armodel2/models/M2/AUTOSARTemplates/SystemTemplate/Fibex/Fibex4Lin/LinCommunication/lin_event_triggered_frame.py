@@ -44,7 +44,7 @@ class LinEventTriggeredFrame(LinFrame):
     lin_unconditional_frame_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "COLLISION-SCHEDULE-REF": lambda obj, elem: setattr(obj, "collision_schedule_ref", ARRef.deserialize(elem)),
-        "LIN-UNCONDITIONAL-FRAME-REFS": lambda obj, elem: obj.lin_unconditional_frame_refs.append(ARRef.deserialize(elem)),
+        "LIN-UNCONDITIONAL-FRAME-REFS": lambda obj, elem: [obj.lin_unconditional_frame_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -132,7 +132,7 @@ class LinEventTriggeredFrame(LinFrame):
             elif tag == "LIN-UNCONDITIONAL-FRAME-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.lin_unconditional_frame_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "LinUnconditionalFrame"))
+                    obj.lin_unconditional_frame_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

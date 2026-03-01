@@ -46,7 +46,7 @@ class StateDependentFirewall(ARElement):
     _DESERIALIZE_DISPATCH = {
         "DEFAULT-ACTION": lambda obj, elem: setattr(obj, "default_action", SerializationHelper.deserialize_by_tag(elem, "FirewallActionEnum")),
         "FIREWALL-RULE-PROPSES": lambda obj, elem: obj.firewall_rule_propses.append(SerializationHelper.deserialize_by_tag(elem, "FirewallRuleProps")),
-        "FIREWALL-STATE-REFS": lambda obj, elem: obj.firewall_state_refs.append(ARRef.deserialize(elem)),
+        "FIREWALL-STATE-REFS": lambda obj, elem: [obj.firewall_state_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -149,7 +149,7 @@ class StateDependentFirewall(ARElement):
             elif tag == "FIREWALL-STATE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.firewall_state_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclaration"))
+                    obj.firewall_state_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

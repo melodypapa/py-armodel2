@@ -43,7 +43,7 @@ class CpSoftwareClusterToApplicationPartitionMapping(Identifiable):
     application_refs: list[ARRef]
     software_cluster_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "APPLICATION-REFS": lambda obj, elem: obj.application_refs.append(ARRef.deserialize(elem)),
+        "APPLICATION-REFS": lambda obj, elem: [obj.application_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SOFTWARE-CLUSTER-REF": lambda obj, elem: setattr(obj, "software_cluster_ref", ARRef.deserialize(elem)),
     }
 
@@ -130,7 +130,7 @@ class CpSoftwareClusterToApplicationPartitionMapping(Identifiable):
             if tag == "APPLICATION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.application_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationPartition"))
+                    obj.application_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SOFTWARE-CLUSTER-REF":
                 setattr(obj, "software_cluster_ref", ARRef.deserialize(child))
 

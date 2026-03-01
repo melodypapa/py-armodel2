@@ -43,7 +43,7 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
     coupled_cluster_refs: list[ARRef]
     nm_schedule: Optional[FlexrayNmScheduleVariant]
     _DESERIALIZE_DISPATCH = {
-        "COUPLED-CLUSTER-REFS": lambda obj, elem: obj.coupled_cluster_refs.append(ARRef.deserialize(elem)),
+        "COUPLED-CLUSTER-REFS": lambda obj, elem: [obj.coupled_cluster_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "NM-SCHEDULE": lambda obj, elem: setattr(obj, "nm_schedule", FlexrayNmScheduleVariant.deserialize(elem)),
     }
 
@@ -130,7 +130,7 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
             if tag == "COUPLED-CLUSTER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.coupled_cluster_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayNmCluster"))
+                    obj.coupled_cluster_refs.append(ARRef.deserialize(item_elem))
             elif tag == "NM-SCHEDULE":
                 setattr(obj, "nm_schedule", FlexrayNmScheduleVariant.deserialize(child))
 

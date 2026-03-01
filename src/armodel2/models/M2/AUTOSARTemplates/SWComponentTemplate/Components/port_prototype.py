@@ -87,7 +87,7 @@ class PortPrototype(Identifiable, ABC):
         "NV-DATA-PORT-ANNOTATIONS": lambda obj, elem: obj.nv_data_port_annotations.append(SerializationHelper.deserialize_by_tag(elem, "NvDataPortAnnotation")),
         "PARAMETER-PORTS": lambda obj, elem: obj.parameter_ports.append(SerializationHelper.deserialize_by_tag(elem, "ParameterPortAnnotation")),
         "SENDER-RECEIVERS": lambda obj, elem: obj.sender_receivers.append(SerializationHelper.deserialize_by_tag(elem, "any (SenderReceiver)")),
-        "TRIGGER-PORT-ANNOTATION-REFS": lambda obj, elem: obj.trigger_port_annotation_refs.append(ARRef.deserialize(elem)),
+        "TRIGGER-PORT-ANNOTATION-REFS": lambda obj, elem: [obj.trigger_port_annotation_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -265,7 +265,7 @@ class PortPrototype(Identifiable, ABC):
             elif tag == "TRIGGER-PORT-ANNOTATION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.trigger_port_annotation_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "TriggerPortAnnotation"))
+                    obj.trigger_port_annotation_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

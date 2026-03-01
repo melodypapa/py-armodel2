@@ -46,7 +46,7 @@ class BswEvent(AbstractEvent, ABC):
     disabled_in_mode_description_instance_refs: list[ModeDeclaration]
     starts_on_event_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-REFS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-REFS": lambda obj, elem: [obj.context_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS": lambda obj, elem: obj.disabled_in_mode_description_instance_refs.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclaration")),
         "STARTS-ON-EVENT-REF": ("_POLYMORPHIC", "starts_on_event_ref", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
     }
@@ -145,7 +145,7 @@ class BswEvent(AbstractEvent, ABC):
             if tag == "CONTEXT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BswDistinguishedPartition"))
+                    obj.context_refs.append(ARRef.deserialize(item_elem))
             elif tag == "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:

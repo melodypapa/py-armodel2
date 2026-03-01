@@ -42,9 +42,9 @@ class SynchronizationPointConstraint(TimingConstraint):
     target_eec_refs: list[Any]
     target_event_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "SOURCE-EEC-REFS": lambda obj, elem: obj.source_eec_refs.append(ARRef.deserialize(elem)),
+        "SOURCE-EEC-REFS": lambda obj, elem: [obj.source_eec_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SOURCE-EVENT-REFS": ("_POLYMORPHIC_LIST", "source_event_refs", ["BswEvent", "RTEEvent"]),
-        "TARGET-EEC-REFS": lambda obj, elem: obj.target_eec_refs.append(ARRef.deserialize(elem)),
+        "TARGET-EEC-REFS": lambda obj, elem: [obj.target_eec_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TARGET-EVENT-REFS": ("_POLYMORPHIC_LIST", "target_event_refs", ["BswEvent", "RTEEvent"]),
     }
 
@@ -170,14 +170,14 @@ class SynchronizationPointConstraint(TimingConstraint):
             if tag == "SOURCE-EEC-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.source_eec_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
+                    obj.source_eec_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SOURCE-EVENT-REFS":
                 for item_elem in child:
                     obj.source_event_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TARGET-EEC-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.target_eec_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
+                    obj.target_eec_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TARGET-EVENT-REFS":
                 for item_elem in child:
                     obj.target_event_refs.append(ARRef.deserialize(item_elem))

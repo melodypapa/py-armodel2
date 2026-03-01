@@ -50,7 +50,7 @@ class ISignalGroup(FibexElement):
     transformation_i_signals: list[Any]
     _DESERIALIZE_DISPATCH = {
         "COM-BASED-REF": lambda obj, elem: setattr(obj, "com_based_ref", ARRef.deserialize(elem)),
-        "I-SIGNAL-REFS": lambda obj, elem: obj.i_signal_refs.append(ARRef.deserialize(elem)),
+        "I-SIGNAL-REFS": lambda obj, elem: [obj.i_signal_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SYSTEM-SIGNAL-GROUP-REF": lambda obj, elem: setattr(obj, "system_signal_group_ref", ARRef.deserialize(elem)),
         "TRANSFORMATION-I-SIGNALS": lambda obj, elem: obj.transformation_i_signals.append(SerializationHelper.deserialize_by_tag(elem, "any (TransformationISignal)")),
     }
@@ -166,7 +166,7 @@ class ISignalGroup(FibexElement):
             elif tag == "I-SIGNAL-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.i_signal_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignal"))
+                    obj.i_signal_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SYSTEM-SIGNAL-GROUP-REF":
                 setattr(obj, "system_signal_group_ref", ARRef.deserialize(child))
             elif tag == "TRANSFORMATION-I-SIGNALS":

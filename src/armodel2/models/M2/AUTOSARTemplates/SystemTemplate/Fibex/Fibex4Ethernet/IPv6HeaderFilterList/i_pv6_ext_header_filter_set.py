@@ -39,7 +39,7 @@ class IPv6ExtHeaderFilterSet(ARElement):
 
     ext_header_filter_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "EXT-HEADER-FILTER-REFS": lambda obj, elem: obj.ext_header_filter_refs.append(ARRef.deserialize(elem)),
+        "EXT-HEADER-FILTER-REFS": lambda obj, elem: [obj.ext_header_filter_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class IPv6ExtHeaderFilterSet(ARElement):
             if tag == "EXT-HEADER-FILTER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.ext_header_filter_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "IPv6ExtHeaderFilterList"))
+                    obj.ext_header_filter_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

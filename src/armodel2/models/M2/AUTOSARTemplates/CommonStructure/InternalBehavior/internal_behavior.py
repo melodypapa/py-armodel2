@@ -68,8 +68,8 @@ class InternalBehavior(Identifiable, ABC):
     static_memories: list[VariableDataPrototype]
     _DESERIALIZE_DISPATCH = {
         "CONSTANT-MEMORIES": lambda obj, elem: obj.constant_memories.append(SerializationHelper.deserialize_by_tag(elem, "ParameterDataPrototype")),
-        "CONSTANT-VALUE-MAPPING-REFS": lambda obj, elem: obj.constant_value_mapping_refs.append(ARRef.deserialize(elem)),
-        "DATA-TYPE-MAPPING-REFS": lambda obj, elem: obj.data_type_mapping_refs.append(ARRef.deserialize(elem)),
+        "CONSTANT-VALUE-MAPPING-REFS": lambda obj, elem: [obj.constant_value_mapping_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "DATA-TYPE-MAPPING-REFS": lambda obj, elem: [obj.data_type_mapping_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "EXCLUSIVE-AREAS": lambda obj, elem: obj.exclusive_areas.append(SerializationHelper.deserialize_by_tag(elem, "ExclusiveArea")),
         "EXCLUSIVE-AREA-NESTING-ORDERS": lambda obj, elem: obj.exclusive_area_nesting_orders.append(SerializationHelper.deserialize_by_tag(elem, "ExclusiveAreaNestingOrder")),
         "STATIC-MEMORIES": lambda obj, elem: obj.static_memories.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
@@ -209,11 +209,11 @@ class InternalBehavior(Identifiable, ABC):
             elif tag == "CONSTANT-VALUE-MAPPING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.constant_value_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstantSpecificationMappingSet"))
+                    obj.constant_value_mapping_refs.append(ARRef.deserialize(item_elem))
             elif tag == "DATA-TYPE-MAPPING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.data_type_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataTypeMappingSet"))
+                    obj.data_type_mapping_refs.append(ARRef.deserialize(item_elem))
             elif tag == "EXCLUSIVE-AREAS":
                 # Iterate through wrapper children
                 for item_elem in child:

@@ -44,7 +44,7 @@ class CouplingPortRatePolicy(ARObject):
         "POLICY-ACTION": lambda obj, elem: setattr(obj, "policy_action", SerializationHelper.deserialize_by_tag(elem, "CouplingPortRatePolicy")),
         "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "TIME-INTERVAL": lambda obj, elem: setattr(obj, "time_interval", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
-        "V-LAN-REFS": lambda obj, elem: obj.v_lan_refs.append(ARRef.deserialize(elem)),
+        "V-LAN-REFS": lambda obj, elem: [obj.v_lan_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -183,7 +183,7 @@ class CouplingPortRatePolicy(ARObject):
             elif tag == "V-LAN-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.v_lan_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EthernetPhysical)"))
+                    obj.v_lan_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

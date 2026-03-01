@@ -42,7 +42,7 @@ class EcucValueCollection(ARElement):
     ecuc_value_refs: list[Any]
     ecu_extract_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ECUC-VALUE-REFS": lambda obj, elem: obj.ecuc_value_refs.append(ARRef.deserialize(elem)),
+        "ECUC-VALUE-REFS": lambda obj, elem: [obj.ecuc_value_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ECU-EXTRACT-REF": lambda obj, elem: setattr(obj, "ecu_extract_ref", ARRef.deserialize(elem)),
     }
 
@@ -129,7 +129,7 @@ class EcucValueCollection(ARElement):
             if tag == "ECUC-VALUE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.ecuc_value_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EcucModule)"))
+                    obj.ecuc_value_refs.append(ARRef.deserialize(item_elem))
             elif tag == "ECU-EXTRACT-REF":
                 setattr(obj, "ecu_extract_ref", ARRef.deserialize(child))
 

@@ -47,7 +47,7 @@ class DataTransformation(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "DATA": lambda obj, elem: setattr(obj, "data", DataTransformationKindEnum.deserialize(elem)),
         "EXECUTE-DESPITE": lambda obj, elem: setattr(obj, "execute_despite", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "TRANSFORMER-REFS": lambda obj, elem: obj.transformer_refs.append(ARRef.deserialize(elem)),
+        "TRANSFORMER-REFS": lambda obj, elem: [obj.transformer_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -152,7 +152,7 @@ class DataTransformation(Identifiable):
             elif tag == "TRANSFORMER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.transformer_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (Transformation)"))
+                    obj.transformer_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -39,7 +39,7 @@ class SecurityEventStateFilter(AbstractSecurityEventFilter):
 
     block_if_state_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "BLOCK-IF-STATE-REFS": lambda obj, elem: obj.block_if_state_refs.append(ARRef.deserialize(elem)),
+        "BLOCK-IF-STATE-REFS": lambda obj, elem: [obj.block_if_state_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class SecurityEventStateFilter(AbstractSecurityEventFilter):
             if tag == "BLOCK-IF-STATE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.block_if_state_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BlockState"))
+                    obj.block_if_state_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

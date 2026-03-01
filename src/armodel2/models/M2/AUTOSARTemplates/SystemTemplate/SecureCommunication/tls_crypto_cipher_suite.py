@@ -71,14 +71,14 @@ class TlsCryptoCipherSuite(Identifiable):
         "CERTIFICATE-REF": lambda obj, elem: setattr(obj, "certificate_ref", ARRef.deserialize(elem)),
         "CIPHER-SUITE-ID": lambda obj, elem: setattr(obj, "cipher_suite_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "CIPHER-SUITE": lambda obj, elem: setattr(obj, "cipher_suite", SerializationHelper.deserialize_by_tag(elem, "String")),
-        "ELLIPTIC-CURF-REFS": lambda obj, elem: obj.elliptic_curf_refs.append(ARRef.deserialize(elem)),
+        "ELLIPTIC-CURF-REFS": lambda obj, elem: [obj.elliptic_curf_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ENCRYPTION-REF": lambda obj, elem: setattr(obj, "encryption_ref", ARRef.deserialize(elem)),
-        "KEY-EXCHANGE-REFS": lambda obj, elem: obj.key_exchange_refs.append(ARRef.deserialize(elem)),
+        "KEY-EXCHANGE-REFS": lambda obj, elem: [obj.key_exchange_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PROPS": lambda obj, elem: setattr(obj, "props", SerializationHelper.deserialize_by_tag(elem, "TlsCryptoCipherSuite")),
         "PSK-IDENTITY": lambda obj, elem: setattr(obj, "psk_identity", SerializationHelper.deserialize_by_tag(elem, "TlsPskIdentity")),
         "REMOTE-REF": lambda obj, elem: setattr(obj, "remote_ref", ARRef.deserialize(elem)),
-        "SIGNATURE-REFS": lambda obj, elem: obj.signature_refs.append(ARRef.deserialize(elem)),
+        "SIGNATURE-REFS": lambda obj, elem: [obj.signature_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "VERSION": lambda obj, elem: setattr(obj, "version", TlsVersionEnum.deserialize(elem)),
     }
 
@@ -344,13 +344,13 @@ class TlsCryptoCipherSuite(Identifiable):
             elif tag == "ELLIPTIC-CURF-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.elliptic_curf_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CryptoEllipticCurveProps"))
+                    obj.elliptic_curf_refs.append(ARRef.deserialize(item_elem))
             elif tag == "ENCRYPTION-REF":
                 setattr(obj, "encryption_ref", ARRef.deserialize(child))
             elif tag == "KEY-EXCHANGE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.key_exchange_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CryptoServicePrimitive"))
+                    obj.key_exchange_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PRIORITY":
                 setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "PROPS":
@@ -362,7 +362,7 @@ class TlsCryptoCipherSuite(Identifiable):
             elif tag == "SIGNATURE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.signature_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CryptoSignatureScheme"))
+                    obj.signature_refs.append(ARRef.deserialize(item_elem))
             elif tag == "VERSION":
                 setattr(obj, "version", TlsVersionEnum.deserialize(child))
 

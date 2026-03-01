@@ -39,7 +39,7 @@ class GeneralPurposeConnection(ARElement):
 
     pdu_triggering_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "PDU-TRIGGERING-REFS": lambda obj, elem: obj.pdu_triggering_refs.append(ARRef.deserialize(elem)),
+        "PDU-TRIGGERING-REFS": lambda obj, elem: [obj.pdu_triggering_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -110,7 +110,7 @@ class GeneralPurposeConnection(ARElement):
             if tag == "PDU-TRIGGERING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.pdu_triggering_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
+                    obj.pdu_triggering_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

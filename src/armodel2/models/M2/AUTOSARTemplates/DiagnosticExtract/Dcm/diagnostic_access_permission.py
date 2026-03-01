@@ -49,9 +49,9 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
     security_level_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "AUTHENTICATION": lambda obj, elem: setattr(obj, "authentication", SerializationHelper.deserialize_by_tag(elem, "DiagnosticAuthRole")),
-        "DIAGNOSTIC-SESSION-REFS": lambda obj, elem: obj.diagnostic_session_refs.append(ARRef.deserialize(elem)),
+        "DIAGNOSTIC-SESSION-REFS": lambda obj, elem: [obj.diagnostic_session_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ENVIRONMENTAL-REF": lambda obj, elem: setattr(obj, "environmental_ref", ARRef.deserialize(elem)),
-        "SECURITY-LEVEL-REFS": lambda obj, elem: obj.security_level_refs.append(ARRef.deserialize(elem)),
+        "SECURITY-LEVEL-REFS": lambda obj, elem: [obj.security_level_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
@@ -172,13 +172,13 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
             elif tag == "DIAGNOSTIC-SESSION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.diagnostic_session_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticSession"))
+                    obj.diagnostic_session_refs.append(ARRef.deserialize(item_elem))
             elif tag == "ENVIRONMENTAL-REF":
                 setattr(obj, "environmental_ref", ARRef.deserialize(child))
             elif tag == "SECURITY-LEVEL-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.security_level_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticSecurityLevel"))
+                    obj.security_level_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

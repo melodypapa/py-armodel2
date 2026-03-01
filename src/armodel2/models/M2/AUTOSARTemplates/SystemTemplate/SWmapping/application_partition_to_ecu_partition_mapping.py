@@ -43,7 +43,7 @@ class ApplicationPartitionToEcuPartitionMapping(Identifiable):
     application_refs: list[ARRef]
     ecu_partition_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "APPLICATION-REFS": lambda obj, elem: obj.application_refs.append(ARRef.deserialize(elem)),
+        "APPLICATION-REFS": lambda obj, elem: [obj.application_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ECU-PARTITION-REF": lambda obj, elem: setattr(obj, "ecu_partition_ref", ARRef.deserialize(elem)),
     }
 
@@ -130,7 +130,7 @@ class ApplicationPartitionToEcuPartitionMapping(Identifiable):
             if tag == "APPLICATION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.application_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationPartition"))
+                    obj.application_refs.append(ARRef.deserialize(item_elem))
             elif tag == "ECU-PARTITION-REF":
                 setattr(obj, "ecu_partition_ref", ARRef.deserialize(child))
 

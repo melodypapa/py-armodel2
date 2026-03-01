@@ -89,17 +89,17 @@ class System(ARElement):
     system_documentations: list[Chapter]
     system_version: Optional[RevisionLabelString]
     _DESERIALIZE_DISPATCH = {
-        "CLIENT-ID-DEFINITION-SET-REFS": lambda obj, elem: obj.client_id_definition_set_refs.append(ARRef.deserialize(elem)),
+        "CLIENT-ID-DEFINITION-SET-REFS": lambda obj, elem: [obj.client_id_definition_set_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "CONTAINER-I-PDU-HEADER-BYTE-ORDER": lambda obj, elem: setattr(obj, "container_i_pdu_header_byte_order", ByteOrderEnum.deserialize(elem)),
         "ECU-EXTRACT-VERSION": lambda obj, elem: setattr(obj, "ecu_extract_version", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
         "FIBEX-ELEMENT-REFS": ("_POLYMORPHIC_LIST", "_fibex_element_refs", ["BusMirrorChannelMapping", "CommunicationCluster", "ConsumedProvidedServiceInstanceGroup", "CouplingElement", "EcuInstance", "EthernetWakeupSleepOnDatalineConfigSet", "Frame", "Gateway", "GlobalTimeDomain", "ISignal", "ISignalGroup", "ISignalIPduGroup", "NmConfig", "Pdu", "PdurIPduGroup", "SecureCommunicationPropsSet", "ServiceInstanceCollectionSet", "SoAdRoutingGroup", "SocketConnectionIpduIdentifierSet", "TpConfig"]),
-        "INTERPOLATION-ROUTINE-MAPPING-SET-REFS": lambda obj, elem: obj.interpolation_routine_mapping_set_refs.append(ARRef.deserialize(elem)),
+        "INTERPOLATION-ROUTINE-MAPPING-SET-REFS": lambda obj, elem: [obj.interpolation_routine_mapping_set_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "J1939-SHARED-ADDRESS-CLUSTERS": lambda obj, elem: obj.j1939_shared_address_clusters.append(SerializationHelper.deserialize_by_tag(elem, "J1939SharedAddressCluster")),
         "MAPPINGS": lambda obj, elem: obj.mappings.append(SerializationHelper.deserialize_by_tag(elem, "SystemMapping")),
         "PNC-VECTOR-LENGTH": lambda obj, elem: setattr(obj, "pnc_vector_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PNC-VECTOR-OFFSET": lambda obj, elem: setattr(obj, "pnc_vector_offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "ROOT-SOFTWARE-COMPOSITIONS": lambda obj, elem: obj.root_software_compositions.append(SerializationHelper.deserialize_by_tag(elem, "RootSwCompositionPrototype")),
-        "SW-CLUSTER-REFS": lambda obj, elem: obj.sw_cluster_refs.append(ARRef.deserialize(elem)),
+        "SW-CLUSTER-REFS": lambda obj, elem: [obj.sw_cluster_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SYSTEM-DOCUMENTATIONS": lambda obj, elem: obj.system_documentations.append(SerializationHelper.deserialize_by_tag(elem, "Chapter")),
         "SYSTEM-VERSION": lambda obj, elem: setattr(obj, "system_version", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
     }
@@ -359,7 +359,7 @@ class System(ARElement):
             if tag == "CLIENT-ID-DEFINITION-SET-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.client_id_definition_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientIdDefinitionSet"))
+                    obj.client_id_definition_set_refs.append(ARRef.deserialize(item_elem))
             elif tag == "CONTAINER-I-PDU-HEADER-BYTE-ORDER":
                 setattr(obj, "container_i_pdu_header_byte_order", ByteOrderEnum.deserialize(child))
             elif tag == "ECU-EXTRACT-VERSION":
@@ -370,7 +370,7 @@ class System(ARElement):
             elif tag == "INTERPOLATION-ROUTINE-MAPPING-SET-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.interpolation_routine_mapping_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "InterpolationRoutineMappingSet"))
+                    obj.interpolation_routine_mapping_set_refs.append(ARRef.deserialize(item_elem))
             elif tag == "J1939-SHARED-ADDRESS-CLUSTERS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -390,7 +390,7 @@ class System(ARElement):
             elif tag == "SW-CLUSTER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.sw_cluster_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareCluster"))
+                    obj.sw_cluster_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SYSTEM-DOCUMENTATIONS":
                 # Iterate through wrapper children
                 for item_elem in child:

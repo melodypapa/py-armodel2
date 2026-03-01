@@ -95,8 +95,8 @@ class RunnableEntity(ExecutableEntity):
         "DATA-RECEIVES": lambda obj, elem: obj.data_receives.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
         "DATA-SEND-POINTS": lambda obj, elem: obj.data_send_points.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
         "DATA-WRITES": lambda obj, elem: obj.data_writes.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
-        "EXTERNAL-REFS": lambda obj, elem: obj.external_refs.append(ARRef.deserialize(elem)),
-        "INTERNAL-REFS": lambda obj, elem: obj.internal_refs.append(ARRef.deserialize(elem)),
+        "EXTERNAL-REFS": lambda obj, elem: [obj.external_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "INTERNAL-REFS": lambda obj, elem: [obj.internal_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "MODE-ACCESS-POINTS": lambda obj, elem: obj.mode_access_points.append(SerializationHelper.deserialize_by_tag(elem, "ModeAccessPoint")),
         "MODE-SWITCH-POINTS": lambda obj, elem: obj.mode_switch_points.append(SerializationHelper.deserialize_by_tag(elem, "ModeSwitchPoint")),
         "PARAMETER-ACCESSES": lambda obj, elem: obj.parameter_accesses.append(SerializationHelper.deserialize_by_tag(elem, "ParameterAccess")),
@@ -392,11 +392,11 @@ class RunnableEntity(ExecutableEntity):
             elif tag == "EXTERNAL-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.external_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExternalTriggeringPoint"))
+                    obj.external_refs.append(ARRef.deserialize(item_elem))
             elif tag == "INTERNAL-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.internal_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "InternalTriggeringPoint"))
+                    obj.internal_refs.append(ARRef.deserialize(item_elem))
             elif tag == "MODE-ACCESS-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:

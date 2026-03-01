@@ -43,8 +43,8 @@ class McGroupDataRefSet(ARObject):
     flat_map_entry_refs: list[ARRef]
     mc_data_instance_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "FLAT-MAP-ENTRY-REFS": lambda obj, elem: obj.flat_map_entry_refs.append(ARRef.deserialize(elem)),
-        "MC-DATA-INSTANCE-REFS": lambda obj, elem: obj.mc_data_instance_refs.append(ARRef.deserialize(elem)),
+        "FLAT-MAP-ENTRY-REFS": lambda obj, elem: [obj.flat_map_entry_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "MC-DATA-INSTANCE-REFS": lambda obj, elem: [obj.mc_data_instance_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
