@@ -110,17 +110,7 @@ class PPortPrototype(AbstractProvidedPortPrototype):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "PROVIDED-INTERFACE-TREF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "CLIENT-SERVER-INTERFACE":
-                        setattr(obj, "provided_interface_ref", SerializationHelper.deserialize_by_tag(child[0], "ClientServerInterface"))
-                    elif concrete_tag == "DATA-INTERFACE":
-                        setattr(obj, "provided_interface_ref", SerializationHelper.deserialize_by_tag(child[0], "DataInterface"))
-                    elif concrete_tag == "MODE-SWITCH-INTERFACE":
-                        setattr(obj, "provided_interface_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchInterface"))
-                    elif concrete_tag == "TRIGGER-INTERFACE":
-                        setattr(obj, "provided_interface_ref", SerializationHelper.deserialize_by_tag(child[0], "TriggerInterface"))
+                setattr(obj, "provided_interface_ref", ARRef.deserialize(child))
 
         return obj
 

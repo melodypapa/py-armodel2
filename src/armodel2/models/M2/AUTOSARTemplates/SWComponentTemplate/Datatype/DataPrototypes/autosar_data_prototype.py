@@ -112,13 +112,7 @@ class AutosarDataPrototype(DataPrototype, ABC):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "TYPE-TREF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-IMPLEMENTATION-DATA-TYPE":
-                        setattr(obj, "type_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractImplementationDataType"))
-                    elif concrete_tag == "APPLICATION-DATA-TYPE":
-                        setattr(obj, "type_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationDataType"))
+                setattr(obj, "type_ref", ARRef.deserialize(child))
 
         return obj
 

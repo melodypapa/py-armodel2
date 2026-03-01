@@ -132,17 +132,7 @@ class RPortPrototype(AbstractRequiredPortPrototype):
             if tag == "MAY-BE-UNCONNECTED":
                 setattr(obj, "may_be_unconnected", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "REQUIRED-INTERFACE-TREF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "CLIENT-SERVER-INTERFACE":
-                        setattr(obj, "required_interface_ref", SerializationHelper.deserialize_by_tag(child[0], "ClientServerInterface"))
-                    elif concrete_tag == "DATA-INTERFACE":
-                        setattr(obj, "required_interface_ref", SerializationHelper.deserialize_by_tag(child[0], "DataInterface"))
-                    elif concrete_tag == "MODE-SWITCH-INTERFACE":
-                        setattr(obj, "required_interface_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchInterface"))
-                    elif concrete_tag == "TRIGGER-INTERFACE":
-                        setattr(obj, "required_interface_ref", SerializationHelper.deserialize_by_tag(child[0], "TriggerInterface"))
+                setattr(obj, "required_interface_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -1253,10 +1253,13 @@ def _generate_deserialize_method(
             kind = attr_info.get("kind", "attribute")
             decorator_name = attr_info.get("decorator_name")
 
-            # Skip xml_attribute and lang_abbr
+            # Skip xml_attribute, lang_abbr, and lang_prefix
+            # lang_prefix attributes need special handling with the tag from decorator_params
             if kind == "xml_attribute" or decorator_name == "xml_attribute":
                 continue
             if decorator_name == "lang_abbr":
+                continue
+            if decorator_name == "lang_prefix":
                 continue
 
             multiplicity = attr_info.get("multiplicity", "1")
@@ -1286,31 +1289,39 @@ def _generate_deserialize_method(
             # Check if this is a polymorphic type
             concrete_types = polymorphic_types.get(attr_type, [])
             if concrete_types:
-                # Generate if-elif-else chain for polymorphic types
-                # For polymorphic types, the XML tag is a wrapper (e.g., VALUE-SPEC)
-                # and we need to check the first child's tag to determine concrete type
-                # Use SerializationHelper.deserialize_by_tag to avoid circular imports
-                branch_lines = [f'        if tag == "{xml_tag}":']
-                indent = "            "
-
-                # Get the first child element to check its tag
-                branch_lines.append(f'{indent}# Check first child element for concrete type')
-                branch_lines.append(f'{indent}if len(child) > 0:')
-                branch_lines.append(f'{indent}    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{{") else child[0].tag')
-
-                for i, concrete_type in enumerate(concrete_types):
-                    xml_concrete_tag = NameConverter.to_xml_tag(concrete_type)
-                    if_str = "if" if i == 0 else "elif"
+                # Special handling for reference types (TYPE-TREF pattern)
+                # These use DEST attribute to indicate type, not child elements
+                if is_ref and kind == "tref":
+                    # For TYPE-TREF pattern, the DEST attribute indicates the concrete type
+                    # Just use ARRef.deserialize() - the DEST attribute is handled by ARRef
+                    handler_code = f'setattr(obj, "{target_attr}", ARRef.deserialize(child))'
+                    all_branches.append((xml_tag, handler_code, False))
+                else:
+                    # Generate if-elif-else chain for polymorphic types
+                    # For polymorphic types, the XML tag is a wrapper (e.g., VALUE-SPEC)
+                    # and we need to check the first child's tag to determine concrete type
                     # Use SerializationHelper.deserialize_by_tag to avoid circular imports
-                    deserializer = f'SerializationHelper.deserialize_by_tag(child[0], "{concrete_type}")'
-                    if is_list:
-                        branch_lines.append(f'{indent}    {if_str} concrete_tag == "{xml_concrete_tag}":')
-                        branch_lines.append(f'{indent}        obj.{target_attr}.append({deserializer})')
-                    else:
-                        branch_lines.append(f'{indent}    {if_str} concrete_tag == "{xml_concrete_tag}":')
-                        branch_lines.append(f'{indent}        setattr(obj, "{target_attr}", {deserializer})')
+                    branch_lines = [f'        if tag == "{xml_tag}":']
+                    indent = "            "
 
-                all_branches.append((xml_tag, "\n".join(branch_lines), True))  # True = is polymorphic
+                    # Get the first child element to check its tag
+                    branch_lines.append(f'{indent}# Check first child element for concrete type')
+                    branch_lines.append(f'{indent}if len(child) > 0:')
+                    branch_lines.append(f'{indent}    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{{") else child[0].tag')
+
+                    for i, concrete_type in enumerate(concrete_types):
+                        xml_concrete_tag = NameConverter.to_xml_tag(concrete_type)
+                        if_str = "if" if i == 0 else "elif"
+                        # Use SerializationHelper.deserialize_by_tag to avoid circular imports
+                        deserializer = f'SerializationHelper.deserialize_by_tag(child[0], "{concrete_type}")'
+                        if is_list:
+                            branch_lines.append(f'{indent}    {if_str} concrete_tag == "{xml_concrete_tag}":')
+                            branch_lines.append(f'{indent}        obj.{target_attr}.append({deserializer})')
+                        else:
+                            branch_lines.append(f'{indent}    {if_str} concrete_tag == "{xml_concrete_tag}":')
+                            branch_lines.append(f'{indent}        setattr(obj, "{target_attr}", {deserializer})')
+
+                    all_branches.append((xml_tag, "\n".join(branch_lines), True))  # True = is polymorphic
             else:
                 # Generate simple handler
                 if _is_basic_python_type(attr_type):
@@ -1364,6 +1375,40 @@ def _generate_deserialize_method(
                 code += f"""            elif tag == "{xml_tag}":
                 {branch_code}
 """
+
+    # Add lang_prefix attribute handling after the main if-elif-else chain
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
+            decorator_name = attr_info.get("decorator_name")
+            if decorator_name == "lang_prefix":
+                lang_prefix_tag = attr_info.get("decorator_params", "")
+                multiplicity = attr_info.get("multiplicity", "1")
+                is_list = multiplicity in ("*", "0..*", "1..*")
+                python_name = get_python_identifier_with_ref(
+                    attr_name,
+                    attr_info.get("is_ref", False),
+                    multiplicity,
+                    decorator_name
+                )
+                target_attr = f"_{python_name}"
+                attr_type = attr_info["type"]
+
+                if is_list:
+                    # For list lang_prefix attributes, iterate through all matching child elements
+                    code += f'''
+        # Parse {python_name} (list with lang_prefix "{lang_prefix_tag}")
+        for child in SerializationHelper.find_all_child_elements(element, "{lang_prefix_tag}"):
+            {python_name}_item = SerializationHelper.deserialize_by_tag(child, "{attr_type}")
+            obj.{target_attr}.append({python_name}_item)
+'''
+                else:
+                    # For single lang_prefix attribute, find the first matching child element
+                    code += f'''
+        # Parse {python_name} (lang_prefix "{lang_prefix_tag}")
+        child = SerializationHelper.find_child_element(element, "{lang_prefix_tag}")
+        if child is not None:
+            obj.{target_attr} = SerializationHelper.deserialize_by_tag(child, "{attr_type}")
+'''
 
     code += """
         return obj

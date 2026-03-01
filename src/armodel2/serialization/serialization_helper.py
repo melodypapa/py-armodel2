@@ -988,7 +988,11 @@ class SerializationHelper:
         # Handle primitive Python types (str, int, float, bool)
         else:
             elem = ET.Element("VALUE")
-            elem.text = str(value)
+            # Handle booleans with XML-compliant format (true/false instead of True/False)
+            if isinstance(value, bool):
+                elem.text = "true" if value else "false"
+            else:
+                elem.text = str(value)
             return elem
 
     @staticmethod

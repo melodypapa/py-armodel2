@@ -52,7 +52,11 @@ class ARPrimitive:
 
         # Serialize value as text content
         if self.value is not None:
-            elem.text = str(self.value)
+            # Handle booleans with XML-compliant format (true/false instead of True/False)
+            if isinstance(self.value, bool):
+                elem.text = "true" if self.value else "false"
+            else:
+                elem.text = str(self.value)
 
         # Serialize additional attributes as XML attributes
         # Get all instance attributes excluding 'value' and private attributes
