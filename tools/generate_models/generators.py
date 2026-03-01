@@ -128,10 +128,14 @@ def _generate_dispatch_table(
         concrete_types = polymorphic_types.get(attr_type, [])
         is_polymorphic = bool(concrete_types)
 
+        # For dispatch table key, extract container tag from multi-level paths
+        dispatch_tag = xml_tag.split("/")[0] if isinstance(xml_tag, str) and "/" in xml_tag else xml_tag
+
         if is_polymorphic:
             # For polymorphic types, we'll generate a special marker
             # The actual if-elif-else code will be generated in _generate_deserialize_method
             # Store the polymorphic info in the dispatch table as a tuple
+            # Use dispatch_tag (container tag) for multi-level paths
             concrete_types_str = ", ".join(f'"{t}"' for t in concrete_types)
             if is_list:
                 handler = f'("_POLYMORPHIC_LIST", "{target_attr}", [{concrete_types_str}])'
@@ -164,7 +168,7 @@ def _generate_dispatch_table(
             else:
                 handler = f'lambda obj, elem: setattr(obj, "{target_attr}", {value_code})'
 
-        dispatch_lines.append(f'        "{xml_tag}": {handler},')
+        dispatch_lines.append(f'        "{dispatch_tag}": {handler},')
 
     dispatch_lines.append("    }")
     return "\n".join(dispatch_lines) + "\n\n\n"
@@ -1331,10 +1335,17 @@ def _generate_deserialize_method(
                     all_branches.append((xml_tag, handler_code, False))
                 else:
                     # Generate if-elif-else chain for polymorphic types
-                    # For polymorphic types, the XML tag is a wrapper (e.g., VALUE-SPEC)
-                    # and we need to check the first child's tag to determine concrete type
+                    # For polymorphic types, the XML tag may be a multi-level path (e.g., "ENTITYS/BSW-SCHEDULABLE-ENTITY")
+                    # The first level is the wrapper container, inside are the concrete type elements
                     # Use SerializationHelper.deserialize_by_tag to avoid circular imports
-                    branch_lines = [f'        if tag == "{xml_tag}":']
+
+                    # Extract container tag (first level) from multi-level path
+                    if isinstance(xml_tag, str) and "/" in xml_tag:
+                        container_tag = xml_tag.split("/")[0]
+                    else:
+                        container_tag = xml_tag
+
+                    branch_lines = [f'        if tag == "{container_tag}":']
                     indent = "            "
 
                     # Get the first child element to check its tag
@@ -1354,7 +1365,7 @@ def _generate_deserialize_method(
                             branch_lines.append(f'{indent}    {if_str} concrete_tag == "{xml_concrete_tag}":')
                             branch_lines.append(f'{indent}        setattr(obj, "{target_attr}", {deserializer})')
 
-                    all_branches.append((xml_tag, "\n".join(branch_lines), True))  # True = is polymorphic
+                    all_branches.append((container_tag, "\n".join(branch_lines), True))  # True = is polymorphic
             else:
                 # Generate simple handler
                 if _is_basic_python_type(attr_type):

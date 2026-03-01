@@ -63,7 +63,7 @@ class ExecutableEntity(Identifiable, ABC):
     sw_addr_method_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "ACTIVATION-REASONS": lambda obj, elem: obj.activation_reasons.append(SerializationHelper.deserialize_by_tag(elem, "ExecutableEntityActivationReason")),
-        "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA-REF": lambda obj, elem: obj._can_enter_refs.append(ARRef.deserialize(elem)),
+        "CAN-ENTER-EXCLUSIVE-AREA-REFS": lambda obj, elem: obj._can_enter_refs.append(ARRef.deserialize(elem)),
         "EXCLUSIVE-AREA-NESTING-ORDER-REFS": lambda obj, elem: obj.exclusive_area_nesting_order_refs.append(ARRef.deserialize(elem)),
         "MINIMUM-START-INTERVAL": lambda obj, elem: setattr(obj, "minimum_start_interval", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "REENTRANCY-LEVEL": lambda obj, elem: setattr(obj, "reentrancy_level", ReentrancyLevelEnum.deserialize(elem)),

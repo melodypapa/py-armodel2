@@ -12,6 +12,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavio
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import xml_element_name
 
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.internal_behavior import (
     InternalBehavior,
@@ -89,7 +90,7 @@ class BswInternalBehavior(InternalBehavior):
     bsw_per_instance_memory_policies: list[BswPerInstanceMemoryPolicy]
     client_policies: list[BswClientPolicy]
     distinguished_partitions: list[BswDistinguishedPartition]
-    entities: list[BswModuleEntity]
+    _entities: list[BswModuleEntity]
     events: list[BswEvent]
     exclusive_area_policies: list[BswExclusiveAreaPolicy]
     included_data_type_sets: list[IncludedDataTypeSet]
@@ -112,7 +113,7 @@ class BswInternalBehavior(InternalBehavior):
         "BSW-PER-INSTANCE-MEMORY-POLICIES": lambda obj, elem: obj.bsw_per_instance_memory_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswPerInstanceMemoryPolicy")),
         "CLIENT-POLICIES": lambda obj, elem: obj.client_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswClientPolicy")),
         "DISTINGUISHED-PARTITIONS": lambda obj, elem: obj.distinguished_partitions.append(SerializationHelper.deserialize_by_tag(elem, "BswDistinguishedPartition")),
-        "ENTITIES": ("_POLYMORPHIC_LIST", "entities", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
+        "ENTITYS": ("_POLYMORPHIC_LIST", "_entities", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
         "EVENTS": ("_POLYMORPHIC_LIST", "events", ["BswInterruptEvent", "BswOperationInvokedEvent", "BswScheduleEvent"]),
         "EXCLUSIVE-AREA-POLICIES": lambda obj, elem: obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswExclusiveAreaPolicy")),
         "INCLUDED-DATA-TYPE-SETS": lambda obj, elem: obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedDataTypeSet")),
@@ -140,7 +141,7 @@ class BswInternalBehavior(InternalBehavior):
         self.bsw_per_instance_memory_policies: list[BswPerInstanceMemoryPolicy] = []
         self.client_policies: list[BswClientPolicy] = []
         self.distinguished_partitions: list[BswDistinguishedPartition] = []
-        self.entities: list[BswModuleEntity] = []
+        self._entities: list[BswModuleEntity] = []
         self.events: list[BswEvent] = []
         self.exclusive_area_policies: list[BswExclusiveAreaPolicy] = []
         self.included_data_type_sets: list[IncludedDataTypeSet] = []
@@ -158,6 +159,17 @@ class BswInternalBehavior(InternalBehavior):
         self.service_dependencies: list[BswServiceDependency] = []
         self.trigger_direct_implementations: list[BswTriggerDirectImplementation] = []
         self.variation_point_proxies: list[VariationPointProxy] = []
+    @property
+    @xml_element_name("ENTITYS/BSW-SCHEDULABLE-ENTITY")
+    def entities(self) -> list[BswModuleEntity]:
+        """Get entities with custom XML element name."""
+        return self._entities
+
+    @entities.setter
+    def entities(self, value: list[BswModuleEntity]) -> None:
+        """Set entities with custom XML element name."""
+        self._entities = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize BswInternalBehavior to XML element.
@@ -222,9 +234,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize entities (list to container "ENTITIES")
+        # Serialize entities (list to container "ENTITYS")
         if self.entities:
-            wrapper = ET.Element("ENTITIES")
+            wrapper = ET.Element("ENTITYS")
             for item in self.entities:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntity")
                 if serialized is not None:
@@ -437,16 +449,16 @@ class BswInternalBehavior(InternalBehavior):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.distinguished_partitions.append(SerializationHelper.deserialize_by_tag(item_elem, "BswDistinguishedPartition"))
-            elif tag == "ENTITIES":
+            elif tag == "ENTITYS":
                 # Check first child element for concrete type
                 if len(child) > 0:
                     concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
                     if concrete_tag == "BSW-CALLED-ENTITY":
-                        obj.entities.append(SerializationHelper.deserialize_by_tag(child[0], "BswCalledEntity"))
+                        obj._entities.append(SerializationHelper.deserialize_by_tag(child[0], "BswCalledEntity"))
                     elif concrete_tag == "BSW-INTERRUPT-ENTITY":
-                        obj.entities.append(SerializationHelper.deserialize_by_tag(child[0], "BswInterruptEntity"))
+                        obj._entities.append(SerializationHelper.deserialize_by_tag(child[0], "BswInterruptEntity"))
                     elif concrete_tag == "BSW-SCHEDULABLE-ENTITY":
-                        obj.entities.append(SerializationHelper.deserialize_by_tag(child[0], "BswSchedulableEntity"))
+                        obj._entities.append(SerializationHelper.deserialize_by_tag(child[0], "BswSchedulableEntity"))
             elif tag == "EVENTS":
                 # Check first child element for concrete type
                 if len(child) > 0:
