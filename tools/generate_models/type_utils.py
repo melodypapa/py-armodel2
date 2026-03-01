@@ -591,9 +591,11 @@ def flatten_atp_mixed_attributes(
         List of attributes with atpMixed children flattened into it
     """
     result = []
+    seen_attr_names = set()  # Track attribute names to prevent duplicates
 
     for attr in attributes:
         attr_type = attr.get("type", "")
+        attr_name = attr.get("name", "")
 
         # Check if this attribute's type is atpMixed (case-insensitive match)
         is_atp_mixed_type = False
@@ -619,9 +621,16 @@ def flatten_atp_mixed_attributes(
 
         if is_atp_mixed_type:
             # Flatten: add the child attributes instead of the wrapper attribute
-            result.extend(atp_mixed_children)
+            # But skip duplicates (prefer parent's own attributes)
+            for child_attr in atp_mixed_children:
+                child_attr_name = child_attr.get("name", "")
+                if child_attr_name not in seen_attr_names:
+                    result.append(child_attr)
+                    seen_attr_names.add(child_attr_name)
         else:
-            # Keep the original attribute
-            result.append(attr)
+            # Keep the original attribute, but skip if duplicate
+            if attr_name not in seen_attr_names:
+                result.append(attr)
+                seen_attr_names.add(attr_name)
 
     return result
