@@ -31,7 +31,15 @@ class DiagnosticReadDTCInformation(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-READ-D-T-C-INFORMATION"
+
+
     read_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "READ-REF": lambda obj, elem: setattr(obj, "read_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticReadDTCInformation."""
         super().__init__()
@@ -43,9 +51,8 @@ class DiagnosticReadDTCInformation(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticReadDTCInformation, self).serialize()
@@ -90,11 +97,12 @@ class DiagnosticReadDTCInformation(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticReadDTCInformation, cls).deserialize(element)
 
-        # Parse read_ref
-        child = SerializationHelper.find_child_element(element, "READ-REF")
-        if child is not None:
-            read_ref_value = ARRef.deserialize(child)
-            obj.read_ref = read_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "READ-REF":
+                setattr(obj, "read_ref", ARRef.deserialize(child))
 
         return obj
 

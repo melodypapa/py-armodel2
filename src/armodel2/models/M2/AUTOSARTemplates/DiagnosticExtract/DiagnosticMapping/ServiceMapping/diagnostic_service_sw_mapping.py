@@ -40,6 +40,9 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SERVICE-SW-MAPPING"
+
+
     accessed_data_ref: Optional[ARRef]
     diagnostic_data_ref: Optional[ARRef]
     diagnostic_ref: Optional[ARRef]
@@ -48,6 +51,18 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
     mapped_swc: Optional[Any]
     parameter: Optional[DiagnosticParameter]
     service_instance_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESSED-DATA-REF": ("_POLYMORPHIC", "accessed_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "DIAGNOSTIC-DATA-REF": lambda obj, elem: setattr(obj, "diagnostic_data_ref", ARRef.deserialize(elem)),
+        "DIAGNOSTIC-REF": lambda obj, elem: setattr(obj, "diagnostic_ref", ARRef.deserialize(elem)),
+        "MAPPED-BSW-REF": lambda obj, elem: setattr(obj, "mapped_bsw_ref", ARRef.deserialize(elem)),
+        "MAPPED-FLAT-SWC-REF": lambda obj, elem: setattr(obj, "mapped_flat_swc_ref", ARRef.deserialize(elem)),
+        "MAPPED-SWC": lambda obj, elem: setattr(obj, "mapped_swc", SerializationHelper.deserialize_by_tag(elem, "any (SwcService)")),
+        "PARAMETER": lambda obj, elem: setattr(obj, "parameter", SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
+        "SERVICE-INSTANCE-REF": lambda obj, elem: setattr(obj, "service_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticServiceSwMapping."""
         super().__init__()
@@ -66,9 +81,8 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticServiceSwMapping, self).serialize()
@@ -211,53 +225,26 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticServiceSwMapping, cls).deserialize(element)
 
-        # Parse accessed_data_ref
-        child = SerializationHelper.find_child_element(element, "ACCESSED-DATA-REF")
-        if child is not None:
-            accessed_data_ref_value = ARRef.deserialize(child)
-            obj.accessed_data_ref = accessed_data_ref_value
-
-        # Parse diagnostic_data_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-DATA-REF")
-        if child is not None:
-            diagnostic_data_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_data_ref = diagnostic_data_ref_value
-
-        # Parse diagnostic_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-REF")
-        if child is not None:
-            diagnostic_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_ref = diagnostic_ref_value
-
-        # Parse mapped_bsw_ref
-        child = SerializationHelper.find_child_element(element, "MAPPED-BSW-REF")
-        if child is not None:
-            mapped_bsw_ref_value = ARRef.deserialize(child)
-            obj.mapped_bsw_ref = mapped_bsw_ref_value
-
-        # Parse mapped_flat_swc_ref
-        child = SerializationHelper.find_child_element(element, "MAPPED-FLAT-SWC-REF")
-        if child is not None:
-            mapped_flat_swc_ref_value = ARRef.deserialize(child)
-            obj.mapped_flat_swc_ref = mapped_flat_swc_ref_value
-
-        # Parse mapped_swc
-        child = SerializationHelper.find_child_element(element, "MAPPED-SWC")
-        if child is not None:
-            mapped_swc_value = child.text
-            obj.mapped_swc = mapped_swc_value
-
-        # Parse parameter
-        child = SerializationHelper.find_child_element(element, "PARAMETER")
-        if child is not None:
-            parameter_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter")
-            obj.parameter = parameter_value
-
-        # Parse service_instance_ref
-        child = SerializationHelper.find_child_element(element, "SERVICE-INSTANCE-REF")
-        if child is not None:
-            service_instance_ref_value = ARRef.deserialize(child)
-            obj.service_instance_ref = service_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ACCESSED-DATA-REF":
+                setattr(obj, "accessed_data_ref", ARRef.deserialize(child))
+            elif tag == "DIAGNOSTIC-DATA-REF":
+                setattr(obj, "diagnostic_data_ref", ARRef.deserialize(child))
+            elif tag == "DIAGNOSTIC-REF":
+                setattr(obj, "diagnostic_ref", ARRef.deserialize(child))
+            elif tag == "MAPPED-BSW-REF":
+                setattr(obj, "mapped_bsw_ref", ARRef.deserialize(child))
+            elif tag == "MAPPED-FLAT-SWC-REF":
+                setattr(obj, "mapped_flat_swc_ref", ARRef.deserialize(child))
+            elif tag == "MAPPED-SWC":
+                setattr(obj, "mapped_swc", SerializationHelper.deserialize_by_tag(child, "any (SwcService)"))
+            elif tag == "PARAMETER":
+                setattr(obj, "parameter", SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter"))
+            elif tag == "SERVICE-INSTANCE-REF":
+                setattr(obj, "service_instance_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -33,8 +33,17 @@ class TargetIPduRef(ARObject):
         """
         return False
 
+    _XML_TAG = "TARGET-I-PDU-REF"
+
+
     default_value_ref: Optional[ARRef]
     target_i_pdu_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-VALUE-REF": lambda obj, elem: setattr(obj, "default_value_ref", ARRef.deserialize(elem)),
+        "TARGET-I-PDU-REF": lambda obj, elem: setattr(obj, "target_i_pdu_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TargetIPduRef."""
         super().__init__()
@@ -47,9 +56,8 @@ class TargetIPduRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TargetIPduRef, self).serialize()
@@ -108,17 +116,14 @@ class TargetIPduRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TargetIPduRef, cls).deserialize(element)
 
-        # Parse default_value_ref
-        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE-REF")
-        if child is not None:
-            default_value_ref_value = ARRef.deserialize(child)
-            obj.default_value_ref = default_value_ref_value
-
-        # Parse target_i_pdu_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-I-PDU-REF")
-        if child is not None:
-            target_i_pdu_ref_value = ARRef.deserialize(child)
-            obj.target_i_pdu_ref = target_i_pdu_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEFAULT-VALUE-REF":
+                setattr(obj, "default_value_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-I-PDU-REF":
+                setattr(obj, "target_i_pdu_ref", ARRef.deserialize(child))
 
         return obj
 

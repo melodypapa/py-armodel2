@@ -48,11 +48,23 @@ class PduTriggering(Identifiable):
         """
         return False
 
+    _XML_TAG = "PDU-TRIGGERING"
+
+
     i_pdu_port_refs: list[ARRef]
     i_pdu_ref: Optional[ARRef]
     i_signal_refs: list[ARRef]
     sec_oc_crypto_service_ref: Optional[ARRef]
     trigger_i_pdu_send_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "I-PDU-PORT-REFS": lambda obj, elem: [obj.i_pdu_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "I-PDU-REF": ("_POLYMORPHIC", "i_pdu_ref", ["GeneralPurposePdu", "IPdu", "NmPdu", "UserDefinedPdu"]),
+        "I-SIGNAL-REFS": lambda obj, elem: [obj.i_signal_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "SEC-OC-CRYPTO-SERVICE-REF": lambda obj, elem: setattr(obj, "sec_oc_crypto_service_ref", ARRef.deserialize(elem)),
+        "TRIGGER-I-PDU-SEND-REFS": lambda obj, elem: [obj.trigger_i_pdu_send_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize PduTriggering."""
         super().__init__()
@@ -68,9 +80,8 @@ class PduTriggering(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PduTriggering, self).serialize()
@@ -180,65 +191,26 @@ class PduTriggering(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PduTriggering, cls).deserialize(element)
 
-        # Parse i_pdu_port_refs (list from container "I-PDU-PORT-REFS")
-        obj.i_pdu_port_refs = []
-        container = SerializationHelper.find_child_element(element, "I-PDU-PORT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.i_pdu_port_refs.append(child_value)
-
-        # Parse i_pdu_ref
-        child = SerializationHelper.find_child_element(element, "I-PDU-REF")
-        if child is not None:
-            i_pdu_ref_value = ARRef.deserialize(child)
-            obj.i_pdu_ref = i_pdu_ref_value
-
-        # Parse i_signal_refs (list from container "I-SIGNAL-REFS")
-        obj.i_signal_refs = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.i_signal_refs.append(child_value)
-
-        # Parse sec_oc_crypto_service_ref
-        child = SerializationHelper.find_child_element(element, "SEC-OC-CRYPTO-SERVICE-REF")
-        if child is not None:
-            sec_oc_crypto_service_ref_value = ARRef.deserialize(child)
-            obj.sec_oc_crypto_service_ref = sec_oc_crypto_service_ref_value
-
-        # Parse trigger_i_pdu_send_refs (list from container "TRIGGER-I-PDU-SEND-REFS")
-        obj.trigger_i_pdu_send_refs = []
-        container = SerializationHelper.find_child_element(element, "TRIGGER-I-PDU-SEND-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.trigger_i_pdu_send_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "I-PDU-PORT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.i_pdu_port_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "I-PDU-REF":
+                setattr(obj, "i_pdu_ref", ARRef.deserialize(child))
+            elif tag == "I-SIGNAL-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.i_signal_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SEC-OC-CRYPTO-SERVICE-REF":
+                setattr(obj, "sec_oc_crypto_service_ref", ARRef.deserialize(child))
+            elif tag == "TRIGGER-I-PDU-SEND-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.trigger_i_pdu_send_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

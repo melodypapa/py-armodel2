@@ -37,9 +37,19 @@ class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-INHIBIT-SOURCE-EVENT-MAPPING"
+
+
     diagnostic_event_ref: Optional[ARRef]
     event_group_group_ref: Optional[ARRef]
     inhibition_source_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTIC-EVENT-REF": lambda obj, elem: setattr(obj, "diagnostic_event_ref", ARRef.deserialize(elem)),
+        "EVENT-GROUP-GROUP-REF": lambda obj, elem: setattr(obj, "event_group_group_ref", ARRef.deserialize(elem)),
+        "INHIBITION-SOURCE-REF": lambda obj, elem: setattr(obj, "inhibition_source_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticInhibitSourceEventMapping."""
         super().__init__()
@@ -53,9 +63,8 @@ class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticInhibitSourceEventMapping, self).serialize()
@@ -128,23 +137,16 @@ class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticInhibitSourceEventMapping, cls).deserialize(element)
 
-        # Parse diagnostic_event_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-EVENT-REF")
-        if child is not None:
-            diagnostic_event_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_event_ref = diagnostic_event_ref_value
-
-        # Parse event_group_group_ref
-        child = SerializationHelper.find_child_element(element, "EVENT-GROUP-GROUP-REF")
-        if child is not None:
-            event_group_group_ref_value = ARRef.deserialize(child)
-            obj.event_group_group_ref = event_group_group_ref_value
-
-        # Parse inhibition_source_ref
-        child = SerializationHelper.find_child_element(element, "INHIBITION-SOURCE-REF")
-        if child is not None:
-            inhibition_source_ref_value = ARRef.deserialize(child)
-            obj.inhibition_source_ref = inhibition_source_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DIAGNOSTIC-EVENT-REF":
+                setattr(obj, "diagnostic_event_ref", ARRef.deserialize(child))
+            elif tag == "EVENT-GROUP-GROUP-REF":
+                setattr(obj, "event_group_group_ref", ARRef.deserialize(child))
+            elif tag == "INHIBITION-SOURCE-REF":
+                setattr(obj, "inhibition_source_ref", ARRef.deserialize(child))
 
         return obj
 

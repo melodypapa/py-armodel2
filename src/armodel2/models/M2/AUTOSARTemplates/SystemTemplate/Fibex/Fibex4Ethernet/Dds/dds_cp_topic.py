@@ -37,8 +37,17 @@ class DdsCpTopic(Identifiable):
         """
         return False
 
+    _XML_TAG = "DDS-CP-TOPIC"
+
+
     dds_partition_ref: Optional[ARRef]
     topic_name: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "DDS-PARTITION-REF": lambda obj, elem: setattr(obj, "dds_partition_ref", ARRef.deserialize(elem)),
+        "TOPIC-NAME": lambda obj, elem: setattr(obj, "topic_name", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpTopic."""
         super().__init__()
@@ -51,9 +60,8 @@ class DdsCpTopic(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpTopic, self).serialize()
@@ -112,17 +120,14 @@ class DdsCpTopic(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpTopic, cls).deserialize(element)
 
-        # Parse dds_partition_ref
-        child = SerializationHelper.find_child_element(element, "DDS-PARTITION-REF")
-        if child is not None:
-            dds_partition_ref_value = ARRef.deserialize(child)
-            obj.dds_partition_ref = dds_partition_ref_value
-
-        # Parse topic_name
-        child = SerializationHelper.find_child_element(element, "TOPIC-NAME")
-        if child is not None:
-            topic_name_value = child.text
-            obj.topic_name = topic_name_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DDS-PARTITION-REF":
+                setattr(obj, "dds_partition_ref", ARRef.deserialize(child))
+            elif tag == "TOPIC-NAME":
+                setattr(obj, "topic_name", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

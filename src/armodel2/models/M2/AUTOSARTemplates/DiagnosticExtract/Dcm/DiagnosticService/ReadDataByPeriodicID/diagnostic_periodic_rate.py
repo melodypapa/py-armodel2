@@ -29,8 +29,17 @@ class DiagnosticPeriodicRate(ARObject):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-PERIODIC-RATE"
+
+
     period: Optional[TimeValue]
     periodic_rate: Optional[DiagnosticPeriodicRate]
+    _DESERIALIZE_DISPATCH = {
+        "PERIOD": lambda obj, elem: setattr(obj, "period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "PERIODIC-RATE": lambda obj, elem: setattr(obj, "periodic_rate", SerializationHelper.deserialize_by_tag(elem, "DiagnosticPeriodicRate")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticPeriodicRate."""
         super().__init__()
@@ -43,9 +52,8 @@ class DiagnosticPeriodicRate(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticPeriodicRate, self).serialize()
@@ -104,17 +112,14 @@ class DiagnosticPeriodicRate(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticPeriodicRate, cls).deserialize(element)
 
-        # Parse period
-        child = SerializationHelper.find_child_element(element, "PERIOD")
-        if child is not None:
-            period_value = child.text
-            obj.period = period_value
-
-        # Parse periodic_rate
-        child = SerializationHelper.find_child_element(element, "PERIODIC-RATE")
-        if child is not None:
-            periodic_rate_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticPeriodicRate")
-            obj.periodic_rate = periodic_rate_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PERIOD":
+                setattr(obj, "period", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "PERIODIC-RATE":
+                setattr(obj, "periodic_rate", SerializationHelper.deserialize_by_tag(child, "DiagnosticPeriodicRate"))
 
         return obj
 

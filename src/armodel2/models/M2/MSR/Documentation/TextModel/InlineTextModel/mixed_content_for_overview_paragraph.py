@@ -65,6 +65,20 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
     tt: Tt
     xref: Xref
     xref_target: XrefTarget
+    _DESERIALIZE_DISPATCH = {
+        "BR": lambda obj, elem: setattr(obj, "br", SerializationHelper.deserialize_by_tag(elem, "Br")),
+        "E": lambda obj, elem: setattr(obj, "e", SerializationHelper.deserialize_by_tag(elem, "EmphasisText")),
+        "FT": lambda obj, elem: setattr(obj, "ft", SerializationHelper.deserialize_by_tag(elem, "SlOverviewParagraph")),
+        "IE": lambda obj, elem: setattr(obj, "ie", SerializationHelper.deserialize_by_tag(elem, "IndexEntry")),
+        "SUB": lambda obj, elem: setattr(obj, "sub", SerializationHelper.deserialize_by_tag(elem, "Superscript")),
+        "SUP": lambda obj, elem: setattr(obj, "sup", SerializationHelper.deserialize_by_tag(elem, "Superscript")),
+        "TRACE-REF": ("_POLYMORPHIC", "trace_ref", ["StructuredReq", "TimingConstraint", "TraceableTable", "TraceableText"]),
+        "TT": lambda obj, elem: setattr(obj, "tt", SerializationHelper.deserialize_by_tag(elem, "Tt")),
+        "XREF": lambda obj, elem: setattr(obj, "xref", SerializationHelper.deserialize_by_tag(elem, "Xref")),
+        "XREF-TARGET": lambda obj, elem: setattr(obj, "xref_target", SerializationHelper.deserialize_by_tag(elem, "XrefTarget")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MixedContentForOverviewParagraph."""
         super().__init__()
@@ -85,9 +99,8 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MixedContentForOverviewParagraph, self).serialize()
@@ -258,65 +271,30 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MixedContentForOverviewParagraph, cls).deserialize(element)
 
-        # Parse br
-        child = SerializationHelper.find_child_element(element, "BR")
-        if child is not None:
-            br_value = SerializationHelper.deserialize_by_tag(child, "Br")
-            obj.br = br_value
-
-        # Parse e
-        child = SerializationHelper.find_child_element(element, "E")
-        if child is not None:
-            e_value = SerializationHelper.deserialize_by_tag(child, "EmphasisText")
-            obj.e = e_value
-
-        # Parse ft
-        child = SerializationHelper.find_child_element(element, "FT")
-        if child is not None:
-            ft_value = SerializationHelper.deserialize_by_tag(child, "SlOverviewParagraph")
-            obj.ft = ft_value
-
-        # Parse ie
-        child = SerializationHelper.find_child_element(element, "IE")
-        if child is not None:
-            ie_value = SerializationHelper.deserialize_by_tag(child, "IndexEntry")
-            obj.ie = ie_value
-
-        # Parse sub
-        child = SerializationHelper.find_child_element(element, "SUB")
-        if child is not None:
-            sub_value = child.text
-            obj.sub = sub_value
-
-        # Parse sup
-        child = SerializationHelper.find_child_element(element, "SUP")
-        if child is not None:
-            sup_value = child.text
-            obj.sup = sup_value
-
-        # Parse trace_ref
-        child = SerializationHelper.find_child_element(element, "TRACE-REF")
-        if child is not None:
-            trace_ref_value = ARRef.deserialize(child)
-            obj.trace_ref = trace_ref_value
-
-        # Parse tt
-        child = SerializationHelper.find_child_element(element, "TT")
-        if child is not None:
-            tt_value = SerializationHelper.deserialize_by_tag(child, "Tt")
-            obj.tt = tt_value
-
-        # Parse xref
-        child = SerializationHelper.find_child_element(element, "XREF")
-        if child is not None:
-            xref_value = SerializationHelper.deserialize_by_tag(child, "Xref")
-            obj.xref = xref_value
-
-        # Parse xref_target
-        child = SerializationHelper.find_child_element(element, "XREF-TARGET")
-        if child is not None:
-            xref_target_value = SerializationHelper.deserialize_by_tag(child, "XrefTarget")
-            obj.xref_target = xref_target_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BR":
+                setattr(obj, "br", SerializationHelper.deserialize_by_tag(child, "Br"))
+            elif tag == "E":
+                setattr(obj, "e", SerializationHelper.deserialize_by_tag(child, "EmphasisText"))
+            elif tag == "FT":
+                setattr(obj, "ft", SerializationHelper.deserialize_by_tag(child, "SlOverviewParagraph"))
+            elif tag == "IE":
+                setattr(obj, "ie", SerializationHelper.deserialize_by_tag(child, "IndexEntry"))
+            elif tag == "SUB":
+                setattr(obj, "sub", SerializationHelper.deserialize_by_tag(child, "Superscript"))
+            elif tag == "SUP":
+                setattr(obj, "sup", SerializationHelper.deserialize_by_tag(child, "Superscript"))
+            elif tag == "TRACE-REF":
+                setattr(obj, "trace_ref", ARRef.deserialize(child))
+            elif tag == "TT":
+                setattr(obj, "tt", SerializationHelper.deserialize_by_tag(child, "Tt"))
+            elif tag == "XREF":
+                setattr(obj, "xref", SerializationHelper.deserialize_by_tag(child, "Xref"))
+            elif tag == "XREF-TARGET":
+                setattr(obj, "xref_target", SerializationHelper.deserialize_by_tag(child, "XrefTarget"))
 
         return obj
 

@@ -281,11 +281,44 @@ class DocumentationBlock(ARObject):
 
         return elem
 
+    _DESERIALIZE_DISPATCH = {
+        "DEF-LIST-REF": lambda obj, elem: setattr(obj, 'def_list_ref', ARRef.deserialize(elem)),
+        "FIGURE": lambda obj, elem: obj.figure.append(
+            SerializationHelper.deserialize_by_tag(elem, "MlFigure")
+        ),
+        "FORMULA": lambda obj, elem: setattr(
+            obj, 'formula', SerializationHelper.deserialize_by_tag(elem, "MlFormula")
+        ),
+        "LABELED-LIST-LABEL-REF": lambda obj, elem: setattr(
+            obj, 'labeled_list_label_ref', ARRef.deserialize(elem)
+        ),
+        "MSR-QUERY-P2": lambda obj, elem: setattr(
+            obj, 'msr_query_p2', SerializationHelper.deserialize_by_tag(elem, "MsrQueryP2")
+        ),
+        "NOTE": lambda obj, elem: setattr(
+            obj, 'note', SerializationHelper.deserialize_by_tag(elem, "Note")
+        ),
+        "P": lambda obj, elem: setattr(obj, 'p', DocumentationBlock._deserialize_p(elem)),
+        "LIST": lambda obj, elem: obj.list.append(
+            SerializationHelper.deserialize_by_tag(elem, "ARList")
+        ),
+        "STRUCTURED-REQ": lambda obj, elem: setattr(
+            obj, 'structured_req', SerializationHelper.deserialize_by_tag(elem, "StructuredReq")
+        ),
+        "TRACE": lambda obj, elem: setattr(
+            obj, 'trace', SerializationHelper.deserialize_by_tag(elem, "TraceableText")
+        ),
+        "VERBATIM": lambda obj, elem: setattr(
+            obj, 'verbatim', DocumentationBlock._deserialize_verbatim(elem)
+        ),
+    }
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DocumentationBlock":
         """Deserialize XML element to DocumentationBlock object.
 
         Uses static dispatch table for O(1) tag-to-handler lookup.
+        Calls super().deserialize() first to handle inherited attributes from ARObject.
 
         Args:
             element: XML element to deserialize from
@@ -293,38 +326,16 @@ class DocumentationBlock(ARObject):
         Returns:
             Deserialized DocumentationBlock object
         """
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, deserialize inherited attributes from ARObject (checksum, timestamp)
+        obj = super(DocumentationBlock, cls).deserialize(element)
 
-        # Single-pass deserialization with dispatch handlers
+        # Then process DocumentationBlock-specific elements with dispatch table
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-
-            if tag == "DEF-LIST-REF":
-                obj.def_list_ref = ARRef.deserialize(child)
-            elif tag == "FIGURE":
-                obj.figure.append(SerializationHelper.deserialize_by_tag(child, "MlFigure"))
-            elif tag == "FORMULA":
-                obj.formula = SerializationHelper.deserialize_by_tag(child, "MlFormula")
-            elif tag == "LABELED-LIST-LABEL-REF":
-                obj.labeled_list_label_ref = ARRef.deserialize(child)
-            elif tag == "MSR-QUERY-P2":
-                obj.msr_query_p2 = SerializationHelper.deserialize_by_tag(child, "MsrQueryP2")
-            elif tag == "NOTE":
-                obj.note = SerializationHelper.deserialize_by_tag(child, "Note")
-            elif tag == "P":
-                obj.p = DocumentationBlock._deserialize_p(child)
-            elif tag == "LIST":
-                list_value = SerializationHelper.deserialize_by_tag(child, "ARList")
-                if list_value is not None:
-                    obj.list.append(list_value)
-            elif tag == "STRUCTURED-REQ":
-                obj.structured_req = SerializationHelper.deserialize_by_tag(child, "StructuredReq")
-            elif tag == "TRACE":
-                obj.trace = SerializationHelper.deserialize_by_tag(child, "TraceableText")
-            elif tag == "VERBATIM":
-                obj.verbatim = DocumentationBlock._deserialize_verbatim(child)
+            handler = cls._DESERIALIZE_DISPATCH.get(tag)
+            if handler is not None:
+                handler(obj, child)
 
         return obj
 
@@ -366,5 +377,4 @@ class DocumentationBlockBuilder:
         Returns:
             DocumentationBlock instance
         """
-        # TODO: Add validation
         return self._obj

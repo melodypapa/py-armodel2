@@ -37,8 +37,17 @@ class EcucEnumerationParamDef(EcucParameterDef):
         """
         return False
 
+    _XML_TAG = "ECUC-ENUMERATION-PARAM-DEF"
+
+
     default_value: Optional[Identifier]
     literals: list[EcucEnumerationLiteralDef]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "LITERALS": lambda obj, elem: obj.literals.append(SerializationHelper.deserialize_by_tag(elem, "EcucEnumerationLiteralDef")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucEnumerationParamDef."""
         super().__init__()
@@ -51,9 +60,8 @@ class EcucEnumerationParamDef(EcucParameterDef):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucEnumerationParamDef, self).serialize()
@@ -108,21 +116,16 @@ class EcucEnumerationParamDef(EcucParameterDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucEnumerationParamDef, cls).deserialize(element)
 
-        # Parse default_value
-        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE")
-        if child is not None:
-            default_value_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.default_value = default_value_value
-
-        # Parse literals (list from container "LITERALS")
-        obj.literals = []
-        container = SerializationHelper.find_child_element(element, "LITERALS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.literals.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEFAULT-VALUE":
+                setattr(obj, "default_value", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "LITERALS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.literals.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucEnumerationLiteralDef"))
 
         return obj
 

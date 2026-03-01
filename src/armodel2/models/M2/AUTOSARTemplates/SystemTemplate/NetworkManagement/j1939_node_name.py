@@ -29,6 +29,9 @@ class J1939NodeName(ARObject):
         """
         return False
 
+    _XML_TAG = "J1939-NODE-NAME"
+
+
     arbitrary_address: Optional[Any]
     ecu_instance: Optional[Integer]
     function: Optional[Integer]
@@ -38,6 +41,19 @@ class J1939NodeName(ARObject):
     manufacturer_code: Optional[Integer]
     vehicle_system: Optional[Integer]
     vehicle_system_instance: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "ARBITRARY-ADDRESS": lambda obj, elem: setattr(obj, "arbitrary_address", SerializationHelper.deserialize_by_tag(elem, "any (BooleanCapable)")),
+        "ECU-INSTANCE": lambda obj, elem: setattr(obj, "ecu_instance", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "FUNCTION": lambda obj, elem: setattr(obj, "function", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "FUNCTION-INSTANCE": lambda obj, elem: setattr(obj, "function_instance", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "IDENTITIY-NUMBER": lambda obj, elem: setattr(obj, "identitiy_number", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "INDUSTRY-GROUP": lambda obj, elem: setattr(obj, "industry_group", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MANUFACTURER-CODE": lambda obj, elem: setattr(obj, "manufacturer_code", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "VEHICLE-SYSTEM": lambda obj, elem: setattr(obj, "vehicle_system", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "VEHICLE-SYSTEM-INSTANCE": lambda obj, elem: setattr(obj, "vehicle_system_instance", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939NodeName."""
         super().__init__()
@@ -57,9 +73,8 @@ class J1939NodeName(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939NodeName, self).serialize()
@@ -216,59 +231,28 @@ class J1939NodeName(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939NodeName, cls).deserialize(element)
 
-        # Parse arbitrary_address
-        child = SerializationHelper.find_child_element(element, "ARBITRARY-ADDRESS")
-        if child is not None:
-            arbitrary_address_value = child.text
-            obj.arbitrary_address = arbitrary_address_value
-
-        # Parse ecu_instance
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE")
-        if child is not None:
-            ecu_instance_value = child.text
-            obj.ecu_instance = ecu_instance_value
-
-        # Parse function
-        child = SerializationHelper.find_child_element(element, "FUNCTION")
-        if child is not None:
-            function_value = child.text
-            obj.function = function_value
-
-        # Parse function_instance
-        child = SerializationHelper.find_child_element(element, "FUNCTION-INSTANCE")
-        if child is not None:
-            function_instance_value = child.text
-            obj.function_instance = function_instance_value
-
-        # Parse identitiy_number
-        child = SerializationHelper.find_child_element(element, "IDENTITIY-NUMBER")
-        if child is not None:
-            identitiy_number_value = child.text
-            obj.identitiy_number = identitiy_number_value
-
-        # Parse industry_group
-        child = SerializationHelper.find_child_element(element, "INDUSTRY-GROUP")
-        if child is not None:
-            industry_group_value = child.text
-            obj.industry_group = industry_group_value
-
-        # Parse manufacturer_code
-        child = SerializationHelper.find_child_element(element, "MANUFACTURER-CODE")
-        if child is not None:
-            manufacturer_code_value = child.text
-            obj.manufacturer_code = manufacturer_code_value
-
-        # Parse vehicle_system
-        child = SerializationHelper.find_child_element(element, "VEHICLE-SYSTEM")
-        if child is not None:
-            vehicle_system_value = child.text
-            obj.vehicle_system = vehicle_system_value
-
-        # Parse vehicle_system_instance
-        child = SerializationHelper.find_child_element(element, "VEHICLE-SYSTEM-INSTANCE")
-        if child is not None:
-            vehicle_system_instance_value = child.text
-            obj.vehicle_system_instance = vehicle_system_instance_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ARBITRARY-ADDRESS":
+                setattr(obj, "arbitrary_address", SerializationHelper.deserialize_by_tag(child, "any (BooleanCapable)"))
+            elif tag == "ECU-INSTANCE":
+                setattr(obj, "ecu_instance", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "FUNCTION":
+                setattr(obj, "function", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "FUNCTION-INSTANCE":
+                setattr(obj, "function_instance", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "IDENTITIY-NUMBER":
+                setattr(obj, "identitiy_number", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "INDUSTRY-GROUP":
+                setattr(obj, "industry_group", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MANUFACTURER-CODE":
+                setattr(obj, "manufacturer_code", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "VEHICLE-SYSTEM":
+                setattr(obj, "vehicle_system", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "VEHICLE-SYSTEM-INSTANCE":
+                setattr(obj, "vehicle_system_instance", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

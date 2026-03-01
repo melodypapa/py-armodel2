@@ -31,8 +31,17 @@ class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-AUTH-TRANSMIT-CERTIFICATE-MAPPING"
+
+
     crypto_service_refs: list[Any]
     service_instance_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CRYPTO-SERVICE-REFS": lambda obj, elem: [obj.crypto_service_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "SERVICE-INSTANCE-REF": lambda obj, elem: setattr(obj, "service_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticAuthTransmitCertificateMapping."""
         super().__init__()
@@ -45,9 +54,8 @@ class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticAuthTransmitCertificateMapping, self).serialize()
@@ -109,27 +117,16 @@ class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAuthTransmitCertificateMapping, cls).deserialize(element)
 
-        # Parse crypto_service_refs (list from container "CRYPTO-SERVICE-REFS")
-        obj.crypto_service_refs = []
-        container = SerializationHelper.find_child_element(element, "CRYPTO-SERVICE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.crypto_service_refs.append(child_value)
-
-        # Parse service_instance_ref
-        child = SerializationHelper.find_child_element(element, "SERVICE-INSTANCE-REF")
-        if child is not None:
-            service_instance_ref_value = ARRef.deserialize(child)
-            obj.service_instance_ref = service_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CRYPTO-SERVICE-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.crypto_service_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SERVICE-INSTANCE-REF":
+                setattr(obj, "service_instance_ref", ARRef.deserialize(child))
 
         return obj
 

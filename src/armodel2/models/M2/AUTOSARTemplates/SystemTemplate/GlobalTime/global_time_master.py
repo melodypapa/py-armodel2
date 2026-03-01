@@ -47,6 +47,15 @@ class GlobalTimeMaster(Identifiable, ABC):
     immediate: Optional[TimeValue]
     is_system_wide: Optional[Boolean]
     sync_period: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CONNECTOR-REF": ("_POLYMORPHIC", "communication_connector_ref", ["CanCommunicationConnector", "TtcanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "ICV-SECURED": lambda obj, elem: setattr(obj, "icv_secured", GlobalTimeIcvSupportEnum.deserialize(elem)),
+        "IMMEDIATE": lambda obj, elem: setattr(obj, "immediate", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "IS-SYSTEM-WIDE": lambda obj, elem: setattr(obj, "is_system_wide", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SYNC-PERIOD": lambda obj, elem: setattr(obj, "sync_period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeMaster."""
         super().__init__()
@@ -62,9 +71,8 @@ class GlobalTimeMaster(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeMaster, self).serialize()
@@ -165,35 +173,20 @@ class GlobalTimeMaster(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeMaster, cls).deserialize(element)
 
-        # Parse communication_connector_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
-        if child is not None:
-            communication_connector_ref_value = ARRef.deserialize(child)
-            obj.communication_connector_ref = communication_connector_ref_value
-
-        # Parse icv_secured
-        child = SerializationHelper.find_child_element(element, "ICV-SECURED")
-        if child is not None:
-            icv_secured_value = GlobalTimeIcvSupportEnum.deserialize(child)
-            obj.icv_secured = icv_secured_value
-
-        # Parse immediate
-        child = SerializationHelper.find_child_element(element, "IMMEDIATE")
-        if child is not None:
-            immediate_value = child.text
-            obj.immediate = immediate_value
-
-        # Parse is_system_wide
-        child = SerializationHelper.find_child_element(element, "IS-SYSTEM-WIDE")
-        if child is not None:
-            is_system_wide_value = child.text
-            obj.is_system_wide = is_system_wide_value
-
-        # Parse sync_period
-        child = SerializationHelper.find_child_element(element, "SYNC-PERIOD")
-        if child is not None:
-            sync_period_value = child.text
-            obj.sync_period = sync_period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMMUNICATION-CONNECTOR-REF":
+                setattr(obj, "communication_connector_ref", ARRef.deserialize(child))
+            elif tag == "ICV-SECURED":
+                setattr(obj, "icv_secured", GlobalTimeIcvSupportEnum.deserialize(child))
+            elif tag == "IMMEDIATE":
+                setattr(obj, "immediate", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "IS-SYSTEM-WIDE":
+                setattr(obj, "is_system_wide", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SYNC-PERIOD":
+                setattr(obj, "sync_period", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

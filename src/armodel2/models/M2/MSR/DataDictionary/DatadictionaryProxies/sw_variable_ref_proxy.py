@@ -36,8 +36,17 @@ class SwVariableRefProxy(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-VARIABLE-REF-PROXY"
+
+
     autosar_variable_ref: Optional[ARRef]
     mc_data_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AUTOSAR-VARIABLE-REF-REF": lambda obj, elem: setattr(obj, "autosar_variable_ref", ARRef.deserialize(elem)),
+        "MC-DATA-INSTANCE-REF": lambda obj, elem: setattr(obj, "mc_data_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwVariableRefProxy."""
         super().__init__()
@@ -50,9 +59,8 @@ class SwVariableRefProxy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwVariableRefProxy, self).serialize()
@@ -111,17 +119,14 @@ class SwVariableRefProxy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwVariableRefProxy, cls).deserialize(element)
 
-        # Parse autosar_variable_ref
-        child = SerializationHelper.find_child_element(element, "AUTOSAR-VARIABLE-REF-REF")
-        if child is not None:
-            autosar_variable_ref_value = ARRef.deserialize(child)
-            obj.autosar_variable_ref = autosar_variable_ref_value
-
-        # Parse mc_data_instance_ref
-        child = SerializationHelper.find_child_element(element, "MC-DATA-INSTANCE-REF")
-        if child is not None:
-            mc_data_instance_ref_value = ARRef.deserialize(child)
-            obj.mc_data_instance_ref = mc_data_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AUTOSAR-VARIABLE-REF-REF":
+                setattr(obj, "autosar_variable_ref", ARRef.deserialize(child))
+            elif tag == "MC-DATA-INSTANCE-REF":
+                setattr(obj, "mc_data_instance_ref", ARRef.deserialize(child))
 
         return obj
 

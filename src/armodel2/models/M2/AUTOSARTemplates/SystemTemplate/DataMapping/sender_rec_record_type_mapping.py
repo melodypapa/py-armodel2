@@ -30,7 +30,15 @@ class SenderRecRecordTypeMapping(SenderRecCompositeTypeMapping):
         """
         return False
 
+    _XML_TAG = "SENDER-REC-RECORD-TYPE-MAPPING"
+
+
     record_elements: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "RECORD-ELEMENTS": lambda obj, elem: obj.record_elements.append(SerializationHelper.deserialize_by_tag(elem, "any (SenderRecRecord)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SenderRecRecordTypeMapping."""
         super().__init__()
@@ -42,9 +50,8 @@ class SenderRecRecordTypeMapping(SenderRecCompositeTypeMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SenderRecRecordTypeMapping, self).serialize()
@@ -85,15 +92,14 @@ class SenderRecRecordTypeMapping(SenderRecCompositeTypeMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderRecRecordTypeMapping, cls).deserialize(element)
 
-        # Parse record_elements (list from container "RECORD-ELEMENTS")
-        obj.record_elements = []
-        container = SerializationHelper.find_child_element(element, "RECORD-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.record_elements.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RECORD-ELEMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.record_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SenderRecRecord)"))
 
         return obj
 

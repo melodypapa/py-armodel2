@@ -30,7 +30,15 @@ class DiagnosticAuthTransmitCertificate(DiagnosticAuthentication):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-AUTH-TRANSMIT-CERTIFICATE"
+
+
     certificates: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CERTIFICATES": lambda obj, elem: obj.certificates.append(SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticAuthTransmit)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticAuthTransmitCertificate."""
         super().__init__()
@@ -42,9 +50,8 @@ class DiagnosticAuthTransmitCertificate(DiagnosticAuthentication):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticAuthTransmitCertificate, self).serialize()
@@ -85,15 +92,14 @@ class DiagnosticAuthTransmitCertificate(DiagnosticAuthentication):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAuthTransmitCertificate, cls).deserialize(element)
 
-        # Parse certificates (list from container "CERTIFICATES")
-        obj.certificates = []
-        container = SerializationHelper.find_child_element(element, "CERTIFICATES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.certificates.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CERTIFICATES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.certificates.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticAuthTransmit)"))
 
         return obj
 

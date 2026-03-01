@@ -36,8 +36,17 @@ class RtpTp(TransportProtocolConfiguration):
         """
         return False
 
+    _XML_TAG = "RTP-TP"
+
+
     ssrc: Optional[PositiveInteger]
     tcp_udp_config: Optional[TcpUdpConfig]
+    _DESERIALIZE_DISPATCH = {
+        "SSRC": lambda obj, elem: setattr(obj, "ssrc", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-UDP-CONFIG": ("_POLYMORPHIC", "tcp_udp_config", ["TcpTp", "UdpTp"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RtpTp."""
         super().__init__()
@@ -50,9 +59,8 @@ class RtpTp(TransportProtocolConfiguration):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RtpTp, self).serialize()
@@ -111,17 +119,20 @@ class RtpTp(TransportProtocolConfiguration):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RtpTp, cls).deserialize(element)
 
-        # Parse ssrc
-        child = SerializationHelper.find_child_element(element, "SSRC")
-        if child is not None:
-            ssrc_value = child.text
-            obj.ssrc = ssrc_value
-
-        # Parse tcp_udp_config
-        child = SerializationHelper.find_child_element(element, "TCP-UDP-CONFIG")
-        if child is not None:
-            tcp_udp_config_value = SerializationHelper.deserialize_by_tag(child, "TcpUdpConfig")
-            obj.tcp_udp_config = tcp_udp_config_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SSRC":
+                setattr(obj, "ssrc", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-UDP-CONFIG":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "TCP-TP":
+                        setattr(obj, "tcp_udp_config", SerializationHelper.deserialize_by_tag(child[0], "TcpTp"))
+                    elif concrete_tag == "UDP-TP":
+                        setattr(obj, "tcp_udp_config", SerializationHelper.deserialize_by_tag(child[0], "UdpTp"))
 
         return obj
 

@@ -33,7 +33,15 @@ class EcucQueryExpression(ARObject):
         """
         return False
 
+    _XML_TAG = "ECUC-QUERY-EXPRESSION"
+
+
     config_element_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONFIG-ELEMENT-REF": ("_POLYMORPHIC", "config_element_ref", ["EcucCommonAttributes", "EcucContainerDef", "EcucModuleDef"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucQueryExpression."""
         super().__init__()
@@ -45,9 +53,8 @@ class EcucQueryExpression(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucQueryExpression, self).serialize()
@@ -92,11 +99,12 @@ class EcucQueryExpression(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucQueryExpression, cls).deserialize(element)
 
-        # Parse config_element_ref
-        child = SerializationHelper.find_child_element(element, "CONFIG-ELEMENT-REF")
-        if child is not None:
-            config_element_ref_value = ARRef.deserialize(child)
-            obj.config_element_ref = config_element_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONFIG-ELEMENT-REF":
+                setattr(obj, "config_element_ref", ARRef.deserialize(child))
 
         return obj
 

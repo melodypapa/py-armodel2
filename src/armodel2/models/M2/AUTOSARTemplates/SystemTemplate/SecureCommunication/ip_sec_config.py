@@ -36,8 +36,17 @@ class IPSecConfig(ARObject):
         """
         return False
 
+    _XML_TAG = "I-P-SEC-CONFIG"
+
+
     ip_sec_config_ref: Optional[ARRef]
     ip_sec_rules: list[IPSecRule]
+    _DESERIALIZE_DISPATCH = {
+        "IP-SEC-CONFIG-REF": lambda obj, elem: setattr(obj, "ip_sec_config_ref", ARRef.deserialize(elem)),
+        "IP-SEC-RULES": lambda obj, elem: obj.ip_sec_rules.append(SerializationHelper.deserialize_by_tag(elem, "IPSecRule")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IPSecConfig."""
         super().__init__()
@@ -50,9 +59,8 @@ class IPSecConfig(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IPSecConfig, self).serialize()
@@ -107,21 +115,16 @@ class IPSecConfig(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IPSecConfig, cls).deserialize(element)
 
-        # Parse ip_sec_config_ref
-        child = SerializationHelper.find_child_element(element, "IP-SEC-CONFIG-REF")
-        if child is not None:
-            ip_sec_config_ref_value = ARRef.deserialize(child)
-            obj.ip_sec_config_ref = ip_sec_config_ref_value
-
-        # Parse ip_sec_rules (list from container "IP-SEC-RULES")
-        obj.ip_sec_rules = []
-        container = SerializationHelper.find_child_element(element, "IP-SEC-RULES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ip_sec_rules.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "IP-SEC-CONFIG-REF":
+                setattr(obj, "ip_sec_config_ref", ARRef.deserialize(child))
+            elif tag == "IP-SEC-RULES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.ip_sec_rules.append(SerializationHelper.deserialize_by_tag(item_elem, "IPSecRule"))
 
         return obj
 

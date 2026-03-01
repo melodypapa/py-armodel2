@@ -33,8 +33,17 @@ class J1939NmCluster(NmCluster):
         """
         return False
 
+    _XML_TAG = "J1939-NM-CLUSTER"
+
+
     address_claim: Optional[Boolean]
     uses_dynamic: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ADDRESS-CLAIM": lambda obj, elem: setattr(obj, "address_claim", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "USES-DYNAMIC": lambda obj, elem: setattr(obj, "uses_dynamic", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939NmCluster."""
         super().__init__()
@@ -47,9 +56,8 @@ class J1939NmCluster(NmCluster):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939NmCluster, self).serialize()
@@ -108,17 +116,14 @@ class J1939NmCluster(NmCluster):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939NmCluster, cls).deserialize(element)
 
-        # Parse address_claim
-        child = SerializationHelper.find_child_element(element, "ADDRESS-CLAIM")
-        if child is not None:
-            address_claim_value = child.text
-            obj.address_claim = address_claim_value
-
-        # Parse uses_dynamic
-        child = SerializationHelper.find_child_element(element, "USES-DYNAMIC")
-        if child is not None:
-            uses_dynamic_value = child.text
-            obj.uses_dynamic = uses_dynamic_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ADDRESS-CLAIM":
+                setattr(obj, "address_claim", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "USES-DYNAMIC":
+                setattr(obj, "uses_dynamic", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

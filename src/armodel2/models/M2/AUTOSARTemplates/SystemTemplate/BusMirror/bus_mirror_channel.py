@@ -33,8 +33,17 @@ class BusMirrorChannel(ARObject):
         """
         return False
 
+    _XML_TAG = "BUS-MIRROR-CHANNEL"
+
+
     bus_mirror: Optional[PositiveInteger]
     channel_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BUS-MIRROR": lambda obj, elem: setattr(obj, "bus_mirror", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "CHANNEL-REF": ("_POLYMORPHIC", "channel_ref", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BusMirrorChannel."""
         super().__init__()
@@ -47,9 +56,8 @@ class BusMirrorChannel(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BusMirrorChannel, self).serialize()
@@ -108,17 +116,14 @@ class BusMirrorChannel(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BusMirrorChannel, cls).deserialize(element)
 
-        # Parse bus_mirror
-        child = SerializationHelper.find_child_element(element, "BUS-MIRROR")
-        if child is not None:
-            bus_mirror_value = child.text
-            obj.bus_mirror = bus_mirror_value
-
-        # Parse channel_ref
-        child = SerializationHelper.find_child_element(element, "CHANNEL-REF")
-        if child is not None:
-            channel_ref_value = ARRef.deserialize(child)
-            obj.channel_ref = channel_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BUS-MIRROR":
+                setattr(obj, "bus_mirror", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "CHANNEL-REF":
+                setattr(obj, "channel_ref", ARRef.deserialize(child))
 
         return obj
 

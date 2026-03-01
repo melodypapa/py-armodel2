@@ -34,11 +34,23 @@ class Ipv6DhcpServerConfiguration(Describable):
         """
         return False
 
+    _XML_TAG = "IPV6-DHCP-SERVER-CONFIGURATION"
+
+
     address_range: Optional[Ip6AddressString]
     default_gateway: Optional[Ip6AddressString]
     default_lease: Optional[TimeValue]
     dns_servers: list[Ip6AddressString]
     network_mask: Optional[Ip6AddressString]
+    _DESERIALIZE_DISPATCH = {
+        "ADDRESS-RANGE": lambda obj, elem: setattr(obj, "address_range", SerializationHelper.deserialize_by_tag(elem, "Ip6AddressString")),
+        "DEFAULT-GATEWAY": lambda obj, elem: setattr(obj, "default_gateway", SerializationHelper.deserialize_by_tag(elem, "Ip6AddressString")),
+        "DEFAULT-LEASE": lambda obj, elem: setattr(obj, "default_lease", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "DNS-SERVERS": lambda obj, elem: obj.dns_servers.append(SerializationHelper.deserialize_by_tag(elem, "Ip6AddressString")),
+        "NETWORK-MASK": lambda obj, elem: setattr(obj, "network_mask", SerializationHelper.deserialize_by_tag(elem, "Ip6AddressString")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ipv6DhcpServerConfiguration."""
         super().__init__()
@@ -54,9 +66,8 @@ class Ipv6DhcpServerConfiguration(Describable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ipv6DhcpServerConfiguration, self).serialize()
@@ -160,39 +171,22 @@ class Ipv6DhcpServerConfiguration(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ipv6DhcpServerConfiguration, cls).deserialize(element)
 
-        # Parse address_range
-        child = SerializationHelper.find_child_element(element, "ADDRESS-RANGE")
-        if child is not None:
-            address_range_value = child.text
-            obj.address_range = address_range_value
-
-        # Parse default_gateway
-        child = SerializationHelper.find_child_element(element, "DEFAULT-GATEWAY")
-        if child is not None:
-            default_gateway_value = child.text
-            obj.default_gateway = default_gateway_value
-
-        # Parse default_lease
-        child = SerializationHelper.find_child_element(element, "DEFAULT-LEASE")
-        if child is not None:
-            default_lease_value = child.text
-            obj.default_lease = default_lease_value
-
-        # Parse dns_servers (list from container "DNS-SERVERS")
-        obj.dns_servers = []
-        container = SerializationHelper.find_child_element(element, "DNS-SERVERS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (Ip6AddressString) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.dns_servers.append(child_value)
-
-        # Parse network_mask
-        child = SerializationHelper.find_child_element(element, "NETWORK-MASK")
-        if child is not None:
-            network_mask_value = child.text
-            obj.network_mask = network_mask_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ADDRESS-RANGE":
+                setattr(obj, "address_range", SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
+            elif tag == "DEFAULT-GATEWAY":
+                setattr(obj, "default_gateway", SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
+            elif tag == "DEFAULT-LEASE":
+                setattr(obj, "default_lease", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "DNS-SERVERS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.dns_servers.append(SerializationHelper.deserialize_by_tag(item_elem, "Ip6AddressString"))
+            elif tag == "NETWORK-MASK":
+                setattr(obj, "network_mask", SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
 
         return obj
 

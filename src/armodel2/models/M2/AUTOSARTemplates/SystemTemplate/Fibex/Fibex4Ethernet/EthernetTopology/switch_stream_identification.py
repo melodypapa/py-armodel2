@@ -41,6 +41,9 @@ class SwitchStreamIdentification(Identifiable):
         """
         return False
 
+    _XML_TAG = "SWITCH-STREAM-IDENTIFICATION"
+
+
     egress_port_refs: list[ARRef]
     filter_action_block: Optional[Boolean]
     filter_action_dest: Optional[Any]
@@ -48,6 +51,17 @@ class SwitchStreamIdentification(Identifiable):
     filter_action_vlan: Optional[PositiveInteger]
     ingress_port_refs: list[ARRef]
     stream_filter: Optional[SwitchStreamFilterRule]
+    _DESERIALIZE_DISPATCH = {
+        "EGRESS-PORT-REFS": lambda obj, elem: [obj.egress_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "FILTER-ACTION-BLOCK": lambda obj, elem: setattr(obj, "filter_action_block", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "FILTER-ACTION-DEST": lambda obj, elem: setattr(obj, "filter_action_dest", SerializationHelper.deserialize_by_tag(elem, "any (SwitchStreamFilter)")),
+        "FILTER-ACTION-DROP": lambda obj, elem: setattr(obj, "filter_action_drop", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "FILTER-ACTION-VLAN": lambda obj, elem: setattr(obj, "filter_action_vlan", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "INGRESS-PORT-REFS": lambda obj, elem: [obj.ingress_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "STREAM-FILTER": lambda obj, elem: setattr(obj, "stream_filter", SerializationHelper.deserialize_by_tag(elem, "SwitchStreamFilterRule")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwitchStreamIdentification."""
         super().__init__()
@@ -65,9 +79,8 @@ class SwitchStreamIdentification(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwitchStreamIdentification, self).serialize()
@@ -202,67 +215,28 @@ class SwitchStreamIdentification(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwitchStreamIdentification, cls).deserialize(element)
 
-        # Parse egress_port_refs (list from container "EGRESS-PORT-REFS")
-        obj.egress_port_refs = []
-        container = SerializationHelper.find_child_element(element, "EGRESS-PORT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.egress_port_refs.append(child_value)
-
-        # Parse filter_action_block
-        child = SerializationHelper.find_child_element(element, "FILTER-ACTION-BLOCK")
-        if child is not None:
-            filter_action_block_value = child.text
-            obj.filter_action_block = filter_action_block_value
-
-        # Parse filter_action_dest
-        child = SerializationHelper.find_child_element(element, "FILTER-ACTION-DEST")
-        if child is not None:
-            filter_action_dest_value = child.text
-            obj.filter_action_dest = filter_action_dest_value
-
-        # Parse filter_action_drop
-        child = SerializationHelper.find_child_element(element, "FILTER-ACTION-DROP")
-        if child is not None:
-            filter_action_drop_value = child.text
-            obj.filter_action_drop = filter_action_drop_value
-
-        # Parse filter_action_vlan
-        child = SerializationHelper.find_child_element(element, "FILTER-ACTION-VLAN")
-        if child is not None:
-            filter_action_vlan_value = child.text
-            obj.filter_action_vlan = filter_action_vlan_value
-
-        # Parse ingress_port_refs (list from container "INGRESS-PORT-REFS")
-        obj.ingress_port_refs = []
-        container = SerializationHelper.find_child_element(element, "INGRESS-PORT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ingress_port_refs.append(child_value)
-
-        # Parse stream_filter
-        child = SerializationHelper.find_child_element(element, "STREAM-FILTER")
-        if child is not None:
-            stream_filter_value = SerializationHelper.deserialize_by_tag(child, "SwitchStreamFilterRule")
-            obj.stream_filter = stream_filter_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EGRESS-PORT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.egress_port_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "FILTER-ACTION-BLOCK":
+                setattr(obj, "filter_action_block", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "FILTER-ACTION-DEST":
+                setattr(obj, "filter_action_dest", SerializationHelper.deserialize_by_tag(child, "any (SwitchStreamFilter)"))
+            elif tag == "FILTER-ACTION-DROP":
+                setattr(obj, "filter_action_drop", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "FILTER-ACTION-VLAN":
+                setattr(obj, "filter_action_vlan", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "INGRESS-PORT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.ingress_port_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "STREAM-FILTER":
+                setattr(obj, "stream_filter", SerializationHelper.deserialize_by_tag(child, "SwitchStreamFilterRule"))
 
         return obj
 

@@ -36,8 +36,17 @@ class SwAxisType(ARElement):
         """
         return False
 
+    _XML_TAG = "SW-AXIS-TYPE"
+
+
     sw_generic_axis: Optional[DocumentationBlock]
     sw_generic_axis_params: list[SwGenericAxisParam]
+    _DESERIALIZE_DISPATCH = {
+        "SW-GENERIC-AXIS": lambda obj, elem: setattr(obj, "sw_generic_axis", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "SW-GENERIC-AXIS-PARAMS": lambda obj, elem: obj.sw_generic_axis_params.append(SerializationHelper.deserialize_by_tag(elem, "SwGenericAxisParam")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwAxisType."""
         super().__init__()
@@ -50,9 +59,8 @@ class SwAxisType(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwAxisType, self).serialize()
@@ -107,21 +115,16 @@ class SwAxisType(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwAxisType, cls).deserialize(element)
 
-        # Parse sw_generic_axis
-        child = SerializationHelper.find_child_element(element, "SW-GENERIC-AXIS")
-        if child is not None:
-            sw_generic_axis_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.sw_generic_axis = sw_generic_axis_value
-
-        # Parse sw_generic_axis_params (list from container "SW-GENERIC-AXIS-PARAMS")
-        obj.sw_generic_axis_params = []
-        container = SerializationHelper.find_child_element(element, "SW-GENERIC-AXIS-PARAMS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_generic_axis_params.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SW-GENERIC-AXIS":
+                setattr(obj, "sw_generic_axis", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "SW-GENERIC-AXIS-PARAMS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sw_generic_axis_params.append(SerializationHelper.deserialize_by_tag(item_elem, "SwGenericAxisParam"))
 
         return obj
 

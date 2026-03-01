@@ -34,8 +34,17 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-BSW-INTERNAL-BEHAVIOR"
+
+
     bsw_module_entity_entity_ref: Optional[ARRef]
     td_event_bsw_behavior_type: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "BSW-MODULE-ENTITY-ENTITY-REF": ("_POLYMORPHIC", "bsw_module_entity_entity_ref", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
+        "TD-EVENT-BSW-BEHAVIOR-TYPE": lambda obj, elem: setattr(obj, "td_event_bsw_behavior_type", SerializationHelper.deserialize_by_tag(elem, "any (TDEventBswInternal)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventBswInternalBehavior."""
         super().__init__()
@@ -48,9 +57,8 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventBswInternalBehavior, self).serialize()
@@ -109,17 +117,14 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventBswInternalBehavior, cls).deserialize(element)
 
-        # Parse bsw_module_entity_entity_ref
-        child = SerializationHelper.find_child_element(element, "BSW-MODULE-ENTITY-ENTITY-REF")
-        if child is not None:
-            bsw_module_entity_entity_ref_value = ARRef.deserialize(child)
-            obj.bsw_module_entity_entity_ref = bsw_module_entity_entity_ref_value
-
-        # Parse td_event_bsw_behavior_type
-        child = SerializationHelper.find_child_element(element, "TD-EVENT-BSW-BEHAVIOR-TYPE")
-        if child is not None:
-            td_event_bsw_behavior_type_value = child.text
-            obj.td_event_bsw_behavior_type = td_event_bsw_behavior_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BSW-MODULE-ENTITY-ENTITY-REF":
+                setattr(obj, "bsw_module_entity_entity_ref", ARRef.deserialize(child))
+            elif tag == "TD-EVENT-BSW-BEHAVIOR-TYPE":
+                setattr(obj, "td_event_bsw_behavior_type", SerializationHelper.deserialize_by_tag(child, "any (TDEventBswInternal)"))
 
         return obj
 

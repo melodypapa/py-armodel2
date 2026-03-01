@@ -37,10 +37,21 @@ class OffsetTimingConstraint(TimingConstraint):
         """
         return False
 
+    _XML_TAG = "OFFSET-TIMING-CONSTRAINT"
+
+
     maximum: Optional[MultidimensionalTime]
     minimum: Optional[MultidimensionalTime]
     source_ref: Optional[ARRef]
     target_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "SOURCE-REF": ("_POLYMORPHIC", "source_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "TARGET-REF": ("_POLYMORPHIC", "target_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize OffsetTimingConstraint."""
         super().__init__()
@@ -55,9 +66,8 @@ class OffsetTimingConstraint(TimingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(OffsetTimingConstraint, self).serialize()
@@ -144,29 +154,18 @@ class OffsetTimingConstraint(TimingConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(OffsetTimingConstraint, cls).deserialize(element)
 
-        # Parse maximum
-        child = SerializationHelper.find_child_element(element, "MAXIMUM")
-        if child is not None:
-            maximum_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.maximum = maximum_value
-
-        # Parse minimum
-        child = SerializationHelper.find_child_element(element, "MINIMUM")
-        if child is not None:
-            minimum_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.minimum = minimum_value
-
-        # Parse source_ref
-        child = SerializationHelper.find_child_element(element, "SOURCE-REF")
-        if child is not None:
-            source_ref_value = ARRef.deserialize(child)
-            obj.source_ref = source_ref_value
-
-        # Parse target_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-REF")
-        if child is not None:
-            target_ref_value = ARRef.deserialize(child)
-            obj.target_ref = target_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAXIMUM":
+                setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "MINIMUM":
+                setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "SOURCE-REF":
+                setattr(obj, "source_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-REF":
+                setattr(obj, "target_ref", ARRef.deserialize(child))
 
         return obj
 

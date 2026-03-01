@@ -35,6 +35,9 @@ class SwBaseType(BaseType):
         """
         return False
 
+    _XML_TAG = "SW-BASE-TYPE"
+
+
     def __init__(self) -> None:
         """Initialize SwBaseType."""
         super().__init__()
@@ -45,9 +48,8 @@ class SwBaseType(BaseType):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwBaseType, self).serialize()

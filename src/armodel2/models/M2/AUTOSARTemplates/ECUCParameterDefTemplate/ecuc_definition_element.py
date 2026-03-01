@@ -57,6 +57,16 @@ class EcucDefinitionElement(Identifiable, ABC):
     related_trace_ref: Optional[ARRef]
     scope: Optional[EcucScopeEnum]
     upper_multiplicity: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ECUC-COND": lambda obj, elem: setattr(obj, "ecuc_cond", SerializationHelper.deserialize_by_tag(elem, "any (EcucCondition)")),
+        "ECUC-VALIDATIONS": lambda obj, elem: obj.ecuc_validations.append(SerializationHelper.deserialize_by_tag(elem, "EcucValidationCondition")),
+        "LOWER-MULTIPLICITY": lambda obj, elem: setattr(obj, "lower_multiplicity", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "RELATED-TRACE-REF": ("_POLYMORPHIC", "related_trace_ref", ["StructuredReq", "TimingConstraint", "TraceableTable", "TraceableText"]),
+        "SCOPE": lambda obj, elem: setattr(obj, "scope", EcucScopeEnum.deserialize(elem)),
+        "UPPER-MULTIPLICITY": lambda obj, elem: setattr(obj, "upper_multiplicity", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucDefinitionElement."""
         super().__init__()
@@ -73,9 +83,8 @@ class EcucDefinitionElement(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucDefinitionElement, self).serialize()
@@ -186,45 +195,24 @@ class EcucDefinitionElement(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucDefinitionElement, cls).deserialize(element)
 
-        # Parse ecuc_cond
-        child = SerializationHelper.find_child_element(element, "ECUC-COND")
-        if child is not None:
-            ecuc_cond_value = child.text
-            obj.ecuc_cond = ecuc_cond_value
-
-        # Parse ecuc_validations (list from container "ECUC-VALIDATIONS")
-        obj.ecuc_validations = []
-        container = SerializationHelper.find_child_element(element, "ECUC-VALIDATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ecuc_validations.append(child_value)
-
-        # Parse lower_multiplicity
-        child = SerializationHelper.find_child_element(element, "LOWER-MULTIPLICITY")
-        if child is not None:
-            lower_multiplicity_value = child.text
-            obj.lower_multiplicity = lower_multiplicity_value
-
-        # Parse related_trace_ref
-        child = SerializationHelper.find_child_element(element, "RELATED-TRACE-REF")
-        if child is not None:
-            related_trace_ref_value = ARRef.deserialize(child)
-            obj.related_trace_ref = related_trace_ref_value
-
-        # Parse scope
-        child = SerializationHelper.find_child_element(element, "SCOPE")
-        if child is not None:
-            scope_value = EcucScopeEnum.deserialize(child)
-            obj.scope = scope_value
-
-        # Parse upper_multiplicity
-        child = SerializationHelper.find_child_element(element, "UPPER-MULTIPLICITY")
-        if child is not None:
-            upper_multiplicity_value = child.text
-            obj.upper_multiplicity = upper_multiplicity_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ECUC-COND":
+                setattr(obj, "ecuc_cond", SerializationHelper.deserialize_by_tag(child, "any (EcucCondition)"))
+            elif tag == "ECUC-VALIDATIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.ecuc_validations.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucValidationCondition"))
+            elif tag == "LOWER-MULTIPLICITY":
+                setattr(obj, "lower_multiplicity", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "RELATED-TRACE-REF":
+                setattr(obj, "related_trace_ref", ARRef.deserialize(child))
+            elif tag == "SCOPE":
+                setattr(obj, "scope", EcucScopeEnum.deserialize(child))
+            elif tag == "UPPER-MULTIPLICITY":
+                setattr(obj, "upper_multiplicity", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

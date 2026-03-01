@@ -39,9 +39,19 @@ class DataPrototypeTransformationProps(ARObject):
         """
         return False
 
+    _XML_TAG = "DATA-PROTOTYPE-TRANSFORMATION-PROPS"
+
+
     data_prototype_in_ref: Optional[ARRef]
     network: Optional[SwDataDefProps]
     transformation_props_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-PROTOTYPE-IN-REF": ("_POLYMORPHIC", "data_prototype_in_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "NETWORK": lambda obj, elem: setattr(obj, "network", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "TRANSFORMATION-PROPS-REF": ("_POLYMORPHIC", "transformation_props_ref", ["SOMEIPTransformationProps", "UserDefinedTransformationProps"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataPrototypeTransformationProps."""
         super().__init__()
@@ -55,9 +65,8 @@ class DataPrototypeTransformationProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataPrototypeTransformationProps, self).serialize()
@@ -130,23 +139,16 @@ class DataPrototypeTransformationProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototypeTransformationProps, cls).deserialize(element)
 
-        # Parse data_prototype_in_ref
-        child = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-IN-REF")
-        if child is not None:
-            data_prototype_in_ref_value = ARRef.deserialize(child)
-            obj.data_prototype_in_ref = data_prototype_in_ref_value
-
-        # Parse network
-        child = SerializationHelper.find_child_element(element, "NETWORK")
-        if child is not None:
-            network_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.network = network_value
-
-        # Parse transformation_props_ref
-        child = SerializationHelper.find_child_element(element, "TRANSFORMATION-PROPS-REF")
-        if child is not None:
-            transformation_props_ref_value = ARRef.deserialize(child)
-            obj.transformation_props_ref = transformation_props_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-PROTOTYPE-IN-REF":
+                setattr(obj, "data_prototype_in_ref", ARRef.deserialize(child))
+            elif tag == "NETWORK":
+                setattr(obj, "network", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            elif tag == "TRANSFORMATION-PROPS-REF":
+                setattr(obj, "transformation_props_ref", ARRef.deserialize(child))
 
         return obj
 

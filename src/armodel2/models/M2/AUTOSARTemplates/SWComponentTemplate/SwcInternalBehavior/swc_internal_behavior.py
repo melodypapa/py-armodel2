@@ -80,6 +80,9 @@ class SwcInternalBehavior(InternalBehavior):
         """
         return False
 
+    _XML_TAG = "SWC-INTERNAL-BEHAVIOR"
+
+
     ar_typed_per_instance_memories: list[VariableDataPrototype]
     events: list[RTEEvent]
     exclusive_area_policies: list[SwcExclusiveAreaPolicy]
@@ -97,6 +100,27 @@ class SwcInternalBehavior(InternalBehavior):
     shared_parameters: list[ParameterDataPrototype]
     support_multiple_instantiations: Optional[Boolean]
     variation_point_proxies: list[VariationPointProxy]
+    _DESERIALIZE_DISPATCH = {
+        "AR-TYPED-PER-INSTANCE-MEMORIES": lambda obj, elem: obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
+        "EVENTS": ("_POLYMORPHIC_LIST", "events", ["AsynchronousServerCallReturnsEvent", "BackgroundEvent", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "ExternalTriggerOccurredEvent", "InitEvent", "InternalTriggerOccurredEvent", "ModeSwitchedAckEvent", "OperationInvokedEvent", "OsTaskExecutionEvent", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "TimingEvent", "TransformerHardErrorEvent"]),
+        "EXCLUSIVE-AREA-POLICIES": lambda obj, elem: obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(elem, "SwcExclusiveAreaPolicy")),
+        "EXPLICIT-INTER-RUNNABLE-VARIABLES": lambda obj, elem: obj.explicit_inter_runnable_variables.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
+        "HANDLE-TERMINATION-AND-RESTART": lambda obj, elem: setattr(obj, "handle_termination_and_restart", HandleTerminationAndRestartEnum.deserialize(elem)),
+        "IMPLICIT-INTER-RUNNABLE-VARIABLES": lambda obj, elem: obj.implicit_inter_runnable_variables.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
+        "INCLUDED-DATA-TYPE-SETS": lambda obj, elem: obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedDataTypeSet")),
+        "INCLUDED-MODE-DECLARATION-GROUP-SETS": lambda obj, elem: obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedModeDeclarationGroupSet")),
+        "INSTANTIATION-DATA-DEF-PROPS": lambda obj, elem: obj.instantiation_data_def_props.append(SerializationHelper.deserialize_by_tag(elem, "InstantiationDataDefProps")),
+        "PER-INSTANCE-MEMORIES": lambda obj, elem: obj.per_instance_memories.append(SerializationHelper.deserialize_by_tag(elem, "PerInstanceMemory")),
+        "PER-INSTANCE-PARAMETERS": lambda obj, elem: obj.per_instance_parameters.append(SerializationHelper.deserialize_by_tag(elem, "ParameterDataPrototype")),
+        "PORT-API-OPTIONS": lambda obj, elem: obj.port_api_options.append(SerializationHelper.deserialize_by_tag(elem, "PortAPIOption")),
+        "RUNNABLES": lambda obj, elem: obj.runnables.append(SerializationHelper.deserialize_by_tag(elem, "RunnableEntity")),
+        "SERVICE-DEPENDENCIES": lambda obj, elem: obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "SwcServiceDependency")),
+        "SHARED-PARAMETERS": lambda obj, elem: obj.shared_parameters.append(SerializationHelper.deserialize_by_tag(elem, "ParameterDataPrototype")),
+        "SUPPORT-MULTIPLE-INSTANTIATIONS": lambda obj, elem: setattr(obj, "support_multiple_instantiations", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "VARIATION-POINT-PROXIES": lambda obj, elem: obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(elem, "VariationPointProxy")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcInternalBehavior."""
         super().__init__()
@@ -124,9 +148,8 @@ class SwcInternalBehavior(InternalBehavior):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcInternalBehavior, self).serialize()
@@ -335,167 +358,106 @@ class SwcInternalBehavior(InternalBehavior):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcInternalBehavior, cls).deserialize(element)
 
-        # Parse ar_typed_per_instance_memories (list from container "AR-TYPED-PER-INSTANCE-MEMORIES")
-        obj.ar_typed_per_instance_memories = []
-        container = SerializationHelper.find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ar_typed_per_instance_memories.append(child_value)
-
-        # Parse events (list from container "EVENTS")
-        obj.events = []
-        container = SerializationHelper.find_child_element(element, "EVENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.events.append(child_value)
-
-        # Parse exclusive_area_policies (list from container "EXCLUSIVE-AREA-POLICIES")
-        obj.exclusive_area_policies = []
-        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.exclusive_area_policies.append(child_value)
-
-        # Parse explicit_inter_runnable_variables (list from container "EXPLICIT-INTER-RUNNABLE-VARIABLES")
-        obj.explicit_inter_runnable_variables = []
-        container = SerializationHelper.find_child_element(element, "EXPLICIT-INTER-RUNNABLE-VARIABLES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.explicit_inter_runnable_variables.append(child_value)
-
-        # Parse handle_termination_and_restart
-        child = SerializationHelper.find_child_element(element, "HANDLE-TERMINATION-AND-RESTART")
-        if child is not None:
-            handle_termination_and_restart_value = HandleTerminationAndRestartEnum.deserialize(child)
-            obj.handle_termination_and_restart = handle_termination_and_restart_value
-
-        # Parse implicit_inter_runnable_variables (list from container "IMPLICIT-INTER-RUNNABLE-VARIABLES")
-        obj.implicit_inter_runnable_variables = []
-        container = SerializationHelper.find_child_element(element, "IMPLICIT-INTER-RUNNABLE-VARIABLES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.implicit_inter_runnable_variables.append(child_value)
-
-        # Parse included_data_type_sets (list from container "INCLUDED-DATA-TYPE-SETS")
-        obj.included_data_type_sets = []
-        container = SerializationHelper.find_child_element(element, "INCLUDED-DATA-TYPE-SETS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.included_data_type_sets.append(child_value)
-
-        # Parse included_mode_declaration_group_sets (list from container "INCLUDED-MODE-DECLARATION-GROUP-SETS")
-        obj.included_mode_declaration_group_sets = []
-        container = SerializationHelper.find_child_element(element, "INCLUDED-MODE-DECLARATION-GROUP-SETS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.included_mode_declaration_group_sets.append(child_value)
-
-        # Parse instantiation_data_def_props (list from container "INSTANTIATION-DATA-DEF-PROPS")
-        obj.instantiation_data_def_props = []
-        container = SerializationHelper.find_child_element(element, "INSTANTIATION-DATA-DEF-PROPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.instantiation_data_def_props.append(child_value)
-
-        # Parse per_instance_memories (list from container "PER-INSTANCE-MEMORIES")
-        obj.per_instance_memories = []
-        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.per_instance_memories.append(child_value)
-
-        # Parse per_instance_parameters (list from container "PER-INSTANCE-PARAMETERS")
-        obj.per_instance_parameters = []
-        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-PARAMETERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.per_instance_parameters.append(child_value)
-
-        # Parse port_api_options (list from container "PORT-API-OPTIONS")
-        obj.port_api_options = []
-        container = SerializationHelper.find_child_element(element, "PORT-API-OPTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.port_api_options.append(child_value)
-
-        # Parse runnables (list from container "RUNNABLES")
-        obj.runnables = []
-        container = SerializationHelper.find_child_element(element, "RUNNABLES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.runnables.append(child_value)
-
-        # Parse service_dependencies (list from container "SERVICE-DEPENDENCIES")
-        obj.service_dependencies = []
-        container = SerializationHelper.find_child_element(element, "SERVICE-DEPENDENCIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.service_dependencies.append(child_value)
-
-        # Parse shared_parameters (list from container "SHARED-PARAMETERS")
-        obj.shared_parameters = []
-        container = SerializationHelper.find_child_element(element, "SHARED-PARAMETERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.shared_parameters.append(child_value)
-
-        # Parse support_multiple_instantiations
-        child = SerializationHelper.find_child_element(element, "SUPPORT-MULTIPLE-INSTANTIATIONS")
-        if child is not None:
-            support_multiple_instantiations_value = child.text
-            obj.support_multiple_instantiations = support_multiple_instantiations_value
-
-        # Parse variation_point_proxies (list from container "VARIATION-POINT-PROXIES")
-        obj.variation_point_proxies = []
-        container = SerializationHelper.find_child_element(element, "VARIATION-POINT-PROXIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.variation_point_proxies.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AR-TYPED-PER-INSTANCE-MEMORIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
+            elif tag == "EVENTS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RETURNS-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "AsynchronousServerCallReturnsEvent"))
+                    elif concrete_tag == "BACKGROUND-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BackgroundEvent"))
+                    elif concrete_tag == "DATA-RECEIVE-ERROR-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "DataReceiveErrorEvent"))
+                    elif concrete_tag == "DATA-RECEIVED-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "DataReceivedEvent"))
+                    elif concrete_tag == "DATA-SEND-COMPLETED-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "DataSendCompletedEvent"))
+                    elif concrete_tag == "DATA-WRITE-COMPLETED-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "DataWriteCompletedEvent"))
+                    elif concrete_tag == "EXTERNAL-TRIGGER-OCCURRED-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "ExternalTriggerOccurredEvent"))
+                    elif concrete_tag == "INIT-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "InitEvent"))
+                    elif concrete_tag == "INTERNAL-TRIGGER-OCCURRED-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "InternalTriggerOccurredEvent"))
+                    elif concrete_tag == "MODE-SWITCHED-ACK-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchedAckEvent"))
+                    elif concrete_tag == "OPERATION-INVOKED-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "OperationInvokedEvent"))
+                    elif concrete_tag == "OS-TASK-EXECUTION-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "OsTaskExecutionEvent"))
+                    elif concrete_tag == "SWC-MODE-MANAGER-ERROR-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcModeManagerErrorEvent"))
+                    elif concrete_tag == "SWC-MODE-SWITCH-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcModeSwitchEvent"))
+                    elif concrete_tag == "TIMING-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingEvent"))
+                    elif concrete_tag == "TRANSFORMER-HARD-ERROR-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "TransformerHardErrorEvent"))
+            elif tag == "EXCLUSIVE-AREA-POLICIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcExclusiveAreaPolicy"))
+            elif tag == "EXPLICIT-INTER-RUNNABLE-VARIABLES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.explicit_inter_runnable_variables.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
+            elif tag == "HANDLE-TERMINATION-AND-RESTART":
+                setattr(obj, "handle_termination_and_restart", HandleTerminationAndRestartEnum.deserialize(child))
+            elif tag == "IMPLICIT-INTER-RUNNABLE-VARIABLES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.implicit_inter_runnable_variables.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
+            elif tag == "INCLUDED-DATA-TYPE-SETS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(item_elem, "IncludedDataTypeSet"))
+            elif tag == "INCLUDED-MODE-DECLARATION-GROUP-SETS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(item_elem, "IncludedModeDeclarationGroupSet"))
+            elif tag == "INSTANTIATION-DATA-DEF-PROPS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.instantiation_data_def_props.append(SerializationHelper.deserialize_by_tag(item_elem, "InstantiationDataDefProps"))
+            elif tag == "PER-INSTANCE-MEMORIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.per_instance_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "PerInstanceMemory"))
+            elif tag == "PER-INSTANCE-PARAMETERS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.per_instance_parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
+            elif tag == "PORT-API-OPTIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.port_api_options.append(SerializationHelper.deserialize_by_tag(item_elem, "PortAPIOption"))
+            elif tag == "RUNNABLES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.runnables.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntity"))
+            elif tag == "SERVICE-DEPENDENCIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcServiceDependency"))
+            elif tag == "SHARED-PARAMETERS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.shared_parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
+            elif tag == "SUPPORT-MULTIPLE-INSTANTIATIONS":
+                setattr(obj, "support_multiple_instantiations", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "VARIATION-POINT-PROXIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(item_elem, "VariationPointProxy"))
 
         return obj
 

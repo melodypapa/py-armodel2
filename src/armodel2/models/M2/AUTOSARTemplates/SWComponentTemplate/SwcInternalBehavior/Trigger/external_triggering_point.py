@@ -31,8 +31,17 @@ class ExternalTriggeringPoint(ARObject):
         """
         return False
 
+    _XML_TAG = "EXTERNAL-TRIGGERING-POINT"
+
+
     ident_ref: Optional[ARRef]
     trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "IDENT-REF": lambda obj, elem: setattr(obj, "ident_ref", ARRef.deserialize(elem)),
+        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ExternalTriggeringPoint."""
         super().__init__()
@@ -45,9 +54,8 @@ class ExternalTriggeringPoint(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ExternalTriggeringPoint, self).serialize()
@@ -106,17 +114,14 @@ class ExternalTriggeringPoint(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ExternalTriggeringPoint, cls).deserialize(element)
 
-        # Parse ident_ref
-        child = SerializationHelper.find_child_element(element, "IDENT-REF")
-        if child is not None:
-            ident_ref_value = ARRef.deserialize(child)
-            obj.ident_ref = ident_ref_value
-
-        # Parse trigger_ref
-        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
-        if child is not None:
-            trigger_ref_value = ARRef.deserialize(child)
-            obj.trigger_ref = trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "IDENT-REF":
+                setattr(obj, "ident_ref", ARRef.deserialize(child))
+            elif tag == "TRIGGER-REF":
+                setattr(obj, "trigger_ref", ARRef.deserialize(child))
 
         return obj
 

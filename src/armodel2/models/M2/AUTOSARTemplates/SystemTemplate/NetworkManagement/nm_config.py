@@ -39,9 +39,19 @@ class NmConfig(FibexElement):
         """
         return False
 
+    _XML_TAG = "NM-CONFIG"
+
+
     nm_clusters: list[NmCluster]
     nm_cluster_couplings: list[NmClusterCoupling]
     nm_if_ecus: list[NmEcu]
+    _DESERIALIZE_DISPATCH = {
+        "NM-CLUSTERS": ("_POLYMORPHIC_LIST", "nm_clusters", ["CanNmCluster", "FlexrayNmCluster", "J1939NmCluster", "UdpNmCluster"]),
+        "NM-CLUSTER-COUPLINGS": ("_POLYMORPHIC_LIST", "nm_cluster_couplings", ["CanNmClusterCoupling", "FlexrayNmClusterCoupling", "UdpNmClusterCoupling"]),
+        "NM-IF-ECUS": lambda obj, elem: obj.nm_if_ecus.append(SerializationHelper.deserialize_by_tag(elem, "NmEcu")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NmConfig."""
         super().__init__()
@@ -55,9 +65,8 @@ class NmConfig(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NmConfig, self).serialize()
@@ -118,35 +127,36 @@ class NmConfig(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NmConfig, cls).deserialize(element)
 
-        # Parse nm_clusters (list from container "NM-CLUSTERS")
-        obj.nm_clusters = []
-        container = SerializationHelper.find_child_element(element, "NM-CLUSTERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.nm_clusters.append(child_value)
-
-        # Parse nm_cluster_couplings (list from container "NM-CLUSTER-COUPLINGS")
-        obj.nm_cluster_couplings = []
-        container = SerializationHelper.find_child_element(element, "NM-CLUSTER-COUPLINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.nm_cluster_couplings.append(child_value)
-
-        # Parse nm_if_ecus (list from container "NM-IF-ECUS")
-        obj.nm_if_ecus = []
-        container = SerializationHelper.find_child_element(element, "NM-IF-ECUS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.nm_if_ecus.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "NM-CLUSTERS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "CAN-NM-CLUSTER":
+                        obj.nm_clusters.append(SerializationHelper.deserialize_by_tag(item_elem, "CanNmCluster"))
+                    elif concrete_tag == "FLEXRAY-NM-CLUSTER":
+                        obj.nm_clusters.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayNmCluster"))
+                    elif concrete_tag == "J1939-NM-CLUSTER":
+                        obj.nm_clusters.append(SerializationHelper.deserialize_by_tag(item_elem, "J1939NmCluster"))
+                    elif concrete_tag == "UDP-NM-CLUSTER":
+                        obj.nm_clusters.append(SerializationHelper.deserialize_by_tag(item_elem, "UdpNmCluster"))
+            elif tag == "NM-CLUSTER-COUPLINGS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "CAN-NM-CLUSTER-COUPLING":
+                        obj.nm_cluster_couplings.append(SerializationHelper.deserialize_by_tag(item_elem, "CanNmClusterCoupling"))
+                    elif concrete_tag == "FLEXRAY-NM-CLUSTER-COUPLING":
+                        obj.nm_cluster_couplings.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayNmClusterCoupling"))
+                    elif concrete_tag == "UDP-NM-CLUSTER-COUPLING":
+                        obj.nm_cluster_couplings.append(SerializationHelper.deserialize_by_tag(item_elem, "UdpNmClusterCoupling"))
+            elif tag == "NM-IF-ECUS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.nm_if_ecus.append(SerializationHelper.deserialize_by_tag(item_elem, "NmEcu"))
 
         return obj
 

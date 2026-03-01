@@ -42,10 +42,21 @@ class ClassContentConditional(Identifiable):
         """
         return False
 
+    _XML_TAG = "CLASS-CONTENT-CONDITIONAL"
+
+
     attributes: list[AttributeTailoring]
     condition: Optional[AbstractCondition]
     constraints: list[ConstraintTailoring]
     sdg_tailorings: list[SdgTailoring]
+    _DESERIALIZE_DISPATCH = {
+        "ATTRIBUTES": ("_POLYMORPHIC_LIST", "attributes", ["AggregationTailoring", "PrimitiveAttributeTailoring", "ReferenceTailoring"]),
+        "CONDITION": ("_POLYMORPHIC", "condition", ["AttributeCondition", "InvertCondition", "TextualCondition"]),
+        "CONSTRAINTS": lambda obj, elem: obj.constraints.append(SerializationHelper.deserialize_by_tag(elem, "ConstraintTailoring")),
+        "SDG-TAILORINGS": lambda obj, elem: obj.sdg_tailorings.append(SerializationHelper.deserialize_by_tag(elem, "SdgTailoring")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClassContentConditional."""
         super().__init__()
@@ -60,9 +71,8 @@ class ClassContentConditional(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClassContentConditional, self).serialize()
@@ -137,41 +147,38 @@ class ClassContentConditional(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClassContentConditional, cls).deserialize(element)
 
-        # Parse attributes (list from container "ATTRIBUTES")
-        obj.attributes = []
-        container = SerializationHelper.find_child_element(element, "ATTRIBUTES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.attributes.append(child_value)
-
-        # Parse condition
-        child = SerializationHelper.find_child_element(element, "CONDITION")
-        if child is not None:
-            condition_value = SerializationHelper.deserialize_by_tag(child, "AbstractCondition")
-            obj.condition = condition_value
-
-        # Parse constraints (list from container "CONSTRAINTS")
-        obj.constraints = []
-        container = SerializationHelper.find_child_element(element, "CONSTRAINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.constraints.append(child_value)
-
-        # Parse sdg_tailorings (list from container "SDG-TAILORINGS")
-        obj.sdg_tailorings = []
-        container = SerializationHelper.find_child_element(element, "SDG-TAILORINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sdg_tailorings.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ATTRIBUTES":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "AGGREGATION-TAILORING":
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "AggregationTailoring"))
+                    elif concrete_tag == "PRIMITIVE-ATTRIBUTE-TAILORING":
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "PrimitiveAttributeTailoring"))
+                    elif concrete_tag == "REFERENCE-TAILORING":
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "ReferenceTailoring"))
+            elif tag == "CONDITION":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATTRIBUTE-CONDITION":
+                        setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child[0], "AttributeCondition"))
+                    elif concrete_tag == "INVERT-CONDITION":
+                        setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child[0], "InvertCondition"))
+                    elif concrete_tag == "TEXTUAL-CONDITION":
+                        setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child[0], "TextualCondition"))
+            elif tag == "CONSTRAINTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstraintTailoring"))
+            elif tag == "SDG-TAILORINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sdg_tailorings.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgTailoring"))
 
         return obj
 

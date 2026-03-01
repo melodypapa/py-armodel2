@@ -39,11 +39,23 @@ class TimingConditionFormula(ARObject):
         """
         return False
 
+    _XML_TAG = "TIMING-CONDITION-FORMULA"
+
+
     timing_argument_argument_instance_ref: Optional[ARRef]
     timing_condition_ref: Optional[ARRef]
     timing_event_ref: Optional[ARRef]
     timing_mode_ref: Optional[ARRef]
     timing_variable_instance_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF": lambda obj, elem: setattr(obj, "timing_argument_argument_instance_ref", ARRef.deserialize(elem)),
+        "TIMING-CONDITION-REF": lambda obj, elem: setattr(obj, "timing_condition_ref", ARRef.deserialize(elem)),
+        "TIMING-EVENT-REF": ("_POLYMORPHIC", "timing_event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "TIMING-MODE-REF": lambda obj, elem: setattr(obj, "timing_mode_ref", ARRef.deserialize(elem)),
+        "TIMING-VARIABLE-INSTANCE-REF": lambda obj, elem: setattr(obj, "timing_variable_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimingConditionFormula."""
         super().__init__()
@@ -59,9 +71,8 @@ class TimingConditionFormula(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimingConditionFormula, self).serialize()
@@ -162,35 +173,20 @@ class TimingConditionFormula(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingConditionFormula, cls).deserialize(element)
 
-        # Parse timing_argument_argument_instance_ref
-        child = SerializationHelper.find_child_element(element, "TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF")
-        if child is not None:
-            timing_argument_argument_instance_ref_value = ARRef.deserialize(child)
-            obj.timing_argument_argument_instance_ref = timing_argument_argument_instance_ref_value
-
-        # Parse timing_condition_ref
-        child = SerializationHelper.find_child_element(element, "TIMING-CONDITION-REF")
-        if child is not None:
-            timing_condition_ref_value = ARRef.deserialize(child)
-            obj.timing_condition_ref = timing_condition_ref_value
-
-        # Parse timing_event_ref
-        child = SerializationHelper.find_child_element(element, "TIMING-EVENT-REF")
-        if child is not None:
-            timing_event_ref_value = ARRef.deserialize(child)
-            obj.timing_event_ref = timing_event_ref_value
-
-        # Parse timing_mode_ref
-        child = SerializationHelper.find_child_element(element, "TIMING-MODE-REF")
-        if child is not None:
-            timing_mode_ref_value = ARRef.deserialize(child)
-            obj.timing_mode_ref = timing_mode_ref_value
-
-        # Parse timing_variable_instance_ref
-        child = SerializationHelper.find_child_element(element, "TIMING-VARIABLE-INSTANCE-REF")
-        if child is not None:
-            timing_variable_instance_ref_value = ARRef.deserialize(child)
-            obj.timing_variable_instance_ref = timing_variable_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF":
+                setattr(obj, "timing_argument_argument_instance_ref", ARRef.deserialize(child))
+            elif tag == "TIMING-CONDITION-REF":
+                setattr(obj, "timing_condition_ref", ARRef.deserialize(child))
+            elif tag == "TIMING-EVENT-REF":
+                setattr(obj, "timing_event_ref", ARRef.deserialize(child))
+            elif tag == "TIMING-MODE-REF":
+                setattr(obj, "timing_mode_ref", ARRef.deserialize(child))
+            elif tag == "TIMING-VARIABLE-INSTANCE-REF":
+                setattr(obj, "timing_variable_instance_ref", ARRef.deserialize(child))
 
         return obj
 

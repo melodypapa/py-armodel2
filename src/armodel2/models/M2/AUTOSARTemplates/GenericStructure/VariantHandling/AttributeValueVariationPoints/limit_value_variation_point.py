@@ -29,7 +29,15 @@ class LimitValueVariationPoint(ARObject):
         """
         return False
 
+    _XML_TAG = "LIMIT-VALUE-VARIATION-POINT"
+
+
     interval_type_enum: Optional[IntervalTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "INTERVAL-TYPE-ENUM": lambda obj, elem: setattr(obj, "interval_type_enum", IntervalTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LimitValueVariationPoint."""
         super().__init__()
@@ -41,9 +49,8 @@ class LimitValueVariationPoint(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LimitValueVariationPoint, self).serialize()
@@ -88,11 +95,12 @@ class LimitValueVariationPoint(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LimitValueVariationPoint, cls).deserialize(element)
 
-        # Parse interval_type_enum
-        child = SerializationHelper.find_child_element(element, "INTERVAL-TYPE-ENUM")
-        if child is not None:
-            interval_type_enum_value = IntervalTypeEnum.deserialize(child)
-            obj.interval_type_enum = interval_type_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INTERVAL-TYPE-ENUM":
+                setattr(obj, "interval_type_enum", IntervalTypeEnum.deserialize(child))
 
         return obj
 

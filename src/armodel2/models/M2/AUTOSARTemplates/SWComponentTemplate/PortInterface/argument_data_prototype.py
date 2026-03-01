@@ -41,8 +41,17 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         """
         return False
 
+    _XML_TAG = "ARGUMENT-DATA-PROTOTYPE"
+
+
     direction: Optional[ArgumentDirectionEnum]
     server_argument_impl: Optional[ServerArgumentImplPolicyEnum]
+    _DESERIALIZE_DISPATCH = {
+        "DIRECTION": lambda obj, elem: setattr(obj, "direction", ArgumentDirectionEnum.deserialize(elem)),
+        "SERVER-ARGUMENT-IMPL": lambda obj, elem: setattr(obj, "server_argument_impl", ServerArgumentImplPolicyEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ArgumentDataPrototype."""
         super().__init__()
@@ -55,9 +64,8 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ArgumentDataPrototype, self).serialize()
@@ -116,17 +124,14 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ArgumentDataPrototype, cls).deserialize(element)
 
-        # Parse direction
-        child = SerializationHelper.find_child_element(element, "DIRECTION")
-        if child is not None:
-            direction_value = ArgumentDirectionEnum.deserialize(child)
-            obj.direction = direction_value
-
-        # Parse server_argument_impl
-        child = SerializationHelper.find_child_element(element, "SERVER-ARGUMENT-IMPL")
-        if child is not None:
-            server_argument_impl_value = ServerArgumentImplPolicyEnum.deserialize(child)
-            obj.server_argument_impl = server_argument_impl_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DIRECTION":
+                setattr(obj, "direction", ArgumentDirectionEnum.deserialize(child))
+            elif tag == "SERVER-ARGUMENT-IMPL":
+                setattr(obj, "server_argument_impl", ServerArgumentImplPolicyEnum.deserialize(child))
 
         return obj
 

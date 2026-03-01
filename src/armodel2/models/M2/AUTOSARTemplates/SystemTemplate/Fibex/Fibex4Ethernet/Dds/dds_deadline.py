@@ -29,7 +29,15 @@ class DdsDeadline(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-DEADLINE"
+
+
     deadline_period: Optional[Float]
+    _DESERIALIZE_DISPATCH = {
+        "DEADLINE-PERIOD": lambda obj, elem: setattr(obj, "deadline_period", SerializationHelper.deserialize_by_tag(elem, "Float")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsDeadline."""
         super().__init__()
@@ -41,9 +49,8 @@ class DdsDeadline(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsDeadline, self).serialize()
@@ -88,11 +95,12 @@ class DdsDeadline(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsDeadline, cls).deserialize(element)
 
-        # Parse deadline_period
-        child = SerializationHelper.find_child_element(element, "DEADLINE-PERIOD")
-        if child is not None:
-            deadline_period_value = child.text
-            obj.deadline_period = deadline_period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEADLINE-PERIOD":
+                setattr(obj, "deadline_period", SerializationHelper.deserialize_by_tag(child, "Float"))
 
         return obj
 

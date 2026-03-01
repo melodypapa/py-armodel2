@@ -36,6 +36,11 @@ class TpConfig(FibexElement, ABC):
         return True
 
     communication_cluster_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CLUSTER-REF": ("_POLYMORPHIC", "communication_cluster_ref", ["AbstractCanCluster", "EthernetCluster", "FlexrayCluster", "LinCluster", "UserDefinedCluster"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TpConfig."""
         super().__init__()
@@ -47,9 +52,8 @@ class TpConfig(FibexElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TpConfig, self).serialize()
@@ -94,11 +98,12 @@ class TpConfig(FibexElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TpConfig, cls).deserialize(element)
 
-        # Parse communication_cluster_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CLUSTER-REF")
-        if child is not None:
-            communication_cluster_ref_value = ARRef.deserialize(child)
-            obj.communication_cluster_ref = communication_cluster_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMMUNICATION-CLUSTER-REF":
+                setattr(obj, "communication_cluster_ref", ARRef.deserialize(child))
 
         return obj
 

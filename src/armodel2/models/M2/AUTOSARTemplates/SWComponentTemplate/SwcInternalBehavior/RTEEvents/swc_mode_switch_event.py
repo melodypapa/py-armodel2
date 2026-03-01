@@ -39,8 +39,17 @@ class SwcModeSwitchEvent(RTEEvent):
         """
         return False
 
+    _XML_TAG = "SWC-MODE-SWITCH-EVENT"
+
+
     activation: Optional[ModeActivationKind]
     _mode_irefs: list[RModeInAtomicSwcInstanceRef]
+    _DESERIALIZE_DISPATCH = {
+        "ACTIVATION": lambda obj, elem: setattr(obj, "activation", ModeActivationKind.deserialize(elem)),
+        "MODES-IREF": lambda obj, elem: obj._mode_irefs.append(SerializationHelper.deserialize_by_tag(elem, "RModeInAtomicSwcInstanceRef")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcModeSwitchEvent."""
         super().__init__()
@@ -64,9 +73,8 @@ class SwcModeSwitchEvent(RTEEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcModeSwitchEvent, self).serialize()
@@ -125,22 +133,16 @@ class SwcModeSwitchEvent(RTEEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcModeSwitchEvent, cls).deserialize(element)
 
-        # Parse activation
-        child = SerializationHelper.find_child_element(element, "ACTIVATION")
-        if child is not None:
-            activation_value = ModeActivationKind.deserialize(child)
-            obj.activation = activation_value
-
-        # Parse mode_irefs (multi-wrapper list from "MODE-IREFS")
-        obj.mode_irefs = []
-        irefs_container = SerializationHelper.find_child_element(element, "MODE-IREFS")
-        if irefs_container is not None:
-            for iref_wrapper in irefs_container:
-                if SerializationHelper.strip_namespace(iref_wrapper.tag) == "MODE-IREF":
-                    # Deserialize each iref wrapper as the type (flattened structure)
-                    child_value = SerializationHelper.deserialize_by_tag(iref_wrapper, "RModeInAtomicSwcInstanceRef")
-                    if child_value is not None:
-                        obj.mode_irefs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ACTIVATION":
+                setattr(obj, "activation", ModeActivationKind.deserialize(child))
+            elif tag == "MODE-IREFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj._mode_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "RModeInAtomicSwcInstanceRef"))
 
         return obj
 

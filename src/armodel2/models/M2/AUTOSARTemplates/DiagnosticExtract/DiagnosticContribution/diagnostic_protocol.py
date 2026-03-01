@@ -42,11 +42,23 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-PROTOCOL"
+
+
     diagnostic_refs: list[ARRef]
     priority: Optional[PositiveInteger]
     protocol_kind: Optional[NameToken]
     send_resp_pend: Optional[Boolean]
     service_table_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTIC-REFS": lambda obj, elem: [obj.diagnostic_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PROTOCOL-KIND": lambda obj, elem: setattr(obj, "protocol_kind", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "SEND-RESP-PEND": lambda obj, elem: setattr(obj, "send_resp_pend", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SERVICE-TABLE-REF": lambda obj, elem: setattr(obj, "service_table_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticProtocol."""
         super().__init__()
@@ -62,9 +74,8 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticProtocol, self).serialize()
@@ -168,45 +179,22 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticProtocol, cls).deserialize(element)
 
-        # Parse diagnostic_refs (list from container "DIAGNOSTIC-REFS")
-        obj.diagnostic_refs = []
-        container = SerializationHelper.find_child_element(element, "DIAGNOSTIC-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.diagnostic_refs.append(child_value)
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse protocol_kind
-        child = SerializationHelper.find_child_element(element, "PROTOCOL-KIND")
-        if child is not None:
-            protocol_kind_value = child.text
-            obj.protocol_kind = protocol_kind_value
-
-        # Parse send_resp_pend
-        child = SerializationHelper.find_child_element(element, "SEND-RESP-PEND")
-        if child is not None:
-            send_resp_pend_value = child.text
-            obj.send_resp_pend = send_resp_pend_value
-
-        # Parse service_table_ref
-        child = SerializationHelper.find_child_element(element, "SERVICE-TABLE-REF")
-        if child is not None:
-            service_table_ref_value = ARRef.deserialize(child)
-            obj.service_table_ref = service_table_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DIAGNOSTIC-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.diagnostic_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PROTOCOL-KIND":
+                setattr(obj, "protocol_kind", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "SEND-RESP-PEND":
+                setattr(obj, "send_resp_pend", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SERVICE-TABLE-REF":
+                setattr(obj, "service_table_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -30,7 +30,15 @@ class TDCpSoftwareClusterMappingSet(ARElement):
         """
         return False
 
+    _XML_TAG = "T-D-CP-SOFTWARE-CLUSTER-MAPPING-SET"
+
+
     td_cp_softwares: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "TD-CP-SOFTWARES": lambda obj, elem: obj.td_cp_softwares.append(SerializationHelper.deserialize_by_tag(elem, "any (TDCpSoftwareCluster)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDCpSoftwareClusterMappingSet."""
         super().__init__()
@@ -42,9 +50,8 @@ class TDCpSoftwareClusterMappingSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDCpSoftwareClusterMappingSet, self).serialize()
@@ -85,15 +92,14 @@ class TDCpSoftwareClusterMappingSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDCpSoftwareClusterMappingSet, cls).deserialize(element)
 
-        # Parse td_cp_softwares (list from container "TD-CP-SOFTWARES")
-        obj.td_cp_softwares = []
-        container = SerializationHelper.find_child_element(element, "TD-CP-SOFTWARES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.td_cp_softwares.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TD-CP-SOFTWARES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.td_cp_softwares.append(SerializationHelper.deserialize_by_tag(item_elem, "any (TDCpSoftwareCluster)"))
 
         return obj
 

@@ -33,7 +33,15 @@ class TlsCryptoCipherSuiteProps(Identifiable):
         """
         return False
 
+    _XML_TAG = "TLS-CRYPTO-CIPHER-SUITE-PROPS"
+
+
     tcp_ip_tls_use: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "TCP-IP-TLS-USE": lambda obj, elem: setattr(obj, "tcp_ip_tls_use", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TlsCryptoCipherSuiteProps."""
         super().__init__()
@@ -45,9 +53,8 @@ class TlsCryptoCipherSuiteProps(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TlsCryptoCipherSuiteProps, self).serialize()
@@ -92,11 +99,12 @@ class TlsCryptoCipherSuiteProps(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TlsCryptoCipherSuiteProps, cls).deserialize(element)
 
-        # Parse tcp_ip_tls_use
-        child = SerializationHelper.find_child_element(element, "TCP-IP-TLS-USE")
-        if child is not None:
-            tcp_ip_tls_use_value = child.text
-            obj.tcp_ip_tls_use = tcp_ip_tls_use_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TCP-IP-TLS-USE":
+                setattr(obj, "tcp_ip_tls_use", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

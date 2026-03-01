@@ -36,10 +36,21 @@ class MacSecCryptoAlgoConfig(ARObject):
         """
         return False
 
+    _XML_TAG = "MAC-SEC-CRYPTO-ALGO-CONFIG"
+
+
     capability: Optional[MacSecCapabilityEnum]
     cipher_suite: MacSecCipherSuiteConfig
     confidentiality: Optional[MacSecConfidentialityOffsetEnum]
     replay_protection: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CAPABILITY": lambda obj, elem: setattr(obj, "capability", MacSecCapabilityEnum.deserialize(elem)),
+        "CIPHER-SUITE": lambda obj, elem: setattr(obj, "cipher_suite", SerializationHelper.deserialize_by_tag(elem, "MacSecCipherSuiteConfig")),
+        "CONFIDENTIALITY": lambda obj, elem: setattr(obj, "confidentiality", MacSecConfidentialityOffsetEnum.deserialize(elem)),
+        "REPLAY-PROTECTION": lambda obj, elem: setattr(obj, "replay_protection", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MacSecCryptoAlgoConfig."""
         super().__init__()
@@ -54,9 +65,8 @@ class MacSecCryptoAlgoConfig(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MacSecCryptoAlgoConfig, self).serialize()
@@ -143,29 +153,18 @@ class MacSecCryptoAlgoConfig(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacSecCryptoAlgoConfig, cls).deserialize(element)
 
-        # Parse capability
-        child = SerializationHelper.find_child_element(element, "CAPABILITY")
-        if child is not None:
-            capability_value = MacSecCapabilityEnum.deserialize(child)
-            obj.capability = capability_value
-
-        # Parse cipher_suite
-        child = SerializationHelper.find_child_element(element, "CIPHER-SUITE")
-        if child is not None:
-            cipher_suite_value = SerializationHelper.deserialize_by_tag(child, "MacSecCipherSuiteConfig")
-            obj.cipher_suite = cipher_suite_value
-
-        # Parse confidentiality
-        child = SerializationHelper.find_child_element(element, "CONFIDENTIALITY")
-        if child is not None:
-            confidentiality_value = MacSecConfidentialityOffsetEnum.deserialize(child)
-            obj.confidentiality = confidentiality_value
-
-        # Parse replay_protection
-        child = SerializationHelper.find_child_element(element, "REPLAY-PROTECTION")
-        if child is not None:
-            replay_protection_value = child.text
-            obj.replay_protection = replay_protection_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CAPABILITY":
+                setattr(obj, "capability", MacSecCapabilityEnum.deserialize(child))
+            elif tag == "CIPHER-SUITE":
+                setattr(obj, "cipher_suite", SerializationHelper.deserialize_by_tag(child, "MacSecCipherSuiteConfig"))
+            elif tag == "CONFIDENTIALITY":
+                setattr(obj, "confidentiality", MacSecConfidentialityOffsetEnum.deserialize(child))
+            elif tag == "REPLAY-PROTECTION":
+                setattr(obj, "replay_protection", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

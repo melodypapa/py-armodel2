@@ -42,10 +42,21 @@ class AdminData(ARObject):
         """
         return False
 
+    _XML_TAG = "ADMIN-DATA"
+
+
     doc_revisions: list[DocRevision]
     language: Optional[LEnum]
     sdgs: list[Sdg]
     used_languages: Optional[MultiLanguagePlainText]
+    _DESERIALIZE_DISPATCH = {
+        "DOC-REVISIONS": lambda obj, elem: obj.doc_revisions.append(SerializationHelper.deserialize_by_tag(elem, "DocRevision")),
+        "LANGUAGE": lambda obj, elem: setattr(obj, "language", LEnum.deserialize(elem)),
+        "SDGS": lambda obj, elem: obj.sdgs.append(SerializationHelper.deserialize_by_tag(elem, "Sdg")),
+        "USED-LANGUAGES": lambda obj, elem: setattr(obj, "used_languages", SerializationHelper.deserialize_by_tag(elem, "MultiLanguagePlainText")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AdminData."""
         super().__init__()
@@ -60,9 +71,8 @@ class AdminData(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AdminData, self).serialize()
@@ -141,37 +151,22 @@ class AdminData(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AdminData, cls).deserialize(element)
 
-        # Parse doc_revisions (list from container "DOC-REVISIONS")
-        obj.doc_revisions = []
-        container = SerializationHelper.find_child_element(element, "DOC-REVISIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.doc_revisions.append(child_value)
-
-        # Parse language
-        child = SerializationHelper.find_child_element(element, "LANGUAGE")
-        if child is not None:
-            language_value = LEnum.deserialize(child)
-            obj.language = language_value
-
-        # Parse sdgs (list from container "SDGS")
-        obj.sdgs = []
-        container = SerializationHelper.find_child_element(element, "SDGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sdgs.append(child_value)
-
-        # Parse used_languages
-        child = SerializationHelper.find_child_element(element, "USED-LANGUAGES")
-        if child is not None:
-            used_languages_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText")
-            obj.used_languages = used_languages_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DOC-REVISIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.doc_revisions.append(SerializationHelper.deserialize_by_tag(item_elem, "DocRevision"))
+            elif tag == "LANGUAGE":
+                setattr(obj, "language", LEnum.deserialize(child))
+            elif tag == "SDGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sdgs.append(SerializationHelper.deserialize_by_tag(item_elem, "Sdg"))
+            elif tag == "USED-LANGUAGES":
+                setattr(obj, "used_languages", SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText"))
 
         return obj
 

@@ -32,8 +32,17 @@ class BlueprintGenerator(ARObject):
         """
         return False
 
+    _XML_TAG = "BLUEPRINT-GENERATOR"
+
+
     expression: Optional[VerbatimString]
     introduction: Optional[DocumentationBlock]
+    _DESERIALIZE_DISPATCH = {
+        "EXPRESSION": lambda obj, elem: setattr(obj, "expression", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
+        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BlueprintGenerator."""
         super().__init__()
@@ -46,9 +55,8 @@ class BlueprintGenerator(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BlueprintGenerator, self).serialize()
@@ -107,17 +115,14 @@ class BlueprintGenerator(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BlueprintGenerator, cls).deserialize(element)
 
-        # Parse expression
-        child = SerializationHelper.find_child_element(element, "EXPRESSION")
-        if child is not None:
-            expression_value = SerializationHelper.deserialize_by_tag(child, "VerbatimString")
-            obj.expression = expression_value
-
-        # Parse introduction
-        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
-        if child is not None:
-            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.introduction = introduction_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EXPRESSION":
+                setattr(obj, "expression", SerializationHelper.deserialize_by_tag(child, "VerbatimString"))
+            elif tag == "INTRODUCTION":
+                setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
 
         return obj
 

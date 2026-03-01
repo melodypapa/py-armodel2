@@ -29,7 +29,15 @@ class SpecificationScope(ARObject):
         """
         return False
 
+    _XML_TAG = "SPECIFICATION-SCOPE"
+
+
     specification_documents: list[SpecificationDocumentScope]
+    _DESERIALIZE_DISPATCH = {
+        "SPECIFICATION-DOCUMENTS": lambda obj, elem: obj.specification_documents.append(SerializationHelper.deserialize_by_tag(elem, "SpecificationDocumentScope")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SpecificationScope."""
         super().__init__()
@@ -41,9 +49,8 @@ class SpecificationScope(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SpecificationScope, self).serialize()
@@ -84,15 +91,14 @@ class SpecificationScope(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SpecificationScope, cls).deserialize(element)
 
-        # Parse specification_documents (list from container "SPECIFICATION-DOCUMENTS")
-        obj.specification_documents = []
-        container = SerializationHelper.find_child_element(element, "SPECIFICATION-DOCUMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.specification_documents.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SPECIFICATION-DOCUMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.specification_documents.append(SerializationHelper.deserialize_by_tag(item_elem, "SpecificationDocumentScope"))
 
         return obj
 

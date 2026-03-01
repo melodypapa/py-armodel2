@@ -29,8 +29,17 @@ class RequestResponseDelay(ARObject):
         """
         return False
 
+    _XML_TAG = "REQUEST-RESPONSE-DELAY"
+
+
     max_value: Optional[TimeValue]
     min_value: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-VALUE": lambda obj, elem: setattr(obj, "max_value", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "MIN-VALUE": lambda obj, elem: setattr(obj, "min_value", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RequestResponseDelay."""
         super().__init__()
@@ -43,9 +52,8 @@ class RequestResponseDelay(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RequestResponseDelay, self).serialize()
@@ -104,17 +112,14 @@ class RequestResponseDelay(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RequestResponseDelay, cls).deserialize(element)
 
-        # Parse max_value
-        child = SerializationHelper.find_child_element(element, "MAX-VALUE")
-        if child is not None:
-            max_value_value = child.text
-            obj.max_value = max_value_value
-
-        # Parse min_value
-        child = SerializationHelper.find_child_element(element, "MIN-VALUE")
-        if child is not None:
-            min_value_value = child.text
-            obj.min_value = min_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAX-VALUE":
+                setattr(obj, "max_value", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "MIN-VALUE":
+                setattr(obj, "min_value", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

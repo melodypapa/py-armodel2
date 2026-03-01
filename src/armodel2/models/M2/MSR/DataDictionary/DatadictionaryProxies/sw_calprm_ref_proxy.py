@@ -33,8 +33,17 @@ class SwCalprmRefProxy(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-CALPRM-REF-PROXY"
+
+
     ar_parameter_ref: Optional[ARRef]
     mc_data_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AR-PARAMETER-REF": lambda obj, elem: setattr(obj, "ar_parameter_ref", ARRef.deserialize(elem)),
+        "MC-DATA-INSTANCE-REF": lambda obj, elem: setattr(obj, "mc_data_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwCalprmRefProxy."""
         super().__init__()
@@ -47,9 +56,8 @@ class SwCalprmRefProxy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwCalprmRefProxy, self).serialize()
@@ -108,17 +116,14 @@ class SwCalprmRefProxy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwCalprmRefProxy, cls).deserialize(element)
 
-        # Parse ar_parameter_ref
-        child = SerializationHelper.find_child_element(element, "AR-PARAMETER-REF")
-        if child is not None:
-            ar_parameter_ref_value = ARRef.deserialize(child)
-            obj.ar_parameter_ref = ar_parameter_ref_value
-
-        # Parse mc_data_instance_ref
-        child = SerializationHelper.find_child_element(element, "MC-DATA-INSTANCE-REF")
-        if child is not None:
-            mc_data_instance_ref_value = ARRef.deserialize(child)
-            obj.mc_data_instance_ref = mc_data_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AR-PARAMETER-REF":
+                setattr(obj, "ar_parameter_ref", ARRef.deserialize(child))
+            elif tag == "MC-DATA-INSTANCE-REF":
+                setattr(obj, "mc_data_instance_ref", ARRef.deserialize(child))
 
         return obj
 

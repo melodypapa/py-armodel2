@@ -33,8 +33,17 @@ class BlueprintMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "BLUEPRINT-MAPPING"
+
+
     blueprint_ref: ARRef
     derived_object_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "BLUEPRINT-REF": ("_POLYMORPHIC", "blueprint_ref", ["ARPackage", "AbstractImplementationDataType", "AclObjectSet", "AclOperation", "AclPermission", "AclRole", "AliasNameSet", "ApplicationDataType", "BswEntryRelationshipSet", "BswModuleDescription", "BswModuleEntry", "BuildActionEntity", "BuildActionEnvironment", "BuildActionManifest", "ClientServerInterfaceToBswModuleEntryBlueprintMapping", "CompuMethod", "ConsistencyNeeds", "DataConstr", "DataTypeMappingSet", "EcucDefinitionCollection", "EcucDestinationUriDefSet", "EcucModuleDef", "FlatMap", "ImpositionTime", "ImpositionTimeDefinitionGroup", "KeywordSet", "LifeCycleState", "LifeCycleStateDefinitionGroup", "ModeDeclarationGroup", "PortInterface", "PortInterfaceMapping", "PortInterfaceMappingSet", "PortPrototypeBlueprint", "SwAddrMethod", "SwBaseType", "SwComponentType", "VfbTiming"]),
+        "DERIVED-OBJECT-REF": ("_POLYMORPHIC", "derived_object_ref", ["ARPackage", "AbstractImplementationDataType", "AclObjectSet", "AclOperation", "AclPermission", "AclRole", "AliasNameSet", "ApplicationDataType", "BswEntryRelationshipSet", "BswModuleDescription", "BswModuleEntry", "BuildActionEntity", "BuildActionEnvironment", "BuildActionManifest", "CompuMethod", "ConsistencyNeeds", "DataConstr", "DataTypeMappingSet", "EcucDefinitionCollection", "EcucDestinationUriDefSet", "EcucModuleDef", "FlatMap", "ImpositionTime", "ImpositionTimeDefinitionGroup", "KeywordSet", "LifeCycleState", "LifeCycleStateDefinitionGroup", "ModeDeclarationGroup", "PortInterface", "PortInterfaceMapping", "PortInterfaceMappingSet", "PortPrototype", "SwAddrMethod", "SwBaseType", "SwComponentType", "VfbTiming"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BlueprintMapping."""
         super().__init__()
@@ -47,9 +56,8 @@ class BlueprintMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BlueprintMapping, self).serialize()
@@ -108,17 +116,14 @@ class BlueprintMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BlueprintMapping, cls).deserialize(element)
 
-        # Parse blueprint_ref
-        child = SerializationHelper.find_child_element(element, "BLUEPRINT-REF")
-        if child is not None:
-            blueprint_ref_value = ARRef.deserialize(child)
-            obj.blueprint_ref = blueprint_ref_value
-
-        # Parse derived_object_ref
-        child = SerializationHelper.find_child_element(element, "DERIVED-OBJECT-REF")
-        if child is not None:
-            derived_object_ref_value = ARRef.deserialize(child)
-            obj.derived_object_ref = derived_object_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BLUEPRINT-REF":
+                setattr(obj, "blueprint_ref", ARRef.deserialize(child))
+            elif tag == "DERIVED-OBJECT-REF":
+                setattr(obj, "derived_object_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -33,7 +33,15 @@ class KeywordSet(ARElement):
         """
         return False
 
+    _XML_TAG = "KEYWORD-SET"
+
+
     keywords: list[Keyword]
+    _DESERIALIZE_DISPATCH = {
+        "KEYWORDS": lambda obj, elem: obj.keywords.append(SerializationHelper.deserialize_by_tag(elem, "Keyword")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize KeywordSet."""
         super().__init__()
@@ -45,9 +53,8 @@ class KeywordSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(KeywordSet, self).serialize()
@@ -88,15 +95,14 @@ class KeywordSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(KeywordSet, cls).deserialize(element)
 
-        # Parse keywords (list from container "KEYWORDS")
-        obj.keywords = []
-        container = SerializationHelper.find_child_element(element, "KEYWORDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.keywords.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "KEYWORDS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.keywords.append(SerializationHelper.deserialize_by_tag(item_elem, "Keyword"))
 
         return obj
 

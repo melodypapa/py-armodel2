@@ -112,5 +112,4 @@ class LanguageSpecificBuilder:
         Returns:
             LanguageSpecific instance
         """
-        # TODO: Add validation
         return self._obj

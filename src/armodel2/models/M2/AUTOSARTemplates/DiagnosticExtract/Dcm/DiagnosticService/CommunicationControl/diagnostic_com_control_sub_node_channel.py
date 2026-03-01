@@ -27,7 +27,15 @@ class DiagnosticComControlSubNodeChannel(ARObject):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-COM-CONTROL-SUB-NODE-CHANNEL"
+
+
     sub_node_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "SUB-NODE-REF": lambda obj, elem: setattr(obj, "sub_node_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticComControlSubNodeChannel."""
         super().__init__()
@@ -39,9 +47,8 @@ class DiagnosticComControlSubNodeChannel(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticComControlSubNodeChannel, self).serialize()
@@ -86,11 +93,12 @@ class DiagnosticComControlSubNodeChannel(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticComControlSubNodeChannel, cls).deserialize(element)
 
-        # Parse sub_node_ref
-        child = SerializationHelper.find_child_element(element, "SUB-NODE-REF")
-        if child is not None:
-            sub_node_ref_value = ARRef.deserialize(child)
-            obj.sub_node_ref = sub_node_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SUB-NODE-REF":
+                setattr(obj, "sub_node_ref", ARRef.deserialize(child))
 
         return obj
 

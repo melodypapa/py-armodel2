@@ -26,7 +26,15 @@ class DdsDestinationOrder(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-DESTINATION-ORDER"
+
+
     destination: Optional[DdsDestinationOrder]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION": lambda obj, elem: setattr(obj, "destination", SerializationHelper.deserialize_by_tag(elem, "DdsDestinationOrder")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsDestinationOrder."""
         super().__init__()
@@ -38,9 +46,8 @@ class DdsDestinationOrder(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsDestinationOrder, self).serialize()
@@ -85,11 +92,12 @@ class DdsDestinationOrder(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsDestinationOrder, cls).deserialize(element)
 
-        # Parse destination
-        child = SerializationHelper.find_child_element(element, "DESTINATION")
-        if child is not None:
-            destination_value = SerializationHelper.deserialize_by_tag(child, "DdsDestinationOrder")
-            obj.destination = destination_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DESTINATION":
+                setattr(obj, "destination", SerializationHelper.deserialize_by_tag(child, "DdsDestinationOrder"))
 
         return obj
 

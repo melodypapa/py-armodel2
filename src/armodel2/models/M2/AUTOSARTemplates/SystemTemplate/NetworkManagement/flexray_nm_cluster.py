@@ -35,6 +35,9 @@ class FlexrayNmCluster(NmCluster):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-NM-CLUSTER"
+
+
     nm_car_wake_up: Optional[Boolean]
     nm_data_cycle: Optional[Integer]
     nm_main: Optional[TimeValue]
@@ -42,6 +45,17 @@ class FlexrayNmCluster(NmCluster):
     nm_repeat: Optional[TimeValue]
     nm_repetition: Optional[Integer]
     nm_voting_cycle: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "NM-CAR-WAKE-UP": lambda obj, elem: setattr(obj, "nm_car_wake_up", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-DATA-CYCLE": lambda obj, elem: setattr(obj, "nm_data_cycle", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NM-MAIN": lambda obj, elem: setattr(obj, "nm_main", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "NM-REMOTE": lambda obj, elem: setattr(obj, "nm_remote", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "NM-REPEAT": lambda obj, elem: setattr(obj, "nm_repeat", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "NM-REPETITION": lambda obj, elem: setattr(obj, "nm_repetition", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NM-VOTING-CYCLE": lambda obj, elem: setattr(obj, "nm_voting_cycle", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayNmCluster."""
         super().__init__()
@@ -59,9 +73,8 @@ class FlexrayNmCluster(NmCluster):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayNmCluster, self).serialize()
@@ -190,47 +203,24 @@ class FlexrayNmCluster(NmCluster):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayNmCluster, cls).deserialize(element)
 
-        # Parse nm_car_wake_up
-        child = SerializationHelper.find_child_element(element, "NM-CAR-WAKE-UP")
-        if child is not None:
-            nm_car_wake_up_value = child.text
-            obj.nm_car_wake_up = nm_car_wake_up_value
-
-        # Parse nm_data_cycle
-        child = SerializationHelper.find_child_element(element, "NM-DATA-CYCLE")
-        if child is not None:
-            nm_data_cycle_value = child.text
-            obj.nm_data_cycle = nm_data_cycle_value
-
-        # Parse nm_main
-        child = SerializationHelper.find_child_element(element, "NM-MAIN")
-        if child is not None:
-            nm_main_value = child.text
-            obj.nm_main = nm_main_value
-
-        # Parse nm_remote
-        child = SerializationHelper.find_child_element(element, "NM-REMOTE")
-        if child is not None:
-            nm_remote_value = child.text
-            obj.nm_remote = nm_remote_value
-
-        # Parse nm_repeat
-        child = SerializationHelper.find_child_element(element, "NM-REPEAT")
-        if child is not None:
-            nm_repeat_value = child.text
-            obj.nm_repeat = nm_repeat_value
-
-        # Parse nm_repetition
-        child = SerializationHelper.find_child_element(element, "NM-REPETITION")
-        if child is not None:
-            nm_repetition_value = child.text
-            obj.nm_repetition = nm_repetition_value
-
-        # Parse nm_voting_cycle
-        child = SerializationHelper.find_child_element(element, "NM-VOTING-CYCLE")
-        if child is not None:
-            nm_voting_cycle_value = child.text
-            obj.nm_voting_cycle = nm_voting_cycle_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "NM-CAR-WAKE-UP":
+                setattr(obj, "nm_car_wake_up", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-DATA-CYCLE":
+                setattr(obj, "nm_data_cycle", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "NM-MAIN":
+                setattr(obj, "nm_main", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "NM-REMOTE":
+                setattr(obj, "nm_remote", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "NM-REPEAT":
+                setattr(obj, "nm_repeat", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "NM-REPETITION":
+                setattr(obj, "nm_repetition", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "NM-VOTING-CYCLE":
+                setattr(obj, "nm_voting_cycle", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

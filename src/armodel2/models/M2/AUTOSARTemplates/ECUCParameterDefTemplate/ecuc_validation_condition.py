@@ -39,8 +39,17 @@ class EcucValidationCondition(Identifiable):
         """
         return False
 
+    _XML_TAG = "ECUC-VALIDATION-CONDITION"
+
+
     ecuc_queries: list[EcucQuery]
     validation: Optional[EcucConditionFormula]
+    _DESERIALIZE_DISPATCH = {
+        "ECUC-QUERIES": lambda obj, elem: obj.ecuc_queries.append(SerializationHelper.deserialize_by_tag(elem, "EcucQuery")),
+        "VALIDATION": lambda obj, elem: setattr(obj, "validation", SerializationHelper.deserialize_by_tag(elem, "EcucConditionFormula")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucValidationCondition."""
         super().__init__()
@@ -53,9 +62,8 @@ class EcucValidationCondition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucValidationCondition, self).serialize()
@@ -110,21 +118,16 @@ class EcucValidationCondition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucValidationCondition, cls).deserialize(element)
 
-        # Parse ecuc_queries (list from container "ECUC-QUERIES")
-        obj.ecuc_queries = []
-        container = SerializationHelper.find_child_element(element, "ECUC-QUERIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ecuc_queries.append(child_value)
-
-        # Parse validation
-        child = SerializationHelper.find_child_element(element, "VALIDATION")
-        if child is not None:
-            validation_value = SerializationHelper.deserialize_by_tag(child, "EcucConditionFormula")
-            obj.validation = validation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ECUC-QUERIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.ecuc_queries.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucQuery"))
+            elif tag == "VALIDATION":
+                setattr(obj, "validation", SerializationHelper.deserialize_by_tag(child, "EcucConditionFormula"))
 
         return obj
 

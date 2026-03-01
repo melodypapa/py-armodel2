@@ -37,8 +37,17 @@ class SpecificationDocumentScope(SpecElementReference):
         """
         return False
 
+    _XML_TAG = "SPECIFICATION-DOCUMENT-SCOPE"
+
+
     custom_documentation_ref: Optional[ARRef]
     documents: list[DocumentElementScope]
+    _DESERIALIZE_DISPATCH = {
+        "CUSTOM-DOCUMENTATION-REF": lambda obj, elem: setattr(obj, "custom_documentation_ref", ARRef.deserialize(elem)),
+        "DOCUMENTS": lambda obj, elem: obj.documents.append(SerializationHelper.deserialize_by_tag(elem, "DocumentElementScope")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SpecificationDocumentScope."""
         super().__init__()
@@ -51,9 +60,8 @@ class SpecificationDocumentScope(SpecElementReference):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SpecificationDocumentScope, self).serialize()
@@ -108,21 +116,16 @@ class SpecificationDocumentScope(SpecElementReference):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SpecificationDocumentScope, cls).deserialize(element)
 
-        # Parse custom_documentation_ref
-        child = SerializationHelper.find_child_element(element, "CUSTOM-DOCUMENTATION-REF")
-        if child is not None:
-            custom_documentation_ref_value = ARRef.deserialize(child)
-            obj.custom_documentation_ref = custom_documentation_ref_value
-
-        # Parse documents (list from container "DOCUMENTS")
-        obj.documents = []
-        container = SerializationHelper.find_child_element(element, "DOCUMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.documents.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CUSTOM-DOCUMENTATION-REF":
+                setattr(obj, "custom_documentation_ref", ARRef.deserialize(child))
+            elif tag == "DOCUMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.documents.append(SerializationHelper.deserialize_by_tag(item_elem, "DocumentElementScope"))
 
         return obj
 

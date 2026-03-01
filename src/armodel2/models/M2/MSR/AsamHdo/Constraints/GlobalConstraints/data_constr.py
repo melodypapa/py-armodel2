@@ -36,7 +36,15 @@ class DataConstr(ARElement):
         """
         return False
 
+    _XML_TAG = "DATA-CONSTR"
+
+
     data_constr_rules: list[DataConstrRule]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-CONSTR-RULES": lambda obj, elem: obj.data_constr_rules.append(SerializationHelper.deserialize_by_tag(elem, "DataConstrRule")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataConstr."""
         super().__init__()
@@ -48,9 +56,8 @@ class DataConstr(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataConstr, self).serialize()
@@ -91,15 +98,14 @@ class DataConstr(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataConstr, cls).deserialize(element)
 
-        # Parse data_constr_rules (list from container "DATA-CONSTR-RULES")
-        obj.data_constr_rules = []
-        container = SerializationHelper.find_child_element(element, "DATA-CONSTR-RULES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_constr_rules.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-CONSTR-RULES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.data_constr_rules.append(SerializationHelper.deserialize_by_tag(item_elem, "DataConstrRule"))
 
         return obj
 

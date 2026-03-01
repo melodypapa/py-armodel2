@@ -35,6 +35,9 @@ class FlexrayCluster(ARObject):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-CLUSTER"
+
+
     action_point_offset: Optional[Integer]
     bit: Optional[TimeValue]
     cas_rx_low_max: Optional[Integer]
@@ -68,6 +71,43 @@ class FlexrayCluster(ARObject):
     wakeup_rx: Optional[Integer]
     wakeup_tx_active: Optional[Integer]
     wakeup_tx_idle: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "ACTION-POINT-OFFSET": lambda obj, elem: setattr(obj, "action_point_offset", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "BIT": lambda obj, elem: setattr(obj, "bit", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "CAS-RX-LOW-MAX": lambda obj, elem: setattr(obj, "cas_rx_low_max", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "COLD-START": lambda obj, elem: setattr(obj, "cold_start", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "CYCLE": lambda obj, elem: setattr(obj, "cycle", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "CYCLE-COUNT-MAX": lambda obj, elem: setattr(obj, "cycle_count_max", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "DETECT-NIT-ERROR": lambda obj, elem: setattr(obj, "detect_nit_error", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "DYNAMIC-SLOT-IDLE-PHASE": lambda obj, elem: setattr(obj, "dynamic_slot_idle_phase", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "IGNORE-AFTER-TX": lambda obj, elem: setattr(obj, "ignore_after_tx", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "LISTEN-NOISE": lambda obj, elem: setattr(obj, "listen_noise", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MACRO-PER-CYCLE": lambda obj, elem: setattr(obj, "macro_per_cycle", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MACROTICK": lambda obj, elem: setattr(obj, "macrotick", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "MAX-WITHOUT": lambda obj, elem: setattr(obj, "max_without", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MINISLOT-ACTION": lambda obj, elem: setattr(obj, "minislot_action", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MINISLOT-DURATION": lambda obj, elem: setattr(obj, "minislot_duration", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NETWORK-IDLE-TIME": lambda obj, elem: setattr(obj, "network_idle_time", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NETWORK": lambda obj, elem: setattr(obj, "network", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NUMBER-OF-MINISLOTS": lambda obj, elem: setattr(obj, "number_of_minislots", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NUMBER-OF-STATIC-SLOTS": lambda obj, elem: setattr(obj, "number_of_static_slots", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "OFFSET-CORRECTION": lambda obj, elem: setattr(obj, "offset_correction", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "PAYLOAD-LENGTH": lambda obj, elem: setattr(obj, "payload_length", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "SAFETY-MARGIN": lambda obj, elem: setattr(obj, "safety_margin", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "SAMPLE-CLOCK-PERIOD": lambda obj, elem: setattr(obj, "sample_clock_period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "STATIC-SLOT": lambda obj, elem: setattr(obj, "static_slot", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "SYMBOL-WINDOW": lambda obj, elem: setattr(obj, "symbol_window", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "SYNC-FRAME-ID": lambda obj, elem: setattr(obj, "sync_frame_id", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "TRANCEIVER": lambda obj, elem: setattr(obj, "tranceiver", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "WAKEUP-RX-IDLE": lambda obj, elem: setattr(obj, "wakeup_rx_idle", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "WAKEUP-RX-LOW": lambda obj, elem: setattr(obj, "wakeup_rx_low", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "WAKEUP-RX": lambda obj, elem: setattr(obj, "wakeup_rx", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "WAKEUP-TX-ACTIVE": lambda obj, elem: setattr(obj, "wakeup_tx_active", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "WAKEUP-TX-IDLE": lambda obj, elem: setattr(obj, "wakeup_tx_idle", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayCluster."""
         super().__init__()

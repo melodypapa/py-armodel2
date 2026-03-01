@@ -37,8 +37,17 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "CP-SOFTWARE-CLUSTER-RESOURCE-TO-APPLICATION-PARTITION-MAPPING"
+
+
     application_ref: Optional[ARRef]
     resource_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATION-REF": lambda obj, elem: setattr(obj, "application_ref", ARRef.deserialize(elem)),
+        "RESOURCE-REF": lambda obj, elem: setattr(obj, "resource_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterResourceToApplicationPartitionMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSoftwareClusterResourceToApplicationPartitionMapping, self).serialize()
@@ -112,17 +120,14 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterResourceToApplicationPartitionMapping, cls).deserialize(element)
 
-        # Parse application_ref
-        child = SerializationHelper.find_child_element(element, "APPLICATION-REF")
-        if child is not None:
-            application_ref_value = ARRef.deserialize(child)
-            obj.application_ref = application_ref_value
-
-        # Parse resource_ref
-        child = SerializationHelper.find_child_element(element, "RESOURCE-REF")
-        if child is not None:
-            resource_ref_value = ARRef.deserialize(child)
-            obj.resource_ref = resource_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "APPLICATION-REF":
+                setattr(obj, "application_ref", ARRef.deserialize(child))
+            elif tag == "RESOURCE-REF":
+                setattr(obj, "resource_ref", ARRef.deserialize(child))
 
         return obj
 

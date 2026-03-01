@@ -42,8 +42,17 @@ class AssemblySwConnector(SwConnector):
         """
         return False
 
+    _XML_TAG = "ASSEMBLY-SW-CONNECTOR"
+
+
     _provider_iref: Optional[PPortInCompositionInstanceRef]
     _requester_iref: Optional[RPortInCompositionInstanceRef]
+    _DESERIALIZE_DISPATCH = {
+        "PROVIDER-IREF": lambda obj, elem: setattr(obj, "_provider_iref", SerializationHelper.deserialize_by_tag(elem, "PPortInCompositionInstanceRef")),
+        "REQUESTER-IREF": lambda obj, elem: setattr(obj, "_requester_iref", SerializationHelper.deserialize_by_tag(elem, "RPortInCompositionInstanceRef")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AssemblySwConnector."""
         super().__init__()
@@ -78,9 +87,8 @@ class AssemblySwConnector(SwConnector):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AssemblySwConnector, self).serialize()
@@ -133,19 +141,14 @@ class AssemblySwConnector(SwConnector):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AssemblySwConnector, cls).deserialize(element)
 
-        # Parse provider_iref (instance reference from wrapper "PROVIDER-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "PROVIDER-IREF")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            provider_iref_value = SerializationHelper.deserialize_by_tag(wrapper, "PPortInCompositionInstanceRef")
-            obj.provider_iref = provider_iref_value
-
-        # Parse requester_iref (instance reference from wrapper "REQUESTER-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "REQUESTER-IREF")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            requester_iref_value = SerializationHelper.deserialize_by_tag(wrapper, "RPortInCompositionInstanceRef")
-            obj.requester_iref = requester_iref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PROVIDER-IREF":
+                setattr(obj, "_provider_iref", SerializationHelper.deserialize_by_tag(child, "PPortInCompositionInstanceRef"))
+            elif tag == "REQUESTER-IREF":
+                setattr(obj, "_requester_iref", SerializationHelper.deserialize_by_tag(child, "RPortInCompositionInstanceRef"))
 
         return obj
 

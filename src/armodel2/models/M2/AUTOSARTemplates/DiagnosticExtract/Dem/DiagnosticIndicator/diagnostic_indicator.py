@@ -33,7 +33,15 @@ class DiagnosticIndicator(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-INDICATOR"
+
+
     type: Optional[DiagnosticIndicatorTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "TYPE": lambda obj, elem: setattr(obj, "type", DiagnosticIndicatorTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticIndicator."""
         super().__init__()
@@ -45,9 +53,8 @@ class DiagnosticIndicator(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticIndicator, self).serialize()
@@ -92,11 +99,12 @@ class DiagnosticIndicator(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticIndicator, cls).deserialize(element)
 
-        # Parse type
-        child = SerializationHelper.find_child_element(element, "TYPE")
-        if child is not None:
-            type_value = DiagnosticIndicatorTypeEnum.deserialize(child)
-            obj.type = type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TYPE":
+                setattr(obj, "type", DiagnosticIndicatorTypeEnum.deserialize(child))
 
         return obj
 

@@ -43,11 +43,23 @@ class SwValues(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-VALUES"
+
+
     v: Optional[Numerical]
     vf: Optional[Numerical]
     vg_ref: Optional[ARRef]
     vt: Optional[VerbatimString]
     vtf: Optional[NumericalOrText]
+    _DESERIALIZE_DISPATCH = {
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VF": lambda obj, elem: setattr(obj, "vf", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VG-REF": lambda obj, elem: setattr(obj, "vg_ref", ARRef.deserialize(elem)),
+        "VT": lambda obj, elem: setattr(obj, "vt", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
+        "VTF": lambda obj, elem: setattr(obj, "vtf", SerializationHelper.deserialize_by_tag(elem, "NumericalOrText")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwValues."""
         super().__init__()

@@ -33,7 +33,15 @@ class FreeFormat(FreeFormatEntry):
         """
         return False
 
+    _XML_TAG = "FREE-FORMAT"
+
+
     byte_values: list[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "BYTE-VALUES": lambda obj, elem: obj.byte_values.append(SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FreeFormat."""
         super().__init__()
@@ -45,9 +53,8 @@ class FreeFormat(FreeFormatEntry):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FreeFormat, self).serialize()
@@ -95,15 +102,14 @@ class FreeFormat(FreeFormatEntry):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FreeFormat, cls).deserialize(element)
 
-        # Parse byte_values (list from container "BYTE-VALUES")
-        obj.byte_values = []
-        container = SerializationHelper.find_child_element(element, "BYTE-VALUES")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (Integer) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.byte_values.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BYTE-VALUES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.byte_values.append(SerializationHelper.deserialize_by_tag(item_elem, "Integer"))
 
         return obj
 

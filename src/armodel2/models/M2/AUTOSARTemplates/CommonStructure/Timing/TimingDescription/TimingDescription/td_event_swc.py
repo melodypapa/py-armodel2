@@ -32,6 +32,11 @@ class TDEventSwc(TimingDescriptionEvent, ABC):
         return True
 
     component: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "COMPONENT": lambda obj, elem: setattr(obj, "component", SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventSwc."""
         super().__init__()
@@ -43,9 +48,8 @@ class TDEventSwc(TimingDescriptionEvent, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventSwc, self).serialize()
@@ -90,11 +94,12 @@ class TDEventSwc(TimingDescriptionEvent, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventSwc, cls).deserialize(element)
 
-        # Parse component
-        child = SerializationHelper.find_child_element(element, "COMPONENT")
-        if child is not None:
-            component_value = child.text
-            obj.component = component_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMPONENT":
+                setattr(obj, "component", SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
 
         return obj
 

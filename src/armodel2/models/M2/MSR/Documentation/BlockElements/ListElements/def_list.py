@@ -36,7 +36,15 @@ class DefList(Paginateable):
         """
         return False
 
+    _XML_TAG = "DEF-LIST"
+
+
     def_item: DefItem
+    _DESERIALIZE_DISPATCH = {
+        "DEF-ITEM": lambda obj, elem: setattr(obj, "def_item", SerializationHelper.deserialize_by_tag(elem, "DefItem")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DefList."""
         super().__init__()
@@ -48,9 +56,8 @@ class DefList(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DefList, self).serialize()
@@ -95,11 +102,12 @@ class DefList(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DefList, cls).deserialize(element)
 
-        # Parse def_item
-        child = SerializationHelper.find_child_element(element, "DEF-ITEM")
-        if child is not None:
-            def_item_value = SerializationHelper.deserialize_by_tag(child, "DefItem")
-            obj.def_item = def_item_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEF-ITEM":
+                setattr(obj, "def_item", SerializationHelper.deserialize_by_tag(child, "DefItem"))
 
         return obj
 

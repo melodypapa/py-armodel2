@@ -33,10 +33,21 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
         """
         return False
 
+    _XML_TAG = "CONCRETE-PATTERN-EVENT-TRIGGERING"
+
+
     offsets: list[MultidimensionalTime]
     pattern_jitter: Optional[MultidimensionalTime]
     pattern_length: Optional[MultidimensionalTime]
     pattern_period: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "OFFSETS": lambda obj, elem: obj.offsets.append(SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "PATTERN-JITTER": lambda obj, elem: setattr(obj, "pattern_jitter", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "PATTERN-LENGTH": lambda obj, elem: setattr(obj, "pattern_length", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "PATTERN-PERIOD": lambda obj, elem: setattr(obj, "pattern_period", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConcretePatternEventTriggering."""
         super().__init__()
@@ -51,9 +62,8 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConcretePatternEventTriggering, self).serialize()
@@ -136,33 +146,20 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConcretePatternEventTriggering, cls).deserialize(element)
 
-        # Parse offsets (list from container "OFFSETS")
-        obj.offsets = []
-        container = SerializationHelper.find_child_element(element, "OFFSETS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.offsets.append(child_value)
-
-        # Parse pattern_jitter
-        child = SerializationHelper.find_child_element(element, "PATTERN-JITTER")
-        if child is not None:
-            pattern_jitter_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.pattern_jitter = pattern_jitter_value
-
-        # Parse pattern_length
-        child = SerializationHelper.find_child_element(element, "PATTERN-LENGTH")
-        if child is not None:
-            pattern_length_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.pattern_length = pattern_length_value
-
-        # Parse pattern_period
-        child = SerializationHelper.find_child_element(element, "PATTERN-PERIOD")
-        if child is not None:
-            pattern_period_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.pattern_period = pattern_period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OFFSETS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.offsets.append(SerializationHelper.deserialize_by_tag(item_elem, "MultidimensionalTime"))
+            elif tag == "PATTERN-JITTER":
+                setattr(obj, "pattern_jitter", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "PATTERN-LENGTH":
+                setattr(obj, "pattern_length", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "PATTERN-PERIOD":
+                setattr(obj, "pattern_period", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

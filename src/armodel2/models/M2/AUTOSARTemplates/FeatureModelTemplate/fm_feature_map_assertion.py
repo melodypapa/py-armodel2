@@ -30,7 +30,15 @@ class FMFeatureMapAssertion(Identifiable):
         """
         return False
 
+    _XML_TAG = "F-M-FEATURE-MAP-ASSERTION"
+
+
     fm_syscond_and_sw_systemconsts: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "FM-SYSCOND-AND-SW-SYSTEMCONSTS": lambda obj, elem: setattr(obj, "fm_syscond_and_sw_systemconsts", SerializationHelper.deserialize_by_tag(elem, "any (FMConditionByFeatures)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FMFeatureMapAssertion."""
         super().__init__()
@@ -42,9 +50,8 @@ class FMFeatureMapAssertion(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FMFeatureMapAssertion, self).serialize()
@@ -89,11 +96,12 @@ class FMFeatureMapAssertion(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeatureMapAssertion, cls).deserialize(element)
 
-        # Parse fm_syscond_and_sw_systemconsts
-        child = SerializationHelper.find_child_element(element, "FM-SYSCOND-AND-SW-SYSTEMCONSTS")
-        if child is not None:
-            fm_syscond_and_sw_systemconsts_value = child.text
-            obj.fm_syscond_and_sw_systemconsts = fm_syscond_and_sw_systemconsts_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FM-SYSCOND-AND-SW-SYSTEMCONSTS":
+                setattr(obj, "fm_syscond_and_sw_systemconsts", SerializationHelper.deserialize_by_tag(child, "any (FMConditionByFeatures)"))
 
         return obj
 

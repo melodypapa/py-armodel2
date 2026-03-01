@@ -33,7 +33,15 @@ class CpSoftwareClusterCommunicationResource(CpSoftwareClusterResource):
         """
         return False
 
+    _XML_TAG = "CP-SOFTWARE-CLUSTER-COMMUNICATION-RESOURCE"
+
+
     communication: Optional[CpSoftwareCluster]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION": lambda obj, elem: setattr(obj, "communication", SerializationHelper.deserialize_by_tag(elem, "CpSoftwareCluster")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterCommunicationResource."""
         super().__init__()
@@ -45,9 +53,8 @@ class CpSoftwareClusterCommunicationResource(CpSoftwareClusterResource):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSoftwareClusterCommunicationResource, self).serialize()
@@ -92,11 +99,12 @@ class CpSoftwareClusterCommunicationResource(CpSoftwareClusterResource):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterCommunicationResource, cls).deserialize(element)
 
-        # Parse communication
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION")
-        if child is not None:
-            communication_value = SerializationHelper.deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.communication = communication_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMMUNICATION":
+                setattr(obj, "communication", SerializationHelper.deserialize_by_tag(child, "CpSoftwareCluster"))
 
         return obj
 

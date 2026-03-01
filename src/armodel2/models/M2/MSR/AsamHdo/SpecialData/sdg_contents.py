@@ -45,11 +45,23 @@ class SdgContents(ARObject):
         """
         return False
 
+    _XML_TAG = "SDG-CONTENTS"
+
+
     sd: Optional[Sd]
     sdf: Optional[Sdf]
     sdg: Optional[Sdg]
     sdx_ref: Optional[ARRef]
     sdxf_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SD": lambda obj, elem: setattr(obj, "sd", SerializationHelper.deserialize_by_tag(elem, "Sd")),
+        "SDF": lambda obj, elem: setattr(obj, "sdf", SerializationHelper.deserialize_by_tag(elem, "Sdf")),
+        "SDG": lambda obj, elem: setattr(obj, "sdg", SerializationHelper.deserialize_by_tag(elem, "Sdg")),
+        "SDX-REF": ("_POLYMORPHIC", "sdx_ref", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
+        "SDXF-REF": ("_POLYMORPHIC", "sdxf_ref", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SdgContents."""
         super().__init__()

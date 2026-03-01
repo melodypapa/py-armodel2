@@ -34,8 +34,17 @@ class DiagnosticSessionControl(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SESSION-CONTROL"
+
+
     diagnostic_session_session_ref: Optional[ARRef]
     session_control_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTIC-SESSION-SESSION-REF": lambda obj, elem: setattr(obj, "diagnostic_session_session_ref", ARRef.deserialize(elem)),
+        "SESSION-CONTROL-REF": lambda obj, elem: setattr(obj, "session_control_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticSessionControl."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticSessionControl(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticSessionControl, self).serialize()
@@ -109,17 +117,14 @@ class DiagnosticSessionControl(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSessionControl, cls).deserialize(element)
 
-        # Parse diagnostic_session_session_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-SESSION-SESSION-REF")
-        if child is not None:
-            diagnostic_session_session_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_session_session_ref = diagnostic_session_session_ref_value
-
-        # Parse session_control_ref
-        child = SerializationHelper.find_child_element(element, "SESSION-CONTROL-REF")
-        if child is not None:
-            session_control_ref_value = ARRef.deserialize(child)
-            obj.session_control_ref = session_control_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DIAGNOSTIC-SESSION-SESSION-REF":
+                setattr(obj, "diagnostic_session_session_ref", ARRef.deserialize(child))
+            elif tag == "SESSION-CONTROL-REF":
+                setattr(obj, "session_control_ref", ARRef.deserialize(child))
 
         return obj
 

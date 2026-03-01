@@ -33,8 +33,17 @@ class BlueprintFormula(ARObject):
         """
         return False
 
+    _XML_TAG = "BLUEPRINT-FORMULA"
+
+
     ecuc_ref: ARRef
     verbatim: MultiLanguageVerbatim
+    _DESERIALIZE_DISPATCH = {
+        "ECUC-REF": ("_POLYMORPHIC", "ecuc_ref", ["EcucCommonAttributes", "EcucContainerDef", "EcucModuleDef"]),
+        "VERBATIM": lambda obj, elem: setattr(obj, "verbatim", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageVerbatim")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BlueprintFormula."""
         super().__init__()
@@ -47,9 +56,8 @@ class BlueprintFormula(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BlueprintFormula, self).serialize()
@@ -108,17 +116,14 @@ class BlueprintFormula(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BlueprintFormula, cls).deserialize(element)
 
-        # Parse ecuc_ref
-        child = SerializationHelper.find_child_element(element, "ECUC-REF")
-        if child is not None:
-            ecuc_ref_value = ARRef.deserialize(child)
-            obj.ecuc_ref = ecuc_ref_value
-
-        # Parse verbatim
-        child = SerializationHelper.find_child_element(element, "VERBATIM")
-        if child is not None:
-            verbatim_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageVerbatim")
-            obj.verbatim = verbatim_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ECUC-REF":
+                setattr(obj, "ecuc_ref", ARRef.deserialize(child))
+            elif tag == "VERBATIM":
+                setattr(obj, "verbatim", SerializationHelper.deserialize_by_tag(child, "MultiLanguageVerbatim"))
 
         return obj
 

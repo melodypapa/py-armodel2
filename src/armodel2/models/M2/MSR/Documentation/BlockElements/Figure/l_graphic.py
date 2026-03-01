@@ -36,8 +36,17 @@ class LGraphic(LanguageSpecific):
         """
         return False
 
+    _XML_TAG = "L-GRAPHIC"
+
+
     graphic: Graphic
     map: Optional[Map]
+    _DESERIALIZE_DISPATCH = {
+        "GRAPHIC": lambda obj, elem: setattr(obj, "graphic", SerializationHelper.deserialize_by_tag(elem, "Graphic")),
+        "MAP": lambda obj, elem: setattr(obj, "map", SerializationHelper.deserialize_by_tag(elem, "Map")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LGraphic."""
         super().__init__()
@@ -50,9 +59,8 @@ class LGraphic(LanguageSpecific):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LGraphic, self).serialize()
@@ -111,17 +119,14 @@ class LGraphic(LanguageSpecific):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LGraphic, cls).deserialize(element)
 
-        # Parse graphic
-        child = SerializationHelper.find_child_element(element, "GRAPHIC")
-        if child is not None:
-            graphic_value = SerializationHelper.deserialize_by_tag(child, "Graphic")
-            obj.graphic = graphic_value
-
-        # Parse map
-        child = SerializationHelper.find_child_element(element, "MAP")
-        if child is not None:
-            map_value = SerializationHelper.deserialize_by_tag(child, "Map")
-            obj.map = map_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "GRAPHIC":
+                setattr(obj, "graphic", SerializationHelper.deserialize_by_tag(child, "Graphic"))
+            elif tag == "MAP":
+                setattr(obj, "map", SerializationHelper.deserialize_by_tag(child, "Map"))
 
         return obj
 

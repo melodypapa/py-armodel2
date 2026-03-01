@@ -36,8 +36,17 @@ class SomeipTpConfig(TpConfig):
         """
         return False
 
+    _XML_TAG = "SOMEIP-TP-CONFIG"
+
+
     tp_channels: list[SomeipTpChannel]
     tp_connections: list[SomeipTpConnection]
+    _DESERIALIZE_DISPATCH = {
+        "TP-CHANNELS": lambda obj, elem: obj.tp_channels.append(SerializationHelper.deserialize_by_tag(elem, "SomeipTpChannel")),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SerializationHelper.deserialize_by_tag(elem, "SomeipTpConnection")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SomeipTpConfig."""
         super().__init__()
@@ -50,9 +59,8 @@ class SomeipTpConfig(TpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SomeipTpConfig, self).serialize()
@@ -103,25 +111,18 @@ class SomeipTpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SomeipTpConfig, cls).deserialize(element)
 
-        # Parse tp_channels (list from container "TP-CHANNELS")
-        obj.tp_channels = []
-        container = SerializationHelper.find_child_element(element, "TP-CHANNELS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_channels.append(child_value)
-
-        # Parse tp_connections (list from container "TP-CONNECTIONS")
-        obj.tp_connections = []
-        container = SerializationHelper.find_child_element(element, "TP-CONNECTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_connections.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TP-CHANNELS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.tp_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "SomeipTpChannel"))
+            elif tag == "TP-CONNECTIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.tp_connections.append(SerializationHelper.deserialize_by_tag(item_elem, "SomeipTpConnection"))
 
         return obj
 

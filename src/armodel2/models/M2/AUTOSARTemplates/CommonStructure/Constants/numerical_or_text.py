@@ -31,8 +31,17 @@ class NumericalOrText(ARObject):
         """
         return False
 
+    _XML_TAG = "NUMERICAL-OR-TEXT"
+
+
     vf: Optional[Numerical]
     vt: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "VF": lambda obj, elem: setattr(obj, "vf", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VT": lambda obj, elem: setattr(obj, "vt", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NumericalOrText."""
         super().__init__()
@@ -45,9 +54,8 @@ class NumericalOrText(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NumericalOrText, self).serialize()
@@ -106,17 +114,14 @@ class NumericalOrText(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NumericalOrText, cls).deserialize(element)
 
-        # Parse vf
-        child = SerializationHelper.find_child_element(element, "VF")
-        if child is not None:
-            vf_value = child.text
-            obj.vf = vf_value
-
-        # Parse vt
-        child = SerializationHelper.find_child_element(element, "VT")
-        if child is not None:
-            vt_value = child.text
-            obj.vt = vt_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "VF":
+                setattr(obj, "vf", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "VT":
+                setattr(obj, "vt", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

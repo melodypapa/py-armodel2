@@ -37,9 +37,19 @@ class MacSecKayParticipant(Identifiable):
         """
         return False
 
+    _XML_TAG = "MAC-SEC-KAY-PARTICIPANT"
+
+
     ckn_ref: Optional[ARRef]
     crypto_algo: Optional[MacSecCryptoAlgoConfig]
     sak_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CKN-REF": lambda obj, elem: setattr(obj, "ckn_ref", ARRef.deserialize(elem)),
+        "CRYPTO-ALGO": lambda obj, elem: setattr(obj, "crypto_algo", SerializationHelper.deserialize_by_tag(elem, "MacSecCryptoAlgoConfig")),
+        "SAK-REF": lambda obj, elem: setattr(obj, "sak_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MacSecKayParticipant."""
         super().__init__()
@@ -53,9 +63,8 @@ class MacSecKayParticipant(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MacSecKayParticipant, self).serialize()
@@ -128,23 +137,16 @@ class MacSecKayParticipant(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacSecKayParticipant, cls).deserialize(element)
 
-        # Parse ckn_ref
-        child = SerializationHelper.find_child_element(element, "CKN-REF")
-        if child is not None:
-            ckn_ref_value = ARRef.deserialize(child)
-            obj.ckn_ref = ckn_ref_value
-
-        # Parse crypto_algo
-        child = SerializationHelper.find_child_element(element, "CRYPTO-ALGO")
-        if child is not None:
-            crypto_algo_value = SerializationHelper.deserialize_by_tag(child, "MacSecCryptoAlgoConfig")
-            obj.crypto_algo = crypto_algo_value
-
-        # Parse sak_ref
-        child = SerializationHelper.find_child_element(element, "SAK-REF")
-        if child is not None:
-            sak_ref_value = ARRef.deserialize(child)
-            obj.sak_ref = sak_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CKN-REF":
+                setattr(obj, "ckn_ref", ARRef.deserialize(child))
+            elif tag == "CRYPTO-ALGO":
+                setattr(obj, "crypto_algo", SerializationHelper.deserialize_by_tag(child, "MacSecCryptoAlgoConfig"))
+            elif tag == "SAK-REF":
+                setattr(obj, "sak_ref", ARRef.deserialize(child))
 
         return obj
 

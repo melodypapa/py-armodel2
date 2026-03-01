@@ -34,8 +34,17 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-REQUEST-POWERTRAIN-FREEZE-FRAME-DATA"
+
+
     freeze_frame_freeze_frame_ref: Optional[ARRef]
     request_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "FREEZE-FRAME-FREEZE-FRAME-REF": lambda obj, elem: setattr(obj, "freeze_frame_freeze_frame_ref", ARRef.deserialize(elem)),
+        "REQUEST-REF": lambda obj, elem: setattr(obj, "request_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticRequestPowertrainFreezeFrameData."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticRequestPowertrainFreezeFrameData, self).serialize()
@@ -109,17 +117,14 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestPowertrainFreezeFrameData, cls).deserialize(element)
 
-        # Parse freeze_frame_freeze_frame_ref
-        child = SerializationHelper.find_child_element(element, "FREEZE-FRAME-FREEZE-FRAME-REF")
-        if child is not None:
-            freeze_frame_freeze_frame_ref_value = ARRef.deserialize(child)
-            obj.freeze_frame_freeze_frame_ref = freeze_frame_freeze_frame_ref_value
-
-        # Parse request_ref
-        child = SerializationHelper.find_child_element(element, "REQUEST-REF")
-        if child is not None:
-            request_ref_value = ARRef.deserialize(child)
-            obj.request_ref = request_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FREEZE-FRAME-FREEZE-FRAME-REF":
+                setattr(obj, "freeze_frame_freeze_frame_ref", ARRef.deserialize(child))
+            elif tag == "REQUEST-REF":
+                setattr(obj, "request_ref", ARRef.deserialize(child))
 
         return obj
 

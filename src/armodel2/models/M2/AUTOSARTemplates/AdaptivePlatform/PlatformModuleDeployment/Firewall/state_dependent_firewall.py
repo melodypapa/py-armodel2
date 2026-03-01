@@ -37,9 +37,19 @@ class StateDependentFirewall(ARElement):
         """
         return False
 
+    _XML_TAG = "STATE-DEPENDENT-FIREWALL"
+
+
     default_action: Optional[FirewallActionEnum]
     firewall_rule_propses: list[FirewallRuleProps]
     firewall_state_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-ACTION": lambda obj, elem: setattr(obj, "default_action", SerializationHelper.deserialize_by_tag(elem, "FirewallActionEnum")),
+        "FIREWALL-RULE-PROPSES": lambda obj, elem: obj.firewall_rule_propses.append(SerializationHelper.deserialize_by_tag(elem, "FirewallRuleProps")),
+        "FIREWALL-STATE-REFS": lambda obj, elem: [obj.firewall_state_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize StateDependentFirewall."""
         super().__init__()
@@ -53,9 +63,8 @@ class StateDependentFirewall(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StateDependentFirewall, self).serialize()
@@ -127,37 +136,20 @@ class StateDependentFirewall(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StateDependentFirewall, cls).deserialize(element)
 
-        # Parse default_action
-        child = SerializationHelper.find_child_element(element, "DEFAULT-ACTION")
-        if child is not None:
-            default_action_value = SerializationHelper.deserialize_by_tag(child, "FirewallActionEnum")
-            obj.default_action = default_action_value
-
-        # Parse firewall_rule_propses (list from container "FIREWALL-RULE-PROPSES")
-        obj.firewall_rule_propses = []
-        container = SerializationHelper.find_child_element(element, "FIREWALL-RULE-PROPSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.firewall_rule_propses.append(child_value)
-
-        # Parse firewall_state_refs (list from container "FIREWALL-STATE-REFS")
-        obj.firewall_state_refs = []
-        container = SerializationHelper.find_child_element(element, "FIREWALL-STATE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.firewall_state_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEFAULT-ACTION":
+                setattr(obj, "default_action", SerializationHelper.deserialize_by_tag(child, "FirewallActionEnum"))
+            elif tag == "FIREWALL-RULE-PROPSES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.firewall_rule_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "FirewallRuleProps"))
+            elif tag == "FIREWALL-STATE-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.firewall_state_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

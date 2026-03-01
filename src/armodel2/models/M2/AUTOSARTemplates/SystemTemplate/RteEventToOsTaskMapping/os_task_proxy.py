@@ -37,9 +37,19 @@ class OsTaskProxy(ARElement):
         """
         return False
 
+    _XML_TAG = "OS-TASK-PROXY"
+
+
     period: Optional[TimeValue]
     preemptability: Optional[OsTaskPreemptabilityEnum]
     priority: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "PERIOD": lambda obj, elem: setattr(obj, "period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "PREEMPTABILITY": lambda obj, elem: setattr(obj, "preemptability", OsTaskPreemptabilityEnum.deserialize(elem)),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize OsTaskProxy."""
         super().__init__()
@@ -53,9 +63,8 @@ class OsTaskProxy(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(OsTaskProxy, self).serialize()
@@ -128,23 +137,16 @@ class OsTaskProxy(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(OsTaskProxy, cls).deserialize(element)
 
-        # Parse period
-        child = SerializationHelper.find_child_element(element, "PERIOD")
-        if child is not None:
-            period_value = child.text
-            obj.period = period_value
-
-        # Parse preemptability
-        child = SerializationHelper.find_child_element(element, "PREEMPTABILITY")
-        if child is not None:
-            preemptability_value = OsTaskPreemptabilityEnum.deserialize(child)
-            obj.preemptability = preemptability_value
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PERIOD":
+                setattr(obj, "period", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "PREEMPTABILITY":
+                setattr(obj, "preemptability", OsTaskPreemptabilityEnum.deserialize(child))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

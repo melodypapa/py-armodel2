@@ -34,7 +34,15 @@ class AssignFrameId(LinConfigurationEntry):
         """
         return False
 
+    _XML_TAG = "ASSIGN-FRAME-ID"
+
+
     assigned_frame_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ASSIGNED-FRAME-REF": lambda obj, elem: setattr(obj, "assigned_frame_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AssignFrameId."""
         super().__init__()
@@ -46,9 +54,8 @@ class AssignFrameId(LinConfigurationEntry):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AssignFrameId, self).serialize()
@@ -93,11 +100,12 @@ class AssignFrameId(LinConfigurationEntry):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AssignFrameId, cls).deserialize(element)
 
-        # Parse assigned_frame_ref
-        child = SerializationHelper.find_child_element(element, "ASSIGNED-FRAME-REF")
-        if child is not None:
-            assigned_frame_ref_value = ARRef.deserialize(child)
-            obj.assigned_frame_ref = assigned_frame_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ASSIGNED-FRAME-REF":
+                setattr(obj, "assigned_frame_ref", ARRef.deserialize(child))
 
         return obj
 

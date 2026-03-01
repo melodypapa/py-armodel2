@@ -52,6 +52,15 @@ class PhysicalChannel(Identifiable, ABC):
     i_signal_triggerings: list[ISignalTriggering]
     managed_physical_channel_refs: list[ARRef]
     pdu_triggerings: list[PduTriggering]
+    _DESERIALIZE_DISPATCH = {
+        "COMM-CONNECTOR-REFS": ("_POLYMORPHIC_LIST", "_comm_connector_refs", ["CanCommunicationConnector", "TtcanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "FRAME-TRIGGERINGS": ("_POLYMORPHIC_LIST", "frame_triggerings", ["CanFrameTriggering", "EthernetFrameTriggering", "FlexrayFrameTriggering", "LinFrameTriggering"]),
+        "I-SIGNAL-TRIGGERINGS": lambda obj, elem: obj.i_signal_triggerings.append(SerializationHelper.deserialize_by_tag(elem, "ISignalTriggering")),
+        "MANAGED-PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "managed_physical_channel_refs", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "PDU-TRIGGERINGS": lambda obj, elem: obj.pdu_triggerings.append(SerializationHelper.deserialize_by_tag(elem, "PduTriggering")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PhysicalChannel."""
         super().__init__()
@@ -78,9 +87,8 @@ class PhysicalChannel(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PhysicalChannel, self).serialize()
@@ -178,67 +186,40 @@ class PhysicalChannel(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PhysicalChannel, cls).deserialize(element)
 
-        # Parse comm_connector_refs (list from container "COMM-CONNECTORS")
-        obj.comm_connector_refs = []
-        container = SerializationHelper.find_child_element(element, "COMM-CONNECTORS")
-        if container is not None:
-            for child in container:
-                # Unwrap -REF-CONDITIONAL to extract the inner -REF
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag == "COMMUNICATION-CONNECTOR-REF-CONDITIONAL":
-                    ref_child = SerializationHelper.find_child_element(child, "COMMUNICATION-CONNECTOR-REF")
-                    if ref_child is not None:
-                        child_value = ARRef.deserialize(ref_child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.comm_connector_refs.append(child_value)
-
-        # Parse frame_triggerings (list from container "FRAME-TRIGGERINGS")
-        obj.frame_triggerings = []
-        container = SerializationHelper.find_child_element(element, "FRAME-TRIGGERINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.frame_triggerings.append(child_value)
-
-        # Parse i_signal_triggerings (list from container "I-SIGNAL-TRIGGERINGS")
-        obj.i_signal_triggerings = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-TRIGGERINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.i_signal_triggerings.append(child_value)
-
-        # Parse managed_physical_channel_refs (list from container "MANAGED-PHYSICAL-CHANNEL-REFS")
-        obj.managed_physical_channel_refs = []
-        container = SerializationHelper.find_child_element(element, "MANAGED-PHYSICAL-CHANNEL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.managed_physical_channel_refs.append(child_value)
-
-        # Parse pdu_triggerings (list from container "PDU-TRIGGERINGS")
-        obj.pdu_triggerings = []
-        container = SerializationHelper.find_child_element(element, "PDU-TRIGGERINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pdu_triggerings.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMM-CONNECTORS":
+                # Unwrap ref_conditional pattern
+                for item_elem in child:
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj._comm_connector_refs.append(ARRef.deserialize(ref_elem))
+            elif tag == "FRAME-TRIGGERINGS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "CAN-FRAME-TRIGGERING":
+                        obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "CanFrameTriggering"))
+                    elif concrete_tag == "ETHERNET-FRAME-TRIGGERING":
+                        obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "EthernetFrameTriggering"))
+                    elif concrete_tag == "FLEXRAY-FRAME-TRIGGERING":
+                        obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayFrameTriggering"))
+                    elif concrete_tag == "LIN-FRAME-TRIGGERING":
+                        obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "LinFrameTriggering"))
+            elif tag == "I-SIGNAL-TRIGGERINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.i_signal_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalTriggering"))
+            elif tag == "MANAGED-PHYSICAL-CHANNEL-REFS":
+                for item_elem in child:
+                    obj.managed_physical_channel_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "PDU-TRIGGERINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.pdu_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
 
         return obj
 

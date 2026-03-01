@@ -29,7 +29,15 @@ class DdsOwnership(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-OWNERSHIP"
+
+
     ownership_kind: Optional[DdsOwnershipKindEnum]
+    _DESERIALIZE_DISPATCH = {
+        "OWNERSHIP-KIND": lambda obj, elem: setattr(obj, "ownership_kind", DdsOwnershipKindEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsOwnership."""
         super().__init__()
@@ -41,9 +49,8 @@ class DdsOwnership(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsOwnership, self).serialize()
@@ -88,11 +95,12 @@ class DdsOwnership(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsOwnership, cls).deserialize(element)
 
-        # Parse ownership_kind
-        child = SerializationHelper.find_child_element(element, "OWNERSHIP-KIND")
-        if child is not None:
-            ownership_kind_value = DdsOwnershipKindEnum.deserialize(child)
-            obj.ownership_kind = ownership_kind_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OWNERSHIP-KIND":
+                setattr(obj, "ownership_kind", DdsOwnershipKindEnum.deserialize(child))
 
         return obj
 

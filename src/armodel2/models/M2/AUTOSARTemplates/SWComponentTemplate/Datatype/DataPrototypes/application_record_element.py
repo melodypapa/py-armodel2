@@ -35,7 +35,15 @@ class ApplicationRecordElement(ApplicationCompositeElementDataPrototype):
         """
         return False
 
+    _XML_TAG = "APPLICATION-RECORD-ELEMENT"
+
+
     is_optional: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "IS-OPTIONAL": lambda obj, elem: setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationRecordElement."""
         super().__init__()
@@ -47,9 +55,8 @@ class ApplicationRecordElement(ApplicationCompositeElementDataPrototype):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationRecordElement, self).serialize()
@@ -94,11 +101,12 @@ class ApplicationRecordElement(ApplicationCompositeElementDataPrototype):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationRecordElement, cls).deserialize(element)
 
-        # Parse is_optional
-        child = SerializationHelper.find_child_element(element, "IS-OPTIONAL")
-        if child is not None:
-            is_optional_value = child.text
-            obj.is_optional = is_optional_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "IS-OPTIONAL":
+                setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

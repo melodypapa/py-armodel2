@@ -37,9 +37,19 @@ class BinaryManifestItemDefinition(Identifiable):
         """
         return False
 
+    _XML_TAG = "BINARY-MANIFEST-ITEM-DEFINITION"
+
+
     auxiliary_fields: list[BinaryManifestItem]
     is_optional: Optional[Boolean]
     size: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "AUXILIARY-FIELDS": lambda obj, elem: obj.auxiliary_fields.append(SerializationHelper.deserialize_by_tag(elem, "BinaryManifestItem")),
+        "IS-OPTIONAL": lambda obj, elem: setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SIZE": lambda obj, elem: setattr(obj, "size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BinaryManifestItemDefinition."""
         super().__init__()
@@ -53,9 +63,8 @@ class BinaryManifestItemDefinition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BinaryManifestItemDefinition, self).serialize()
@@ -124,27 +133,18 @@ class BinaryManifestItemDefinition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BinaryManifestItemDefinition, cls).deserialize(element)
 
-        # Parse auxiliary_fields (list from container "AUXILIARY-FIELDS")
-        obj.auxiliary_fields = []
-        container = SerializationHelper.find_child_element(element, "AUXILIARY-FIELDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.auxiliary_fields.append(child_value)
-
-        # Parse is_optional
-        child = SerializationHelper.find_child_element(element, "IS-OPTIONAL")
-        if child is not None:
-            is_optional_value = child.text
-            obj.is_optional = is_optional_value
-
-        # Parse size
-        child = SerializationHelper.find_child_element(element, "SIZE")
-        if child is not None:
-            size_value = child.text
-            obj.size = size_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AUXILIARY-FIELDS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.auxiliary_fields.append(SerializationHelper.deserialize_by_tag(item_elem, "BinaryManifestItem"))
+            elif tag == "IS-OPTIONAL":
+                setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SIZE":
+                setattr(obj, "size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

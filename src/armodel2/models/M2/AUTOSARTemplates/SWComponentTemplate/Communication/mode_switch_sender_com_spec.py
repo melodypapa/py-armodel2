@@ -41,10 +41,21 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         """
         return False
 
+    _XML_TAG = "MODE-SWITCH-SENDER-COM-SPEC"
+
+
     enhanced_mode_api: Optional[Boolean]
     mode_group_ref: Optional[ARRef]
     mode_switched_ack: Optional[ModeSwitchedAckRequest]
     queue_length: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ENHANCED-MODE-API": lambda obj, elem: setattr(obj, "enhanced_mode_api", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "MODE-GROUP-REF": lambda obj, elem: setattr(obj, "mode_group_ref", ARRef.deserialize(elem)),
+        "MODE-SWITCHED-ACK": lambda obj, elem: setattr(obj, "mode_switched_ack", SerializationHelper.deserialize_by_tag(elem, "ModeSwitchedAckRequest")),
+        "QUEUE-LENGTH": lambda obj, elem: setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeSwitchSenderComSpec."""
         super().__init__()
@@ -59,9 +70,8 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeSwitchSenderComSpec, self).serialize()
@@ -148,29 +158,18 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeSwitchSenderComSpec, cls).deserialize(element)
 
-        # Parse enhanced_mode_api
-        child = SerializationHelper.find_child_element(element, "ENHANCED-MODE-API")
-        if child is not None:
-            enhanced_mode_api_value = child.text
-            obj.enhanced_mode_api = enhanced_mode_api_value
-
-        # Parse mode_group_ref
-        child = SerializationHelper.find_child_element(element, "MODE-GROUP-REF")
-        if child is not None:
-            mode_group_ref_value = ARRef.deserialize(child)
-            obj.mode_group_ref = mode_group_ref_value
-
-        # Parse mode_switched_ack
-        child = SerializationHelper.find_child_element(element, "MODE-SWITCHED-ACK")
-        if child is not None:
-            mode_switched_ack_value = SerializationHelper.deserialize_by_tag(child, "ModeSwitchedAckRequest")
-            obj.mode_switched_ack = mode_switched_ack_value
-
-        # Parse queue_length
-        child = SerializationHelper.find_child_element(element, "QUEUE-LENGTH")
-        if child is not None:
-            queue_length_value = child.text
-            obj.queue_length = queue_length_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ENHANCED-MODE-API":
+                setattr(obj, "enhanced_mode_api", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "MODE-GROUP-REF":
+                setattr(obj, "mode_group_ref", ARRef.deserialize(child))
+            elif tag == "MODE-SWITCHED-ACK":
+                setattr(obj, "mode_switched_ack", SerializationHelper.deserialize_by_tag(child, "ModeSwitchedAckRequest"))
+            elif tag == "QUEUE-LENGTH":
+                setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

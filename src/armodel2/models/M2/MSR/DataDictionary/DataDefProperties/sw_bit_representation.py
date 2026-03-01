@@ -29,8 +29,17 @@ class SwBitRepresentation(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-BIT-REPRESENTATION"
+
+
     bit_position: Optional[Integer]
     number_of_bits: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "BIT-POSITION": lambda obj, elem: setattr(obj, "bit_position", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NUMBER-OF-BITS": lambda obj, elem: setattr(obj, "number_of_bits", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwBitRepresentation."""
         super().__init__()
@@ -43,9 +52,8 @@ class SwBitRepresentation(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwBitRepresentation, self).serialize()
@@ -104,17 +112,14 @@ class SwBitRepresentation(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwBitRepresentation, cls).deserialize(element)
 
-        # Parse bit_position
-        child = SerializationHelper.find_child_element(element, "BIT-POSITION")
-        if child is not None:
-            bit_position_value = child.text
-            obj.bit_position = bit_position_value
-
-        # Parse number_of_bits
-        child = SerializationHelper.find_child_element(element, "NUMBER-OF-BITS")
-        if child is not None:
-            number_of_bits_value = child.text
-            obj.number_of_bits = number_of_bits_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BIT-POSITION":
+                setattr(obj, "bit_position", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "NUMBER-OF-BITS":
+                setattr(obj, "number_of_bits", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

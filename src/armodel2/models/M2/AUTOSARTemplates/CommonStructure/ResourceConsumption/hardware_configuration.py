@@ -29,9 +29,19 @@ class HardwareConfiguration(ARObject):
         """
         return False
 
+    _XML_TAG = "HARDWARE-CONFIGURATION"
+
+
     additional: Optional[String]
     processor_mode: Optional[String]
     processor_speed: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "ADDITIONAL": lambda obj, elem: setattr(obj, "additional", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "PROCESSOR-MODE": lambda obj, elem: setattr(obj, "processor_mode", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "PROCESSOR-SPEED": lambda obj, elem: setattr(obj, "processor_speed", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize HardwareConfiguration."""
         super().__init__()
@@ -45,9 +55,8 @@ class HardwareConfiguration(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(HardwareConfiguration, self).serialize()
@@ -120,23 +129,16 @@ class HardwareConfiguration(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HardwareConfiguration, cls).deserialize(element)
 
-        # Parse additional
-        child = SerializationHelper.find_child_element(element, "ADDITIONAL")
-        if child is not None:
-            additional_value = child.text
-            obj.additional = additional_value
-
-        # Parse processor_mode
-        child = SerializationHelper.find_child_element(element, "PROCESSOR-MODE")
-        if child is not None:
-            processor_mode_value = child.text
-            obj.processor_mode = processor_mode_value
-
-        # Parse processor_speed
-        child = SerializationHelper.find_child_element(element, "PROCESSOR-SPEED")
-        if child is not None:
-            processor_speed_value = child.text
-            obj.processor_speed = processor_speed_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ADDITIONAL":
+                setattr(obj, "additional", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "PROCESSOR-MODE":
+                setattr(obj, "processor_mode", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "PROCESSOR-SPEED":
+                setattr(obj, "processor_speed", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

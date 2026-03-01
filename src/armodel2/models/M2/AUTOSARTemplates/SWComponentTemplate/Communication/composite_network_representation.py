@@ -26,8 +26,17 @@ class CompositeNetworkRepresentation(ARObject):
         """
         return False
 
+    _XML_TAG = "COMPOSITE-NETWORK-REPRESENTATION"
+
+
     leaf_element_element_in_port_interface_instance_ref: Optional[Any]
     network_representation: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "LEAF-ELEMENT-ELEMENT-IN-PORT-INTERFACE-INSTANCE-REF": lambda obj, elem: setattr(obj, "leaf_element_element_in_port_interface_instance_ref", SerializationHelper.deserialize_by_tag(elem, "any (ApplicationComposite)")),
+        "NETWORK-REPRESENTATION": lambda obj, elem: setattr(obj, "network_representation", SerializationHelper.deserialize_by_tag(elem, "any (SwDataDefPropsRepresentation)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompositeNetworkRepresentation."""
         super().__init__()
@@ -40,9 +49,8 @@ class CompositeNetworkRepresentation(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompositeNetworkRepresentation, self).serialize()
@@ -101,17 +109,14 @@ class CompositeNetworkRepresentation(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompositeNetworkRepresentation, cls).deserialize(element)
 
-        # Parse leaf_element_element_in_port_interface_instance_ref
-        child = SerializationHelper.find_child_element(element, "LEAF-ELEMENT-ELEMENT-IN-PORT-INTERFACE-INSTANCE-REF")
-        if child is not None:
-            leaf_element_element_in_port_interface_instance_ref_value = child.text
-            obj.leaf_element_element_in_port_interface_instance_ref = leaf_element_element_in_port_interface_instance_ref_value
-
-        # Parse network_representation
-        child = SerializationHelper.find_child_element(element, "NETWORK-REPRESENTATION")
-        if child is not None:
-            network_representation_value = child.text
-            obj.network_representation = network_representation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LEAF-ELEMENT-ELEMENT-IN-PORT-INTERFACE-INSTANCE-REF":
+                setattr(obj, "leaf_element_element_in_port_interface_instance_ref", SerializationHelper.deserialize_by_tag(child, "any (ApplicationComposite)"))
+            elif tag == "NETWORK-REPRESENTATION":
+                setattr(obj, "network_representation", SerializationHelper.deserialize_by_tag(child, "any (SwDataDefPropsRepresentation)"))
 
         return obj
 

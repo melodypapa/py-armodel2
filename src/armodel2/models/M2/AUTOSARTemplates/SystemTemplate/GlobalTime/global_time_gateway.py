@@ -40,9 +40,19 @@ class GlobalTimeGateway(Identifiable):
         """
         return False
 
+    _XML_TAG = "GLOBAL-TIME-GATEWAY"
+
+
     host_ref: Optional[ARRef]
     master_ref: Optional[ARRef]
     slave_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "HOST-REF": lambda obj, elem: setattr(obj, "host_ref", ARRef.deserialize(elem)),
+        "MASTER-REF": ("_POLYMORPHIC", "master_ref", ["GlobalTimeCanMaster", "GlobalTimeEthMaster", "GlobalTimeFrMaster", "UserDefinedGlobalTimeMaster"]),
+        "SLAVE-REF": ("_POLYMORPHIC", "slave_ref", ["GlobalTimeCanSlave", "GlobalTimeEthSlave", "GlobalTimeFrSlave", "UserDefinedGlobalTimeSlave"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeGateway."""
         super().__init__()
@@ -56,9 +66,8 @@ class GlobalTimeGateway(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeGateway, self).serialize()
@@ -131,23 +140,16 @@ class GlobalTimeGateway(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeGateway, cls).deserialize(element)
 
-        # Parse host_ref
-        child = SerializationHelper.find_child_element(element, "HOST-REF")
-        if child is not None:
-            host_ref_value = ARRef.deserialize(child)
-            obj.host_ref = host_ref_value
-
-        # Parse master_ref
-        child = SerializationHelper.find_child_element(element, "MASTER-REF")
-        if child is not None:
-            master_ref_value = ARRef.deserialize(child)
-            obj.master_ref = master_ref_value
-
-        # Parse slave_ref
-        child = SerializationHelper.find_child_element(element, "SLAVE-REF")
-        if child is not None:
-            slave_ref_value = ARRef.deserialize(child)
-            obj.slave_ref = slave_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "HOST-REF":
+                setattr(obj, "host_ref", ARRef.deserialize(child))
+            elif tag == "MASTER-REF":
+                setattr(obj, "master_ref", ARRef.deserialize(child))
+            elif tag == "SLAVE-REF":
+                setattr(obj, "slave_ref", ARRef.deserialize(child))
 
         return obj
 

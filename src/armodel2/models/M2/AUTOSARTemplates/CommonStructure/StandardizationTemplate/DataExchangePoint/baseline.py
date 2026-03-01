@@ -36,9 +36,19 @@ class Baseline(ARObject):
         """
         return False
 
+    _XML_TAG = "BASELINE"
+
+
     custom_sdg_def_refs: list[ARRef]
     custom_refs: list[ARRef]
     standards: list[String]
+    _DESERIALIZE_DISPATCH = {
+        "CUSTOM-SDG-DEF-REFS": lambda obj, elem: [obj.custom_sdg_def_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "CUSTOM-REFS": lambda obj, elem: [obj.custom_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "STANDARDS": lambda obj, elem: obj.standards.append(SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Baseline."""
         super().__init__()
@@ -52,9 +62,8 @@ class Baseline(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Baseline, self).serialize()
@@ -136,47 +145,22 @@ class Baseline(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Baseline, cls).deserialize(element)
 
-        # Parse custom_sdg_def_refs (list from container "CUSTOM-SDG-DEF-REFS")
-        obj.custom_sdg_def_refs = []
-        container = SerializationHelper.find_child_element(element, "CUSTOM-SDG-DEF-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.custom_sdg_def_refs.append(child_value)
-
-        # Parse custom_refs (list from container "CUSTOM-REFS")
-        obj.custom_refs = []
-        container = SerializationHelper.find_child_element(element, "CUSTOM-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.custom_refs.append(child_value)
-
-        # Parse standards (list from container "STANDARDS")
-        obj.standards = []
-        container = SerializationHelper.find_child_element(element, "STANDARDS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (String) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.standards.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CUSTOM-SDG-DEF-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.custom_sdg_def_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "CUSTOM-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.custom_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "STANDARDS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.standards.append(SerializationHelper.deserialize_by_tag(item_elem, "String"))
 
         return obj
 

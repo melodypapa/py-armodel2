@@ -34,8 +34,17 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-ROUTINE-CONTROL"
+
+
     routine_ref: Optional[ARRef]
     routine_control_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ROUTINE-REF": lambda obj, elem: setattr(obj, "routine_ref", ARRef.deserialize(elem)),
+        "ROUTINE-CONTROL-REF": lambda obj, elem: setattr(obj, "routine_control_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticRoutineControl."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticRoutineControl, self).serialize()
@@ -109,17 +117,14 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRoutineControl, cls).deserialize(element)
 
-        # Parse routine_ref
-        child = SerializationHelper.find_child_element(element, "ROUTINE-REF")
-        if child is not None:
-            routine_ref_value = ARRef.deserialize(child)
-            obj.routine_ref = routine_ref_value
-
-        # Parse routine_control_ref
-        child = SerializationHelper.find_child_element(element, "ROUTINE-CONTROL-REF")
-        if child is not None:
-            routine_control_ref_value = ARRef.deserialize(child)
-            obj.routine_control_ref = routine_control_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ROUTINE-REF":
+                setattr(obj, "routine_ref", ARRef.deserialize(child))
+            elif tag == "ROUTINE-CONTROL-REF":
+                setattr(obj, "routine_control_ref", ARRef.deserialize(child))
 
         return obj
 

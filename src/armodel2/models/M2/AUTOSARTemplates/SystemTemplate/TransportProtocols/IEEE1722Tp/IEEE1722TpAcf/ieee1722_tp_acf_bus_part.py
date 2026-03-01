@@ -36,6 +36,11 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
         return True
 
     collection_trigger_ref: Optional[PduCollectionTriggerEnum]
+    _DESERIALIZE_DISPATCH = {
+        "COLLECTION-TRIGGER-REF": lambda obj, elem: setattr(obj, "collection_trigger_ref", PduCollectionTriggerEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfBusPart."""
         super().__init__()
@@ -47,9 +52,8 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpAcfBusPart, self).serialize()
@@ -94,11 +98,12 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpAcfBusPart, cls).deserialize(element)
 
-        # Parse collection_trigger_ref
-        child = SerializationHelper.find_child_element(element, "COLLECTION-TRIGGER-REF")
-        if child is not None:
-            collection_trigger_ref_value = ARRef.deserialize(child)
-            obj.collection_trigger_ref = collection_trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COLLECTION-TRIGGER-REF":
+                setattr(obj, "collection_trigger_ref", PduCollectionTriggerEnum.deserialize(child))
 
         return obj
 

@@ -35,6 +35,11 @@ class SdgAbstractForeignReference(SdgElementWithGid, ABC):
         return True
 
     dest_meta_class: Optional[MetaClassName]
+    _DESERIALIZE_DISPATCH = {
+        "DEST-META-CLASS": lambda obj, elem: setattr(obj, "dest_meta_class", SerializationHelper.deserialize_by_tag(elem, "MetaClassName")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SdgAbstractForeignReference."""
         super().__init__()
@@ -46,9 +51,8 @@ class SdgAbstractForeignReference(SdgElementWithGid, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SdgAbstractForeignReference, self).serialize()
@@ -93,11 +97,12 @@ class SdgAbstractForeignReference(SdgElementWithGid, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SdgAbstractForeignReference, cls).deserialize(element)
 
-        # Parse dest_meta_class
-        child = SerializationHelper.find_child_element(element, "DEST-META-CLASS")
-        if child is not None:
-            dest_meta_class_value = child.text
-            obj.dest_meta_class = dest_meta_class_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEST-META-CLASS":
+                setattr(obj, "dest_meta_class", SerializationHelper.deserialize_by_tag(child, "MetaClassName"))
 
         return obj
 

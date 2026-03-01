@@ -37,7 +37,15 @@ class PostBuildVariantCriterion(ARElement):
         """
         return False
 
+    _XML_TAG = "POST-BUILD-VARIANT-CRITERION"
+
+
     compu_method_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "COMPU-METHOD-REF": lambda obj, elem: setattr(obj, "compu_method_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PostBuildVariantCriterion."""
         super().__init__()
@@ -49,9 +57,8 @@ class PostBuildVariantCriterion(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PostBuildVariantCriterion, self).serialize()
@@ -96,11 +103,12 @@ class PostBuildVariantCriterion(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PostBuildVariantCriterion, cls).deserialize(element)
 
-        # Parse compu_method_ref
-        child = SerializationHelper.find_child_element(element, "COMPU-METHOD-REF")
-        if child is not None:
-            compu_method_ref_value = ARRef.deserialize(child)
-            obj.compu_method_ref = compu_method_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMPU-METHOD-REF":
+                setattr(obj, "compu_method_ref", ARRef.deserialize(child))
 
         return obj
 

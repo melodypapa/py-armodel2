@@ -29,8 +29,17 @@ class SomeipServiceVersion(ARObject):
         """
         return False
 
+    _XML_TAG = "SOMEIP-SERVICE-VERSION"
+
+
     major_version: Optional[PositiveInteger]
     minor_version: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "MAJOR-VERSION": lambda obj, elem: setattr(obj, "major_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SomeipServiceVersion."""
         super().__init__()
@@ -43,9 +52,8 @@ class SomeipServiceVersion(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SomeipServiceVersion, self).serialize()
@@ -104,17 +112,14 @@ class SomeipServiceVersion(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SomeipServiceVersion, cls).deserialize(element)
 
-        # Parse major_version
-        child = SerializationHelper.find_child_element(element, "MAJOR-VERSION")
-        if child is not None:
-            major_version_value = child.text
-            obj.major_version = major_version_value
-
-        # Parse minor_version
-        child = SerializationHelper.find_child_element(element, "MINOR-VERSION")
-        if child is not None:
-            minor_version_value = child.text
-            obj.minor_version = minor_version_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAJOR-VERSION":
+                setattr(obj, "major_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MINOR-VERSION":
+                setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

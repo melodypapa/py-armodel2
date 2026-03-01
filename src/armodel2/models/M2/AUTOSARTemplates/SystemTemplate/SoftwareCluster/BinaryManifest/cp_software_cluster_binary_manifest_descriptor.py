@@ -46,12 +46,25 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         """
         return False
 
+    _XML_TAG = "CP-SOFTWARE-CLUSTER-BINARY-MANIFEST-DESCRIPTOR"
+
+
     cp_software_cluster_ref: Optional[ARRef]
     meta_data_fields: list[BinaryManifestMetaDataField]
     provides: list[BinaryManifestProvideResource]
     requires: list[BinaryManifestRequireResource]
     resources: list[Any]
     software_cluster: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CP-SOFTWARE-CLUSTER-REF": lambda obj, elem: setattr(obj, "cp_software_cluster_ref", ARRef.deserialize(elem)),
+        "META-DATA-FIELDS": lambda obj, elem: obj.meta_data_fields.append(SerializationHelper.deserialize_by_tag(elem, "BinaryManifestMetaDataField")),
+        "PROVIDES": lambda obj, elem: obj.provides.append(SerializationHelper.deserialize_by_tag(elem, "BinaryManifestProvideResource")),
+        "REQUIRES": lambda obj, elem: obj.requires.append(SerializationHelper.deserialize_by_tag(elem, "BinaryManifestRequireResource")),
+        "RESOURCES": lambda obj, elem: obj.resources.append(SerializationHelper.deserialize_by_tag(elem, "any (BinaryManifest)")),
+        "SOFTWARE-CLUSTER": lambda obj, elem: setattr(obj, "software_cluster", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterBinaryManifestDescriptor."""
         super().__init__()
@@ -68,9 +81,8 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSoftwareClusterBinaryManifestDescriptor, self).serialize()
@@ -169,57 +181,30 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterBinaryManifestDescriptor, cls).deserialize(element)
 
-        # Parse cp_software_cluster_ref
-        child = SerializationHelper.find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
-        if child is not None:
-            cp_software_cluster_ref_value = ARRef.deserialize(child)
-            obj.cp_software_cluster_ref = cp_software_cluster_ref_value
-
-        # Parse meta_data_fields (list from container "META-DATA-FIELDS")
-        obj.meta_data_fields = []
-        container = SerializationHelper.find_child_element(element, "META-DATA-FIELDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.meta_data_fields.append(child_value)
-
-        # Parse provides (list from container "PROVIDES")
-        obj.provides = []
-        container = SerializationHelper.find_child_element(element, "PROVIDES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.provides.append(child_value)
-
-        # Parse requires (list from container "REQUIRES")
-        obj.requires = []
-        container = SerializationHelper.find_child_element(element, "REQUIRES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.requires.append(child_value)
-
-        # Parse resources (list from container "RESOURCES")
-        obj.resources = []
-        container = SerializationHelper.find_child_element(element, "RESOURCES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.resources.append(child_value)
-
-        # Parse software_cluster
-        child = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTER")
-        if child is not None:
-            software_cluster_value = child.text
-            obj.software_cluster = software_cluster_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CP-SOFTWARE-CLUSTER-REF":
+                setattr(obj, "cp_software_cluster_ref", ARRef.deserialize(child))
+            elif tag == "META-DATA-FIELDS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.meta_data_fields.append(SerializationHelper.deserialize_by_tag(item_elem, "BinaryManifestMetaDataField"))
+            elif tag == "PROVIDES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.provides.append(SerializationHelper.deserialize_by_tag(item_elem, "BinaryManifestProvideResource"))
+            elif tag == "REQUIRES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.requires.append(SerializationHelper.deserialize_by_tag(item_elem, "BinaryManifestRequireResource"))
+            elif tag == "RESOURCES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.resources.append(SerializationHelper.deserialize_by_tag(item_elem, "any (BinaryManifest)"))
+            elif tag == "SOFTWARE-CLUSTER":
+                setattr(obj, "software_cluster", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

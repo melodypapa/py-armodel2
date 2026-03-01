@@ -39,9 +39,19 @@ class DdsCpDomain(Identifiable):
         """
         return False
 
+    _XML_TAG = "DDS-CP-DOMAIN"
+
+
     dds_partitions: list[DdsCpPartition]
     dds_topics: list[DdsCpTopic]
     domain_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DDS-PARTITIONS": lambda obj, elem: obj.dds_partitions.append(SerializationHelper.deserialize_by_tag(elem, "DdsCpPartition")),
+        "DDS-TOPICS": lambda obj, elem: obj.dds_topics.append(SerializationHelper.deserialize_by_tag(elem, "DdsCpTopic")),
+        "DOMAIN-ID": lambda obj, elem: setattr(obj, "domain_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpDomain."""
         super().__init__()
@@ -55,9 +65,8 @@ class DdsCpDomain(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpDomain, self).serialize()
@@ -122,31 +131,20 @@ class DdsCpDomain(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpDomain, cls).deserialize(element)
 
-        # Parse dds_partitions (list from container "DDS-PARTITIONS")
-        obj.dds_partitions = []
-        container = SerializationHelper.find_child_element(element, "DDS-PARTITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dds_partitions.append(child_value)
-
-        # Parse dds_topics (list from container "DDS-TOPICS")
-        obj.dds_topics = []
-        container = SerializationHelper.find_child_element(element, "DDS-TOPICS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dds_topics.append(child_value)
-
-        # Parse domain_id
-        child = SerializationHelper.find_child_element(element, "DOMAIN-ID")
-        if child is not None:
-            domain_id_value = child.text
-            obj.domain_id = domain_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DDS-PARTITIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.dds_partitions.append(SerializationHelper.deserialize_by_tag(item_elem, "DdsCpPartition"))
+            elif tag == "DDS-TOPICS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.dds_topics.append(SerializationHelper.deserialize_by_tag(item_elem, "DdsCpTopic"))
+            elif tag == "DOMAIN-ID":
+                setattr(obj, "domain_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

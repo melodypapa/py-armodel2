@@ -52,6 +52,16 @@ class CommunicationConnector(Identifiable, ABC):
     ecu_comm_port_instances: list[CommConnectorPort]
     pnc_filter_array_masks: list[PositiveInteger]
     pnc_gateway_type: Optional[PncGatewayTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "COMM-CONTROLLER-REF": ("_POLYMORPHIC", "comm_controller_ref", ["CanCommunicationController", "TtcanCommunicationController", "EthernetCommunicationController", "FlexrayCommunicationController", "LinCommunicationController", "UserDefinedCommunicationController"]),
+        "CREATE-ECU-WAKEUP-SOURCE": lambda obj, elem: setattr(obj, "create_ecu_wakeup_source", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED": lambda obj, elem: setattr(obj, "dynamic_pnc_to_channel_mapping_enabled", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "ECU-COMM-PORT-INSTANCES": ("_POLYMORPHIC_LIST", "ecu_comm_port_instances", ["FramePort", "IPduPort", "ISignalPort"]),
+        "PNC-FILTER-ARRAY-MASKS": lambda obj, elem: obj.pnc_filter_array_masks.append(SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PNC-GATEWAY-TYPE": lambda obj, elem: setattr(obj, "pnc_gateway_type", PncGatewayTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CommunicationConnector."""
         super().__init__()
@@ -68,9 +78,8 @@ class CommunicationConnector(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CommunicationConnector, self).serialize()
@@ -184,49 +193,32 @@ class CommunicationConnector(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommunicationConnector, cls).deserialize(element)
 
-        # Parse comm_controller_ref
-        child = SerializationHelper.find_child_element(element, "COMM-CONTROLLER-REF")
-        if child is not None:
-            comm_controller_ref_value = ARRef.deserialize(child)
-            obj.comm_controller_ref = comm_controller_ref_value
-
-        # Parse create_ecu_wakeup_source
-        child = SerializationHelper.find_child_element(element, "CREATE-ECU-WAKEUP-SOURCE")
-        if child is not None:
-            create_ecu_wakeup_source_value = child.text
-            obj.create_ecu_wakeup_source = create_ecu_wakeup_source_value
-
-        # Parse dynamic_pnc_to_channel_mapping_enabled
-        child = SerializationHelper.find_child_element(element, "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED")
-        if child is not None:
-            dynamic_pnc_to_channel_mapping_enabled_value = child.text
-            obj.dynamic_pnc_to_channel_mapping_enabled = dynamic_pnc_to_channel_mapping_enabled_value
-
-        # Parse ecu_comm_port_instances (list from container "ECU-COMM-PORT-INSTANCES")
-        obj.ecu_comm_port_instances = []
-        container = SerializationHelper.find_child_element(element, "ECU-COMM-PORT-INSTANCES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ecu_comm_port_instances.append(child_value)
-
-        # Parse pnc_filter_array_masks (list from container "PNC-FILTER-ARRAY-MASKS")
-        obj.pnc_filter_array_masks = []
-        container = SerializationHelper.find_child_element(element, "PNC-FILTER-ARRAY-MASKS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (PositiveInteger) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.pnc_filter_array_masks.append(child_value)
-
-        # Parse pnc_gateway_type
-        child = SerializationHelper.find_child_element(element, "PNC-GATEWAY-TYPE")
-        if child is not None:
-            pnc_gateway_type_value = PncGatewayTypeEnum.deserialize(child)
-            obj.pnc_gateway_type = pnc_gateway_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMM-CONTROLLER-REF":
+                setattr(obj, "comm_controller_ref", ARRef.deserialize(child))
+            elif tag == "CREATE-ECU-WAKEUP-SOURCE":
+                setattr(obj, "create_ecu_wakeup_source", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED":
+                setattr(obj, "dynamic_pnc_to_channel_mapping_enabled", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "ECU-COMM-PORT-INSTANCES":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "FRAME-PORT":
+                        obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(item_elem, "FramePort"))
+                    elif concrete_tag == "I-PDU-PORT":
+                        obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(item_elem, "IPduPort"))
+                    elif concrete_tag == "I-SIGNAL-PORT":
+                        obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalPort"))
+            elif tag == "PNC-FILTER-ARRAY-MASKS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.pnc_filter_array_masks.append(SerializationHelper.deserialize_by_tag(item_elem, "PositiveInteger"))
+            elif tag == "PNC-GATEWAY-TYPE":
+                setattr(obj, "pnc_gateway_type", PncGatewayTypeEnum.deserialize(child))
 
         return obj
 

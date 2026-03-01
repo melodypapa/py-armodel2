@@ -36,6 +36,12 @@ class AbstractVariationRestriction(ARObject, ABC):
 
     valid_bindings: list[FullBindingTimeEnum]
     variation: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "VALID-BINDINGS": lambda obj, elem: obj.valid_bindings.append(FullBindingTimeEnum.deserialize(elem)),
+        "VARIATION": lambda obj, elem: setattr(obj, "variation", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AbstractVariationRestriction."""
         super().__init__()
@@ -48,9 +54,8 @@ class AbstractVariationRestriction(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AbstractVariationRestriction, self).serialize()
@@ -112,21 +117,16 @@ class AbstractVariationRestriction(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractVariationRestriction, cls).deserialize(element)
 
-        # Parse valid_bindings (list from container "VALID-BINDINGS")
-        obj.valid_bindings = []
-        container = SerializationHelper.find_child_element(element, "VALID-BINDINGS")
-        if container is not None:
-            for child in container:
-                # Extract enum value (FullBindingTimeEnum)
-                child_value = FullBindingTimeEnum.deserialize(child)
-                if child_value is not None:
-                    obj.valid_bindings.append(child_value)
-
-        # Parse variation
-        child = SerializationHelper.find_child_element(element, "VARIATION")
-        if child is not None:
-            variation_value = child.text
-            obj.variation = variation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "VALID-BINDINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.valid_bindings.append(SerializationHelper.deserialize_by_tag(item_elem, "FullBindingTimeEnum"))
+            elif tag == "VARIATION":
+                setattr(obj, "variation", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

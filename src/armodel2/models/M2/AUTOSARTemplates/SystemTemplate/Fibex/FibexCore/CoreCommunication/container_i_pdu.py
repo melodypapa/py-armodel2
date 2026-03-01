@@ -46,6 +46,9 @@ class ContainerIPdu(IPdu):
         """
         return False
 
+    _XML_TAG = "CONTAINER-I-PDU"
+
+
     contained_i_pdu_propses: list[ContainedIPduProps]
     contained_pdu_refs: list[ARRef]
     container: Optional[TimeValue]
@@ -56,6 +59,20 @@ class ContainerIPdu(IPdu):
     rx_accept: Optional[RxAcceptContainedIPduEnum]
     threshold_size: Optional[PositiveInteger]
     unused_bit: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CONTAINED-I-PDU-PROPSES": lambda obj, elem: obj.contained_i_pdu_propses.append(SerializationHelper.deserialize_by_tag(elem, "ContainedIPduProps")),
+        "CONTAINED-PDU-REFS": lambda obj, elem: [obj.contained_pdu_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "CONTAINER": lambda obj, elem: setattr(obj, "container", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "CONTAINER-TRIGGER-REF": lambda obj, elem: setattr(obj, "container_trigger_ref", ContainerIPduTriggerEnum.deserialize(elem)),
+        "HEADER-TYPE": lambda obj, elem: setattr(obj, "header_type", ContainerIPduHeaderTypeEnum.deserialize(elem)),
+        "MINIMUM-RX": lambda obj, elem: setattr(obj, "minimum_rx", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MINIMUM-TX": lambda obj, elem: setattr(obj, "minimum_tx", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "RX-ACCEPT": lambda obj, elem: setattr(obj, "rx_accept", RxAcceptContainedIPduEnum.deserialize(elem)),
+        "THRESHOLD-SIZE": lambda obj, elem: setattr(obj, "threshold_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "UNUSED-BIT": lambda obj, elem: setattr(obj, "unused_bit", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ContainerIPdu."""
         super().__init__()
@@ -76,9 +93,8 @@ class ContainerIPdu(IPdu):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ContainerIPdu, self).serialize()
@@ -248,79 +264,34 @@ class ContainerIPdu(IPdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ContainerIPdu, cls).deserialize(element)
 
-        # Parse contained_i_pdu_propses (list from container "CONTAINED-I-PDU-PROPSES")
-        obj.contained_i_pdu_propses = []
-        container = SerializationHelper.find_child_element(element, "CONTAINED-I-PDU-PROPSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.contained_i_pdu_propses.append(child_value)
-
-        # Parse contained_pdu_refs (list from container "CONTAINED-PDU-REFS")
-        obj.contained_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTAINED-PDU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.contained_pdu_refs.append(child_value)
-
-        # Parse container
-        child = SerializationHelper.find_child_element(element, "CONTAINER")
-        if child is not None:
-            container_value = child.text
-            obj.container = container_value
-
-        # Parse container_trigger_ref
-        child = SerializationHelper.find_child_element(element, "CONTAINER-TRIGGER-REF")
-        if child is not None:
-            container_trigger_ref_value = ARRef.deserialize(child)
-            obj.container_trigger_ref = container_trigger_ref_value
-
-        # Parse header_type
-        child = SerializationHelper.find_child_element(element, "HEADER-TYPE")
-        if child is not None:
-            header_type_value = ContainerIPduHeaderTypeEnum.deserialize(child)
-            obj.header_type = header_type_value
-
-        # Parse minimum_rx
-        child = SerializationHelper.find_child_element(element, "MINIMUM-RX")
-        if child is not None:
-            minimum_rx_value = child.text
-            obj.minimum_rx = minimum_rx_value
-
-        # Parse minimum_tx
-        child = SerializationHelper.find_child_element(element, "MINIMUM-TX")
-        if child is not None:
-            minimum_tx_value = child.text
-            obj.minimum_tx = minimum_tx_value
-
-        # Parse rx_accept
-        child = SerializationHelper.find_child_element(element, "RX-ACCEPT")
-        if child is not None:
-            rx_accept_value = RxAcceptContainedIPduEnum.deserialize(child)
-            obj.rx_accept = rx_accept_value
-
-        # Parse threshold_size
-        child = SerializationHelper.find_child_element(element, "THRESHOLD-SIZE")
-        if child is not None:
-            threshold_size_value = child.text
-            obj.threshold_size = threshold_size_value
-
-        # Parse unused_bit
-        child = SerializationHelper.find_child_element(element, "UNUSED-BIT")
-        if child is not None:
-            unused_bit_value = child.text
-            obj.unused_bit = unused_bit_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONTAINED-I-PDU-PROPSES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.contained_i_pdu_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "ContainedIPduProps"))
+            elif tag == "CONTAINED-PDU-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.contained_pdu_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "CONTAINER":
+                setattr(obj, "container", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "CONTAINER-TRIGGER-REF":
+                setattr(obj, "container_trigger_ref", ContainerIPduTriggerEnum.deserialize(child))
+            elif tag == "HEADER-TYPE":
+                setattr(obj, "header_type", ContainerIPduHeaderTypeEnum.deserialize(child))
+            elif tag == "MINIMUM-RX":
+                setattr(obj, "minimum_rx", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MINIMUM-TX":
+                setattr(obj, "minimum_tx", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "RX-ACCEPT":
+                setattr(obj, "rx_accept", RxAcceptContainedIPduEnum.deserialize(child))
+            elif tag == "THRESHOLD-SIZE":
+                setattr(obj, "threshold_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "UNUSED-BIT":
+                setattr(obj, "unused_bit", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

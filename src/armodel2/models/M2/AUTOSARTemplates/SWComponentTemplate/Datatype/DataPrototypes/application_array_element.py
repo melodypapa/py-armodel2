@@ -47,10 +47,21 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
         """
         return False
 
+    _XML_TAG = "APPLICATION-ARRAY-ELEMENT"
+
+
     array_size_handling: Optional[ArraySizeHandlingEnum]
     array_size_semantics: Optional[ArraySizeSemanticsEnum]
     index_data_type_ref: Optional[ARRef]
     max_number_of_elements: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ARRAY-SIZE-HANDLING": lambda obj, elem: setattr(obj, "array_size_handling", ArraySizeHandlingEnum.deserialize(elem)),
+        "ARRAY-SIZE-SEMANTICS": lambda obj, elem: setattr(obj, "array_size_semantics", ArraySizeSemanticsEnum.deserialize(elem)),
+        "INDEX-DATA-TYPE-REF": lambda obj, elem: setattr(obj, "index_data_type_ref", ARRef.deserialize(elem)),
+        "MAX-NUMBER-OF-ELEMENTS": lambda obj, elem: setattr(obj, "max_number_of_elements", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationArrayElement."""
         super().__init__()
@@ -65,9 +76,8 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationArrayElement, self).serialize()
@@ -154,29 +164,18 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationArrayElement, cls).deserialize(element)
 
-        # Parse array_size_handling
-        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE-HANDLING")
-        if child is not None:
-            array_size_handling_value = ArraySizeHandlingEnum.deserialize(child)
-            obj.array_size_handling = array_size_handling_value
-
-        # Parse array_size_semantics
-        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE-SEMANTICS")
-        if child is not None:
-            array_size_semantics_value = ArraySizeSemanticsEnum.deserialize(child)
-            obj.array_size_semantics = array_size_semantics_value
-
-        # Parse index_data_type_ref
-        child = SerializationHelper.find_child_element(element, "INDEX-DATA-TYPE-REF")
-        if child is not None:
-            index_data_type_ref_value = ARRef.deserialize(child)
-            obj.index_data_type_ref = index_data_type_ref_value
-
-        # Parse max_number_of_elements
-        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF-ELEMENTS")
-        if child is not None:
-            max_number_of_elements_value = child.text
-            obj.max_number_of_elements = max_number_of_elements_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ARRAY-SIZE-HANDLING":
+                setattr(obj, "array_size_handling", ArraySizeHandlingEnum.deserialize(child))
+            elif tag == "ARRAY-SIZE-SEMANTICS":
+                setattr(obj, "array_size_semantics", ArraySizeSemanticsEnum.deserialize(child))
+            elif tag == "INDEX-DATA-TYPE-REF":
+                setattr(obj, "index_data_type_ref", ARRef.deserialize(child))
+            elif tag == "MAX-NUMBER-OF-ELEMENTS":
+                setattr(obj, "max_number_of_elements", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

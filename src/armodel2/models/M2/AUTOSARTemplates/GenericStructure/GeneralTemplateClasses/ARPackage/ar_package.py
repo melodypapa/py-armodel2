@@ -165,7 +165,6 @@ class ARPackageBuilder:
         Returns:
             ARPackage instance
         """
-        # TODO: Add validation
         return self._obj
 
 

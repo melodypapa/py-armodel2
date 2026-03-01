@@ -32,8 +32,17 @@ class DdsHistory(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-HISTORY"
+
+
     history_kind: Optional[DdsHistoryKindEnum]
     history_order: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "HISTORY-KIND": lambda obj, elem: setattr(obj, "history_kind", DdsHistoryKindEnum.deserialize(elem)),
+        "HISTORY-ORDER": lambda obj, elem: setattr(obj, "history_order", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsHistory."""
         super().__init__()
@@ -46,9 +55,8 @@ class DdsHistory(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsHistory, self).serialize()
@@ -107,17 +115,14 @@ class DdsHistory(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsHistory, cls).deserialize(element)
 
-        # Parse history_kind
-        child = SerializationHelper.find_child_element(element, "HISTORY-KIND")
-        if child is not None:
-            history_kind_value = DdsHistoryKindEnum.deserialize(child)
-            obj.history_kind = history_kind_value
-
-        # Parse history_order
-        child = SerializationHelper.find_child_element(element, "HISTORY-ORDER")
-        if child is not None:
-            history_order_value = child.text
-            obj.history_order = history_order_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "HISTORY-KIND":
+                setattr(obj, "history_kind", DdsHistoryKindEnum.deserialize(child))
+            elif tag == "HISTORY-ORDER":
+                setattr(obj, "history_order", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -32,7 +32,15 @@ class PostBuildVariantCriterionValueSet(ARElement):
         """
         return False
 
+    _XML_TAG = "POST-BUILD-VARIANT-CRITERION-VALUE-SET"
+
+
     post_build_variants: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "POST-BUILD-VARIANTS": lambda obj, elem: obj.post_build_variants.append(SerializationHelper.deserialize_by_tag(elem, "any (PostBuildVariant)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PostBuildVariantCriterionValueSet."""
         super().__init__()
@@ -44,9 +52,8 @@ class PostBuildVariantCriterionValueSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PostBuildVariantCriterionValueSet, self).serialize()
@@ -87,15 +94,14 @@ class PostBuildVariantCriterionValueSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PostBuildVariantCriterionValueSet, cls).deserialize(element)
 
-        # Parse post_build_variants (list from container "POST-BUILD-VARIANTS")
-        obj.post_build_variants = []
-        container = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.post_build_variants.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "POST-BUILD-VARIANTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.post_build_variants.append(SerializationHelper.deserialize_by_tag(item_elem, "any (PostBuildVariant)"))
 
         return obj
 

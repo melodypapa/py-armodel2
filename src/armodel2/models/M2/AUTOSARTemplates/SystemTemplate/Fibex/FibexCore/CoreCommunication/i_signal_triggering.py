@@ -41,9 +41,19 @@ class ISignalTriggering(Identifiable):
         """
         return False
 
+    _XML_TAG = "I-SIGNAL-TRIGGERING"
+
+
     i_signal_group_ref: Optional[ARRef]
     i_signal_port_refs: list[ARRef]
     i_signal_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "I-SIGNAL-GROUP-REF": lambda obj, elem: setattr(obj, "i_signal_group_ref", ARRef.deserialize(elem)),
+        "I-SIGNAL-PORT-REFS": lambda obj, elem: [obj.i_signal_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "I-SIGNAL-REF": lambda obj, elem: setattr(obj, "i_signal_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ISignalTriggering."""
         super().__init__()
@@ -57,9 +67,8 @@ class ISignalTriggering(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ISignalTriggering, self).serialize()
@@ -135,33 +144,18 @@ class ISignalTriggering(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignalTriggering, cls).deserialize(element)
 
-        # Parse i_signal_group_ref
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-GROUP-REF")
-        if child is not None:
-            i_signal_group_ref_value = ARRef.deserialize(child)
-            obj.i_signal_group_ref = i_signal_group_ref_value
-
-        # Parse i_signal_port_refs (list from container "I-SIGNAL-PORT-REFS")
-        obj.i_signal_port_refs = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-PORT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.i_signal_port_refs.append(child_value)
-
-        # Parse i_signal_ref
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-REF")
-        if child is not None:
-            i_signal_ref_value = ARRef.deserialize(child)
-            obj.i_signal_ref = i_signal_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "I-SIGNAL-GROUP-REF":
+                setattr(obj, "i_signal_group_ref", ARRef.deserialize(child))
+            elif tag == "I-SIGNAL-PORT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.i_signal_port_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "I-SIGNAL-REF":
+                setattr(obj, "i_signal_ref", ARRef.deserialize(child))
 
         return obj
 

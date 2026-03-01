@@ -272,5 +272,4 @@ class AUTOSARBuilder:
         Returns:
             AUTOSAR instance (singleton)
         """
-        # TODO: Add validation
         return self._obj

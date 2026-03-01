@@ -32,8 +32,17 @@ class TimeSyncClientConfiguration(ARObject):
         """
         return False
 
+    _XML_TAG = "TIME-SYNC-CLIENT-CONFIGURATION"
+
+
     ordered_masters: list[OrderedMaster]
     time_sync: Optional[TimeSyncTechnologyEnum]
+    _DESERIALIZE_DISPATCH = {
+        "ORDERED-MASTERS": lambda obj, elem: obj.ordered_masters.append(SerializationHelper.deserialize_by_tag(elem, "OrderedMaster")),
+        "TIME-SYNC": lambda obj, elem: setattr(obj, "time_sync", TimeSyncTechnologyEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimeSyncClientConfiguration."""
         super().__init__()
@@ -46,9 +55,8 @@ class TimeSyncClientConfiguration(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimeSyncClientConfiguration, self).serialize()
@@ -103,21 +111,16 @@ class TimeSyncClientConfiguration(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimeSyncClientConfiguration, cls).deserialize(element)
 
-        # Parse ordered_masters (list from container "ORDERED-MASTERS")
-        obj.ordered_masters = []
-        container = SerializationHelper.find_child_element(element, "ORDERED-MASTERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ordered_masters.append(child_value)
-
-        # Parse time_sync
-        child = SerializationHelper.find_child_element(element, "TIME-SYNC")
-        if child is not None:
-            time_sync_value = TimeSyncTechnologyEnum.deserialize(child)
-            obj.time_sync = time_sync_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ORDERED-MASTERS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.ordered_masters.append(SerializationHelper.deserialize_by_tag(item_elem, "OrderedMaster"))
+            elif tag == "TIME-SYNC":
+                setattr(obj, "time_sync", TimeSyncTechnologyEnum.deserialize(child))
 
         return obj
 

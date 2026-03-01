@@ -31,7 +31,15 @@ class DiagnosticReadDataByPeriodicID(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-READ-DATA-BY-PERIODIC-ID"
+
+
     read_data_class_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "READ-DATA-CLASS-REF": lambda obj, elem: setattr(obj, "read_data_class_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticReadDataByPeriodicID."""
         super().__init__()
@@ -43,9 +51,8 @@ class DiagnosticReadDataByPeriodicID(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticReadDataByPeriodicID, self).serialize()
@@ -90,11 +97,12 @@ class DiagnosticReadDataByPeriodicID(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticReadDataByPeriodicID, cls).deserialize(element)
 
-        # Parse read_data_class_ref
-        child = SerializationHelper.find_child_element(element, "READ-DATA-CLASS-REF")
-        if child is not None:
-            read_data_class_ref_value = ARRef.deserialize(child)
-            obj.read_data_class_ref = read_data_class_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "READ-DATA-CLASS-REF":
+                setattr(obj, "read_data_class_ref", ARRef.deserialize(child))
 
         return obj
 

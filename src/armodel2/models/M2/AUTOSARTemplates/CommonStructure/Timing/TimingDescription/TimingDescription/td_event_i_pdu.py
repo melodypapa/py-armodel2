@@ -40,9 +40,19 @@ class TDEventIPdu(TDEventCom):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-I-PDU"
+
+
     i_pdu_ref: Optional[ARRef]
     physical_channel_ref: Optional[ARRef]
     td_event_type: Optional[TDEventIPduTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "I-PDU-REF": ("_POLYMORPHIC", "i_pdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
+        "PHYSICAL-CHANNEL-REF": ("_POLYMORPHIC", "physical_channel_ref", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "TD-EVENT-TYPE": lambda obj, elem: setattr(obj, "td_event_type", TDEventIPduTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventIPdu."""
         super().__init__()
@@ -56,9 +66,8 @@ class TDEventIPdu(TDEventCom):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventIPdu, self).serialize()
@@ -131,23 +140,16 @@ class TDEventIPdu(TDEventCom):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventIPdu, cls).deserialize(element)
 
-        # Parse i_pdu_ref
-        child = SerializationHelper.find_child_element(element, "I-PDU-REF")
-        if child is not None:
-            i_pdu_ref_value = ARRef.deserialize(child)
-            obj.i_pdu_ref = i_pdu_ref_value
-
-        # Parse physical_channel_ref
-        child = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNEL-REF")
-        if child is not None:
-            physical_channel_ref_value = ARRef.deserialize(child)
-            obj.physical_channel_ref = physical_channel_ref_value
-
-        # Parse td_event_type
-        child = SerializationHelper.find_child_element(element, "TD-EVENT-TYPE")
-        if child is not None:
-            td_event_type_value = TDEventIPduTypeEnum.deserialize(child)
-            obj.td_event_type = td_event_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "I-PDU-REF":
+                setattr(obj, "i_pdu_ref", ARRef.deserialize(child))
+            elif tag == "PHYSICAL-CHANNEL-REF":
+                setattr(obj, "physical_channel_ref", ARRef.deserialize(child))
+            elif tag == "TD-EVENT-TYPE":
+                setattr(obj, "td_event_type", TDEventIPduTypeEnum.deserialize(child))
 
         return obj
 

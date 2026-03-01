@@ -37,10 +37,21 @@ class J1939TpPg(ARObject):
         """
         return False
 
+    _XML_TAG = "J1939-TP-PG"
+
+
     direct_pdu_ref: Optional[ARRef]
     pgn: Optional[Integer]
     requestable: Optional[Boolean]
     sdu_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DIRECT-PDU-REF": lambda obj, elem: setattr(obj, "direct_pdu_ref", ARRef.deserialize(elem)),
+        "PGN": lambda obj, elem: setattr(obj, "pgn", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "REQUESTABLE": lambda obj, elem: setattr(obj, "requestable", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SDU-REFS": ("_POLYMORPHIC_LIST", "sdu_refs", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939TpPg."""
         super().__init__()
@@ -55,9 +66,8 @@ class J1939TpPg(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939TpPg, self).serialize()
@@ -147,39 +157,19 @@ class J1939TpPg(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939TpPg, cls).deserialize(element)
 
-        # Parse direct_pdu_ref
-        child = SerializationHelper.find_child_element(element, "DIRECT-PDU-REF")
-        if child is not None:
-            direct_pdu_ref_value = ARRef.deserialize(child)
-            obj.direct_pdu_ref = direct_pdu_ref_value
-
-        # Parse pgn
-        child = SerializationHelper.find_child_element(element, "PGN")
-        if child is not None:
-            pgn_value = child.text
-            obj.pgn = pgn_value
-
-        # Parse requestable
-        child = SerializationHelper.find_child_element(element, "REQUESTABLE")
-        if child is not None:
-            requestable_value = child.text
-            obj.requestable = requestable_value
-
-        # Parse sdu_refs (list from container "SDU-REFS")
-        obj.sdu_refs = []
-        container = SerializationHelper.find_child_element(element, "SDU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sdu_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DIRECT-PDU-REF":
+                setattr(obj, "direct_pdu_ref", ARRef.deserialize(child))
+            elif tag == "PGN":
+                setattr(obj, "pgn", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "REQUESTABLE":
+                setattr(obj, "requestable", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SDU-REFS":
+                for item_elem in child:
+                    obj.sdu_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

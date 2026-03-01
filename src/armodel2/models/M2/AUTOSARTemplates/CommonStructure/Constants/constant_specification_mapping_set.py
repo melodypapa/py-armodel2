@@ -33,7 +33,15 @@ class ConstantSpecificationMappingSet(ARElement):
         """
         return False
 
+    _XML_TAG = "CONSTANT-SPECIFICATION-MAPPING-SET"
+
+
     mappings: list[ConstantSpecification]
+    _DESERIALIZE_DISPATCH = {
+        "MAPPINGS": lambda obj, elem: obj.mappings.append(SerializationHelper.deserialize_by_tag(elem, "ConstantSpecification")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConstantSpecificationMappingSet."""
         super().__init__()
@@ -45,9 +53,8 @@ class ConstantSpecificationMappingSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConstantSpecificationMappingSet, self).serialize()
@@ -88,15 +95,14 @@ class ConstantSpecificationMappingSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConstantSpecificationMappingSet, cls).deserialize(element)
 
-        # Parse mappings (list from container "MAPPINGS")
-        obj.mappings = []
-        container = SerializationHelper.find_child_element(element, "MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mappings.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstantSpecification"))
 
         return obj
 

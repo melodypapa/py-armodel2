@@ -32,8 +32,17 @@ class PostBuildVariantCondition(ARObject):
         """
         return False
 
+    _XML_TAG = "POST-BUILD-VARIANT-CONDITION"
+
+
     matching_ref: Any
     value: Integer
+    _DESERIALIZE_DISPATCH = {
+        "MATCHING-REF": lambda obj, elem: setattr(obj, "matching_ref", ARRef.deserialize(elem)),
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PostBuildVariantCondition."""
         super().__init__()
@@ -46,9 +55,8 @@ class PostBuildVariantCondition(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PostBuildVariantCondition, self).serialize()
@@ -107,17 +115,14 @@ class PostBuildVariantCondition(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PostBuildVariantCondition, cls).deserialize(element)
 
-        # Parse matching_ref
-        child = SerializationHelper.find_child_element(element, "MATCHING-REF")
-        if child is not None:
-            matching_ref_value = ARRef.deserialize(child)
-            obj.matching_ref = matching_ref_value
-
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = child.text
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MATCHING-REF":
+                setattr(obj, "matching_ref", ARRef.deserialize(child))
+            elif tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

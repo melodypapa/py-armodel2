@@ -33,7 +33,15 @@ class BinaryManifestResourceDefinition(Identifiable):
         """
         return False
 
+    _XML_TAG = "BINARY-MANIFEST-RESOURCE-DEFINITION"
+
+
     item_definitions: list[BinaryManifestItem]
+    _DESERIALIZE_DISPATCH = {
+        "ITEM-DEFINITIONS": lambda obj, elem: obj.item_definitions.append(SerializationHelper.deserialize_by_tag(elem, "BinaryManifestItem")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BinaryManifestResourceDefinition."""
         super().__init__()
@@ -45,9 +53,8 @@ class BinaryManifestResourceDefinition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BinaryManifestResourceDefinition, self).serialize()
@@ -88,15 +95,14 @@ class BinaryManifestResourceDefinition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BinaryManifestResourceDefinition, cls).deserialize(element)
 
-        # Parse item_definitions (list from container "ITEM-DEFINITIONS")
-        obj.item_definitions = []
-        container = SerializationHelper.find_child_element(element, "ITEM-DEFINITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.item_definitions.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ITEM-DEFINITIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.item_definitions.append(SerializationHelper.deserialize_by_tag(item_elem, "BinaryManifestItem"))
 
         return obj
 

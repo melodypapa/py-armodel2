@@ -30,6 +30,9 @@ class J1939DcmDm19Support(ServiceNeeds):
         """
         return False
 
+    _XML_TAG = "J1939-DCM-DM19-SUPPORT"
+
+
     def __init__(self) -> None:
         """Initialize J1939DcmDm19Support."""
         super().__init__()
@@ -40,9 +43,8 @@ class J1939DcmDm19Support(ServiceNeeds):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939DcmDm19Support, self).serialize()

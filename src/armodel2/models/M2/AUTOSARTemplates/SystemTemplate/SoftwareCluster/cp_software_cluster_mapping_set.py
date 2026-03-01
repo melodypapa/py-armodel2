@@ -39,10 +39,21 @@ class CpSoftwareClusterMappingSet(ARElement):
         """
         return False
 
+    _XML_TAG = "CP-SOFTWARE-CLUSTER-MAPPING-SET"
+
+
     port_element_toes: list[PortElementToCommunicationResourceMapping]
     resource_toes: list[CpSoftwareCluster]
     software_clusters: list[Any]
     swc_toes: list[SwcToApplicationPartitionMapping]
+    _DESERIALIZE_DISPATCH = {
+        "PORT-ELEMENT-TOES": lambda obj, elem: obj.port_element_toes.append(SerializationHelper.deserialize_by_tag(elem, "PortElementToCommunicationResourceMapping")),
+        "RESOURCE-TOES": lambda obj, elem: obj.resource_toes.append(SerializationHelper.deserialize_by_tag(elem, "CpSoftwareCluster")),
+        "SOFTWARE-CLUSTERS": lambda obj, elem: obj.software_clusters.append(SerializationHelper.deserialize_by_tag(elem, "any (CpSoftwareClusterTo)")),
+        "SWC-TOES": lambda obj, elem: obj.swc_toes.append(SerializationHelper.deserialize_by_tag(elem, "SwcToApplicationPartitionMapping")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterMappingSet."""
         super().__init__()
@@ -57,9 +68,8 @@ class CpSoftwareClusterMappingSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSoftwareClusterMappingSet, self).serialize()
@@ -130,45 +140,26 @@ class CpSoftwareClusterMappingSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterMappingSet, cls).deserialize(element)
 
-        # Parse port_element_toes (list from container "PORT-ELEMENT-TOES")
-        obj.port_element_toes = []
-        container = SerializationHelper.find_child_element(element, "PORT-ELEMENT-TOES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.port_element_toes.append(child_value)
-
-        # Parse resource_toes (list from container "RESOURCE-TOES")
-        obj.resource_toes = []
-        container = SerializationHelper.find_child_element(element, "RESOURCE-TOES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.resource_toes.append(child_value)
-
-        # Parse software_clusters (list from container "SOFTWARE-CLUSTERS")
-        obj.software_clusters = []
-        container = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.software_clusters.append(child_value)
-
-        # Parse swc_toes (list from container "SWC-TOES")
-        obj.swc_toes = []
-        container = SerializationHelper.find_child_element(element, "SWC-TOES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.swc_toes.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PORT-ELEMENT-TOES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.port_element_toes.append(SerializationHelper.deserialize_by_tag(item_elem, "PortElementToCommunicationResourceMapping"))
+            elif tag == "RESOURCE-TOES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.resource_toes.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareCluster"))
+            elif tag == "SOFTWARE-CLUSTERS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.software_clusters.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CpSoftwareClusterTo)"))
+            elif tag == "SWC-TOES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.swc_toes.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToApplicationPartitionMapping"))
 
         return obj
 

@@ -40,12 +40,25 @@ class LifeCycleInfo(ARObject):
         """
         return False
 
+    _XML_TAG = "LIFE-CYCLE-INFO"
+
+
     lc_object_ref: ARRef
     lc_state_ref: Optional[ARRef]
     period_begin: Optional[LifeCyclePeriod]
     period_end: Optional[LifeCyclePeriod]
     remark: Optional[DocumentationBlock]
     use_instead_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "LC-OBJECT-REF": ("_POLYMORPHIC", "lc_object_ref", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
+        "LC-STATE-REF": lambda obj, elem: setattr(obj, "lc_state_ref", ARRef.deserialize(elem)),
+        "PERIOD-BEGIN": lambda obj, elem: setattr(obj, "period_begin", SerializationHelper.deserialize_by_tag(elem, "LifeCyclePeriod")),
+        "PERIOD-END": lambda obj, elem: setattr(obj, "period_end", SerializationHelper.deserialize_by_tag(elem, "LifeCyclePeriod")),
+        "REMARK": lambda obj, elem: setattr(obj, "remark", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "USE-INSTEAD-REFS": ("_POLYMORPHIC_LIST", "use_instead_refs", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LifeCycleInfo."""
         super().__init__()
@@ -62,9 +75,8 @@ class LifeCycleInfo(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LifeCycleInfo, self).serialize()
@@ -182,51 +194,23 @@ class LifeCycleInfo(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LifeCycleInfo, cls).deserialize(element)
 
-        # Parse lc_object_ref
-        child = SerializationHelper.find_child_element(element, "LC-OBJECT-REF")
-        if child is not None:
-            lc_object_ref_value = ARRef.deserialize(child)
-            obj.lc_object_ref = lc_object_ref_value
-
-        # Parse lc_state_ref
-        child = SerializationHelper.find_child_element(element, "LC-STATE-REF")
-        if child is not None:
-            lc_state_ref_value = ARRef.deserialize(child)
-            obj.lc_state_ref = lc_state_ref_value
-
-        # Parse period_begin
-        child = SerializationHelper.find_child_element(element, "PERIOD-BEGIN")
-        if child is not None:
-            period_begin_value = SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod")
-            obj.period_begin = period_begin_value
-
-        # Parse period_end
-        child = SerializationHelper.find_child_element(element, "PERIOD-END")
-        if child is not None:
-            period_end_value = SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod")
-            obj.period_end = period_end_value
-
-        # Parse remark
-        child = SerializationHelper.find_child_element(element, "REMARK")
-        if child is not None:
-            remark_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.remark = remark_value
-
-        # Parse use_instead_refs (list from container "USE-INSTEAD-REFS")
-        obj.use_instead_refs = []
-        container = SerializationHelper.find_child_element(element, "USE-INSTEAD-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.use_instead_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LC-OBJECT-REF":
+                setattr(obj, "lc_object_ref", ARRef.deserialize(child))
+            elif tag == "LC-STATE-REF":
+                setattr(obj, "lc_state_ref", ARRef.deserialize(child))
+            elif tag == "PERIOD-BEGIN":
+                setattr(obj, "period_begin", SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod"))
+            elif tag == "PERIOD-END":
+                setattr(obj, "period_end", SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod"))
+            elif tag == "REMARK":
+                setattr(obj, "remark", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "USE-INSTEAD-REFS":
+                for item_elem in child:
+                    obj.use_instead_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

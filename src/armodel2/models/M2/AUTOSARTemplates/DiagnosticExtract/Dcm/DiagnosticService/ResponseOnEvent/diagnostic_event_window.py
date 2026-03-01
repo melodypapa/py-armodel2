@@ -26,7 +26,15 @@ class DiagnosticEventWindow(ARObject):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-EVENT-WINDOW"
+
+
     event_window: Optional[DiagnosticEventWindow]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-WINDOW": lambda obj, elem: setattr(obj, "event_window", SerializationHelper.deserialize_by_tag(elem, "DiagnosticEventWindow")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEventWindow."""
         super().__init__()
@@ -38,9 +46,8 @@ class DiagnosticEventWindow(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEventWindow, self).serialize()
@@ -85,11 +92,12 @@ class DiagnosticEventWindow(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventWindow, cls).deserialize(element)
 
-        # Parse event_window
-        child = SerializationHelper.find_child_element(element, "EVENT-WINDOW")
-        if child is not None:
-            event_window_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticEventWindow")
-            obj.event_window = event_window_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EVENT-WINDOW":
+                setattr(obj, "event_window", SerializationHelper.deserialize_by_tag(child, "DiagnosticEventWindow"))
 
         return obj
 

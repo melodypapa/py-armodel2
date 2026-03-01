@@ -37,10 +37,21 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-COM-CONTROL-CLASS"
+
+
     all_channel_refs: list[ARRef]
     all_physical_refs: list[Any]
     specific_channels: list[DiagnosticComControl]
     sub_nodes: list[DiagnosticComControl]
+    _DESERIALIZE_DISPATCH = {
+        "ALL-CHANNELS-REFS": ("_POLYMORPHIC_LIST", "all_channel_refs", ["AbstractCanCluster", "EthernetCluster", "FlexrayCluster", "LinCluster", "UserDefinedCluster"]),
+        "ALL-PHYSICAL-REFS": lambda obj, elem: [obj.all_physical_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "SPECIFIC-CHANNELS": lambda obj, elem: obj.specific_channels.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticComControl")),
+        "SUB-NODES": lambda obj, elem: obj.sub_nodes.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticComControl")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticComControlClass."""
         super().__init__()
@@ -55,9 +66,8 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticComControlClass, self).serialize()
@@ -142,57 +152,25 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticComControlClass, cls).deserialize(element)
 
-        # Parse all_channel_refs (list from container "ALL-CHANNELS-REFS")
-        obj.all_channel_refs = []
-        container = SerializationHelper.find_child_element(element, "ALL-CHANNELS-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.all_channel_refs.append(child_value)
-
-        # Parse all_physical_refs (list from container "ALL-PHYSICAL-REFS")
-        obj.all_physical_refs = []
-        container = SerializationHelper.find_child_element(element, "ALL-PHYSICAL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.all_physical_refs.append(child_value)
-
-        # Parse specific_channels (list from container "SPECIFIC-CHANNELS")
-        obj.specific_channels = []
-        container = SerializationHelper.find_child_element(element, "SPECIFIC-CHANNELS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.specific_channels.append(child_value)
-
-        # Parse sub_nodes (list from container "SUB-NODES")
-        obj.sub_nodes = []
-        container = SerializationHelper.find_child_element(element, "SUB-NODES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sub_nodes.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ALL-CHANNELS-REFS":
+                for item_elem in child:
+                    obj.all_channel_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "ALL-PHYSICAL-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.all_physical_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SPECIFIC-CHANNELS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.specific_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticComControl"))
+            elif tag == "SUB-NODES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sub_nodes.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticComControl"))
 
         return obj
 

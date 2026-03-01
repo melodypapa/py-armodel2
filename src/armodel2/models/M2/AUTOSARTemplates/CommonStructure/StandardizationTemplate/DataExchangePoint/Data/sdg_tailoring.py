@@ -34,7 +34,15 @@ class SdgTailoring(RestrictionWithSeverity):
         """
         return False
 
+    _XML_TAG = "SDG-TAILORING"
+
+
     sdg_class_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SDG-CLASS-REF": lambda obj, elem: setattr(obj, "sdg_class_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SdgTailoring."""
         super().__init__()
@@ -46,9 +54,8 @@ class SdgTailoring(RestrictionWithSeverity):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SdgTailoring, self).serialize()
@@ -93,11 +100,12 @@ class SdgTailoring(RestrictionWithSeverity):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SdgTailoring, cls).deserialize(element)
 
-        # Parse sdg_class_ref
-        child = SerializationHelper.find_child_element(element, "SDG-CLASS-REF")
-        if child is not None:
-            sdg_class_ref_value = ARRef.deserialize(child)
-            obj.sdg_class_ref = sdg_class_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SDG-CLASS-REF":
+                setattr(obj, "sdg_class_ref", ARRef.deserialize(child))
 
         return obj
 

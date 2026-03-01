@@ -36,8 +36,17 @@ class ClientIdDefinition(Identifiable):
         """
         return False
 
+    _XML_TAG = "CLIENT-ID-DEFINITION"
+
+
     client_id: Optional[Numerical]
     client_server_instance_ref: Optional[ClientServerOperation]
+    _DESERIALIZE_DISPATCH = {
+        "CLIENT-ID": lambda obj, elem: setattr(obj, "client_id", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "CLIENT-SERVER-INSTANCE-REF": lambda obj, elem: setattr(obj, "client_server_instance_ref", SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientIdDefinition."""
         super().__init__()
@@ -50,9 +59,8 @@ class ClientIdDefinition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientIdDefinition, self).serialize()
@@ -111,17 +119,14 @@ class ClientIdDefinition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientIdDefinition, cls).deserialize(element)
 
-        # Parse client_id
-        child = SerializationHelper.find_child_element(element, "CLIENT-ID")
-        if child is not None:
-            client_id_value = child.text
-            obj.client_id = client_id_value
-
-        # Parse client_server_instance_ref
-        child = SerializationHelper.find_child_element(element, "CLIENT-SERVER-INSTANCE-REF")
-        if child is not None:
-            client_server_instance_ref_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
-            obj.client_server_instance_ref = client_server_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CLIENT-ID":
+                setattr(obj, "client_id", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "CLIENT-SERVER-INSTANCE-REF":
+                setattr(obj, "client_server_instance_ref", SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
 
         return obj
 

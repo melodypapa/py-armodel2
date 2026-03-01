@@ -34,7 +34,15 @@ class ApplicationError(Identifiable):
         """
         return False
 
+    _XML_TAG = "APPLICATION-ERROR"
+
+
     error_code: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "ERROR-CODE": lambda obj, elem: setattr(obj, "error_code", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationError."""
         super().__init__()
@@ -46,9 +54,8 @@ class ApplicationError(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationError, self).serialize()
@@ -93,11 +100,12 @@ class ApplicationError(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationError, cls).deserialize(element)
 
-        # Parse error_code
-        child = SerializationHelper.find_child_element(element, "ERROR-CODE")
-        if child is not None:
-            error_code_value = child.text
-            obj.error_code = error_code_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ERROR-CODE":
+                setattr(obj, "error_code", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

@@ -39,6 +39,9 @@ class Graphic(EngineeringObject):
         """
         return False
 
+    _XML_TAG = "GRAPHIC"
+
+
     editfit: Optional[GraphicFitEnum]
     edit_height: Optional[String]
     editscale: Optional[String]
@@ -54,6 +57,24 @@ class Graphic(EngineeringObject):
     notation: Optional[GraphicNotationEnum]
     scale: Optional[String]
     width: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "EDITFIT": lambda obj, elem: setattr(obj, "editfit", GraphicFitEnum.deserialize(elem)),
+        "EDIT-HEIGHT": lambda obj, elem: setattr(obj, "edit_height", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "EDITSCALE": lambda obj, elem: setattr(obj, "editscale", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "EDIT-WIDTH": lambda obj, elem: setattr(obj, "edit_width", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "FIT": lambda obj, elem: setattr(obj, "fit", GraphicFitEnum.deserialize(elem)),
+        "GENERATOR": lambda obj, elem: setattr(obj, "generator", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "HEIGHT": lambda obj, elem: setattr(obj, "height", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "HTML-FIT": lambda obj, elem: setattr(obj, "html_fit", GraphicFitEnum.deserialize(elem)),
+        "HTML-HEIGHT": lambda obj, elem: setattr(obj, "html_height", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "HTML-SCALE": lambda obj, elem: setattr(obj, "html_scale", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "HTML-WIDTH": lambda obj, elem: setattr(obj, "html_width", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "NOTATION": lambda obj, elem: setattr(obj, "notation", GraphicNotationEnum.deserialize(elem)),
+        "SCALE": lambda obj, elem: setattr(obj, "scale", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "WIDTH": lambda obj, elem: setattr(obj, "width", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Graphic."""
         super().__init__()
@@ -90,9 +111,8 @@ class Graphic(EngineeringObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Graphic, self).serialize()
@@ -323,94 +343,42 @@ class Graphic(EngineeringObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Graphic, cls).deserialize(element)
 
-        # Parse editfit
-        child = SerializationHelper.find_child_element(element, "EDITFIT")
-        if child is not None:
-            editfit_value = GraphicFitEnum.deserialize(child)
-            obj.editfit = editfit_value
-
-        # Parse edit_height
-        child = SerializationHelper.find_child_element(element, "EDIT-HEIGHT")
-        if child is not None:
-            edit_height_value = child.text
-            obj.edit_height = edit_height_value
-
-        # Parse editscale
-        child = SerializationHelper.find_child_element(element, "EDITSCALE")
-        if child is not None:
-            editscale_value = child.text
-            obj.editscale = editscale_value
-
-        # Parse edit_width
-        child = SerializationHelper.find_child_element(element, "EDIT-WIDTH")
-        if child is not None:
-            edit_width_value = child.text
-            obj.edit_width = edit_width_value
-
         # Parse filename from XML attribute
         if "FILENAME" in element.attrib:
-            filename_value = element.attrib["FILENAME"]
-            obj.filename = filename_value
+            obj.filename = element.attrib["FILENAME"]
 
-        # Parse fit
-        child = SerializationHelper.find_child_element(element, "FIT")
-        if child is not None:
-            fit_value = GraphicFitEnum.deserialize(child)
-            obj.fit = fit_value
-
-        # Parse generator
-        child = SerializationHelper.find_child_element(element, "GENERATOR")
-        if child is not None:
-            generator_value = child.text
-            obj.generator = generator_value
-
-        # Parse height
-        child = SerializationHelper.find_child_element(element, "HEIGHT")
-        if child is not None:
-            height_value = child.text
-            obj.height = height_value
-
-        # Parse html_fit
-        child = SerializationHelper.find_child_element(element, "HTML-FIT")
-        if child is not None:
-            html_fit_value = GraphicFitEnum.deserialize(child)
-            obj.html_fit = html_fit_value
-
-        # Parse html_height
-        child = SerializationHelper.find_child_element(element, "HTML-HEIGHT")
-        if child is not None:
-            html_height_value = child.text
-            obj.html_height = html_height_value
-
-        # Parse html_scale
-        child = SerializationHelper.find_child_element(element, "HTML-SCALE")
-        if child is not None:
-            html_scale_value = child.text
-            obj.html_scale = html_scale_value
-
-        # Parse html_width
-        child = SerializationHelper.find_child_element(element, "HTML-WIDTH")
-        if child is not None:
-            html_width_value = child.text
-            obj.html_width = html_width_value
-
-        # Parse notation
-        child = SerializationHelper.find_child_element(element, "NOTATION")
-        if child is not None:
-            notation_value = GraphicNotationEnum.deserialize(child)
-            obj.notation = notation_value
-
-        # Parse scale
-        child = SerializationHelper.find_child_element(element, "SCALE")
-        if child is not None:
-            scale_value = child.text
-            obj.scale = scale_value
-
-        # Parse width
-        child = SerializationHelper.find_child_element(element, "WIDTH")
-        if child is not None:
-            width_value = child.text
-            obj.width = width_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EDITFIT":
+                setattr(obj, "editfit", GraphicFitEnum.deserialize(child))
+            elif tag == "EDIT-HEIGHT":
+                setattr(obj, "edit_height", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "EDITSCALE":
+                setattr(obj, "editscale", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "EDIT-WIDTH":
+                setattr(obj, "edit_width", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "FIT":
+                setattr(obj, "fit", GraphicFitEnum.deserialize(child))
+            elif tag == "GENERATOR":
+                setattr(obj, "generator", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "HEIGHT":
+                setattr(obj, "height", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "HTML-FIT":
+                setattr(obj, "html_fit", GraphicFitEnum.deserialize(child))
+            elif tag == "HTML-HEIGHT":
+                setattr(obj, "html_height", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "HTML-SCALE":
+                setattr(obj, "html_scale", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "HTML-WIDTH":
+                setattr(obj, "html_width", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "NOTATION":
+                setattr(obj, "notation", GraphicNotationEnum.deserialize(child))
+            elif tag == "SCALE":
+                setattr(obj, "scale", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "WIDTH":
+                setattr(obj, "width", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

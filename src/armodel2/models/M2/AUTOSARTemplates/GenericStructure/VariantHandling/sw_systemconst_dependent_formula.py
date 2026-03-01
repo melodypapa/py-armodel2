@@ -35,6 +35,12 @@ class SwSystemconstDependentFormula(ARObject, ABC):
 
     sysc_ref: Optional[ARRef]
     sysc_string_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SYSC-REF": lambda obj, elem: setattr(obj, "sysc_ref", ARRef.deserialize(elem)),
+        "SYSC-STRING-REF": lambda obj, elem: setattr(obj, "sysc_string_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwSystemconstDependentFormula."""
         super().__init__()
@@ -47,9 +53,8 @@ class SwSystemconstDependentFormula(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwSystemconstDependentFormula, self).serialize()
@@ -108,17 +113,14 @@ class SwSystemconstDependentFormula(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwSystemconstDependentFormula, cls).deserialize(element)
 
-        # Parse sysc_ref
-        child = SerializationHelper.find_child_element(element, "SYSC-REF")
-        if child is not None:
-            sysc_ref_value = ARRef.deserialize(child)
-            obj.sysc_ref = sysc_ref_value
-
-        # Parse sysc_string_ref
-        child = SerializationHelper.find_child_element(element, "SYSC-STRING-REF")
-        if child is not None:
-            sysc_string_ref_value = ARRef.deserialize(child)
-            obj.sysc_string_ref = sysc_string_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SYSC-REF":
+                setattr(obj, "sysc_ref", ARRef.deserialize(child))
+            elif tag == "SYSC-STRING-REF":
+                setattr(obj, "sysc_string_ref", ARRef.deserialize(child))
 
         return obj
 

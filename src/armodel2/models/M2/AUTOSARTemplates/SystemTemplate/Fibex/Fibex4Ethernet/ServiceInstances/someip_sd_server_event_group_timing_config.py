@@ -33,7 +33,15 @@ class SomeipSdServerEventGroupTimingConfig(ARElement):
         """
         return False
 
+    _XML_TAG = "SOMEIP-SD-SERVER-EVENT-GROUP-TIMING-CONFIG"
+
+
     request: Optional[RequestResponseDelay]
+    _DESERIALIZE_DISPATCH = {
+        "REQUEST": lambda obj, elem: setattr(obj, "request", SerializationHelper.deserialize_by_tag(elem, "RequestResponseDelay")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SomeipSdServerEventGroupTimingConfig."""
         super().__init__()
@@ -45,9 +53,8 @@ class SomeipSdServerEventGroupTimingConfig(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SomeipSdServerEventGroupTimingConfig, self).serialize()
@@ -92,11 +99,12 @@ class SomeipSdServerEventGroupTimingConfig(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SomeipSdServerEventGroupTimingConfig, cls).deserialize(element)
 
-        # Parse request
-        child = SerializationHelper.find_child_element(element, "REQUEST")
-        if child is not None:
-            request_value = SerializationHelper.deserialize_by_tag(child, "RequestResponseDelay")
-            obj.request = request_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "REQUEST":
+                setattr(obj, "request", SerializationHelper.deserialize_by_tag(child, "RequestResponseDelay"))
 
         return obj
 

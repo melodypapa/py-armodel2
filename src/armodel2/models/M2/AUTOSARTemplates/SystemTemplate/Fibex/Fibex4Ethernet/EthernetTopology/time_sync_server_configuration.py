@@ -38,10 +38,21 @@ class TimeSyncServerConfiguration(Referrable):
         """
         return False
 
+    _XML_TAG = "TIME-SYNC-SERVER-CONFIGURATION"
+
+
     priority: Optional[PositiveInteger]
     sync_interval: Optional[TimeValue]
     time_sync_server_identifier: Optional[String]
     time_sync: Optional[TimeSyncTechnologyEnum]
+    _DESERIALIZE_DISPATCH = {
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SYNC-INTERVAL": lambda obj, elem: setattr(obj, "sync_interval", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIME-SYNC-SERVER-IDENTIFIER": lambda obj, elem: setattr(obj, "time_sync_server_identifier", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "TIME-SYNC": lambda obj, elem: setattr(obj, "time_sync", TimeSyncTechnologyEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimeSyncServerConfiguration."""
         super().__init__()
@@ -56,9 +67,8 @@ class TimeSyncServerConfiguration(Referrable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimeSyncServerConfiguration, self).serialize()
@@ -145,29 +155,18 @@ class TimeSyncServerConfiguration(Referrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimeSyncServerConfiguration, cls).deserialize(element)
 
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse sync_interval
-        child = SerializationHelper.find_child_element(element, "SYNC-INTERVAL")
-        if child is not None:
-            sync_interval_value = child.text
-            obj.sync_interval = sync_interval_value
-
-        # Parse time_sync_server_identifier
-        child = SerializationHelper.find_child_element(element, "TIME-SYNC-SERVER-IDENTIFIER")
-        if child is not None:
-            time_sync_server_identifier_value = child.text
-            obj.time_sync_server_identifier = time_sync_server_identifier_value
-
-        # Parse time_sync
-        child = SerializationHelper.find_child_element(element, "TIME-SYNC")
-        if child is not None:
-            time_sync_value = TimeSyncTechnologyEnum.deserialize(child)
-            obj.time_sync = time_sync_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SYNC-INTERVAL":
+                setattr(obj, "sync_interval", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIME-SYNC-SERVER-IDENTIFIER":
+                setattr(obj, "time_sync_server_identifier", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "TIME-SYNC":
+                setattr(obj, "time_sync", TimeSyncTechnologyEnum.deserialize(child))
 
         return obj
 

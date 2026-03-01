@@ -33,9 +33,19 @@ class FrameMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "FRAME-MAPPING"
+
+
     introduction: Optional[DocumentationBlock]
     source_frame_ref: Optional[ARRef]
     target_frame_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "SOURCE-FRAME-REF": ("_POLYMORPHIC", "source_frame_ref", ["CanFrameTriggering", "EthernetFrameTriggering", "FlexrayFrameTriggering", "LinFrameTriggering"]),
+        "TARGET-FRAME-REF": ("_POLYMORPHIC", "target_frame_ref", ["CanFrameTriggering", "EthernetFrameTriggering", "FlexrayFrameTriggering", "LinFrameTriggering"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FrameMapping."""
         super().__init__()
@@ -49,9 +59,8 @@ class FrameMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FrameMapping, self).serialize()
@@ -124,23 +133,16 @@ class FrameMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FrameMapping, cls).deserialize(element)
 
-        # Parse introduction
-        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
-        if child is not None:
-            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.introduction = introduction_value
-
-        # Parse source_frame_ref
-        child = SerializationHelper.find_child_element(element, "SOURCE-FRAME-REF")
-        if child is not None:
-            source_frame_ref_value = ARRef.deserialize(child)
-            obj.source_frame_ref = source_frame_ref_value
-
-        # Parse target_frame_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-FRAME-REF")
-        if child is not None:
-            target_frame_ref_value = ARRef.deserialize(child)
-            obj.target_frame_ref = target_frame_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INTRODUCTION":
+                setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "SOURCE-FRAME-REF":
+                setattr(obj, "source_frame_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-FRAME-REF":
+                setattr(obj, "target_frame_ref", ARRef.deserialize(child))
 
         return obj
 

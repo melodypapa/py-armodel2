@@ -29,8 +29,17 @@ class DiagnosticSupportInfoByte(ARObject):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SUPPORT-INFO-BYTE"
+
+
     position: Optional[PositiveInteger]
     size: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "POSITION": lambda obj, elem: setattr(obj, "position", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SIZE": lambda obj, elem: setattr(obj, "size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticSupportInfoByte."""
         super().__init__()
@@ -43,9 +52,8 @@ class DiagnosticSupportInfoByte(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticSupportInfoByte, self).serialize()
@@ -104,17 +112,14 @@ class DiagnosticSupportInfoByte(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSupportInfoByte, cls).deserialize(element)
 
-        # Parse position
-        child = SerializationHelper.find_child_element(element, "POSITION")
-        if child is not None:
-            position_value = child.text
-            obj.position = position_value
-
-        # Parse size
-        child = SerializationHelper.find_child_element(element, "SIZE")
-        if child is not None:
-            size_value = child.text
-            obj.size = size_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "POSITION":
+                setattr(obj, "position", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SIZE":
+                setattr(obj, "size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

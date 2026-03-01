@@ -34,7 +34,15 @@ class SdgReference(SdgAttribute):
         """
         return False
 
+    _XML_TAG = "SDG-REFERENCE"
+
+
     dest_sdg_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DEST-SDG-REF": lambda obj, elem: setattr(obj, "dest_sdg_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SdgReference."""
         super().__init__()
@@ -46,9 +54,8 @@ class SdgReference(SdgAttribute):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SdgReference, self).serialize()
@@ -93,11 +100,12 @@ class SdgReference(SdgAttribute):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SdgReference, cls).deserialize(element)
 
-        # Parse dest_sdg_ref
-        child = SerializationHelper.find_child_element(element, "DEST-SDG-REF")
-        if child is not None:
-            dest_sdg_ref_value = ARRef.deserialize(child)
-            obj.dest_sdg_ref = dest_sdg_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEST-SDG-REF":
+                setattr(obj, "dest_sdg_ref", ARRef.deserialize(child))
 
         return obj
 

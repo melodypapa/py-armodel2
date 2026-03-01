@@ -55,12 +55,25 @@ class CompositionSwComponentType(SwComponentType):
         """
         return False
 
+    _XML_TAG = "COMPOSITION-SW-COMPONENT-TYPE"
+
+
     components: list[SwComponentPrototype]
     connectors: list[SwConnector]
     constant_value_mapping_refs: list[ARRef]
     data_type_mapping_refs: list[ARRef]
     instantiation_rte_event_props: list[InstantiationRTEEventProps]
     physical_dimension_mapping_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMPONENTS": lambda obj, elem: obj.components.append(SerializationHelper.deserialize_by_tag(elem, "SwComponentPrototype")),
+        "CONNECTORS": ("_POLYMORPHIC_LIST", "connectors", ["AssemblySwConnector", "DelegationSwConnector", "PassThroughSwConnector"]),
+        "CONSTANT-VALUE-MAPPING-REFS": lambda obj, elem: [obj.constant_value_mapping_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "DATA-TYPE-MAPPING-REFS": lambda obj, elem: [obj.data_type_mapping_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "INSTANTIATION-RTE-EVENT-PROPS": ("_POLYMORPHIC_LIST", "instantiation_rte_event_props", ["InstantiationTimingEventProps"]),
+        "PHYSICAL-DIMENSION-MAPPING-REF": lambda obj, elem: setattr(obj, "physical_dimension_mapping_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompositionSwComponentType."""
         super().__init__()
@@ -77,9 +90,8 @@ class CompositionSwComponentType(SwComponentType):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompositionSwComponentType, self).serialize()
@@ -188,73 +200,40 @@ class CompositionSwComponentType(SwComponentType):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompositionSwComponentType, cls).deserialize(element)
 
-        # Parse components (list from container "COMPONENTS")
-        obj.components = []
-        container = SerializationHelper.find_child_element(element, "COMPONENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.components.append(child_value)
-
-        # Parse connectors (list from container "CONNECTORS")
-        obj.connectors = []
-        container = SerializationHelper.find_child_element(element, "CONNECTORS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.connectors.append(child_value)
-
-        # Parse constant_value_mapping_refs (list from container "CONSTANT-VALUE-MAPPING-REFS")
-        obj.constant_value_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "CONSTANT-VALUE-MAPPING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.constant_value_mapping_refs.append(child_value)
-
-        # Parse data_type_mapping_refs (list from container "DATA-TYPE-MAPPING-REFS")
-        obj.data_type_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-TYPE-MAPPING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_type_mapping_refs.append(child_value)
-
-        # Parse instantiation_rte_event_props (list from container "INSTANTIATION-RTE-EVENT-PROPS")
-        obj.instantiation_rte_event_props = []
-        container = SerializationHelper.find_child_element(element, "INSTANTIATION-RTE-EVENT-PROPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.instantiation_rte_event_props.append(child_value)
-
-        # Parse physical_dimension_mapping_ref
-        child = SerializationHelper.find_child_element(element, "PHYSICAL-DIMENSION-MAPPING-REF")
-        if child is not None:
-            physical_dimension_mapping_ref_value = ARRef.deserialize(child)
-            obj.physical_dimension_mapping_ref = physical_dimension_mapping_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMPONENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.components.append(SerializationHelper.deserialize_by_tag(item_elem, "SwComponentPrototype"))
+            elif tag == "CONNECTORS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "ASSEMBLY-SW-CONNECTOR":
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "AssemblySwConnector"))
+                    elif concrete_tag == "DELEGATION-SW-CONNECTOR":
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "DelegationSwConnector"))
+                    elif concrete_tag == "PASS-THROUGH-SW-CONNECTOR":
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "PassThroughSwConnector"))
+            elif tag == "CONSTANT-VALUE-MAPPING-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.constant_value_mapping_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "DATA-TYPE-MAPPING-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.data_type_mapping_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "INSTANTIATION-RTE-EVENT-PROPS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "INSTANTIATION-TIMING-EVENT-PROPS":
+                        obj.instantiation_rte_event_props.append(SerializationHelper.deserialize_by_tag(item_elem, "InstantiationTimingEventProps"))
+            elif tag == "PHYSICAL-DIMENSION-MAPPING-REF":
+                setattr(obj, "physical_dimension_mapping_ref", ARRef.deserialize(child))
 
         return obj
 

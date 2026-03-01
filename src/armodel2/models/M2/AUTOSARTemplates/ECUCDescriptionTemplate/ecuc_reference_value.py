@@ -35,7 +35,15 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
         """
         return False
 
+    _XML_TAG = "ECUC-REFERENCE-VALUE"
+
+
     value_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "VALUE-REF": ("_POLYMORPHIC", "value_ref", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucReferenceValue."""
         super().__init__()
@@ -47,9 +55,8 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucReferenceValue, self).serialize()
@@ -94,11 +101,12 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucReferenceValue, cls).deserialize(element)
 
-        # Parse value_ref
-        child = SerializationHelper.find_child_element(element, "VALUE-REF")
-        if child is not None:
-            value_ref_value = ARRef.deserialize(child)
-            obj.value_ref = value_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "VALUE-REF":
+                setattr(obj, "value_ref", ARRef.deserialize(child))
 
         return obj
 

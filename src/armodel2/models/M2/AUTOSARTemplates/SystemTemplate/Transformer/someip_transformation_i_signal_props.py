@@ -40,6 +40,9 @@ class SOMEIPTransformationISignalProps(ARObject):
         """
         return False
 
+    _XML_TAG = "S-O-M-E-I-P-TRANSFORMATION-I-SIGNAL-PROPS"
+
+
     implements: Optional[Boolean]
     interface_version: Optional[PositiveInteger]
     is_dynamic: Optional[Boolean]
@@ -49,6 +52,19 @@ class SOMEIPTransformationISignalProps(ARObject):
     size_of_struct: Optional[PositiveInteger]
     size_of_union: Optional[PositiveInteger]
     tlv_data_id_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "IMPLEMENTS": lambda obj, elem: setattr(obj, "implements", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "INTERFACE-VERSION": lambda obj, elem: setattr(obj, "interface_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IS-DYNAMIC": lambda obj, elem: setattr(obj, "is_dynamic", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "MESSAGE-TYPE": lambda obj, elem: setattr(obj, "message_type", SOMEIPMessageTypeEnum.deserialize(elem)),
+        "SIZE-OF-ARRAY": lambda obj, elem: setattr(obj, "size_of_array", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SIZE-OF-STRING": lambda obj, elem: setattr(obj, "size_of_string", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SIZE-OF-STRUCT": lambda obj, elem: setattr(obj, "size_of_struct", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SIZE-OF-UNION": lambda obj, elem: setattr(obj, "size_of_union", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TLV-DATA-ID-REFS": lambda obj, elem: [obj.tlv_data_id_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize SOMEIPTransformationISignalProps."""
         super().__init__()

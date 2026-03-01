@@ -20,12 +20,258 @@ from .type_utils import (
     extract_attribute_metadata,
     get_type_coercion_function,
     should_apply_type_coercion,
+    flatten_atp_mixed_attributes,
 )
 
 
 # Base class names for AUTOSAR primitives and enums
 PRIMITIVE_BASE_CLASS = "ARPrimitive"
 ENUM_BASE_CLASS = "AREnum"
+
+
+def _collect_attribute_types_with_flattening(
+    class_name: str,
+    package_path: str,
+    package_data: Dict[str, Dict[str, Any]],
+) -> Dict[str, Dict[str, Any]]:
+    """Collect attribute types for a class, flattening atpMixed child attributes.
+
+    Args:
+        class_name: Name of the class to collect attributes for
+        package_path: Path to the package containing the class
+        package_data: Package data dictionary
+
+    Returns:
+        Dictionary of attribute names to attribute info, with atpMixed children flattened
+    """
+    attribute_types = {}
+
+    if package_path not in package_data:
+        return attribute_types
+
+    class_info = package_data[package_path].get("classes", [])
+    cls = None
+    for c in class_info:
+        if c["name"] == class_name and "attributes" in c:
+            cls = c
+            break
+
+    if cls is None:
+        return attribute_types
+
+    # First, collect raw attributes and convert to metadata format
+    raw_attributes = []
+    for attr_name, attr_info in cls["attributes"].items():
+        attr_type = attr_info["type"]
+        multiplicity = attr_info["multiplicity"]
+        is_ref = attr_info.get("is_ref", False)
+        kind = attr_info.get("kind", "attribute")
+        decorator_name = None
+
+        attr_meta = {
+            "name": attr_name,
+            "type": attr_type,
+            "multiplicity": multiplicity,
+            "is_ref": is_ref,
+            "kind": kind,
+        }
+
+        # Parse decorator field if present
+        if "decorator" in attr_info:
+            decorator_spec = attr_info["decorator"]
+            if ":" in decorator_spec:
+                decorator_name, params = decorator_spec.split(":", 1)
+                attr_meta["decorator_name"] = decorator_name
+                attr_meta["decorator_params"] = params
+            else:
+                decorator_name = decorator_spec
+                attr_meta["decorator_name"] = decorator_spec
+                attr_meta["decorator_params"] = None
+
+        # Auto-detect YS→IES pattern and add xml_element_name decorator
+        if (
+            attr_name.lower().endswith("ies")
+            and attr_info.get("multiplicity") == "*"
+        ):
+            snake_name = to_snake_case(attr_name)
+            xml_tag = snake_name.upper().replace("_", "-")
+            legacy_tag = f"{xml_tag[:-3]}YS"
+            attr_meta["decorator_name"] = "xml_element_name"
+            attr_meta["decorator_params"] = legacy_tag
+
+        raw_attributes.append(attr_meta)
+
+    # Apply atpMixed flattening
+    flattened = flatten_atp_mixed_attributes(raw_attributes, package_data)
+
+    # Convert flattened attributes to the format expected by the rest of the code
+    for attr in flattened:
+        attr_name = attr["name"]
+        attribute_types[attr_name] = {
+            "type": attr["type"],
+            "multiplicity": attr["multiplicity"],
+            "is_ref": attr.get("is_ref", False),  # Use .get() with default
+            "kind": attr.get("kind", "attribute"),  # Use .get() with default
+        }
+        if "decorator_name" in attr:
+            attribute_types[attr_name]["decorator_name"] = attr["decorator_name"]
+        if "decorator_params" in attr:
+            attribute_types[attr_name]["decorator_params"] = attr["decorator_params"]
+
+    return attribute_types
+
+
+def _is_basic_python_type(type_name: str) -> bool:
+    """Check if type is a basic Python type (str, int, float, bool).
+
+    Args:
+        type_name: Type name to check
+
+    Returns:
+        True if basic Python type
+    """
+    return type_name in ("str", "int", "float", "bool")
+
+
+def _generate_xml_tag_constant(class_name: str) -> str:
+    """Generate _XML_TAG constant for a class."""
+    xml_tag = NameConverter.to_xml_tag(class_name)
+    return f'    _XML_TAG = "{xml_tag}"\n\n\n'
+
+
+def _generate_dispatch_table(
+    attribute_types: Dict[str, Dict[str, Any]],
+    package_data: Dict[str, Dict[str, Any]],
+    polymorphic_types: Optional[Dict[str, List[str]]] = None,
+) -> str:
+    """Generate _DESERIALIZE_DISPATCH table for a class.
+
+    For polymorphic attributes, generates a special handler marker that will be
+    expanded to if-elif-else chains in the deserialize method.
+
+    Args:
+        attribute_types: Dictionary of attribute information
+        package_data: Dictionary with package data including class attributes
+        polymorphic_types: Dict mapping base types to lists of concrete implementations
+
+    Returns:
+        Generated dispatch table code as string
+    """
+    if polymorphic_types is None:
+        polymorphic_types = {}
+
+    if not attribute_types:
+        return ""
+
+    dispatch_lines = ["    _DESERIALIZE_DISPATCH = {"]
+
+    for attr_name, attr_info in attribute_types.items():
+        kind = attr_info.get("kind", "attribute")
+        decorator_name = attr_info.get("decorator_name")
+
+        # Skip xml_attribute and lang_abbr (handled by parent class)
+        if kind == "xml_attribute" or decorator_name == "xml_attribute":
+            continue
+        if decorator_name == "lang_abbr":
+            continue
+
+        multiplicity = attr_info.get("multiplicity", "1")
+        is_ref = attr_info.get("is_ref", False)
+        snake_name = to_snake_case(attr_name)
+        xml_tag = snake_name.upper().replace("_", "-")
+
+        # Check for xml_element_name decorator with params
+        if decorator_name == "xml_element_name":
+            # Use decorator_params value for XML tag
+            decorator_params = attr_info.get("decorator_params")
+            if decorator_params:
+                xml_tag = decorator_params
+            else:
+                xml_tag = snake_name.upper().replace("_", "-")
+        # For list attributes, determine the correct container tag
+        elif multiplicity in ("*", "0..*"):
+            if is_ref and kind != "iref":
+                # For reference lists, container is SINGULAR-NAME + "-REFS" (e.g., USE-INSTEAD-REFS)
+                singular_xml_tag = snake_name.upper().replace("_", "-")
+                xml_tag = f"{singular_xml_tag}-REFS"
+            else:
+                # For non-reference lists, pluralize the tag
+                from ._common import to_plural as pluralize_snake
+                plural_snake = pluralize_snake(snake_name)
+                xml_tag = plural_snake.upper().replace("_", "-")
+
+        # Add -REF suffix for non-list reference attributes
+        if is_ref and multiplicity not in ("*", "0..*", "1..*") and kind != "iref":
+            xml_tag = f"{xml_tag}-TREF" if kind == "tref" else f"{xml_tag}-REF"
+
+        # Add -IREF suffix for instance_ref attributes (iref kind)
+        if kind == "iref":
+            xml_tag = f"{xml_tag}-IREF"
+
+        # Get Python identifier for the target attribute
+        python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
+
+        # Determine target attribute name (private for decorated attrs)
+        target_attr = f"_{python_name}" if decorator_name in (
+            "xml_attribute", "lang_prefix", "lang_abbr", "xml_element_name",
+            "ref_conditional", "instance_ref", "polymorphic"
+        ) else python_name
+
+        # Build handler lambda
+        attr_type = attr_info["type"]
+        is_list = multiplicity in ("*", "0..*", "1..*")
+
+        # Check if this is a polymorphic type
+        concrete_types = polymorphic_types.get(attr_type, [])
+        is_polymorphic = bool(concrete_types)
+
+        # For dispatch table key, extract container tag from multi-level paths
+        dispatch_tag = xml_tag.split("/")[0] if isinstance(xml_tag, str) and "/" in xml_tag else xml_tag
+
+        if is_polymorphic:
+            # For polymorphic types, we'll generate a special marker
+            # The actual if-elif-else code will be generated in _generate_deserialize_method
+            # Store the polymorphic info in the dispatch table as a tuple
+            # Use dispatch_tag (container tag) for multi-level paths
+            concrete_types_str = ", ".join(f'"{t}"' for t in concrete_types)
+            if is_list:
+                handler = f'("_POLYMORPHIC_LIST", "{target_attr}", [{concrete_types_str}])'
+            else:
+                handler = f'("_POLYMORPHIC", "{target_attr}", [{concrete_types_str}])'
+        elif _is_basic_python_type(attr_type):
+            value_code = "elem.text"
+            if is_list:
+                handler = f'lambda obj, elem: obj.{target_attr}.append({value_code})'
+            else:
+                handler = f'lambda obj, elem: setattr(obj, "{target_attr}", {value_code})'
+        elif is_enum_type(attr_type, package_data):
+            value_code = f"{attr_type}.deserialize(elem)"
+            if is_list:
+                handler = f'lambda obj, elem: obj.{target_attr}.append({value_code})'
+            else:
+                handler = f'lambda obj, elem: setattr(obj, "{target_attr}", {value_code})'
+        elif is_ref and kind != "iref":
+            # For iref kind, deserialize as the specific type, not as ARRef
+            if is_list:
+                # For reference lists, elem is the container (e.g., DATA-TYPE-MAPPING-REFS)
+                # Need to iterate through children and deserialize each as ARRef
+                handler = f'lambda obj, elem: [obj.{target_attr}.append(ARRef.deserialize(item_elem)) for item_elem in elem]'
+            else:
+                handler = f'lambda obj, elem: setattr(obj, "{target_attr}", ARRef.deserialize(elem))'
+        else:
+            # Use SerializationHelper.deserialize_by_tag for all other types
+            # This handles ARPrimitive subclasses (like Identifier) and complex types
+            # Also handles iref kind which deserializes as the specific type
+            value_code = f'SerializationHelper.deserialize_by_tag(elem, "{attr_type}")'
+            if is_list:
+                handler = f'lambda obj, elem: obj.{target_attr}.append({value_code})'
+            else:
+                handler = f'lambda obj, elem: setattr(obj, "{target_attr}", {value_code})'
+
+        dispatch_lines.append(f'        "{dispatch_tag}": {handler},')
+
+    dispatch_lines.append("    }")
+    return "\n".join(dispatch_lines) + "\n\n\n"
 
 
 def generate_class_code(
@@ -37,6 +283,7 @@ def generate_class_code(
     dependency_graph: Optional[Dict[str, Set[str]]] = None,
     force_type_checking_imports: Optional[Dict[str, Union[List[str], str]]] = None,
     builder_imports: str = "",
+    polymorphic_types: Optional[Dict[str, List[str]]] = None,
 ) -> str:
     """Generate Python class code from type definition.
 
@@ -49,6 +296,7 @@ def generate_class_code(
         dependency_graph: Complete dependency graph for circular import detection
         force_type_checking_imports: Dict mapping class names to types that should use TYPE_CHECKING
         builder_imports: Import statements needed for Builder class (added at top of file)
+        polymorphic_types: Dict mapping base types to lists of concrete implementations
 
     Returns:
         Generated Python code as string
@@ -57,6 +305,8 @@ def generate_class_code(
         dependency_graph = {}
     if force_type_checking_imports is None:
         force_type_checking_imports = {}
+    if polymorphic_types is None:
+        polymorphic_types = {}
     class_name = type_def["name"]
     is_splitable = type_def.get("splitable", False)
     split_file_name = type_def.get("split_file_name", "")
@@ -131,54 +381,19 @@ def generate_class_code(
 '''
     else:
         # For other classes, we need to check attribute types first to determine imports
-        # Collect attribute types for imports
+        # Collect attribute types for imports (with atpMixed flattening)
         attribute_types = {}
         has_xml_attribute = False
         if include_members and package_path in package_data:
-            class_info = package_data[package_path].get("classes", [])
-            for cls in class_info:
-                if cls["name"] == class_name and "attributes" in cls:
-                    for attr_name, attr_info in cls["attributes"].items():
-                        attr_type = attr_info["type"]
-                        multiplicity = attr_info["multiplicity"]
-                        is_ref = attr_info.get("is_ref", False)
-                        kind = attr_info.get("kind", "attribute")
-                        decorator_name = None  # Initialize decorator_name
-                        attribute_types[attr_name] = {
-                            "type": attr_type,
-                            "multiplicity": multiplicity,
-                            "is_ref": is_ref,
-                            "kind": kind,
-                        }
-                        # Parse decorator field if present
-                        if "decorator" in attr_info:
-                            decorator_spec = attr_info["decorator"]
-                            # Parse format: "decorator_name:param1,param2,..."
-                            if ":" in decorator_spec:
-                                decorator_name, params = decorator_spec.split(":", 1)
-                                attribute_types[attr_name]["decorator_name"] = decorator_name
-                                attribute_types[attr_name]["decorator_params"] = params
-                            else:
-                                decorator_name = decorator_spec
-                                attribute_types[attr_name]["decorator_name"] = decorator_spec
-                                attribute_types[attr_name]["decorator_params"] = None
-                        # Check if this attribute uses xml_attribute (via kind or decorator)
-                        if kind == "xml_attribute" or decorator_name == "xml_attribute":
-                            has_xml_attribute = True
-                        else:
-                            # Auto-detect YS→IES pattern and add xml_element_name decorator
-                            # Check if attribute name ends with "ies" and multiplicity is "*"
-                            if (
-                                attr_name.lower().endswith("ies")
-                                and attr_info.get("multiplicity") == "*"
-                            ):
-                                # Convert attribute name to XML tag
-                                snake_name = to_snake_case(attr_name)
-                                xml_tag = snake_name.upper().replace("_", "-")
-                                # Convert IES to YS (e.g., ENTITIES → ENTITYS)
-                                legacy_tag = f"{xml_tag[:-3]}YS"
-                                attribute_types[attr_name]["decorator_name"] = "xml_element_name"
-                                attribute_types[attr_name]["decorator_params"] = legacy_tag
+            attribute_types = _collect_attribute_types_with_flattening(
+                class_name, package_path, package_data
+            )
+            # Check if any attribute uses xml_attribute
+            for attr_info in attribute_types.values():
+                kind = attr_info.get("kind", "attribute")
+                decorator_name = attr_info.get("decorator_name")
+                if kind == "xml_attribute" or decorator_name == "xml_attribute":
+                    has_xml_attribute = True
                     break
 
         # Check if we need Any type
@@ -341,49 +556,12 @@ def generate_class_code(
             # Not a duplicate, add the full import line
             code += builder_import_line + "\n"
 
-    # Collect attribute types for all classes
+    # Collect attribute types for all classes (with atpMixed flattening)
     attribute_types = {}
     if include_members and package_path in package_data:
-        class_info = package_data[package_path].get("classes", [])
-        for cls in class_info:
-            if cls["name"] == class_name and "attributes" in cls:
-                for attr_name, attr_info in cls["attributes"].items():
-                    attr_type = attr_info["type"]
-                    multiplicity = attr_info["multiplicity"]
-                    is_ref = attr_info.get("is_ref", False)
-                    kind = attr_info.get("kind", "attribute")
-                    attribute_types[attr_name] = {
-                        "type": attr_type,
-                        "multiplicity": multiplicity,
-                        "is_ref": is_ref,
-                        "kind": kind,
-                    }
-                    # Parse decorator field if present
-                    if "decorator" in attr_info:
-                        decorator_spec = attr_info["decorator"]
-                        # Parse format: "decorator_name:param1,param2,..."
-                        if ":" in decorator_spec:
-                            decorator_name, params = decorator_spec.split(":", 1)
-                            attribute_types[attr_name]["decorator_name"] = decorator_name
-                            attribute_types[attr_name]["decorator_params"] = params
-                        else:
-                            attribute_types[attr_name]["decorator_name"] = decorator_spec
-                            attribute_types[attr_name]["decorator_params"] = None
-                    else:
-                        # Auto-detect YS→IES pattern and add xml_element_name decorator
-                        # Check if attribute name ends with "ies" and multiplicity is "*"
-                        if (
-                            attr_name.lower().endswith("ies")
-                            and attr_info.get("multiplicity") == "*"
-                        ):
-                            # Convert attribute name to XML tag
-                            snake_name = to_snake_case(attr_name)
-                            xml_tag = snake_name.upper().replace("_", "-")
-                            # Convert IES to YS (e.g., ENTITIES → ENTITYS)
-                            legacy_tag = f"{xml_tag[:-3]}YS"
-                            attribute_types[attr_name]["decorator_name"] = "xml_element_name"
-                            attribute_types[attr_name]["decorator_params"] = legacy_tag
-                break
+        attribute_types = _collect_attribute_types_with_flattening(
+            class_name, package_path, package_data
+        )
 
     # Add ARRef import if any attribute has is_ref=True
     if attribute_types and any(
@@ -419,6 +597,12 @@ def generate_class_code(
             elif not attr_type.startswith("any ("):
                 # Import class types (skip polymorphic "any (xxx)" types)
                 type_imports.add(attr_type)
+
+                # Check if this is a polymorphic type and add concrete implementations
+                # Note: We don't need to import concrete types since we use
+                # SerializationHelper.deserialize_by_tag() which handles class lookup
+                if polymorphic_types:
+                    pass  # Polymorphic handling is done at runtime via deserialize_by_tag
 
         # Add import statements for enum types
         if enum_imports:
@@ -653,6 +837,10 @@ class {class_name}(ABC):
 
 '''
 
+    # Add _XML_TAG constant for non-abstract classes
+    if not is_abstract:
+        code += _generate_xml_tag_constant(class_name)
+
     if is_splitable:
         code += f'''    is_splitable = True
     split_file_name = "{split_file_name}"
@@ -692,6 +880,10 @@ class {class_name}(ABC):
             else:
                 # Add class-level annotation
                 code += f"    {python_name}: {python_type}\n"
+
+    # Add _DESERIALIZE_DISPATCH table for classes with attributes
+    if attribute_types:
+        code += _generate_dispatch_table(attribute_types, package_data, polymorphic_types)
 
     code += f'''    def __init__(self) -> None:
         """Initialize {class_name}."""\n'''
@@ -966,7 +1158,7 @@ class {class_name}(ABC):
             class_name, attribute_types, parent_class, package_data
         )
         deserialize_code = _generate_deserialize_method_for_atp_variant(
-            class_name, attribute_types, parent_class, package_data
+            class_name, attribute_types, parent_class, package_data, polymorphic_types
         )
         code += serialize_code + deserialize_code
     elif type_def.get("atp_type") == "atpMixed":
@@ -976,7 +1168,7 @@ class {class_name}(ABC):
             class_name, attribute_types, parent_class, package_data
         )
         deserialize_code = _generate_deserialize_method_for_atp_mixed(
-            class_name, attribute_types, parent_class, package_data
+            class_name, attribute_types, parent_class, package_data, polymorphic_types
         )
         code += serialize_code + deserialize_code
     elif attribute_types and any(
@@ -990,7 +1182,7 @@ class {class_name}(ABC):
                 class_name, attribute_types, parent_class, package_data
             )
             deserialize_code = _generate_deserialize_method(
-                class_name, attribute_types, parent_class, package_data
+                class_name, attribute_types, parent_class, package_data, polymorphic_types
             )
             code += serialize_code + deserialize_code
         else:
@@ -1000,7 +1192,7 @@ class {class_name}(ABC):
                 class_name, attribute_types, parent_class, package_data
             )
             deserialize_code = _generate_deserialize_method(
-                class_name, attribute_types, parent_class, package_data
+                class_name, attribute_types, parent_class, package_data, polymorphic_types
             )
             code += serialize_code + deserialize_code
     else:
@@ -1010,7 +1202,7 @@ class {class_name}(ABC):
             class_name, attribute_types, parent_class, package_data
         )
         deserialize_code = _generate_deserialize_method(
-            class_name, attribute_types, parent_class, package_data
+            class_name, attribute_types, parent_class, package_data, polymorphic_types
         )
         code += serialize_code + deserialize_code
 
@@ -1022,6 +1214,7 @@ def _generate_deserialize_method(
     attribute_types: Dict[str, Dict[str, Any]],
     parent_class: Optional[str],
     package_data: Dict[str, Dict[str, Any]],
+    polymorphic_types: Optional[Dict[str, List[str]]] = None,
 ) -> str:
     """Generate optimized deserialize() method for a class.
 
@@ -1030,10 +1223,14 @@ def _generate_deserialize_method(
         attribute_types: Dictionary of attribute information
         parent_class: Name of parent class (if any)
         package_data: Package data dictionary
+        polymorphic_types: Dict mapping base types to lists of concrete implementations
 
     Returns:
         Generated deserialize() method code
     """
+    if polymorphic_types is None:
+        polymorphic_types = {}
+
     code = f'''    @classmethod
     def deserialize(cls, element: ET.Element) -> "{class_name}":
         """Deserialize XML element to {class_name} object.
@@ -1070,462 +1267,310 @@ def _generate_deserialize_method(
 
 """
 
-    # Generate code to parse each attribute
+    # Handle xml_attribute and lang_abbr attributes (read from element.attrib)
     if attribute_types:
         for attr_name, attr_info in attribute_types.items():
-            attr_type = attr_info["type"]
-            multiplicity = attr_info["multiplicity"]
-            is_ref = attr_info.get("is_ref", False)
             kind = attr_info.get("kind", "attribute")
-
-            # Debug output for ReferenceBase package attribute
-            if class_name == "ReferenceBase" and attr_name == "package":
-                print(
-                    f"DEBUG [deserialize]: class={class_name}, attr={attr_name}, is_ref={is_ref}, kind={kind}, is_ref and kind == 'reference'={is_ref and kind == 'reference'}"
-                )
-
-            # Get Python identifier
-            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
-            # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
-            snake_name = to_snake_case(attr_name)
-            xml_tag = snake_name.upper().replace("_", "-")
-
-            # For list attributes (multiplicity "*" or "0..*"), pluralize the XML tag
-            # This creates container tags like SUB-ELEMENTS for subElement JSON attribute
-            # For reference attributes, the container tag will be created as SINGULAR-REFS below
-            if multiplicity in ("*", "0..*"):
-                # Pluralize the xml_tag for container elements
-                from ._common import to_plural as pluralize_snake
-                plural_snake = pluralize_snake(snake_name)
-                xml_tag = plural_snake.upper().replace("_", "-")
-
-            # Add -TREF or -REF suffix for reference attributes with multiplicity != "*"
-            # Container elements (multiplicity "*") should not have -REF suffix
-            # Note: iref kind is handled separately below and doesn't get -REF suffix
-            if is_ref and multiplicity != "*" and kind != "iref":
-                # Use the kind field from JSON to determine the suffix
-                # "tref" -> -TREF, "ref" -> -REF
-                if kind == "tref":
-                    xml_tag = f"{xml_tag}-TREF"
-                else:
-                    xml_tag = f"{xml_tag}-REF"
-
-            # Convert "any (xxx)" types to "Any" for generation
-            effective_type = attr_type
-            if attr_type.startswith("any ("):
-                effective_type = "Any"
-
-            # Get decorator_name if present
             decorator_name = attr_info.get("decorator_name")
 
-            # Handle xml_attribute - parse from XML attributes, not child elements
             if kind == "xml_attribute" or decorator_name == "xml_attribute":
-                # Get decorator params if present for custom XML attribute name
-                decorator_params = attr_info.get("decorator_params", None)
-                if decorator_params:
-                    xml_attr_tag = decorator_params  # Use custom attribute name from decorator
-                else:
-                    xml_attr_tag = xml_tag  # Use auto-converted name
-                attribute_value = f'element.attrib["{xml_attr_tag}"]'
+                python_name = get_python_identifier_with_ref(attr_name, attr_info.get("is_ref", False), attr_info.get("multiplicity", "1"), kind)
+                decorator_params = attr_info.get("decorator_params")
+                xml_attr_name = decorator_params if decorator_params else attr_name.upper()
                 code += f'''        # Parse {python_name} from XML attribute
-        if "{xml_attr_tag}" in element.attrib:
-            {_generate_value_extraction_code_for_attribute(effective_type, attribute_value, package_data, python_name, is_ref)}
-            obj.{python_name} = {python_name}_value
+        if "{xml_attr_name}" in element.attrib:
+            obj.{python_name} = element.attrib["{xml_attr_name}"]
 
 '''
             elif decorator_name == "lang_abbr":
-                # Handle lang_abbr - parse from custom XML attribute name
+                python_name = get_python_identifier_with_ref(attr_name, attr_info.get("is_ref", False), attr_info.get("multiplicity", "1"), kind)
                 xml_attr_name = attr_info.get("decorator_params", attr_name.upper())
-                attribute_value = f'element.attrib["{xml_attr_name}"]'
                 code += f'''        # Parse {python_name} from language abbreviation XML attribute
         if "{xml_attr_name}" in element.attrib:
-            {_generate_value_extraction_code_for_attribute(effective_type, attribute_value, package_data, python_name, is_ref)}
-            obj.{python_name} = {python_name}_value
+            obj.{python_name} = element.attrib["{xml_attr_name}"]
 
 '''
-            elif kind == "iref":
-                # Handle iref kind - instance reference with special wrapper
-                # The outer wrapper is attribute name + -IREF
-                # Determine if this should be flattened based on decorator parameter
-                decorator_name = attr_info.get("decorator_name")
+
+    # Generate if-elif-else chain for all handlers
+    all_branches = []
+
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
+            kind = attr_info.get("kind", "attribute")
+            decorator_name = attr_info.get("decorator_name")
+
+            # Skip xml_attribute, lang_abbr, and lang_prefix
+            # lang_prefix attributes need special handling with the tag from decorator_params
+            if kind == "xml_attribute" or decorator_name == "xml_attribute":
+                continue
+            if decorator_name == "lang_abbr":
+                continue
+            if decorator_name == "lang_prefix":
+                continue
+
+            multiplicity = attr_info.get("multiplicity", "1")
+            is_ref = attr_info.get("is_ref", False)
+            snake_name = to_snake_case(attr_name)
+            xml_tag = snake_name.upper().replace("_", "-")
+
+            # Check for xml_element_name decorator with params
+            if decorator_name == "xml_element_name":
+                # Use decorator_params value for XML tag
                 decorator_params = attr_info.get("decorator_params")
-                
-                # Determine if this should be flattened based on decorator parameter
-                should_flatten = False
-                list_type = "single"  # Default: single-wrapper behavior
-                if decorator_name == "instance_ref" and decorator_params:
-                    # Parse decorator params (format: "flatten=True,list_type=multi" or "flatten=False")
-                    # Parameters are comma-separated
-                    param_list = [p.strip() for p in decorator_params.split(",")]
-                    for param in param_list:
-                        if param == "flatten=True":
-                            should_flatten = True
-                        elif param == "flatten=False":
-                            should_flatten = False
-                        elif param == "list_type=multi":
-                            list_type = "multi"
-                        elif param == "list_type=single":
-                            list_type = "single"
-
-                # Determine iref_wrapper_tag based on list_type
-                # For multi-wrapper lists, use singular form for wrapper tag (e.g., COMPONENT-IREF, not COMPONENTS-IREF)
-                if multiplicity in ("*", "1..*") and list_type == "multi":
-                    singular_tag = xml_tag[:-1] if xml_tag.endswith("S") else xml_tag
-                    iref_wrapper_tag = f"{singular_tag}-IREF"
+                if decorator_params:
+                    xml_tag = decorator_params
                 else:
-                    iref_wrapper_tag = f"{xml_tag}-IREF"
-
-                if multiplicity in ("*", "1..*"):
-                                    # List type
-                                    if list_type == "multi":
-                                        # Multi-wrapper list: deserialize from <TAG>-IREFS container with multiple <TAG>-IREF children
-                                        # Use singular form for container tag (e.g., COMPONENT-IREFS, not COMPONENTS-IREFS)
-                                        singular_tag = xml_tag[:-1] if xml_tag.endswith("S") else xml_tag
-                                        irefs_container_tag = f"{singular_tag}-IREFS"
-                                        code += f'''        # Parse {python_name} (multi-wrapper list from "{irefs_container_tag}")
-        obj.{python_name} = []
-        irefs_container = SerializationHelper.find_child_element(element, "{irefs_container_tag}")
-        if irefs_container is not None:
-            for iref_wrapper in irefs_container:
-                if SerializationHelper.strip_namespace(iref_wrapper.tag) == "{iref_wrapper_tag}":
-                    # Deserialize each iref wrapper as the type (flattened structure)
-                    child_value = SerializationHelper.deserialize_by_tag(iref_wrapper, "{effective_type}")
-                    if child_value is not None:
-                        obj.{python_name}.append(child_value)
-
-'''
-                                    else:
-                                        # Single-wrapper list: deserialize from single <TAG>-IREF wrapper
-                                        if should_flatten:
-                                            code += f'''        # Parse {python_name} (list from wrapper "{iref_wrapper_tag}")
-        wrapper = SerializationHelper.find_child_element(element, "{iref_wrapper_tag}")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            {python_name}_value = SerializationHelper.deserialize_by_tag(wrapper, "{effective_type}")
-            obj.{python_name} = {python_name}_value
-
-'''
-                                        else:
-                                            code += f'''        # Parse {python_name} (list from wrapper "{iref_wrapper_tag}")
-        obj.{python_name} = []
-        wrapper = SerializationHelper.find_child_element(element, "{iref_wrapper_tag}")
-        if wrapper is not None:
-            # Get all child elements (each wrapped in its own element)
-            for inner_elem in wrapper:
-                {_generate_value_extraction_code(effective_type, "inner_elem", package_data, python_name, is_ref, kind)}
-                if {python_name}_value is not None:
-                    obj.{python_name}.append({python_name}_value)
-
-'''
+                    xml_tag = snake_name.upper().replace("_", "-")
+            # Check for ref_conditional decorator with params
+            elif decorator_name == "ref_conditional":
+                # Use decorator_params value for XML container tag (e.g., "FIBEX-ELEMENTS")
+                decorator_params = attr_info.get("decorator_params")
+                if decorator_params:
+                    xml_tag = decorator_params
                 else:
-                    # Single item type
-                    if should_flatten:
-                        # Flattened type: deserialize wrapper element directly as the type
-                        code += f'''        # Parse {python_name} (instance reference from wrapper "{iref_wrapper_tag}")
-        wrapper = SerializationHelper.find_child_element(element, "{iref_wrapper_tag}")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            {python_name}_value = SerializationHelper.deserialize_by_tag(wrapper, "{effective_type}")
-            obj.{python_name} = {python_name}_value
+                    xml_tag = snake_name.upper().replace("_", "-")
+            # For list attributes, determine the correct container tag
+            elif multiplicity in ("*", "0..*"):
+                if is_ref and kind != "iref":
+                    # For reference lists, container is SINGULAR-NAME + "-REFS" (e.g., USE-INSTEAD-REFS)
+                    singular_xml_tag = snake_name.upper().replace("_", "-")
+                    xml_tag = f"{singular_xml_tag}-REFS"
+                elif kind == "iref":
+                    # For instance reference lists, container is SINGULAR-NAME + "-IREFS" (e.g., COMPONENT-IREFS)
+                    singular_xml_tag = snake_name.upper().replace("_", "-")
+                    xml_tag = f"{singular_xml_tag}-IREFS"
+                else:
+                    # For non-reference lists, pluralize the tag
+                    from ._common import to_plural as pluralize_snake
+                    plural_snake = pluralize_snake(snake_name)
+                    xml_tag = plural_snake.upper().replace("_", "-")
 
-'''
-                    else:
-                        # Non-flattened type: deserialize from child element
-                        code += f'''        # Parse {python_name} (instance reference from wrapper "{iref_wrapper_tag}")
-        wrapper = SerializationHelper.find_child_element(element, "{iref_wrapper_tag}")
-        if wrapper is not None:
-            # Get the first child element (the actual reference)
-            children = list(wrapper)
-            if children:
-                inner_elem = children[0]
-                {_generate_value_extraction_code(effective_type, "inner_elem", package_data, python_name, is_ref, kind)}
-                obj.{python_name} = {python_name}_value
+            # Add -REF suffix for non-list reference attributes
+            if is_ref and multiplicity not in ("*", "0..*", "1..*") and kind != "iref":
+                xml_tag = f"{xml_tag}-TREF" if kind == "tref" else f"{xml_tag}-REF"
 
-'''
-            elif multiplicity in ("*", "1..*"):
-                # List type
-                # Initialize container_tag and child_tag
-                container_tag = None
-                child_tag = None
-                inner_tags = []
-                decorator_name = attr_info.get("decorator_name")
-                
-                # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
-                # If so, it's a container element and we need to create a wrapper
-                if xml_tag.endswith("S"):
-                    if decorator_name == "lang_prefix":
-                        # Treat as non-container list - each item uses its own tag
-                        container_tag = None
-                        child_tag = attr_info.get("decorator_params", xml_tag)
-                        inner_tags = []
-                    elif decorator_name == "ref_conditional":
-                        # Use ref_conditional pattern: container stays as-is, each item wrapped in -REF-CONDITIONAL
-                        container_tag = attr_info.get("decorator_params", xml_tag)
-                        # Use the type's XML tag for wrapper/reference generation (handles abbreviated container tags)
-                        type_xml_tag = NameConverter.to_xml_tag(attr_type)
-                        conditional_tag = f"{type_xml_tag}-REF-CONDITIONAL"
-                        ref_tag = f"{type_xml_tag}-REF"
-                    elif decorator_name == "xml_element_name":
-                        # Parse decorator params: can be single value or multi-level path separated by '/'
-                        # Examples: "V" (direct child, no container) or "PROVIDED-ENTRYS" (container)
-                        #           or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
-                        decorator_params = attr_info.get("decorator_params", xml_tag)
-                        if isinstance(decorator_params, str) and "/" in decorator_params:
-                            # Multi-level nesting: split on '/' to get all levels
-                            tag_levels = [level.strip() for level in decorator_params.split("/")]
-                            container_tag = tag_levels[0]  # Outermost container
-                            child_tag = tag_levels[-1]  # Innermost tag for individual items
-                            inner_tags = tag_levels[1:-1]  # Intermediate nesting levels (if any)
-                        else:
-                            # Single parameter: can be container tag OR direct child tag (no container)
-                            # Detection logic:
-                            # - Known direct child tags (short singular forms): ITEM, ENTRY, V, NAME, TYPE, VALUE, REF
-                            # - If ends with "ES" (e.g., BOXES, ELEMENTS): container tag
-                            # - If ends with "S" but is short (<=4 chars): likely direct child
-                            # - Otherwise: container tag (most common case for lists)
+            # Add -IREF suffix for non-list instance_ref attributes (iref kind)
+            if kind == "iref" and multiplicity not in ("*", "0..*", "1..*"):
+                xml_tag = f"{xml_tag}-IREF"
 
-                            single_value = decorator_params if isinstance(decorator_params, str) else xml_tag
+            # For tag comparison in deserialize, extract container tag from multi-level paths
+            # e.g., "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA-REF" -> "CAN-ENTER-EXCLUSIVE-AREA-REFS"
+            compare_tag = xml_tag.split("/")[0] if isinstance(xml_tag, str) and "/" in xml_tag else xml_tag
 
-                            # Known direct child tags (from AUTOSAR schema)
-                            known_direct_children = {"ITEM", "ENTRY", "V", "VALUE", "NAME", "TYPE", "REF"}
+            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
+            target_attr = f"_{python_name}" if decorator_name in (
+                "xml_attribute", "lang_prefix", "lang_abbr", "xml_element_name",
+                "ref_conditional", "instance_ref", "polymorphic"
+            ) else python_name
 
-                            if single_value.upper() in known_direct_children:
-                                # Direct child tag, no container
-                                container_tag = None
-                                child_tag = single_value
-                            elif single_value.endswith("ES"):
-                                # Ends with ES (e.g., BOXES, ELEMENTS) -> container tag
-                                container_tag = single_value
-                                child_tag = None
-                            elif single_value.endswith("S"):
-                                # Ends with S (e.g., ITEMS, ENTRYS, REFS)
-                                # Check if it's a known direct child tag that happens to end with S
-                                if len(single_value) <= 4 and single_value.upper() in known_direct_children:
-                                    # Short word ending with S, likely a direct child
-                                    container_tag = None
-                                    child_tag = single_value
-                                else:
-                                    # Longer word ending with S, likely a container
-                                    container_tag = single_value
-                                    child_tag = None
-                            else:
-                                # Doesn't end with S -> direct child tag
-                                container_tag = None
-                                child_tag = single_value
-                    else:
-                        # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
-                        # For reference lists (is_ref=True), the container tag should be singular + -REFS
-                        # For non-reference lists, use AUTOSAR simple plural rule: attr_name (singular) + "S"
-                        # This ensures: RUNNABLE → RUNNABLES, PER-INSTANCE-MEMORY → PER-INSTANCE-MEMORYS
-                        container_tag = xml_tag
-                        child_tag = None
-                        if is_ref:
-                            # For reference lists, container is SINGULAR-NAME + "-REF" + "S" (e.g., POSSIBLE-ERROR-REFS)
-                            # Convert attr_name to AUTOSAR XML format (UPPER-CASE-WITH-HYPHENS)
-                            singular_xml_tag = NameConverter.to_xml_tag(attr_name)
-                            container_tag = f"{singular_xml_tag}-REFS"
-                        else:
-                            # For non-reference lists, container is PLURAL-NAME
-                            # Use python_name (already pluralized) to handle irregular plurals like entity → entities
-                            # e.g., entity → entities → ENTITIES, perInstanceMemory → perInstanceMemorys → PER-INSTANCE-MEMORYS
-                            plural_xml_tag = NameConverter.to_xml_tag(python_name)
-                            container_tag = plural_xml_tag
+            attr_type = attr_info["type"]
+            is_list = multiplicity in ("*", "0..*", "1..*")
 
-                    # Handle no container case (direct children)
-                    if container_tag is None:
-                        code += f'''        # Parse {python_name} (list of direct "{child_tag}" children, no container)
-        obj.{python_name} = []
-        for child in element:
-            child_element_tag = SerializationHelper.strip_namespace(child.tag)
-            if child_element_tag == "{child_tag}":'''
-                    else:
-                        code += f'''        # Parse {python_name} (list from container "{container_tag}")
-        obj.{python_name} = []
-        container = SerializationHelper.find_child_element(element, "{container_tag}")'''
-
-                        # Add navigation through nested levels if inner_tags is not empty
-                        if inner_tags:
-                            code += """        # Navigate through nested container levels"""
-                            for inner_tag in inner_tags:
-                                code += f'''
-        if container is not None:
-            container = SerializationHelper.find_child_element(container, "{inner_tag}")'''
-
-                        code += """
-        if container is not None:
-            for child in container:
-"""
-
-                    # For reference lists, check if child is a reference element and use ARRef.deserialize()
-                    # For primitive/enum lists, extract text directly
-                    # For non-reference class lists, deserialize each child element dynamically based on its tag
-                    if is_ref:
-                        # Check if ref_conditional decorator is present
+            # Check if this is a polymorphic type
+            concrete_types = polymorphic_types.get(attr_type, [])
+            if concrete_types:
+                # Special handling for reference types (TYPE-TREF and TYPE-REF patterns)
+                # These use DEST attribute to indicate type, not child elements
+                if is_ref and kind in ("tref", "ref"):
+                    # For TYPE-TREF and TYPE-REF pattern, the DEST attribute indicates the concrete type
+                    # Just use ARRef.deserialize() - the DEST attribute is handled by ARRef
+                    if is_list:
+                        # For lists, the xml_tag is the container (e.g., USE-INSTEAD-REFS)
+                        # and we need to iterate through children (e.g., USE-INSTEAD-REF)
                         if decorator_name == "ref_conditional":
-                            # Unwrap -REF-CONDITIONAL to extract the inner -REF
-                            code += f'''                # Unwrap -REF-CONDITIONAL to extract the inner -REF
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag == "{conditional_tag}":
-                    ref_child = SerializationHelper.find_child_element(child, "{ref_tag}")
-                    if ref_child is not None:
-                        child_value = ARRef.deserialize(ref_child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-'''
-                        # Use the child_tag from decorator if specified to match specific child tag
-                        elif child_tag:
-                            code += f'''                # Check if child matches expected reference tag "{child_tag}"
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag == "{child_tag}":
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-'''
+                            # ref_conditional pattern: each child is -REF-CONDITIONAL wrapper
+                            handler_code = f'''# Unwrap ref_conditional pattern
+                for item_elem in child:
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj.{target_attr}.append(ARRef.deserialize(ref_elem))'''
                         else:
-                            code += """                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-"""
-                    elif is_primitive_type(attr_type, package_data):
-                        # Simple primitive type - extract text directly
-                        code += f"""                # Extract primitive value ({attr_type}) as text
-                child_value = child.text
-"""
-                    elif is_enum_type(attr_type, package_data):
-                        # Enum type - use deserialize method for proper conversion
-                        code += f"""                # Extract enum value ({attr_type})
-                child_value = {attr_type}.deserialize(child)
-"""
+                            handler_code = f'for item_elem in child:\n                    obj.{target_attr}.append(ARRef.deserialize(item_elem))'
                     else:
-                        # Complex object type - deserialize dynamically
-                        code += """                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-"""
-
-                    code += f"""                if child_value is not None:
-                    obj.{python_name}.append(child_value)
-
-"""
+                        handler_code = f'setattr(obj, "{target_attr}", ARRef.deserialize(child))'
+                    all_branches.append((compare_tag, handler_code, False))
                 else:
-                    # Non-container list type (multiple instances of the same element)
-                    # Check if this is a lang_prefix attribute
-                    if decorator_name == "lang_prefix":
-                        # lang_prefix attributes use the tag from decorator_params (e.g., L-1, L-10)
-                        lang_prefix_tag = attr_info.get("decorator_params", "")
-                        code += f'''        # Parse {python_name} (list with lang_prefix "{lang_prefix_tag}")
-        obj.{python_name} = []
-        for child in SerializationHelper.find_all_child_elements(element, "{lang_prefix_tag}"):
-            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
-            obj.{python_name}.append({python_name}_value)
+                    # Generate if-elif-else chain for polymorphic types
+                    # For polymorphic types, the XML tag may be a multi-level path (e.g., "ENTITYS/BSW-SCHEDULABLE-ENTITY")
+                    # The first level is the wrapper container, inside are the concrete type elements
+                    # Use SerializationHelper.deserialize_by_tag to avoid circular imports
 
-'''
+                    # Extract container tag (first level) from multi-level path
+                    if isinstance(xml_tag, str) and "/" in xml_tag:
+                        container_tag = xml_tag.split("/")[0]
                     else:
-                        # Regular non-container list
-                        code += f'''        # Parse {python_name} (list)
-        obj.{python_name} = []
-        for child in SerializationHelper.find_all_child_elements(element, "{xml_tag}"):
-            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
-            obj.{python_name}.append({python_name}_value)
+                        container_tag = xml_tag
 
-'''
+                    branch_lines = [f'        if tag == "{container_tag}":']
+                    indent = "            "
+
+                    if is_list:
+                        # For polymorphic LISTS, iterate through ALL child elements
+                        # Each child may be a different concrete type
+                        if decorator_name == "ref_conditional" and is_ref and kind != "iref":
+                            # ref_conditional pattern with references: each child is -REF-CONDITIONAL wrapper
+                            # Unwrap and deserialize as ARRef (concrete type is in DEST attribute)
+                            branch_lines.append(f'{indent}# Unwrap ref_conditional pattern and deserialize as ARRef')
+                            branch_lines.append(f'{indent}for item_elem in child:')
+                            branch_lines.append(f'{indent}    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF')
+                            branch_lines.append(f'{indent}    if len(item_elem) > 0:')
+                            branch_lines.append(f'{indent}        ref_elem = item_elem[0]')
+                            branch_lines.append(f'{indent}        obj.{target_attr}.append(ARRef.deserialize(ref_elem))')
+                        else:
+                            branch_lines.append(f'{indent}# Iterate through all child elements and deserialize each based on its concrete type')
+                            branch_lines.append(f'{indent}for item_elem in child:')
+                            branch_lines.append(f'{indent}    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{{") else item_elem.tag')
+
+                            for i, concrete_type in enumerate(concrete_types):
+                                xml_concrete_tag = NameConverter.to_xml_tag(concrete_type)
+                                if_str = "if" if i == 0 else "elif"
+                                deserializer = f'SerializationHelper.deserialize_by_tag(item_elem, "{concrete_type}")'
+                                branch_lines.append(f'{indent}    {if_str} concrete_tag == "{xml_concrete_tag}":')
+                                branch_lines.append(f'{indent}        obj.{target_attr}.append({deserializer})')
+                    else:
+                        # For polymorphic SINGLE values, only check the first child element
+                        branch_lines.append(f'{indent}# Check first child element for concrete type')
+                        branch_lines.append(f'{indent}if len(child) > 0:')
+                        branch_lines.append(f'{indent}    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{{") else child[0].tag')
+
+                        for i, concrete_type in enumerate(concrete_types):
+                            xml_concrete_tag = NameConverter.to_xml_tag(concrete_type)
+                            if_str = "if" if i == 0 else "elif"
+                            deserializer = f'SerializationHelper.deserialize_by_tag(child[0], "{concrete_type}")'
+                            branch_lines.append(f'{indent}    {if_str} concrete_tag == "{xml_concrete_tag}":')
+                            branch_lines.append(f'{indent}        setattr(obj, "{target_attr}", {deserializer})')
+
+                    all_branches.append((container_tag, "\n".join(branch_lines), True))  # True = is polymorphic
             else:
-                # Single value type
-                # Check if this attribute has the polymorphic decorator
-                if decorator_name == "polymorphic":
-                    # Parse the polymorphic mapping from decorator_params
-                    # Format: "WRAPPER-TAG=BaseClassName,WRAPPER2-TAG=BaseClassName2"
-                    params = attr_info.get("decorator_params", "")
-                    # Use the first mapping (wrapper tag) for finding the element
-                    wrapper_tag = None
-                    base_class = None
-                    if params:
-                        for pair in params.split(","):
-                            if "=" in pair:
-                                wrapper_tag, base_class = pair.split("=", 1)
-                                wrapper_tag = wrapper_tag.strip()
-                                base_class = base_class.strip()
-                                break  # Use first mapping
-                    # If no wrapper_tag specified, use the auto-generated xml_tag
-                    if not wrapper_tag:
-                        wrapper_tag = xml_tag
-                    # Get base class name from mapping or use attr_type as fallback
-                    if not base_class:
-                        base_class = effective_type
+                # Generate simple handler
+                if _is_basic_python_type(attr_type):
+                    value_code = "child.text"
+                elif is_enum_type(attr_type, package_data):
+                    value_code = f"{attr_type}.deserialize(child)"
+                elif is_ref and kind != "iref":
+                    # For iref kind, deserialize as the specific type, not as ARRef
+                    value_code = "ARRef.deserialize(child)"
+                else:
+                    value_code = f'SerializationHelper.deserialize_by_tag(child, "{attr_type}")'
 
-                    code += f'''        # Parse {python_name} (polymorphic wrapper "{wrapper_tag}")
-        wrapper = SerializationHelper.find_child_element(element, "{wrapper_tag}")
-        if wrapper is not None:
-            {python_name}_value = SerializationHelper.deserialize_polymorphic(wrapper, "{base_class}")
-            obj.{python_name} = {python_name}_value
+                if is_list:
+                    # Check if this is a "direct child" tag (no wrapper container)
+                    # Same logic as serialize: known direct children like ITEM, ENTRY, V, etc.
+                    # or short singular tags that don't end with "S"
+                    # For multi-level paths, always use wrapper container logic
+                    is_multi_level = isinstance(xml_tag, str) and "/" in xml_tag
+                    check_tag = compare_tag if is_multi_level else xml_tag
+                    known_direct_children = {"ITEM", "ENTRY", "V", "VALUE", "NAME", "TYPE", "REF"}
+                    is_direct_child = (
+                        not is_multi_level and decorator_name == "xml_element_name" and decorator_name != "ref_conditional" and (
+                            check_tag in known_direct_children or
+                            (len(check_tag) <= 4 and check_tag.endswith("S")) or
+                            not check_tag.endswith("S")
+                        )
+                    )
+                    if is_direct_child:
+                        # Direct child tag (e.g., ITEM) - deserialize the element directly
+                        if is_ref and kind != "iref":
+                            handler_code = f'obj.{target_attr}.append(ARRef.deserialize(child))'
+                        else:
+                            handler_code = f'obj.{target_attr}.append(SerializationHelper.deserialize_by_tag(child, "{attr_type}"))'
+                    else:
+                        # Wrapper container (e.g., DATA-CONSTR-RULES) - iterate through children
+                        if is_ref and kind != "iref":
+                            if decorator_name == "ref_conditional":
+                                # ref_conditional pattern: each child is -REF-CONDITIONAL wrapper
+                                # Need to unwrap to get the actual -REF element inside
+                                handler_code = f'''# Unwrap ref_conditional pattern
+                for item_elem in child:
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj.{target_attr}.append(ARRef.deserialize(ref_elem))'''
+                            else:
+                                # For reference lists, each child is a -REF element that should be deserialized as ARRef
+                                handler_code = f'# Iterate through wrapper children\n                for item_elem in child:\n                    obj.{target_attr}.append(ARRef.deserialize(item_elem))'
+                        else:
+                            handler_code = f'# Iterate through wrapper children\n                for item_elem in child:\n                    obj.{target_attr}.append(SerializationHelper.deserialize_by_tag(item_elem, "{attr_type}"))'
+                else:
+                    handler_code = f'setattr(obj, "{target_attr}", {value_code})'
 
+                all_branches.append((compare_tag, handler_code, False))  # False = not polymorphic
+
+    # Generate the dispatch code
+    code += """        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+"""
+
+    # Add all branches with proper if/elif (indented to be inside the for loop)
+    for i, (branch_xml_tag, branch_code, is_polymorphic) in enumerate(all_branches):
+        if is_polymorphic:
+            # Polymorphic branch already has its own if statement structure
+            # Need to change first 'if' to 'elif' if not first branch
+            # Also need to add extra indentation since we're inside the for loop
+            if i > 0:
+                # Replace first 'if' with 'elif' and add indentation
+                branch_code = branch_code.replace('        if tag', '            elif tag', 1)
+                branch_code = branch_code.replace('\n            ', '\n                ')
+            else:
+                branch_code = branch_code.replace('        if tag', '            if tag', 1)
+                branch_code = branch_code.replace('\n            ', '\n                ')
+            code += f"{branch_code}\n"
+        else:
+            # Simple handler - use if for first, elif for rest
+            # Add extra indentation since we're inside the for loop
+            if i == 0:
+                code += f"""            if tag == "{branch_xml_tag}":
+                {branch_code}
+"""
+            else:
+                code += f"""            elif tag == "{branch_xml_tag}":
+                {branch_code}
+"""
+
+    # Add lang_prefix attribute handling after the main if-elif-else chain
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
+            decorator_name = attr_info.get("decorator_name")
+            if decorator_name == "lang_prefix":
+                lang_prefix_tag = attr_info.get("decorator_params", "")
+                multiplicity = attr_info.get("multiplicity", "1")
+                is_list = multiplicity in ("*", "0..*", "1..*")
+                python_name = get_python_identifier_with_ref(
+                    attr_name,
+                    attr_info.get("is_ref", False),
+                    multiplicity,
+                    decorator_name
+                )
+                target_attr = f"_{python_name}"
+                attr_type = attr_info["type"]
+
+                if is_list:
+                    # For list lang_prefix attributes, iterate through all matching child elements
+                    code += f'''
+        # Parse {python_name} (list with lang_prefix "{lang_prefix_tag}")
+        for child in SerializationHelper.find_all_child_elements(element, "{lang_prefix_tag}"):
+            {python_name}_item = SerializationHelper.deserialize_by_tag(child, "{attr_type}")
+            obj.{target_attr}.append({python_name}_item)
 '''
                 else:
-                    # Check if this attribute uses atp_mixed pattern
-                    # atp_mixed types parse children directly without looking for wrapper element
-                    # Check if the TYPE of this attribute has atp_type == "atpMixed" (not the attribute itself)
-                    is_atp_mixed = False
-                    for pkg_path, pkg_data in package_data.items():
-                        if "classes" in pkg_data:
-                            for cls_def in pkg_data["classes"]:
-                                # Compare case-insensitively (effective_type may be lowercase, class name is PascalCase)
-                                if cls_def["name"].lower() == effective_type.lower():
-                                    if cls_def.get("atp_type") == "atpMixed":
-                                        is_atp_mixed = True
-                                    break
-                        if is_atp_mixed:
-                            break
-
-                    if is_atp_mixed:
-                        # For atp_mixed types, check if element contains expected children
-                        # Get the child tags from the atp_mixed content type definition
-                        child_tags_to_check = []
-                        for pkg_path, pkg_data in package_data.items():
-                            if "classes" in pkg_data:
-                                for cls_def in pkg_data["classes"]:
-                                    if cls_def["name"].lower() == effective_type.lower():
-                                        if "attributes" in cls_def:
-                                            for attr_name, attr_data in cls_def["attributes"].items():
-                                                xml_tag = NameConverter.to_xml_tag(attr_name)
-                                                child_tags_to_check.append(xml_tag)
-                                        break
-                                if child_tags_to_check:
-                                    break
-
-                        code += f'''        # Parse {python_name} (atp_mixed - children appear directly)
-        # Check if element contains expected children for {effective_type}
-        has_mixed_children = False
-        child_tags_to_check = {child_tags_to_check}
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            {python_name}_value = SerializationHelper.deserialize_by_tag(element, "{effective_type}")
-            obj.{python_name} = {python_name}_value
-
-'''
-                    else:
-                        code += f'''        # Parse {python_name}
-        child = SerializationHelper.find_child_element(element, "{xml_tag}")
+                    # For single lang_prefix attribute, find the first matching child element
+                    code += f'''
+        # Parse {python_name} (lang_prefix "{lang_prefix_tag}")
+        child = SerializationHelper.find_child_element(element, "{lang_prefix_tag}")
         if child is not None:
-            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
-            obj.{python_name} = {python_name}_value
-
+            obj.{target_attr} = SerializationHelper.deserialize_by_tag(child, "{attr_type}")
 '''
 
-    code += """        return obj
+    code += """
+        return obj
 
 """
     return code
+
+
 
 
 def _generate_value_extraction_code(
@@ -2089,7 +2134,7 @@ def _collect_all_attributes(
         package_path: Path to the package (not used, searches all packages)
 
     Returns:
-        List of all attributes (child first, then parents)
+        List of all attributes (child first, then parents) with atpMixed flattening applied
     """
     all_attributes = []
 
@@ -2116,10 +2161,12 @@ def _collect_all_attributes(
         if class_data:
             break
 
-    # Add current class attributes
+    # Add current class attributes (with atpMixed flattening)
     if class_data and "attributes" in class_data:
         attrs = extract_attribute_metadata(class_name, class_data["attributes"])
-        all_attributes.extend(attrs)
+        # Apply atpMixed flattening to current class attributes
+        flattened_attrs = flatten_atp_mixed_attributes(attrs, package_data)
+        all_attributes.extend(flattened_attrs)
 
     return all_attributes
 
@@ -2135,7 +2182,7 @@ def _collect_current_class_attributes(
         package_data: Package data containing class definitions
 
     Returns:
-        List of current class's own attributes
+        List of current class's own attributes with atpMixed flattening applied
     """
     # Search for current class in all packages
     class_data = None
@@ -2148,9 +2195,11 @@ def _collect_current_class_attributes(
         if class_data:
             break
 
-    # Add current class attributes only
+    # Add current class attributes only (with atpMixed flattening)
     if class_data and "attributes" in class_data:
-        return extract_attribute_metadata(class_name, class_data["attributes"])
+        attrs = extract_attribute_metadata(class_name, class_data["attributes"])
+        # Apply atpMixed flattening
+        return flatten_atp_mixed_attributes(attrs, package_data)
 
     return []
 
@@ -2809,9 +2858,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
-from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel2.serialization.serialization_helper import SerializationHelper
 
-class ARPrimitive(ARObject):
+class ARPrimitive:
     """Base class for all AUTOSAR primitive types.
 
     All primitive types (String, Integer, Float, etc.) inherit from this class.
@@ -2821,13 +2870,21 @@ class ARPrimitive(ARObject):
     python_type: type = str
     """The underlying Python type for this primitive."""
 
-    def __init__(self) -> None:
-        """Initialize ARPrimitive."""
-        super().__init__()
-        self.value: Optional[Any] = None
+    def __init__(self, value: Optional[Any] = None, _original_text: Optional[str] = None) -> None:
+        """Initialize ARPrimitive.
+
+        Args:
+            value: The primitive value
+            _original_text: Original XML text representation (for preserving format)
+        """
+        self.value: Optional[Any] = value
+        self._original_text: Optional[str] = _original_text  # Preserve original XML text format
 
     def serialize(self, namespace: str = "") -> ET.Element:
         """Serialize the primitive to an XML element.
+
+        Serializes the value as element text content and any additional
+        attributes as XML attributes.
 
         Args:
             namespace: XML namespace URI (optional)
@@ -2841,8 +2898,43 @@ class ARPrimitive(ARObject):
         if namespace:
             elem.set("xmlns", namespace)
 
+        # Serialize value as text content
         if self.value is not None:
-            elem.text = str(self.value)
+            # Preserve original format for binary-exact round-trip serialization
+            if self._original_text is not None:
+                # Use original text format for floats and booleans
+                if isinstance(self.value, (float, bool)):
+                    elem.text = self._original_text
+                else:
+                    elem.text = str(self.value)
+            else:
+                elem.text = str(self.value)
+
+        # Serialize additional attributes as XML attributes
+        # Get all instance attributes excluding 'value', '_original_text', and private attributes
+        from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
+        for name, value in vars(self).items():
+            if name.startswith('_') or name in ('value', '_original_text'):
+                continue
+
+            # Convert Python name to XML tag
+            from armodel2.serialization.name_converter import NameConverter
+            xml_tag = NameConverter.to_xml_tag(name)
+
+            # Skip None values
+            if value is None:
+                continue
+
+            # Serialize as XML attribute
+            if hasattr(value, 'value'):
+                # Handle primitive types with value attribute
+                # Check if it's an AREnum and convert to uppercase
+                if isinstance(value, AREnum):
+                    elem.set(xml_tag, str(value.value).upper())
+                else:
+                    elem.set(xml_tag, str(value.value))
+            else:
+                elem.set(xml_tag, str(value))
 
         return elem
 
@@ -2851,7 +2943,8 @@ class ARPrimitive(ARObject):
         """Deserialize an XML element to an ARPrimitive instance.
 
         Automatically converts the text content to the appropriate Python type
-        based on the python_type class attribute.
+        based on the python_type class attribute. Also deserializes any
+        additional XML attributes to object attributes.
 
         Args:
             element: XML element to deserialize from
@@ -2859,25 +2952,70 @@ class ARPrimitive(ARObject):
         Returns:
             Deserialized ARPrimitive instance
         """
+        # Get type hints to know what attributes to expect
+        from typing import get_type_hints, Union, get_origin, get_args
+        type_hints = {}
+        try:
+            type_hints = get_type_hints(cls)
+        except Exception:
+            # Fallback: Use __annotations__ directly if get_type_hints fails
+            if hasattr(cls, '__annotations__'):
+                for attr_name, attr_type_str in cls.__annotations__.items():
+                    if attr_name != 'value':
+                        type_hints[attr_name] = attr_type_str
+
+        # Create instance
         obj = cls()
+
+        # Deserialize XML attributes to object attributes
+        for attr_name, attr_type in type_hints.items():
+            if attr_name in ('value', '_original_text'):
+                continue
+
+            # Convert Python name to XML tag
+            from armodel2.serialization.name_converter import NameConverter
+            xml_tag = NameConverter.to_xml_tag(attr_name)
+
+            # Get attribute value from XML
+            attr_value = element.get(xml_tag)
+            if attr_value is None:
+                continue
+
+            # Convert to appropriate type
+            from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
+            if isinstance(attr_type, type) and issubclass(attr_type, AREnum):
+                # Deserialize as enum
+                fake_elem = ET.Element('TEMP')
+                fake_elem.text = attr_value
+                setattr(obj, attr_name, attr_type.deserialize(fake_elem))
+            else:
+                setattr(obj, attr_name, attr_value)
+
+        # Deserialize text content to value
         if element.text:
+            # Preserve original format for binary-exact serialization
+            original_text = element.text
+
             # Convert to the appropriate Python type based on python_type
             if cls.python_type is str:
-                obj.value = element.text
+                obj.value = original_text
             elif cls.python_type is int:
                 try:
-                    obj.value = int(element.text)
+                    obj.value = int(original_text)
                 except ValueError:
-                    obj.value = element.text  # Keep as string if conversion fails
+                    obj.value = original_text  # Keep as string if conversion fails
             elif cls.python_type is float:
                 try:
-                    obj.value = float(element.text)
+                    obj.value = float(original_text)
                 except ValueError:
-                    obj.value = element.text
+                    obj.value = original_text
             elif cls.python_type is bool:
-                obj.value = element.text.lower() in ('true', '1', 'yes')
+                obj.value = original_text.lower() in ('true', '1', 'yes')
             else:
-                obj.value = element.text
+                obj.value = original_text
+
+            # Store original text for format preservation during serialization
+            obj._original_text = original_text
         return obj
 
     def __str__(self) -> str:
@@ -2887,6 +3025,33 @@ class ARPrimitive(ARObject):
     def __repr__(self) -> str:
         """Return detailed string representation."""
         return f"{self.__class__.__name__}({self.value!r})"
+
+    def __eq__(self, other: object) -> bool:
+        """Check equality based on value.
+
+        Provides transparent comparison with primitive Python types (str, int, float, bool).
+
+        Args:
+            other: Object to compare with
+
+        Returns:
+            True if values are equal (both same class or primitive type), False otherwise
+        """
+        # Compare with same class (existing behavior)
+        if isinstance(other, self.__class__):
+            return self.value == other.value
+        # Compare with primitive Python type (transparent behavior)
+        if isinstance(other, self.python_type):
+            return self.value == other
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        """Return hash based on value.
+
+        Returns:
+            Hash of the value, or hash of None if value is None
+        """
+        return hash(self.value) if self.value is not None else hash(None)
 '''
     return code
 
@@ -3002,9 +3167,8 @@ def _generate_serialize_method(
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
 '''
 
@@ -3291,19 +3455,32 @@ def _generate_serialize_method(
 
                     # Handle no container case (direct children)
                     if container_tag is None:
-                        code += f'''        # Serialize {python_name} (list of direct "{child_tag}" children, no container)
+                        if child_tag:
+                            # Direct child tag with custom name (e.g., V from @xml_element_name("V"))
+                            # Need to wrap each serialized item with the correct tag
+                            code += f'''        # Serialize {python_name} (list of direct "{child_tag}" children, no container)
         if self.{python_name}:
             for item in self.{python_name}:
                 serialized = SerializationHelper.serialize_item(item, "{effective_type}")
                 if serialized is not None:
-                    child_elem = ET.Element("{child_tag}")
+                    # Wrap with correct tag from @xml_element_name decorator
+                    wrapped = ET.Element("{child_tag}")
                     if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
+                        wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
-                        child_elem.text = serialized.text
+                        wrapped.text = serialized.text
                     for child in serialized:
-                        child_elem.append(child)
-                    elem.append(child_elem)
+                        wrapped.append(child)
+                    elem.append(wrapped)
+'''
+                        else:
+                            # No wrapper, no custom tag - just append directly
+                            code += f'''        # Serialize {python_name} (list of direct children, no container)
+        if self.{python_name}:
+            for item in self.{python_name}:
+                serialized = SerializationHelper.serialize_item(item, "{effective_type}")
+                if serialized is not None:
+                    elem.append(serialized)
 '''
                     else:
                         code += f'''        # Serialize {python_name} (list to container "{container_tag}")
@@ -3803,6 +3980,7 @@ def _generate_deserialize_method_for_atp_variant(
     attribute_types: Dict[str, Dict[str, Any]],
     parent_class: Optional[str],
     package_data: Dict[str, Dict[str, Any]],
+    polymorphic_types: Optional[Dict[str, List[str]]] = None,
 ) -> str:
     """Generate deserialize() method for atp_variant classes.
 
@@ -3816,10 +3994,13 @@ def _generate_deserialize_method_for_atp_variant(
         attribute_types: Dictionary of attribute information
         parent_class: Name of parent class (if any)
         package_data: Package data dictionary
+        polymorphic_types: Dict mapping base types to lists of concrete implementations
 
     Returns:
         Generated deserialize() method code
     """
+    if polymorphic_types is None:
+        polymorphic_types = {}
     code = f'''    @classmethod
     def deserialize(cls, element: ET.Element) -> "{class_name}":
         """Deserialize XML element to {class_name} object with atp_variant unwrapping.
@@ -4389,6 +4570,7 @@ def _generate_deserialize_method_for_atp_mixed(
     attribute_types: Dict[str, Dict[str, Any]],
     parent_class: Optional[str],
     package_data: Dict[str, Dict[str, Any]],
+    polymorphic_types: Optional[Dict[str, List[str]]] = None,
 ) -> str:
     """Generate deserialize() method for atp_mixed classes.
 
@@ -4403,10 +4585,13 @@ def _generate_deserialize_method_for_atp_mixed(
         attribute_types: Dictionary of attribute information
         parent_class: Name of parent class (if any)
         package_data: Package data dictionary
+        polymorphic_types: Dict mapping base types to lists of concrete implementations
 
     Returns:
         Generated deserialize() method code
     """
+    if polymorphic_types is None:
+        polymorphic_types = {}
     code = f'''    @classmethod
     def deserialize(cls, element: ET.Element) -> "{class_name}":
         """Deserialize XML element to {class_name} object (atp_mixed - no unwrapping).

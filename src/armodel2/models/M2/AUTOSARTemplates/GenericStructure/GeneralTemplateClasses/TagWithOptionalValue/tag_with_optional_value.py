@@ -31,9 +31,19 @@ class TagWithOptionalValue(ARObject):
         """
         return False
 
+    _XML_TAG = "TAG-WITH-OPTIONAL-VALUE"
+
+
     key: Optional[String]
     sequence_offset: Optional[Integer]
     value: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "KEY": lambda obj, elem: setattr(obj, "key", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "SEQUENCE-OFFSET": lambda obj, elem: setattr(obj, "sequence_offset", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TagWithOptionalValue."""
         super().__init__()
@@ -47,9 +57,8 @@ class TagWithOptionalValue(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TagWithOptionalValue, self).serialize()
@@ -122,23 +131,16 @@ class TagWithOptionalValue(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TagWithOptionalValue, cls).deserialize(element)
 
-        # Parse key
-        child = SerializationHelper.find_child_element(element, "KEY")
-        if child is not None:
-            key_value = child.text
-            obj.key = key_value
-
-        # Parse sequence_offset
-        child = SerializationHelper.find_child_element(element, "SEQUENCE-OFFSET")
-        if child is not None:
-            sequence_offset_value = child.text
-            obj.sequence_offset = sequence_offset_value
-
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = child.text
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "KEY":
+                setattr(obj, "key", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "SEQUENCE-OFFSET":
+                setattr(obj, "sequence_offset", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

@@ -37,8 +37,17 @@ class ApplicationPartitionToEcuPartitionMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "APPLICATION-PARTITION-TO-ECU-PARTITION-MAPPING"
+
+
     application_refs: list[ARRef]
     ecu_partition_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATION-REFS": lambda obj, elem: [obj.application_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "ECU-PARTITION-REF": lambda obj, elem: setattr(obj, "ecu_partition_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationPartitionToEcuPartitionMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class ApplicationPartitionToEcuPartitionMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationPartitionToEcuPartitionMapping, self).serialize()
@@ -115,27 +123,16 @@ class ApplicationPartitionToEcuPartitionMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationPartitionToEcuPartitionMapping, cls).deserialize(element)
 
-        # Parse application_refs (list from container "APPLICATION-REFS")
-        obj.application_refs = []
-        container = SerializationHelper.find_child_element(element, "APPLICATION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.application_refs.append(child_value)
-
-        # Parse ecu_partition_ref
-        child = SerializationHelper.find_child_element(element, "ECU-PARTITION-REF")
-        if child is not None:
-            ecu_partition_ref_value = ARRef.deserialize(child)
-            obj.ecu_partition_ref = ecu_partition_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "APPLICATION-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.application_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "ECU-PARTITION-REF":
+                setattr(obj, "ecu_partition_ref", ARRef.deserialize(child))
 
         return obj
 

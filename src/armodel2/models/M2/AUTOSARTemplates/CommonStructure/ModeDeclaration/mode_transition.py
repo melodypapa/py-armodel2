@@ -35,8 +35,17 @@ class ModeTransition(Identifiable):
         """
         return False
 
+    _XML_TAG = "MODE-TRANSITION"
+
+
     entered_mode_ref: Optional[ARRef]
     exited_mode_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ENTERED-MODE-REF": lambda obj, elem: setattr(obj, "entered_mode_ref", ARRef.deserialize(elem)),
+        "EXITED-MODE-REF": lambda obj, elem: setattr(obj, "exited_mode_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeTransition."""
         super().__init__()
@@ -49,9 +58,8 @@ class ModeTransition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeTransition, self).serialize()
@@ -110,17 +118,14 @@ class ModeTransition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeTransition, cls).deserialize(element)
 
-        # Parse entered_mode_ref
-        child = SerializationHelper.find_child_element(element, "ENTERED-MODE-REF")
-        if child is not None:
-            entered_mode_ref_value = ARRef.deserialize(child)
-            obj.entered_mode_ref = entered_mode_ref_value
-
-        # Parse exited_mode_ref
-        child = SerializationHelper.find_child_element(element, "EXITED-MODE-REF")
-        if child is not None:
-            exited_mode_ref_value = ARRef.deserialize(child)
-            obj.exited_mode_ref = exited_mode_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ENTERED-MODE-REF":
+                setattr(obj, "entered_mode_ref", ARRef.deserialize(child))
+            elif tag == "EXITED-MODE-REF":
+                setattr(obj, "exited_mode_ref", ARRef.deserialize(child))
 
         return obj
 

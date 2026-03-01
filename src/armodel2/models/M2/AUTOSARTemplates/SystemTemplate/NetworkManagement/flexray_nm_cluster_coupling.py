@@ -37,8 +37,17 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-NM-CLUSTER-COUPLING"
+
+
     coupled_cluster_refs: list[ARRef]
     nm_schedule: Optional[FlexrayNmScheduleVariant]
+    _DESERIALIZE_DISPATCH = {
+        "COUPLED-CLUSTER-REFS": lambda obj, elem: [obj.coupled_cluster_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "NM-SCHEDULE": lambda obj, elem: setattr(obj, "nm_schedule", FlexrayNmScheduleVariant.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayNmClusterCoupling."""
         super().__init__()
@@ -51,9 +60,8 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayNmClusterCoupling, self).serialize()
@@ -115,27 +123,16 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayNmClusterCoupling, cls).deserialize(element)
 
-        # Parse coupled_cluster_refs (list from container "COUPLED-CLUSTER-REFS")
-        obj.coupled_cluster_refs = []
-        container = SerializationHelper.find_child_element(element, "COUPLED-CLUSTER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.coupled_cluster_refs.append(child_value)
-
-        # Parse nm_schedule
-        child = SerializationHelper.find_child_element(element, "NM-SCHEDULE")
-        if child is not None:
-            nm_schedule_value = FlexrayNmScheduleVariant.deserialize(child)
-            obj.nm_schedule = nm_schedule_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COUPLED-CLUSTER-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.coupled_cluster_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "NM-SCHEDULE":
+                setattr(obj, "nm_schedule", FlexrayNmScheduleVariant.deserialize(child))
 
         return obj
 

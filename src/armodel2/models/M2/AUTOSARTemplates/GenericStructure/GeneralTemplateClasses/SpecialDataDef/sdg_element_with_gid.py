@@ -31,6 +31,11 @@ class SdgElementWithGid(ARObject, ABC):
         return True
 
     gid: Optional[NameToken]
+    _DESERIALIZE_DISPATCH = {
+        "GID": lambda obj, elem: setattr(obj, "gid", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SdgElementWithGid."""
         super().__init__()
@@ -42,9 +47,8 @@ class SdgElementWithGid(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SdgElementWithGid, self).serialize()
@@ -89,11 +93,12 @@ class SdgElementWithGid(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SdgElementWithGid, cls).deserialize(element)
 
-        # Parse gid
-        child = SerializationHelper.find_child_element(element, "GID")
-        if child is not None:
-            gid_value = child.text
-            obj.gid = gid_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "GID":
+                setattr(obj, "gid", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

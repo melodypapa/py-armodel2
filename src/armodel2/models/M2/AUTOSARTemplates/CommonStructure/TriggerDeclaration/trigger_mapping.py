@@ -30,8 +30,17 @@ class TriggerMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "TRIGGER-MAPPING"
+
+
     first_trigger_ref: Optional[ARRef]
     second_trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FIRST-TRIGGER-REF": lambda obj, elem: setattr(obj, "first_trigger_ref", ARRef.deserialize(elem)),
+        "SECOND-TRIGGER-REF": lambda obj, elem: setattr(obj, "second_trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TriggerMapping."""
         super().__init__()
@@ -44,9 +53,8 @@ class TriggerMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TriggerMapping, self).serialize()
@@ -105,17 +113,14 @@ class TriggerMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TriggerMapping, cls).deserialize(element)
 
-        # Parse first_trigger_ref
-        child = SerializationHelper.find_child_element(element, "FIRST-TRIGGER-REF")
-        if child is not None:
-            first_trigger_ref_value = ARRef.deserialize(child)
-            obj.first_trigger_ref = first_trigger_ref_value
-
-        # Parse second_trigger_ref
-        child = SerializationHelper.find_child_element(element, "SECOND-TRIGGER-REF")
-        if child is not None:
-            second_trigger_ref_value = ARRef.deserialize(child)
-            obj.second_trigger_ref = second_trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FIRST-TRIGGER-REF":
+                setattr(obj, "first_trigger_ref", ARRef.deserialize(child))
+            elif tag == "SECOND-TRIGGER-REF":
+                setattr(obj, "second_trigger_ref", ARRef.deserialize(child))
 
         return obj
 

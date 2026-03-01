@@ -27,7 +27,15 @@ class SwGenericAxisParam(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-GENERIC-AXIS-PARAM"
+
+
     sw_generic_axis_param_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SW-GENERIC-AXIS-PARAM-REF": lambda obj, elem: setattr(obj, "sw_generic_axis_param_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwGenericAxisParam."""
         super().__init__()
@@ -39,9 +47,8 @@ class SwGenericAxisParam(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwGenericAxisParam, self).serialize()
@@ -86,11 +93,12 @@ class SwGenericAxisParam(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwGenericAxisParam, cls).deserialize(element)
 
-        # Parse sw_generic_axis_param_ref
-        child = SerializationHelper.find_child_element(element, "SW-GENERIC-AXIS-PARAM-REF")
-        if child is not None:
-            sw_generic_axis_param_ref_value = ARRef.deserialize(child)
-            obj.sw_generic_axis_param_ref = sw_generic_axis_param_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SW-GENERIC-AXIS-PARAM-REF":
+                setattr(obj, "sw_generic_axis_param_ref", ARRef.deserialize(child))
 
         return obj
 

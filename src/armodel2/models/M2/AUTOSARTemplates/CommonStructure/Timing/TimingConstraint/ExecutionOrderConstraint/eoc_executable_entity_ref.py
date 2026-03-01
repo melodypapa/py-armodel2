@@ -37,10 +37,21 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
         """
         return False
 
+    _XML_TAG = "E-O-C-EXECUTABLE-ENTITY-REF"
+
+
     bsw_module_ref: Optional[ARRef]
     component: Optional[Any]
     executable_entity_ref: Optional[ARRef]
     successor_refs: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "BSW-MODULE-REF": lambda obj, elem: setattr(obj, "bsw_module_ref", ARRef.deserialize(elem)),
+        "COMPONENT": lambda obj, elem: setattr(obj, "component", SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
+        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswModuleEntity", "RunnableEntity"]),
+        "SUCCESSOR-REFS": lambda obj, elem: [obj.successor_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize EOCExecutableEntityRef."""
         super().__init__()
@@ -55,9 +66,8 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EOCExecutableEntityRef, self).serialize()
@@ -147,39 +157,20 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EOCExecutableEntityRef, cls).deserialize(element)
 
-        # Parse bsw_module_ref
-        child = SerializationHelper.find_child_element(element, "BSW-MODULE-REF")
-        if child is not None:
-            bsw_module_ref_value = ARRef.deserialize(child)
-            obj.bsw_module_ref = bsw_module_ref_value
-
-        # Parse component
-        child = SerializationHelper.find_child_element(element, "COMPONENT")
-        if child is not None:
-            component_value = child.text
-            obj.component = component_value
-
-        # Parse executable_entity_ref
-        child = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITY-REF")
-        if child is not None:
-            executable_entity_ref_value = ARRef.deserialize(child)
-            obj.executable_entity_ref = executable_entity_ref_value
-
-        # Parse successor_refs (list from container "SUCCESSOR-REFS")
-        obj.successor_refs = []
-        container = SerializationHelper.find_child_element(element, "SUCCESSOR-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.successor_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BSW-MODULE-REF":
+                setattr(obj, "bsw_module_ref", ARRef.deserialize(child))
+            elif tag == "COMPONENT":
+                setattr(obj, "component", SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
+            elif tag == "EXECUTABLE-ENTITY-REF":
+                setattr(obj, "executable_entity_ref", ARRef.deserialize(child))
+            elif tag == "SUCCESSOR-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.successor_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

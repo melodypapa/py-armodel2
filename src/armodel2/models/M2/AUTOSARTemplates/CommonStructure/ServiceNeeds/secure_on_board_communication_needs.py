@@ -33,7 +33,15 @@ class SecureOnBoardCommunicationNeeds(ServiceNeeds):
         """
         return False
 
+    _XML_TAG = "SECURE-ON-BOARD-COMMUNICATION-NEEDS"
+
+
     verification: Optional[VerificationStatusIndicationModeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "VERIFICATION": lambda obj, elem: setattr(obj, "verification", VerificationStatusIndicationModeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecureOnBoardCommunicationNeeds."""
         super().__init__()
@@ -45,9 +53,8 @@ class SecureOnBoardCommunicationNeeds(ServiceNeeds):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecureOnBoardCommunicationNeeds, self).serialize()
@@ -92,11 +99,12 @@ class SecureOnBoardCommunicationNeeds(ServiceNeeds):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecureOnBoardCommunicationNeeds, cls).deserialize(element)
 
-        # Parse verification
-        child = SerializationHelper.find_child_element(element, "VERIFICATION")
-        if child is not None:
-            verification_value = VerificationStatusIndicationModeEnum.deserialize(child)
-            obj.verification = verification_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "VERIFICATION":
+                setattr(obj, "verification", VerificationStatusIndicationModeEnum.deserialize(child))
 
         return obj
 

@@ -29,8 +29,17 @@ class PlcaProps(ARObject):
         """
         return False
 
+    _XML_TAG = "PLCA-PROPS"
+
+
     plca_local_node: Optional[PositiveInteger]
     plca_max_burst: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "PLCA-LOCAL-NODE": lambda obj, elem: setattr(obj, "plca_local_node", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PLCA-MAX-BURST": lambda obj, elem: setattr(obj, "plca_max_burst", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PlcaProps."""
         super().__init__()
@@ -43,9 +52,8 @@ class PlcaProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PlcaProps, self).serialize()
@@ -104,17 +112,14 @@ class PlcaProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PlcaProps, cls).deserialize(element)
 
-        # Parse plca_local_node
-        child = SerializationHelper.find_child_element(element, "PLCA-LOCAL-NODE")
-        if child is not None:
-            plca_local_node_value = child.text
-            obj.plca_local_node = plca_local_node_value
-
-        # Parse plca_max_burst
-        child = SerializationHelper.find_child_element(element, "PLCA-MAX-BURST")
-        if child is not None:
-            plca_max_burst_value = child.text
-            obj.plca_max_burst = plca_max_burst_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PLCA-LOCAL-NODE":
+                setattr(obj, "plca_local_node", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PLCA-MAX-BURST":
+                setattr(obj, "plca_max_burst", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

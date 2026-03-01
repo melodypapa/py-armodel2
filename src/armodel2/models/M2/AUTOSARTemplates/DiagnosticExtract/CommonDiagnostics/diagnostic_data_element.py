@@ -43,10 +43,21 @@ class DiagnosticDataElement(Identifiable):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-DATA-ELEMENT"
+
+
     array_size: Optional[ArraySizeSemanticsEnum]
     max_number_of: Optional[PositiveInteger]
     scaling_info_size: Optional[PositiveInteger]
     sw_data_def: Optional[SwDataDefProps]
+    _DESERIALIZE_DISPATCH = {
+        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(elem)),
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SCALING-INFO-SIZE": lambda obj, elem: setattr(obj, "scaling_info_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticDataElement."""
         super().__init__()
@@ -61,9 +72,8 @@ class DiagnosticDataElement(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticDataElement, self).serialize()
@@ -150,29 +160,18 @@ class DiagnosticDataElement(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDataElement, cls).deserialize(element)
 
-        # Parse array_size
-        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE")
-        if child is not None:
-            array_size_value = ArraySizeSemanticsEnum.deserialize(child)
-            obj.array_size = array_size_value
-
-        # Parse max_number_of
-        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
-        if child is not None:
-            max_number_of_value = child.text
-            obj.max_number_of = max_number_of_value
-
-        # Parse scaling_info_size
-        child = SerializationHelper.find_child_element(element, "SCALING-INFO-SIZE")
-        if child is not None:
-            scaling_info_size_value = child.text
-            obj.scaling_info_size = scaling_info_size_value
-
-        # Parse sw_data_def
-        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
-        if child is not None:
-            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.sw_data_def = sw_data_def_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ARRAY-SIZE":
+                setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(child))
+            elif tag == "MAX-NUMBER-OF":
+                setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SCALING-INFO-SIZE":
+                setattr(obj, "scaling_info_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SW-DATA-DEF":
+                setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
         return obj
 

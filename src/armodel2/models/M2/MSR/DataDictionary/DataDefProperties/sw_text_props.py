@@ -39,10 +39,21 @@ class SwTextProps(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-TEXT-PROPS"
+
+
     array_size: Optional[ArraySizeSemanticsEnum]
     base_type_ref: Optional[ARRef]
     sw_fill_character: Optional[Integer]
     sw_max_text_size: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(elem)),
+        "BASE-TYPE-REF": lambda obj, elem: setattr(obj, "base_type_ref", ARRef.deserialize(elem)),
+        "SW-FILL-CHARACTER": lambda obj, elem: setattr(obj, "sw_fill_character", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "SW-MAX-TEXT-SIZE": lambda obj, elem: setattr(obj, "sw_max_text_size", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwTextProps."""
         super().__init__()
@@ -57,9 +68,8 @@ class SwTextProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwTextProps, self).serialize()
@@ -146,29 +156,18 @@ class SwTextProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwTextProps, cls).deserialize(element)
 
-        # Parse array_size
-        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE")
-        if child is not None:
-            array_size_value = ArraySizeSemanticsEnum.deserialize(child)
-            obj.array_size = array_size_value
-
-        # Parse base_type_ref
-        child = SerializationHelper.find_child_element(element, "BASE-TYPE-REF")
-        if child is not None:
-            base_type_ref_value = ARRef.deserialize(child)
-            obj.base_type_ref = base_type_ref_value
-
-        # Parse sw_fill_character
-        child = SerializationHelper.find_child_element(element, "SW-FILL-CHARACTER")
-        if child is not None:
-            sw_fill_character_value = child.text
-            obj.sw_fill_character = sw_fill_character_value
-
-        # Parse sw_max_text_size
-        child = SerializationHelper.find_child_element(element, "SW-MAX-TEXT-SIZE")
-        if child is not None:
-            sw_max_text_size_value = child.text
-            obj.sw_max_text_size = sw_max_text_size_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ARRAY-SIZE":
+                setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(child))
+            elif tag == "BASE-TYPE-REF":
+                setattr(obj, "base_type_ref", ARRef.deserialize(child))
+            elif tag == "SW-FILL-CHARACTER":
+                setattr(obj, "sw_fill_character", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "SW-MAX-TEXT-SIZE":
+                setattr(obj, "sw_max_text_size", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

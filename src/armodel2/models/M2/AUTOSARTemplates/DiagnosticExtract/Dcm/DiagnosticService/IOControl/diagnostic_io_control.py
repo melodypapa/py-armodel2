@@ -37,12 +37,25 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-I-O-CONTROL"
+
+
     control_enables: list[Any]
     data_identifier_identifier_ref: Optional[ARRef]
     freeze_current: Optional[Boolean]
     io_control_class_ref: Optional[ARRef]
     reset_to_default: Optional[Boolean]
     short_term: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CONTROL-ENABLES": lambda obj, elem: obj.control_enables.append(SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticControl)")),
+        "DATA-IDENTIFIER-IDENTIFIER-REF": lambda obj, elem: setattr(obj, "data_identifier_identifier_ref", ARRef.deserialize(elem)),
+        "FREEZE-CURRENT": lambda obj, elem: setattr(obj, "freeze_current", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "IO-CONTROL-CLASS-REF": lambda obj, elem: setattr(obj, "io_control_class_ref", ARRef.deserialize(elem)),
+        "RESET-TO-DEFAULT": lambda obj, elem: setattr(obj, "reset_to_default", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SHORT-TERM": lambda obj, elem: setattr(obj, "short_term", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticIOControl."""
         super().__init__()
@@ -59,9 +72,8 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticIOControl, self).serialize()
@@ -172,45 +184,24 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticIOControl, cls).deserialize(element)
 
-        # Parse control_enables (list from container "CONTROL-ENABLES")
-        obj.control_enables = []
-        container = SerializationHelper.find_child_element(element, "CONTROL-ENABLES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.control_enables.append(child_value)
-
-        # Parse data_identifier_identifier_ref
-        child = SerializationHelper.find_child_element(element, "DATA-IDENTIFIER-IDENTIFIER-REF")
-        if child is not None:
-            data_identifier_identifier_ref_value = ARRef.deserialize(child)
-            obj.data_identifier_identifier_ref = data_identifier_identifier_ref_value
-
-        # Parse freeze_current
-        child = SerializationHelper.find_child_element(element, "FREEZE-CURRENT")
-        if child is not None:
-            freeze_current_value = child.text
-            obj.freeze_current = freeze_current_value
-
-        # Parse io_control_class_ref
-        child = SerializationHelper.find_child_element(element, "IO-CONTROL-CLASS-REF")
-        if child is not None:
-            io_control_class_ref_value = ARRef.deserialize(child)
-            obj.io_control_class_ref = io_control_class_ref_value
-
-        # Parse reset_to_default
-        child = SerializationHelper.find_child_element(element, "RESET-TO-DEFAULT")
-        if child is not None:
-            reset_to_default_value = child.text
-            obj.reset_to_default = reset_to_default_value
-
-        # Parse short_term
-        child = SerializationHelper.find_child_element(element, "SHORT-TERM")
-        if child is not None:
-            short_term_value = child.text
-            obj.short_term = short_term_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONTROL-ENABLES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.control_enables.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticControl)"))
+            elif tag == "DATA-IDENTIFIER-IDENTIFIER-REF":
+                setattr(obj, "data_identifier_identifier_ref", ARRef.deserialize(child))
+            elif tag == "FREEZE-CURRENT":
+                setattr(obj, "freeze_current", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "IO-CONTROL-CLASS-REF":
+                setattr(obj, "io_control_class_ref", ARRef.deserialize(child))
+            elif tag == "RESET-TO-DEFAULT":
+                setattr(obj, "reset_to_default", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SHORT-TERM":
+                setattr(obj, "short_term", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

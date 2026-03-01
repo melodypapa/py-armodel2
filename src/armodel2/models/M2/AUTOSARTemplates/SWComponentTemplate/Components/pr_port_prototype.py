@@ -36,7 +36,15 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
         """
         return False
 
+    _XML_TAG = "P-R-PORT-PROTOTYPE"
+
+
     provided: Optional[PortInterface]
+    _DESERIALIZE_DISPATCH = {
+        "PROVIDED": ("_POLYMORPHIC", "provided", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PRPortPrototype."""
         super().__init__()
@@ -48,9 +56,8 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PRPortPrototype, self).serialize()
@@ -95,11 +102,22 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PRPortPrototype, cls).deserialize(element)
 
-        # Parse provided
-        child = SerializationHelper.find_child_element(element, "PROVIDED")
-        if child is not None:
-            provided_value = SerializationHelper.deserialize_by_tag(child, "PortInterface")
-            obj.provided = provided_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PROVIDED":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CLIENT-SERVER-INTERFACE":
+                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "ClientServerInterface"))
+                    elif concrete_tag == "DATA-INTERFACE":
+                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "DataInterface"))
+                    elif concrete_tag == "MODE-SWITCH-INTERFACE":
+                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchInterface"))
+                    elif concrete_tag == "TRIGGER-INTERFACE":
+                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "TriggerInterface"))
 
         return obj
 

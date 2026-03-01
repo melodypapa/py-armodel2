@@ -40,9 +40,19 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
         """
         return False
 
+    _XML_TAG = "APPLICATION-RULE-BASED-VALUE-SPECIFICATION"
+
+
     category_specification: Optional[Identifier]
     sw_axis_conts: list[RuleBasedAxisCont]
     sw_value_cont: Optional[RuleBasedValueCont]
+    _DESERIALIZE_DISPATCH = {
+        "CATEGORY-SPECIFICATION": lambda obj, elem: setattr(obj, "category_specification", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "SW-AXIS-CONTS": lambda obj, elem: obj.sw_axis_conts.append(SerializationHelper.deserialize_by_tag(elem, "RuleBasedAxisCont")),
+        "SW-VALUE-CONT": lambda obj, elem: setattr(obj, "sw_value_cont", SerializationHelper.deserialize_by_tag(elem, "RuleBasedValueCont")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationRuleBasedValueSpecification."""
         super().__init__()
@@ -56,9 +66,8 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationRuleBasedValueSpecification, self).serialize()
@@ -127,27 +136,18 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationRuleBasedValueSpecification, cls).deserialize(element)
 
-        # Parse category_specification
-        child = SerializationHelper.find_child_element(element, "CATEGORY-SPECIFICATION")
-        if child is not None:
-            category_specification_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.category_specification = category_specification_value
-
-        # Parse sw_axis_conts (list from container "SW-AXIS-CONTS")
-        obj.sw_axis_conts = []
-        container = SerializationHelper.find_child_element(element, "SW-AXIS-CONTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_axis_conts.append(child_value)
-
-        # Parse sw_value_cont
-        child = SerializationHelper.find_child_element(element, "SW-VALUE-CONT")
-        if child is not None:
-            sw_value_cont_value = SerializationHelper.deserialize_by_tag(child, "RuleBasedValueCont")
-            obj.sw_value_cont = sw_value_cont_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CATEGORY-SPECIFICATION":
+                setattr(obj, "category_specification", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "SW-AXIS-CONTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sw_axis_conts.append(SerializationHelper.deserialize_by_tag(item_elem, "RuleBasedAxisCont"))
+            elif tag == "SW-VALUE-CONT":
+                setattr(obj, "sw_value_cont", SerializationHelper.deserialize_by_tag(child, "RuleBasedValueCont"))
 
         return obj
 

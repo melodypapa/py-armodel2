@@ -36,8 +36,17 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-ENV-CONDITION-FORMULA"
+
+
     nrc_value: Optional[PositiveInteger]
     op: Optional[DiagnosticLogicalOperatorEnum]
+    _DESERIALIZE_DISPATCH = {
+        "NRC-VALUE": lambda obj, elem: setattr(obj, "nrc_value", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "OP": lambda obj, elem: setattr(obj, "op", DiagnosticLogicalOperatorEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEnvConditionFormula."""
         super().__init__()
@@ -50,9 +59,8 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEnvConditionFormula, self).serialize()
@@ -111,17 +119,14 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEnvConditionFormula, cls).deserialize(element)
 
-        # Parse nrc_value
-        child = SerializationHelper.find_child_element(element, "NRC-VALUE")
-        if child is not None:
-            nrc_value_value = child.text
-            obj.nrc_value = nrc_value_value
-
-        # Parse op
-        child = SerializationHelper.find_child_element(element, "OP")
-        if child is not None:
-            op_value = DiagnosticLogicalOperatorEnum.deserialize(child)
-            obj.op = op_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "NRC-VALUE":
+                setattr(obj, "nrc_value", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "OP":
+                setattr(obj, "op", DiagnosticLogicalOperatorEnum.deserialize(child))
 
         return obj
 

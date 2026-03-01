@@ -33,8 +33,17 @@ class CommunicationControllerMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "COMMUNICATION-CONTROLLER-MAPPING"
+
+
     communication_controller_ref: Optional[ARRef]
     hw_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CONTROLLER-REF": ("_POLYMORPHIC", "communication_controller_ref", ["CanCommunicationController", "TtcanCommunicationController", "EthernetCommunicationController", "FlexrayCommunicationController", "LinCommunicationController", "UserDefinedCommunicationController"]),
+        "HW-REF": lambda obj, elem: setattr(obj, "hw_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CommunicationControllerMapping."""
         super().__init__()
@@ -47,9 +56,8 @@ class CommunicationControllerMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CommunicationControllerMapping, self).serialize()
@@ -108,17 +116,14 @@ class CommunicationControllerMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommunicationControllerMapping, cls).deserialize(element)
 
-        # Parse communication_controller_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONTROLLER-REF")
-        if child is not None:
-            communication_controller_ref_value = ARRef.deserialize(child)
-            obj.communication_controller_ref = communication_controller_ref_value
-
-        # Parse hw_ref
-        child = SerializationHelper.find_child_element(element, "HW-REF")
-        if child is not None:
-            hw_ref_value = ARRef.deserialize(child)
-            obj.hw_ref = hw_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMMUNICATION-CONTROLLER-REF":
+                setattr(obj, "communication_controller_ref", ARRef.deserialize(child))
+            elif tag == "HW-REF":
+                setattr(obj, "hw_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -34,8 +34,17 @@ class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
         """
         return False
 
+    _XML_TAG = "SECURITY-EVENT-THRESHOLD-FILTER"
+
+
     interval_length: Optional[TimeValue]
     threshold: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "INTERVAL-LENGTH": lambda obj, elem: setattr(obj, "interval_length", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "THRESHOLD": lambda obj, elem: setattr(obj, "threshold", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecurityEventThresholdFilter."""
         super().__init__()
@@ -48,9 +57,8 @@ class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecurityEventThresholdFilter, self).serialize()
@@ -109,17 +117,14 @@ class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventThresholdFilter, cls).deserialize(element)
 
-        # Parse interval_length
-        child = SerializationHelper.find_child_element(element, "INTERVAL-LENGTH")
-        if child is not None:
-            interval_length_value = child.text
-            obj.interval_length = interval_length_value
-
-        # Parse threshold
-        child = SerializationHelper.find_child_element(element, "THRESHOLD")
-        if child is not None:
-            threshold_value = child.text
-            obj.threshold = threshold_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INTERVAL-LENGTH":
+                setattr(obj, "interval_length", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "THRESHOLD":
+                setattr(obj, "threshold", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

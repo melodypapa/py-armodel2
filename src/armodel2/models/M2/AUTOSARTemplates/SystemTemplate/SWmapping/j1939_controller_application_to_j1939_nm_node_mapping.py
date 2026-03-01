@@ -30,8 +30,17 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPING"
+
+
     j1939_controller_ref: Optional[Any]
     j1939_nm_node_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "J1939-CONTROLLER-REF": lambda obj, elem: setattr(obj, "j1939_controller_ref", ARRef.deserialize(elem)),
+        "J1939-NM-NODE-REF": lambda obj, elem: setattr(obj, "j1939_nm_node_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939ControllerApplicationToJ1939NmNodeMapping."""
         super().__init__()
@@ -44,9 +53,8 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939ControllerApplicationToJ1939NmNodeMapping, self).serialize()
@@ -105,17 +113,14 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939ControllerApplicationToJ1939NmNodeMapping, cls).deserialize(element)
 
-        # Parse j1939_controller_ref
-        child = SerializationHelper.find_child_element(element, "J1939-CONTROLLER-REF")
-        if child is not None:
-            j1939_controller_ref_value = ARRef.deserialize(child)
-            obj.j1939_controller_ref = j1939_controller_ref_value
-
-        # Parse j1939_nm_node_ref
-        child = SerializationHelper.find_child_element(element, "J1939-NM-NODE-REF")
-        if child is not None:
-            j1939_nm_node_ref_value = ARRef.deserialize(child)
-            obj.j1939_nm_node_ref = j1939_nm_node_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "J1939-CONTROLLER-REF":
+                setattr(obj, "j1939_controller_ref", ARRef.deserialize(child))
+            elif tag == "J1939-NM-NODE-REF":
+                setattr(obj, "j1939_nm_node_ref", ARRef.deserialize(child))
 
         return obj
 

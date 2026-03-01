@@ -33,8 +33,17 @@ class TDLETZoneClock(TimingClock):
         """
         return False
 
+    _XML_TAG = "T-D-L-E-T-ZONE-CLOCK"
+
+
     accuracy_ext: Optional[MultidimensionalTime]
     accuracy_int: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "ACCURACY-EXT": lambda obj, elem: setattr(obj, "accuracy_ext", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "ACCURACY-INT": lambda obj, elem: setattr(obj, "accuracy_int", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDLETZoneClock."""
         super().__init__()
@@ -47,9 +56,8 @@ class TDLETZoneClock(TimingClock):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDLETZoneClock, self).serialize()
@@ -108,17 +116,14 @@ class TDLETZoneClock(TimingClock):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDLETZoneClock, cls).deserialize(element)
 
-        # Parse accuracy_ext
-        child = SerializationHelper.find_child_element(element, "ACCURACY-EXT")
-        if child is not None:
-            accuracy_ext_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.accuracy_ext = accuracy_ext_value
-
-        # Parse accuracy_int
-        child = SerializationHelper.find_child_element(element, "ACCURACY-INT")
-        if child is not None:
-            accuracy_int_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.accuracy_int = accuracy_int_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ACCURACY-EXT":
+                setattr(obj, "accuracy_ext", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "ACCURACY-INT":
+                setattr(obj, "accuracy_int", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

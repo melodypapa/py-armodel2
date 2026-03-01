@@ -33,7 +33,15 @@ class ClientServerOperationComProps(CpSoftwareClusterCommunicationResourceProps)
         """
         return False
 
+    _XML_TAG = "CLIENT-SERVER-OPERATION-COM-PROPS"
+
+
     queue_length: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "QUEUE-LENGTH": lambda obj, elem: setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientServerOperationComProps."""
         super().__init__()
@@ -45,9 +53,8 @@ class ClientServerOperationComProps(CpSoftwareClusterCommunicationResourceProps)
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientServerOperationComProps, self).serialize()
@@ -92,11 +99,12 @@ class ClientServerOperationComProps(CpSoftwareClusterCommunicationResourceProps)
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerOperationComProps, cls).deserialize(element)
 
-        # Parse queue_length
-        child = SerializationHelper.find_child_element(element, "QUEUE-LENGTH")
-        if child is not None:
-            queue_length_value = child.text
-            obj.queue_length = queue_length_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "QUEUE-LENGTH":
+                setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

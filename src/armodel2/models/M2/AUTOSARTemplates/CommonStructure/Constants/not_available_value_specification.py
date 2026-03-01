@@ -33,7 +33,15 @@ class NotAvailableValueSpecification(ValueSpecification):
         """
         return False
 
+    _XML_TAG = "NOT-AVAILABLE-VALUE-SPECIFICATION"
+
+
     default_pattern: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-PATTERN": lambda obj, elem: setattr(obj, "default_pattern", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NotAvailableValueSpecification."""
         super().__init__()
@@ -45,9 +53,8 @@ class NotAvailableValueSpecification(ValueSpecification):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NotAvailableValueSpecification, self).serialize()
@@ -92,11 +99,12 @@ class NotAvailableValueSpecification(ValueSpecification):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NotAvailableValueSpecification, cls).deserialize(element)
 
-        # Parse default_pattern
-        child = SerializationHelper.find_child_element(element, "DEFAULT-PATTERN")
-        if child is not None:
-            default_pattern_value = child.text
-            obj.default_pattern = default_pattern_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEFAULT-PATTERN":
+                setattr(obj, "default_pattern", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

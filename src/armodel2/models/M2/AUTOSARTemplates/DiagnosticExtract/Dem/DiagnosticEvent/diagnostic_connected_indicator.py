@@ -37,10 +37,21 @@ class DiagnosticConnectedIndicator(Identifiable):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-CONNECTED-INDICATOR"
+
+
     behavior_indicator_behavior_enum: Optional[Any]
     healing_cycle: Optional[PositiveInteger]
     indicator_ref: Optional[ARRef]
     indicator_failure: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "BEHAVIOR-INDICATOR-BEHAVIOR-ENUM": lambda obj, elem: setattr(obj, "behavior_indicator_behavior_enum", SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticConnected)")),
+        "HEALING-CYCLE": lambda obj, elem: setattr(obj, "healing_cycle", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "INDICATOR-REF": lambda obj, elem: setattr(obj, "indicator_ref", ARRef.deserialize(elem)),
+        "INDICATOR-FAILURE": lambda obj, elem: setattr(obj, "indicator_failure", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticConnectedIndicator."""
         super().__init__()
@@ -55,9 +66,8 @@ class DiagnosticConnectedIndicator(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticConnectedIndicator, self).serialize()
@@ -144,29 +154,18 @@ class DiagnosticConnectedIndicator(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticConnectedIndicator, cls).deserialize(element)
 
-        # Parse behavior_indicator_behavior_enum
-        child = SerializationHelper.find_child_element(element, "BEHAVIOR-INDICATOR-BEHAVIOR-ENUM")
-        if child is not None:
-            behavior_indicator_behavior_enum_value = child.text
-            obj.behavior_indicator_behavior_enum = behavior_indicator_behavior_enum_value
-
-        # Parse healing_cycle
-        child = SerializationHelper.find_child_element(element, "HEALING-CYCLE")
-        if child is not None:
-            healing_cycle_value = child.text
-            obj.healing_cycle = healing_cycle_value
-
-        # Parse indicator_ref
-        child = SerializationHelper.find_child_element(element, "INDICATOR-REF")
-        if child is not None:
-            indicator_ref_value = ARRef.deserialize(child)
-            obj.indicator_ref = indicator_ref_value
-
-        # Parse indicator_failure
-        child = SerializationHelper.find_child_element(element, "INDICATOR-FAILURE")
-        if child is not None:
-            indicator_failure_value = child.text
-            obj.indicator_failure = indicator_failure_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BEHAVIOR-INDICATOR-BEHAVIOR-ENUM":
+                setattr(obj, "behavior_indicator_behavior_enum", SerializationHelper.deserialize_by_tag(child, "any (DiagnosticConnected)"))
+            elif tag == "HEALING-CYCLE":
+                setattr(obj, "healing_cycle", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "INDICATOR-REF":
+                setattr(obj, "indicator_ref", ARRef.deserialize(child))
+            elif tag == "INDICATOR-FAILURE":
+                setattr(obj, "indicator_failure", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -10,19 +10,20 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Numerical,
+    VerbatimString,
+)
 from armodel2.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilanguage_long_name import (
     MultilanguageLongName,
 )
-
-if TYPE_CHECKING:
-    from armodel2.models.M2.MSR.CalibrationData.CalibrationValue.sw_values import (
-        SwValues,
-    )
-
-
-
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.numerical_or_text import (
+    NumericalOrText,
+)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
+
+
 class ValueGroup(ARObject):
     """AUTOSAR ValueGroup."""
 
@@ -35,13 +36,34 @@ class ValueGroup(ARObject):
         """
         return False
 
+    _XML_TAG = "VALUE-GROUP"
+
+
     label: Optional[MultilanguageLongName]
-    vg_contents: Optional[SwValues]
+    v: Optional[Numerical]
+    vf: Optional[Numerical]
+    vg: Optional[ValueGroup]
+    vt: Optional[VerbatimString]
+    vtf: Optional[NumericalOrText]
+    _DESERIALIZE_DISPATCH = {
+        "LABEL": lambda obj, elem: setattr(obj, "label", SerializationHelper.deserialize_by_tag(elem, "MultilanguageLongName")),
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VF": lambda obj, elem: setattr(obj, "vf", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VG": lambda obj, elem: setattr(obj, "vg", SerializationHelper.deserialize_by_tag(elem, "ValueGroup")),
+        "VT": lambda obj, elem: setattr(obj, "vt", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
+        "VTF": lambda obj, elem: setattr(obj, "vtf", SerializationHelper.deserialize_by_tag(elem, "NumericalOrText")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ValueGroup."""
         super().__init__()
         self.label: Optional[MultilanguageLongName] = None
-        self.vg_contents: Optional[SwValues] = None
+        self.v: Optional[Numerical] = None
+        self.vf: Optional[Numerical] = None
+        self.vg: Optional[ValueGroup] = None
+        self.vt: Optional[VerbatimString] = None
+        self.vtf: Optional[NumericalOrText] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ValueGroup to XML element.
@@ -49,9 +71,8 @@ class ValueGroup(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ValueGroup, self).serialize()
@@ -81,18 +102,75 @@ class ValueGroup(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize vg_contents (atp_mixed - append children directly)
-        if self.vg_contents is not None:
-            serialized = SerializationHelper.serialize_item(self.vg_contents, "SwValues")
+        # Serialize v
+        if self.v is not None:
+            serialized = SerializationHelper.serialize_item(self.v, "Numerical")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("V")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vf
+        if self.vf is not None:
+            serialized = SerializationHelper.serialize_item(self.vf, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vg
+        if self.vg is not None:
+            serialized = SerializationHelper.serialize_item(self.vg, "ValueGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vt
+        if self.vt is not None:
+            serialized = SerializationHelper.serialize_item(self.vt, "VerbatimString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vtf
+        if self.vtf is not None:
+            serialized = SerializationHelper.serialize_item(self.vtf, "NumericalOrText")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VTF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         return elem
 
@@ -109,25 +187,22 @@ class ValueGroup(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ValueGroup, cls).deserialize(element)
 
-        # Parse label
-        child = SerializationHelper.find_child_element(element, "LABEL")
-        if child is not None:
-            label_value = SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName")
-            obj.label = label_value
-
-        # Parse vg_contents (atp_mixed - children appear directly)
-        # Check if element contains expected children for SwValues
-        has_mixed_children = False
-        child_tags_to_check = ['V', 'VF', 'VG', 'VT', 'VTF']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            vg_contents_value = SerializationHelper.deserialize_by_tag(element, "SwValues")
-            obj.vg_contents = vg_contents_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LABEL":
+                setattr(obj, "label", SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName"))
+            elif tag == "V":
+                setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "VF":
+                setattr(obj, "vf", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "VG":
+                setattr(obj, "vg", SerializationHelper.deserialize_by_tag(child, "ValueGroup"))
+            elif tag == "VT":
+                setattr(obj, "vt", SerializationHelper.deserialize_by_tag(child, "VerbatimString"))
+            elif tag == "VTF":
+                setattr(obj, "vtf", SerializationHelper.deserialize_by_tag(child, "NumericalOrText"))
 
         return obj
 
@@ -156,8 +231,8 @@ class ValueGroupBuilder(BuilderBase):
         self._obj.label = value
         return self
 
-    def with_vg_contents(self, value: Optional[SwValues]) -> "ValueGroupBuilder":
-        """Set vg_contents attribute.
+    def with_v(self, value: Optional[Numerical]) -> "ValueGroupBuilder":
+        """Set v attribute.
 
         Args:
             value: Value to set
@@ -167,7 +242,63 @@ class ValueGroupBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.vg_contents = value
+        self._obj.v = value
+        return self
+
+    def with_vf(self, value: Optional[Numerical]) -> "ValueGroupBuilder":
+        """Set vf attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.vf = value
+        return self
+
+    def with_vg(self, value: Optional[ValueGroup]) -> "ValueGroupBuilder":
+        """Set vg attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.vg = value
+        return self
+
+    def with_vt(self, value: Optional[VerbatimString]) -> "ValueGroupBuilder":
+        """Set vt attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.vt = value
+        return self
+
+    def with_vtf(self, value: Optional[NumericalOrText]) -> "ValueGroupBuilder":
+        """Set vtf attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.vtf = value
         return self
 
 

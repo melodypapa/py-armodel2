@@ -40,8 +40,17 @@ class ClientServerInterface(PortInterface):
         """
         return False
 
+    _XML_TAG = "CLIENT-SERVER-INTERFACE"
+
+
     operations: list[ClientServerOperation]
     possible_errors: list[ApplicationError]
+    _DESERIALIZE_DISPATCH = {
+        "OPERATIONS": lambda obj, elem: obj.operations.append(SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
+        "POSSIBLE-ERRORS": lambda obj, elem: obj.possible_errors.append(SerializationHelper.deserialize_by_tag(elem, "ApplicationError")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientServerInterface."""
         super().__init__()
@@ -54,9 +63,8 @@ class ClientServerInterface(PortInterface):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientServerInterface, self).serialize()
@@ -107,25 +115,18 @@ class ClientServerInterface(PortInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerInterface, cls).deserialize(element)
 
-        # Parse operations (list from container "OPERATIONS")
-        obj.operations = []
-        container = SerializationHelper.find_child_element(element, "OPERATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.operations.append(child_value)
-
-        # Parse possible_errors (list from container "POSSIBLE-ERRORS")
-        obj.possible_errors = []
-        container = SerializationHelper.find_child_element(element, "POSSIBLE-ERRORS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.possible_errors.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OPERATIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.operations.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientServerOperation"))
+            elif tag == "POSSIBLE-ERRORS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.possible_errors.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationError"))
 
         return obj
 

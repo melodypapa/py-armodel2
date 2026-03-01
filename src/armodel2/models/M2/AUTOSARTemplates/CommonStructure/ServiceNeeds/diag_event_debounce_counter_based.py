@@ -35,12 +35,25 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
         """
         return False
 
+    _XML_TAG = "DIAG-EVENT-DEBOUNCE-COUNTER-BASED"
+
+
     counter_based: Optional[Integer]
     counter: Optional[Integer]
     counter_failed: Optional[Integer]
     counter_jump: Optional[Integer]
     counter_jump_up: Optional[Integer]
     counter_passed: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "COUNTER-BASED": lambda obj, elem: setattr(obj, "counter_based", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "COUNTER": lambda obj, elem: setattr(obj, "counter", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "COUNTER-FAILED": lambda obj, elem: setattr(obj, "counter_failed", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "COUNTER-JUMP": lambda obj, elem: setattr(obj, "counter_jump", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "COUNTER-JUMP-UP": lambda obj, elem: setattr(obj, "counter_jump_up", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "COUNTER-PASSED": lambda obj, elem: setattr(obj, "counter_passed", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagEventDebounceCounterBased."""
         super().__init__()
@@ -57,9 +70,8 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagEventDebounceCounterBased, self).serialize()
@@ -174,41 +186,22 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagEventDebounceCounterBased, cls).deserialize(element)
 
-        # Parse counter_based
-        child = SerializationHelper.find_child_element(element, "COUNTER-BASED")
-        if child is not None:
-            counter_based_value = child.text
-            obj.counter_based = counter_based_value
-
-        # Parse counter
-        child = SerializationHelper.find_child_element(element, "COUNTER")
-        if child is not None:
-            counter_value = child.text
-            obj.counter = counter_value
-
-        # Parse counter_failed
-        child = SerializationHelper.find_child_element(element, "COUNTER-FAILED")
-        if child is not None:
-            counter_failed_value = child.text
-            obj.counter_failed = counter_failed_value
-
-        # Parse counter_jump
-        child = SerializationHelper.find_child_element(element, "COUNTER-JUMP")
-        if child is not None:
-            counter_jump_value = child.text
-            obj.counter_jump = counter_jump_value
-
-        # Parse counter_jump_up
-        child = SerializationHelper.find_child_element(element, "COUNTER-JUMP-UP")
-        if child is not None:
-            counter_jump_up_value = child.text
-            obj.counter_jump_up = counter_jump_up_value
-
-        # Parse counter_passed
-        child = SerializationHelper.find_child_element(element, "COUNTER-PASSED")
-        if child is not None:
-            counter_passed_value = child.text
-            obj.counter_passed = counter_passed_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COUNTER-BASED":
+                setattr(obj, "counter_based", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "COUNTER":
+                setattr(obj, "counter", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "COUNTER-FAILED":
+                setattr(obj, "counter_failed", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "COUNTER-JUMP":
+                setattr(obj, "counter_jump", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "COUNTER-JUMP-UP":
+                setattr(obj, "counter_jump_up", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "COUNTER-PASSED":
+                setattr(obj, "counter_passed", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

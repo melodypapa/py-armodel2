@@ -34,8 +34,17 @@ class DiagnosticSecurityEventReportingModeMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SECURITY-EVENT-REPORTING-MODE-MAPPING"
+
+
     data_element_ref: Optional[ARRef]
     security_event_context_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "SECURITY-EVENT-CONTEXT-REF": lambda obj, elem: setattr(obj, "security_event_context_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticSecurityEventReportingModeMapping."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticSecurityEventReportingModeMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticSecurityEventReportingModeMapping, self).serialize()
@@ -109,17 +117,14 @@ class DiagnosticSecurityEventReportingModeMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSecurityEventReportingModeMapping, cls).deserialize(element)
 
-        # Parse data_element_ref
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
-        if child is not None:
-            data_element_ref_value = ARRef.deserialize(child)
-            obj.data_element_ref = data_element_ref_value
-
-        # Parse security_event_context_ref
-        child = SerializationHelper.find_child_element(element, "SECURITY-EVENT-CONTEXT-REF")
-        if child is not None:
-            security_event_context_ref_value = ARRef.deserialize(child)
-            obj.security_event_context_ref = security_event_context_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-ELEMENT-REF":
+                setattr(obj, "data_element_ref", ARRef.deserialize(child))
+            elif tag == "SECURITY-EVENT-CONTEXT-REF":
+                setattr(obj, "security_event_context_ref", ARRef.deserialize(child))
 
         return obj
 

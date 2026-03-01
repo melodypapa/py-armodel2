@@ -29,7 +29,15 @@ class StreamFilterMACAddress(ARObject):
         """
         return False
 
+    _XML_TAG = "STREAM-FILTER-M-A-C-ADDRESS"
+
+
     mac_address_string: Optional[MacAddressString]
+    _DESERIALIZE_DISPATCH = {
+        "MAC-ADDRESS-STRING": lambda obj, elem: setattr(obj, "mac_address_string", SerializationHelper.deserialize_by_tag(elem, "MacAddressString")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StreamFilterMACAddress."""
         super().__init__()
@@ -41,9 +49,8 @@ class StreamFilterMACAddress(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StreamFilterMACAddress, self).serialize()
@@ -88,11 +95,12 @@ class StreamFilterMACAddress(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StreamFilterMACAddress, cls).deserialize(element)
 
-        # Parse mac_address_string
-        child = SerializationHelper.find_child_element(element, "MAC-ADDRESS-STRING")
-        if child is not None:
-            mac_address_string_value = child.text
-            obj.mac_address_string = mac_address_string_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAC-ADDRESS-STRING":
+                setattr(obj, "mac_address_string", SerializationHelper.deserialize_by_tag(child, "MacAddressString"))
 
         return obj
 

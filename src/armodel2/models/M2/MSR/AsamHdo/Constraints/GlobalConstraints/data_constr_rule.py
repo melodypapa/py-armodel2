@@ -36,9 +36,19 @@ class DataConstrRule(ARObject):
         """
         return False
 
+    _XML_TAG = "DATA-CONSTR-RULE"
+
+
     constr_level: Optional[Integer]
     internal_constrs: Optional[InternalConstrs]
     phys_constrs: Optional[PhysConstrs]
+    _DESERIALIZE_DISPATCH = {
+        "CONSTR-LEVEL": lambda obj, elem: setattr(obj, "constr_level", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "INTERNAL-CONSTRS": lambda obj, elem: setattr(obj, "internal_constrs", SerializationHelper.deserialize_by_tag(elem, "InternalConstrs")),
+        "PHYS-CONSTRS": lambda obj, elem: setattr(obj, "phys_constrs", SerializationHelper.deserialize_by_tag(elem, "PhysConstrs")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataConstrRule."""
         super().__init__()
@@ -52,9 +62,8 @@ class DataConstrRule(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataConstrRule, self).serialize()
@@ -127,23 +136,16 @@ class DataConstrRule(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataConstrRule, cls).deserialize(element)
 
-        # Parse constr_level
-        child = SerializationHelper.find_child_element(element, "CONSTR-LEVEL")
-        if child is not None:
-            constr_level_value = child.text
-            obj.constr_level = constr_level_value
-
-        # Parse internal_constrs
-        child = SerializationHelper.find_child_element(element, "INTERNAL-CONSTRS")
-        if child is not None:
-            internal_constrs_value = SerializationHelper.deserialize_by_tag(child, "InternalConstrs")
-            obj.internal_constrs = internal_constrs_value
-
-        # Parse phys_constrs
-        child = SerializationHelper.find_child_element(element, "PHYS-CONSTRS")
-        if child is not None:
-            phys_constrs_value = SerializationHelper.deserialize_by_tag(child, "PhysConstrs")
-            obj.phys_constrs = phys_constrs_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONSTR-LEVEL":
+                setattr(obj, "constr_level", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "INTERNAL-CONSTRS":
+                setattr(obj, "internal_constrs", SerializationHelper.deserialize_by_tag(child, "InternalConstrs"))
+            elif tag == "PHYS-CONSTRS":
+                setattr(obj, "phys_constrs", SerializationHelper.deserialize_by_tag(child, "PhysConstrs"))
 
         return obj
 

@@ -33,8 +33,17 @@ class OrderedMaster(ARObject):
         """
         return False
 
+    _XML_TAG = "ORDERED-MASTER"
+
+
     index: Optional[PositiveInteger]
     time_sync_server_configuration_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "INDEX": lambda obj, elem: setattr(obj, "index", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TIME-SYNC-SERVER-CONFIGURATION-REF": lambda obj, elem: setattr(obj, "time_sync_server_configuration_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize OrderedMaster."""
         super().__init__()
@@ -47,9 +56,8 @@ class OrderedMaster(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(OrderedMaster, self).serialize()
@@ -108,17 +116,14 @@ class OrderedMaster(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(OrderedMaster, cls).deserialize(element)
 
-        # Parse index
-        child = SerializationHelper.find_child_element(element, "INDEX")
-        if child is not None:
-            index_value = child.text
-            obj.index = index_value
-
-        # Parse time_sync_server_configuration_ref
-        child = SerializationHelper.find_child_element(element, "TIME-SYNC-SERVER-CONFIGURATION-REF")
-        if child is not None:
-            time_sync_server_configuration_ref_value = ARRef.deserialize(child)
-            obj.time_sync_server_configuration_ref = time_sync_server_configuration_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INDEX":
+                setattr(obj, "index", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TIME-SYNC-SERVER-CONFIGURATION-REF":
+                setattr(obj, "time_sync_server_configuration_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -33,8 +33,17 @@ class FlexrayNmEcu(BusspecificNmEcu):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-NM-ECU"
+
+
     nm_hw_vote: Optional[Boolean]
     nm_main: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "NM-HW-VOTE": lambda obj, elem: setattr(obj, "nm_hw_vote", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-MAIN": lambda obj, elem: setattr(obj, "nm_main", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayNmEcu."""
         super().__init__()
@@ -47,9 +56,8 @@ class FlexrayNmEcu(BusspecificNmEcu):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayNmEcu, self).serialize()
@@ -108,17 +116,14 @@ class FlexrayNmEcu(BusspecificNmEcu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayNmEcu, cls).deserialize(element)
 
-        # Parse nm_hw_vote
-        child = SerializationHelper.find_child_element(element, "NM-HW-VOTE")
-        if child is not None:
-            nm_hw_vote_value = child.text
-            obj.nm_hw_vote = nm_hw_vote_value
-
-        # Parse nm_main
-        child = SerializationHelper.find_child_element(element, "NM-MAIN")
-        if child is not None:
-            nm_main_value = child.text
-            obj.nm_main = nm_main_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "NM-HW-VOTE":
+                setattr(obj, "nm_hw_vote", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-MAIN":
+                setattr(obj, "nm_main", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

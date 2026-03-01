@@ -55,6 +55,9 @@ class CanTpConnection(TpConnection):
         """
         return False
 
+    _XML_TAG = "CAN-TP-CONNECTION"
+
+
     addressing: Optional[CanTpAddressingFormatType]
     cancellation: Optional[Boolean]
     can_tp_channel_ref: Optional[ARRef]
@@ -71,6 +74,26 @@ class CanTpConnection(TpConnection):
     timeout_cs: Optional[TimeValue]
     tp_sdu_ref: Optional[ARRef]
     transmitter_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ADDRESSING": lambda obj, elem: setattr(obj, "addressing", CanTpAddressingFormatType.deserialize(elem)),
+        "CANCELLATION": lambda obj, elem: setattr(obj, "cancellation", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CAN-TP-CHANNEL-REF": lambda obj, elem: setattr(obj, "can_tp_channel_ref", ARRef.deserialize(elem)),
+        "DATA-PDU-REF": lambda obj, elem: setattr(obj, "data_pdu_ref", ARRef.deserialize(elem)),
+        "FLOW-CONTROL-PDU-REF": lambda obj, elem: setattr(obj, "flow_control_pdu_ref", ARRef.deserialize(elem)),
+        "MAX-BLOCK-SIZE": lambda obj, elem: setattr(obj, "max_block_size", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
+        "PADDING": lambda obj, elem: setattr(obj, "padding", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RECEIVER-REFS": lambda obj, elem: [obj.receiver_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "TA-TYPE-TYPE": lambda obj, elem: setattr(obj, "ta_type_type", NetworkTargetAddressType.deserialize(elem)),
+        "TIMEOUT-BR": lambda obj, elem: setattr(obj, "timeout_br", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-BS": lambda obj, elem: setattr(obj, "timeout_bs", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-CR": lambda obj, elem: setattr(obj, "timeout_cr", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-CS": lambda obj, elem: setattr(obj, "timeout_cs", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TP-SDU-REF": ("_POLYMORPHIC", "tp_sdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
+        "TRANSMITTER-REF": lambda obj, elem: setattr(obj, "transmitter_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanTpConnection."""
         super().__init__()
@@ -97,9 +120,8 @@ class CanTpConnection(TpConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanTpConnection, self).serialize()
@@ -357,111 +379,44 @@ class CanTpConnection(TpConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanTpConnection, cls).deserialize(element)
 
-        # Parse addressing
-        child = SerializationHelper.find_child_element(element, "ADDRESSING")
-        if child is not None:
-            addressing_value = CanTpAddressingFormatType.deserialize(child)
-            obj.addressing = addressing_value
-
-        # Parse cancellation
-        child = SerializationHelper.find_child_element(element, "CANCELLATION")
-        if child is not None:
-            cancellation_value = child.text
-            obj.cancellation = cancellation_value
-
-        # Parse can_tp_channel_ref
-        child = SerializationHelper.find_child_element(element, "CAN-TP-CHANNEL-REF")
-        if child is not None:
-            can_tp_channel_ref_value = ARRef.deserialize(child)
-            obj.can_tp_channel_ref = can_tp_channel_ref_value
-
-        # Parse data_pdu_ref
-        child = SerializationHelper.find_child_element(element, "DATA-PDU-REF")
-        if child is not None:
-            data_pdu_ref_value = ARRef.deserialize(child)
-            obj.data_pdu_ref = data_pdu_ref_value
-
-        # Parse flow_control_pdu_ref
-        child = SerializationHelper.find_child_element(element, "FLOW-CONTROL-PDU-REF")
-        if child is not None:
-            flow_control_pdu_ref_value = ARRef.deserialize(child)
-            obj.flow_control_pdu_ref = flow_control_pdu_ref_value
-
-        # Parse max_block_size
-        child = SerializationHelper.find_child_element(element, "MAX-BLOCK-SIZE")
-        if child is not None:
-            max_block_size_value = child.text
-            obj.max_block_size = max_block_size_value
-
-        # Parse multicast_ref
-        child = SerializationHelper.find_child_element(element, "MULTICAST-REF")
-        if child is not None:
-            multicast_ref_value = ARRef.deserialize(child)
-            obj.multicast_ref = multicast_ref_value
-
-        # Parse padding
-        child = SerializationHelper.find_child_element(element, "PADDING")
-        if child is not None:
-            padding_value = child.text
-            obj.padding = padding_value
-
-        # Parse receiver_refs (list from container "RECEIVER-REFS")
-        obj.receiver_refs = []
-        container = SerializationHelper.find_child_element(element, "RECEIVER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.receiver_refs.append(child_value)
-
-        # Parse ta_type_type
-        child = SerializationHelper.find_child_element(element, "TA-TYPE-TYPE")
-        if child is not None:
-            ta_type_type_value = NetworkTargetAddressType.deserialize(child)
-            obj.ta_type_type = ta_type_type_value
-
-        # Parse timeout_br
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-BR")
-        if child is not None:
-            timeout_br_value = child.text
-            obj.timeout_br = timeout_br_value
-
-        # Parse timeout_bs
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-BS")
-        if child is not None:
-            timeout_bs_value = child.text
-            obj.timeout_bs = timeout_bs_value
-
-        # Parse timeout_cr
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-CR")
-        if child is not None:
-            timeout_cr_value = child.text
-            obj.timeout_cr = timeout_cr_value
-
-        # Parse timeout_cs
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-CS")
-        if child is not None:
-            timeout_cs_value = child.text
-            obj.timeout_cs = timeout_cs_value
-
-        # Parse tp_sdu_ref
-        child = SerializationHelper.find_child_element(element, "TP-SDU-REF")
-        if child is not None:
-            tp_sdu_ref_value = ARRef.deserialize(child)
-            obj.tp_sdu_ref = tp_sdu_ref_value
-
-        # Parse transmitter_ref
-        child = SerializationHelper.find_child_element(element, "TRANSMITTER-REF")
-        if child is not None:
-            transmitter_ref_value = ARRef.deserialize(child)
-            obj.transmitter_ref = transmitter_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ADDRESSING":
+                setattr(obj, "addressing", CanTpAddressingFormatType.deserialize(child))
+            elif tag == "CANCELLATION":
+                setattr(obj, "cancellation", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CAN-TP-CHANNEL-REF":
+                setattr(obj, "can_tp_channel_ref", ARRef.deserialize(child))
+            elif tag == "DATA-PDU-REF":
+                setattr(obj, "data_pdu_ref", ARRef.deserialize(child))
+            elif tag == "FLOW-CONTROL-PDU-REF":
+                setattr(obj, "flow_control_pdu_ref", ARRef.deserialize(child))
+            elif tag == "MAX-BLOCK-SIZE":
+                setattr(obj, "max_block_size", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MULTICAST-REF":
+                setattr(obj, "multicast_ref", ARRef.deserialize(child))
+            elif tag == "PADDING":
+                setattr(obj, "padding", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RECEIVER-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.receiver_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "TA-TYPE-TYPE":
+                setattr(obj, "ta_type_type", NetworkTargetAddressType.deserialize(child))
+            elif tag == "TIMEOUT-BR":
+                setattr(obj, "timeout_br", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-BS":
+                setattr(obj, "timeout_bs", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-CR":
+                setattr(obj, "timeout_cr", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-CS":
+                setattr(obj, "timeout_cs", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TP-SDU-REF":
+                setattr(obj, "tp_sdu_ref", ARRef.deserialize(child))
+            elif tag == "TRANSMITTER-REF":
+                setattr(obj, "transmitter_ref", ARRef.deserialize(child))
 
         return obj
 

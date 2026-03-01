@@ -33,7 +33,15 @@ class Caption(MultilanguageReferrable):
         """
         return False
 
+    _XML_TAG = "CAPTION"
+
+
     desc: Optional[MultiLanguageOverviewParagraph]
+    _DESERIALIZE_DISPATCH = {
+        "DESC": lambda obj, elem: setattr(obj, "desc", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageOverviewParagraph")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Caption."""
         super().__init__()
@@ -45,9 +53,8 @@ class Caption(MultilanguageReferrable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Caption, self).serialize()
@@ -92,11 +99,12 @@ class Caption(MultilanguageReferrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Caption, cls).deserialize(element)
 
-        # Parse desc
-        child = SerializationHelper.find_child_element(element, "DESC")
-        if child is not None:
-            desc_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
-            obj.desc = desc_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DESC":
+                setattr(obj, "desc", SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph"))
 
         return obj
 

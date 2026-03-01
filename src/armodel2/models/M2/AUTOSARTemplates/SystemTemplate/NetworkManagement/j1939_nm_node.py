@@ -37,8 +37,17 @@ class J1939NmNode(NmNode):
         """
         return False
 
+    _XML_TAG = "J1939-NM-NODE"
+
+
     address: Optional[J1939NmAddressConfigurationCapabilityEnum]
     node_name: Optional[J1939NodeName]
+    _DESERIALIZE_DISPATCH = {
+        "ADDRESS": lambda obj, elem: setattr(obj, "address", J1939NmAddressConfigurationCapabilityEnum.deserialize(elem)),
+        "NODE-NAME": lambda obj, elem: setattr(obj, "node_name", SerializationHelper.deserialize_by_tag(elem, "J1939NodeName")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939NmNode."""
         super().__init__()
@@ -51,9 +60,8 @@ class J1939NmNode(NmNode):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939NmNode, self).serialize()
@@ -112,17 +120,14 @@ class J1939NmNode(NmNode):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939NmNode, cls).deserialize(element)
 
-        # Parse address
-        child = SerializationHelper.find_child_element(element, "ADDRESS")
-        if child is not None:
-            address_value = J1939NmAddressConfigurationCapabilityEnum.deserialize(child)
-            obj.address = address_value
-
-        # Parse node_name
-        child = SerializationHelper.find_child_element(element, "NODE-NAME")
-        if child is not None:
-            node_name_value = SerializationHelper.deserialize_by_tag(child, "J1939NodeName")
-            obj.node_name = node_name_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ADDRESS":
+                setattr(obj, "address", J1939NmAddressConfigurationCapabilityEnum.deserialize(child))
+            elif tag == "NODE-NAME":
+                setattr(obj, "node_name", SerializationHelper.deserialize_by_tag(child, "J1939NodeName"))
 
         return obj
 

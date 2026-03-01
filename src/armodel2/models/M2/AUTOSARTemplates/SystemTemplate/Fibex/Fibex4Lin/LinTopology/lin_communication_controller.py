@@ -31,6 +31,11 @@ class LinCommunicationController(ARObject, ABC):
         return True
 
     protocol_version: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "PROTOCOL-VERSION": lambda obj, elem: setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinCommunicationController."""
         super().__init__()
@@ -42,9 +47,8 @@ class LinCommunicationController(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinCommunicationController, self).serialize()
@@ -89,11 +93,12 @@ class LinCommunicationController(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinCommunicationController, cls).deserialize(element)
 
-        # Parse protocol_version
-        child = SerializationHelper.find_child_element(element, "PROTOCOL-VERSION")
-        if child is not None:
-            protocol_version_value = child.text
-            obj.protocol_version = protocol_version_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PROTOCOL-VERSION":
+                setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

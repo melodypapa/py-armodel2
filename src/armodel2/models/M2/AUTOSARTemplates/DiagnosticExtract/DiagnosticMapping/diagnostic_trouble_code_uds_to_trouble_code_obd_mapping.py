@@ -34,8 +34,17 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-TROUBLE-CODE-UDS-TO-TROUBLE-CODE-OBD-MAPPING"
+
+
     trouble_code_ref: Optional[ARRef]
     trouble_code_uds_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TROUBLE-CODE-REF": ("_POLYMORPHIC", "trouble_code_ref", ["DiagnosticTroubleCodeJ1939", "DiagnosticTroubleCodeObd", "DiagnosticTroubleCodeUds"]),
+        "TROUBLE-CODE-UDS-REF": ("_POLYMORPHIC", "trouble_code_uds_ref", ["DiagnosticTroubleCodeJ1939", "DiagnosticTroubleCodeObd", "DiagnosticTroubleCodeUds"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeUdsToTroubleCodeObdMapping."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticTroubleCodeUdsToTroubleCodeObdMapping, self).serialize()
@@ -109,17 +117,14 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTroubleCodeUdsToTroubleCodeObdMapping, cls).deserialize(element)
 
-        # Parse trouble_code_ref
-        child = SerializationHelper.find_child_element(element, "TROUBLE-CODE-REF")
-        if child is not None:
-            trouble_code_ref_value = ARRef.deserialize(child)
-            obj.trouble_code_ref = trouble_code_ref_value
-
-        # Parse trouble_code_uds_ref
-        child = SerializationHelper.find_child_element(element, "TROUBLE-CODE-UDS-REF")
-        if child is not None:
-            trouble_code_uds_ref_value = ARRef.deserialize(child)
-            obj.trouble_code_uds_ref = trouble_code_uds_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TROUBLE-CODE-REF":
+                setattr(obj, "trouble_code_ref", ARRef.deserialize(child))
+            elif tag == "TROUBLE-CODE-UDS-REF":
+                setattr(obj, "trouble_code_uds_ref", ARRef.deserialize(child))
 
         return obj
 

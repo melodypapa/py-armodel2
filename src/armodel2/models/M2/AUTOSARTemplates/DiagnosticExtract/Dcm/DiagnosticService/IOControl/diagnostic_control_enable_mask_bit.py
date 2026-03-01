@@ -33,8 +33,17 @@ class DiagnosticControlEnableMaskBit(ARObject):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-CONTROL-ENABLE-MASK-BIT"
+
+
     bit_number: Optional[PositiveInteger]
     controlled_data_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BIT-NUMBER": lambda obj, elem: setattr(obj, "bit_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "CONTROLLED-DATA-REFS": lambda obj, elem: [obj.controlled_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticControlEnableMaskBit."""
         super().__init__()
@@ -47,9 +56,8 @@ class DiagnosticControlEnableMaskBit(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticControlEnableMaskBit, self).serialize()
@@ -111,27 +119,16 @@ class DiagnosticControlEnableMaskBit(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticControlEnableMaskBit, cls).deserialize(element)
 
-        # Parse bit_number
-        child = SerializationHelper.find_child_element(element, "BIT-NUMBER")
-        if child is not None:
-            bit_number_value = child.text
-            obj.bit_number = bit_number_value
-
-        # Parse controlled_data_refs (list from container "CONTROLLED-DATA-REFS")
-        obj.controlled_data_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTROLLED-DATA-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.controlled_data_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BIT-NUMBER":
+                setattr(obj, "bit_number", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "CONTROLLED-DATA-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.controlled_data_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

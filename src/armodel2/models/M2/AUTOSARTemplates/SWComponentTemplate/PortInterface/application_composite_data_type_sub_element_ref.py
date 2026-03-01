@@ -30,7 +30,15 @@ class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
         """
         return False
 
+    _XML_TAG = "APPLICATION-COMPOSITE-DATA-TYPE-SUB-ELEMENT-REF"
+
+
     application: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATION": lambda obj, elem: setattr(obj, "application", SerializationHelper.deserialize_by_tag(elem, "any (ApplicationComposite)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ApplicationCompositeDataTypeSubElementRef."""
         super().__init__()
@@ -42,9 +50,8 @@ class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ApplicationCompositeDataTypeSubElementRef, self).serialize()
@@ -89,11 +96,12 @@ class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationCompositeDataTypeSubElementRef, cls).deserialize(element)
 
-        # Parse application
-        child = SerializationHelper.find_child_element(element, "APPLICATION")
-        if child is not None:
-            application_value = child.text
-            obj.application = application_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "APPLICATION":
+                setattr(obj, "application", SerializationHelper.deserialize_by_tag(child, "any (ApplicationComposite)"))
 
         return obj
 

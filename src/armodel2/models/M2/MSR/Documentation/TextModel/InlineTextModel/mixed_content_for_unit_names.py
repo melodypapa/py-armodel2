@@ -129,5 +129,4 @@ class MixedContentForUnitNamesBuilder:
         Returns:
             MixedContentForUnitNames instance
         """
-        # TODO: Add validation
         return self._obj

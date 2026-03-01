@@ -39,12 +39,25 @@ class SecurityEventContextProps(Identifiable):
         """
         return False
 
+    _XML_TAG = "SECURITY-EVENT-CONTEXT-PROPS"
+
+
     context_data: Optional[Any]
     default: Optional[Any]
     persistent: Optional[Boolean]
     security_event_ref: Optional[ARRef]
     sensor_instance: Optional[PositiveInteger]
     severity: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXT-DATA": lambda obj, elem: setattr(obj, "context_data", SerializationHelper.deserialize_by_tag(elem, "any (SecurityEventContext)")),
+        "DEFAULT": lambda obj, elem: setattr(obj, "default", SerializationHelper.deserialize_by_tag(elem, "any (SecurityEventReporting)")),
+        "PERSISTENT": lambda obj, elem: setattr(obj, "persistent", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SECURITY-EVENT-REF": lambda obj, elem: setattr(obj, "security_event_ref", ARRef.deserialize(elem)),
+        "SENSOR-INSTANCE": lambda obj, elem: setattr(obj, "sensor_instance", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SEVERITY": lambda obj, elem: setattr(obj, "severity", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecurityEventContextProps."""
         super().__init__()
@@ -61,9 +74,8 @@ class SecurityEventContextProps(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecurityEventContextProps, self).serialize()
@@ -178,41 +190,22 @@ class SecurityEventContextProps(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventContextProps, cls).deserialize(element)
 
-        # Parse context_data
-        child = SerializationHelper.find_child_element(element, "CONTEXT-DATA")
-        if child is not None:
-            context_data_value = child.text
-            obj.context_data = context_data_value
-
-        # Parse default
-        child = SerializationHelper.find_child_element(element, "DEFAULT")
-        if child is not None:
-            default_value = child.text
-            obj.default = default_value
-
-        # Parse persistent
-        child = SerializationHelper.find_child_element(element, "PERSISTENT")
-        if child is not None:
-            persistent_value = child.text
-            obj.persistent = persistent_value
-
-        # Parse security_event_ref
-        child = SerializationHelper.find_child_element(element, "SECURITY-EVENT-REF")
-        if child is not None:
-            security_event_ref_value = ARRef.deserialize(child)
-            obj.security_event_ref = security_event_ref_value
-
-        # Parse sensor_instance
-        child = SerializationHelper.find_child_element(element, "SENSOR-INSTANCE")
-        if child is not None:
-            sensor_instance_value = child.text
-            obj.sensor_instance = sensor_instance_value
-
-        # Parse severity
-        child = SerializationHelper.find_child_element(element, "SEVERITY")
-        if child is not None:
-            severity_value = child.text
-            obj.severity = severity_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONTEXT-DATA":
+                setattr(obj, "context_data", SerializationHelper.deserialize_by_tag(child, "any (SecurityEventContext)"))
+            elif tag == "DEFAULT":
+                setattr(obj, "default", SerializationHelper.deserialize_by_tag(child, "any (SecurityEventReporting)"))
+            elif tag == "PERSISTENT":
+                setattr(obj, "persistent", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SECURITY-EVENT-REF":
+                setattr(obj, "security_event_ref", ARRef.deserialize(child))
+            elif tag == "SENSOR-INSTANCE":
+                setattr(obj, "sensor_instance", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SEVERITY":
+                setattr(obj, "severity", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

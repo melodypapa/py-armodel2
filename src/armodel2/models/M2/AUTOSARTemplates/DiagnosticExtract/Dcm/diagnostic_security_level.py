@@ -34,11 +34,23 @@ class DiagnosticSecurityLevel(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SECURITY-LEVEL"
+
+
     access_data: Optional[PositiveInteger]
     key_size: Optional[PositiveInteger]
     num_failed: Optional[PositiveInteger]
     security_delay: Optional[TimeValue]
     seed_size: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESS-DATA": lambda obj, elem: setattr(obj, "access_data", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "KEY-SIZE": lambda obj, elem: setattr(obj, "key_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "NUM-FAILED": lambda obj, elem: setattr(obj, "num_failed", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SECURITY-DELAY": lambda obj, elem: setattr(obj, "security_delay", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "SEED-SIZE": lambda obj, elem: setattr(obj, "seed_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticSecurityLevel."""
         super().__init__()
@@ -54,9 +66,8 @@ class DiagnosticSecurityLevel(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticSecurityLevel, self).serialize()
@@ -157,35 +168,20 @@ class DiagnosticSecurityLevel(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSecurityLevel, cls).deserialize(element)
 
-        # Parse access_data
-        child = SerializationHelper.find_child_element(element, "ACCESS-DATA")
-        if child is not None:
-            access_data_value = child.text
-            obj.access_data = access_data_value
-
-        # Parse key_size
-        child = SerializationHelper.find_child_element(element, "KEY-SIZE")
-        if child is not None:
-            key_size_value = child.text
-            obj.key_size = key_size_value
-
-        # Parse num_failed
-        child = SerializationHelper.find_child_element(element, "NUM-FAILED")
-        if child is not None:
-            num_failed_value = child.text
-            obj.num_failed = num_failed_value
-
-        # Parse security_delay
-        child = SerializationHelper.find_child_element(element, "SECURITY-DELAY")
-        if child is not None:
-            security_delay_value = child.text
-            obj.security_delay = security_delay_value
-
-        # Parse seed_size
-        child = SerializationHelper.find_child_element(element, "SEED-SIZE")
-        if child is not None:
-            seed_size_value = child.text
-            obj.seed_size = seed_size_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ACCESS-DATA":
+                setattr(obj, "access_data", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "KEY-SIZE":
+                setattr(obj, "key_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "NUM-FAILED":
+                setattr(obj, "num_failed", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SECURITY-DELAY":
+                setattr(obj, "security_delay", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "SEED-SIZE":
+                setattr(obj, "seed_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

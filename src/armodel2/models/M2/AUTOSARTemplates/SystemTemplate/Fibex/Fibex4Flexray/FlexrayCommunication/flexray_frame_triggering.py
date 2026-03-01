@@ -37,10 +37,21 @@ class FlexrayFrameTriggering(FrameTriggering):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-FRAME-TRIGGERING"
+
+
     absolutelies: list[FlexrayAbsolutelyScheduledTiming]
     allow_dynamic: Optional[Boolean]
     message_id: Optional[PositiveInteger]
     payload_preamble: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ABSOLUTELIES": lambda obj, elem: obj.absolutelies.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayAbsolutelyScheduledTiming")),
+        "ALLOW-DYNAMIC": lambda obj, elem: setattr(obj, "allow_dynamic", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "MESSAGE-ID": lambda obj, elem: setattr(obj, "message_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PAYLOAD-PREAMBLE": lambda obj, elem: setattr(obj, "payload_preamble", SerializationHelper.deserialize_by_tag(elem, "any (BooleanIndicator)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayFrameTriggering."""
         super().__init__()
@@ -55,9 +66,8 @@ class FlexrayFrameTriggering(FrameTriggering):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayFrameTriggering, self).serialize()
@@ -140,33 +150,20 @@ class FlexrayFrameTriggering(FrameTriggering):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayFrameTriggering, cls).deserialize(element)
 
-        # Parse absolutelies (list from container "ABSOLUTELIES")
-        obj.absolutelies = []
-        container = SerializationHelper.find_child_element(element, "ABSOLUTELIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.absolutelies.append(child_value)
-
-        # Parse allow_dynamic
-        child = SerializationHelper.find_child_element(element, "ALLOW-DYNAMIC")
-        if child is not None:
-            allow_dynamic_value = child.text
-            obj.allow_dynamic = allow_dynamic_value
-
-        # Parse message_id
-        child = SerializationHelper.find_child_element(element, "MESSAGE-ID")
-        if child is not None:
-            message_id_value = child.text
-            obj.message_id = message_id_value
-
-        # Parse payload_preamble
-        child = SerializationHelper.find_child_element(element, "PAYLOAD-PREAMBLE")
-        if child is not None:
-            payload_preamble_value = child.text
-            obj.payload_preamble = payload_preamble_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ABSOLUTELIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.absolutelies.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayAbsolutelyScheduledTiming"))
+            elif tag == "ALLOW-DYNAMIC":
+                setattr(obj, "allow_dynamic", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "MESSAGE-ID":
+                setattr(obj, "message_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PAYLOAD-PREAMBLE":
+                setattr(obj, "payload_preamble", SerializationHelper.deserialize_by_tag(child, "any (BooleanIndicator)"))
 
         return obj
 

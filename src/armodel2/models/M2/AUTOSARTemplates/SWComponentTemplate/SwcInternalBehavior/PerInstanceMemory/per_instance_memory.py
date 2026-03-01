@@ -41,10 +41,21 @@ class PerInstanceMemory(Identifiable):
         """
         return False
 
+    _XML_TAG = "PER-INSTANCE-MEMORY"
+
+
     _init_value: Optional[String]
     sw_data_def_props: Optional[SwDataDefProps]
     type: Optional[CIdentifier]
     type_definition: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "INIT-VALUE": lambda obj, elem: setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "SW-DATA-DEF-PROPS": lambda obj, elem: setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "TYPE": lambda obj, elem: setattr(obj, "type", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
+        "TYPE-DEFINITION": lambda obj, elem: setattr(obj, "type_definition", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PerInstanceMemory."""
         super().__init__()
@@ -70,9 +81,8 @@ class PerInstanceMemory(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PerInstanceMemory, self).serialize()
@@ -154,29 +164,18 @@ class PerInstanceMemory(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PerInstanceMemory, cls).deserialize(element)
 
-        # Parse init_value (polymorphic wrapper "INIT-VALUE")
-        wrapper = SerializationHelper.find_child_element(element, "INIT-VALUE")
-        if wrapper is not None:
-            init_value_value = SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
-            obj.init_value = init_value_value
-
-        # Parse sw_data_def_props
-        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF-PROPS")
-        if child is not None:
-            sw_data_def_props_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.sw_data_def_props = sw_data_def_props_value
-
-        # Parse type
-        child = SerializationHelper.find_child_element(element, "TYPE")
-        if child is not None:
-            type_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
-            obj.type = type_value
-
-        # Parse type_definition
-        child = SerializationHelper.find_child_element(element, "TYPE-DEFINITION")
-        if child is not None:
-            type_definition_value = child.text
-            obj.type_definition = type_definition_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INIT-VALUE":
+                setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "SW-DATA-DEF-PROPS":
+                setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            elif tag == "TYPE":
+                setattr(obj, "type", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
+            elif tag == "TYPE-DEFINITION":
+                setattr(obj, "type_definition", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

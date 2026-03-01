@@ -43,11 +43,23 @@ class ISignalPort(CommConnectorPort):
         """
         return False
 
+    _XML_TAG = "I-SIGNAL-PORT"
+
+
     data_filter: Optional[DataFilter]
     dds_qos_profile_ref: Optional[ARRef]
     first_timeout: Optional[TimeValue]
     handle_invalid_enum: Optional[HandleInvalidEnum]
     timeout: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-FILTER": lambda obj, elem: setattr(obj, "data_filter", SerializationHelper.deserialize_by_tag(elem, "DataFilter")),
+        "DDS-QOS-PROFILE-REF": lambda obj, elem: setattr(obj, "dds_qos_profile_ref", ARRef.deserialize(elem)),
+        "FIRST-TIMEOUT": lambda obj, elem: setattr(obj, "first_timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "HANDLE-INVALID-ENUM": lambda obj, elem: setattr(obj, "handle_invalid_enum", HandleInvalidEnum.deserialize(elem)),
+        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ISignalPort."""
         super().__init__()
@@ -63,9 +75,8 @@ class ISignalPort(CommConnectorPort):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ISignalPort, self).serialize()
@@ -166,35 +177,20 @@ class ISignalPort(CommConnectorPort):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignalPort, cls).deserialize(element)
 
-        # Parse data_filter
-        child = SerializationHelper.find_child_element(element, "DATA-FILTER")
-        if child is not None:
-            data_filter_value = SerializationHelper.deserialize_by_tag(child, "DataFilter")
-            obj.data_filter = data_filter_value
-
-        # Parse dds_qos_profile_ref
-        child = SerializationHelper.find_child_element(element, "DDS-QOS-PROFILE-REF")
-        if child is not None:
-            dds_qos_profile_ref_value = ARRef.deserialize(child)
-            obj.dds_qos_profile_ref = dds_qos_profile_ref_value
-
-        # Parse first_timeout
-        child = SerializationHelper.find_child_element(element, "FIRST-TIMEOUT")
-        if child is not None:
-            first_timeout_value = child.text
-            obj.first_timeout = first_timeout_value
-
-        # Parse handle_invalid_enum
-        child = SerializationHelper.find_child_element(element, "HANDLE-INVALID-ENUM")
-        if child is not None:
-            handle_invalid_enum_value = HandleInvalidEnum.deserialize(child)
-            obj.handle_invalid_enum = handle_invalid_enum_value
-
-        # Parse timeout
-        child = SerializationHelper.find_child_element(element, "TIMEOUT")
-        if child is not None:
-            timeout_value = child.text
-            obj.timeout = timeout_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-FILTER":
+                setattr(obj, "data_filter", SerializationHelper.deserialize_by_tag(child, "DataFilter"))
+            elif tag == "DDS-QOS-PROFILE-REF":
+                setattr(obj, "dds_qos_profile_ref", ARRef.deserialize(child))
+            elif tag == "FIRST-TIMEOUT":
+                setattr(obj, "first_timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "HANDLE-INVALID-ENUM":
+                setattr(obj, "handle_invalid_enum", HandleInvalidEnum.deserialize(child))
+            elif tag == "TIMEOUT":
+                setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

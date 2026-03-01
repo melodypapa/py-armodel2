@@ -36,10 +36,21 @@ class ClientServerOperationMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "CLIENT-SERVER-OPERATION-MAPPING"
+
+
     argument_refs: list[ARRef]
     first_operation_ref: Optional[ARRef]
     first_to_second_ref: Optional[ARRef]
     second_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ARGUMENT-REFS": lambda obj, elem: [obj.argument_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "FIRST-OPERATION-REF": lambda obj, elem: setattr(obj, "first_operation_ref", ARRef.deserialize(elem)),
+        "FIRST-TO-SECOND-REF": lambda obj, elem: setattr(obj, "first_to_second_ref", ARRef.deserialize(elem)),
+        "SECOND-REF": lambda obj, elem: setattr(obj, "second_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientServerOperationMapping."""
         super().__init__()
@@ -54,9 +65,8 @@ class ClientServerOperationMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientServerOperationMapping, self).serialize()
@@ -146,39 +156,20 @@ class ClientServerOperationMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerOperationMapping, cls).deserialize(element)
 
-        # Parse argument_refs (list from container "ARGUMENT-REFS")
-        obj.argument_refs = []
-        container = SerializationHelper.find_child_element(element, "ARGUMENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.argument_refs.append(child_value)
-
-        # Parse first_operation_ref
-        child = SerializationHelper.find_child_element(element, "FIRST-OPERATION-REF")
-        if child is not None:
-            first_operation_ref_value = ARRef.deserialize(child)
-            obj.first_operation_ref = first_operation_ref_value
-
-        # Parse first_to_second_ref
-        child = SerializationHelper.find_child_element(element, "FIRST-TO-SECOND-REF")
-        if child is not None:
-            first_to_second_ref_value = ARRef.deserialize(child)
-            obj.first_to_second_ref = first_to_second_ref_value
-
-        # Parse second_ref
-        child = SerializationHelper.find_child_element(element, "SECOND-REF")
-        if child is not None:
-            second_ref_value = ARRef.deserialize(child)
-            obj.second_ref = second_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ARGUMENT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.argument_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "FIRST-OPERATION-REF":
+                setattr(obj, "first_operation_ref", ARRef.deserialize(child))
+            elif tag == "FIRST-TO-SECOND-REF":
+                setattr(obj, "first_to_second_ref", ARRef.deserialize(child))
+            elif tag == "SECOND-REF":
+                setattr(obj, "second_ref", ARRef.deserialize(child))
 
         return obj
 

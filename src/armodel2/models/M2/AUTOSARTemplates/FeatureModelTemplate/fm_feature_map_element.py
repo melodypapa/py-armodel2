@@ -40,10 +40,21 @@ class FMFeatureMapElement(Identifiable):
         """
         return False
 
+    _XML_TAG = "F-M-FEATURE-MAP-ELEMENT"
+
+
     assertions: list[FMFeatureMap]
     conditions: list[FMFeatureMap]
     post_build_variant_refs: list[Any]
     sw_value_set_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ASSERTIONS": lambda obj, elem: obj.assertions.append(SerializationHelper.deserialize_by_tag(elem, "FMFeatureMap")),
+        "CONDITIONS": lambda obj, elem: obj.conditions.append(SerializationHelper.deserialize_by_tag(elem, "FMFeatureMap")),
+        "POST-BUILD-VARIANT-REFS": lambda obj, elem: [obj.post_build_variant_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "SW-VALUE-SET-REFS": lambda obj, elem: [obj.sw_value_set_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize FMFeatureMapElement."""
         super().__init__()
@@ -58,9 +69,8 @@ class FMFeatureMapElement(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FMFeatureMapElement, self).serialize()
@@ -145,57 +155,26 @@ class FMFeatureMapElement(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeatureMapElement, cls).deserialize(element)
 
-        # Parse assertions (list from container "ASSERTIONS")
-        obj.assertions = []
-        container = SerializationHelper.find_child_element(element, "ASSERTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.assertions.append(child_value)
-
-        # Parse conditions (list from container "CONDITIONS")
-        obj.conditions = []
-        container = SerializationHelper.find_child_element(element, "CONDITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.conditions.append(child_value)
-
-        # Parse post_build_variant_refs (list from container "POST-BUILD-VARIANT-REFS")
-        obj.post_build_variant_refs = []
-        container = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.post_build_variant_refs.append(child_value)
-
-        # Parse sw_value_set_refs (list from container "SW-VALUE-SET-REFS")
-        obj.sw_value_set_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-VALUE-SET-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_value_set_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ASSERTIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.assertions.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureMap"))
+            elif tag == "CONDITIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.conditions.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureMap"))
+            elif tag == "POST-BUILD-VARIANT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.post_build_variant_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SW-VALUE-SET-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sw_value_set_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

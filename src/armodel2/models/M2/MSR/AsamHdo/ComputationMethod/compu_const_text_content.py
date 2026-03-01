@@ -111,5 +111,4 @@ class CompuConstTextContentBuilder:
         Returns:
             CompuConstTextContent instance
         """
-        # TODO: Add validation
         return self._obj

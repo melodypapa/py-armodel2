@@ -33,7 +33,15 @@ class DiagnosticMeasurementIdentifier(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-MEASUREMENT-IDENTIFIER"
+
+
     obd_mid: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "OBD-MID": lambda obj, elem: setattr(obj, "obd_mid", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticMeasurementIdentifier."""
         super().__init__()
@@ -45,9 +53,8 @@ class DiagnosticMeasurementIdentifier(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticMeasurementIdentifier, self).serialize()
@@ -92,11 +99,12 @@ class DiagnosticMeasurementIdentifier(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMeasurementIdentifier, cls).deserialize(element)
 
-        # Parse obd_mid
-        child = SerializationHelper.find_child_element(element, "OBD-MID")
-        if child is not None:
-            obd_mid_value = child.text
-            obj.obd_mid = obd_mid_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OBD-MID":
+                setattr(obj, "obd_mid", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

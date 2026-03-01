@@ -29,7 +29,15 @@ class RelativeTolerance(ARObject):
         """
         return False
 
+    _XML_TAG = "RELATIVE-TOLERANCE"
+
+
     relative: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "RELATIVE": lambda obj, elem: setattr(obj, "relative", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RelativeTolerance."""
         super().__init__()
@@ -41,9 +49,8 @@ class RelativeTolerance(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RelativeTolerance, self).serialize()
@@ -88,11 +95,12 @@ class RelativeTolerance(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RelativeTolerance, cls).deserialize(element)
 
-        # Parse relative
-        child = SerializationHelper.find_child_element(element, "RELATIVE")
-        if child is not None:
-            relative_value = child.text
-            obj.relative = relative_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RELATIVE":
+                setattr(obj, "relative", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

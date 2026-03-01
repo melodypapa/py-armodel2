@@ -37,9 +37,19 @@ class ServerComSpec(PPortComSpec):
         """
         return False
 
+    _XML_TAG = "SERVER-COM-SPEC"
+
+
     operation_ref: Optional[ARRef]
     queue_length: Optional[PositiveInteger]
     transformation_coms: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "OPERATION-REF": lambda obj, elem: setattr(obj, "operation_ref", ARRef.deserialize(elem)),
+        "QUEUE-LENGTH": lambda obj, elem: setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TRANSFORMATION-COMS": lambda obj, elem: obj.transformation_coms.append(SerializationHelper.deserialize_by_tag(elem, "any (TransformationCom)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ServerComSpec."""
         super().__init__()
@@ -53,9 +63,8 @@ class ServerComSpec(PPortComSpec):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ServerComSpec, self).serialize()
@@ -124,27 +133,18 @@ class ServerComSpec(PPortComSpec):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ServerComSpec, cls).deserialize(element)
 
-        # Parse operation_ref
-        child = SerializationHelper.find_child_element(element, "OPERATION-REF")
-        if child is not None:
-            operation_ref_value = ARRef.deserialize(child)
-            obj.operation_ref = operation_ref_value
-
-        # Parse queue_length
-        child = SerializationHelper.find_child_element(element, "QUEUE-LENGTH")
-        if child is not None:
-            queue_length_value = child.text
-            obj.queue_length = queue_length_value
-
-        # Parse transformation_coms (list from container "TRANSFORMATION-COMS")
-        obj.transformation_coms = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-COMS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.transformation_coms.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OPERATION-REF":
+                setattr(obj, "operation_ref", ARRef.deserialize(child))
+            elif tag == "QUEUE-LENGTH":
+                setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TRANSFORMATION-COMS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.transformation_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "any (TransformationCom)"))
 
         return obj
 

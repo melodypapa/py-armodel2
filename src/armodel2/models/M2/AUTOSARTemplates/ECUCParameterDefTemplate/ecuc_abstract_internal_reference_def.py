@@ -35,6 +35,11 @@ class EcucAbstractInternalReferenceDef(EcucAbstractReferenceDef, ABC):
         return True
 
     requires: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "REQUIRES": lambda obj, elem: setattr(obj, "requires", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucAbstractInternalReferenceDef."""
         super().__init__()
@@ -46,9 +51,8 @@ class EcucAbstractInternalReferenceDef(EcucAbstractReferenceDef, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucAbstractInternalReferenceDef, self).serialize()
@@ -93,11 +97,12 @@ class EcucAbstractInternalReferenceDef(EcucAbstractReferenceDef, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucAbstractInternalReferenceDef, cls).deserialize(element)
 
-        # Parse requires
-        child = SerializationHelper.find_child_element(element, "REQUIRES")
-        if child is not None:
-            requires_value = child.text
-            obj.requires = requires_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "REQUIRES":
+                setattr(obj, "requires", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

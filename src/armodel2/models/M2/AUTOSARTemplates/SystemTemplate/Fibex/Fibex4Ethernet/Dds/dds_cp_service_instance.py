@@ -48,6 +48,16 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
     dds_service_qos_ref: Optional[ARRef]
     service_instance: Optional[PositiveInteger]
     service_interface: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "DDS-FIELD-REPLY-REF": lambda obj, elem: setattr(obj, "dds_field_reply_ref", ARRef.deserialize(elem)),
+        "DDS-FIELD-REF": lambda obj, elem: setattr(obj, "dds_field_ref", ARRef.deserialize(elem)),
+        "DDS-METHOD-REF": lambda obj, elem: setattr(obj, "dds_method_ref", ARRef.deserialize(elem)),
+        "DDS-SERVICE-QOS-REF": lambda obj, elem: setattr(obj, "dds_service_qos_ref", ARRef.deserialize(elem)),
+        "SERVICE-INSTANCE": lambda obj, elem: setattr(obj, "service_instance", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SERVICE-INTERFACE": lambda obj, elem: setattr(obj, "service_interface", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpServiceInstance."""
         super().__init__()
@@ -64,9 +74,8 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpServiceInstance, self).serialize()
@@ -181,41 +190,22 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpServiceInstance, cls).deserialize(element)
 
-        # Parse dds_field_reply_ref
-        child = SerializationHelper.find_child_element(element, "DDS-FIELD-REPLY-REF")
-        if child is not None:
-            dds_field_reply_ref_value = ARRef.deserialize(child)
-            obj.dds_field_reply_ref = dds_field_reply_ref_value
-
-        # Parse dds_field_ref
-        child = SerializationHelper.find_child_element(element, "DDS-FIELD-REF")
-        if child is not None:
-            dds_field_ref_value = ARRef.deserialize(child)
-            obj.dds_field_ref = dds_field_ref_value
-
-        # Parse dds_method_ref
-        child = SerializationHelper.find_child_element(element, "DDS-METHOD-REF")
-        if child is not None:
-            dds_method_ref_value = ARRef.deserialize(child)
-            obj.dds_method_ref = dds_method_ref_value
-
-        # Parse dds_service_qos_ref
-        child = SerializationHelper.find_child_element(element, "DDS-SERVICE-QOS-REF")
-        if child is not None:
-            dds_service_qos_ref_value = ARRef.deserialize(child)
-            obj.dds_service_qos_ref = dds_service_qos_ref_value
-
-        # Parse service_instance
-        child = SerializationHelper.find_child_element(element, "SERVICE-INSTANCE")
-        if child is not None:
-            service_instance_value = child.text
-            obj.service_instance = service_instance_value
-
-        # Parse service_interface
-        child = SerializationHelper.find_child_element(element, "SERVICE-INTERFACE")
-        if child is not None:
-            service_interface_value = child.text
-            obj.service_interface = service_interface_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DDS-FIELD-REPLY-REF":
+                setattr(obj, "dds_field_reply_ref", ARRef.deserialize(child))
+            elif tag == "DDS-FIELD-REF":
+                setattr(obj, "dds_field_ref", ARRef.deserialize(child))
+            elif tag == "DDS-METHOD-REF":
+                setattr(obj, "dds_method_ref", ARRef.deserialize(child))
+            elif tag == "DDS-SERVICE-QOS-REF":
+                setattr(obj, "dds_service_qos_ref", ARRef.deserialize(child))
+            elif tag == "SERVICE-INSTANCE":
+                setattr(obj, "service_instance", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SERVICE-INTERFACE":
+                setattr(obj, "service_interface", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

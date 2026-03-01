@@ -46,6 +46,13 @@ class FrameTriggering(Identifiable, ABC):
     frame_port_refs: list[ARRef]
     frame_ref: Optional[ARRef]
     pdu_triggering_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FRAME-PORT-REFS": lambda obj, elem: [obj.frame_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "FRAME-REF": ("_POLYMORPHIC", "frame_ref", ["AbstractEthernetFrame", "CanFrame", "FlexrayFrame", "LinFrame"]),
+        "PDU-TRIGGERING-REFS": lambda obj, elem: [obj.pdu_triggering_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize FrameTriggering."""
         super().__init__()
@@ -59,9 +66,8 @@ class FrameTriggering(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FrameTriggering, self).serialize()
@@ -140,43 +146,20 @@ class FrameTriggering(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FrameTriggering, cls).deserialize(element)
 
-        # Parse frame_port_refs (list from container "FRAME-PORT-REFS")
-        obj.frame_port_refs = []
-        container = SerializationHelper.find_child_element(element, "FRAME-PORT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.frame_port_refs.append(child_value)
-
-        # Parse frame_ref
-        child = SerializationHelper.find_child_element(element, "FRAME-REF")
-        if child is not None:
-            frame_ref_value = ARRef.deserialize(child)
-            obj.frame_ref = frame_ref_value
-
-        # Parse pdu_triggering_refs (list from container "PDU-TRIGGERING-REFS")
-        obj.pdu_triggering_refs = []
-        container = SerializationHelper.find_child_element(element, "PDU-TRIGGERING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pdu_triggering_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FRAME-PORT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.frame_port_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "FRAME-REF":
+                setattr(obj, "frame_ref", ARRef.deserialize(child))
+            elif tag == "PDU-TRIGGERING-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.pdu_triggering_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

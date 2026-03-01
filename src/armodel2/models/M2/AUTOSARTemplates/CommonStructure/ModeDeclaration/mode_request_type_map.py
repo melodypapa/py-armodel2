@@ -37,8 +37,17 @@ class ModeRequestTypeMap(ARObject):
         """
         return False
 
+    _XML_TAG = "MODE-REQUEST-TYPE-MAP"
+
+
     implementation_data_type_ref: Optional[ARRef]
     mode_group_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "IMPLEMENTATION-DATA-TYPE-REF": ("_POLYMORPHIC", "implementation_data_type_ref", ["ImplementationDataType"]),
+        "MODE-GROUP-REF": lambda obj, elem: setattr(obj, "mode_group_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeRequestTypeMap."""
         super().__init__()
@@ -51,9 +60,8 @@ class ModeRequestTypeMap(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeRequestTypeMap, self).serialize()
@@ -112,17 +120,14 @@ class ModeRequestTypeMap(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeRequestTypeMap, cls).deserialize(element)
 
-        # Parse implementation_data_type_ref
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-DATA-TYPE-REF")
-        if child is not None:
-            implementation_data_type_ref_value = ARRef.deserialize(child)
-            obj.implementation_data_type_ref = implementation_data_type_ref_value
-
-        # Parse mode_group_ref
-        child = SerializationHelper.find_child_element(element, "MODE-GROUP-REF")
-        if child is not None:
-            mode_group_ref_value = ARRef.deserialize(child)
-            obj.mode_group_ref = mode_group_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "IMPLEMENTATION-DATA-TYPE-REF":
+                setattr(obj, "implementation_data_type_ref", ARRef.deserialize(child))
+            elif tag == "MODE-GROUP-REF":
+                setattr(obj, "mode_group_ref", ARRef.deserialize(child))
 
         return obj
 

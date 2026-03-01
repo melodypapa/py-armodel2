@@ -48,6 +48,9 @@ class Collection(ARElement):
         """
         return False
 
+    _XML_TAG = "COLLECTION"
+
+
     auto_collect: Optional[AutoCollectEnum]
     _collected_instance_irefs: list[AnyInstanceRef]
     collection_semantics: Optional[NameToken]
@@ -55,6 +58,17 @@ class Collection(ARElement):
     element_refs: list[ARRef]
     source_element_refs: list[ARRef]
     _source_instance_irefs: list[AnyInstanceRef]
+    _DESERIALIZE_DISPATCH = {
+        "AUTO-COLLECT": lambda obj, elem: setattr(obj, "auto_collect", AutoCollectEnum.deserialize(elem)),
+        "COLLECTED-INSTANCES-IREF": lambda obj, elem: obj._collected_instance_irefs.append(SerializationHelper.deserialize_by_tag(elem, "AnyInstanceRef")),
+        "COLLECTION-SEMANTICS": lambda obj, elem: setattr(obj, "collection_semantics", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "ELEMENT-ROLE": lambda obj, elem: setattr(obj, "element_role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "ELEMENT-REFS": ("_POLYMORPHIC_LIST", "element_refs", ["ARPackage", "AbstractDoIpLogicAddressProps", "AbstractEvent", "AbstractImplementationDataTypeElement", "AbstractSecurityEventFilter", "AbstractSecurityIdsmInstanceFilter", "AbstractServiceInstance", "AppOsTaskProxyToEcuTaskProxyMapping", "ApplicationEndpoint", "ApplicationError", "ApplicationPartitionToEcuPartitionMapping", "AppliedStandard", "AsynchronousServerCallResultPoint", "AtpBlueprint", "AtpBlueprintable", "AtpClassifier", "AtpFeature", "AutosarOperationArgumentInstance", "AutosarVariableInstance", "BinaryManifestAddressableObject", "BinaryManifestItemDefinition", "BinaryManifestResource", "BinaryManifestResourceDefinition", "BlockState", "BswInternalTriggeringPoint", "BswModuleDependency", "BuildActionEntity", "BuildActionEnvironment", "CanTpAddress", "CanTpChannel", "CanTpNode", "Chapter", "ClassContentConditional", "ClientIdDefinition", "ClientServerOperation", "Code", "CollectableElement", "ComManagementMapping", "CommConnectorPort", "CommunicationConnector", "CommunicationController", "Compiler", "ConsistencyNeeds", "ConsumedEventGroup", "CouplingElementAbstractDetails", "CouplingPort", "CouplingPortAbstractShaper", "CouplingPortStructuralElement", "CpSoftwareClusterResource", "CpSoftwareClusterResourceToApplicationPartitionMapping", "CpSoftwareClusterToApplicationPartitionMapping", "CpSoftwareClusterToEcuInstanceMapping", "CpSoftwareClusterToResourceMapping", "CryptoServiceMapping", "DataPrototypeGroup", "Data", "Transformation", "DdsCpDomain", "DdsCpPartition", "DdsCpQosProfile", "DdsCpTopic", "DependencyOnArtifact", "DiagEventDebounceAlgorithm", "DiagnosticAuthTransmitCertificateEvaluation", "DiagnosticConnectedIndicator", "DiagnosticDataElement", "DiagnosticDebounceAlgorithmProps", "DiagnosticFunctionInhibitSource", "DiagnosticParameterElement", "DiagnosticRoutineSubfunction", "DltApplication", "DltArgument", "DltLogChannel", "DltMessage", "DoIpInterface", "DoIpLogicAddress", "DoIpRoutingActivation", "ECUMapping", "EOCExecutableEntityRefAbstract", "EcuPartition", "EcucContainerValue", "EcucDefinitionElement", "EcucDestinationUriDef", "EcucEnumerationLiteralDef", "EcucQuery", "EcucValidationCondition", "EndToEndProtection", "EthernetWakeupSleepOnDatalineConfig", "EventHandler", "ExclusiveArea", "ExecutableEntity", "ExecutionTime", "FMAttributeDef", "FMFeatureMapAssertion", "FMFeatureMapCondition", "FMFeatureMapElement", "FMFeatureRelation", "FMFeatureRestriction", "FMFeatureSelection", "FlatInstanceDescriptor", "FlexrayArTpNode", "FlexrayTpConnectionControl", "FlexrayTpNode", "FlexrayTpPduPool", "FrameTriggering", "GeneralParameter", "GlobalTimeGateway", "GlobalTimeMaster", "GlobalTimeSlave", "HeapUsage", "HwAttributeDef", "HwAttributeLiteralDef", "HwPin", "HwPinGroup", "IEEE1722TpAcfBus", "IEEE1722TpAcfBusPart", "IPSecRule", "IPv6ExtHeaderFilterList", "ISignalToIPduMapping", "ISignalTriggering", "IdentCaption", "ImpositionTime", "InternalTriggeringPoint", "J1939SharedAddressCluster", "J1939TpNode", "Keyword", "LifeCycleState", "LinScheduleTable", "LinTpNode", "Linker", "MacMulticastGroup", "MacSecKayParticipant", "McDataInstance", "MemorySection", "ModeDeclaration", "ModeDeclarationMapping", "ModeSwitchPoint", "NetworkEndpoint", "NmCluster", "NmEcu", "NmNode", "NvBlockDescriptor", "PackageableElement", "ParameterAccess", "PduActivationRoutingGroup", "PduToFrameMapping", "PduTriggering", "PerInstanceMemory", "PhysicalChannel", "PortElementToCommunicationResourceMapping", "PortGroup", "PortInterfaceMapping", "PossibleErrorReaction", "ResourceConsumption", "RootSwCompositionPrototype", "RptComponent", "RptContainer", "RptExecutableEntity", "RptExecutableEntityEvent", "RptExecutionContext", "RptProfile", "RptServicePoint", "RteEventInCompositionSeparation", "RteEventInCompositionToOsTaskProxyMapping", "RteEventInSystemSeparation", "RteEventInSystemToOsTaskProxyMapping", "RunnableEntityGroup", "SdgAttribute", "SdgClass", "SecureCommunicationAuthenticationProps", "SecureCommunicationFreshnessProps", "SecurityEventContextProps", "ServerCallPoint", "ServiceNeeds", "SignalServiceTranslationElementProps", "SignalServiceTranslationEventProps", "SignalServiceTranslationProps", "SocketAddress", "SomeipTpChannel", "SpecElementReference", "StackUsage", "StaticSocketConnection", "StructuredReq", "SwGenericAxisParamType", "SwServiceArg", "SwcServiceDependency", "SwcToApplicationPartitionMapping", "SwcToEcuMapping", "SwcToImplMapping", "SwitchAsynchronousTrafficShaperGroupEntry", "SwitchFlowMeteringEntry", "SwitchStreamFilterActionDestPortModification", "SwitchStreamFilterEntry", "SwitchStreamFilterRule", "SwitchStreamGateEntry", "SwitchStreamIdentification", "SystemMapping", "SystemSignalGroupToCommunicationResourceMapping", "SystemSignalToCommunicationResourceMapping", "TDCpSoftwareClusterMapping", "TDCpSoftwareClusterResourceMapping", "TcpOptionFilterList", "TimingClock", "TimingClockSyncAccuracy", "TimingCondition", "TimingConstraint", "TimingDescription", "TimingExtensionResource", "TimingModeInstance", "TlsCryptoCipherSuite", "TlsCryptoCipherSuiteProps", "Topic1", "TpAddress", "TraceableTable", "TraceableText", "TracedFailure", "TransformationProps", "TransformationTechnology", "Trigger", "VariableAccess", "VariationPointProxy", "ViewMap", "VlanConfig", "WaitPoint"]),
+        "SOURCE-ELEMENT-REFS": ("_POLYMORPHIC_LIST", "source_element_refs", ["ARPackage", "AbstractDoIpLogicAddressProps", "AbstractEvent", "AbstractImplementationDataTypeElement", "AbstractSecurityEventFilter", "AbstractSecurityIdsmInstanceFilter", "AbstractServiceInstance", "AppOsTaskProxyToEcuTaskProxyMapping", "ApplicationEndpoint", "ApplicationError", "ApplicationPartitionToEcuPartitionMapping", "AppliedStandard", "AsynchronousServerCallResultPoint", "AtpBlueprint", "AtpBlueprintable", "AtpClassifier", "AtpFeature", "AutosarOperationArgumentInstance", "AutosarVariableInstance", "BinaryManifestAddressableObject", "BinaryManifestItemDefinition", "BinaryManifestResource", "BinaryManifestResourceDefinition", "BlockState", "BswInternalTriggeringPoint", "BswModuleDependency", "BuildActionEntity", "BuildActionEnvironment", "CanTpAddress", "CanTpChannel", "CanTpNode", "Chapter", "ClassContentConditional", "ClientIdDefinition", "ClientServerOperation", "Code", "CollectableElement", "ComManagementMapping", "CommConnectorPort", "CommunicationConnector", "CommunicationController", "Compiler", "ConsistencyNeeds", "ConsumedEventGroup", "CouplingElementAbstractDetails", "CouplingPort", "CouplingPortAbstractShaper", "CouplingPortStructuralElement", "CpSoftwareClusterResource", "CpSoftwareClusterResourceToApplicationPartitionMapping", "CpSoftwareClusterToApplicationPartitionMapping", "CpSoftwareClusterToEcuInstanceMapping", "CpSoftwareClusterToResourceMapping", "CryptoServiceMapping", "DataPrototypeGroup", "Data", "Transformation", "DdsCpDomain", "DdsCpPartition", "DdsCpQosProfile", "DdsCpTopic", "DependencyOnArtifact", "DiagEventDebounceAlgorithm", "DiagnosticAuthTransmitCertificateEvaluation", "DiagnosticConnectedIndicator", "DiagnosticDataElement", "DiagnosticDebounceAlgorithmProps", "DiagnosticFunctionInhibitSource", "DiagnosticParameterElement", "DiagnosticRoutineSubfunction", "DltApplication", "DltArgument", "DltLogChannel", "DltMessage", "DoIpInterface", "DoIpLogicAddress", "DoIpRoutingActivation", "ECUMapping", "EOCExecutableEntityRefAbstract", "EcuPartition", "EcucContainerValue", "EcucDefinitionElement", "EcucDestinationUriDef", "EcucEnumerationLiteralDef", "EcucQuery", "EcucValidationCondition", "EndToEndProtection", "EthernetWakeupSleepOnDatalineConfig", "EventHandler", "ExclusiveArea", "ExecutableEntity", "ExecutionTime", "FMAttributeDef", "FMFeatureMapAssertion", "FMFeatureMapCondition", "FMFeatureMapElement", "FMFeatureRelation", "FMFeatureRestriction", "FMFeatureSelection", "FlatInstanceDescriptor", "FlexrayArTpNode", "FlexrayTpConnectionControl", "FlexrayTpNode", "FlexrayTpPduPool", "FrameTriggering", "GeneralParameter", "GlobalTimeGateway", "GlobalTimeMaster", "GlobalTimeSlave", "HeapUsage", "HwAttributeDef", "HwAttributeLiteralDef", "HwPin", "HwPinGroup", "IEEE1722TpAcfBus", "IEEE1722TpAcfBusPart", "IPSecRule", "IPv6ExtHeaderFilterList", "ISignalToIPduMapping", "ISignalTriggering", "IdentCaption", "ImpositionTime", "InternalTriggeringPoint", "J1939SharedAddressCluster", "J1939TpNode", "Keyword", "LifeCycleState", "LinScheduleTable", "LinTpNode", "Linker", "MacMulticastGroup", "MacSecKayParticipant", "McDataInstance", "MemorySection", "ModeDeclaration", "ModeDeclarationMapping", "ModeSwitchPoint", "NetworkEndpoint", "NmCluster", "NmEcu", "NmNode", "NvBlockDescriptor", "PackageableElement", "ParameterAccess", "PduActivationRoutingGroup", "PduToFrameMapping", "PduTriggering", "PerInstanceMemory", "PhysicalChannel", "PortElementToCommunicationResourceMapping", "PortGroup", "PortInterfaceMapping", "PossibleErrorReaction", "ResourceConsumption", "RootSwCompositionPrototype", "RptComponent", "RptContainer", "RptExecutableEntity", "RptExecutableEntityEvent", "RptExecutionContext", "RptProfile", "RptServicePoint", "RteEventInCompositionSeparation", "RteEventInCompositionToOsTaskProxyMapping", "RteEventInSystemSeparation", "RteEventInSystemToOsTaskProxyMapping", "RunnableEntityGroup", "SdgAttribute", "SdgClass", "SecureCommunicationAuthenticationProps", "SecureCommunicationFreshnessProps", "SecurityEventContextProps", "ServerCallPoint", "ServiceNeeds", "SignalServiceTranslationElementProps", "SignalServiceTranslationEventProps", "SignalServiceTranslationProps", "SocketAddress", "SomeipTpChannel", "SpecElementReference", "StackUsage", "StaticSocketConnection", "StructuredReq", "SwGenericAxisParamType", "SwServiceArg", "SwcServiceDependency", "SwcToApplicationPartitionMapping", "SwcToEcuMapping", "SwcToImplMapping", "SwitchAsynchronousTrafficShaperGroupEntry", "SwitchFlowMeteringEntry", "SwitchStreamFilterActionDestPortModification", "SwitchStreamFilterEntry", "SwitchStreamFilterRule", "SwitchStreamGateEntry", "SwitchStreamIdentification", "SystemMapping", "SystemSignalGroupToCommunicationResourceMapping", "SystemSignalToCommunicationResourceMapping", "TDCpSoftwareClusterMapping", "TDCpSoftwareClusterResourceMapping", "TcpOptionFilterList", "TimingClock", "TimingClockSyncAccuracy", "TimingCondition", "TimingConstraint", "TimingDescription", "TimingExtensionResource", "TimingModeInstance", "TlsCryptoCipherSuite", "TlsCryptoCipherSuiteProps", "Topic1", "TpAddress", "TraceableTable", "TraceableText", "TracedFailure", "TransformationProps", "TransformationTechnology", "Trigger", "VariableAccess", "VariationPointProxy", "ViewMap", "VlanConfig", "WaitPoint"]),
+        "SOURCE-INSTANCES-IREF": lambda obj, elem: obj._source_instance_irefs.append(SerializationHelper.deserialize_by_tag(elem, "AnyInstanceRef")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Collection."""
         super().__init__()
@@ -94,9 +108,8 @@ class Collection(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Collection, self).serialize()
@@ -225,69 +238,30 @@ class Collection(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Collection, cls).deserialize(element)
 
-        # Parse auto_collect
-        child = SerializationHelper.find_child_element(element, "AUTO-COLLECT")
-        if child is not None:
-            auto_collect_value = AutoCollectEnum.deserialize(child)
-            obj.auto_collect = auto_collect_value
-
-        # Parse collected_instance_irefs (list from wrapper "COLLECTED-INSTANCES-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "COLLECTED-INSTANCES-IREF")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            collected_instance_irefs_value = SerializationHelper.deserialize_by_tag(wrapper, "AnyInstanceRef")
-            obj.collected_instance_irefs = collected_instance_irefs_value
-
-        # Parse collection_semantics
-        child = SerializationHelper.find_child_element(element, "COLLECTION-SEMANTICS")
-        if child is not None:
-            collection_semantics_value = child.text
-            obj.collection_semantics = collection_semantics_value
-
-        # Parse element_role
-        child = SerializationHelper.find_child_element(element, "ELEMENT-ROLE")
-        if child is not None:
-            element_role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.element_role = element_role_value
-
-        # Parse element_refs (list from container "ELEMENT-REFS")
-        obj.element_refs = []
-        container = SerializationHelper.find_child_element(element, "ELEMENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.element_refs.append(child_value)
-
-        # Parse source_element_refs (list from container "SOURCE-ELEMENT-REFS")
-        obj.source_element_refs = []
-        container = SerializationHelper.find_child_element(element, "SOURCE-ELEMENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.source_element_refs.append(child_value)
-
-        # Parse source_instance_irefs (list from wrapper "SOURCE-INSTANCES-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "SOURCE-INSTANCES-IREF")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            source_instance_irefs_value = SerializationHelper.deserialize_by_tag(wrapper, "AnyInstanceRef")
-            obj.source_instance_irefs = source_instance_irefs_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AUTO-COLLECT":
+                setattr(obj, "auto_collect", AutoCollectEnum.deserialize(child))
+            elif tag == "COLLECTED-INSTANCE-IREFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj._collected_instance_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "AnyInstanceRef"))
+            elif tag == "COLLECTION-SEMANTICS":
+                setattr(obj, "collection_semantics", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "ELEMENT-ROLE":
+                setattr(obj, "element_role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "ELEMENT-REFS":
+                for item_elem in child:
+                    obj.element_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SOURCE-ELEMENT-REFS":
+                for item_elem in child:
+                    obj.source_element_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SOURCE-INSTANCE-IREFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj._source_instance_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "AnyInstanceRef"))
 
         return obj
 

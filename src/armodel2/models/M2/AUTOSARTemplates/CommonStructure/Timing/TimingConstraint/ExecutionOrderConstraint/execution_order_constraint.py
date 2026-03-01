@@ -37,12 +37,25 @@ class ExecutionOrderConstraint(TimingConstraint):
         """
         return False
 
+    _XML_TAG = "EXECUTION-ORDER-CONSTRAINT"
+
+
     base_ref: Optional[ARRef]
     execution_order: Optional[Any]
     ignore_order: Optional[Boolean]
     is_event: Optional[Boolean]
     ordered_elements: list[Any]
     permit_multiple: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "EXECUTION-ORDER": lambda obj, elem: setattr(obj, "execution_order", SerializationHelper.deserialize_by_tag(elem, "any (ExecutionOrder)")),
+        "IGNORE-ORDER": lambda obj, elem: setattr(obj, "ignore_order", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "IS-EVENT": lambda obj, elem: setattr(obj, "is_event", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "ORDERED-ELEMENTS": lambda obj, elem: obj.ordered_elements.append(SerializationHelper.deserialize_by_tag(elem, "any (EOCExecutableEntity)")),
+        "PERMIT-MULTIPLE": lambda obj, elem: setattr(obj, "permit_multiple", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ExecutionOrderConstraint."""
         super().__init__()
@@ -59,9 +72,8 @@ class ExecutionOrderConstraint(TimingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ExecutionOrderConstraint, self).serialize()
@@ -172,45 +184,24 @@ class ExecutionOrderConstraint(TimingConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ExecutionOrderConstraint, cls).deserialize(element)
 
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse execution_order
-        child = SerializationHelper.find_child_element(element, "EXECUTION-ORDER")
-        if child is not None:
-            execution_order_value = child.text
-            obj.execution_order = execution_order_value
-
-        # Parse ignore_order
-        child = SerializationHelper.find_child_element(element, "IGNORE-ORDER")
-        if child is not None:
-            ignore_order_value = child.text
-            obj.ignore_order = ignore_order_value
-
-        # Parse is_event
-        child = SerializationHelper.find_child_element(element, "IS-EVENT")
-        if child is not None:
-            is_event_value = child.text
-            obj.is_event = is_event_value
-
-        # Parse ordered_elements (list from container "ORDERED-ELEMENTS")
-        obj.ordered_elements = []
-        container = SerializationHelper.find_child_element(element, "ORDERED-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ordered_elements.append(child_value)
-
-        # Parse permit_multiple
-        child = SerializationHelper.find_child_element(element, "PERMIT-MULTIPLE")
-        if child is not None:
-            permit_multiple_value = child.text
-            obj.permit_multiple = permit_multiple_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BASE-REF":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "EXECUTION-ORDER":
+                setattr(obj, "execution_order", SerializationHelper.deserialize_by_tag(child, "any (ExecutionOrder)"))
+            elif tag == "IGNORE-ORDER":
+                setattr(obj, "ignore_order", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "IS-EVENT":
+                setattr(obj, "is_event", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "ORDERED-ELEMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.ordered_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
+            elif tag == "PERMIT-MULTIPLE":
+                setattr(obj, "permit_multiple", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

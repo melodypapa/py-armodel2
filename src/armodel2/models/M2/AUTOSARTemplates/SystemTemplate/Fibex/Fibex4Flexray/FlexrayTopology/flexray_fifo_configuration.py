@@ -37,6 +37,9 @@ class FlexrayFifoConfiguration(ARObject):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-FIFO-CONFIGURATION"
+
+
     admit_without: Optional[Boolean]
     base_cycle: Optional[Integer]
     channel_ref: Optional[ARRef]
@@ -45,6 +48,18 @@ class FlexrayFifoConfiguration(ARObject):
     fifo_ranges: list[FlexrayFifoRange]
     msg_id_mask: Optional[Integer]
     msg_id_match: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "ADMIT-WITHOUT": lambda obj, elem: setattr(obj, "admit_without", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "BASE-CYCLE": lambda obj, elem: setattr(obj, "base_cycle", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "CHANNEL-REF": lambda obj, elem: setattr(obj, "channel_ref", ARRef.deserialize(elem)),
+        "CYCLE-REPETITION": lambda obj, elem: setattr(obj, "cycle_repetition", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "FIFO-DEPTH": lambda obj, elem: setattr(obj, "fifo_depth", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "FIFO-RANGES": lambda obj, elem: obj.fifo_ranges.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayFifoRange")),
+        "MSG-ID-MASK": lambda obj, elem: setattr(obj, "msg_id_mask", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MSG-ID-MATCH": lambda obj, elem: setattr(obj, "msg_id_match", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayFifoConfiguration."""
         super().__init__()
@@ -63,9 +78,8 @@ class FlexrayFifoConfiguration(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayFifoConfiguration, self).serialize()
@@ -204,57 +218,28 @@ class FlexrayFifoConfiguration(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayFifoConfiguration, cls).deserialize(element)
 
-        # Parse admit_without
-        child = SerializationHelper.find_child_element(element, "ADMIT-WITHOUT")
-        if child is not None:
-            admit_without_value = child.text
-            obj.admit_without = admit_without_value
-
-        # Parse base_cycle
-        child = SerializationHelper.find_child_element(element, "BASE-CYCLE")
-        if child is not None:
-            base_cycle_value = child.text
-            obj.base_cycle = base_cycle_value
-
-        # Parse channel_ref
-        child = SerializationHelper.find_child_element(element, "CHANNEL-REF")
-        if child is not None:
-            channel_ref_value = ARRef.deserialize(child)
-            obj.channel_ref = channel_ref_value
-
-        # Parse cycle_repetition
-        child = SerializationHelper.find_child_element(element, "CYCLE-REPETITION")
-        if child is not None:
-            cycle_repetition_value = child.text
-            obj.cycle_repetition = cycle_repetition_value
-
-        # Parse fifo_depth
-        child = SerializationHelper.find_child_element(element, "FIFO-DEPTH")
-        if child is not None:
-            fifo_depth_value = child.text
-            obj.fifo_depth = fifo_depth_value
-
-        # Parse fifo_ranges (list from container "FIFO-RANGES")
-        obj.fifo_ranges = []
-        container = SerializationHelper.find_child_element(element, "FIFO-RANGES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.fifo_ranges.append(child_value)
-
-        # Parse msg_id_mask
-        child = SerializationHelper.find_child_element(element, "MSG-ID-MASK")
-        if child is not None:
-            msg_id_mask_value = child.text
-            obj.msg_id_mask = msg_id_mask_value
-
-        # Parse msg_id_match
-        child = SerializationHelper.find_child_element(element, "MSG-ID-MATCH")
-        if child is not None:
-            msg_id_match_value = child.text
-            obj.msg_id_match = msg_id_match_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ADMIT-WITHOUT":
+                setattr(obj, "admit_without", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "BASE-CYCLE":
+                setattr(obj, "base_cycle", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "CHANNEL-REF":
+                setattr(obj, "channel_ref", ARRef.deserialize(child))
+            elif tag == "CYCLE-REPETITION":
+                setattr(obj, "cycle_repetition", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "FIFO-DEPTH":
+                setattr(obj, "fifo_depth", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "FIFO-RANGES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.fifo_ranges.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayFifoRange"))
+            elif tag == "MSG-ID-MASK":
+                setattr(obj, "msg_id_mask", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MSG-ID-MATCH":
+                setattr(obj, "msg_id_match", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

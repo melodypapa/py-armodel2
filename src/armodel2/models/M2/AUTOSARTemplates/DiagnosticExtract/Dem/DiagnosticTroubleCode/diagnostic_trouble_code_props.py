@@ -50,6 +50,9 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-TROUBLE-CODE-PROPS"
+
+
     aging_ref: Optional[ARRef]
     diagnostic_memory_ref: Optional[Any]
     extended_data_refs: list[ARRef]
@@ -60,6 +63,20 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
     priority: Optional[PositiveInteger]
     significance: Optional[DiagnosticSignificanceEnum]
     snapshot_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AGING-REF": lambda obj, elem: setattr(obj, "aging_ref", ARRef.deserialize(elem)),
+        "DIAGNOSTIC-MEMORY-REF": lambda obj, elem: setattr(obj, "diagnostic_memory_ref", ARRef.deserialize(elem)),
+        "EXTENDED-DATA-REFS": lambda obj, elem: [obj.extended_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "FREEZE-FRAME-REFS": lambda obj, elem: [obj.freeze_frame_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "IMMEDIATE-NV": lambda obj, elem: setattr(obj, "immediate_nv", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "LEGISLATED-REF": lambda obj, elem: setattr(obj, "legislated_ref", ARRef.deserialize(elem)),
+        "MAX-NUMBER": lambda obj, elem: setattr(obj, "max_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SIGNIFICANCE": lambda obj, elem: setattr(obj, "significance", DiagnosticSignificanceEnum.deserialize(elem)),
+        "SNAPSHOT-REF": lambda obj, elem: setattr(obj, "snapshot_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeProps."""
         super().__init__()
@@ -80,9 +97,8 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticTroubleCodeProps, self).serialize()
@@ -259,85 +275,34 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTroubleCodeProps, cls).deserialize(element)
 
-        # Parse aging_ref
-        child = SerializationHelper.find_child_element(element, "AGING-REF")
-        if child is not None:
-            aging_ref_value = ARRef.deserialize(child)
-            obj.aging_ref = aging_ref_value
-
-        # Parse diagnostic_memory_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-MEMORY-REF")
-        if child is not None:
-            diagnostic_memory_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_memory_ref = diagnostic_memory_ref_value
-
-        # Parse extended_data_refs (list from container "EXTENDED-DATA-REFS")
-        obj.extended_data_refs = []
-        container = SerializationHelper.find_child_element(element, "EXTENDED-DATA-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.extended_data_refs.append(child_value)
-
-        # Parse freeze_frame_refs (list from container "FREEZE-FRAME-REFS")
-        obj.freeze_frame_refs = []
-        container = SerializationHelper.find_child_element(element, "FREEZE-FRAME-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.freeze_frame_refs.append(child_value)
-
-        # Parse immediate_nv
-        child = SerializationHelper.find_child_element(element, "IMMEDIATE-NV")
-        if child is not None:
-            immediate_nv_value = child.text
-            obj.immediate_nv = immediate_nv_value
-
-        # Parse legislated_ref
-        child = SerializationHelper.find_child_element(element, "LEGISLATED-REF")
-        if child is not None:
-            legislated_ref_value = ARRef.deserialize(child)
-            obj.legislated_ref = legislated_ref_value
-
-        # Parse max_number
-        child = SerializationHelper.find_child_element(element, "MAX-NUMBER")
-        if child is not None:
-            max_number_value = child.text
-            obj.max_number = max_number_value
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse significance
-        child = SerializationHelper.find_child_element(element, "SIGNIFICANCE")
-        if child is not None:
-            significance_value = DiagnosticSignificanceEnum.deserialize(child)
-            obj.significance = significance_value
-
-        # Parse snapshot_ref
-        child = SerializationHelper.find_child_element(element, "SNAPSHOT-REF")
-        if child is not None:
-            snapshot_ref_value = ARRef.deserialize(child)
-            obj.snapshot_ref = snapshot_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AGING-REF":
+                setattr(obj, "aging_ref", ARRef.deserialize(child))
+            elif tag == "DIAGNOSTIC-MEMORY-REF":
+                setattr(obj, "diagnostic_memory_ref", ARRef.deserialize(child))
+            elif tag == "EXTENDED-DATA-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.extended_data_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "FREEZE-FRAME-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.freeze_frame_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "IMMEDIATE-NV":
+                setattr(obj, "immediate_nv", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "LEGISLATED-REF":
+                setattr(obj, "legislated_ref", ARRef.deserialize(child))
+            elif tag == "MAX-NUMBER":
+                setattr(obj, "max_number", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SIGNIFICANCE":
+                setattr(obj, "significance", DiagnosticSignificanceEnum.deserialize(child))
+            elif tag == "SNAPSHOT-REF":
+                setattr(obj, "snapshot_ref", ARRef.deserialize(child))
 
         return obj
 

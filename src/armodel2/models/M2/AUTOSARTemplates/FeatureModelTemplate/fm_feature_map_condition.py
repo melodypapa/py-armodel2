@@ -30,7 +30,15 @@ class FMFeatureMapCondition(Identifiable):
         """
         return False
 
+    _XML_TAG = "F-M-FEATURE-MAP-CONDITION"
+
+
     fm_cond_and_attributes: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "FM-COND-AND-ATTRIBUTES": lambda obj, elem: setattr(obj, "fm_cond_and_attributes", SerializationHelper.deserialize_by_tag(elem, "any (FMConditionByFeatures)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FMFeatureMapCondition."""
         super().__init__()
@@ -42,9 +50,8 @@ class FMFeatureMapCondition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FMFeatureMapCondition, self).serialize()
@@ -89,11 +96,12 @@ class FMFeatureMapCondition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeatureMapCondition, cls).deserialize(element)
 
-        # Parse fm_cond_and_attributes
-        child = SerializationHelper.find_child_element(element, "FM-COND-AND-ATTRIBUTES")
-        if child is not None:
-            fm_cond_and_attributes_value = child.text
-            obj.fm_cond_and_attributes = fm_cond_and_attributes_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FM-COND-AND-ATTRIBUTES":
+                setattr(obj, "fm_cond_and_attributes", SerializationHelper.deserialize_by_tag(child, "any (FMConditionByFeatures)"))
 
         return obj
 

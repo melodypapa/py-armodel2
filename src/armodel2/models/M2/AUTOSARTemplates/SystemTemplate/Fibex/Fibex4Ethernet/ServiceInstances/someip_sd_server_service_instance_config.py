@@ -40,11 +40,23 @@ class SomeipSdServerServiceInstanceConfig(ARElement):
         """
         return False
 
+    _XML_TAG = "SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG"
+
+
     initial_offer_behavior: Optional[InitialSdDelayConfig]
     offer_cyclic_delay: Optional[TimeValue]
     priority: Optional[PositiveInteger]
     request: Optional[RequestResponseDelay]
     service_offer: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "INITIAL-OFFER-BEHAVIOR": lambda obj, elem: setattr(obj, "initial_offer_behavior", SerializationHelper.deserialize_by_tag(elem, "InitialSdDelayConfig")),
+        "OFFER-CYCLIC-DELAY": lambda obj, elem: setattr(obj, "offer_cyclic_delay", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "REQUEST": lambda obj, elem: setattr(obj, "request", SerializationHelper.deserialize_by_tag(elem, "RequestResponseDelay")),
+        "SERVICE-OFFER": lambda obj, elem: setattr(obj, "service_offer", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SomeipSdServerServiceInstanceConfig."""
         super().__init__()
@@ -60,9 +72,8 @@ class SomeipSdServerServiceInstanceConfig(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SomeipSdServerServiceInstanceConfig, self).serialize()
@@ -163,35 +174,20 @@ class SomeipSdServerServiceInstanceConfig(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SomeipSdServerServiceInstanceConfig, cls).deserialize(element)
 
-        # Parse initial_offer_behavior
-        child = SerializationHelper.find_child_element(element, "INITIAL-OFFER-BEHAVIOR")
-        if child is not None:
-            initial_offer_behavior_value = SerializationHelper.deserialize_by_tag(child, "InitialSdDelayConfig")
-            obj.initial_offer_behavior = initial_offer_behavior_value
-
-        # Parse offer_cyclic_delay
-        child = SerializationHelper.find_child_element(element, "OFFER-CYCLIC-DELAY")
-        if child is not None:
-            offer_cyclic_delay_value = child.text
-            obj.offer_cyclic_delay = offer_cyclic_delay_value
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse request
-        child = SerializationHelper.find_child_element(element, "REQUEST")
-        if child is not None:
-            request_value = SerializationHelper.deserialize_by_tag(child, "RequestResponseDelay")
-            obj.request = request_value
-
-        # Parse service_offer
-        child = SerializationHelper.find_child_element(element, "SERVICE-OFFER")
-        if child is not None:
-            service_offer_value = child.text
-            obj.service_offer = service_offer_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INITIAL-OFFER-BEHAVIOR":
+                setattr(obj, "initial_offer_behavior", SerializationHelper.deserialize_by_tag(child, "InitialSdDelayConfig"))
+            elif tag == "OFFER-CYCLIC-DELAY":
+                setattr(obj, "offer_cyclic_delay", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "REQUEST":
+                setattr(obj, "request", SerializationHelper.deserialize_by_tag(child, "RequestResponseDelay"))
+            elif tag == "SERVICE-OFFER":
+                setattr(obj, "service_offer", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

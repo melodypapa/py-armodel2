@@ -36,9 +36,19 @@ class SOMEIPTransformationDescription(TransformationDescription):
         """
         return False
 
+    _XML_TAG = "S-O-M-E-I-P-TRANSFORMATION-DESCRIPTION"
+
+
     alignment: Optional[PositiveInteger]
     byte_order: Optional[ByteOrderEnum]
     interface_version: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ALIGNMENT": lambda obj, elem: setattr(obj, "alignment", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "BYTE-ORDER": lambda obj, elem: setattr(obj, "byte_order", ByteOrderEnum.deserialize(elem)),
+        "INTERFACE-VERSION": lambda obj, elem: setattr(obj, "interface_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SOMEIPTransformationDescription."""
         super().__init__()
@@ -52,9 +62,8 @@ class SOMEIPTransformationDescription(TransformationDescription):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SOMEIPTransformationDescription, self).serialize()
@@ -127,23 +136,16 @@ class SOMEIPTransformationDescription(TransformationDescription):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SOMEIPTransformationDescription, cls).deserialize(element)
 
-        # Parse alignment
-        child = SerializationHelper.find_child_element(element, "ALIGNMENT")
-        if child is not None:
-            alignment_value = child.text
-            obj.alignment = alignment_value
-
-        # Parse byte_order
-        child = SerializationHelper.find_child_element(element, "BYTE-ORDER")
-        if child is not None:
-            byte_order_value = ByteOrderEnum.deserialize(child)
-            obj.byte_order = byte_order_value
-
-        # Parse interface_version
-        child = SerializationHelper.find_child_element(element, "INTERFACE-VERSION")
-        if child is not None:
-            interface_version_value = child.text
-            obj.interface_version = interface_version_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ALIGNMENT":
+                setattr(obj, "alignment", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "BYTE-ORDER":
+                setattr(obj, "byte_order", ByteOrderEnum.deserialize(child))
+            elif tag == "INTERFACE-VERSION":
+                setattr(obj, "interface_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -29,7 +29,15 @@ class StreamFilterIpv6Address(ARObject):
         """
         return False
 
+    _XML_TAG = "STREAM-FILTER-IPV6-ADDRESS"
+
+
     ipv6_address: Optional[Ip6AddressString]
+    _DESERIALIZE_DISPATCH = {
+        "IPV6-ADDRESS": lambda obj, elem: setattr(obj, "ipv6_address", SerializationHelper.deserialize_by_tag(elem, "Ip6AddressString")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StreamFilterIpv6Address."""
         super().__init__()
@@ -41,9 +49,8 @@ class StreamFilterIpv6Address(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StreamFilterIpv6Address, self).serialize()
@@ -88,11 +95,12 @@ class StreamFilterIpv6Address(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StreamFilterIpv6Address, cls).deserialize(element)
 
-        # Parse ipv6_address
-        child = SerializationHelper.find_child_element(element, "IPV6-ADDRESS")
-        if child is not None:
-            ipv6_address_value = child.text
-            obj.ipv6_address = ipv6_address_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "IPV6-ADDRESS":
+                setattr(obj, "ipv6_address", SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
 
         return obj
 

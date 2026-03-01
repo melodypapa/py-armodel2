@@ -30,9 +30,19 @@ class TransmissionComSpecProps(ARObject):
         """
         return False
 
+    _XML_TAG = "TRANSMISSION-COM-SPEC-PROPS"
+
+
     data_update: Optional[TimeValue]
     minimum_send: Optional[TimeValue]
     transmission: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-UPDATE": lambda obj, elem: setattr(obj, "data_update", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "MINIMUM-SEND": lambda obj, elem: setattr(obj, "minimum_send", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", SerializationHelper.deserialize_by_tag(elem, "any (TransmissionMode)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TransmissionComSpecProps."""
         super().__init__()
@@ -46,9 +56,8 @@ class TransmissionComSpecProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TransmissionComSpecProps, self).serialize()
@@ -121,23 +130,16 @@ class TransmissionComSpecProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransmissionComSpecProps, cls).deserialize(element)
 
-        # Parse data_update
-        child = SerializationHelper.find_child_element(element, "DATA-UPDATE")
-        if child is not None:
-            data_update_value = child.text
-            obj.data_update = data_update_value
-
-        # Parse minimum_send
-        child = SerializationHelper.find_child_element(element, "MINIMUM-SEND")
-        if child is not None:
-            minimum_send_value = child.text
-            obj.minimum_send = minimum_send_value
-
-        # Parse transmission
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION")
-        if child is not None:
-            transmission_value = child.text
-            obj.transmission = transmission_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-UPDATE":
+                setattr(obj, "data_update", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "MINIMUM-SEND":
+                setattr(obj, "minimum_send", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TRANSMISSION":
+                setattr(obj, "transmission", SerializationHelper.deserialize_by_tag(child, "any (TransmissionMode)"))
 
         return obj
 

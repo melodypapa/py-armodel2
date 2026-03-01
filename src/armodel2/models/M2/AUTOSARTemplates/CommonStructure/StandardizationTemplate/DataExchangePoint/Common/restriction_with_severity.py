@@ -31,6 +31,11 @@ class RestrictionWithSeverity(ARObject, ABC):
         return True
 
     severity: SeverityEnum
+    _DESERIALIZE_DISPATCH = {
+        "SEVERITY": lambda obj, elem: setattr(obj, "severity", SeverityEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RestrictionWithSeverity."""
         super().__init__()
@@ -42,9 +47,8 @@ class RestrictionWithSeverity(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RestrictionWithSeverity, self).serialize()
@@ -89,11 +93,12 @@ class RestrictionWithSeverity(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RestrictionWithSeverity, cls).deserialize(element)
 
-        # Parse severity
-        child = SerializationHelper.find_child_element(element, "SEVERITY")
-        if child is not None:
-            severity_value = SeverityEnum.deserialize(child)
-            obj.severity = severity_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SEVERITY":
+                setattr(obj, "severity", SeverityEnum.deserialize(child))
 
         return obj
 

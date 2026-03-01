@@ -48,6 +48,12 @@ class Referrable(ARObject, ABC):
 
     short_name: Identifier
     short_name_fragments: list[ShortNameFragment]
+    _DESERIALIZE_DISPATCH = {
+        "SHORT-NAME": lambda obj, elem: setattr(obj, "short_name", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "SHORT-NAME-FRAGMENTS": lambda obj, elem: obj.short_name_fragments.append(SerializationHelper.deserialize_by_tag(elem, "ShortNameFragment")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Referrable."""
         super().__init__()
@@ -60,9 +66,8 @@ class Referrable(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Referrable, self).serialize()
@@ -117,21 +122,16 @@ class Referrable(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Referrable, cls).deserialize(element)
 
-        # Parse short_name
-        child = SerializationHelper.find_child_element(element, "SHORT-NAME")
-        if child is not None:
-            short_name_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_name = short_name_value
-
-        # Parse short_name_fragments (list from container "SHORT-NAME-FRAGMENTS")
-        obj.short_name_fragments = []
-        container = SerializationHelper.find_child_element(element, "SHORT-NAME-FRAGMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.short_name_fragments.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SHORT-NAME":
+                setattr(obj, "short_name", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "SHORT-NAME-FRAGMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.short_name_fragments.append(SerializationHelper.deserialize_by_tag(item_elem, "ShortNameFragment"))
 
         return obj
 

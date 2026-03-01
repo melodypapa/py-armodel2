@@ -36,6 +36,9 @@ class UdpNmCluster(NmCluster):
         """
         return False
 
+    _XML_TAG = "UDP-NM-CLUSTER"
+
+
     nm_cbv_position: Optional[Integer]
     nm_immediate: Optional[PositiveInteger]
     nm_message: Optional[TimeValue]
@@ -46,6 +49,20 @@ class UdpNmCluster(NmCluster):
     nm_repeat: Optional[TimeValue]
     nm_wait_bus: Optional[TimeValue]
     vlan_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "NM-CBV-POSITION": lambda obj, elem: setattr(obj, "nm_cbv_position", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NM-IMMEDIATE": lambda obj, elem: setattr(obj, "nm_immediate", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "NM-MESSAGE": lambda obj, elem: setattr(obj, "nm_message", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "NM-MSG-CYCLE": lambda obj, elem: setattr(obj, "nm_msg_cycle", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "NM-NETWORK": lambda obj, elem: setattr(obj, "nm_network", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "NM-NID-POSITION": lambda obj, elem: setattr(obj, "nm_nid_position", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NM-REMOTE": lambda obj, elem: setattr(obj, "nm_remote", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "NM-REPEAT": lambda obj, elem: setattr(obj, "nm_repeat", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "NM-WAIT-BUS": lambda obj, elem: setattr(obj, "nm_wait_bus", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "VLAN-REF": lambda obj, elem: setattr(obj, "vlan_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize UdpNmCluster."""
         super().__init__()
@@ -66,9 +83,8 @@ class UdpNmCluster(NmCluster):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(UdpNmCluster, self).serialize()
@@ -239,65 +255,30 @@ class UdpNmCluster(NmCluster):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(UdpNmCluster, cls).deserialize(element)
 
-        # Parse nm_cbv_position
-        child = SerializationHelper.find_child_element(element, "NM-CBV-POSITION")
-        if child is not None:
-            nm_cbv_position_value = child.text
-            obj.nm_cbv_position = nm_cbv_position_value
-
-        # Parse nm_immediate
-        child = SerializationHelper.find_child_element(element, "NM-IMMEDIATE")
-        if child is not None:
-            nm_immediate_value = child.text
-            obj.nm_immediate = nm_immediate_value
-
-        # Parse nm_message
-        child = SerializationHelper.find_child_element(element, "NM-MESSAGE")
-        if child is not None:
-            nm_message_value = child.text
-            obj.nm_message = nm_message_value
-
-        # Parse nm_msg_cycle
-        child = SerializationHelper.find_child_element(element, "NM-MSG-CYCLE")
-        if child is not None:
-            nm_msg_cycle_value = child.text
-            obj.nm_msg_cycle = nm_msg_cycle_value
-
-        # Parse nm_network
-        child = SerializationHelper.find_child_element(element, "NM-NETWORK")
-        if child is not None:
-            nm_network_value = child.text
-            obj.nm_network = nm_network_value
-
-        # Parse nm_nid_position
-        child = SerializationHelper.find_child_element(element, "NM-NID-POSITION")
-        if child is not None:
-            nm_nid_position_value = child.text
-            obj.nm_nid_position = nm_nid_position_value
-
-        # Parse nm_remote
-        child = SerializationHelper.find_child_element(element, "NM-REMOTE")
-        if child is not None:
-            nm_remote_value = child.text
-            obj.nm_remote = nm_remote_value
-
-        # Parse nm_repeat
-        child = SerializationHelper.find_child_element(element, "NM-REPEAT")
-        if child is not None:
-            nm_repeat_value = child.text
-            obj.nm_repeat = nm_repeat_value
-
-        # Parse nm_wait_bus
-        child = SerializationHelper.find_child_element(element, "NM-WAIT-BUS")
-        if child is not None:
-            nm_wait_bus_value = child.text
-            obj.nm_wait_bus = nm_wait_bus_value
-
-        # Parse vlan_ref
-        child = SerializationHelper.find_child_element(element, "VLAN-REF")
-        if child is not None:
-            vlan_ref_value = ARRef.deserialize(child)
-            obj.vlan_ref = vlan_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "NM-CBV-POSITION":
+                setattr(obj, "nm_cbv_position", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "NM-IMMEDIATE":
+                setattr(obj, "nm_immediate", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "NM-MESSAGE":
+                setattr(obj, "nm_message", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "NM-MSG-CYCLE":
+                setattr(obj, "nm_msg_cycle", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "NM-NETWORK":
+                setattr(obj, "nm_network", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "NM-NID-POSITION":
+                setattr(obj, "nm_nid_position", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "NM-REMOTE":
+                setattr(obj, "nm_remote", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "NM-REPEAT":
+                setattr(obj, "nm_repeat", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "NM-WAIT-BUS":
+                setattr(obj, "nm_wait_bus", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "VLAN-REF":
+                setattr(obj, "vlan_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -29,8 +29,17 @@ class CompuRationalCoeffs(ARObject):
         """
         return False
 
+    _XML_TAG = "COMPU-RATIONAL-COEFFS"
+
+
     compu_numerator: Optional[CompuNominatorDenominator]
     compu_denominator: Optional[CompuNominatorDenominator]
+    _DESERIALIZE_DISPATCH = {
+        "COMPU-NUMERATOR": lambda obj, elem: setattr(obj, "compu_numerator", SerializationHelper.deserialize_by_tag(elem, "CompuNominatorDenominator")),
+        "COMPU-DENOMINATOR": lambda obj, elem: setattr(obj, "compu_denominator", SerializationHelper.deserialize_by_tag(elem, "CompuNominatorDenominator")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompuRationalCoeffs."""
         super().__init__()
@@ -43,9 +52,8 @@ class CompuRationalCoeffs(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompuRationalCoeffs, self).serialize()
@@ -104,17 +112,14 @@ class CompuRationalCoeffs(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuRationalCoeffs, cls).deserialize(element)
 
-        # Parse compu_numerator
-        child = SerializationHelper.find_child_element(element, "COMPU-NUMERATOR")
-        if child is not None:
-            compu_numerator_value = SerializationHelper.deserialize_by_tag(child, "CompuNominatorDenominator")
-            obj.compu_numerator = compu_numerator_value
-
-        # Parse compu_denominator
-        child = SerializationHelper.find_child_element(element, "COMPU-DENOMINATOR")
-        if child is not None:
-            compu_denominator_value = SerializationHelper.deserialize_by_tag(child, "CompuNominatorDenominator")
-            obj.compu_denominator = compu_denominator_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMPU-NUMERATOR":
+                setattr(obj, "compu_numerator", SerializationHelper.deserialize_by_tag(child, "CompuNominatorDenominator"))
+            elif tag == "COMPU-DENOMINATOR":
+                setattr(obj, "compu_denominator", SerializationHelper.deserialize_by_tag(child, "CompuNominatorDenominator"))
 
         return obj
 

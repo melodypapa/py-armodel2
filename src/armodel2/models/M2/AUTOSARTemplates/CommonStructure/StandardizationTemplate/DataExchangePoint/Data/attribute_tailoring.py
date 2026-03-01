@@ -36,6 +36,12 @@ class AttributeTailoring(DataFormatElementScope, ABC):
 
     multiplicity: Optional[Any]
     variation: Optional[VariationRestrictionWithSeverity]
+    _DESERIALIZE_DISPATCH = {
+        "MULTIPLICITY": lambda obj, elem: setattr(obj, "multiplicity", SerializationHelper.deserialize_by_tag(elem, "any (MultiplicityRestriction)")),
+        "VARIATION": lambda obj, elem: setattr(obj, "variation", SerializationHelper.deserialize_by_tag(elem, "VariationRestrictionWithSeverity")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AttributeTailoring."""
         super().__init__()
@@ -48,9 +54,8 @@ class AttributeTailoring(DataFormatElementScope, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AttributeTailoring, self).serialize()
@@ -109,17 +114,14 @@ class AttributeTailoring(DataFormatElementScope, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AttributeTailoring, cls).deserialize(element)
 
-        # Parse multiplicity
-        child = SerializationHelper.find_child_element(element, "MULTIPLICITY")
-        if child is not None:
-            multiplicity_value = child.text
-            obj.multiplicity = multiplicity_value
-
-        # Parse variation
-        child = SerializationHelper.find_child_element(element, "VARIATION")
-        if child is not None:
-            variation_value = SerializationHelper.deserialize_by_tag(child, "VariationRestrictionWithSeverity")
-            obj.variation = variation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MULTIPLICITY":
+                setattr(obj, "multiplicity", SerializationHelper.deserialize_by_tag(child, "any (MultiplicityRestriction)"))
+            elif tag == "VARIATION":
+                setattr(obj, "variation", SerializationHelper.deserialize_by_tag(child, "VariationRestrictionWithSeverity"))
 
         return obj
 

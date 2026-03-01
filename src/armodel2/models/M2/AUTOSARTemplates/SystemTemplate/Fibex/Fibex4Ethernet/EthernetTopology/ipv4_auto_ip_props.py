@@ -29,7 +29,15 @@ class Ipv4AutoIpProps(ARObject):
         """
         return False
 
+    _XML_TAG = "IPV4-AUTO-IP-PROPS"
+
+
     tcp_ip_auto_ip_init: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "TCP-IP-AUTO-IP-INIT": lambda obj, elem: setattr(obj, "tcp_ip_auto_ip_init", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ipv4AutoIpProps."""
         super().__init__()
@@ -41,9 +49,8 @@ class Ipv4AutoIpProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ipv4AutoIpProps, self).serialize()
@@ -88,11 +95,12 @@ class Ipv4AutoIpProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ipv4AutoIpProps, cls).deserialize(element)
 
-        # Parse tcp_ip_auto_ip_init
-        child = SerializationHelper.find_child_element(element, "TCP-IP-AUTO-IP-INIT")
-        if child is not None:
-            tcp_ip_auto_ip_init_value = child.text
-            obj.tcp_ip_auto_ip_init = tcp_ip_auto_ip_init_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TCP-IP-AUTO-IP-INIT":
+                setattr(obj, "tcp_ip_auto_ip_init", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

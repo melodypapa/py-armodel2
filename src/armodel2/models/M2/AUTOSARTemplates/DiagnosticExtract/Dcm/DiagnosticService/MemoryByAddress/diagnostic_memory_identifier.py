@@ -38,10 +38,21 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-MEMORY-IDENTIFIER"
+
+
     access_ref: Optional[ARRef]
     id: Optional[PositiveInteger]
     memory_high: Optional[String]
     memory_low: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESS-REF": lambda obj, elem: setattr(obj, "access_ref", ARRef.deserialize(elem)),
+        "ID": lambda obj, elem: setattr(obj, "id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MEMORY-HIGH": lambda obj, elem: setattr(obj, "memory_high", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "MEMORY-LOW": lambda obj, elem: setattr(obj, "memory_low", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryIdentifier."""
         super().__init__()
@@ -56,9 +67,8 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticMemoryIdentifier, self).serialize()
@@ -145,29 +155,18 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMemoryIdentifier, cls).deserialize(element)
 
-        # Parse access_ref
-        child = SerializationHelper.find_child_element(element, "ACCESS-REF")
-        if child is not None:
-            access_ref_value = ARRef.deserialize(child)
-            obj.access_ref = access_ref_value
-
-        # Parse id
-        child = SerializationHelper.find_child_element(element, "ID")
-        if child is not None:
-            id_value = child.text
-            obj.id = id_value
-
-        # Parse memory_high
-        child = SerializationHelper.find_child_element(element, "MEMORY-HIGH")
-        if child is not None:
-            memory_high_value = child.text
-            obj.memory_high = memory_high_value
-
-        # Parse memory_low
-        child = SerializationHelper.find_child_element(element, "MEMORY-LOW")
-        if child is not None:
-            memory_low_value = child.text
-            obj.memory_low = memory_low_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ACCESS-REF":
+                setattr(obj, "access_ref", ARRef.deserialize(child))
+            elif tag == "ID":
+                setattr(obj, "id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MEMORY-HIGH":
+                setattr(obj, "memory_high", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "MEMORY-LOW":
+                setattr(obj, "memory_low", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

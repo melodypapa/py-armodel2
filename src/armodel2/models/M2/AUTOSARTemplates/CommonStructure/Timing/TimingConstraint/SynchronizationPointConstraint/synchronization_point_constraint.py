@@ -34,10 +34,21 @@ class SynchronizationPointConstraint(TimingConstraint):
         """
         return False
 
+    _XML_TAG = "SYNCHRONIZATION-POINT-CONSTRAINT"
+
+
     source_eec_refs: list[Any]
     source_event_refs: list[ARRef]
     target_eec_refs: list[Any]
     target_event_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SOURCE-EEC-REFS": lambda obj, elem: [obj.source_eec_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "SOURCE-EVENT-REFS": ("_POLYMORPHIC_LIST", "source_event_refs", ["BswEvent", "RTEEvent"]),
+        "TARGET-EEC-REFS": lambda obj, elem: [obj.target_eec_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "TARGET-EVENT-REFS": ("_POLYMORPHIC_LIST", "target_event_refs", ["BswEvent", "RTEEvent"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SynchronizationPointConstraint."""
         super().__init__()
@@ -52,9 +63,8 @@ class SynchronizationPointConstraint(TimingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SynchronizationPointConstraint, self).serialize()
@@ -153,69 +163,24 @@ class SynchronizationPointConstraint(TimingConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SynchronizationPointConstraint, cls).deserialize(element)
 
-        # Parse source_eec_refs (list from container "SOURCE-EEC-REFS")
-        obj.source_eec_refs = []
-        container = SerializationHelper.find_child_element(element, "SOURCE-EEC-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.source_eec_refs.append(child_value)
-
-        # Parse source_event_refs (list from container "SOURCE-EVENT-REFS")
-        obj.source_event_refs = []
-        container = SerializationHelper.find_child_element(element, "SOURCE-EVENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.source_event_refs.append(child_value)
-
-        # Parse target_eec_refs (list from container "TARGET-EEC-REFS")
-        obj.target_eec_refs = []
-        container = SerializationHelper.find_child_element(element, "TARGET-EEC-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.target_eec_refs.append(child_value)
-
-        # Parse target_event_refs (list from container "TARGET-EVENT-REFS")
-        obj.target_event_refs = []
-        container = SerializationHelper.find_child_element(element, "TARGET-EVENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.target_event_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SOURCE-EEC-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.source_eec_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SOURCE-EVENT-REFS":
+                for item_elem in child:
+                    obj.source_event_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "TARGET-EEC-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.target_eec_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "TARGET-EVENT-REFS":
+                for item_elem in child:
+                    obj.target_event_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

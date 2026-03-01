@@ -36,6 +36,11 @@ class AbstractAccessPoint(Identifiable, ABC):
         return True
 
     return_value: Optional[RteApiReturnValueProvisionEnum]
+    _DESERIALIZE_DISPATCH = {
+        "RETURN-VALUE": lambda obj, elem: setattr(obj, "return_value", RteApiReturnValueProvisionEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AbstractAccessPoint."""
         super().__init__()
@@ -47,9 +52,8 @@ class AbstractAccessPoint(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AbstractAccessPoint, self).serialize()
@@ -94,11 +98,12 @@ class AbstractAccessPoint(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractAccessPoint, cls).deserialize(element)
 
-        # Parse return_value
-        child = SerializationHelper.find_child_element(element, "RETURN-VALUE")
-        if child is not None:
-            return_value_value = RteApiReturnValueProvisionEnum.deserialize(child)
-            obj.return_value = return_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RETURN-VALUE":
+                setattr(obj, "return_value", RteApiReturnValueProvisionEnum.deserialize(child))
 
         return obj
 

@@ -46,12 +46,25 @@ class FMFeature(ARElement):
         """
         return False
 
+    _XML_TAG = "F-M-FEATURE"
+
+
     attribute_defs: list[FMAttributeDef]
     decomposition_decompositions: list[FMFeature]
     maximum: Optional[BindingTimeEnum]
     minimum: Optional[BindingTimeEnum]
     relations: list[FMFeatureRelation]
     restrictions: list[FMFeatureRestriction]
+    _DESERIALIZE_DISPATCH = {
+        "ATTRIBUTE-DEFS": lambda obj, elem: obj.attribute_defs.append(SerializationHelper.deserialize_by_tag(elem, "FMAttributeDef")),
+        "DECOMPOSITION-DECOMPOSITIONS": lambda obj, elem: obj.decomposition_decompositions.append(SerializationHelper.deserialize_by_tag(elem, "FMFeature")),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", BindingTimeEnum.deserialize(elem)),
+        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", BindingTimeEnum.deserialize(elem)),
+        "RELATIONS": lambda obj, elem: obj.relations.append(SerializationHelper.deserialize_by_tag(elem, "FMFeatureRelation")),
+        "RESTRICTIONS": lambda obj, elem: obj.restrictions.append(SerializationHelper.deserialize_by_tag(elem, "FMFeatureRestriction")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FMFeature."""
         super().__init__()
@@ -68,9 +81,8 @@ class FMFeature(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FMFeature, self).serialize()
@@ -169,57 +181,30 @@ class FMFeature(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeature, cls).deserialize(element)
 
-        # Parse attribute_defs (list from container "ATTRIBUTE-DEFS")
-        obj.attribute_defs = []
-        container = SerializationHelper.find_child_element(element, "ATTRIBUTE-DEFS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.attribute_defs.append(child_value)
-
-        # Parse decomposition_decompositions (list from container "DECOMPOSITION-DECOMPOSITIONS")
-        obj.decomposition_decompositions = []
-        container = SerializationHelper.find_child_element(element, "DECOMPOSITION-DECOMPOSITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.decomposition_decompositions.append(child_value)
-
-        # Parse maximum
-        child = SerializationHelper.find_child_element(element, "MAXIMUM")
-        if child is not None:
-            maximum_value = BindingTimeEnum.deserialize(child)
-            obj.maximum = maximum_value
-
-        # Parse minimum
-        child = SerializationHelper.find_child_element(element, "MINIMUM")
-        if child is not None:
-            minimum_value = BindingTimeEnum.deserialize(child)
-            obj.minimum = minimum_value
-
-        # Parse relations (list from container "RELATIONS")
-        obj.relations = []
-        container = SerializationHelper.find_child_element(element, "RELATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.relations.append(child_value)
-
-        # Parse restrictions (list from container "RESTRICTIONS")
-        obj.restrictions = []
-        container = SerializationHelper.find_child_element(element, "RESTRICTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.restrictions.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ATTRIBUTE-DEFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.attribute_defs.append(SerializationHelper.deserialize_by_tag(item_elem, "FMAttributeDef"))
+            elif tag == "DECOMPOSITION-DECOMPOSITIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.decomposition_decompositions.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeature"))
+            elif tag == "MAXIMUM":
+                setattr(obj, "maximum", BindingTimeEnum.deserialize(child))
+            elif tag == "MINIMUM":
+                setattr(obj, "minimum", BindingTimeEnum.deserialize(child))
+            elif tag == "RELATIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.relations.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureRelation"))
+            elif tag == "RESTRICTIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.restrictions.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureRestriction"))
 
         return obj
 

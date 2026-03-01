@@ -41,9 +41,19 @@ class VariationPointProxy(Identifiable):
         """
         return False
 
+    _XML_TAG = "VARIATION-POINT-PROXY"
+
+
     condition_access: Optional[ConditionByFormula]
     implementation_ref: Optional[ARRef]
     post_build_value_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CONDITION-ACCESS": lambda obj, elem: setattr(obj, "condition_access", SerializationHelper.deserialize_by_tag(elem, "ConditionByFormula")),
+        "IMPLEMENTATION-REF": ("_POLYMORPHIC", "implementation_ref", ["ImplementationDataType"]),
+        "POST-BUILD-VALUE-REF": lambda obj, elem: setattr(obj, "post_build_value_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize VariationPointProxy."""
         super().__init__()
@@ -57,9 +67,8 @@ class VariationPointProxy(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(VariationPointProxy, self).serialize()
@@ -132,23 +141,16 @@ class VariationPointProxy(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(VariationPointProxy, cls).deserialize(element)
 
-        # Parse condition_access
-        child = SerializationHelper.find_child_element(element, "CONDITION-ACCESS")
-        if child is not None:
-            condition_access_value = SerializationHelper.deserialize_by_tag(child, "ConditionByFormula")
-            obj.condition_access = condition_access_value
-
-        # Parse implementation_ref
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REF")
-        if child is not None:
-            implementation_ref_value = ARRef.deserialize(child)
-            obj.implementation_ref = implementation_ref_value
-
-        # Parse post_build_value_ref
-        child = SerializationHelper.find_child_element(element, "POST-BUILD-VALUE-REF")
-        if child is not None:
-            post_build_value_ref_value = ARRef.deserialize(child)
-            obj.post_build_value_ref = post_build_value_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONDITION-ACCESS":
+                setattr(obj, "condition_access", SerializationHelper.deserialize_by_tag(child, "ConditionByFormula"))
+            elif tag == "IMPLEMENTATION-REF":
+                setattr(obj, "implementation_ref", ARRef.deserialize(child))
+            elif tag == "POST-BUILD-VALUE-REF":
+                setattr(obj, "post_build_value_ref", ARRef.deserialize(child))
 
         return obj
 

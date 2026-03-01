@@ -34,8 +34,17 @@ class J1939TpNode(Identifiable):
         """
         return False
 
+    _XML_TAG = "J1939-TP-NODE"
+
+
     connector_ref: Optional[Any]
     tp_address_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONNECTOR-REF": lambda obj, elem: setattr(obj, "connector_ref", ARRef.deserialize(elem)),
+        "TP-ADDRESS-REF": lambda obj, elem: setattr(obj, "tp_address_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939TpNode."""
         super().__init__()
@@ -48,9 +57,8 @@ class J1939TpNode(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939TpNode, self).serialize()
@@ -109,17 +117,14 @@ class J1939TpNode(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939TpNode, cls).deserialize(element)
 
-        # Parse connector_ref
-        child = SerializationHelper.find_child_element(element, "CONNECTOR-REF")
-        if child is not None:
-            connector_ref_value = ARRef.deserialize(child)
-            obj.connector_ref = connector_ref_value
-
-        # Parse tp_address_ref
-        child = SerializationHelper.find_child_element(element, "TP-ADDRESS-REF")
-        if child is not None:
-            tp_address_ref_value = ARRef.deserialize(child)
-            obj.tp_address_ref = tp_address_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONNECTOR-REF":
+                setattr(obj, "connector_ref", ARRef.deserialize(child))
+            elif tag == "TP-ADDRESS-REF":
+                setattr(obj, "tp_address_ref", ARRef.deserialize(child))
 
         return obj
 

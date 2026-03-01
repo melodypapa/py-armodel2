@@ -34,8 +34,17 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT-SCHEDULER"
+
+
     port_scheduler_scheduler_enum: Optional[EthernetCouplingPortSchedulerEnum]
     predecessor_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "PORT-SCHEDULER-SCHEDULER-ENUM": lambda obj, elem: setattr(obj, "port_scheduler_scheduler_enum", EthernetCouplingPortSchedulerEnum.deserialize(elem)),
+        "PREDECESSOR-REFS": ("_POLYMORPHIC_LIST", "predecessor_refs", ["CouplingPortFifo", "CouplingPortScheduler", "CouplingPortShaper"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPortScheduler."""
         super().__init__()
@@ -48,9 +57,8 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPortScheduler, self).serialize()
@@ -112,27 +120,15 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CouplingPortScheduler, cls).deserialize(element)
 
-        # Parse port_scheduler_scheduler_enum
-        child = SerializationHelper.find_child_element(element, "PORT-SCHEDULER-SCHEDULER-ENUM")
-        if child is not None:
-            port_scheduler_scheduler_enum_value = EthernetCouplingPortSchedulerEnum.deserialize(child)
-            obj.port_scheduler_scheduler_enum = port_scheduler_scheduler_enum_value
-
-        # Parse predecessor_refs (list from container "PREDECESSOR-REFS")
-        obj.predecessor_refs = []
-        container = SerializationHelper.find_child_element(element, "PREDECESSOR-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.predecessor_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PORT-SCHEDULER-SCHEDULER-ENUM":
+                setattr(obj, "port_scheduler_scheduler_enum", EthernetCouplingPortSchedulerEnum.deserialize(child))
+            elif tag == "PREDECESSOR-REFS":
+                for item_elem in child:
+                    obj.predecessor_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -33,8 +33,17 @@ class GlobalTimeFrSlave(GlobalTimeSlave):
         """
         return False
 
+    _XML_TAG = "GLOBAL-TIME-FR-SLAVE"
+
+
     crc_validated: Optional[Any]
     sequence: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CRC-VALIDATED": lambda obj, elem: setattr(obj, "crc_validated", SerializationHelper.deserialize_by_tag(elem, "any (GlobalTimeCrc)")),
+        "SEQUENCE": lambda obj, elem: setattr(obj, "sequence", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeFrSlave."""
         super().__init__()
@@ -47,9 +56,8 @@ class GlobalTimeFrSlave(GlobalTimeSlave):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeFrSlave, self).serialize()
@@ -108,17 +116,14 @@ class GlobalTimeFrSlave(GlobalTimeSlave):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeFrSlave, cls).deserialize(element)
 
-        # Parse crc_validated
-        child = SerializationHelper.find_child_element(element, "CRC-VALIDATED")
-        if child is not None:
-            crc_validated_value = child.text
-            obj.crc_validated = crc_validated_value
-
-        # Parse sequence
-        child = SerializationHelper.find_child_element(element, "SEQUENCE")
-        if child is not None:
-            sequence_value = child.text
-            obj.sequence = sequence_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CRC-VALIDATED":
+                setattr(obj, "crc_validated", SerializationHelper.deserialize_by_tag(child, "any (GlobalTimeCrc)"))
+            elif tag == "SEQUENCE":
+                setattr(obj, "sequence", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

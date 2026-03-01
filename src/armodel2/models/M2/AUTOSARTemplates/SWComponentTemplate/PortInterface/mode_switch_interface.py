@@ -34,7 +34,15 @@ class ModeSwitchInterface(PortInterface):
         """
         return False
 
+    _XML_TAG = "MODE-SWITCH-INTERFACE"
+
+
     mode_group: Optional[ModeDeclarationGroupPrototype]
+    _DESERIALIZE_DISPATCH = {
+        "MODE-GROUP": lambda obj, elem: setattr(obj, "mode_group", SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroupPrototype")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeSwitchInterface."""
         super().__init__()
@@ -46,9 +54,8 @@ class ModeSwitchInterface(PortInterface):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeSwitchInterface, self).serialize()
@@ -93,11 +100,12 @@ class ModeSwitchInterface(PortInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeSwitchInterface, cls).deserialize(element)
 
-        # Parse mode_group
-        child = SerializationHelper.find_child_element(element, "MODE-GROUP")
-        if child is not None:
-            mode_group_value = SerializationHelper.deserialize_by_tag(child, "ModeDeclarationGroupPrototype")
-            obj.mode_group = mode_group_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MODE-GROUP":
+                setattr(obj, "mode_group", SerializationHelper.deserialize_by_tag(child, "ModeDeclarationGroupPrototype"))
 
         return obj
 

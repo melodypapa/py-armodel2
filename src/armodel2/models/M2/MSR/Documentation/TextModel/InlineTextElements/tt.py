@@ -30,9 +30,19 @@ class Tt(ARObject):
         """
         return False
 
+    _XML_TAG = "TT"
+
+
     term: String
     tex_render: Optional[String]
     type: NameToken
+    _DESERIALIZE_DISPATCH = {
+        "TERM": lambda obj, elem: setattr(obj, "term", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "TEX-RENDER": lambda obj, elem: setattr(obj, "tex_render", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "TYPE": lambda obj, elem: setattr(obj, "type", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Tt."""
         super().__init__()
@@ -46,9 +56,8 @@ class Tt(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Tt, self).serialize()
@@ -121,23 +130,16 @@ class Tt(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Tt, cls).deserialize(element)
 
-        # Parse term
-        child = SerializationHelper.find_child_element(element, "TERM")
-        if child is not None:
-            term_value = child.text
-            obj.term = term_value
-
-        # Parse tex_render
-        child = SerializationHelper.find_child_element(element, "TEX-RENDER")
-        if child is not None:
-            tex_render_value = child.text
-            obj.tex_render = tex_render_value
-
-        # Parse type
-        child = SerializationHelper.find_child_element(element, "TYPE")
-        if child is not None:
-            type_value = child.text
-            obj.type = type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TERM":
+                setattr(obj, "term", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "TEX-RENDER":
+                setattr(obj, "tex_render", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "TYPE":
+                setattr(obj, "type", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

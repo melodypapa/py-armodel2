@@ -36,10 +36,21 @@ class RptHook(ARObject):
         """
         return False
 
+    _XML_TAG = "RPT-HOOK"
+
+
     code_label: Optional[CIdentifier]
     mcd_identifier: Optional[NameToken]
     rpt_ar_hook: Optional[AtpFeature]
     sdgs: list[Sdg]
+    _DESERIALIZE_DISPATCH = {
+        "CODE-LABEL": lambda obj, elem: setattr(obj, "code_label", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
+        "MCD-IDENTIFIER": lambda obj, elem: setattr(obj, "mcd_identifier", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "RPT-AR-HOOK": ("_POLYMORPHIC", "rpt_ar_hook", ["AtpPrototype", "AtpStructureElement"]),
+        "SDGS": lambda obj, elem: obj.sdgs.append(SerializationHelper.deserialize_by_tag(elem, "Sdg")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptHook."""
         super().__init__()
@@ -54,9 +65,8 @@ class RptHook(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptHook, self).serialize()
@@ -139,33 +149,26 @@ class RptHook(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptHook, cls).deserialize(element)
 
-        # Parse code_label
-        child = SerializationHelper.find_child_element(element, "CODE-LABEL")
-        if child is not None:
-            code_label_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
-            obj.code_label = code_label_value
-
-        # Parse mcd_identifier
-        child = SerializationHelper.find_child_element(element, "MCD-IDENTIFIER")
-        if child is not None:
-            mcd_identifier_value = child.text
-            obj.mcd_identifier = mcd_identifier_value
-
-        # Parse rpt_ar_hook
-        child = SerializationHelper.find_child_element(element, "RPT-AR-HOOK")
-        if child is not None:
-            rpt_ar_hook_value = SerializationHelper.deserialize_by_tag(child, "AtpFeature")
-            obj.rpt_ar_hook = rpt_ar_hook_value
-
-        # Parse sdgs (list from container "SDGS")
-        obj.sdgs = []
-        container = SerializationHelper.find_child_element(element, "SDGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sdgs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CODE-LABEL":
+                setattr(obj, "code_label", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
+            elif tag == "MCD-IDENTIFIER":
+                setattr(obj, "mcd_identifier", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "RPT-AR-HOOK":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATP-PROTOTYPE":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
+                    elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
+            elif tag == "SDGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sdgs.append(SerializationHelper.deserialize_by_tag(item_elem, "Sdg"))
 
         return obj
 

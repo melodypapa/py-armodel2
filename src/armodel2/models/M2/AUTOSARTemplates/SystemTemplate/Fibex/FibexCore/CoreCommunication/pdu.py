@@ -38,6 +38,12 @@ class Pdu(FibexElement, ABC):
 
     has_dynamic_length: Optional[Boolean]
     length: Optional[UnlimitedInteger]
+    _DESERIALIZE_DISPATCH = {
+        "HAS-DYNAMIC-LENGTH": lambda obj, elem: setattr(obj, "has_dynamic_length", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "LENGTH": lambda obj, elem: setattr(obj, "length", SerializationHelper.deserialize_by_tag(elem, "UnlimitedInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Pdu."""
         super().__init__()
@@ -50,9 +56,8 @@ class Pdu(FibexElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Pdu, self).serialize()
@@ -111,17 +116,14 @@ class Pdu(FibexElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Pdu, cls).deserialize(element)
 
-        # Parse has_dynamic_length
-        child = SerializationHelper.find_child_element(element, "HAS-DYNAMIC-LENGTH")
-        if child is not None:
-            has_dynamic_length_value = child.text
-            obj.has_dynamic_length = has_dynamic_length_value
-
-        # Parse length
-        child = SerializationHelper.find_child_element(element, "LENGTH")
-        if child is not None:
-            length_value = child.text
-            obj.length = length_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "HAS-DYNAMIC-LENGTH":
+                setattr(obj, "has_dynamic_length", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "LENGTH":
+                setattr(obj, "length", SerializationHelper.deserialize_by_tag(child, "UnlimitedInteger"))
 
         return obj
 

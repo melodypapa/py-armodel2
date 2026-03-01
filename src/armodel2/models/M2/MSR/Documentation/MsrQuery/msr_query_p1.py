@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_MSR_Documentation_MsrQuery.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
@@ -14,11 +14,14 @@ from armodel2.models.M2.MSR.Documentation.BlockElements.PaginationAndView.pagina
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import PaginateableBuilder
+from armodel2.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
 from armodel2.models.M2.MSR.Documentation.MsrQuery.msr_query_props import (
     MsrQueryProps,
 )
-from armodel2.models.M2.MSR.Documentation.Chapters.topic_content import (
-    TopicContent,
+from armodel2.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.table import (
+    Table,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -36,13 +39,28 @@ class MsrQueryP1(Paginateable):
         """
         return False
 
+    _XML_TAG = "MSR-QUERY-P1"
+
+
     msr_query_props: MsrQueryProps
-    msr_query_result: Optional[TopicContent]
+    block_level: DocumentationBlock
+    table: Optional[Table]
+    traceable_table: Any
+    _DESERIALIZE_DISPATCH = {
+        "MSR-QUERY-PROPS": lambda obj, elem: setattr(obj, "msr_query_props", SerializationHelper.deserialize_by_tag(elem, "MsrQueryProps")),
+        "BLOCK-LEVEL": lambda obj, elem: setattr(obj, "block_level", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "TABLE": lambda obj, elem: setattr(obj, "table", SerializationHelper.deserialize_by_tag(elem, "Table")),
+        "TRACEABLE-TABLE": lambda obj, elem: setattr(obj, "traceable_table", SerializationHelper.deserialize_by_tag(elem, "any (TraceableTable)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MsrQueryP1."""
         super().__init__()
         self.msr_query_props: MsrQueryProps = None
-        self.msr_query_result: Optional[TopicContent] = None
+        self.block_level: DocumentationBlock = None
+        self.table: Optional[Table] = None
+        self.traceable_table: Any = None
 
     def serialize(self) -> ET.Element:
         """Serialize MsrQueryP1 to XML element.
@@ -50,9 +68,8 @@ class MsrQueryP1(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MsrQueryP1, self).serialize()
@@ -82,18 +99,47 @@ class MsrQueryP1(Paginateable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize msr_query_result (atp_mixed - append children directly)
-        if self.msr_query_result is not None:
-            serialized = SerializationHelper.serialize_item(self.msr_query_result, "TopicContent")
+        # Serialize block_level
+        if self.block_level is not None:
+            serialized = SerializationHelper.serialize_item(self.block_level, "DocumentationBlock")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("BLOCK-LEVEL")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize table
+        if self.table is not None:
+            serialized = SerializationHelper.serialize_item(self.table, "Table")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize traceable_table
+        if self.traceable_table is not None:
+            serialized = SerializationHelper.serialize_item(self.traceable_table, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRACEABLE-TABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         return elem
 
@@ -110,25 +156,18 @@ class MsrQueryP1(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MsrQueryP1, cls).deserialize(element)
 
-        # Parse msr_query_props
-        child = SerializationHelper.find_child_element(element, "MSR-QUERY-PROPS")
-        if child is not None:
-            msr_query_props_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryProps")
-            obj.msr_query_props = msr_query_props_value
-
-        # Parse msr_query_result (atp_mixed - children appear directly)
-        # Check if element contains expected children for TopicContent
-        has_mixed_children = False
-        child_tags_to_check = ['BLOCK-LEVEL', 'TABLE', 'TRACEABLE-TABLE']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            msr_query_result_value = SerializationHelper.deserialize_by_tag(element, "TopicContent")
-            obj.msr_query_result = msr_query_result_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MSR-QUERY-PROPS":
+                setattr(obj, "msr_query_props", SerializationHelper.deserialize_by_tag(child, "MsrQueryProps"))
+            elif tag == "BLOCK-LEVEL":
+                setattr(obj, "block_level", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "TABLE":
+                setattr(obj, "table", SerializationHelper.deserialize_by_tag(child, "Table"))
+            elif tag == "TRACEABLE-TABLE":
+                setattr(obj, "traceable_table", SerializationHelper.deserialize_by_tag(child, "any (TraceableTable)"))
 
         return obj
 
@@ -157,8 +196,22 @@ class MsrQueryP1Builder(PaginateableBuilder):
         self._obj.msr_query_props = value
         return self
 
-    def with_msr_query_result(self, value: Optional[TopicContent]) -> "MsrQueryP1Builder":
-        """Set msr_query_result attribute.
+    def with_block_level(self, value: DocumentationBlock) -> "MsrQueryP1Builder":
+        """Set block_level attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.block_level = value
+        return self
+
+    def with_table(self, value: Optional[Table]) -> "MsrQueryP1Builder":
+        """Set table attribute.
 
         Args:
             value: Value to set
@@ -168,7 +221,21 @@ class MsrQueryP1Builder(PaginateableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.msr_query_result = value
+        self._obj.table = value
+        return self
+
+    def with_traceable_table(self, value: any (TraceableTable)) -> "MsrQueryP1Builder":
+        """Set traceable_table attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.traceable_table = value
         return self
 
 

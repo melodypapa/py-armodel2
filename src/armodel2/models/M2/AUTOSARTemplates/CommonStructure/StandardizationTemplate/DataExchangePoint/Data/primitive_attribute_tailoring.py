@@ -36,9 +36,19 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
         """
         return False
 
+    _XML_TAG = "PRIMITIVE-ATTRIBUTE-TAILORING"
+
+
     default_value: Optional[DefaultValueApplicationStrategyEnum]
     sub_attributes: list[Any]
     value_restriction_with_severity: Optional[ValueRestrictionWithSeverity]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", DefaultValueApplicationStrategyEnum.deserialize(elem)),
+        "SUB-ATTRIBUTES": lambda obj, elem: obj.sub_attributes.append(SerializationHelper.deserialize_by_tag(elem, "any (PrimitiveAttribute)")),
+        "VALUE-RESTRICTION-WITH-SEVERITY": lambda obj, elem: setattr(obj, "value_restriction_with_severity", SerializationHelper.deserialize_by_tag(elem, "ValueRestrictionWithSeverity")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PrimitiveAttributeTailoring."""
         super().__init__()
@@ -52,9 +62,8 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PrimitiveAttributeTailoring, self).serialize()
@@ -123,27 +132,18 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PrimitiveAttributeTailoring, cls).deserialize(element)
 
-        # Parse default_value
-        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE")
-        if child is not None:
-            default_value_value = DefaultValueApplicationStrategyEnum.deserialize(child)
-            obj.default_value = default_value_value
-
-        # Parse sub_attributes (list from container "SUB-ATTRIBUTES")
-        obj.sub_attributes = []
-        container = SerializationHelper.find_child_element(element, "SUB-ATTRIBUTES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sub_attributes.append(child_value)
-
-        # Parse value_restriction_with_severity
-        child = SerializationHelper.find_child_element(element, "VALUE-RESTRICTION-WITH-SEVERITY")
-        if child is not None:
-            value_restriction_with_severity_value = SerializationHelper.deserialize_by_tag(child, "ValueRestrictionWithSeverity")
-            obj.value_restriction_with_severity = value_restriction_with_severity_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEFAULT-VALUE":
+                setattr(obj, "default_value", DefaultValueApplicationStrategyEnum.deserialize(child))
+            elif tag == "SUB-ATTRIBUTES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sub_attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "any (PrimitiveAttribute)"))
+            elif tag == "VALUE-RESTRICTION-WITH-SEVERITY":
+                setattr(obj, "value_restriction_with_severity", SerializationHelper.deserialize_by_tag(child, "ValueRestrictionWithSeverity"))
 
         return obj
 

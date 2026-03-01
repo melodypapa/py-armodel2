@@ -33,8 +33,17 @@ class EthernetPriorityRegeneration(Referrable):
         """
         return False
 
+    _XML_TAG = "ETHERNET-PRIORITY-REGENERATION"
+
+
     ingress_priority: Optional[PositiveInteger]
     regenerated: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "INGRESS-PRIORITY": lambda obj, elem: setattr(obj, "ingress_priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "REGENERATED": lambda obj, elem: setattr(obj, "regenerated", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthernetPriorityRegeneration."""
         super().__init__()
@@ -47,9 +56,8 @@ class EthernetPriorityRegeneration(Referrable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthernetPriorityRegeneration, self).serialize()
@@ -108,17 +116,14 @@ class EthernetPriorityRegeneration(Referrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthernetPriorityRegeneration, cls).deserialize(element)
 
-        # Parse ingress_priority
-        child = SerializationHelper.find_child_element(element, "INGRESS-PRIORITY")
-        if child is not None:
-            ingress_priority_value = child.text
-            obj.ingress_priority = ingress_priority_value
-
-        # Parse regenerated
-        child = SerializationHelper.find_child_element(element, "REGENERATED")
-        if child is not None:
-            regenerated_value = child.text
-            obj.regenerated = regenerated_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INGRESS-PRIORITY":
+                setattr(obj, "ingress_priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "REGENERATED":
+                setattr(obj, "regenerated", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

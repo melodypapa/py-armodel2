@@ -40,8 +40,17 @@ class WaitPoint(Identifiable):
         """
         return False
 
+    _XML_TAG = "WAIT-POINT"
+
+
     timeout: Optional[TimeValue]
     trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TRIGGER-REF": ("_POLYMORPHIC", "trigger_ref", ["AsynchronousServerCallReturnsEvent", "BackgroundEvent", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "ExternalTriggerOccurredEvent", "InitEvent", "InternalTriggerOccurredEvent", "ModeSwitchedAckEvent", "OperationInvokedEvent", "OsTaskExecutionEvent", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "TimingEvent", "TransformerHardErrorEvent"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize WaitPoint."""
         super().__init__()
@@ -54,9 +63,8 @@ class WaitPoint(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(WaitPoint, self).serialize()
@@ -115,17 +123,14 @@ class WaitPoint(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(WaitPoint, cls).deserialize(element)
 
-        # Parse timeout
-        child = SerializationHelper.find_child_element(element, "TIMEOUT")
-        if child is not None:
-            timeout_value = child.text
-            obj.timeout = timeout_value
-
-        # Parse trigger_ref
-        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
-        if child is not None:
-            trigger_ref_value = ARRef.deserialize(child)
-            obj.trigger_ref = trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TIMEOUT":
+                setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TRIGGER-REF":
+                setattr(obj, "trigger_ref", ARRef.deserialize(child))
 
         return obj
 

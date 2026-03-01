@@ -36,10 +36,21 @@ class RptExecutableEntityProperties(ARObject):
         """
         return False
 
+    _XML_TAG = "RPT-EXECUTABLE-ENTITY-PROPERTIES"
+
+
     max_rpt_event_id: Optional[PositiveInteger]
     min_rpt_event_id: Optional[PositiveInteger]
     rpt_execution_control: Optional[RptExecutionControlEnum]
     rpt_service_point_enum: Optional[RptServicePointEnum]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-RPT-EVENT-ID": lambda obj, elem: setattr(obj, "max_rpt_event_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MIN-RPT-EVENT-ID": lambda obj, elem: setattr(obj, "min_rpt_event_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "RPT-EXECUTION-CONTROL": lambda obj, elem: setattr(obj, "rpt_execution_control", RptExecutionControlEnum.deserialize(elem)),
+        "RPT-SERVICE-POINT-ENUM": lambda obj, elem: setattr(obj, "rpt_service_point_enum", RptServicePointEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptExecutableEntityProperties."""
         super().__init__()
@@ -54,9 +65,8 @@ class RptExecutableEntityProperties(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptExecutableEntityProperties, self).serialize()
@@ -143,29 +153,18 @@ class RptExecutableEntityProperties(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptExecutableEntityProperties, cls).deserialize(element)
 
-        # Parse max_rpt_event_id
-        child = SerializationHelper.find_child_element(element, "MAX-RPT-EVENT-ID")
-        if child is not None:
-            max_rpt_event_id_value = child.text
-            obj.max_rpt_event_id = max_rpt_event_id_value
-
-        # Parse min_rpt_event_id
-        child = SerializationHelper.find_child_element(element, "MIN-RPT-EVENT-ID")
-        if child is not None:
-            min_rpt_event_id_value = child.text
-            obj.min_rpt_event_id = min_rpt_event_id_value
-
-        # Parse rpt_execution_control
-        child = SerializationHelper.find_child_element(element, "RPT-EXECUTION-CONTROL")
-        if child is not None:
-            rpt_execution_control_value = RptExecutionControlEnum.deserialize(child)
-            obj.rpt_execution_control = rpt_execution_control_value
-
-        # Parse rpt_service_point_enum
-        child = SerializationHelper.find_child_element(element, "RPT-SERVICE-POINT-ENUM")
-        if child is not None:
-            rpt_service_point_enum_value = RptServicePointEnum.deserialize(child)
-            obj.rpt_service_point_enum = rpt_service_point_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAX-RPT-EVENT-ID":
+                setattr(obj, "max_rpt_event_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MIN-RPT-EVENT-ID":
+                setattr(obj, "min_rpt_event_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "RPT-EXECUTION-CONTROL":
+                setattr(obj, "rpt_execution_control", RptExecutionControlEnum.deserialize(child))
+            elif tag == "RPT-SERVICE-POINT-ENUM":
+                setattr(obj, "rpt_service_point_enum", RptServicePointEnum.deserialize(child))
 
         return obj
 

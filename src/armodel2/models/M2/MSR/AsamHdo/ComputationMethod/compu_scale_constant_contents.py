@@ -33,7 +33,15 @@ class CompuScaleConstantContents(CompuScaleContents):
         """
         return False
 
+    _XML_TAG = "COMPU-SCALE-CONSTANT-CONTENTS"
+
+
     compu_const: Optional[CompuConst]
+    _DESERIALIZE_DISPATCH = {
+        "COMPU-CONST": lambda obj, elem: setattr(obj, "compu_const", SerializationHelper.deserialize_by_tag(elem, "CompuConst")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompuScaleConstantContents."""
         super().__init__()
@@ -45,9 +53,8 @@ class CompuScaleConstantContents(CompuScaleContents):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompuScaleConstantContents, self).serialize()
@@ -92,11 +99,12 @@ class CompuScaleConstantContents(CompuScaleContents):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuScaleConstantContents, cls).deserialize(element)
 
-        # Parse compu_const
-        child = SerializationHelper.find_child_element(element, "COMPU-CONST")
-        if child is not None:
-            compu_const_value = SerializationHelper.deserialize_by_tag(child, "CompuConst")
-            obj.compu_const = compu_const_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMPU-CONST":
+                setattr(obj, "compu_const", SerializationHelper.deserialize_by_tag(child, "CompuConst"))
 
         return obj
 

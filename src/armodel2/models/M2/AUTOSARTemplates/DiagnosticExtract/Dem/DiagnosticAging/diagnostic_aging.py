@@ -34,8 +34,17 @@ class DiagnosticAging(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-AGING"
+
+
     aging_cycle_ref: Optional[Any]
     threshold: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "AGING-CYCLE-REF": lambda obj, elem: setattr(obj, "aging_cycle_ref", ARRef.deserialize(elem)),
+        "THRESHOLD": lambda obj, elem: setattr(obj, "threshold", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticAging."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticAging(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticAging, self).serialize()
@@ -109,17 +117,14 @@ class DiagnosticAging(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAging, cls).deserialize(element)
 
-        # Parse aging_cycle_ref
-        child = SerializationHelper.find_child_element(element, "AGING-CYCLE-REF")
-        if child is not None:
-            aging_cycle_ref_value = ARRef.deserialize(child)
-            obj.aging_cycle_ref = aging_cycle_ref_value
-
-        # Parse threshold
-        child = SerializationHelper.find_child_element(element, "THRESHOLD")
-        if child is not None:
-            threshold_value = child.text
-            obj.threshold = threshold_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AGING-CYCLE-REF":
+                setattr(obj, "aging_cycle_ref", ARRef.deserialize(child))
+            elif tag == "THRESHOLD":
+                setattr(obj, "threshold", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

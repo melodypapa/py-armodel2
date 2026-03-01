@@ -35,9 +35,19 @@ class PostBuildVariantCriterionValue(ARObject):
         """
         return False
 
+    _XML_TAG = "POST-BUILD-VARIANT-CRITERION-VALUE"
+
+
     annotations: list[Annotation]
     value: Integer
     variant_criterion_ref: Any
+    _DESERIALIZE_DISPATCH = {
+        "ANNOTATIONS": lambda obj, elem: obj.annotations.append(SerializationHelper.deserialize_by_tag(elem, "Annotation")),
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "VARIANT-CRITERION-REF": lambda obj, elem: setattr(obj, "variant_criterion_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PostBuildVariantCriterionValue."""
         super().__init__()
@@ -51,9 +61,8 @@ class PostBuildVariantCriterionValue(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PostBuildVariantCriterionValue, self).serialize()
@@ -122,27 +131,18 @@ class PostBuildVariantCriterionValue(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PostBuildVariantCriterionValue, cls).deserialize(element)
 
-        # Parse annotations (list from container "ANNOTATIONS")
-        obj.annotations = []
-        container = SerializationHelper.find_child_element(element, "ANNOTATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.annotations.append(child_value)
-
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = child.text
-            obj.value = value_value
-
-        # Parse variant_criterion_ref
-        child = SerializationHelper.find_child_element(element, "VARIANT-CRITERION-REF")
-        if child is not None:
-            variant_criterion_ref_value = ARRef.deserialize(child)
-            obj.variant_criterion_ref = variant_criterion_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ANNOTATIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "Annotation"))
+            elif tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "VARIANT-CRITERION-REF":
+                setattr(obj, "variant_criterion_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -32,6 +32,12 @@ class EcucAbstractConfigurationClass(ARObject, ABC):
 
     config_class: Optional[EcucConfigurationClassEnum]
     config_variant: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CONFIG-CLASS": lambda obj, elem: setattr(obj, "config_class", EcucConfigurationClassEnum.deserialize(elem)),
+        "CONFIG-VARIANT": lambda obj, elem: setattr(obj, "config_variant", SerializationHelper.deserialize_by_tag(elem, "any (EcucConfiguration)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucAbstractConfigurationClass."""
         super().__init__()
@@ -44,9 +50,8 @@ class EcucAbstractConfigurationClass(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucAbstractConfigurationClass, self).serialize()
@@ -105,17 +110,14 @@ class EcucAbstractConfigurationClass(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucAbstractConfigurationClass, cls).deserialize(element)
 
-        # Parse config_class
-        child = SerializationHelper.find_child_element(element, "CONFIG-CLASS")
-        if child is not None:
-            config_class_value = EcucConfigurationClassEnum.deserialize(child)
-            obj.config_class = config_class_value
-
-        # Parse config_variant
-        child = SerializationHelper.find_child_element(element, "CONFIG-VARIANT")
-        if child is not None:
-            config_variant_value = child.text
-            obj.config_variant = config_variant_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONFIG-CLASS":
+                setattr(obj, "config_class", EcucConfigurationClassEnum.deserialize(child))
+            elif tag == "CONFIG-VARIANT":
+                setattr(obj, "config_variant", SerializationHelper.deserialize_by_tag(child, "any (EcucConfiguration)"))
 
         return obj
 

@@ -33,8 +33,17 @@ class InvalidationPolicy(ARObject):
         """
         return False
 
+    _XML_TAG = "INVALIDATION-POLICY"
+
+
     data_element_ref: Optional[ARRef]
     handle_invalid_enum: Optional[HandleInvalidEnum]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "HANDLE-INVALID-ENUM": lambda obj, elem: setattr(obj, "handle_invalid_enum", HandleInvalidEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InvalidationPolicy."""
         super().__init__()
@@ -47,9 +56,8 @@ class InvalidationPolicy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InvalidationPolicy, self).serialize()
@@ -108,17 +116,14 @@ class InvalidationPolicy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InvalidationPolicy, cls).deserialize(element)
 
-        # Parse data_element_ref
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
-        if child is not None:
-            data_element_ref_value = ARRef.deserialize(child)
-            obj.data_element_ref = data_element_ref_value
-
-        # Parse handle_invalid_enum
-        child = SerializationHelper.find_child_element(element, "HANDLE-INVALID-ENUM")
-        if child is not None:
-            handle_invalid_enum_value = HandleInvalidEnum.deserialize(child)
-            obj.handle_invalid_enum = handle_invalid_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-ELEMENT-REF":
+                setattr(obj, "data_element_ref", ARRef.deserialize(child))
+            elif tag == "HANDLE-INVALID-ENUM":
+                setattr(obj, "handle_invalid_enum", HandleInvalidEnum.deserialize(child))
 
         return obj
 

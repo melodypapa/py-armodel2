@@ -31,7 +31,15 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-TRANSFER-EXIT"
+
+
     transfer_exit_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TRANSFER-EXIT-REF": lambda obj, elem: setattr(obj, "transfer_exit_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticTransferExit."""
         super().__init__()
@@ -43,9 +51,8 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticTransferExit, self).serialize()
@@ -90,11 +97,12 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTransferExit, cls).deserialize(element)
 
-        # Parse transfer_exit_ref
-        child = SerializationHelper.find_child_element(element, "TRANSFER-EXIT-REF")
-        if child is not None:
-            transfer_exit_ref_value = ARRef.deserialize(child)
-            obj.transfer_exit_ref = transfer_exit_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TRANSFER-EXIT-REF":
+                setattr(obj, "transfer_exit_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -34,8 +34,17 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
         """
         return False
 
+    _XML_TAG = "DATA-COM-PROPS"
+
+
     data: Optional[DataConsistencyPolicyEnum]
     send_indication_enum: Optional[SendIndicationEnum]
+    _DESERIALIZE_DISPATCH = {
+        "DATA": lambda obj, elem: setattr(obj, "data", DataConsistencyPolicyEnum.deserialize(elem)),
+        "SEND-INDICATION-ENUM": lambda obj, elem: setattr(obj, "send_indication_enum", SendIndicationEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataComProps."""
         super().__init__()
@@ -48,9 +57,8 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataComProps, self).serialize()
@@ -109,17 +117,14 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataComProps, cls).deserialize(element)
 
-        # Parse data
-        child = SerializationHelper.find_child_element(element, "DATA")
-        if child is not None:
-            data_value = DataConsistencyPolicyEnum.deserialize(child)
-            obj.data = data_value
-
-        # Parse send_indication_enum
-        child = SerializationHelper.find_child_element(element, "SEND-INDICATION-ENUM")
-        if child is not None:
-            send_indication_enum_value = SendIndicationEnum.deserialize(child)
-            obj.send_indication_enum = send_indication_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA":
+                setattr(obj, "data", DataConsistencyPolicyEnum.deserialize(child))
+            elif tag == "SEND-INDICATION-ENUM":
+                setattr(obj, "send_indication_enum", SendIndicationEnum.deserialize(child))
 
         return obj
 

@@ -32,8 +32,17 @@ class InfrastructureServices(ARObject):
         """
         return False
 
+    _XML_TAG = "INFRASTRUCTURE-SERVICES"
+
+
     do_ip_entity: Optional[DoIpEntity]
     time: Optional[TimeSynchronization]
+    _DESERIALIZE_DISPATCH = {
+        "DO-IP-ENTITY": lambda obj, elem: setattr(obj, "do_ip_entity", SerializationHelper.deserialize_by_tag(elem, "DoIpEntity")),
+        "TIME": lambda obj, elem: setattr(obj, "time", SerializationHelper.deserialize_by_tag(elem, "TimeSynchronization")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InfrastructureServices."""
         super().__init__()
@@ -46,9 +55,8 @@ class InfrastructureServices(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InfrastructureServices, self).serialize()
@@ -107,17 +115,14 @@ class InfrastructureServices(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InfrastructureServices, cls).deserialize(element)
 
-        # Parse do_ip_entity
-        child = SerializationHelper.find_child_element(element, "DO-IP-ENTITY")
-        if child is not None:
-            do_ip_entity_value = SerializationHelper.deserialize_by_tag(child, "DoIpEntity")
-            obj.do_ip_entity = do_ip_entity_value
-
-        # Parse time
-        child = SerializationHelper.find_child_element(element, "TIME")
-        if child is not None:
-            time_value = SerializationHelper.deserialize_by_tag(child, "TimeSynchronization")
-            obj.time = time_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DO-IP-ENTITY":
+                setattr(obj, "do_ip_entity", SerializationHelper.deserialize_by_tag(child, "DoIpEntity"))
+            elif tag == "TIME":
+                setattr(obj, "time", SerializationHelper.deserialize_by_tag(child, "TimeSynchronization"))
 
         return obj
 

@@ -37,8 +37,17 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-J1939-SW-MAPPING"
+
+
     node_ref: Optional[ARRef]
     sw_component_prototype_composition_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "NODE-REF": lambda obj, elem: setattr(obj, "node_ref", ARRef.deserialize(elem)),
+        "SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "sw_component_prototype_composition_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939SwMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticJ1939SwMapping, self).serialize()
@@ -112,17 +120,14 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticJ1939SwMapping, cls).deserialize(element)
 
-        # Parse node_ref
-        child = SerializationHelper.find_child_element(element, "NODE-REF")
-        if child is not None:
-            node_ref_value = ARRef.deserialize(child)
-            obj.node_ref = node_ref_value
-
-        # Parse sw_component_prototype_composition_instance_ref
-        child = SerializationHelper.find_child_element(element, "SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF-REF")
-        if child is not None:
-            sw_component_prototype_composition_instance_ref_value = ARRef.deserialize(child)
-            obj.sw_component_prototype_composition_instance_ref = sw_component_prototype_composition_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "NODE-REF":
+                setattr(obj, "node_ref", ARRef.deserialize(child))
+            elif tag == "SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF-REF":
+                setattr(obj, "sw_component_prototype_composition_instance_ref", ARRef.deserialize(child))
 
         return obj
 

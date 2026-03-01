@@ -33,7 +33,15 @@ class EcucForeignReferenceDef(EcucAbstractExternalReferenceDef):
         """
         return False
 
+    _XML_TAG = "ECUC-FOREIGN-REFERENCE-DEF"
+
+
     destination_type: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION-TYPE": lambda obj, elem: setattr(obj, "destination_type", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucForeignReferenceDef."""
         super().__init__()
@@ -45,9 +53,8 @@ class EcucForeignReferenceDef(EcucAbstractExternalReferenceDef):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucForeignReferenceDef, self).serialize()
@@ -92,11 +99,12 @@ class EcucForeignReferenceDef(EcucAbstractExternalReferenceDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucForeignReferenceDef, cls).deserialize(element)
 
-        # Parse destination_type
-        child = SerializationHelper.find_child_element(element, "DESTINATION-TYPE")
-        if child is not None:
-            destination_type_value = child.text
-            obj.destination_type = destination_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DESTINATION-TYPE":
+                setattr(obj, "destination_type", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

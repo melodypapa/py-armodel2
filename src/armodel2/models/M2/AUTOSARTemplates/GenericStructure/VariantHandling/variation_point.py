@@ -37,8 +37,17 @@ class VariationPoint(ARObject):
         """
         return False
 
+    _XML_TAG = "VARIATION-POINT"
+
+
     blueprint: Optional[DocumentationBlock]
     sw_syscond: Optional[ConditionByFormula]
+    _DESERIALIZE_DISPATCH = {
+        "BLUEPRINT": lambda obj, elem: setattr(obj, "blueprint", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "SW-SYSCOND": lambda obj, elem: setattr(obj, "sw_syscond", SerializationHelper.deserialize_by_tag(elem, "ConditionByFormula")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize VariationPoint."""
         super().__init__()
@@ -51,9 +60,8 @@ class VariationPoint(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(VariationPoint, self).serialize()
@@ -112,17 +120,14 @@ class VariationPoint(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(VariationPoint, cls).deserialize(element)
 
-        # Parse blueprint
-        child = SerializationHelper.find_child_element(element, "BLUEPRINT")
-        if child is not None:
-            blueprint_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.blueprint = blueprint_value
-
-        # Parse sw_syscond
-        child = SerializationHelper.find_child_element(element, "SW-SYSCOND")
-        if child is not None:
-            sw_syscond_value = SerializationHelper.deserialize_by_tag(child, "ConditionByFormula")
-            obj.sw_syscond = sw_syscond_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BLUEPRINT":
+                setattr(obj, "blueprint", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "SW-SYSCOND":
+                setattr(obj, "sw_syscond", SerializationHelper.deserialize_by_tag(child, "ConditionByFormula"))
 
         return obj
 

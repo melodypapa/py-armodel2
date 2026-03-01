@@ -33,8 +33,17 @@ class IdsmSignatureSupportAp(ARObject):
         """
         return False
 
+    _XML_TAG = "IDSM-SIGNATURE-SUPPORT-AP"
+
+
     crypto_primitive: String
     key_slot_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CRYPTO-PRIMITIVE": lambda obj, elem: setattr(obj, "crypto_primitive", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "KEY-SLOT-REF": lambda obj, elem: setattr(obj, "key_slot_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IdsmSignatureSupportAp."""
         super().__init__()
@@ -47,9 +56,8 @@ class IdsmSignatureSupportAp(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IdsmSignatureSupportAp, self).serialize()
@@ -108,17 +116,14 @@ class IdsmSignatureSupportAp(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IdsmSignatureSupportAp, cls).deserialize(element)
 
-        # Parse crypto_primitive
-        child = SerializationHelper.find_child_element(element, "CRYPTO-PRIMITIVE")
-        if child is not None:
-            crypto_primitive_value = child.text
-            obj.crypto_primitive = crypto_primitive_value
-
-        # Parse key_slot_ref
-        child = SerializationHelper.find_child_element(element, "KEY-SLOT-REF")
-        if child is not None:
-            key_slot_ref_value = ARRef.deserialize(child)
-            obj.key_slot_ref = key_slot_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CRYPTO-PRIMITIVE":
+                setattr(obj, "crypto_primitive", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "KEY-SLOT-REF":
+                setattr(obj, "key_slot_ref", ARRef.deserialize(child))
 
         return obj
 

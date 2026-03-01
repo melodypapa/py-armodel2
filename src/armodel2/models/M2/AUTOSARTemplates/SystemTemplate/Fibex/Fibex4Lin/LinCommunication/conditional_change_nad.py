@@ -34,11 +34,23 @@ class ConditionalChangeNad(LinConfigurationEntry):
         """
         return False
 
+    _XML_TAG = "CONDITIONAL-CHANGE-NAD"
+
+
     byte: Optional[Integer]
     id: Optional[PositiveInteger]
     invert: Optional[Integer]
     mask: Optional[Integer]
     new_nad: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "BYTE": lambda obj, elem: setattr(obj, "byte", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "ID": lambda obj, elem: setattr(obj, "id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "INVERT": lambda obj, elem: setattr(obj, "invert", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MASK": lambda obj, elem: setattr(obj, "mask", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NEW-NAD": lambda obj, elem: setattr(obj, "new_nad", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConditionalChangeNad."""
         super().__init__()
@@ -54,9 +66,8 @@ class ConditionalChangeNad(LinConfigurationEntry):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConditionalChangeNad, self).serialize()
@@ -157,35 +168,20 @@ class ConditionalChangeNad(LinConfigurationEntry):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConditionalChangeNad, cls).deserialize(element)
 
-        # Parse byte
-        child = SerializationHelper.find_child_element(element, "BYTE")
-        if child is not None:
-            byte_value = child.text
-            obj.byte = byte_value
-
-        # Parse id
-        child = SerializationHelper.find_child_element(element, "ID")
-        if child is not None:
-            id_value = child.text
-            obj.id = id_value
-
-        # Parse invert
-        child = SerializationHelper.find_child_element(element, "INVERT")
-        if child is not None:
-            invert_value = child.text
-            obj.invert = invert_value
-
-        # Parse mask
-        child = SerializationHelper.find_child_element(element, "MASK")
-        if child is not None:
-            mask_value = child.text
-            obj.mask = mask_value
-
-        # Parse new_nad
-        child = SerializationHelper.find_child_element(element, "NEW-NAD")
-        if child is not None:
-            new_nad_value = child.text
-            obj.new_nad = new_nad_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BYTE":
+                setattr(obj, "byte", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "ID":
+                setattr(obj, "id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "INVERT":
+                setattr(obj, "invert", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MASK":
+                setattr(obj, "mask", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "NEW-NAD":
+                setattr(obj, "new_nad", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

@@ -39,6 +39,9 @@ class DiagnosticEvent(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-EVENT"
+
+
     associated: Optional[PositiveInteger]
     clear_event: Optional[DiagnosticClearEventAllowedBehaviorEnum]
     confirmation: Optional[PositiveInteger]
@@ -48,6 +51,19 @@ class DiagnosticEvent(DiagnosticCommonElement):
     prestorage: Optional[Boolean]
     prestored: Optional[Boolean]
     recoverable_in: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ASSOCIATED": lambda obj, elem: setattr(obj, "associated", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "CLEAR-EVENT": lambda obj, elem: setattr(obj, "clear_event", DiagnosticClearEventAllowedBehaviorEnum.deserialize(elem)),
+        "CONFIRMATION": lambda obj, elem: setattr(obj, "confirmation", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "CONNECTEDS": lambda obj, elem: obj.connecteds.append(SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticConnected)")),
+        "EVENT-CLEAR": lambda obj, elem: setattr(obj, "event_clear", DiagnosticEventClearAllowedEnum.deserialize(elem)),
+        "EVENT-KIND": lambda obj, elem: setattr(obj, "event_kind", DiagnosticEventKindEnum.deserialize(elem)),
+        "PRESTORAGE": lambda obj, elem: setattr(obj, "prestorage", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PRESTORED": lambda obj, elem: setattr(obj, "prestored", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RECOVERABLE-IN": lambda obj, elem: setattr(obj, "recoverable_in", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEvent."""
         super().__init__()
@@ -67,9 +83,8 @@ class DiagnosticEvent(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEvent, self).serialize()
@@ -222,63 +237,30 @@ class DiagnosticEvent(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEvent, cls).deserialize(element)
 
-        # Parse associated
-        child = SerializationHelper.find_child_element(element, "ASSOCIATED")
-        if child is not None:
-            associated_value = child.text
-            obj.associated = associated_value
-
-        # Parse clear_event
-        child = SerializationHelper.find_child_element(element, "CLEAR-EVENT")
-        if child is not None:
-            clear_event_value = DiagnosticClearEventAllowedBehaviorEnum.deserialize(child)
-            obj.clear_event = clear_event_value
-
-        # Parse confirmation
-        child = SerializationHelper.find_child_element(element, "CONFIRMATION")
-        if child is not None:
-            confirmation_value = child.text
-            obj.confirmation = confirmation_value
-
-        # Parse connecteds (list from container "CONNECTEDS")
-        obj.connecteds = []
-        container = SerializationHelper.find_child_element(element, "CONNECTEDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.connecteds.append(child_value)
-
-        # Parse event_clear
-        child = SerializationHelper.find_child_element(element, "EVENT-CLEAR")
-        if child is not None:
-            event_clear_value = DiagnosticEventClearAllowedEnum.deserialize(child)
-            obj.event_clear = event_clear_value
-
-        # Parse event_kind
-        child = SerializationHelper.find_child_element(element, "EVENT-KIND")
-        if child is not None:
-            event_kind_value = DiagnosticEventKindEnum.deserialize(child)
-            obj.event_kind = event_kind_value
-
-        # Parse prestorage
-        child = SerializationHelper.find_child_element(element, "PRESTORAGE")
-        if child is not None:
-            prestorage_value = child.text
-            obj.prestorage = prestorage_value
-
-        # Parse prestored
-        child = SerializationHelper.find_child_element(element, "PRESTORED")
-        if child is not None:
-            prestored_value = child.text
-            obj.prestored = prestored_value
-
-        # Parse recoverable_in
-        child = SerializationHelper.find_child_element(element, "RECOVERABLE-IN")
-        if child is not None:
-            recoverable_in_value = child.text
-            obj.recoverable_in = recoverable_in_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ASSOCIATED":
+                setattr(obj, "associated", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "CLEAR-EVENT":
+                setattr(obj, "clear_event", DiagnosticClearEventAllowedBehaviorEnum.deserialize(child))
+            elif tag == "CONFIRMATION":
+                setattr(obj, "confirmation", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "CONNECTEDS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.connecteds.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticConnected)"))
+            elif tag == "EVENT-CLEAR":
+                setattr(obj, "event_clear", DiagnosticEventClearAllowedEnum.deserialize(child))
+            elif tag == "EVENT-KIND":
+                setattr(obj, "event_kind", DiagnosticEventKindEnum.deserialize(child))
+            elif tag == "PRESTORAGE":
+                setattr(obj, "prestorage", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PRESTORED":
+                setattr(obj, "prestored", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RECOVERABLE-IN":
+                setattr(obj, "recoverable_in", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

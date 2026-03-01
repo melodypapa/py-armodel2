@@ -30,8 +30,17 @@ class SwcBswSynchronizedTrigger(ARObject):
         """
         return False
 
+    _XML_TAG = "SWC-BSW-SYNCHRONIZED-TRIGGER"
+
+
     bsw_trigger_ref: Optional[ARRef]
     swc_trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BSW-TRIGGER-REF": lambda obj, elem: setattr(obj, "bsw_trigger_ref", ARRef.deserialize(elem)),
+        "SWC-TRIGGER-REF": lambda obj, elem: setattr(obj, "swc_trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcBswSynchronizedTrigger."""
         super().__init__()
@@ -44,9 +53,8 @@ class SwcBswSynchronizedTrigger(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcBswSynchronizedTrigger, self).serialize()
@@ -105,17 +113,14 @@ class SwcBswSynchronizedTrigger(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcBswSynchronizedTrigger, cls).deserialize(element)
 
-        # Parse bsw_trigger_ref
-        child = SerializationHelper.find_child_element(element, "BSW-TRIGGER-REF")
-        if child is not None:
-            bsw_trigger_ref_value = ARRef.deserialize(child)
-            obj.bsw_trigger_ref = bsw_trigger_ref_value
-
-        # Parse swc_trigger_ref
-        child = SerializationHelper.find_child_element(element, "SWC-TRIGGER-REF")
-        if child is not None:
-            swc_trigger_ref_value = ARRef.deserialize(child)
-            obj.swc_trigger_ref = swc_trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BSW-TRIGGER-REF":
+                setattr(obj, "bsw_trigger_ref", ARRef.deserialize(child))
+            elif tag == "SWC-TRIGGER-REF":
+                setattr(obj, "swc_trigger_ref", ARRef.deserialize(child))
 
         return obj
 

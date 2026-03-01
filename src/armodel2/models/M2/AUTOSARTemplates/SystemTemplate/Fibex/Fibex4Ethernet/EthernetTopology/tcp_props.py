@@ -31,6 +31,9 @@ class TcpProps(ARObject):
         """
         return False
 
+    _XML_TAG = "TCP-PROPS"
+
+
     tcp_congestion: Optional[Boolean]
     tcp_delayed_ack: Optional[TimeValue]
     tcp_fast_recovery: Optional[Any]
@@ -46,6 +49,25 @@ class TcpProps(ARObject):
     tcp_syn_max_rtx: Optional[PositiveInteger]
     tcp_syn_received: Optional[TimeValue]
     tcp_ttl: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "TCP-CONGESTION": lambda obj, elem: setattr(obj, "tcp_congestion", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TCP-DELAYED-ACK": lambda obj, elem: setattr(obj, "tcp_delayed_ack", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-FAST-RECOVERY": lambda obj, elem: setattr(obj, "tcp_fast_recovery", SerializationHelper.deserialize_by_tag(elem, "any (BooleanRecovery)")),
+        "TCP-FAST": lambda obj, elem: setattr(obj, "tcp_fast", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TCP-FIN": lambda obj, elem: setattr(obj, "tcp_fin", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-KEEP-ALIVE": lambda obj, elem: setattr(obj, "tcp_keep_alive", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-MAX-RTX": lambda obj, elem: setattr(obj, "tcp_max_rtx", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-MSL": lambda obj, elem: setattr(obj, "tcp_msl", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-NAGLE": lambda obj, elem: setattr(obj, "tcp_nagle", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TCP-RECEIVE-WINDOW-MAX": lambda obj, elem: setattr(obj, "tcp_receive_window_max", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP": lambda obj, elem: setattr(obj, "tcp", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-SLOW-START": lambda obj, elem: setattr(obj, "tcp_slow_start", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TCP-SYN-MAX-RTX": lambda obj, elem: setattr(obj, "tcp_syn_max_rtx", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-SYN-RECEIVED": lambda obj, elem: setattr(obj, "tcp_syn_received", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-TTL": lambda obj, elem: setattr(obj, "tcp_ttl", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TcpProps."""
         super().__init__()
@@ -71,9 +93,8 @@ class TcpProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TcpProps, self).serialize()
@@ -314,95 +335,40 @@ class TcpProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TcpProps, cls).deserialize(element)
 
-        # Parse tcp_congestion
-        child = SerializationHelper.find_child_element(element, "TCP-CONGESTION")
-        if child is not None:
-            tcp_congestion_value = child.text
-            obj.tcp_congestion = tcp_congestion_value
-
-        # Parse tcp_delayed_ack
-        child = SerializationHelper.find_child_element(element, "TCP-DELAYED-ACK")
-        if child is not None:
-            tcp_delayed_ack_value = child.text
-            obj.tcp_delayed_ack = tcp_delayed_ack_value
-
-        # Parse tcp_fast_recovery
-        child = SerializationHelper.find_child_element(element, "TCP-FAST-RECOVERY")
-        if child is not None:
-            tcp_fast_recovery_value = child.text
-            obj.tcp_fast_recovery = tcp_fast_recovery_value
-
-        # Parse tcp_fast
-        child = SerializationHelper.find_child_element(element, "TCP-FAST")
-        if child is not None:
-            tcp_fast_value = child.text
-            obj.tcp_fast = tcp_fast_value
-
-        # Parse tcp_fin
-        child = SerializationHelper.find_child_element(element, "TCP-FIN")
-        if child is not None:
-            tcp_fin_value = child.text
-            obj.tcp_fin = tcp_fin_value
-
-        # Parse tcp_keep_alive
-        child = SerializationHelper.find_child_element(element, "TCP-KEEP-ALIVE")
-        if child is not None:
-            tcp_keep_alive_value = child.text
-            obj.tcp_keep_alive = tcp_keep_alive_value
-
-        # Parse tcp_max_rtx
-        child = SerializationHelper.find_child_element(element, "TCP-MAX-RTX")
-        if child is not None:
-            tcp_max_rtx_value = child.text
-            obj.tcp_max_rtx = tcp_max_rtx_value
-
-        # Parse tcp_msl
-        child = SerializationHelper.find_child_element(element, "TCP-MSL")
-        if child is not None:
-            tcp_msl_value = child.text
-            obj.tcp_msl = tcp_msl_value
-
-        # Parse tcp_nagle
-        child = SerializationHelper.find_child_element(element, "TCP-NAGLE")
-        if child is not None:
-            tcp_nagle_value = child.text
-            obj.tcp_nagle = tcp_nagle_value
-
-        # Parse tcp_receive_window_max
-        child = SerializationHelper.find_child_element(element, "TCP-RECEIVE-WINDOW-MAX")
-        if child is not None:
-            tcp_receive_window_max_value = child.text
-            obj.tcp_receive_window_max = tcp_receive_window_max_value
-
-        # Parse tcp
-        child = SerializationHelper.find_child_element(element, "TCP")
-        if child is not None:
-            tcp_value = child.text
-            obj.tcp = tcp_value
-
-        # Parse tcp_slow_start
-        child = SerializationHelper.find_child_element(element, "TCP-SLOW-START")
-        if child is not None:
-            tcp_slow_start_value = child.text
-            obj.tcp_slow_start = tcp_slow_start_value
-
-        # Parse tcp_syn_max_rtx
-        child = SerializationHelper.find_child_element(element, "TCP-SYN-MAX-RTX")
-        if child is not None:
-            tcp_syn_max_rtx_value = child.text
-            obj.tcp_syn_max_rtx = tcp_syn_max_rtx_value
-
-        # Parse tcp_syn_received
-        child = SerializationHelper.find_child_element(element, "TCP-SYN-RECEIVED")
-        if child is not None:
-            tcp_syn_received_value = child.text
-            obj.tcp_syn_received = tcp_syn_received_value
-
-        # Parse tcp_ttl
-        child = SerializationHelper.find_child_element(element, "TCP-TTL")
-        if child is not None:
-            tcp_ttl_value = child.text
-            obj.tcp_ttl = tcp_ttl_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TCP-CONGESTION":
+                setattr(obj, "tcp_congestion", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TCP-DELAYED-ACK":
+                setattr(obj, "tcp_delayed_ack", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-FAST-RECOVERY":
+                setattr(obj, "tcp_fast_recovery", SerializationHelper.deserialize_by_tag(child, "any (BooleanRecovery)"))
+            elif tag == "TCP-FAST":
+                setattr(obj, "tcp_fast", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TCP-FIN":
+                setattr(obj, "tcp_fin", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-KEEP-ALIVE":
+                setattr(obj, "tcp_keep_alive", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-MAX-RTX":
+                setattr(obj, "tcp_max_rtx", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-MSL":
+                setattr(obj, "tcp_msl", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-NAGLE":
+                setattr(obj, "tcp_nagle", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TCP-RECEIVE-WINDOW-MAX":
+                setattr(obj, "tcp_receive_window_max", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP":
+                setattr(obj, "tcp", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-SLOW-START":
+                setattr(obj, "tcp_slow_start", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TCP-SYN-MAX-RTX":
+                setattr(obj, "tcp_syn_max_rtx", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-SYN-RECEIVED":
+                setattr(obj, "tcp_syn_received", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-TTL":
+                setattr(obj, "tcp_ttl", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

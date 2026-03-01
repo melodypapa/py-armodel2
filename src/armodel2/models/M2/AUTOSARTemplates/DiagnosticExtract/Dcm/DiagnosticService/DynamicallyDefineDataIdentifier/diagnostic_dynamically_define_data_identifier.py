@@ -37,9 +37,19 @@ class DiagnosticDynamicallyDefineDataIdentifier(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-DYNAMICALLY-DEFINE-DATA-IDENTIFIER"
+
+
     data_identifier_ref: Optional[ARRef]
     dynamically_ref: Optional[Any]
     max_source: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-IDENTIFIER-REF": lambda obj, elem: setattr(obj, "data_identifier_ref", ARRef.deserialize(elem)),
+        "DYNAMICALLY-REF": lambda obj, elem: setattr(obj, "dynamically_ref", ARRef.deserialize(elem)),
+        "MAX-SOURCE": lambda obj, elem: setattr(obj, "max_source", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticDynamicallyDefineDataIdentifier."""
         super().__init__()
@@ -53,9 +63,8 @@ class DiagnosticDynamicallyDefineDataIdentifier(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticDynamicallyDefineDataIdentifier, self).serialize()
@@ -128,23 +137,16 @@ class DiagnosticDynamicallyDefineDataIdentifier(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDynamicallyDefineDataIdentifier, cls).deserialize(element)
 
-        # Parse data_identifier_ref
-        child = SerializationHelper.find_child_element(element, "DATA-IDENTIFIER-REF")
-        if child is not None:
-            data_identifier_ref_value = ARRef.deserialize(child)
-            obj.data_identifier_ref = data_identifier_ref_value
-
-        # Parse dynamically_ref
-        child = SerializationHelper.find_child_element(element, "DYNAMICALLY-REF")
-        if child is not None:
-            dynamically_ref_value = ARRef.deserialize(child)
-            obj.dynamically_ref = dynamically_ref_value
-
-        # Parse max_source
-        child = SerializationHelper.find_child_element(element, "MAX-SOURCE")
-        if child is not None:
-            max_source_value = child.text
-            obj.max_source = max_source_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-IDENTIFIER-REF":
+                setattr(obj, "data_identifier_ref", ARRef.deserialize(child))
+            elif tag == "DYNAMICALLY-REF":
+                setattr(obj, "dynamically_ref", ARRef.deserialize(child))
+            elif tag == "MAX-SOURCE":
+                setattr(obj, "max_source", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

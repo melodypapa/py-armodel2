@@ -31,6 +31,9 @@ class Ipv6NdpProps(ARObject):
         """
         return False
 
+    _XML_TAG = "IPV6-NDP-PROPS"
+
+
     tcp_ip_ndp_default: Optional[TimeValue]
     tcp_ip_ndp_default_router_list_size: Optional[PositiveInteger]
     tcp_ip_ndp: Optional[Boolean]
@@ -44,6 +47,23 @@ class Ipv6NdpProps(ARObject):
     tcp_ip_ndp_rnd_rtr: Optional[Boolean]
     tcp_ip_ndp_rtr: Optional[TimeValue]
     tcp_ip_ndp_slaac: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "TCP-IP-NDP-DEFAULT": lambda obj, elem: setattr(obj, "tcp_ip_ndp_default", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-IP-NDP-DEFAULT-ROUTER-LIST-SIZE": lambda obj, elem: setattr(obj, "tcp_ip_ndp_default_router_list_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-IP-NDP": lambda obj, elem: setattr(obj, "tcp_ip_ndp", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TCP-IP-NDP-DELAY-FIRST-PROBE-TIME-VALUE": lambda obj, elem: setattr(obj, "tcp_ip_ndp_delay_first_probe_time_value", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-IP-NDP-MAX-RANDOM-FACTOR": lambda obj, elem: setattr(obj, "tcp_ip_ndp_max_random_factor", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-IP-NDP-MAX-RTR": lambda obj, elem: setattr(obj, "tcp_ip_ndp_max_rtr", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-IP-NDP-MIN-RANDOM-FACTOR": lambda obj, elem: setattr(obj, "tcp_ip_ndp_min_random_factor", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-IP-NDP-NUM": lambda obj, elem: setattr(obj, "tcp_ip_ndp_num", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-IP-NDP-PACKET": lambda obj, elem: setattr(obj, "tcp_ip_ndp_packet", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TCP-IP-NDP-PREFIX": lambda obj, elem: setattr(obj, "tcp_ip_ndp_prefix", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-IP-NDP-RND-RTR": lambda obj, elem: setattr(obj, "tcp_ip_ndp_rnd_rtr", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TCP-IP-NDP-RTR": lambda obj, elem: setattr(obj, "tcp_ip_ndp_rtr", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-IP-NDP-SLAAC": lambda obj, elem: setattr(obj, "tcp_ip_ndp_slaac", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ipv6NdpProps."""
         super().__init__()
@@ -67,9 +87,8 @@ class Ipv6NdpProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ipv6NdpProps, self).serialize()
@@ -282,83 +301,36 @@ class Ipv6NdpProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ipv6NdpProps, cls).deserialize(element)
 
-        # Parse tcp_ip_ndp_default
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-DEFAULT")
-        if child is not None:
-            tcp_ip_ndp_default_value = child.text
-            obj.tcp_ip_ndp_default = tcp_ip_ndp_default_value
-
-        # Parse tcp_ip_ndp_default_router_list_size
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-DEFAULT-ROUTER-LIST-SIZE")
-        if child is not None:
-            tcp_ip_ndp_default_router_list_size_value = child.text
-            obj.tcp_ip_ndp_default_router_list_size = tcp_ip_ndp_default_router_list_size_value
-
-        # Parse tcp_ip_ndp
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP")
-        if child is not None:
-            tcp_ip_ndp_value = child.text
-            obj.tcp_ip_ndp = tcp_ip_ndp_value
-
-        # Parse tcp_ip_ndp_delay_first_probe_time_value
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-DELAY-FIRST-PROBE-TIME-VALUE")
-        if child is not None:
-            tcp_ip_ndp_delay_first_probe_time_value_value = child.text
-            obj.tcp_ip_ndp_delay_first_probe_time_value = tcp_ip_ndp_delay_first_probe_time_value_value
-
-        # Parse tcp_ip_ndp_max_random_factor
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-MAX-RANDOM-FACTOR")
-        if child is not None:
-            tcp_ip_ndp_max_random_factor_value = child.text
-            obj.tcp_ip_ndp_max_random_factor = tcp_ip_ndp_max_random_factor_value
-
-        # Parse tcp_ip_ndp_max_rtr
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-MAX-RTR")
-        if child is not None:
-            tcp_ip_ndp_max_rtr_value = child.text
-            obj.tcp_ip_ndp_max_rtr = tcp_ip_ndp_max_rtr_value
-
-        # Parse tcp_ip_ndp_min_random_factor
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-MIN-RANDOM-FACTOR")
-        if child is not None:
-            tcp_ip_ndp_min_random_factor_value = child.text
-            obj.tcp_ip_ndp_min_random_factor = tcp_ip_ndp_min_random_factor_value
-
-        # Parse tcp_ip_ndp_num
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-NUM")
-        if child is not None:
-            tcp_ip_ndp_num_value = child.text
-            obj.tcp_ip_ndp_num = tcp_ip_ndp_num_value
-
-        # Parse tcp_ip_ndp_packet
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-PACKET")
-        if child is not None:
-            tcp_ip_ndp_packet_value = child.text
-            obj.tcp_ip_ndp_packet = tcp_ip_ndp_packet_value
-
-        # Parse tcp_ip_ndp_prefix
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-PREFIX")
-        if child is not None:
-            tcp_ip_ndp_prefix_value = child.text
-            obj.tcp_ip_ndp_prefix = tcp_ip_ndp_prefix_value
-
-        # Parse tcp_ip_ndp_rnd_rtr
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-RND-RTR")
-        if child is not None:
-            tcp_ip_ndp_rnd_rtr_value = child.text
-            obj.tcp_ip_ndp_rnd_rtr = tcp_ip_ndp_rnd_rtr_value
-
-        # Parse tcp_ip_ndp_rtr
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-RTR")
-        if child is not None:
-            tcp_ip_ndp_rtr_value = child.text
-            obj.tcp_ip_ndp_rtr = tcp_ip_ndp_rtr_value
-
-        # Parse tcp_ip_ndp_slaac
-        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-SLAAC")
-        if child is not None:
-            tcp_ip_ndp_slaac_value = child.text
-            obj.tcp_ip_ndp_slaac = tcp_ip_ndp_slaac_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TCP-IP-NDP-DEFAULT":
+                setattr(obj, "tcp_ip_ndp_default", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-IP-NDP-DEFAULT-ROUTER-LIST-SIZE":
+                setattr(obj, "tcp_ip_ndp_default_router_list_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-IP-NDP":
+                setattr(obj, "tcp_ip_ndp", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TCP-IP-NDP-DELAY-FIRST-PROBE-TIME-VALUE":
+                setattr(obj, "tcp_ip_ndp_delay_first_probe_time_value", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-IP-NDP-MAX-RANDOM-FACTOR":
+                setattr(obj, "tcp_ip_ndp_max_random_factor", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-IP-NDP-MAX-RTR":
+                setattr(obj, "tcp_ip_ndp_max_rtr", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-IP-NDP-MIN-RANDOM-FACTOR":
+                setattr(obj, "tcp_ip_ndp_min_random_factor", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-IP-NDP-NUM":
+                setattr(obj, "tcp_ip_ndp_num", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-IP-NDP-PACKET":
+                setattr(obj, "tcp_ip_ndp_packet", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TCP-IP-NDP-PREFIX":
+                setattr(obj, "tcp_ip_ndp_prefix", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-IP-NDP-RND-RTR":
+                setattr(obj, "tcp_ip_ndp_rnd_rtr", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TCP-IP-NDP-RTR":
+                setattr(obj, "tcp_ip_ndp_rtr", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-IP-NDP-SLAAC":
+                setattr(obj, "tcp_ip_ndp_slaac", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

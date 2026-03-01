@@ -40,9 +40,19 @@ class SignalServiceTranslationElementProps(Identifiable):
         """
         return False
 
+    _XML_TAG = "SIGNAL-SERVICE-TRANSLATION-ELEMENT-PROPS"
+
+
     element_ref: Optional[ARRef]
     filter: Optional[DataFilter]
     transmission: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ELEMENT-REF": ("_POLYMORPHIC", "element_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "FILTER": lambda obj, elem: setattr(obj, "filter", SerializationHelper.deserialize_by_tag(elem, "DataFilter")),
+        "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SignalServiceTranslationElementProps."""
         super().__init__()
@@ -56,9 +66,8 @@ class SignalServiceTranslationElementProps(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SignalServiceTranslationElementProps, self).serialize()
@@ -131,23 +140,16 @@ class SignalServiceTranslationElementProps(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SignalServiceTranslationElementProps, cls).deserialize(element)
 
-        # Parse element_ref
-        child = SerializationHelper.find_child_element(element, "ELEMENT-REF")
-        if child is not None:
-            element_ref_value = ARRef.deserialize(child)
-            obj.element_ref = element_ref_value
-
-        # Parse filter
-        child = SerializationHelper.find_child_element(element, "FILTER")
-        if child is not None:
-            filter_value = SerializationHelper.deserialize_by_tag(child, "DataFilter")
-            obj.filter = filter_value
-
-        # Parse transmission
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION")
-        if child is not None:
-            transmission_value = child.text
-            obj.transmission = transmission_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ELEMENT-REF":
+                setattr(obj, "element_ref", ARRef.deserialize(child))
+            elif tag == "FILTER":
+                setattr(obj, "filter", SerializationHelper.deserialize_by_tag(child, "DataFilter"))
+            elif tag == "TRANSMISSION":
+                setattr(obj, "transmission", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

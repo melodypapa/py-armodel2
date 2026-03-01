@@ -33,7 +33,15 @@ class CompuScaleRationalFormula(CompuScaleContents):
         """
         return False
 
+    _XML_TAG = "COMPU-SCALE-RATIONAL-FORMULA"
+
+
     compu_rational_coeffs: Optional[CompuRationalCoeffs]
+    _DESERIALIZE_DISPATCH = {
+        "COMPU-RATIONAL-COEFFS": lambda obj, elem: setattr(obj, "compu_rational_coeffs", SerializationHelper.deserialize_by_tag(elem, "CompuRationalCoeffs")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompuScaleRationalFormula."""
         super().__init__()
@@ -45,9 +53,8 @@ class CompuScaleRationalFormula(CompuScaleContents):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompuScaleRationalFormula, self).serialize()
@@ -92,11 +99,12 @@ class CompuScaleRationalFormula(CompuScaleContents):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuScaleRationalFormula, cls).deserialize(element)
 
-        # Parse compu_rational_coeffs
-        child = SerializationHelper.find_child_element(element, "COMPU-RATIONAL-COEFFS")
-        if child is not None:
-            compu_rational_coeffs_value = SerializationHelper.deserialize_by_tag(child, "CompuRationalCoeffs")
-            obj.compu_rational_coeffs = compu_rational_coeffs_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMPU-RATIONAL-COEFFS":
+                setattr(obj, "compu_rational_coeffs", SerializationHelper.deserialize_by_tag(child, "CompuRationalCoeffs"))
 
         return obj
 

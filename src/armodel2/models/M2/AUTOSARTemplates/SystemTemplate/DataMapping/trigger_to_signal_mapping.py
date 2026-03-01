@@ -37,8 +37,17 @@ class TriggerToSignalMapping(DataMapping):
         """
         return False
 
+    _XML_TAG = "TRIGGER-TO-SIGNAL-MAPPING"
+
+
     system_signal_ref: Optional[ARRef]
     trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SYSTEM-SIGNAL-REF": lambda obj, elem: setattr(obj, "system_signal_ref", ARRef.deserialize(elem)),
+        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TriggerToSignalMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class TriggerToSignalMapping(DataMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TriggerToSignalMapping, self).serialize()
@@ -112,17 +120,14 @@ class TriggerToSignalMapping(DataMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TriggerToSignalMapping, cls).deserialize(element)
 
-        # Parse system_signal_ref
-        child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
-        if child is not None:
-            system_signal_ref_value = ARRef.deserialize(child)
-            obj.system_signal_ref = system_signal_ref_value
-
-        # Parse trigger_ref
-        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
-        if child is not None:
-            trigger_ref_value = ARRef.deserialize(child)
-            obj.trigger_ref = trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SYSTEM-SIGNAL-REF":
+                setattr(obj, "system_signal_ref", ARRef.deserialize(child))
+            elif tag == "TRIGGER-REF":
+                setattr(obj, "trigger_ref", ARRef.deserialize(child))
 
         return obj
 

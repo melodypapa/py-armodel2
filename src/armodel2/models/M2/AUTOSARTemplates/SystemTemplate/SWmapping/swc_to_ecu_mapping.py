@@ -45,10 +45,21 @@ class SwcToEcuMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "SWC-TO-ECU-MAPPING"
+
+
     _component_irefs: list[ComponentInSystemInstanceRef]
     controlled_hw_element_ref: Optional[ARRef]
     ecu_instance_ref: Optional[ARRef]
     processing_unit_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMPONENTS-IREF": lambda obj, elem: obj._component_irefs.append(SerializationHelper.deserialize_by_tag(elem, "ComponentInSystemInstanceRef")),
+        "CONTROLLED-HW-ELEMENT-REF": lambda obj, elem: setattr(obj, "controlled_hw_element_ref", ARRef.deserialize(elem)),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+        "PROCESSING-UNIT-REF": lambda obj, elem: setattr(obj, "processing_unit_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcToEcuMapping."""
         super().__init__()
@@ -74,9 +85,8 @@ class SwcToEcuMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcToEcuMapping, self).serialize()
@@ -163,34 +173,20 @@ class SwcToEcuMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcToEcuMapping, cls).deserialize(element)
 
-        # Parse component_irefs (multi-wrapper list from "COMPONENT-IREFS")
-        obj.component_irefs = []
-        irefs_container = SerializationHelper.find_child_element(element, "COMPONENT-IREFS")
-        if irefs_container is not None:
-            for iref_wrapper in irefs_container:
-                if SerializationHelper.strip_namespace(iref_wrapper.tag) == "COMPONENT-IREF":
-                    # Deserialize each iref wrapper as the type (flattened structure)
-                    child_value = SerializationHelper.deserialize_by_tag(iref_wrapper, "ComponentInSystemInstanceRef")
-                    if child_value is not None:
-                        obj.component_irefs.append(child_value)
-
-        # Parse controlled_hw_element_ref
-        child = SerializationHelper.find_child_element(element, "CONTROLLED-HW-ELEMENT-REF")
-        if child is not None:
-            controlled_hw_element_ref_value = ARRef.deserialize(child)
-            obj.controlled_hw_element_ref = controlled_hw_element_ref_value
-
-        # Parse ecu_instance_ref
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
-        if child is not None:
-            ecu_instance_ref_value = ARRef.deserialize(child)
-            obj.ecu_instance_ref = ecu_instance_ref_value
-
-        # Parse processing_unit_ref
-        child = SerializationHelper.find_child_element(element, "PROCESSING-UNIT-REF")
-        if child is not None:
-            processing_unit_ref_value = ARRef.deserialize(child)
-            obj.processing_unit_ref = processing_unit_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMPONENT-IREFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj._component_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "ComponentInSystemInstanceRef"))
+            elif tag == "CONTROLLED-HW-ELEMENT-REF":
+                setattr(obj, "controlled_hw_element_ref", ARRef.deserialize(child))
+            elif tag == "ECU-INSTANCE-REF":
+                setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
+            elif tag == "PROCESSING-UNIT-REF":
+                setattr(obj, "processing_unit_ref", ARRef.deserialize(child))
 
         return obj
 

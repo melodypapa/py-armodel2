@@ -35,9 +35,19 @@ class Ipv4Props(ARObject):
         """
         return False
 
+    _XML_TAG = "IPV4-PROPS"
+
+
     arp_props: Optional[Ipv4ArpProps]
     auto_ip_props: Optional[Ipv4AutoIpProps]
     fragmentation: Optional[Ipv4FragmentationProps]
+    _DESERIALIZE_DISPATCH = {
+        "ARP-PROPS": lambda obj, elem: setattr(obj, "arp_props", SerializationHelper.deserialize_by_tag(elem, "Ipv4ArpProps")),
+        "AUTO-IP-PROPS": lambda obj, elem: setattr(obj, "auto_ip_props", SerializationHelper.deserialize_by_tag(elem, "Ipv4AutoIpProps")),
+        "FRAGMENTATION": lambda obj, elem: setattr(obj, "fragmentation", SerializationHelper.deserialize_by_tag(elem, "Ipv4FragmentationProps")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ipv4Props."""
         super().__init__()
@@ -51,9 +61,8 @@ class Ipv4Props(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ipv4Props, self).serialize()
@@ -126,23 +135,16 @@ class Ipv4Props(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ipv4Props, cls).deserialize(element)
 
-        # Parse arp_props
-        child = SerializationHelper.find_child_element(element, "ARP-PROPS")
-        if child is not None:
-            arp_props_value = SerializationHelper.deserialize_by_tag(child, "Ipv4ArpProps")
-            obj.arp_props = arp_props_value
-
-        # Parse auto_ip_props
-        child = SerializationHelper.find_child_element(element, "AUTO-IP-PROPS")
-        if child is not None:
-            auto_ip_props_value = SerializationHelper.deserialize_by_tag(child, "Ipv4AutoIpProps")
-            obj.auto_ip_props = auto_ip_props_value
-
-        # Parse fragmentation
-        child = SerializationHelper.find_child_element(element, "FRAGMENTATION")
-        if child is not None:
-            fragmentation_value = SerializationHelper.deserialize_by_tag(child, "Ipv4FragmentationProps")
-            obj.fragmentation = fragmentation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ARP-PROPS":
+                setattr(obj, "arp_props", SerializationHelper.deserialize_by_tag(child, "Ipv4ArpProps"))
+            elif tag == "AUTO-IP-PROPS":
+                setattr(obj, "auto_ip_props", SerializationHelper.deserialize_by_tag(child, "Ipv4AutoIpProps"))
+            elif tag == "FRAGMENTATION":
+                setattr(obj, "fragmentation", SerializationHelper.deserialize_by_tag(child, "Ipv4FragmentationProps"))
 
         return obj
 

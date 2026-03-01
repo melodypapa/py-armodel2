@@ -40,10 +40,21 @@ class SwAddrMethod(ARElement):
         """
         return False
 
+    _XML_TAG = "SW-ADDR-METHOD"
+
+
     memory: Optional[MemoryAllocationKeywordPolicyType]
     options: list[Identifier]
     section: Optional[SectionInitializationPolicyType]
     section_type: Optional[MemorySectionType]
+    _DESERIALIZE_DISPATCH = {
+        "MEMORY": lambda obj, elem: setattr(obj, "memory", MemoryAllocationKeywordPolicyType.deserialize(elem)),
+        "OPTIONS": lambda obj, elem: obj.options.append(SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "SECTION": lambda obj, elem: setattr(obj, "section", SerializationHelper.deserialize_by_tag(elem, "SectionInitializationPolicyType")),
+        "SECTION-TYPE": lambda obj, elem: setattr(obj, "section_type", MemorySectionType.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwAddrMethod."""
         super().__init__()
@@ -58,9 +69,8 @@ class SwAddrMethod(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwAddrMethod, self).serialize()
@@ -150,33 +160,20 @@ class SwAddrMethod(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwAddrMethod, cls).deserialize(element)
 
-        # Parse memory
-        child = SerializationHelper.find_child_element(element, "MEMORY")
-        if child is not None:
-            memory_value = MemoryAllocationKeywordPolicyType.deserialize(child)
-            obj.memory = memory_value
-
-        # Parse options (list from container "OPTIONS")
-        obj.options = []
-        container = SerializationHelper.find_child_element(element, "OPTIONS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (Identifier) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.options.append(child_value)
-
-        # Parse section
-        child = SerializationHelper.find_child_element(element, "SECTION")
-        if child is not None:
-            section_value = child.text
-            obj.section = section_value
-
-        # Parse section_type
-        child = SerializationHelper.find_child_element(element, "SECTION-TYPE")
-        if child is not None:
-            section_type_value = MemorySectionType.deserialize(child)
-            obj.section_type = section_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MEMORY":
+                setattr(obj, "memory", MemoryAllocationKeywordPolicyType.deserialize(child))
+            elif tag == "OPTIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.options.append(SerializationHelper.deserialize_by_tag(item_elem, "Identifier"))
+            elif tag == "SECTION":
+                setattr(obj, "section", SerializationHelper.deserialize_by_tag(child, "SectionInitializationPolicyType"))
+            elif tag == "SECTION-TYPE":
+                setattr(obj, "section_type", MemorySectionType.deserialize(child))
 
         return obj
 

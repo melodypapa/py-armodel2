@@ -34,8 +34,17 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-RESPONSE-ON-EVENT"
+
+
     event_windows: list[DiagnosticEventWindow]
     response_on_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-WINDOWS": lambda obj, elem: obj.event_windows.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticEventWindow")),
+        "RESPONSE-ON-REF": lambda obj, elem: setattr(obj, "response_on_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticResponseOnEvent."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticResponseOnEvent, self).serialize()
@@ -105,21 +113,16 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticResponseOnEvent, cls).deserialize(element)
 
-        # Parse event_windows (list from container "EVENT-WINDOWS")
-        obj.event_windows = []
-        container = SerializationHelper.find_child_element(element, "EVENT-WINDOWS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.event_windows.append(child_value)
-
-        # Parse response_on_ref
-        child = SerializationHelper.find_child_element(element, "RESPONSE-ON-REF")
-        if child is not None:
-            response_on_ref_value = ARRef.deserialize(child)
-            obj.response_on_ref = response_on_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EVENT-WINDOWS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.event_windows.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticEventWindow"))
+            elif tag == "RESPONSE-ON-REF":
+                setattr(obj, "response_on_ref", ARRef.deserialize(child))
 
         return obj
 

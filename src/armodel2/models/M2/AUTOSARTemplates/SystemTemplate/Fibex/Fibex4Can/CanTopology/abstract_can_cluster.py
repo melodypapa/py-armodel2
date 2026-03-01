@@ -39,6 +39,13 @@ class AbstractCanCluster(CommunicationCluster, ABC):
     bus_off_recovery: Optional[CanClusterBusOffRecovery]
     can_fd_baudrate: Optional[PositiveUnlimitedInteger]
     can_xl_baudrate: Optional[PositiveUnlimitedInteger]
+    _DESERIALIZE_DISPATCH = {
+        "BUS-OFF-RECOVERY": lambda obj, elem: setattr(obj, "bus_off_recovery", SerializationHelper.deserialize_by_tag(elem, "CanClusterBusOffRecovery")),
+        "CAN-FD-BAUDRATE": lambda obj, elem: setattr(obj, "can_fd_baudrate", SerializationHelper.deserialize_by_tag(elem, "PositiveUnlimitedInteger")),
+        "CAN-XL-BAUDRATE": lambda obj, elem: setattr(obj, "can_xl_baudrate", SerializationHelper.deserialize_by_tag(elem, "PositiveUnlimitedInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AbstractCanCluster."""
         super().__init__()
@@ -52,9 +59,8 @@ class AbstractCanCluster(CommunicationCluster, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AbstractCanCluster, self).serialize()
@@ -127,23 +133,16 @@ class AbstractCanCluster(CommunicationCluster, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractCanCluster, cls).deserialize(element)
 
-        # Parse bus_off_recovery
-        child = SerializationHelper.find_child_element(element, "BUS-OFF-RECOVERY")
-        if child is not None:
-            bus_off_recovery_value = SerializationHelper.deserialize_by_tag(child, "CanClusterBusOffRecovery")
-            obj.bus_off_recovery = bus_off_recovery_value
-
-        # Parse can_fd_baudrate
-        child = SerializationHelper.find_child_element(element, "CAN-FD-BAUDRATE")
-        if child is not None:
-            can_fd_baudrate_value = child.text
-            obj.can_fd_baudrate = can_fd_baudrate_value
-
-        # Parse can_xl_baudrate
-        child = SerializationHelper.find_child_element(element, "CAN-XL-BAUDRATE")
-        if child is not None:
-            can_xl_baudrate_value = child.text
-            obj.can_xl_baudrate = can_xl_baudrate_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BUS-OFF-RECOVERY":
+                setattr(obj, "bus_off_recovery", SerializationHelper.deserialize_by_tag(child, "CanClusterBusOffRecovery"))
+            elif tag == "CAN-FD-BAUDRATE":
+                setattr(obj, "can_fd_baudrate", SerializationHelper.deserialize_by_tag(child, "PositiveUnlimitedInteger"))
+            elif tag == "CAN-XL-BAUDRATE":
+                setattr(obj, "can_xl_baudrate", SerializationHelper.deserialize_by_tag(child, "PositiveUnlimitedInteger"))
 
         return obj
 

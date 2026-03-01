@@ -37,8 +37,17 @@ class CpSwClusterResourceToDiagDataElemMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "CP-SW-CLUSTER-RESOURCE-TO-DIAG-DATA-ELEM-MAPPING"
+
+
     cp_software_cluster_ref: Optional[ARRef]
     diagnostic_data_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CP-SOFTWARE-CLUSTER-REF": lambda obj, elem: setattr(obj, "cp_software_cluster_ref", ARRef.deserialize(elem)),
+        "DIAGNOSTIC-DATA-REF": lambda obj, elem: setattr(obj, "diagnostic_data_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSwClusterResourceToDiagDataElemMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class CpSwClusterResourceToDiagDataElemMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSwClusterResourceToDiagDataElemMapping, self).serialize()
@@ -112,17 +120,14 @@ class CpSwClusterResourceToDiagDataElemMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSwClusterResourceToDiagDataElemMapping, cls).deserialize(element)
 
-        # Parse cp_software_cluster_ref
-        child = SerializationHelper.find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
-        if child is not None:
-            cp_software_cluster_ref_value = ARRef.deserialize(child)
-            obj.cp_software_cluster_ref = cp_software_cluster_ref_value
-
-        # Parse diagnostic_data_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-DATA-REF")
-        if child is not None:
-            diagnostic_data_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_data_ref = diagnostic_data_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CP-SOFTWARE-CLUSTER-REF":
+                setattr(obj, "cp_software_cluster_ref", ARRef.deserialize(child))
+            elif tag == "DIAGNOSTIC-DATA-REF":
+                setattr(obj, "diagnostic_data_ref", ARRef.deserialize(child))
 
         return obj
 

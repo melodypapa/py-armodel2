@@ -41,9 +41,19 @@ class ParameterSwComponentType(SwComponentType):
         """
         return False
 
+    _XML_TAG = "PARAMETER-SW-COMPONENT-TYPE"
+
+
     constant_refs: list[ARRef]
     data_type_refs: list[ARRef]
     instantiation_data_defs: list[InstantiationDataDefProps]
+    _DESERIALIZE_DISPATCH = {
+        "CONSTANT-REFS": lambda obj, elem: [obj.constant_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "DATA-TYPE-REFS": lambda obj, elem: [obj.data_type_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "INSTANTIATION-DATA-DEFS": lambda obj, elem: obj.instantiation_data_defs.append(SerializationHelper.deserialize_by_tag(elem, "InstantiationDataDefProps")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ParameterSwComponentType."""
         super().__init__()
@@ -57,9 +67,8 @@ class ParameterSwComponentType(SwComponentType):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ParameterSwComponentType, self).serialize()
@@ -134,47 +143,22 @@ class ParameterSwComponentType(SwComponentType):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ParameterSwComponentType, cls).deserialize(element)
 
-        # Parse constant_refs (list from container "CONSTANT-REFS")
-        obj.constant_refs = []
-        container = SerializationHelper.find_child_element(element, "CONSTANT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.constant_refs.append(child_value)
-
-        # Parse data_type_refs (list from container "DATA-TYPE-REFS")
-        obj.data_type_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-TYPE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_type_refs.append(child_value)
-
-        # Parse instantiation_data_defs (list from container "INSTANTIATION-DATA-DEFS")
-        obj.instantiation_data_defs = []
-        container = SerializationHelper.find_child_element(element, "INSTANTIATION-DATA-DEFS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.instantiation_data_defs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONSTANT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.constant_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "DATA-TYPE-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.data_type_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "INSTANTIATION-DATA-DEFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.instantiation_data_defs.append(SerializationHelper.deserialize_by_tag(item_elem, "InstantiationDataDefProps"))
 
         return obj
 

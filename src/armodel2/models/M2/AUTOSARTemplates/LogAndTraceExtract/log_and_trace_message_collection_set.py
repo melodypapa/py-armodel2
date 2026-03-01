@@ -33,7 +33,15 @@ class LogAndTraceMessageCollectionSet(ARElement):
         """
         return False
 
+    _XML_TAG = "LOG-AND-TRACE-MESSAGE-COLLECTION-SET"
+
+
     dlt_messages: list[DltMessage]
+    _DESERIALIZE_DISPATCH = {
+        "DLT-MESSAGES": lambda obj, elem: obj.dlt_messages.append(SerializationHelper.deserialize_by_tag(elem, "DltMessage")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LogAndTraceMessageCollectionSet."""
         super().__init__()
@@ -45,9 +53,8 @@ class LogAndTraceMessageCollectionSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LogAndTraceMessageCollectionSet, self).serialize()
@@ -88,15 +95,14 @@ class LogAndTraceMessageCollectionSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LogAndTraceMessageCollectionSet, cls).deserialize(element)
 
-        # Parse dlt_messages (list from container "DLT-MESSAGES")
-        obj.dlt_messages = []
-        container = SerializationHelper.find_child_element(element, "DLT-MESSAGES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dlt_messages.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DLT-MESSAGES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.dlt_messages.append(SerializationHelper.deserialize_by_tag(item_elem, "DltMessage"))
 
         return obj
 

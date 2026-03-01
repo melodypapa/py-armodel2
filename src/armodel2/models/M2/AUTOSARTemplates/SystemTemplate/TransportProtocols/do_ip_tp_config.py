@@ -36,8 +36,17 @@ class DoIpTpConfig(TpConfig):
         """
         return False
 
+    _XML_TAG = "DO-IP-TP-CONFIG"
+
+
     do_ip_logic_address_addresses: list[DoIpLogicAddress]
     tp_connections: list[DoIpTpConnection]
+    _DESERIALIZE_DISPATCH = {
+        "DO-IP-LOGIC-ADDRESS-ADDRESSES": lambda obj, elem: obj.do_ip_logic_address_addresses.append(SerializationHelper.deserialize_by_tag(elem, "DoIpLogicAddress")),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SerializationHelper.deserialize_by_tag(elem, "DoIpTpConnection")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DoIpTpConfig."""
         super().__init__()
@@ -50,9 +59,8 @@ class DoIpTpConfig(TpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DoIpTpConfig, self).serialize()
@@ -103,25 +111,18 @@ class DoIpTpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpTpConfig, cls).deserialize(element)
 
-        # Parse do_ip_logic_address_addresses (list from container "DO-IP-LOGIC-ADDRESS-ADDRESSES")
-        obj.do_ip_logic_address_addresses = []
-        container = SerializationHelper.find_child_element(element, "DO-IP-LOGIC-ADDRESS-ADDRESSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.do_ip_logic_address_addresses.append(child_value)
-
-        # Parse tp_connections (list from container "TP-CONNECTIONS")
-        obj.tp_connections = []
-        container = SerializationHelper.find_child_element(element, "TP-CONNECTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_connections.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DO-IP-LOGIC-ADDRESS-ADDRESSES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.do_ip_logic_address_addresses.append(SerializationHelper.deserialize_by_tag(item_elem, "DoIpLogicAddress"))
+            elif tag == "TP-CONNECTIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.tp_connections.append(SerializationHelper.deserialize_by_tag(item_elem, "DoIpTpConnection"))
 
         return obj
 

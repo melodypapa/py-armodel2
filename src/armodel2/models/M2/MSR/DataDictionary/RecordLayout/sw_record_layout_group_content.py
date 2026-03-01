@@ -39,9 +39,19 @@ class SwRecordLayoutGroupContent(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-RECORD-LAYOUT-GROUP-CONTENT"
+
+
     sw_record_layout_ref: Optional[ARRef]
     sw_record_layout_group: Optional[SwRecordLayoutGroup]
     sw_record_layout_v: Optional[SwRecordLayoutV]
+    _DESERIALIZE_DISPATCH = {
+        "SW-RECORD-LAYOUT-REF": lambda obj, elem: setattr(obj, "sw_record_layout_ref", ARRef.deserialize(elem)),
+        "SW-RECORD-LAYOUT-GROUP": lambda obj, elem: setattr(obj, "sw_record_layout_group", SerializationHelper.deserialize_by_tag(elem, "SwRecordLayoutGroup")),
+        "SW-RECORD-LAYOUT-V": lambda obj, elem: setattr(obj, "sw_record_layout_v", SerializationHelper.deserialize_by_tag(elem, "SwRecordLayoutV")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwRecordLayoutGroupContent."""
         super().__init__()

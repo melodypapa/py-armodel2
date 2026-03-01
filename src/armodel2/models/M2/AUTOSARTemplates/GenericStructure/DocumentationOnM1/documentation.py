@@ -38,8 +38,17 @@ class Documentation(ARElement):
         """
         return False
 
+    _XML_TAG = "DOCUMENTATION"
+
+
     contexts: list[DocumentationContext]
     documentation: Optional[PredefinedChapter]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXTS": lambda obj, elem: obj.contexts.append(SerializationHelper.deserialize_by_tag(elem, "DocumentationContext")),
+        "DOCUMENTATION": lambda obj, elem: setattr(obj, "documentation", SerializationHelper.deserialize_by_tag(elem, "PredefinedChapter")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Documentation."""
         super().__init__()
@@ -52,9 +61,8 @@ class Documentation(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Documentation, self).serialize()
@@ -109,21 +117,16 @@ class Documentation(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Documentation, cls).deserialize(element)
 
-        # Parse contexts (list from container "CONTEXTS")
-        obj.contexts = []
-        container = SerializationHelper.find_child_element(element, "CONTEXTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.contexts.append(child_value)
-
-        # Parse documentation
-        child = SerializationHelper.find_child_element(element, "DOCUMENTATION")
-        if child is not None:
-            documentation_value = SerializationHelper.deserialize_by_tag(child, "PredefinedChapter")
-            obj.documentation = documentation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONTEXTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.contexts.append(SerializationHelper.deserialize_by_tag(item_elem, "DocumentationContext"))
+            elif tag == "DOCUMENTATION":
+                setattr(obj, "documentation", SerializationHelper.deserialize_by_tag(child, "PredefinedChapter"))
 
         return obj
 

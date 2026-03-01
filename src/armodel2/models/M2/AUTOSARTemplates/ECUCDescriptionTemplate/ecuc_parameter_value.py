@@ -46,6 +46,13 @@ class EcucParameterValue(EcucIndexableValue, ABC):
     annotations: list[Annotation]
     definition_ref: Optional[ARRef]
     is_auto_value: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ANNOTATIONS": lambda obj, elem: obj.annotations.append(SerializationHelper.deserialize_by_tag(elem, "Annotation")),
+        "DEFINITION-REF": ("_POLYMORPHIC", "definition_ref", ["EcucAbstractStringParamDef", "EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucIntegerParamDef"]),
+        "IS-AUTO-VALUE": lambda obj, elem: setattr(obj, "is_auto_value", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucParameterValue."""
         super().__init__()
@@ -59,9 +66,8 @@ class EcucParameterValue(EcucIndexableValue, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucParameterValue, self).serialize()
@@ -130,27 +136,18 @@ class EcucParameterValue(EcucIndexableValue, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucParameterValue, cls).deserialize(element)
 
-        # Parse annotations (list from container "ANNOTATIONS")
-        obj.annotations = []
-        container = SerializationHelper.find_child_element(element, "ANNOTATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.annotations.append(child_value)
-
-        # Parse definition_ref
-        child = SerializationHelper.find_child_element(element, "DEFINITION-REF")
-        if child is not None:
-            definition_ref_value = ARRef.deserialize(child)
-            obj.definition_ref = definition_ref_value
-
-        # Parse is_auto_value
-        child = SerializationHelper.find_child_element(element, "IS-AUTO-VALUE")
-        if child is not None:
-            is_auto_value_value = child.text
-            obj.is_auto_value = is_auto_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ANNOTATIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "Annotation"))
+            elif tag == "DEFINITION-REF":
+                setattr(obj, "definition_ref", ARRef.deserialize(child))
+            elif tag == "IS-AUTO-VALUE":
+                setattr(obj, "is_auto_value", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

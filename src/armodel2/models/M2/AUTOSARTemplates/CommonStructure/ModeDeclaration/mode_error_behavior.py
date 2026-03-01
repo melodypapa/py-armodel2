@@ -34,8 +34,17 @@ class ModeErrorBehavior(ARObject):
         """
         return False
 
+    _XML_TAG = "MODE-ERROR-BEHAVIOR"
+
+
     default_mode_ref: Optional[ARRef]
     error_reaction: Optional[ModeErrorReactionPolicyEnum]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-MODE-REF": lambda obj, elem: setattr(obj, "default_mode_ref", ARRef.deserialize(elem)),
+        "ERROR-REACTION": lambda obj, elem: setattr(obj, "error_reaction", ModeErrorReactionPolicyEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeErrorBehavior."""
         super().__init__()
@@ -48,9 +57,8 @@ class ModeErrorBehavior(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeErrorBehavior, self).serialize()
@@ -109,17 +117,14 @@ class ModeErrorBehavior(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeErrorBehavior, cls).deserialize(element)
 
-        # Parse default_mode_ref
-        child = SerializationHelper.find_child_element(element, "DEFAULT-MODE-REF")
-        if child is not None:
-            default_mode_ref_value = ARRef.deserialize(child)
-            obj.default_mode_ref = default_mode_ref_value
-
-        # Parse error_reaction
-        child = SerializationHelper.find_child_element(element, "ERROR-REACTION")
-        if child is not None:
-            error_reaction_value = ModeErrorReactionPolicyEnum.deserialize(child)
-            obj.error_reaction = error_reaction_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEFAULT-MODE-REF":
+                setattr(obj, "default_mode_ref", ARRef.deserialize(child))
+            elif tag == "ERROR-REACTION":
+                setattr(obj, "error_reaction", ModeErrorReactionPolicyEnum.deserialize(child))
 
         return obj
 

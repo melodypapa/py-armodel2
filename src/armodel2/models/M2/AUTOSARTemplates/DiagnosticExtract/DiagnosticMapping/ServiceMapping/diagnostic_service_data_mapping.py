@@ -40,10 +40,21 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SERVICE-DATA-MAPPING"
+
+
     diagnostic_data_ref: Optional[ARRef]
     diagnostic_ref: Optional[ARRef]
     mapped_data_ref: Optional[ARRef]
     parameter: Optional[DiagnosticParameter]
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTIC-DATA-REF": lambda obj, elem: setattr(obj, "diagnostic_data_ref", ARRef.deserialize(elem)),
+        "DIAGNOSTIC-REF": lambda obj, elem: setattr(obj, "diagnostic_ref", ARRef.deserialize(elem)),
+        "MAPPED-DATA-REF": ("_POLYMORPHIC", "mapped_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "PARAMETER": lambda obj, elem: setattr(obj, "parameter", SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticServiceDataMapping."""
         super().__init__()
@@ -58,9 +69,8 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticServiceDataMapping, self).serialize()
@@ -147,29 +157,18 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticServiceDataMapping, cls).deserialize(element)
 
-        # Parse diagnostic_data_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-DATA-REF")
-        if child is not None:
-            diagnostic_data_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_data_ref = diagnostic_data_ref_value
-
-        # Parse diagnostic_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-REF")
-        if child is not None:
-            diagnostic_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_ref = diagnostic_ref_value
-
-        # Parse mapped_data_ref
-        child = SerializationHelper.find_child_element(element, "MAPPED-DATA-REF")
-        if child is not None:
-            mapped_data_ref_value = ARRef.deserialize(child)
-            obj.mapped_data_ref = mapped_data_ref_value
-
-        # Parse parameter
-        child = SerializationHelper.find_child_element(element, "PARAMETER")
-        if child is not None:
-            parameter_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter")
-            obj.parameter = parameter_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DIAGNOSTIC-DATA-REF":
+                setattr(obj, "diagnostic_data_ref", ARRef.deserialize(child))
+            elif tag == "DIAGNOSTIC-REF":
+                setattr(obj, "diagnostic_ref", ARRef.deserialize(child))
+            elif tag == "MAPPED-DATA-REF":
+                setattr(obj, "mapped_data_ref", ARRef.deserialize(child))
+            elif tag == "PARAMETER":
+                setattr(obj, "parameter", SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter"))
 
         return obj
 

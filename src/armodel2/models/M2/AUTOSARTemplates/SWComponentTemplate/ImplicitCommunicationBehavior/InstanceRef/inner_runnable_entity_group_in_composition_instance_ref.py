@@ -33,9 +33,19 @@ class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "INNER-RUNNABLE-ENTITY-GROUP-IN-COMPOSITION-INSTANCE-REF"
+
+
     base_ref: Optional[ARRef]
     context_sw_refs: list[Any]
     target_runnable_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "CONTEXT-SW-REFS": lambda obj, elem: [obj.context_sw_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "TARGET-RUNNABLE-REF": lambda obj, elem: setattr(obj, "target_runnable_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InnerRunnableEntityGroupInCompositionInstanceRef."""
         super().__init__()
@@ -49,9 +59,8 @@ class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InnerRunnableEntityGroupInCompositionInstanceRef, self).serialize()
@@ -127,33 +136,18 @@ class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InnerRunnableEntityGroupInCompositionInstanceRef, cls).deserialize(element)
 
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse context_sw_refs (list from container "CONTEXT-SW-REFS")
-        obj.context_sw_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-SW-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.context_sw_refs.append(child_value)
-
-        # Parse target_runnable_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-RUNNABLE-REF")
-        if child is not None:
-            target_runnable_ref_value = ARRef.deserialize(child)
-            obj.target_runnable_ref = target_runnable_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BASE-REF":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-SW-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.context_sw_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "TARGET-RUNNABLE-REF":
+                setattr(obj, "target_runnable_ref", ARRef.deserialize(child))
 
         return obj
 

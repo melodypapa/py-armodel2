@@ -29,6 +29,9 @@ class EcucLinkerSymbolDef(ARObject):
         """
         return False
 
+    _XML_TAG = "ECUC-LINKER-SYMBOL-DEF"
+
+
     def __init__(self) -> None:
         """Initialize EcucLinkerSymbolDef."""
         super().__init__()

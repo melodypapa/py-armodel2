@@ -31,6 +31,11 @@ class DataPrototypeReference(ARObject, ABC):
         return True
 
     tag_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "TAG-ID": lambda obj, elem: setattr(obj, "tag_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataPrototypeReference."""
         super().__init__()
@@ -42,9 +47,8 @@ class DataPrototypeReference(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataPrototypeReference, self).serialize()
@@ -89,11 +93,12 @@ class DataPrototypeReference(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototypeReference, cls).deserialize(element)
 
-        # Parse tag_id
-        child = SerializationHelper.find_child_element(element, "TAG-ID")
-        if child is not None:
-            tag_id_value = child.text
-            obj.tag_id = tag_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TAG-ID":
+                setattr(obj, "tag_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

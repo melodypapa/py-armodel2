@@ -30,7 +30,15 @@ class TimingCondition(Identifiable):
         """
         return False
 
+    _XML_TAG = "TIMING-CONDITION"
+
+
     timing_condition: Optional[TimingCondition]
+    _DESERIALIZE_DISPATCH = {
+        "TIMING-CONDITION": lambda obj, elem: setattr(obj, "timing_condition", SerializationHelper.deserialize_by_tag(elem, "TimingCondition")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimingCondition."""
         super().__init__()
@@ -42,9 +50,8 @@ class TimingCondition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimingCondition, self).serialize()
@@ -89,11 +96,12 @@ class TimingCondition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingCondition, cls).deserialize(element)
 
-        # Parse timing_condition
-        child = SerializationHelper.find_child_element(element, "TIMING-CONDITION")
-        if child is not None:
-            timing_condition_value = SerializationHelper.deserialize_by_tag(child, "TimingCondition")
-            obj.timing_condition = timing_condition_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TIMING-CONDITION":
+                setattr(obj, "timing_condition", SerializationHelper.deserialize_by_tag(child, "TimingCondition"))
 
         return obj
 

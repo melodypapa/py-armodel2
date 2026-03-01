@@ -33,7 +33,15 @@ class SwitchStreamGateEntry(Identifiable):
         """
         return False
 
+    _XML_TAG = "SWITCH-STREAM-GATE-ENTRY"
+
+
     internal_priority: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "INTERNAL-PRIORITY": lambda obj, elem: setattr(obj, "internal_priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwitchStreamGateEntry."""
         super().__init__()
@@ -45,9 +53,8 @@ class SwitchStreamGateEntry(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwitchStreamGateEntry, self).serialize()
@@ -92,11 +99,12 @@ class SwitchStreamGateEntry(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwitchStreamGateEntry, cls).deserialize(element)
 
-        # Parse internal_priority
-        child = SerializationHelper.find_child_element(element, "INTERNAL-PRIORITY")
-        if child is not None:
-            internal_priority_value = child.text
-            obj.internal_priority = internal_priority_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INTERNAL-PRIORITY":
+                setattr(obj, "internal_priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

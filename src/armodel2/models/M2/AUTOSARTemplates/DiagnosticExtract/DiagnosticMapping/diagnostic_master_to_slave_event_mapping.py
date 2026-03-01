@@ -34,8 +34,17 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-MASTER-TO-SLAVE-EVENT-MAPPING"
+
+
     master_event_ref: Optional[ARRef]
     slave_event_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "MASTER-EVENT-REF": lambda obj, elem: setattr(obj, "master_event_ref", ARRef.deserialize(elem)),
+        "SLAVE-EVENT-REF": lambda obj, elem: setattr(obj, "slave_event_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticMasterToSlaveEventMapping."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticMasterToSlaveEventMapping, self).serialize()
@@ -109,17 +117,14 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMasterToSlaveEventMapping, cls).deserialize(element)
 
-        # Parse master_event_ref
-        child = SerializationHelper.find_child_element(element, "MASTER-EVENT-REF")
-        if child is not None:
-            master_event_ref_value = ARRef.deserialize(child)
-            obj.master_event_ref = master_event_ref_value
-
-        # Parse slave_event_ref
-        child = SerializationHelper.find_child_element(element, "SLAVE-EVENT-REF")
-        if child is not None:
-            slave_event_ref_value = ARRef.deserialize(child)
-            obj.slave_event_ref = slave_event_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MASTER-EVENT-REF":
+                setattr(obj, "master_event_ref", ARRef.deserialize(child))
+            elif tag == "SLAVE-EVENT-REF":
+                setattr(obj, "slave_event_ref", ARRef.deserialize(child))
 
         return obj
 

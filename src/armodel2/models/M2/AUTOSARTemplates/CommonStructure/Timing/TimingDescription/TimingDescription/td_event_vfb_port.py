@@ -45,6 +45,13 @@ class TDEventVfbPort(TDEventVfb, ABC):
     is_external: Optional[Boolean]
     port_ref: Optional[ARRef]
     port_prototype_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "IS-EXTERNAL": lambda obj, elem: setattr(obj, "is_external", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "PORT-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "port_prototype_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventVfbPort."""
         super().__init__()
@@ -58,9 +65,8 @@ class TDEventVfbPort(TDEventVfb, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventVfbPort, self).serialize()
@@ -133,23 +139,16 @@ class TDEventVfbPort(TDEventVfb, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventVfbPort, cls).deserialize(element)
 
-        # Parse is_external
-        child = SerializationHelper.find_child_element(element, "IS-EXTERNAL")
-        if child is not None:
-            is_external_value = child.text
-            obj.is_external = is_external_value
-
-        # Parse port_ref
-        child = SerializationHelper.find_child_element(element, "PORT-REF")
-        if child is not None:
-            port_ref_value = ARRef.deserialize(child)
-            obj.port_ref = port_ref_value
-
-        # Parse port_prototype_ref
-        child = SerializationHelper.find_child_element(element, "PORT-PROTOTYPE-REF")
-        if child is not None:
-            port_prototype_ref_value = ARRef.deserialize(child)
-            obj.port_prototype_ref = port_prototype_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "IS-EXTERNAL":
+                setattr(obj, "is_external", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PORT-REF":
+                setattr(obj, "port_ref", ARRef.deserialize(child))
+            elif tag == "PORT-PROTOTYPE-REF":
+                setattr(obj, "port_prototype_ref", ARRef.deserialize(child))
 
         return obj
 

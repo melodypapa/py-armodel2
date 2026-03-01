@@ -37,8 +37,17 @@ class BswInterruptEntity(BswModuleEntity):
         """
         return False
 
+    _XML_TAG = "BSW-INTERRUPT-ENTITY"
+
+
     interrupt_category: Optional[BswInterruptCategory]
     interrupt_source: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "INTERRUPT-CATEGORY": lambda obj, elem: setattr(obj, "interrupt_category", BswInterruptCategory.deserialize(elem)),
+        "INTERRUPT-SOURCE": lambda obj, elem: setattr(obj, "interrupt_source", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswInterruptEntity."""
         super().__init__()
@@ -51,9 +60,8 @@ class BswInterruptEntity(BswModuleEntity):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswInterruptEntity, self).serialize()
@@ -112,17 +120,14 @@ class BswInterruptEntity(BswModuleEntity):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswInterruptEntity, cls).deserialize(element)
 
-        # Parse interrupt_category
-        child = SerializationHelper.find_child_element(element, "INTERRUPT-CATEGORY")
-        if child is not None:
-            interrupt_category_value = BswInterruptCategory.deserialize(child)
-            obj.interrupt_category = interrupt_category_value
-
-        # Parse interrupt_source
-        child = SerializationHelper.find_child_element(element, "INTERRUPT-SOURCE")
-        if child is not None:
-            interrupt_source_value = child.text
-            obj.interrupt_source = interrupt_source_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INTERRUPT-CATEGORY":
+                setattr(obj, "interrupt_category", BswInterruptCategory.deserialize(child))
+            elif tag == "INTERRUPT-SOURCE":
+                setattr(obj, "interrupt_source", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

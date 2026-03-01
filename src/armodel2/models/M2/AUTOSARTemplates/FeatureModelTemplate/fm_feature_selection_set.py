@@ -37,9 +37,19 @@ class FMFeatureSelectionSet(ARElement):
         """
         return False
 
+    _XML_TAG = "F-M-FEATURE-SELECTION-SET"
+
+
     feature_model_refs: list[ARRef]
     include_refs: list[ARRef]
     selections: list[FMFeatureSelection]
+    _DESERIALIZE_DISPATCH = {
+        "FEATURE-MODEL-REFS": lambda obj, elem: [obj.feature_model_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "INCLUDE-REFS": lambda obj, elem: [obj.include_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "SELECTIONS": lambda obj, elem: obj.selections.append(SerializationHelper.deserialize_by_tag(elem, "FMFeatureSelection")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FMFeatureSelectionSet."""
         super().__init__()
@@ -53,9 +63,8 @@ class FMFeatureSelectionSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FMFeatureSelectionSet, self).serialize()
@@ -130,47 +139,22 @@ class FMFeatureSelectionSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeatureSelectionSet, cls).deserialize(element)
 
-        # Parse feature_model_refs (list from container "FEATURE-MODEL-REFS")
-        obj.feature_model_refs = []
-        container = SerializationHelper.find_child_element(element, "FEATURE-MODEL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.feature_model_refs.append(child_value)
-
-        # Parse include_refs (list from container "INCLUDE-REFS")
-        obj.include_refs = []
-        container = SerializationHelper.find_child_element(element, "INCLUDE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.include_refs.append(child_value)
-
-        # Parse selections (list from container "SELECTIONS")
-        obj.selections = []
-        container = SerializationHelper.find_child_element(element, "SELECTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.selections.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FEATURE-MODEL-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.feature_model_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "INCLUDE-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.include_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SELECTIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.selections.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureSelection"))
 
         return obj
 

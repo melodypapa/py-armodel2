@@ -150,5 +150,4 @@ class MultiLanguageParagraphBuilder:
         Returns:
             MultiLanguageParagraph instance
         """
-        # TODO: Add validation
         return self._obj

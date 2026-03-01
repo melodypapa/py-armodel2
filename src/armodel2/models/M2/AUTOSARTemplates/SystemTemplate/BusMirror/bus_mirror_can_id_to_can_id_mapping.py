@@ -33,8 +33,17 @@ class BusMirrorCanIdToCanIdMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "BUS-MIRROR-CAN-ID-TO-CAN-ID-MAPPING"
+
+
     remapped_can_id: Optional[PositiveInteger]
     souce_can_id_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "REMAPPED-CAN-ID": lambda obj, elem: setattr(obj, "remapped_can_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SOUCE-CAN-ID-REF": lambda obj, elem: setattr(obj, "souce_can_id_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BusMirrorCanIdToCanIdMapping."""
         super().__init__()
@@ -47,9 +56,8 @@ class BusMirrorCanIdToCanIdMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BusMirrorCanIdToCanIdMapping, self).serialize()
@@ -108,17 +116,14 @@ class BusMirrorCanIdToCanIdMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BusMirrorCanIdToCanIdMapping, cls).deserialize(element)
 
-        # Parse remapped_can_id
-        child = SerializationHelper.find_child_element(element, "REMAPPED-CAN-ID")
-        if child is not None:
-            remapped_can_id_value = child.text
-            obj.remapped_can_id = remapped_can_id_value
-
-        # Parse souce_can_id_ref
-        child = SerializationHelper.find_child_element(element, "SOUCE-CAN-ID-REF")
-        if child is not None:
-            souce_can_id_ref_value = ARRef.deserialize(child)
-            obj.souce_can_id_ref = souce_can_id_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "REMAPPED-CAN-ID":
+                setattr(obj, "remapped_can_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SOUCE-CAN-ID-REF":
+                setattr(obj, "souce_can_id_ref", ARRef.deserialize(child))
 
         return obj
 

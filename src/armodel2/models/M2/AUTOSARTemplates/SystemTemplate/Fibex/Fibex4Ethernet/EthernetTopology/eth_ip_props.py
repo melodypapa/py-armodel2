@@ -36,8 +36,17 @@ class EthIpProps(ARElement):
         """
         return False
 
+    _XML_TAG = "ETH-IP-PROPS"
+
+
     ipv4_props: Optional[Ipv4Props]
     ipv6_props: Optional[Ipv6Props]
+    _DESERIALIZE_DISPATCH = {
+        "IPV4-PROPS": lambda obj, elem: setattr(obj, "ipv4_props", SerializationHelper.deserialize_by_tag(elem, "Ipv4Props")),
+        "IPV6-PROPS": lambda obj, elem: setattr(obj, "ipv6_props", SerializationHelper.deserialize_by_tag(elem, "Ipv6Props")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthIpProps."""
         super().__init__()
@@ -50,9 +59,8 @@ class EthIpProps(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthIpProps, self).serialize()
@@ -111,17 +119,14 @@ class EthIpProps(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthIpProps, cls).deserialize(element)
 
-        # Parse ipv4_props
-        child = SerializationHelper.find_child_element(element, "IPV4-PROPS")
-        if child is not None:
-            ipv4_props_value = SerializationHelper.deserialize_by_tag(child, "Ipv4Props")
-            obj.ipv4_props = ipv4_props_value
-
-        # Parse ipv6_props
-        child = SerializationHelper.find_child_element(element, "IPV6-PROPS")
-        if child is not None:
-            ipv6_props_value = SerializationHelper.deserialize_by_tag(child, "Ipv6Props")
-            obj.ipv6_props = ipv6_props_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "IPV4-PROPS":
+                setattr(obj, "ipv4_props", SerializationHelper.deserialize_by_tag(child, "Ipv4Props"))
+            elif tag == "IPV6-PROPS":
+                setattr(obj, "ipv6_props", SerializationHelper.deserialize_by_tag(child, "Ipv6Props"))
 
         return obj
 

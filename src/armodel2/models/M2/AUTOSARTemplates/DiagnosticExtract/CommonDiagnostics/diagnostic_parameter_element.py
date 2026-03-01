@@ -36,8 +36,17 @@ class DiagnosticParameterElement(Identifiable):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-PARAMETER-ELEMENT"
+
+
     array_size: Optional[PositiveInteger]
     sub_elements: list[DiagnosticParameter]
+    _DESERIALIZE_DISPATCH = {
+        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SUB-ELEMENTS": lambda obj, elem: obj.sub_elements.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticParameterElement."""
         super().__init__()
@@ -50,9 +59,8 @@ class DiagnosticParameterElement(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticParameterElement, self).serialize()
@@ -107,21 +115,16 @@ class DiagnosticParameterElement(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticParameterElement, cls).deserialize(element)
 
-        # Parse array_size
-        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE")
-        if child is not None:
-            array_size_value = child.text
-            obj.array_size = array_size_value
-
-        # Parse sub_elements (list from container "SUB-ELEMENTS")
-        obj.sub_elements = []
-        container = SerializationHelper.find_child_element(element, "SUB-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sub_elements.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ARRAY-SIZE":
+                setattr(obj, "array_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SUB-ELEMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sub_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticParameter"))
 
         return obj
 

@@ -39,8 +39,17 @@ class RoleBasedPortAssignment(ARObject):
         """
         return False
 
+    _XML_TAG = "ROLE-BASED-PORT-ASSIGNMENT"
+
+
     port_prototype_ref: Optional[ARRef]
     role: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RoleBasedPortAssignment."""
         super().__init__()
@@ -53,9 +62,8 @@ class RoleBasedPortAssignment(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RoleBasedPortAssignment, self).serialize()
@@ -114,17 +122,14 @@ class RoleBasedPortAssignment(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RoleBasedPortAssignment, cls).deserialize(element)
 
-        # Parse port_prototype_ref
-        child = SerializationHelper.find_child_element(element, "PORT-PROTOTYPE-REF")
-        if child is not None:
-            port_prototype_ref_value = ARRef.deserialize(child)
-            obj.port_prototype_ref = port_prototype_ref_value
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PORT-PROTOTYPE-REF":
+                setattr(obj, "port_prototype_ref", ARRef.deserialize(child))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

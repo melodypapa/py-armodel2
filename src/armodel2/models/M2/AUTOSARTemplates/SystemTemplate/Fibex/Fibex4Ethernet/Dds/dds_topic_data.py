@@ -29,7 +29,15 @@ class DdsTopicData(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-TOPIC-DATA"
+
+
     topic_data: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "TOPIC-DATA": lambda obj, elem: setattr(obj, "topic_data", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsTopicData."""
         super().__init__()
@@ -41,9 +49,8 @@ class DdsTopicData(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsTopicData, self).serialize()
@@ -88,11 +95,12 @@ class DdsTopicData(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsTopicData, cls).deserialize(element)
 
-        # Parse topic_data
-        child = SerializationHelper.find_child_element(element, "TOPIC-DATA")
-        if child is not None:
-            topic_data_value = child.text
-            obj.topic_data = topic_data_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TOPIC-DATA":
+                setattr(obj, "topic_data", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

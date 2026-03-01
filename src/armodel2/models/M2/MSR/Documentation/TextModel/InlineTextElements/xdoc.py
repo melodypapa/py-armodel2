@@ -34,12 +34,25 @@ class Xdoc(SingleLanguageReferrable):
         """
         return False
 
+    _XML_TAG = "XDOC"
+
+
     date: Optional[DateTime]
     number: Optional[String]
     position: Optional[String]
     publisher: Optional[String]
     state: Optional[String]
     url: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DATE": lambda obj, elem: setattr(obj, "date", SerializationHelper.deserialize_by_tag(elem, "DateTime")),
+        "NUMBER": lambda obj, elem: setattr(obj, "number", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "POSITION": lambda obj, elem: setattr(obj, "position", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "PUBLISHER": lambda obj, elem: setattr(obj, "publisher", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "STATE": lambda obj, elem: setattr(obj, "state", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "URL": lambda obj, elem: setattr(obj, "url", SerializationHelper.deserialize_by_tag(elem, "any (Url)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Xdoc."""
         super().__init__()
@@ -56,9 +69,8 @@ class Xdoc(SingleLanguageReferrable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Xdoc, self).serialize()
@@ -173,41 +185,22 @@ class Xdoc(SingleLanguageReferrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Xdoc, cls).deserialize(element)
 
-        # Parse date
-        child = SerializationHelper.find_child_element(element, "DATE")
-        if child is not None:
-            date_value = child.text
-            obj.date = date_value
-
-        # Parse number
-        child = SerializationHelper.find_child_element(element, "NUMBER")
-        if child is not None:
-            number_value = child.text
-            obj.number = number_value
-
-        # Parse position
-        child = SerializationHelper.find_child_element(element, "POSITION")
-        if child is not None:
-            position_value = child.text
-            obj.position = position_value
-
-        # Parse publisher
-        child = SerializationHelper.find_child_element(element, "PUBLISHER")
-        if child is not None:
-            publisher_value = child.text
-            obj.publisher = publisher_value
-
-        # Parse state
-        child = SerializationHelper.find_child_element(element, "STATE")
-        if child is not None:
-            state_value = child.text
-            obj.state = state_value
-
-        # Parse url
-        child = SerializationHelper.find_child_element(element, "URL")
-        if child is not None:
-            url_value = child.text
-            obj.url = url_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATE":
+                setattr(obj, "date", SerializationHelper.deserialize_by_tag(child, "DateTime"))
+            elif tag == "NUMBER":
+                setattr(obj, "number", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "POSITION":
+                setattr(obj, "position", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "PUBLISHER":
+                setattr(obj, "publisher", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "STATE":
+                setattr(obj, "state", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "URL":
+                setattr(obj, "url", SerializationHelper.deserialize_by_tag(child, "any (Url)"))
 
         return obj
 

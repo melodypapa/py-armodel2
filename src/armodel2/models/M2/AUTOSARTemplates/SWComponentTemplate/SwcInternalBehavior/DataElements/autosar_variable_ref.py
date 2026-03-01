@@ -34,8 +34,17 @@ class AutosarVariableRef(ARObject):
         """
         return False
 
+    _XML_TAG = "AUTOSAR-VARIABLE-REF"
+
+
     autosar_variable: Optional[Any]
     local_variable_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AUTOSAR-VARIABLE": lambda obj, elem: setattr(obj, "autosar_variable", SerializationHelper.deserialize_by_tag(elem, "any (ArVariableIn)")),
+        "LOCAL-VARIABLE-REF": lambda obj, elem: setattr(obj, "local_variable_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AutosarVariableRef."""
         super().__init__()
@@ -48,9 +57,8 @@ class AutosarVariableRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AutosarVariableRef, self).serialize()
@@ -109,17 +117,14 @@ class AutosarVariableRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AutosarVariableRef, cls).deserialize(element)
 
-        # Parse autosar_variable
-        child = SerializationHelper.find_child_element(element, "AUTOSAR-VARIABLE")
-        if child is not None:
-            autosar_variable_value = child.text
-            obj.autosar_variable = autosar_variable_value
-
-        # Parse local_variable_ref
-        child = SerializationHelper.find_child_element(element, "LOCAL-VARIABLE-REF")
-        if child is not None:
-            local_variable_ref_value = ARRef.deserialize(child)
-            obj.local_variable_ref = local_variable_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AUTOSAR-VARIABLE":
+                setattr(obj, "autosar_variable", SerializationHelper.deserialize_by_tag(child, "any (ArVariableIn)"))
+            elif tag == "LOCAL-VARIABLE-REF":
+                setattr(obj, "local_variable_ref", ARRef.deserialize(child))
 
         return obj
 

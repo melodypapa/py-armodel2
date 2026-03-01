@@ -42,9 +42,19 @@ class LabeledItem(Paginateable):
         """
         return False
 
+    _XML_TAG = "LABELED-ITEM"
+
+
     help_entry: Optional[String]
     item_contents: Optional[DocumentationBlock]
     item_label: MultiLanguageOverviewParagraph
+    _DESERIALIZE_DISPATCH = {
+        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ITEM-CONTENTS": lambda obj, elem: setattr(obj, "item_contents", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "ITEM-LABEL": lambda obj, elem: setattr(obj, "item_label", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageOverviewParagraph")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LabeledItem."""
         super().__init__()
@@ -58,9 +68,8 @@ class LabeledItem(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LabeledItem, self).serialize()
@@ -133,23 +142,16 @@ class LabeledItem(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LabeledItem, cls).deserialize(element)
 
-        # Parse help_entry
-        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
-        if child is not None:
-            help_entry_value = child.text
-            obj.help_entry = help_entry_value
-
-        # Parse item_contents
-        child = SerializationHelper.find_child_element(element, "ITEM-CONTENTS")
-        if child is not None:
-            item_contents_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.item_contents = item_contents_value
-
-        # Parse item_label
-        child = SerializationHelper.find_child_element(element, "ITEM-LABEL")
-        if child is not None:
-            item_label_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
-            obj.item_label = item_label_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "HELP-ENTRY":
+                setattr(obj, "help_entry", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ITEM-CONTENTS":
+                setattr(obj, "item_contents", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "ITEM-LABEL":
+                setattr(obj, "item_label", SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph"))
 
         return obj
 

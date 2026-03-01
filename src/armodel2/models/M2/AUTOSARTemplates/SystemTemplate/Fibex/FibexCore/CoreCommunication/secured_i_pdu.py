@@ -40,6 +40,9 @@ class SecuredIPdu(IPdu):
         """
         return False
 
+    _XML_TAG = "SECURED-I-PDU"
+
+
     authentication_ref: Optional[Any]
     dynamic: Optional[Boolean]
     freshness_props_ref: Optional[Any]
@@ -47,6 +50,17 @@ class SecuredIPdu(IPdu):
     secure: Optional[Any]
     use_as: Optional[Boolean]
     use_secured_pdu: Optional[SecuredPduHeaderEnum]
+    _DESERIALIZE_DISPATCH = {
+        "AUTHENTICATION-REF": lambda obj, elem: setattr(obj, "authentication_ref", ARRef.deserialize(elem)),
+        "DYNAMIC": lambda obj, elem: setattr(obj, "dynamic", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "FRESHNESS-PROPS-REF": lambda obj, elem: setattr(obj, "freshness_props_ref", ARRef.deserialize(elem)),
+        "PAYLOAD-REF": lambda obj, elem: setattr(obj, "payload_ref", ARRef.deserialize(elem)),
+        "SECURE": lambda obj, elem: setattr(obj, "secure", SerializationHelper.deserialize_by_tag(elem, "any (SecureCommunication)")),
+        "USE-AS": lambda obj, elem: setattr(obj, "use_as", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "USE-SECURED-PDU": lambda obj, elem: setattr(obj, "use_secured_pdu", SecuredPduHeaderEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecuredIPdu."""
         super().__init__()
@@ -64,9 +78,8 @@ class SecuredIPdu(IPdu):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecuredIPdu, self).serialize()
@@ -195,47 +208,24 @@ class SecuredIPdu(IPdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecuredIPdu, cls).deserialize(element)
 
-        # Parse authentication_ref
-        child = SerializationHelper.find_child_element(element, "AUTHENTICATION-REF")
-        if child is not None:
-            authentication_ref_value = ARRef.deserialize(child)
-            obj.authentication_ref = authentication_ref_value
-
-        # Parse dynamic
-        child = SerializationHelper.find_child_element(element, "DYNAMIC")
-        if child is not None:
-            dynamic_value = child.text
-            obj.dynamic = dynamic_value
-
-        # Parse freshness_props_ref
-        child = SerializationHelper.find_child_element(element, "FRESHNESS-PROPS-REF")
-        if child is not None:
-            freshness_props_ref_value = ARRef.deserialize(child)
-            obj.freshness_props_ref = freshness_props_ref_value
-
-        # Parse payload_ref
-        child = SerializationHelper.find_child_element(element, "PAYLOAD-REF")
-        if child is not None:
-            payload_ref_value = ARRef.deserialize(child)
-            obj.payload_ref = payload_ref_value
-
-        # Parse secure
-        child = SerializationHelper.find_child_element(element, "SECURE")
-        if child is not None:
-            secure_value = child.text
-            obj.secure = secure_value
-
-        # Parse use_as
-        child = SerializationHelper.find_child_element(element, "USE-AS")
-        if child is not None:
-            use_as_value = child.text
-            obj.use_as = use_as_value
-
-        # Parse use_secured_pdu
-        child = SerializationHelper.find_child_element(element, "USE-SECURED-PDU")
-        if child is not None:
-            use_secured_pdu_value = SecuredPduHeaderEnum.deserialize(child)
-            obj.use_secured_pdu = use_secured_pdu_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AUTHENTICATION-REF":
+                setattr(obj, "authentication_ref", ARRef.deserialize(child))
+            elif tag == "DYNAMIC":
+                setattr(obj, "dynamic", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "FRESHNESS-PROPS-REF":
+                setattr(obj, "freshness_props_ref", ARRef.deserialize(child))
+            elif tag == "PAYLOAD-REF":
+                setattr(obj, "payload_ref", ARRef.deserialize(child))
+            elif tag == "SECURE":
+                setattr(obj, "secure", SerializationHelper.deserialize_by_tag(child, "any (SecureCommunication)"))
+            elif tag == "USE-AS":
+                setattr(obj, "use_as", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "USE-SECURED-PDU":
+                setattr(obj, "use_secured_pdu", SecuredPduHeaderEnum.deserialize(child))
 
         return obj
 

@@ -33,7 +33,15 @@ class SwitchAsynchronousTrafficShaperGroupEntry(Identifiable):
         """
         return False
 
+    _XML_TAG = "SWITCH-ASYNCHRONOUS-TRAFFIC-SHAPER-GROUP-ENTRY"
+
+
     maximum: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwitchAsynchronousTrafficShaperGroupEntry."""
         super().__init__()
@@ -45,9 +53,8 @@ class SwitchAsynchronousTrafficShaperGroupEntry(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwitchAsynchronousTrafficShaperGroupEntry, self).serialize()
@@ -92,11 +99,12 @@ class SwitchAsynchronousTrafficShaperGroupEntry(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwitchAsynchronousTrafficShaperGroupEntry, cls).deserialize(element)
 
-        # Parse maximum
-        child = SerializationHelper.find_child_element(element, "MAXIMUM")
-        if child is not None:
-            maximum_value = child.text
-            obj.maximum = maximum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAXIMUM":
+                setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

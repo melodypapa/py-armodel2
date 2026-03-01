@@ -33,7 +33,15 @@ class EcucInstanceReferenceValue(EcucAbstractReferenceValue):
         """
         return False
 
+    _XML_TAG = "ECUC-INSTANCE-REFERENCE-VALUE"
+
+
     value: Optional[AtpFeature]
+    _DESERIALIZE_DISPATCH = {
+        "VALUE": ("_POLYMORPHIC", "value", ["AtpPrototype", "AtpStructureElement"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucInstanceReferenceValue."""
         super().__init__()
@@ -45,9 +53,8 @@ class EcucInstanceReferenceValue(EcucAbstractReferenceValue):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucInstanceReferenceValue, self).serialize()
@@ -92,11 +99,18 @@ class EcucInstanceReferenceValue(EcucAbstractReferenceValue):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucInstanceReferenceValue, cls).deserialize(element)
 
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = SerializationHelper.deserialize_by_tag(child, "AtpFeature")
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "VALUE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATP-PROTOTYPE":
+                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
+                    elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
+                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
 
         return obj
 

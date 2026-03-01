@@ -38,8 +38,17 @@ class PassThroughSwConnector(SwConnector):
         """
         return False
 
+    _XML_TAG = "PASS-THROUGH-SW-CONNECTOR"
+
+
     provided_outer_ref: Optional[ARRef]
     required_outer_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "PROVIDED-OUTER-REF": ("_POLYMORPHIC", "provided_outer_ref", ["PPortPrototype", "PRPortPrototype"]),
+        "REQUIRED-OUTER-REF": ("_POLYMORPHIC", "required_outer_ref", ["PRPortPrototype", "RPortPrototype"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PassThroughSwConnector."""
         super().__init__()
@@ -52,9 +61,8 @@ class PassThroughSwConnector(SwConnector):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PassThroughSwConnector, self).serialize()
@@ -113,17 +121,14 @@ class PassThroughSwConnector(SwConnector):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PassThroughSwConnector, cls).deserialize(element)
 
-        # Parse provided_outer_ref
-        child = SerializationHelper.find_child_element(element, "PROVIDED-OUTER-REF")
-        if child is not None:
-            provided_outer_ref_value = ARRef.deserialize(child)
-            obj.provided_outer_ref = provided_outer_ref_value
-
-        # Parse required_outer_ref
-        child = SerializationHelper.find_child_element(element, "REQUIRED-OUTER-REF")
-        if child is not None:
-            required_outer_ref_value = ARRef.deserialize(child)
-            obj.required_outer_ref = required_outer_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PROVIDED-OUTER-REF":
+                setattr(obj, "provided_outer_ref", ARRef.deserialize(child))
+            elif tag == "REQUIRED-OUTER-REF":
+                setattr(obj, "required_outer_ref", ARRef.deserialize(child))
 
         return obj
 

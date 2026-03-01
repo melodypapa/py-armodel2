@@ -29,8 +29,17 @@ class ClientIdRange(ARObject):
         """
         return False
 
+    _XML_TAG = "CLIENT-ID-RANGE"
+
+
     lower_limit: Optional[Limit]
     upper_limit: Optional[Limit]
+    _DESERIALIZE_DISPATCH = {
+        "LOWER-LIMIT": lambda obj, elem: setattr(obj, "lower_limit", SerializationHelper.deserialize_by_tag(elem, "Limit")),
+        "UPPER-LIMIT": lambda obj, elem: setattr(obj, "upper_limit", SerializationHelper.deserialize_by_tag(elem, "Limit")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientIdRange."""
         super().__init__()
@@ -43,9 +52,8 @@ class ClientIdRange(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientIdRange, self).serialize()
@@ -104,17 +112,14 @@ class ClientIdRange(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientIdRange, cls).deserialize(element)
 
-        # Parse lower_limit
-        child = SerializationHelper.find_child_element(element, "LOWER-LIMIT")
-        if child is not None:
-            lower_limit_value = SerializationHelper.deserialize_by_tag(child, "Limit")
-            obj.lower_limit = lower_limit_value
-
-        # Parse upper_limit
-        child = SerializationHelper.find_child_element(element, "UPPER-LIMIT")
-        if child is not None:
-            upper_limit_value = SerializationHelper.deserialize_by_tag(child, "Limit")
-            obj.upper_limit = upper_limit_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LOWER-LIMIT":
+                setattr(obj, "lower_limit", SerializationHelper.deserialize_by_tag(child, "Limit"))
+            elif tag == "UPPER-LIMIT":
+                setattr(obj, "upper_limit", SerializationHelper.deserialize_by_tag(child, "Limit"))
 
         return obj
 

@@ -29,12 +29,25 @@ class EthTSynCrcFlags(ARObject):
         """
         return False
 
+    _XML_TAG = "ETH-T-SYN-CRC-FLAGS"
+
+
     crc_correction: Optional[Boolean]
     crc_domain: Optional[Boolean]
     crc_message: Optional[Boolean]
     crc_precise: Optional[Boolean]
     crc_sequence_id: Optional[Boolean]
     crc_source_port: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CRC-CORRECTION": lambda obj, elem: setattr(obj, "crc_correction", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CRC-DOMAIN": lambda obj, elem: setattr(obj, "crc_domain", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CRC-MESSAGE": lambda obj, elem: setattr(obj, "crc_message", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CRC-PRECISE": lambda obj, elem: setattr(obj, "crc_precise", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CRC-SEQUENCE-ID": lambda obj, elem: setattr(obj, "crc_sequence_id", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CRC-SOURCE-PORT": lambda obj, elem: setattr(obj, "crc_source_port", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthTSynCrcFlags."""
         super().__init__()
@@ -51,9 +64,8 @@ class EthTSynCrcFlags(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthTSynCrcFlags, self).serialize()
@@ -168,41 +180,22 @@ class EthTSynCrcFlags(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthTSynCrcFlags, cls).deserialize(element)
 
-        # Parse crc_correction
-        child = SerializationHelper.find_child_element(element, "CRC-CORRECTION")
-        if child is not None:
-            crc_correction_value = child.text
-            obj.crc_correction = crc_correction_value
-
-        # Parse crc_domain
-        child = SerializationHelper.find_child_element(element, "CRC-DOMAIN")
-        if child is not None:
-            crc_domain_value = child.text
-            obj.crc_domain = crc_domain_value
-
-        # Parse crc_message
-        child = SerializationHelper.find_child_element(element, "CRC-MESSAGE")
-        if child is not None:
-            crc_message_value = child.text
-            obj.crc_message = crc_message_value
-
-        # Parse crc_precise
-        child = SerializationHelper.find_child_element(element, "CRC-PRECISE")
-        if child is not None:
-            crc_precise_value = child.text
-            obj.crc_precise = crc_precise_value
-
-        # Parse crc_sequence_id
-        child = SerializationHelper.find_child_element(element, "CRC-SEQUENCE-ID")
-        if child is not None:
-            crc_sequence_id_value = child.text
-            obj.crc_sequence_id = crc_sequence_id_value
-
-        # Parse crc_source_port
-        child = SerializationHelper.find_child_element(element, "CRC-SOURCE-PORT")
-        if child is not None:
-            crc_source_port_value = child.text
-            obj.crc_source_port = crc_source_port_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CRC-CORRECTION":
+                setattr(obj, "crc_correction", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CRC-DOMAIN":
+                setattr(obj, "crc_domain", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CRC-MESSAGE":
+                setattr(obj, "crc_message", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CRC-PRECISE":
+                setattr(obj, "crc_precise", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CRC-SEQUENCE-ID":
+                setattr(obj, "crc_sequence_id", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CRC-SOURCE-PORT":
+                setattr(obj, "crc_source_port", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

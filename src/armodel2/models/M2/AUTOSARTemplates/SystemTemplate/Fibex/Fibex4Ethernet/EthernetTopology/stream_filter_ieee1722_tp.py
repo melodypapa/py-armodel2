@@ -29,7 +29,15 @@ class StreamFilterIEEE1722Tp(ARObject):
         """
         return False
 
+    _XML_TAG = "STREAM-FILTER-I-E-E-E1722-TP"
+
+
     stream_id: Optional[PositiveUnlimitedInteger]
+    _DESERIALIZE_DISPATCH = {
+        "STREAM-ID": lambda obj, elem: setattr(obj, "stream_id", SerializationHelper.deserialize_by_tag(elem, "PositiveUnlimitedInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StreamFilterIEEE1722Tp."""
         super().__init__()
@@ -41,9 +49,8 @@ class StreamFilterIEEE1722Tp(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StreamFilterIEEE1722Tp, self).serialize()
@@ -88,11 +95,12 @@ class StreamFilterIEEE1722Tp(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StreamFilterIEEE1722Tp, cls).deserialize(element)
 
-        # Parse stream_id
-        child = SerializationHelper.find_child_element(element, "STREAM-ID")
-        if child is not None:
-            stream_id_value = child.text
-            obj.stream_id = stream_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "STREAM-ID":
+                setattr(obj, "stream_id", SerializationHelper.deserialize_by_tag(child, "PositiveUnlimitedInteger"))
 
         return obj
 

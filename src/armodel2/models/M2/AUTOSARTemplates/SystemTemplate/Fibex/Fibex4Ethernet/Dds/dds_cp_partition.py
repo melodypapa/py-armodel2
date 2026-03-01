@@ -33,7 +33,15 @@ class DdsCpPartition(Identifiable):
         """
         return False
 
+    _XML_TAG = "DDS-CP-PARTITION"
+
+
     partition_name: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "PARTITION-NAME": lambda obj, elem: setattr(obj, "partition_name", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpPartition."""
         super().__init__()
@@ -45,9 +53,8 @@ class DdsCpPartition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpPartition, self).serialize()
@@ -92,11 +99,12 @@ class DdsCpPartition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpPartition, cls).deserialize(element)
 
-        # Parse partition_name
-        child = SerializationHelper.find_child_element(element, "PARTITION-NAME")
-        if child is not None:
-            partition_name_value = child.text
-            obj.partition_name = partition_name_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PARTITION-NAME":
+                setattr(obj, "partition_name", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

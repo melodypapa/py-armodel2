@@ -40,10 +40,21 @@ class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-DATA-IDENTIFIER"
+
+
     data_elements: list[DiagnosticParameter]
     did_size: Optional[PositiveInteger]
     represents_vin: Optional[Boolean]
     support_info_byte: Optional[DiagnosticSupportInfoByte]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENTS": lambda obj, elem: obj.data_elements.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
+        "DID-SIZE": lambda obj, elem: setattr(obj, "did_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "REPRESENTS-VIN": lambda obj, elem: setattr(obj, "represents_vin", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SUPPORT-INFO-BYTE": lambda obj, elem: setattr(obj, "support_info_byte", SerializationHelper.deserialize_by_tag(elem, "DiagnosticSupportInfoByte")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticDataIdentifier."""
         super().__init__()
@@ -58,9 +69,8 @@ class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticDataIdentifier, self).serialize()
@@ -143,33 +153,20 @@ class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDataIdentifier, cls).deserialize(element)
 
-        # Parse data_elements (list from container "DATA-ELEMENTS")
-        obj.data_elements = []
-        container = SerializationHelper.find_child_element(element, "DATA-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_elements.append(child_value)
-
-        # Parse did_size
-        child = SerializationHelper.find_child_element(element, "DID-SIZE")
-        if child is not None:
-            did_size_value = child.text
-            obj.did_size = did_size_value
-
-        # Parse represents_vin
-        child = SerializationHelper.find_child_element(element, "REPRESENTS-VIN")
-        if child is not None:
-            represents_vin_value = child.text
-            obj.represents_vin = represents_vin_value
-
-        # Parse support_info_byte
-        child = SerializationHelper.find_child_element(element, "SUPPORT-INFO-BYTE")
-        if child is not None:
-            support_info_byte_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticSupportInfoByte")
-            obj.support_info_byte = support_info_byte_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-ELEMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.data_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticParameter"))
+            elif tag == "DID-SIZE":
+                setattr(obj, "did_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "REPRESENTS-VIN":
+                setattr(obj, "represents_vin", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SUPPORT-INFO-BYTE":
+                setattr(obj, "support_info_byte", SerializationHelper.deserialize_by_tag(child, "DiagnosticSupportInfoByte"))
 
         return obj
 

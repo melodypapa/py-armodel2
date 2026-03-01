@@ -33,7 +33,15 @@ class HwCategory(ARElement):
         """
         return False
 
+    _XML_TAG = "HW-CATEGORY"
+
+
     hw_attribute_defs: list[HwAttributeDef]
+    _DESERIALIZE_DISPATCH = {
+        "HW-ATTRIBUTE-DEFS": lambda obj, elem: obj.hw_attribute_defs.append(SerializationHelper.deserialize_by_tag(elem, "HwAttributeDef")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize HwCategory."""
         super().__init__()
@@ -45,9 +53,8 @@ class HwCategory(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(HwCategory, self).serialize()
@@ -88,15 +95,14 @@ class HwCategory(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwCategory, cls).deserialize(element)
 
-        # Parse hw_attribute_defs (list from container "HW-ATTRIBUTE-DEFS")
-        obj.hw_attribute_defs = []
-        container = SerializationHelper.find_child_element(element, "HW-ATTRIBUTE-DEFS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.hw_attribute_defs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "HW-ATTRIBUTE-DEFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.hw_attribute_defs.append(SerializationHelper.deserialize_by_tag(item_elem, "HwAttributeDef"))
 
         return obj
 

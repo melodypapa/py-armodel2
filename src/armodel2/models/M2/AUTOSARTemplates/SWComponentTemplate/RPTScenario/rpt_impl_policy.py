@@ -31,8 +31,17 @@ class RptImplPolicy(ARObject):
         """
         return False
 
+    _XML_TAG = "RPT-IMPL-POLICY"
+
+
     rpt_enabler_impl: Optional[RptEnablerImplTypeEnum]
     rpt_preparation_enum: Optional[RptPreparationEnum]
+    _DESERIALIZE_DISPATCH = {
+        "RPT-ENABLER-IMPL": lambda obj, elem: setattr(obj, "rpt_enabler_impl", RptEnablerImplTypeEnum.deserialize(elem)),
+        "RPT-PREPARATION-ENUM": lambda obj, elem: setattr(obj, "rpt_preparation_enum", RptPreparationEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptImplPolicy."""
         super().__init__()
@@ -45,9 +54,8 @@ class RptImplPolicy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptImplPolicy, self).serialize()
@@ -106,17 +114,14 @@ class RptImplPolicy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptImplPolicy, cls).deserialize(element)
 
-        # Parse rpt_enabler_impl
-        child = SerializationHelper.find_child_element(element, "RPT-ENABLER-IMPL")
-        if child is not None:
-            rpt_enabler_impl_value = RptEnablerImplTypeEnum.deserialize(child)
-            obj.rpt_enabler_impl = rpt_enabler_impl_value
-
-        # Parse rpt_preparation_enum
-        child = SerializationHelper.find_child_element(element, "RPT-PREPARATION-ENUM")
-        if child is not None:
-            rpt_preparation_enum_value = RptPreparationEnum.deserialize(child)
-            obj.rpt_preparation_enum = rpt_preparation_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RPT-ENABLER-IMPL":
+                setattr(obj, "rpt_enabler_impl", RptEnablerImplTypeEnum.deserialize(child))
+            elif tag == "RPT-PREPARATION-ENUM":
+                setattr(obj, "rpt_preparation_enum", RptPreparationEnum.deserialize(child))
 
         return obj
 

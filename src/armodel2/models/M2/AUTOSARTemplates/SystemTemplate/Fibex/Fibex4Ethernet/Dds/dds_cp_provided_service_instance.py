@@ -37,10 +37,21 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
         """
         return False
 
+    _XML_TAG = "DDS-CP-PROVIDED-SERVICE-INSTANCE"
+
+
     local_unicast_ref: Optional[ARRef]
     minor_version: Optional[PositiveInteger]
     provided_ddses: list[DdsCpServiceInstance]
     static_remote_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "LOCAL-UNICAST-REF": lambda obj, elem: setattr(obj, "local_unicast_ref", ARRef.deserialize(elem)),
+        "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PROVIDED-DDSES": ("_POLYMORPHIC_LIST", "provided_ddses", ["DdsCpConsumedServiceInstance", "DdsCpProvidedServiceInstance"]),
+        "STATIC-REMOTE-REFS": lambda obj, elem: [obj.static_remote_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpProvidedServiceInstance."""
         super().__init__()
@@ -55,9 +66,8 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpProvidedServiceInstance, self).serialize()
@@ -143,43 +153,26 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpProvidedServiceInstance, cls).deserialize(element)
 
-        # Parse local_unicast_ref
-        child = SerializationHelper.find_child_element(element, "LOCAL-UNICAST-REF")
-        if child is not None:
-            local_unicast_ref_value = ARRef.deserialize(child)
-            obj.local_unicast_ref = local_unicast_ref_value
-
-        # Parse minor_version
-        child = SerializationHelper.find_child_element(element, "MINOR-VERSION")
-        if child is not None:
-            minor_version_value = child.text
-            obj.minor_version = minor_version_value
-
-        # Parse provided_ddses (list from container "PROVIDED-DDSES")
-        obj.provided_ddses = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-DDSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.provided_ddses.append(child_value)
-
-        # Parse static_remote_refs (list from container "STATIC-REMOTE-REFS")
-        obj.static_remote_refs = []
-        container = SerializationHelper.find_child_element(element, "STATIC-REMOTE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.static_remote_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LOCAL-UNICAST-REF":
+                setattr(obj, "local_unicast_ref", ARRef.deserialize(child))
+            elif tag == "MINOR-VERSION":
+                setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PROVIDED-DDSES":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "DDS-CP-CONSUMED-SERVICE-INSTANCE":
+                        obj.provided_ddses.append(SerializationHelper.deserialize_by_tag(item_elem, "DdsCpConsumedServiceInstance"))
+                    elif concrete_tag == "DDS-CP-PROVIDED-SERVICE-INSTANCE":
+                        obj.provided_ddses.append(SerializationHelper.deserialize_by_tag(item_elem, "DdsCpProvidedServiceInstance"))
+            elif tag == "STATIC-REMOTE-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.static_remote_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

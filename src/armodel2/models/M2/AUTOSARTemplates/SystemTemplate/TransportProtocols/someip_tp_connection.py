@@ -33,9 +33,19 @@ class SomeipTpConnection(ARObject):
         """
         return False
 
+    _XML_TAG = "SOMEIP-TP-CONNECTION"
+
+
     tp_channel_ref: Optional[ARRef]
     tp_sdu_ref: Optional[ARRef]
     transport_pdu_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TP-CHANNEL-REF": lambda obj, elem: setattr(obj, "tp_channel_ref", ARRef.deserialize(elem)),
+        "TP-SDU-REF": lambda obj, elem: setattr(obj, "tp_sdu_ref", ARRef.deserialize(elem)),
+        "TRANSPORT-PDU-REF": lambda obj, elem: setattr(obj, "transport_pdu_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SomeipTpConnection."""
         super().__init__()
@@ -49,9 +59,8 @@ class SomeipTpConnection(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SomeipTpConnection, self).serialize()
@@ -124,23 +133,16 @@ class SomeipTpConnection(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SomeipTpConnection, cls).deserialize(element)
 
-        # Parse tp_channel_ref
-        child = SerializationHelper.find_child_element(element, "TP-CHANNEL-REF")
-        if child is not None:
-            tp_channel_ref_value = ARRef.deserialize(child)
-            obj.tp_channel_ref = tp_channel_ref_value
-
-        # Parse tp_sdu_ref
-        child = SerializationHelper.find_child_element(element, "TP-SDU-REF")
-        if child is not None:
-            tp_sdu_ref_value = ARRef.deserialize(child)
-            obj.tp_sdu_ref = tp_sdu_ref_value
-
-        # Parse transport_pdu_ref
-        child = SerializationHelper.find_child_element(element, "TRANSPORT-PDU-REF")
-        if child is not None:
-            transport_pdu_ref_value = ARRef.deserialize(child)
-            obj.transport_pdu_ref = transport_pdu_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TP-CHANNEL-REF":
+                setattr(obj, "tp_channel_ref", ARRef.deserialize(child))
+            elif tag == "TP-SDU-REF":
+                setattr(obj, "tp_sdu_ref", ARRef.deserialize(child))
+            elif tag == "TRANSPORT-PDU-REF":
+                setattr(obj, "transport_pdu_ref", ARRef.deserialize(child))
 
         return obj
 

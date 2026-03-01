@@ -33,7 +33,15 @@ class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
         """
         return False
 
+    _XML_TAG = "SECURITY-EVENT-CONTEXT-MAPPING-BSW-MODULE"
+
+
     affected_bsw: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "AFFECTED-BSW": lambda obj, elem: setattr(obj, "affected_bsw", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecurityEventContextMappingBswModule."""
         super().__init__()
@@ -45,9 +53,8 @@ class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecurityEventContextMappingBswModule, self).serialize()
@@ -92,11 +99,12 @@ class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventContextMappingBswModule, cls).deserialize(element)
 
-        # Parse affected_bsw
-        child = SerializationHelper.find_child_element(element, "AFFECTED-BSW")
-        if child is not None:
-            affected_bsw_value = child.text
-            obj.affected_bsw = affected_bsw_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AFFECTED-BSW":
+                setattr(obj, "affected_bsw", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

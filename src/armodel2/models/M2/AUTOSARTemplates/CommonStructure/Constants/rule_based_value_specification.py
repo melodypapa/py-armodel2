@@ -14,9 +14,11 @@ from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
     Integer,
+    Numerical,
+    VerbatimString,
 )
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.rule_arguments import (
-    RuleArguments,
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.numerical_or_text import (
+    NumericalOrText,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -34,13 +36,32 @@ class RuleBasedValueSpecification(ARObject):
         """
         return False
 
-    arguments: Optional[RuleArguments]
+    _XML_TAG = "RULE-BASED-VALUE-SPECIFICATION"
+
+
+    v: Optional[Numerical]
+    vf: Optional[Numerical]
+    vt: Optional[VerbatimString]
+    vtf: Optional[NumericalOrText]
     max_size_to_fill: Optional[Integer]
     rule: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VF": lambda obj, elem: setattr(obj, "vf", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VT": lambda obj, elem: setattr(obj, "vt", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
+        "VTF": lambda obj, elem: setattr(obj, "vtf", SerializationHelper.deserialize_by_tag(elem, "NumericalOrText")),
+        "MAX-SIZE-TO-FILL": lambda obj, elem: setattr(obj, "max_size_to_fill", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "RULE": lambda obj, elem: setattr(obj, "rule", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RuleBasedValueSpecification."""
         super().__init__()
-        self.arguments: Optional[RuleArguments] = None
+        self.v: Optional[Numerical] = None
+        self.vf: Optional[Numerical] = None
+        self.vt: Optional[VerbatimString] = None
+        self.vtf: Optional[NumericalOrText] = None
         self.max_size_to_fill: Optional[Integer] = None
         self.rule: Optional[Identifier] = None
 
@@ -50,9 +71,8 @@ class RuleBasedValueSpecification(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RuleBasedValueSpecification, self).serialize()
@@ -68,18 +88,61 @@ class RuleBasedValueSpecification(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize arguments (atp_mixed - append children directly)
-        if self.arguments is not None:
-            serialized = SerializationHelper.serialize_item(self.arguments, "RuleArguments")
+        # Serialize v
+        if self.v is not None:
+            serialized = SerializationHelper.serialize_item(self.v, "Numerical")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("V")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vf
+        if self.vf is not None:
+            serialized = SerializationHelper.serialize_item(self.vf, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vt
+        if self.vt is not None:
+            serialized = SerializationHelper.serialize_item(self.vt, "VerbatimString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vtf
+        if self.vtf is not None:
+            serialized = SerializationHelper.serialize_item(self.vtf, "NumericalOrText")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VTF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize max_size_to_fill
         if self.max_size_to_fill is not None:
@@ -124,31 +187,22 @@ class RuleBasedValueSpecification(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RuleBasedValueSpecification, cls).deserialize(element)
 
-        # Parse arguments (atp_mixed - children appear directly)
-        # Check if element contains expected children for RuleArguments
-        has_mixed_children = False
-        child_tags_to_check = ['V', 'VF', 'VT', 'VTF']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            arguments_value = SerializationHelper.deserialize_by_tag(element, "RuleArguments")
-            obj.arguments = arguments_value
-
-        # Parse max_size_to_fill
-        child = SerializationHelper.find_child_element(element, "MAX-SIZE-TO-FILL")
-        if child is not None:
-            max_size_to_fill_value = child.text
-            obj.max_size_to_fill = max_size_to_fill_value
-
-        # Parse rule
-        child = SerializationHelper.find_child_element(element, "RULE")
-        if child is not None:
-            rule_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.rule = rule_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "V":
+                setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "VF":
+                setattr(obj, "vf", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "VT":
+                setattr(obj, "vt", SerializationHelper.deserialize_by_tag(child, "VerbatimString"))
+            elif tag == "VTF":
+                setattr(obj, "vtf", SerializationHelper.deserialize_by_tag(child, "NumericalOrText"))
+            elif tag == "MAX-SIZE-TO-FILL":
+                setattr(obj, "max_size_to_fill", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "RULE":
+                setattr(obj, "rule", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 
@@ -163,8 +217,8 @@ class RuleBasedValueSpecificationBuilder(BuilderBase):
         self._obj: RuleBasedValueSpecification = RuleBasedValueSpecification()
 
 
-    def with_arguments(self, value: Optional[RuleArguments]) -> "RuleBasedValueSpecificationBuilder":
-        """Set arguments attribute.
+    def with_v(self, value: Optional[Numerical]) -> "RuleBasedValueSpecificationBuilder":
+        """Set v attribute.
 
         Args:
             value: Value to set
@@ -174,7 +228,49 @@ class RuleBasedValueSpecificationBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.arguments = value
+        self._obj.v = value
+        return self
+
+    def with_vf(self, value: Optional[Numerical]) -> "RuleBasedValueSpecificationBuilder":
+        """Set vf attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.vf = value
+        return self
+
+    def with_vt(self, value: Optional[VerbatimString]) -> "RuleBasedValueSpecificationBuilder":
+        """Set vt attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.vt = value
+        return self
+
+    def with_vtf(self, value: Optional[NumericalOrText]) -> "RuleBasedValueSpecificationBuilder":
+        """Set vtf attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.vtf = value
         return self
 
     def with_max_size_to_fill(self, value: Optional[Integer]) -> "RuleBasedValueSpecificationBuilder":

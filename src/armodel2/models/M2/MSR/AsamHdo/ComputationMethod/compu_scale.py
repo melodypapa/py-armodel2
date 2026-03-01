@@ -348,5 +348,4 @@ class CompuScaleBuilder:
         Returns:
             CompuScale instance
         """
-        # TODO: Add validation
         return self._obj

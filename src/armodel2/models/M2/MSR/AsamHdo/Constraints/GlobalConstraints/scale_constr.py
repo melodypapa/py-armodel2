@@ -33,11 +33,23 @@ class ScaleConstr(ARObject):
         """
         return False
 
+    _XML_TAG = "SCALE-CONSTR"
+
+
     desc: Optional[MultiLanguageOverviewParagraph]
     lower_limit: Optional[Limit]
     short_label: Optional[Identifier]
     upper_limit: Optional[Limit]
     validity: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DESC": lambda obj, elem: setattr(obj, "desc", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageOverviewParagraph")),
+        "LOWER-LIMIT": lambda obj, elem: setattr(obj, "lower_limit", SerializationHelper.deserialize_by_tag(elem, "Limit")),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "UPPER-LIMIT": lambda obj, elem: setattr(obj, "upper_limit", SerializationHelper.deserialize_by_tag(elem, "Limit")),
+        "VALIDITY": lambda obj, elem: setattr(obj, "validity", SerializationHelper.deserialize_by_tag(elem, "any (ScaleConstrValidity)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ScaleConstr."""
         super().__init__()
@@ -53,9 +65,8 @@ class ScaleConstr(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ScaleConstr, self).serialize()
@@ -156,35 +167,20 @@ class ScaleConstr(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ScaleConstr, cls).deserialize(element)
 
-        # Parse desc
-        child = SerializationHelper.find_child_element(element, "DESC")
-        if child is not None:
-            desc_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
-            obj.desc = desc_value
-
-        # Parse lower_limit
-        child = SerializationHelper.find_child_element(element, "LOWER-LIMIT")
-        if child is not None:
-            lower_limit_value = SerializationHelper.deserialize_by_tag(child, "Limit")
-            obj.lower_limit = lower_limit_value
-
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
-
-        # Parse upper_limit
-        child = SerializationHelper.find_child_element(element, "UPPER-LIMIT")
-        if child is not None:
-            upper_limit_value = SerializationHelper.deserialize_by_tag(child, "Limit")
-            obj.upper_limit = upper_limit_value
-
-        # Parse validity
-        child = SerializationHelper.find_child_element(element, "VALIDITY")
-        if child is not None:
-            validity_value = child.text
-            obj.validity = validity_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DESC":
+                setattr(obj, "desc", SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph"))
+            elif tag == "LOWER-LIMIT":
+                setattr(obj, "lower_limit", SerializationHelper.deserialize_by_tag(child, "Limit"))
+            elif tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "UPPER-LIMIT":
+                setattr(obj, "upper_limit", SerializationHelper.deserialize_by_tag(child, "Limit"))
+            elif tag == "VALIDITY":
+                setattr(obj, "validity", SerializationHelper.deserialize_by_tag(child, "any (ScaleConstrValidity)"))
 
         return obj
 

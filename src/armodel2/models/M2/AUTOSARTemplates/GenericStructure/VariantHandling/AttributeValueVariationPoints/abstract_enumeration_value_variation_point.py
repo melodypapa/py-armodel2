@@ -34,6 +34,12 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
 
     base: Optional[Identifier]
     enum_table_ref: Optional[Ref]
+    _DESERIALIZE_DISPATCH = {
+        "BASE": lambda obj, elem: setattr(obj, "base", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "ENUM-TABLE-REF": lambda obj, elem: setattr(obj, "enum_table_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AbstractEnumerationValueVariationPoint."""
         super().__init__()
@@ -46,9 +52,8 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AbstractEnumerationValueVariationPoint, self).serialize()
@@ -107,17 +112,14 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractEnumerationValueVariationPoint, cls).deserialize(element)
 
-        # Parse base
-        child = SerializationHelper.find_child_element(element, "BASE")
-        if child is not None:
-            base_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.base = base_value
-
-        # Parse enum_table_ref
-        child = SerializationHelper.find_child_element(element, "ENUM-TABLE-REF")
-        if child is not None:
-            enum_table_ref_value = ARRef.deserialize(child)
-            obj.enum_table_ref = enum_table_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BASE":
+                setattr(obj, "base", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "ENUM-TABLE-REF":
+                setattr(obj, "enum_table_ref", ARRef.deserialize(child))
 
         return obj
 

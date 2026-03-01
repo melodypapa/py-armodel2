@@ -46,12 +46,25 @@ class CouplingElement(FibexElement):
         """
         return False
 
+    _XML_TAG = "COUPLING-ELEMENT"
+
+
     communication_ref: Optional[ARRef]
     coupling: Optional[CouplingElement]
     coupling_ports: list[CouplingPort]
     coupling_type: Optional[CouplingElementEnum]
     ecu_instance_ref: Optional[ARRef]
     firewall_rule_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-REF": lambda obj, elem: setattr(obj, "communication_ref", ARRef.deserialize(elem)),
+        "COUPLING": lambda obj, elem: setattr(obj, "coupling", SerializationHelper.deserialize_by_tag(elem, "CouplingElement")),
+        "COUPLING-PORTS": lambda obj, elem: obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(elem, "CouplingPort")),
+        "COUPLING-TYPE": lambda obj, elem: setattr(obj, "coupling_type", CouplingElementEnum.deserialize(elem)),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+        "FIREWALL-RULE-REFS": lambda obj, elem: [obj.firewall_rule_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingElement."""
         super().__init__()
@@ -68,9 +81,8 @@ class CouplingElement(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingElement, self).serialize()
@@ -184,55 +196,26 @@ class CouplingElement(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CouplingElement, cls).deserialize(element)
 
-        # Parse communication_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-REF")
-        if child is not None:
-            communication_ref_value = ARRef.deserialize(child)
-            obj.communication_ref = communication_ref_value
-
-        # Parse coupling
-        child = SerializationHelper.find_child_element(element, "COUPLING")
-        if child is not None:
-            coupling_value = SerializationHelper.deserialize_by_tag(child, "CouplingElement")
-            obj.coupling = coupling_value
-
-        # Parse coupling_ports (list from container "COUPLING-PORTS")
-        obj.coupling_ports = []
-        container = SerializationHelper.find_child_element(element, "COUPLING-PORTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.coupling_ports.append(child_value)
-
-        # Parse coupling_type
-        child = SerializationHelper.find_child_element(element, "COUPLING-TYPE")
-        if child is not None:
-            coupling_type_value = CouplingElementEnum.deserialize(child)
-            obj.coupling_type = coupling_type_value
-
-        # Parse ecu_instance_ref
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
-        if child is not None:
-            ecu_instance_ref_value = ARRef.deserialize(child)
-            obj.ecu_instance_ref = ecu_instance_ref_value
-
-        # Parse firewall_rule_refs (list from container "FIREWALL-RULE-REFS")
-        obj.firewall_rule_refs = []
-        container = SerializationHelper.find_child_element(element, "FIREWALL-RULE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.firewall_rule_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMMUNICATION-REF":
+                setattr(obj, "communication_ref", ARRef.deserialize(child))
+            elif tag == "COUPLING":
+                setattr(obj, "coupling", SerializationHelper.deserialize_by_tag(child, "CouplingElement"))
+            elif tag == "COUPLING-PORTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPort"))
+            elif tag == "COUPLING-TYPE":
+                setattr(obj, "coupling_type", CouplingElementEnum.deserialize(child))
+            elif tag == "ECU-INSTANCE-REF":
+                setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
+            elif tag == "FIREWALL-RULE-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.firewall_rule_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

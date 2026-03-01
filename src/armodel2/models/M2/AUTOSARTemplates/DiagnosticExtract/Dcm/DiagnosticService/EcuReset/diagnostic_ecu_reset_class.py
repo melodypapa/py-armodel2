@@ -33,7 +33,15 @@ class DiagnosticEcuResetClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-ECU-RESET-CLASS"
+
+
     respond_to: Optional[DiagnosticResponseToEcuResetEnum]
+    _DESERIALIZE_DISPATCH = {
+        "RESPOND-TO": lambda obj, elem: setattr(obj, "respond_to", DiagnosticResponseToEcuResetEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEcuResetClass."""
         super().__init__()
@@ -45,9 +53,8 @@ class DiagnosticEcuResetClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEcuResetClass, self).serialize()
@@ -92,11 +99,12 @@ class DiagnosticEcuResetClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEcuResetClass, cls).deserialize(element)
 
-        # Parse respond_to
-        child = SerializationHelper.find_child_element(element, "RESPOND-TO")
-        if child is not None:
-            respond_to_value = DiagnosticResponseToEcuResetEnum.deserialize(child)
-            obj.respond_to = respond_to_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RESPOND-TO":
+                setattr(obj, "respond_to", DiagnosticResponseToEcuResetEnum.deserialize(child))
 
         return obj
 

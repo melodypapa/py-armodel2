@@ -45,6 +45,16 @@ class GlobalTimeSlave(Identifiable, ABC):
     time_leap_future: Optional[TimeValue]
     time_leap: Optional[PositiveInteger]
     time_leap_past: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CONNECTOR-REF": ("_POLYMORPHIC", "communication_connector_ref", ["CanCommunicationConnector", "TtcanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "FOLLOW-UP-TIMEOUT-VALUE": lambda obj, elem: setattr(obj, "follow_up_timeout_value", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "ICV-VERIFICATION": lambda obj, elem: setattr(obj, "icv_verification", SerializationHelper.deserialize_by_tag(elem, "any (GlobalTimeIcv)")),
+        "TIME-LEAP-FUTURE": lambda obj, elem: setattr(obj, "time_leap_future", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIME-LEAP": lambda obj, elem: setattr(obj, "time_leap", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TIME-LEAP-PAST": lambda obj, elem: setattr(obj, "time_leap_past", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeSlave."""
         super().__init__()
@@ -61,9 +71,8 @@ class GlobalTimeSlave(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeSlave, self).serialize()
@@ -178,41 +187,22 @@ class GlobalTimeSlave(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeSlave, cls).deserialize(element)
 
-        # Parse communication_connector_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
-        if child is not None:
-            communication_connector_ref_value = ARRef.deserialize(child)
-            obj.communication_connector_ref = communication_connector_ref_value
-
-        # Parse follow_up_timeout_value
-        child = SerializationHelper.find_child_element(element, "FOLLOW-UP-TIMEOUT-VALUE")
-        if child is not None:
-            follow_up_timeout_value_value = child.text
-            obj.follow_up_timeout_value = follow_up_timeout_value_value
-
-        # Parse icv_verification
-        child = SerializationHelper.find_child_element(element, "ICV-VERIFICATION")
-        if child is not None:
-            icv_verification_value = child.text
-            obj.icv_verification = icv_verification_value
-
-        # Parse time_leap_future
-        child = SerializationHelper.find_child_element(element, "TIME-LEAP-FUTURE")
-        if child is not None:
-            time_leap_future_value = child.text
-            obj.time_leap_future = time_leap_future_value
-
-        # Parse time_leap
-        child = SerializationHelper.find_child_element(element, "TIME-LEAP")
-        if child is not None:
-            time_leap_value = child.text
-            obj.time_leap = time_leap_value
-
-        # Parse time_leap_past
-        child = SerializationHelper.find_child_element(element, "TIME-LEAP-PAST")
-        if child is not None:
-            time_leap_past_value = child.text
-            obj.time_leap_past = time_leap_past_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMMUNICATION-CONNECTOR-REF":
+                setattr(obj, "communication_connector_ref", ARRef.deserialize(child))
+            elif tag == "FOLLOW-UP-TIMEOUT-VALUE":
+                setattr(obj, "follow_up_timeout_value", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "ICV-VERIFICATION":
+                setattr(obj, "icv_verification", SerializationHelper.deserialize_by_tag(child, "any (GlobalTimeIcv)"))
+            elif tag == "TIME-LEAP-FUTURE":
+                setattr(obj, "time_leap_future", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIME-LEAP":
+                setattr(obj, "time_leap", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TIME-LEAP-PAST":
+                setattr(obj, "time_leap_past", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

@@ -34,8 +34,17 @@ class UdpNmNode(NmNode):
         """
         return False
 
+    _XML_TAG = "UDP-NM-NODE"
+
+
     all_nm_messages: Optional[Boolean]
     nm_msg_cycle: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "ALL-NM-MESSAGES": lambda obj, elem: setattr(obj, "all_nm_messages", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-MSG-CYCLE": lambda obj, elem: setattr(obj, "nm_msg_cycle", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize UdpNmNode."""
         super().__init__()
@@ -48,9 +57,8 @@ class UdpNmNode(NmNode):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(UdpNmNode, self).serialize()
@@ -109,17 +117,14 @@ class UdpNmNode(NmNode):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(UdpNmNode, cls).deserialize(element)
 
-        # Parse all_nm_messages
-        child = SerializationHelper.find_child_element(element, "ALL-NM-MESSAGES")
-        if child is not None:
-            all_nm_messages_value = child.text
-            obj.all_nm_messages = all_nm_messages_value
-
-        # Parse nm_msg_cycle
-        child = SerializationHelper.find_child_element(element, "NM-MSG-CYCLE")
-        if child is not None:
-            nm_msg_cycle_value = child.text
-            obj.nm_msg_cycle = nm_msg_cycle_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ALL-NM-MESSAGES":
+                setattr(obj, "all_nm_messages", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-MSG-CYCLE":
+                setattr(obj, "nm_msg_cycle", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

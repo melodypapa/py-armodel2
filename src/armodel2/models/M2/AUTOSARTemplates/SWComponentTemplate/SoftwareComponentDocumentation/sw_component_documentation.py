@@ -31,6 +31,9 @@ class SwComponentDocumentation(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-COMPONENT-DOCUMENTATION"
+
+
     chapters: list[Chapter]
     sw_calibration: Optional[Chapter]
     sw_carb_doc: Optional[Chapter]
@@ -39,6 +42,18 @@ class SwComponentDocumentation(ARObject):
     sw_feature_desc: Optional[Chapter]
     sw_maintenance: Optional[Chapter]
     sw_test_desc: Optional[Chapter]
+    _DESERIALIZE_DISPATCH = {
+        "CHAPTERS": lambda obj, elem: obj.chapters.append(SerializationHelper.deserialize_by_tag(elem, "Chapter")),
+        "SW-CALIBRATION": lambda obj, elem: setattr(obj, "sw_calibration", SerializationHelper.deserialize_by_tag(elem, "Chapter")),
+        "SW-CARB-DOC": lambda obj, elem: setattr(obj, "sw_carb_doc", SerializationHelper.deserialize_by_tag(elem, "Chapter")),
+        "SW-DIAGNOSTICS": lambda obj, elem: setattr(obj, "sw_diagnostics", SerializationHelper.deserialize_by_tag(elem, "Chapter")),
+        "SW-FEATURE-DEF": lambda obj, elem: setattr(obj, "sw_feature_def", SerializationHelper.deserialize_by_tag(elem, "Chapter")),
+        "SW-FEATURE-DESC": lambda obj, elem: setattr(obj, "sw_feature_desc", SerializationHelper.deserialize_by_tag(elem, "Chapter")),
+        "SW-MAINTENANCE": lambda obj, elem: setattr(obj, "sw_maintenance", SerializationHelper.deserialize_by_tag(elem, "Chapter")),
+        "SW-TEST-DESC": lambda obj, elem: setattr(obj, "sw_test_desc", SerializationHelper.deserialize_by_tag(elem, "Chapter")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwComponentDocumentation."""
         super().__init__()
@@ -57,9 +72,8 @@ class SwComponentDocumentation(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwComponentDocumentation, self).serialize()
@@ -198,57 +212,28 @@ class SwComponentDocumentation(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwComponentDocumentation, cls).deserialize(element)
 
-        # Parse chapters (list from container "CHAPTERS")
-        obj.chapters = []
-        container = SerializationHelper.find_child_element(element, "CHAPTERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.chapters.append(child_value)
-
-        # Parse sw_calibration
-        child = SerializationHelper.find_child_element(element, "SW-CALIBRATION")
-        if child is not None:
-            sw_calibration_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
-            obj.sw_calibration = sw_calibration_value
-
-        # Parse sw_carb_doc
-        child = SerializationHelper.find_child_element(element, "SW-CARB-DOC")
-        if child is not None:
-            sw_carb_doc_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
-            obj.sw_carb_doc = sw_carb_doc_value
-
-        # Parse sw_diagnostics
-        child = SerializationHelper.find_child_element(element, "SW-DIAGNOSTICS")
-        if child is not None:
-            sw_diagnostics_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
-            obj.sw_diagnostics = sw_diagnostics_value
-
-        # Parse sw_feature_def
-        child = SerializationHelper.find_child_element(element, "SW-FEATURE-DEF")
-        if child is not None:
-            sw_feature_def_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
-            obj.sw_feature_def = sw_feature_def_value
-
-        # Parse sw_feature_desc
-        child = SerializationHelper.find_child_element(element, "SW-FEATURE-DESC")
-        if child is not None:
-            sw_feature_desc_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
-            obj.sw_feature_desc = sw_feature_desc_value
-
-        # Parse sw_maintenance
-        child = SerializationHelper.find_child_element(element, "SW-MAINTENANCE")
-        if child is not None:
-            sw_maintenance_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
-            obj.sw_maintenance = sw_maintenance_value
-
-        # Parse sw_test_desc
-        child = SerializationHelper.find_child_element(element, "SW-TEST-DESC")
-        if child is not None:
-            sw_test_desc_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
-            obj.sw_test_desc = sw_test_desc_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CHAPTERS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.chapters.append(SerializationHelper.deserialize_by_tag(item_elem, "Chapter"))
+            elif tag == "SW-CALIBRATION":
+                setattr(obj, "sw_calibration", SerializationHelper.deserialize_by_tag(child, "Chapter"))
+            elif tag == "SW-CARB-DOC":
+                setattr(obj, "sw_carb_doc", SerializationHelper.deserialize_by_tag(child, "Chapter"))
+            elif tag == "SW-DIAGNOSTICS":
+                setattr(obj, "sw_diagnostics", SerializationHelper.deserialize_by_tag(child, "Chapter"))
+            elif tag == "SW-FEATURE-DEF":
+                setattr(obj, "sw_feature_def", SerializationHelper.deserialize_by_tag(child, "Chapter"))
+            elif tag == "SW-FEATURE-DESC":
+                setattr(obj, "sw_feature_desc", SerializationHelper.deserialize_by_tag(child, "Chapter"))
+            elif tag == "SW-MAINTENANCE":
+                setattr(obj, "sw_maintenance", SerializationHelper.deserialize_by_tag(child, "Chapter"))
+            elif tag == "SW-TEST-DESC":
+                setattr(obj, "sw_test_desc", SerializationHelper.deserialize_by_tag(child, "Chapter"))
 
         return obj
 

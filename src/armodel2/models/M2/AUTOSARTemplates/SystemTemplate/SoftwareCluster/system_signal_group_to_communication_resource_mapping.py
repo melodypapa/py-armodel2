@@ -37,8 +37,17 @@ class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "SYSTEM-SIGNAL-GROUP-TO-COMMUNICATION-RESOURCE-MAPPING"
+
+
     software_cluster_ref: Optional[ARRef]
     system_signal_group_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SOFTWARE-CLUSTER-REF": lambda obj, elem: setattr(obj, "software_cluster_ref", ARRef.deserialize(elem)),
+        "SYSTEM-SIGNAL-GROUP-REF": lambda obj, elem: setattr(obj, "system_signal_group_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SystemSignalGroupToCommunicationResourceMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SystemSignalGroupToCommunicationResourceMapping, self).serialize()
@@ -112,17 +120,14 @@ class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SystemSignalGroupToCommunicationResourceMapping, cls).deserialize(element)
 
-        # Parse software_cluster_ref
-        child = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTER-REF")
-        if child is not None:
-            software_cluster_ref_value = ARRef.deserialize(child)
-            obj.software_cluster_ref = software_cluster_ref_value
-
-        # Parse system_signal_group_ref
-        child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-GROUP-REF")
-        if child is not None:
-            system_signal_group_ref_value = ARRef.deserialize(child)
-            obj.system_signal_group_ref = system_signal_group_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SOFTWARE-CLUSTER-REF":
+                setattr(obj, "software_cluster_ref", ARRef.deserialize(child))
+            elif tag == "SYSTEM-SIGNAL-GROUP-REF":
+                setattr(obj, "system_signal_group_ref", ARRef.deserialize(child))
 
         return obj
 

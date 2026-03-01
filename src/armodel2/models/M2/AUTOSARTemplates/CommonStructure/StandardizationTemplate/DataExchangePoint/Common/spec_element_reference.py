@@ -35,6 +35,11 @@ class SpecElementReference(Identifiable, ABC):
         return True
 
     alternative: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "ALTERNATIVE": lambda obj, elem: setattr(obj, "alternative", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SpecElementReference."""
         super().__init__()
@@ -46,9 +51,8 @@ class SpecElementReference(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SpecElementReference, self).serialize()
@@ -93,11 +97,12 @@ class SpecElementReference(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SpecElementReference, cls).deserialize(element)
 
-        # Parse alternative
-        child = SerializationHelper.find_child_element(element, "ALTERNATIVE")
-        if child is not None:
-            alternative_value = child.text
-            obj.alternative = alternative_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ALTERNATIVE":
+                setattr(obj, "alternative", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

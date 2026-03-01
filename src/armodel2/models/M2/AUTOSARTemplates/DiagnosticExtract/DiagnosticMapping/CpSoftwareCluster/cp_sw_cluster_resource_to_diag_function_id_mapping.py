@@ -34,8 +34,17 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "CP-SW-CLUSTER-RESOURCE-TO-DIAG-FUNCTION-ID-MAPPING"
+
+
     cp_software_cluster_ref: Optional[ARRef]
     function_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CP-SOFTWARE-CLUSTER-REF": lambda obj, elem: setattr(obj, "cp_software_cluster_ref", ARRef.deserialize(elem)),
+        "FUNCTION-REF": lambda obj, elem: setattr(obj, "function_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSwClusterResourceToDiagFunctionIdMapping."""
         super().__init__()
@@ -48,9 +57,8 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSwClusterResourceToDiagFunctionIdMapping, self).serialize()
@@ -109,17 +117,14 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSwClusterResourceToDiagFunctionIdMapping, cls).deserialize(element)
 
-        # Parse cp_software_cluster_ref
-        child = SerializationHelper.find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
-        if child is not None:
-            cp_software_cluster_ref_value = ARRef.deserialize(child)
-            obj.cp_software_cluster_ref = cp_software_cluster_ref_value
-
-        # Parse function_ref
-        child = SerializationHelper.find_child_element(element, "FUNCTION-REF")
-        if child is not None:
-            function_ref_value = ARRef.deserialize(child)
-            obj.function_ref = function_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CP-SOFTWARE-CLUSTER-REF":
+                setattr(obj, "cp_software_cluster_ref", ARRef.deserialize(child))
+            elif tag == "FUNCTION-REF":
+                setattr(obj, "function_ref", ARRef.deserialize(child))
 
         return obj
 

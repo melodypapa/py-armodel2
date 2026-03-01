@@ -33,7 +33,15 @@ class DiagnosticReadDataByIdentifierClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-READ-DATA-BY-IDENTIFIER-CLASS"
+
+
     max_did_to_read: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-DID-TO-READ": lambda obj, elem: setattr(obj, "max_did_to_read", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticReadDataByIdentifierClass."""
         super().__init__()
@@ -45,9 +53,8 @@ class DiagnosticReadDataByIdentifierClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticReadDataByIdentifierClass, self).serialize()
@@ -92,11 +99,12 @@ class DiagnosticReadDataByIdentifierClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticReadDataByIdentifierClass, cls).deserialize(element)
 
-        # Parse max_did_to_read
-        child = SerializationHelper.find_child_element(element, "MAX-DID-TO-READ")
-        if child is not None:
-            max_did_to_read_value = child.text
-            obj.max_did_to_read = max_did_to_read_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAX-DID-TO-READ":
+                setattr(obj, "max_did_to_read", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

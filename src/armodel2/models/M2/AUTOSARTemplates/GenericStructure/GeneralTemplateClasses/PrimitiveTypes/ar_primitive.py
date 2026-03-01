@@ -1,11 +1,10 @@
 """ARPrimitive base class for all AUTOSAR primitive types."""
 
 from __future__ import annotations
-from typing import Optional, Any, get_type_hints, Union
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
-from armodel2.serialization.name_converter import NameConverter
-from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
+from armodel2.serialization.serialization_helper import SerializationHelper
 
 class ARPrimitive:
     """Base class for all AUTOSAR primitive types.
@@ -17,20 +16,15 @@ class ARPrimitive:
     python_type: type = str
     """The underlying Python type for this primitive."""
 
-    def __init__(self) -> None:
-        """Initialize ARPrimitive."""
-        super().__init__()
-        self.value: Optional[Any] = None
+    def __init__(self, value: Optional[Any] = None, _original_text: Optional[str] = None) -> None:
+        """Initialize ARPrimitive.
 
-    def _get_xml_tag(self) -> str:
-        """Get XML tag name for this class.
-
-        Auto-generates from class name using NameConverter.
-
-        Returns:
-            XML tag name
+        Args:
+            value: The primitive value
+            _original_text: Original XML text representation (for preserving format)
         """
-        return NameConverter.to_xml_tag(self.__class__.__name__)
+        self.value: Optional[Any] = value
+        self._original_text: Optional[str] = _original_text  # Preserve original XML text format
 
     def serialize(self, namespace: str = "") -> ET.Element:
         """Serialize the primitive to an XML element.
@@ -44,7 +38,7 @@ class ARPrimitive:
         Returns:
             xml.etree.ElementTree.Element representing this primitive
         """
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         if namespace:
@@ -52,15 +46,25 @@ class ARPrimitive:
 
         # Serialize value as text content
         if self.value is not None:
-            elem.text = str(self.value)
+            # Preserve original format for binary-exact round-trip serialization
+            if self._original_text is not None:
+                # Use original text format for floats and booleans
+                if isinstance(self.value, (float, bool)):
+                    elem.text = self._original_text
+                else:
+                    elem.text = str(self.value)
+            else:
+                elem.text = str(self.value)
 
         # Serialize additional attributes as XML attributes
-        # Get all instance attributes excluding 'value' and private attributes
+        # Get all instance attributes excluding 'value', '_original_text', and private attributes
+        from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
         for name, value in vars(self).items():
-            if name.startswith('_') or name == 'value':
+            if name.startswith('_') or name in ('value', '_original_text'):
                 continue
 
             # Convert Python name to XML tag
+            from armodel2.serialization.name_converter import NameConverter
             xml_tag = NameConverter.to_xml_tag(name)
 
             # Skip None values
@@ -95,85 +99,69 @@ class ARPrimitive:
             Deserialized ARPrimitive instance
         """
         # Get type hints to know what attributes to expect
+        from typing import get_type_hints, Union, get_origin, get_args
         type_hints = {}
         try:
             type_hints = get_type_hints(cls)
         except Exception:
             # Fallback: Use __annotations__ directly if get_type_hints fails
-            # Note: Annotations will be strings due to 'from __future__ import annotations'
             if hasattr(cls, '__annotations__'):
                 for attr_name, attr_type_str in cls.__annotations__.items():
-                    if attr_name != 'value':  # Skip value, it's handled separately
+                    if attr_name != 'value':
                         type_hints[attr_name] = attr_type_str
 
-        # Get __init__ signature to determine which parameters to pass
-        import inspect
-        init_signature = inspect.signature(cls.__init__)
-        init_params = list(init_signature.parameters.keys())
-        init_params.remove('self')  # Remove 'self'
+        # Create instance
+        obj = cls()
 
-        # Collect attribute values from XML
-        attr_values = {'value': None}
-        for param_name in init_params:
-            if param_name == 'value':
+        # Deserialize XML attributes to object attributes
+        for attr_name, attr_type in type_hints.items():
+            if attr_name in ('value', '_original_text'):
                 continue
 
             # Convert Python name to XML tag
-            xml_tag = NameConverter.to_xml_tag(param_name)
+            from armodel2.serialization.name_converter import NameConverter
+            xml_tag = NameConverter.to_xml_tag(attr_name)
 
             # Get attribute value from XML
             attr_value = element.get(xml_tag)
+            if attr_value is None:
+                continue
 
-            # Convert to appropriate type based on type hints
-            if param_name in type_hints and attr_value is not None:
-                attr_type = type_hints[param_name]
-                
-                # Unwrap Optional type if present
-                from typing import get_origin, get_args
-                origin = get_origin(attr_type)
-                if origin is Union:
-                    type_args = get_args(attr_type)
-                    # Get the first non-None type
-                    for arg in type_args:
-                        if arg is not type(None):
-                            attr_type = arg
-                            break
-                
-                # Check if it's an AREnum type
-                if isinstance(attr_type, type) and issubclass(attr_type, AREnum):
-                    # Deserialize as enum by creating a fake XML element
-                    fake_elem = ET.Element('TEMP')
-                    fake_elem.text = attr_value
-                    attr_values[param_name] = attr_type.deserialize(fake_elem)
-                else:
-                    # Simple type conversion for other types
-                    attr_values[param_name] = str(attr_value)
-            elif attr_value is not None:
-                attr_values[param_name] = attr_value
+            # Convert to appropriate type
+            from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
+            if isinstance(attr_type, type) and issubclass(attr_type, AREnum):
+                # Deserialize as enum
+                fake_elem = ET.Element('TEMP')
+                fake_elem.text = attr_value
+                setattr(obj, attr_name, attr_type.deserialize(fake_elem))
+            else:
+                setattr(obj, attr_name, attr_value)
 
         # Deserialize text content to value
         if element.text:
+            # Preserve original format for binary-exact serialization
+            original_text = element.text
+
             # Convert to the appropriate Python type based on python_type
             if cls.python_type is str:
-                attr_values['value'] = element.text
+                obj.value = original_text
             elif cls.python_type is int:
                 try:
-                    attr_values['value'] = int(element.text)
+                    obj.value = int(original_text)
                 except ValueError:
-                    attr_values['value'] = element.text  # Keep as string if conversion fails
+                    obj.value = original_text  # Keep as string if conversion fails
             elif cls.python_type is float:
                 try:
-                    attr_values['value'] = float(element.text)
+                    obj.value = float(original_text)
                 except ValueError:
-                    attr_values['value'] = element.text
+                    obj.value = original_text
             elif cls.python_type is bool:
-                attr_values['value'] = element.text.lower() in ('true', '1', 'yes')
+                obj.value = original_text.lower() in ('true', '1', 'yes')
             else:
-                attr_values['value'] = element.text
+                obj.value = original_text
 
-        # Create instance with all parameters
-        obj = cls(**attr_values)
-
+            # Store original text for format preservation during serialization
+            obj._original_text = original_text
         return obj
 
     def __str__(self) -> str:

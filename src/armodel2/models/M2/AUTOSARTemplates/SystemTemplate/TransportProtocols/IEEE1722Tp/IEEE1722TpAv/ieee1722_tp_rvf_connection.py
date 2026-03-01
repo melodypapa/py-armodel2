@@ -38,6 +38,9 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-RVF-CONNECTION"
+
+
     rvf_active_pixels: Optional[PositiveInteger]
     rvf_color_space: Optional[IEEE1722TpRvfColorSpaceEnum]
     rvf_event_default: Optional[PositiveInteger]
@@ -46,6 +49,18 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
     rvf_pixel_depth: Optional[Any]
     rvf_pixel_format: Optional[Any]
     rvf_total_lines: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "RVF-ACTIVE-PIXELS": lambda obj, elem: setattr(obj, "rvf_active_pixels", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "RVF-COLOR-SPACE": lambda obj, elem: setattr(obj, "rvf_color_space", IEEE1722TpRvfColorSpaceEnum.deserialize(elem)),
+        "RVF-EVENT-DEFAULT": lambda obj, elem: setattr(obj, "rvf_event_default", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "RVF-FRAME-RATE": lambda obj, elem: setattr(obj, "rvf_frame_rate", IEEE1722TpRvfFrameRateEnum.deserialize(elem)),
+        "RVF-INTERLACED": lambda obj, elem: setattr(obj, "rvf_interlaced", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RVF-PIXEL-DEPTH": lambda obj, elem: setattr(obj, "rvf_pixel_depth", SerializationHelper.deserialize_by_tag(elem, "any (IEEE1722TpRvfPixel)")),
+        "RVF-PIXEL-FORMAT": lambda obj, elem: setattr(obj, "rvf_pixel_format", SerializationHelper.deserialize_by_tag(elem, "any (IEEE1722TpRvfPixel)")),
+        "RVF-TOTAL-LINES": lambda obj, elem: setattr(obj, "rvf_total_lines", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpRvfConnection."""
         super().__init__()
@@ -64,9 +79,8 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpRvfConnection, self).serialize()
@@ -209,53 +223,26 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpRvfConnection, cls).deserialize(element)
 
-        # Parse rvf_active_pixels
-        child = SerializationHelper.find_child_element(element, "RVF-ACTIVE-PIXELS")
-        if child is not None:
-            rvf_active_pixels_value = child.text
-            obj.rvf_active_pixels = rvf_active_pixels_value
-
-        # Parse rvf_color_space
-        child = SerializationHelper.find_child_element(element, "RVF-COLOR-SPACE")
-        if child is not None:
-            rvf_color_space_value = IEEE1722TpRvfColorSpaceEnum.deserialize(child)
-            obj.rvf_color_space = rvf_color_space_value
-
-        # Parse rvf_event_default
-        child = SerializationHelper.find_child_element(element, "RVF-EVENT-DEFAULT")
-        if child is not None:
-            rvf_event_default_value = child.text
-            obj.rvf_event_default = rvf_event_default_value
-
-        # Parse rvf_frame_rate
-        child = SerializationHelper.find_child_element(element, "RVF-FRAME-RATE")
-        if child is not None:
-            rvf_frame_rate_value = IEEE1722TpRvfFrameRateEnum.deserialize(child)
-            obj.rvf_frame_rate = rvf_frame_rate_value
-
-        # Parse rvf_interlaced
-        child = SerializationHelper.find_child_element(element, "RVF-INTERLACED")
-        if child is not None:
-            rvf_interlaced_value = child.text
-            obj.rvf_interlaced = rvf_interlaced_value
-
-        # Parse rvf_pixel_depth
-        child = SerializationHelper.find_child_element(element, "RVF-PIXEL-DEPTH")
-        if child is not None:
-            rvf_pixel_depth_value = child.text
-            obj.rvf_pixel_depth = rvf_pixel_depth_value
-
-        # Parse rvf_pixel_format
-        child = SerializationHelper.find_child_element(element, "RVF-PIXEL-FORMAT")
-        if child is not None:
-            rvf_pixel_format_value = child.text
-            obj.rvf_pixel_format = rvf_pixel_format_value
-
-        # Parse rvf_total_lines
-        child = SerializationHelper.find_child_element(element, "RVF-TOTAL-LINES")
-        if child is not None:
-            rvf_total_lines_value = child.text
-            obj.rvf_total_lines = rvf_total_lines_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RVF-ACTIVE-PIXELS":
+                setattr(obj, "rvf_active_pixels", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "RVF-COLOR-SPACE":
+                setattr(obj, "rvf_color_space", IEEE1722TpRvfColorSpaceEnum.deserialize(child))
+            elif tag == "RVF-EVENT-DEFAULT":
+                setattr(obj, "rvf_event_default", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "RVF-FRAME-RATE":
+                setattr(obj, "rvf_frame_rate", IEEE1722TpRvfFrameRateEnum.deserialize(child))
+            elif tag == "RVF-INTERLACED":
+                setattr(obj, "rvf_interlaced", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RVF-PIXEL-DEPTH":
+                setattr(obj, "rvf_pixel_depth", SerializationHelper.deserialize_by_tag(child, "any (IEEE1722TpRvfPixel)"))
+            elif tag == "RVF-PIXEL-FORMAT":
+                setattr(obj, "rvf_pixel_format", SerializationHelper.deserialize_by_tag(child, "any (IEEE1722TpRvfPixel)"))
+            elif tag == "RVF-TOTAL-LINES":
+                setattr(obj, "rvf_total_lines", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

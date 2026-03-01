@@ -33,7 +33,15 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-CONTROL-D-T-C-SETTING-CLASS"
+
+
     control_option: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CONTROL-OPTION": lambda obj, elem: setattr(obj, "control_option", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticControlDTCSettingClass."""
         super().__init__()
@@ -45,9 +53,8 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticControlDTCSettingClass, self).serialize()
@@ -92,11 +99,12 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticControlDTCSettingClass, cls).deserialize(element)
 
-        # Parse control_option
-        child = SerializationHelper.find_child_element(element, "CONTROL-OPTION")
-        if child is not None:
-            control_option_value = child.text
-            obj.control_option = control_option_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONTROL-OPTION":
+                setattr(obj, "control_option", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

@@ -49,6 +49,9 @@ class RptContainer(Identifiable):
         """
         return False
 
+    _XML_TAG = "RPT-CONTAINER"
+
+
     by_pass_points: list[AtpFeature]
     explicit_rpt_refs: list[ARRef]
     rpt_containers: list[RptContainer]
@@ -56,6 +59,17 @@ class RptContainer(Identifiable):
     rpt_hook: Optional[RptHook]
     rpt_impl_policy: Optional[RptImplPolicy]
     rpt_sw: Optional[RptSwPrototypingAccess]
+    _DESERIALIZE_DISPATCH = {
+        "BY-PASS-POINTS": ("_POLYMORPHIC_LIST", "by_pass_points", ["AtpPrototype", "AtpStructureElement"]),
+        "EXPLICIT-RPT-REFS": lambda obj, elem: [obj.explicit_rpt_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "RPT-CONTAINERS": lambda obj, elem: obj.rpt_containers.append(SerializationHelper.deserialize_by_tag(elem, "RptContainer")),
+        "RPT-EXECUTABLE-ENTITY": lambda obj, elem: setattr(obj, "rpt_executable_entity", SerializationHelper.deserialize_by_tag(elem, "RptExecutableEntity")),
+        "RPT-HOOK": lambda obj, elem: setattr(obj, "rpt_hook", SerializationHelper.deserialize_by_tag(elem, "RptHook")),
+        "RPT-IMPL-POLICY": lambda obj, elem: setattr(obj, "rpt_impl_policy", SerializationHelper.deserialize_by_tag(elem, "RptImplPolicy")),
+        "RPT-SW": lambda obj, elem: setattr(obj, "rpt_sw", SerializationHelper.deserialize_by_tag(elem, "RptSwPrototypingAccess")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptContainer."""
         super().__init__()
@@ -73,9 +87,8 @@ class RptContainer(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptContainer, self).serialize()
@@ -199,65 +212,34 @@ class RptContainer(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptContainer, cls).deserialize(element)
 
-        # Parse by_pass_points (list from container "BY-PASS-POINTS")
-        obj.by_pass_points = []
-        container = SerializationHelper.find_child_element(element, "BY-PASS-POINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.by_pass_points.append(child_value)
-
-        # Parse explicit_rpt_refs (list from container "EXPLICIT-RPT-REFS")
-        obj.explicit_rpt_refs = []
-        container = SerializationHelper.find_child_element(element, "EXPLICIT-RPT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.explicit_rpt_refs.append(child_value)
-
-        # Parse rpt_containers (list from container "RPT-CONTAINERS")
-        obj.rpt_containers = []
-        container = SerializationHelper.find_child_element(element, "RPT-CONTAINERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rpt_containers.append(child_value)
-
-        # Parse rpt_executable_entity
-        child = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITY")
-        if child is not None:
-            rpt_executable_entity_value = SerializationHelper.deserialize_by_tag(child, "RptExecutableEntity")
-            obj.rpt_executable_entity = rpt_executable_entity_value
-
-        # Parse rpt_hook
-        child = SerializationHelper.find_child_element(element, "RPT-HOOK")
-        if child is not None:
-            rpt_hook_value = SerializationHelper.deserialize_by_tag(child, "RptHook")
-            obj.rpt_hook = rpt_hook_value
-
-        # Parse rpt_impl_policy
-        child = SerializationHelper.find_child_element(element, "RPT-IMPL-POLICY")
-        if child is not None:
-            rpt_impl_policy_value = SerializationHelper.deserialize_by_tag(child, "RptImplPolicy")
-            obj.rpt_impl_policy = rpt_impl_policy_value
-
-        # Parse rpt_sw
-        child = SerializationHelper.find_child_element(element, "RPT-SW")
-        if child is not None:
-            rpt_sw_value = SerializationHelper.deserialize_by_tag(child, "RptSwPrototypingAccess")
-            obj.rpt_sw = rpt_sw_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BY-PASS-POINTS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "ATP-PROTOTYPE":
+                        obj.by_pass_points.append(SerializationHelper.deserialize_by_tag(item_elem, "AtpPrototype"))
+                    elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
+                        obj.by_pass_points.append(SerializationHelper.deserialize_by_tag(item_elem, "AtpStructureElement"))
+            elif tag == "EXPLICIT-RPT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.explicit_rpt_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "RPT-CONTAINERS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.rpt_containers.append(SerializationHelper.deserialize_by_tag(item_elem, "RptContainer"))
+            elif tag == "RPT-EXECUTABLE-ENTITY":
+                setattr(obj, "rpt_executable_entity", SerializationHelper.deserialize_by_tag(child, "RptExecutableEntity"))
+            elif tag == "RPT-HOOK":
+                setattr(obj, "rpt_hook", SerializationHelper.deserialize_by_tag(child, "RptHook"))
+            elif tag == "RPT-IMPL-POLICY":
+                setattr(obj, "rpt_impl_policy", SerializationHelper.deserialize_by_tag(child, "RptImplPolicy"))
+            elif tag == "RPT-SW":
+                setattr(obj, "rpt_sw", SerializationHelper.deserialize_by_tag(child, "RptSwPrototypingAccess"))
 
         return obj
 

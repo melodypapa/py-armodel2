@@ -40,8 +40,16 @@ class ARList(Paginateable):
         """
         return False
 
+    _XML_TAG = "AR-LIST"
+
+
     _items: list[Item]
     _type: Optional[ListEnum]
+    _DESERIALIZE_DISPATCH = {
+        "ITEM": lambda obj, elem: obj._items.append(SerializationHelper.deserialize_by_tag(elem, "Item")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ARList."""
         super().__init__()
@@ -76,9 +84,8 @@ class ARList(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ARList, self).serialize()
@@ -99,14 +106,15 @@ class ARList(Paginateable):
             for item in self.items:
                 serialized = SerializationHelper.serialize_item(item, "Item")
                 if serialized is not None:
-                    child_elem = ET.Element("ITEM")
+                    # Wrap with correct tag from @xml_element_name decorator
+                    wrapped = ET.Element("ITEM")
                     if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
+                        wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
-                        child_elem.text = serialized.text
+                        wrapped.text = serialized.text
                     for child in serialized:
-                        child_elem.append(child)
-                    elem.append(child_elem)
+                        wrapped.append(child)
+                    elem.append(wrapped)
         # Serialize type as XML attribute
         if self.type is not None:
             elem.attrib["TYPE"] = str(self.type)
@@ -126,19 +134,16 @@ class ARList(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ARList, cls).deserialize(element)
 
-        # Parse items (list of direct "ITEM" children, no container)
-        obj.items = []
-        for child in element:
-            child_element_tag = SerializationHelper.strip_namespace(child.tag)
-            if child_element_tag == "ITEM":                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.items.append(child_value)
-
         # Parse type from XML attribute
         if "TYPE" in element.attrib:
-            type_value = ListEnum(element.attrib["TYPE"])
-            obj.type = type_value
+            obj.type = element.attrib["TYPE"]
+
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ITEM":
+                obj._items.append(SerializationHelper.deserialize_by_tag(child, "Item"))
 
         return obj
 

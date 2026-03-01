@@ -41,11 +41,23 @@ class CryptoServiceKey(ARElement):
         """
         return False
 
+    _XML_TAG = "CRYPTO-SERVICE-KEY"
+
+
     algorithm_family: Optional[String]
     development: Optional[ValueSpecification]
     key_generation: Optional[CryptoServiceKey]
     key_storage_type: Optional[String]
     length: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ALGORITHM-FAMILY": lambda obj, elem: setattr(obj, "algorithm_family", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "DEVELOPMENT": ("_POLYMORPHIC", "development", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "KEY-GENERATION": lambda obj, elem: setattr(obj, "key_generation", SerializationHelper.deserialize_by_tag(elem, "CryptoServiceKey")),
+        "KEY-STORAGE-TYPE": lambda obj, elem: setattr(obj, "key_storage_type", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "LENGTH": lambda obj, elem: setattr(obj, "length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CryptoServiceKey."""
         super().__init__()
@@ -61,9 +73,8 @@ class CryptoServiceKey(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CryptoServiceKey, self).serialize()
@@ -164,35 +175,38 @@ class CryptoServiceKey(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CryptoServiceKey, cls).deserialize(element)
 
-        # Parse algorithm_family
-        child = SerializationHelper.find_child_element(element, "ALGORITHM-FAMILY")
-        if child is not None:
-            algorithm_family_value = child.text
-            obj.algorithm_family = algorithm_family_value
-
-        # Parse development
-        child = SerializationHelper.find_child_element(element, "DEVELOPMENT")
-        if child is not None:
-            development_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
-            obj.development = development_value
-
-        # Parse key_generation
-        child = SerializationHelper.find_child_element(element, "KEY-GENERATION")
-        if child is not None:
-            key_generation_value = SerializationHelper.deserialize_by_tag(child, "CryptoServiceKey")
-            obj.key_generation = key_generation_value
-
-        # Parse key_storage_type
-        child = SerializationHelper.find_child_element(element, "KEY-STORAGE-TYPE")
-        if child is not None:
-            key_storage_type_value = child.text
-            obj.key_storage_type = key_storage_type_value
-
-        # Parse length
-        child = SerializationHelper.find_child_element(element, "LENGTH")
-        if child is not None:
-            length_value = child.text
-            obj.length = length_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ALGORITHM-FAMILY":
+                setattr(obj, "algorithm_family", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "DEVELOPMENT":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
+            elif tag == "KEY-GENERATION":
+                setattr(obj, "key_generation", SerializationHelper.deserialize_by_tag(child, "CryptoServiceKey"))
+            elif tag == "KEY-STORAGE-TYPE":
+                setattr(obj, "key_storage_type", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "LENGTH":
+                setattr(obj, "length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

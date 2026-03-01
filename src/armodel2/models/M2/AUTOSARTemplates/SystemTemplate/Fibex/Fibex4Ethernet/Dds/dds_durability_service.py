@@ -29,7 +29,15 @@ class DdsDurabilityService(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-DURABILITY-SERVICE"
+
+
     durability: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DURABILITY": lambda obj, elem: setattr(obj, "durability", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsDurabilityService."""
         super().__init__()
@@ -41,9 +49,8 @@ class DdsDurabilityService(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsDurabilityService, self).serialize()
@@ -88,11 +95,12 @@ class DdsDurabilityService(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsDurabilityService, cls).deserialize(element)
 
-        # Parse durability
-        child = SerializationHelper.find_child_element(element, "DURABILITY")
-        if child is not None:
-            durability_value = child.text
-            obj.durability = durability_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DURABILITY":
+                setattr(obj, "durability", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

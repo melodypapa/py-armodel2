@@ -154,5 +154,4 @@ class BaseTypeBuilder:
         Returns:
             BaseType instance
         """
-        # TODO: Add validation
         return self._obj

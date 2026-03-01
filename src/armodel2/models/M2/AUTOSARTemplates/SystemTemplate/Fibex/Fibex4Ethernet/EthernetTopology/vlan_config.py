@@ -33,7 +33,15 @@ class VlanConfig(Identifiable):
         """
         return False
 
+    _XML_TAG = "VLAN-CONFIG"
+
+
     vlan_identifier: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "VLAN-IDENTIFIER": lambda obj, elem: setattr(obj, "vlan_identifier", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize VlanConfig."""
         super().__init__()
@@ -45,9 +53,8 @@ class VlanConfig(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(VlanConfig, self).serialize()
@@ -92,11 +99,12 @@ class VlanConfig(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(VlanConfig, cls).deserialize(element)
 
-        # Parse vlan_identifier
-        child = SerializationHelper.find_child_element(element, "VLAN-IDENTIFIER")
-        if child is not None:
-            vlan_identifier_value = child.text
-            obj.vlan_identifier = vlan_identifier_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "VLAN-IDENTIFIER":
+                setattr(obj, "vlan_identifier", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -134,5 +134,4 @@ class CompuBuilder:
         Returns:
             Compu instance
         """
-        # TODO: Add validation
         return self._obj

@@ -34,9 +34,19 @@ class EcucParamConfContainerDef(EcucContainerDef):
         """
         return False
 
+    _XML_TAG = "ECUC-PARAM-CONF-CONTAINER-DEF"
+
+
     parameters: list[EcucParameterDef]
     reference_refs: list[Any]
     sub_containers: list[EcucContainerDef]
+    _DESERIALIZE_DISPATCH = {
+        "PARAMETERS": ("_POLYMORPHIC_LIST", "parameters", ["EcucAbstractStringParamDef", "EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucIntegerParamDef"]),
+        "REFERENCE-REFS": lambda obj, elem: [obj.reference_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "SUB-CONTAINERS": ("_POLYMORPHIC_LIST", "sub_containers", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucParamConfContainerDef."""
         super().__init__()
@@ -50,9 +60,8 @@ class EcucParamConfContainerDef(EcucContainerDef):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucParamConfContainerDef, self).serialize()
@@ -120,41 +129,38 @@ class EcucParamConfContainerDef(EcucContainerDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucParamConfContainerDef, cls).deserialize(element)
 
-        # Parse parameters (list from container "PARAMETERS")
-        obj.parameters = []
-        container = SerializationHelper.find_child_element(element, "PARAMETERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.parameters.append(child_value)
-
-        # Parse reference_refs (list from container "REFERENCE-REFS")
-        obj.reference_refs = []
-        container = SerializationHelper.find_child_element(element, "REFERENCE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.reference_refs.append(child_value)
-
-        # Parse sub_containers (list from container "SUB-CONTAINERS")
-        obj.sub_containers = []
-        container = SerializationHelper.find_child_element(element, "SUB-CONTAINERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sub_containers.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PARAMETERS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "ECUC-ABSTRACT-STRING-PARAM-DEF":
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucAbstractStringParamDef"))
+                    elif concrete_tag == "ECUC-ADD-INFO-PARAM-DEF":
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucAddInfoParamDef"))
+                    elif concrete_tag == "ECUC-BOOLEAN-PARAM-DEF":
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucBooleanParamDef"))
+                    elif concrete_tag == "ECUC-ENUMERATION-PARAM-DEF":
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucEnumerationParamDef"))
+                    elif concrete_tag == "ECUC-FLOAT-PARAM-DEF":
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucFloatParamDef"))
+                    elif concrete_tag == "ECUC-INTEGER-PARAM-DEF":
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucIntegerParamDef"))
+            elif tag == "REFERENCE-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.reference_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SUB-CONTAINERS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "ECUC-CHOICE-CONTAINER-DEF":
+                        obj.sub_containers.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucChoiceContainerDef"))
+                    elif concrete_tag == "ECUC-PARAM-CONF-CONTAINER-DEF":
+                        obj.sub_containers.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucParamConfContainerDef"))
 
         return obj
 

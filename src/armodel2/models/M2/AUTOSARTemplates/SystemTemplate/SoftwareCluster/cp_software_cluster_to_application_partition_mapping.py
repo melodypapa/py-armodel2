@@ -37,8 +37,17 @@ class CpSoftwareClusterToApplicationPartitionMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "CP-SOFTWARE-CLUSTER-TO-APPLICATION-PARTITION-MAPPING"
+
+
     application_refs: list[ARRef]
     software_cluster_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATION-REFS": lambda obj, elem: [obj.application_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "SOFTWARE-CLUSTER-REF": lambda obj, elem: setattr(obj, "software_cluster_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterToApplicationPartitionMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class CpSoftwareClusterToApplicationPartitionMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CpSoftwareClusterToApplicationPartitionMapping, self).serialize()
@@ -115,27 +123,16 @@ class CpSoftwareClusterToApplicationPartitionMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterToApplicationPartitionMapping, cls).deserialize(element)
 
-        # Parse application_refs (list from container "APPLICATION-REFS")
-        obj.application_refs = []
-        container = SerializationHelper.find_child_element(element, "APPLICATION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.application_refs.append(child_value)
-
-        # Parse software_cluster_ref
-        child = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTER-REF")
-        if child is not None:
-            software_cluster_ref_value = ARRef.deserialize(child)
-            obj.software_cluster_ref = software_cluster_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "APPLICATION-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.application_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SOFTWARE-CLUSTER-REF":
+                setattr(obj, "software_cluster_ref", ARRef.deserialize(child))
 
         return obj
 

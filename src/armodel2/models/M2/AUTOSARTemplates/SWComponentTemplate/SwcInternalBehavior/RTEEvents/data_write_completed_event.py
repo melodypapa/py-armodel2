@@ -34,7 +34,15 @@ class DataWriteCompletedEvent(RTEEvent):
         """
         return False
 
+    _XML_TAG = "DATA-WRITE-COMPLETED-EVENT"
+
+
     event_source_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-SOURCE-REF": lambda obj, elem: setattr(obj, "event_source_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataWriteCompletedEvent."""
         super().__init__()
@@ -46,9 +54,8 @@ class DataWriteCompletedEvent(RTEEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataWriteCompletedEvent, self).serialize()
@@ -93,11 +100,12 @@ class DataWriteCompletedEvent(RTEEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataWriteCompletedEvent, cls).deserialize(element)
 
-        # Parse event_source_ref
-        child = SerializationHelper.find_child_element(element, "EVENT-SOURCE-REF")
-        if child is not None:
-            event_source_ref_value = ARRef.deserialize(child)
-            obj.event_source_ref = event_source_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EVENT-SOURCE-REF":
+                setattr(obj, "event_source_ref", ARRef.deserialize(child))
 
         return obj
 

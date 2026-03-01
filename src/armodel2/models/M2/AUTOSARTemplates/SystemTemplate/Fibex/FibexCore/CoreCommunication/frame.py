@@ -41,6 +41,12 @@ class Frame(FibexElement, ABC):
 
     frame_length: Optional[Integer]
     pdu_to_frame_mappings: list[PduToFrameMapping]
+    _DESERIALIZE_DISPATCH = {
+        "FRAME-LENGTH": lambda obj, elem: setattr(obj, "frame_length", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "PDU-TO-FRAME-MAPPINGS": lambda obj, elem: obj.pdu_to_frame_mappings.append(SerializationHelper.deserialize_by_tag(elem, "PduToFrameMapping")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Frame."""
         super().__init__()
@@ -53,9 +59,8 @@ class Frame(FibexElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Frame, self).serialize()
@@ -110,21 +115,16 @@ class Frame(FibexElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Frame, cls).deserialize(element)
 
-        # Parse frame_length
-        child = SerializationHelper.find_child_element(element, "FRAME-LENGTH")
-        if child is not None:
-            frame_length_value = child.text
-            obj.frame_length = frame_length_value
-
-        # Parse pdu_to_frame_mappings (list from container "PDU-TO-FRAME-MAPPINGS")
-        obj.pdu_to_frame_mappings = []
-        container = SerializationHelper.find_child_element(element, "PDU-TO-FRAME-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pdu_to_frame_mappings.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FRAME-LENGTH":
+                setattr(obj, "frame_length", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "PDU-TO-FRAME-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.pdu_to_frame_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "PduToFrameMapping"))
 
         return obj
 

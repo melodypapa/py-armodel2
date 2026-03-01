@@ -34,7 +34,15 @@ class IEEE1722TpConfig(TpConfig):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-CONFIG"
+
+
     tp_connection_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TP-CONNECTION-REFS": ("_POLYMORPHIC_LIST", "tp_connection_refs", ["IEEE1722TpAcfConnection", "IEEE1722TpAvConnection"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpConfig."""
         super().__init__()
@@ -46,9 +54,8 @@ class IEEE1722TpConfig(TpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpConfig, self).serialize()
@@ -96,21 +103,13 @@ class IEEE1722TpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpConfig, cls).deserialize(element)
 
-        # Parse tp_connection_refs (list from container "TP-CONNECTION-REFS")
-        obj.tp_connection_refs = []
-        container = SerializationHelper.find_child_element(element, "TP-CONNECTION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_connection_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TP-CONNECTION-REFS":
+                for item_elem in child:
+                    obj.tp_connection_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

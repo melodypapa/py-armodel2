@@ -33,9 +33,19 @@ class Field(AutosarDataPrototype):
         """
         return False
 
+    _XML_TAG = "FIELD"
+
+
     has_getter: Optional[Boolean]
     has_notifier: Optional[Boolean]
     has_setter: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "HAS-GETTER": lambda obj, elem: setattr(obj, "has_getter", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "HAS-NOTIFIER": lambda obj, elem: setattr(obj, "has_notifier", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "HAS-SETTER": lambda obj, elem: setattr(obj, "has_setter", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Field."""
         super().__init__()
@@ -49,9 +59,8 @@ class Field(AutosarDataPrototype):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Field, self).serialize()
@@ -124,23 +133,16 @@ class Field(AutosarDataPrototype):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Field, cls).deserialize(element)
 
-        # Parse has_getter
-        child = SerializationHelper.find_child_element(element, "HAS-GETTER")
-        if child is not None:
-            has_getter_value = child.text
-            obj.has_getter = has_getter_value
-
-        # Parse has_notifier
-        child = SerializationHelper.find_child_element(element, "HAS-NOTIFIER")
-        if child is not None:
-            has_notifier_value = child.text
-            obj.has_notifier = has_notifier_value
-
-        # Parse has_setter
-        child = SerializationHelper.find_child_element(element, "HAS-SETTER")
-        if child is not None:
-            has_setter_value = child.text
-            obj.has_setter = has_setter_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "HAS-GETTER":
+                setattr(obj, "has_getter", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "HAS-NOTIFIER":
+                setattr(obj, "has_notifier", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "HAS-SETTER":
+                setattr(obj, "has_setter", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

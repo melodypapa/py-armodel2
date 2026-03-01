@@ -221,5 +221,4 @@ class MultiLanguageVerbatimBuilder:
         Returns:
             MultiLanguageVerbatim instance
         """
-        # TODO: Add validation
         return self._obj

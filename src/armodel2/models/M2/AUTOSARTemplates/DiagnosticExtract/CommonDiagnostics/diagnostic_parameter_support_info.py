@@ -29,7 +29,15 @@ class DiagnosticParameterSupportInfo(ARObject):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-PARAMETER-SUPPORT-INFO"
+
+
     support_info_bit: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "SUPPORT-INFO-BIT": lambda obj, elem: setattr(obj, "support_info_bit", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticParameterSupportInfo."""
         super().__init__()
@@ -41,9 +49,8 @@ class DiagnosticParameterSupportInfo(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticParameterSupportInfo, self).serialize()
@@ -88,11 +95,12 @@ class DiagnosticParameterSupportInfo(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticParameterSupportInfo, cls).deserialize(element)
 
-        # Parse support_info_bit
-        child = SerializationHelper.find_child_element(element, "SUPPORT-INFO-BIT")
-        if child is not None:
-            support_info_bit_value = child.text
-            obj.support_info_bit = support_info_bit_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SUPPORT-INFO-BIT":
+                setattr(obj, "support_info_bit", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

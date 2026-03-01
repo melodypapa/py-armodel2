@@ -30,7 +30,15 @@ class TimingModeInstance(Identifiable):
         """
         return False
 
+    _XML_TAG = "TIMING-MODE-INSTANCE"
+
+
     mode_instance: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "MODE-INSTANCE": lambda obj, elem: setattr(obj, "mode_instance", SerializationHelper.deserialize_by_tag(elem, "any (ModeInSwcBsw)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimingModeInstance."""
         super().__init__()
@@ -42,9 +50,8 @@ class TimingModeInstance(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimingModeInstance, self).serialize()
@@ -89,11 +96,12 @@ class TimingModeInstance(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingModeInstance, cls).deserialize(element)
 
-        # Parse mode_instance
-        child = SerializationHelper.find_child_element(element, "MODE-INSTANCE")
-        if child is not None:
-            mode_instance_value = child.text
-            obj.mode_instance = mode_instance_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MODE-INSTANCE":
+                setattr(obj, "mode_instance", SerializationHelper.deserialize_by_tag(child, "any (ModeInSwcBsw)"))
 
         return obj
 

@@ -29,7 +29,15 @@ class PredefinedChapter(ARObject):
         """
         return False
 
+    _XML_TAG = "PREDEFINED-CHAPTER"
+
+
     chapter_model: ChapterModel
+    _DESERIALIZE_DISPATCH = {
+        "CHAPTER-MODEL": lambda obj, elem: setattr(obj, "chapter_model", SerializationHelper.deserialize_by_tag(elem, "ChapterModel")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PredefinedChapter."""
         super().__init__()
@@ -41,9 +49,8 @@ class PredefinedChapter(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PredefinedChapter, self).serialize()
@@ -88,11 +95,12 @@ class PredefinedChapter(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PredefinedChapter, cls).deserialize(element)
 
-        # Parse chapter_model
-        child = SerializationHelper.find_child_element(element, "CHAPTER-MODEL")
-        if child is not None:
-            chapter_model_value = SerializationHelper.deserialize_by_tag(child, "ChapterModel")
-            obj.chapter_model = chapter_model_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CHAPTER-MODEL":
+                setattr(obj, "chapter_model", SerializationHelper.deserialize_by_tag(child, "ChapterModel"))
 
         return obj
 

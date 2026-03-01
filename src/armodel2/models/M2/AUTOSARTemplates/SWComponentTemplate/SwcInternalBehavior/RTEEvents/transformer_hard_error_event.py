@@ -37,8 +37,17 @@ class TransformerHardErrorEvent(RTEEvent):
         """
         return False
 
+    _XML_TAG = "TRANSFORMER-HARD-ERROR-EVENT"
+
+
     operation: Optional[ClientServerOperation]
     required_trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "OPERATION": lambda obj, elem: setattr(obj, "operation", SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
+        "REQUIRED-TRIGGER-REF": lambda obj, elem: setattr(obj, "required_trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TransformerHardErrorEvent."""
         super().__init__()
@@ -51,9 +60,8 @@ class TransformerHardErrorEvent(RTEEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TransformerHardErrorEvent, self).serialize()
@@ -112,17 +120,14 @@ class TransformerHardErrorEvent(RTEEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransformerHardErrorEvent, cls).deserialize(element)
 
-        # Parse operation
-        child = SerializationHelper.find_child_element(element, "OPERATION")
-        if child is not None:
-            operation_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
-            obj.operation = operation_value
-
-        # Parse required_trigger_ref
-        child = SerializationHelper.find_child_element(element, "REQUIRED-TRIGGER-REF")
-        if child is not None:
-            required_trigger_ref_value = ARRef.deserialize(child)
-            obj.required_trigger_ref = required_trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OPERATION":
+                setattr(obj, "operation", SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
+            elif tag == "REQUIRED-TRIGGER-REF":
+                setattr(obj, "required_trigger_ref", ARRef.deserialize(child))
 
         return obj
 

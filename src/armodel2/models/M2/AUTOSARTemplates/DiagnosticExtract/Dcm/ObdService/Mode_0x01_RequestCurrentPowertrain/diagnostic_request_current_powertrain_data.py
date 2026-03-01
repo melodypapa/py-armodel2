@@ -34,8 +34,17 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-REQUEST-CURRENT-POWERTRAIN-DATA"
+
+
     pid_ref: Optional[ARRef]
     request_current_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "PID-REF": lambda obj, elem: setattr(obj, "pid_ref", ARRef.deserialize(elem)),
+        "REQUEST-CURRENT-REF": lambda obj, elem: setattr(obj, "request_current_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticRequestCurrentPowertrainData."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticRequestCurrentPowertrainData, self).serialize()
@@ -109,17 +117,14 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestCurrentPowertrainData, cls).deserialize(element)
 
-        # Parse pid_ref
-        child = SerializationHelper.find_child_element(element, "PID-REF")
-        if child is not None:
-            pid_ref_value = ARRef.deserialize(child)
-            obj.pid_ref = pid_ref_value
-
-        # Parse request_current_ref
-        child = SerializationHelper.find_child_element(element, "REQUEST-CURRENT-REF")
-        if child is not None:
-            request_current_ref_value = ARRef.deserialize(child)
-            obj.request_current_ref = request_current_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PID-REF":
+                setattr(obj, "pid_ref", ARRef.deserialize(child))
+            elif tag == "REQUEST-CURRENT-REF":
+                setattr(obj, "request_current_ref", ARRef.deserialize(child))
 
         return obj
 

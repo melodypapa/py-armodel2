@@ -33,6 +33,9 @@ class FirewallRule(ARElement):
         """
         return False
 
+    _XML_TAG = "FIREWALL-RULE"
+
+
     bucket_size: Optional[PositiveInteger]
     data_link_layer_rule: Optional[Any]
     dds_rule: Optional[Any]
@@ -43,6 +46,20 @@ class FirewallRule(ARElement):
     someip_rule: Optional[Any]
     someip_sd_rule: Optional[Any]
     transport_layer_rule: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "BUCKET-SIZE": lambda obj, elem: setattr(obj, "bucket_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "DATA-LINK-LAYER-RULE": lambda obj, elem: setattr(obj, "data_link_layer_rule", SerializationHelper.deserialize_by_tag(elem, "any (DataLinkLayerRule)")),
+        "DDS-RULE": lambda obj, elem: setattr(obj, "dds_rule", SerializationHelper.deserialize_by_tag(elem, "any (DdsRule)")),
+        "DO-IP-RULE": lambda obj, elem: setattr(obj, "do_ip_rule", SerializationHelper.deserialize_by_tag(elem, "any (DoIpRule)")),
+        "NETWORK-LAYER-RULE": lambda obj, elem: setattr(obj, "network_layer_rule", SerializationHelper.deserialize_by_tag(elem, "any (NetworkLayerRule)")),
+        "PAYLOAD-BYTE-PATTERNS": lambda obj, elem: obj.payload_byte_patterns.append(SerializationHelper.deserialize_by_tag(elem, "any (PayloadBytePattern)")),
+        "REFILL-AMOUNT": lambda obj, elem: setattr(obj, "refill_amount", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SOMEIP-RULE": lambda obj, elem: setattr(obj, "someip_rule", SerializationHelper.deserialize_by_tag(elem, "any (SomeipProtocolRule)")),
+        "SOMEIP-SD-RULE": lambda obj, elem: setattr(obj, "someip_sd_rule", SerializationHelper.deserialize_by_tag(elem, "any (SomeipSdRule)")),
+        "TRANSPORT-LAYER-RULE": lambda obj, elem: setattr(obj, "transport_layer_rule", SerializationHelper.deserialize_by_tag(elem, "any (TransportLayerRule)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FirewallRule."""
         super().__init__()
@@ -63,9 +80,8 @@ class FirewallRule(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FirewallRule, self).serialize()
@@ -232,69 +248,32 @@ class FirewallRule(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FirewallRule, cls).deserialize(element)
 
-        # Parse bucket_size
-        child = SerializationHelper.find_child_element(element, "BUCKET-SIZE")
-        if child is not None:
-            bucket_size_value = child.text
-            obj.bucket_size = bucket_size_value
-
-        # Parse data_link_layer_rule
-        child = SerializationHelper.find_child_element(element, "DATA-LINK-LAYER-RULE")
-        if child is not None:
-            data_link_layer_rule_value = child.text
-            obj.data_link_layer_rule = data_link_layer_rule_value
-
-        # Parse dds_rule
-        child = SerializationHelper.find_child_element(element, "DDS-RULE")
-        if child is not None:
-            dds_rule_value = child.text
-            obj.dds_rule = dds_rule_value
-
-        # Parse do_ip_rule
-        child = SerializationHelper.find_child_element(element, "DO-IP-RULE")
-        if child is not None:
-            do_ip_rule_value = child.text
-            obj.do_ip_rule = do_ip_rule_value
-
-        # Parse network_layer_rule
-        child = SerializationHelper.find_child_element(element, "NETWORK-LAYER-RULE")
-        if child is not None:
-            network_layer_rule_value = child.text
-            obj.network_layer_rule = network_layer_rule_value
-
-        # Parse payload_byte_patterns (list from container "PAYLOAD-BYTE-PATTERNS")
-        obj.payload_byte_patterns = []
-        container = SerializationHelper.find_child_element(element, "PAYLOAD-BYTE-PATTERNS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.payload_byte_patterns.append(child_value)
-
-        # Parse refill_amount
-        child = SerializationHelper.find_child_element(element, "REFILL-AMOUNT")
-        if child is not None:
-            refill_amount_value = child.text
-            obj.refill_amount = refill_amount_value
-
-        # Parse someip_rule
-        child = SerializationHelper.find_child_element(element, "SOMEIP-RULE")
-        if child is not None:
-            someip_rule_value = child.text
-            obj.someip_rule = someip_rule_value
-
-        # Parse someip_sd_rule
-        child = SerializationHelper.find_child_element(element, "SOMEIP-SD-RULE")
-        if child is not None:
-            someip_sd_rule_value = child.text
-            obj.someip_sd_rule = someip_sd_rule_value
-
-        # Parse transport_layer_rule
-        child = SerializationHelper.find_child_element(element, "TRANSPORT-LAYER-RULE")
-        if child is not None:
-            transport_layer_rule_value = child.text
-            obj.transport_layer_rule = transport_layer_rule_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BUCKET-SIZE":
+                setattr(obj, "bucket_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "DATA-LINK-LAYER-RULE":
+                setattr(obj, "data_link_layer_rule", SerializationHelper.deserialize_by_tag(child, "any (DataLinkLayerRule)"))
+            elif tag == "DDS-RULE":
+                setattr(obj, "dds_rule", SerializationHelper.deserialize_by_tag(child, "any (DdsRule)"))
+            elif tag == "DO-IP-RULE":
+                setattr(obj, "do_ip_rule", SerializationHelper.deserialize_by_tag(child, "any (DoIpRule)"))
+            elif tag == "NETWORK-LAYER-RULE":
+                setattr(obj, "network_layer_rule", SerializationHelper.deserialize_by_tag(child, "any (NetworkLayerRule)"))
+            elif tag == "PAYLOAD-BYTE-PATTERNS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.payload_byte_patterns.append(SerializationHelper.deserialize_by_tag(item_elem, "any (PayloadBytePattern)"))
+            elif tag == "REFILL-AMOUNT":
+                setattr(obj, "refill_amount", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SOMEIP-RULE":
+                setattr(obj, "someip_rule", SerializationHelper.deserialize_by_tag(child, "any (SomeipProtocolRule)"))
+            elif tag == "SOMEIP-SD-RULE":
+                setattr(obj, "someip_sd_rule", SerializationHelper.deserialize_by_tag(child, "any (SomeipSdRule)"))
+            elif tag == "TRANSPORT-LAYER-RULE":
+                setattr(obj, "transport_layer_rule", SerializationHelper.deserialize_by_tag(child, "any (TransportLayerRule)"))
 
         return obj
 

@@ -34,7 +34,15 @@ class InternalTriggeringPoint(AbstractAccessPoint):
         """
         return False
 
+    _XML_TAG = "INTERNAL-TRIGGERING-POINT"
+
+
     sw_impl_policy_enum: Optional[SwImplPolicyEnum]
+    _DESERIALIZE_DISPATCH = {
+        "SW-IMPL-POLICY-ENUM": lambda obj, elem: setattr(obj, "sw_impl_policy_enum", SwImplPolicyEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InternalTriggeringPoint."""
         super().__init__()
@@ -46,9 +54,8 @@ class InternalTriggeringPoint(AbstractAccessPoint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InternalTriggeringPoint, self).serialize()
@@ -93,11 +100,12 @@ class InternalTriggeringPoint(AbstractAccessPoint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InternalTriggeringPoint, cls).deserialize(element)
 
-        # Parse sw_impl_policy_enum
-        child = SerializationHelper.find_child_element(element, "SW-IMPL-POLICY-ENUM")
-        if child is not None:
-            sw_impl_policy_enum_value = SwImplPolicyEnum.deserialize(child)
-            obj.sw_impl_policy_enum = sw_impl_policy_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SW-IMPL-POLICY-ENUM":
+                setattr(obj, "sw_impl_policy_enum", SwImplPolicyEnum.deserialize(child))
 
         return obj
 

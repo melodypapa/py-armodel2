@@ -30,8 +30,17 @@ class DiagnosticParameter(DiagnosticAbstractParameter):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-PARAMETER"
+
+
     ident: Optional[DiagnosticParameter]
     support_info: Optional[DiagnosticParameter]
+    _DESERIALIZE_DISPATCH = {
+        "IDENT": lambda obj, elem: setattr(obj, "ident", SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
+        "SUPPORT-INFO": lambda obj, elem: setattr(obj, "support_info", SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticParameter."""
         super().__init__()
@@ -44,9 +53,8 @@ class DiagnosticParameter(DiagnosticAbstractParameter):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticParameter, self).serialize()
@@ -105,17 +113,14 @@ class DiagnosticParameter(DiagnosticAbstractParameter):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticParameter, cls).deserialize(element)
 
-        # Parse ident
-        child = SerializationHelper.find_child_element(element, "IDENT")
-        if child is not None:
-            ident_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter")
-            obj.ident = ident_value
-
-        # Parse support_info
-        child = SerializationHelper.find_child_element(element, "SUPPORT-INFO")
-        if child is not None:
-            support_info_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter")
-            obj.support_info = support_info_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "IDENT":
+                setattr(obj, "ident", SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter"))
+            elif tag == "SUPPORT-INFO":
+                setattr(obj, "support_info", SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter"))
 
         return obj
 

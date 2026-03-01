@@ -34,10 +34,21 @@ class Ieee1722Tp(TransportProtocolConfiguration):
         """
         return False
 
+    _XML_TAG = "IEEE1722-TP"
+
+
     relative: Optional[TimeValue]
     stream_identifier: Optional[PositiveInteger]
     sub_type: Optional[PositiveInteger]
     version: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "RELATIVE": lambda obj, elem: setattr(obj, "relative", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "STREAM-IDENTIFIER": lambda obj, elem: setattr(obj, "stream_identifier", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SUB-TYPE": lambda obj, elem: setattr(obj, "sub_type", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "VERSION": lambda obj, elem: setattr(obj, "version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Ieee1722Tp."""
         super().__init__()
@@ -52,9 +63,8 @@ class Ieee1722Tp(TransportProtocolConfiguration):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Ieee1722Tp, self).serialize()
@@ -141,29 +151,18 @@ class Ieee1722Tp(TransportProtocolConfiguration):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ieee1722Tp, cls).deserialize(element)
 
-        # Parse relative
-        child = SerializationHelper.find_child_element(element, "RELATIVE")
-        if child is not None:
-            relative_value = child.text
-            obj.relative = relative_value
-
-        # Parse stream_identifier
-        child = SerializationHelper.find_child_element(element, "STREAM-IDENTIFIER")
-        if child is not None:
-            stream_identifier_value = child.text
-            obj.stream_identifier = stream_identifier_value
-
-        # Parse sub_type
-        child = SerializationHelper.find_child_element(element, "SUB-TYPE")
-        if child is not None:
-            sub_type_value = child.text
-            obj.sub_type = sub_type_value
-
-        # Parse version
-        child = SerializationHelper.find_child_element(element, "VERSION")
-        if child is not None:
-            version_value = child.text
-            obj.version = version_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RELATIVE":
+                setattr(obj, "relative", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "STREAM-IDENTIFIER":
+                setattr(obj, "stream_identifier", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SUB-TYPE":
+                setattr(obj, "sub_type", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "VERSION":
+                setattr(obj, "version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

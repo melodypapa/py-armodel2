@@ -29,7 +29,15 @@ class DdsLatencyBudget(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-LATENCY-BUDGET"
+
+
     latency_budget: Optional[Float]
+    _DESERIALIZE_DISPATCH = {
+        "LATENCY-BUDGET": lambda obj, elem: setattr(obj, "latency_budget", SerializationHelper.deserialize_by_tag(elem, "Float")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsLatencyBudget."""
         super().__init__()
@@ -41,9 +49,8 @@ class DdsLatencyBudget(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsLatencyBudget, self).serialize()
@@ -88,11 +95,12 @@ class DdsLatencyBudget(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsLatencyBudget, cls).deserialize(element)
 
-        # Parse latency_budget
-        child = SerializationHelper.find_child_element(element, "LATENCY-BUDGET")
-        if child is not None:
-            latency_budget_value = child.text
-            obj.latency_budget = latency_budget_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LATENCY-BUDGET":
+                setattr(obj, "latency_budget", SerializationHelper.deserialize_by_tag(child, "Float"))
 
         return obj
 

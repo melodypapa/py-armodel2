@@ -33,7 +33,15 @@ class ConcreteClassTailoring(DataFormatElementScope):
         """
         return False
 
+    _XML_TAG = "CONCRETE-CLASS-TAILORING"
+
+
     validation_root: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "VALIDATION-ROOT": lambda obj, elem: setattr(obj, "validation_root", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConcreteClassTailoring."""
         super().__init__()
@@ -45,9 +53,8 @@ class ConcreteClassTailoring(DataFormatElementScope):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConcreteClassTailoring, self).serialize()
@@ -92,11 +99,12 @@ class ConcreteClassTailoring(DataFormatElementScope):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConcreteClassTailoring, cls).deserialize(element)
 
-        # Parse validation_root
-        child = SerializationHelper.find_child_element(element, "VALIDATION-ROOT")
-        if child is not None:
-            validation_root_value = child.text
-            obj.validation_root = validation_root_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "VALIDATION-ROOT":
+                setattr(obj, "validation_root", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

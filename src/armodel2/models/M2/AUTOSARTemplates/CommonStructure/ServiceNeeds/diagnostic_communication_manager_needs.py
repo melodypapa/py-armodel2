@@ -31,7 +31,15 @@ class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-COMMUNICATION-MANAGER-NEEDS"
+
+
     service_request: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "SERVICE-REQUEST": lambda obj, elem: setattr(obj, "service_request", SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticService)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticCommunicationManagerNeeds."""
         super().__init__()
@@ -43,9 +51,8 @@ class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticCommunicationManagerNeeds, self).serialize()
@@ -90,11 +97,12 @@ class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticCommunicationManagerNeeds, cls).deserialize(element)
 
-        # Parse service_request
-        child = SerializationHelper.find_child_element(element, "SERVICE-REQUEST")
-        if child is not None:
-            service_request_value = child.text
-            obj.service_request = service_request_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SERVICE-REQUEST":
+                setattr(obj, "service_request", SerializationHelper.deserialize_by_tag(child, "any (DiagnosticService)"))
 
         return obj
 

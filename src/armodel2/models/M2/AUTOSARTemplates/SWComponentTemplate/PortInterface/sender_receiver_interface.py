@@ -44,9 +44,19 @@ class SenderReceiverInterface(DataInterface):
         """
         return False
 
+    _XML_TAG = "SENDER-RECEIVER-INTERFACE"
+
+
     data_elements: list[VariableDataPrototype]
     invalidation_policy_policies: list[InvalidationPolicy]
     meta_data_item_sets: list[MetaDataItemSet]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENTS": lambda obj, elem: obj.data_elements.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
+        "INVALIDATION-POLICY-POLICIES": lambda obj, elem: obj.invalidation_policy_policies.append(SerializationHelper.deserialize_by_tag(elem, "InvalidationPolicy")),
+        "META-DATA-ITEM-SETS": lambda obj, elem: obj.meta_data_item_sets.append(SerializationHelper.deserialize_by_tag(elem, "MetaDataItemSet")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SenderReceiverInterface."""
         super().__init__()
@@ -60,9 +70,8 @@ class SenderReceiverInterface(DataInterface):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SenderReceiverInterface, self).serialize()
@@ -123,35 +132,22 @@ class SenderReceiverInterface(DataInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderReceiverInterface, cls).deserialize(element)
 
-        # Parse data_elements (list from container "DATA-ELEMENTS")
-        obj.data_elements = []
-        container = SerializationHelper.find_child_element(element, "DATA-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_elements.append(child_value)
-
-        # Parse invalidation_policy_policies (list from container "INVALIDATION-POLICY-POLICIES")
-        obj.invalidation_policy_policies = []
-        container = SerializationHelper.find_child_element(element, "INVALIDATION-POLICY-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.invalidation_policy_policies.append(child_value)
-
-        # Parse meta_data_item_sets (list from container "META-DATA-ITEM-SETS")
-        obj.meta_data_item_sets = []
-        container = SerializationHelper.find_child_element(element, "META-DATA-ITEM-SETS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.meta_data_item_sets.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-ELEMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.data_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
+            elif tag == "INVALIDATION-POLICY-POLICIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.invalidation_policy_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "InvalidationPolicy"))
+            elif tag == "META-DATA-ITEM-SETS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.meta_data_item_sets.append(SerializationHelper.deserialize_by_tag(item_elem, "MetaDataItemSet"))
 
         return obj
 

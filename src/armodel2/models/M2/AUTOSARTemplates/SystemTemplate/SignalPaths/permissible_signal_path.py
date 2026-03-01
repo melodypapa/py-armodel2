@@ -37,9 +37,19 @@ class PermissibleSignalPath(SignalPathConstraint):
         """
         return False
 
+    _XML_TAG = "PERMISSIBLE-SIGNAL-PATH"
+
+
     operations: list[Any]
     physical_channel_refs: list[ARRef]
     signals: list[SwcToSwcSignal]
+    _DESERIALIZE_DISPATCH = {
+        "OPERATIONS": lambda obj, elem: obj.operations.append(SerializationHelper.deserialize_by_tag(elem, "any (SwcToSwcOperation)")),
+        "PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "physical_channel_refs", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "SIGNALS": lambda obj, elem: obj.signals.append(SerializationHelper.deserialize_by_tag(elem, "SwcToSwcSignal")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PermissibleSignalPath."""
         super().__init__()
@@ -53,9 +63,8 @@ class PermissibleSignalPath(SignalPathConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PermissibleSignalPath, self).serialize()
@@ -123,41 +132,21 @@ class PermissibleSignalPath(SignalPathConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PermissibleSignalPath, cls).deserialize(element)
 
-        # Parse operations (list from container "OPERATIONS")
-        obj.operations = []
-        container = SerializationHelper.find_child_element(element, "OPERATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.operations.append(child_value)
-
-        # Parse physical_channel_refs (list from container "PHYSICAL-CHANNEL-REFS")
-        obj.physical_channel_refs = []
-        container = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNEL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.physical_channel_refs.append(child_value)
-
-        # Parse signals (list from container "SIGNALS")
-        obj.signals = []
-        container = SerializationHelper.find_child_element(element, "SIGNALS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.signals.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OPERATIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.operations.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwcToSwcOperation)"))
+            elif tag == "PHYSICAL-CHANNEL-REFS":
+                for item_elem in child:
+                    obj.physical_channel_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SIGNALS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.signals.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToSwcSignal"))
 
         return obj
 

@@ -33,9 +33,19 @@ class BswModeReceiverPolicy(ARObject):
         """
         return False
 
+    _XML_TAG = "BSW-MODE-RECEIVER-POLICY"
+
+
     enhanced_mode: Optional[Boolean]
     required_mode_ref: Optional[ARRef]
     supports: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ENHANCED-MODE": lambda obj, elem: setattr(obj, "enhanced_mode", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "REQUIRED-MODE-REF": lambda obj, elem: setattr(obj, "required_mode_ref", ARRef.deserialize(elem)),
+        "SUPPORTS": lambda obj, elem: setattr(obj, "supports", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswModeReceiverPolicy."""
         super().__init__()
@@ -49,9 +59,8 @@ class BswModeReceiverPolicy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswModeReceiverPolicy, self).serialize()
@@ -124,23 +133,16 @@ class BswModeReceiverPolicy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModeReceiverPolicy, cls).deserialize(element)
 
-        # Parse enhanced_mode
-        child = SerializationHelper.find_child_element(element, "ENHANCED-MODE")
-        if child is not None:
-            enhanced_mode_value = child.text
-            obj.enhanced_mode = enhanced_mode_value
-
-        # Parse required_mode_ref
-        child = SerializationHelper.find_child_element(element, "REQUIRED-MODE-REF")
-        if child is not None:
-            required_mode_ref_value = ARRef.deserialize(child)
-            obj.required_mode_ref = required_mode_ref_value
-
-        # Parse supports
-        child = SerializationHelper.find_child_element(element, "SUPPORTS")
-        if child is not None:
-            supports_value = child.text
-            obj.supports = supports_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ENHANCED-MODE":
+                setattr(obj, "enhanced_mode", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "REQUIRED-MODE-REF":
+                setattr(obj, "required_mode_ref", ARRef.deserialize(child))
+            elif tag == "SUPPORTS":
+                setattr(obj, "supports", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

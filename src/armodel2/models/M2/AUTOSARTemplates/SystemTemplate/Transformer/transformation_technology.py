@@ -44,6 +44,9 @@ class TransformationTechnology(Identifiable):
         """
         return False
 
+    _XML_TAG = "TRANSFORMATION-TECHNOLOGY"
+
+
     buffer_properties: Optional[BufferProperties]
     has_internal: Optional[Boolean]
     needs_original: Optional[Boolean]
@@ -51,6 +54,17 @@ class TransformationTechnology(Identifiable):
     transformation_description: Optional[TransformationDescription]
     transformer: Optional[TransformerClassEnum]
     version: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "BUFFER-PROPERTIES": lambda obj, elem: setattr(obj, "buffer_properties", SerializationHelper.deserialize_by_tag(elem, "BufferProperties")),
+        "HAS-INTERNAL": lambda obj, elem: setattr(obj, "has_internal", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NEEDS-ORIGINAL": lambda obj, elem: setattr(obj, "needs_original", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PROTOCOL": lambda obj, elem: setattr(obj, "protocol", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "TRANSFORMATION-DESCRIPTION": ("_POLYMORPHIC", "transformation_description", ["EndToEndTransformationDescription", "SOMEIPTransformationDescription", "UserDefinedTransformation"]),
+        "TRANSFORMER": lambda obj, elem: setattr(obj, "transformer", TransformerClassEnum.deserialize(elem)),
+        "VERSION": lambda obj, elem: setattr(obj, "version", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TransformationTechnology."""
         super().__init__()
@@ -68,9 +82,8 @@ class TransformationTechnology(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TransformationTechnology, self).serialize()
@@ -199,47 +212,32 @@ class TransformationTechnology(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransformationTechnology, cls).deserialize(element)
 
-        # Parse buffer_properties
-        child = SerializationHelper.find_child_element(element, "BUFFER-PROPERTIES")
-        if child is not None:
-            buffer_properties_value = SerializationHelper.deserialize_by_tag(child, "BufferProperties")
-            obj.buffer_properties = buffer_properties_value
-
-        # Parse has_internal
-        child = SerializationHelper.find_child_element(element, "HAS-INTERNAL")
-        if child is not None:
-            has_internal_value = child.text
-            obj.has_internal = has_internal_value
-
-        # Parse needs_original
-        child = SerializationHelper.find_child_element(element, "NEEDS-ORIGINAL")
-        if child is not None:
-            needs_original_value = child.text
-            obj.needs_original = needs_original_value
-
-        # Parse protocol
-        child = SerializationHelper.find_child_element(element, "PROTOCOL")
-        if child is not None:
-            protocol_value = child.text
-            obj.protocol = protocol_value
-
-        # Parse transformation_description
-        child = SerializationHelper.find_child_element(element, "TRANSFORMATION-DESCRIPTION")
-        if child is not None:
-            transformation_description_value = SerializationHelper.deserialize_by_tag(child, "TransformationDescription")
-            obj.transformation_description = transformation_description_value
-
-        # Parse transformer
-        child = SerializationHelper.find_child_element(element, "TRANSFORMER")
-        if child is not None:
-            transformer_value = TransformerClassEnum.deserialize(child)
-            obj.transformer = transformer_value
-
-        # Parse version
-        child = SerializationHelper.find_child_element(element, "VERSION")
-        if child is not None:
-            version_value = child.text
-            obj.version = version_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BUFFER-PROPERTIES":
+                setattr(obj, "buffer_properties", SerializationHelper.deserialize_by_tag(child, "BufferProperties"))
+            elif tag == "HAS-INTERNAL":
+                setattr(obj, "has_internal", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NEEDS-ORIGINAL":
+                setattr(obj, "needs_original", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PROTOCOL":
+                setattr(obj, "protocol", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "TRANSFORMATION-DESCRIPTION":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "END-TO-END-TRANSFORMATION-DESCRIPTION":
+                        setattr(obj, "transformation_description", SerializationHelper.deserialize_by_tag(child[0], "EndToEndTransformationDescription"))
+                    elif concrete_tag == "S-O-M-E-I-P-TRANSFORMATION-DESCRIPTION":
+                        setattr(obj, "transformation_description", SerializationHelper.deserialize_by_tag(child[0], "SOMEIPTransformationDescription"))
+                    elif concrete_tag == "USER-DEFINED-TRANSFORMATION":
+                        setattr(obj, "transformation_description", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedTransformation"))
+            elif tag == "TRANSFORMER":
+                setattr(obj, "transformer", TransformerClassEnum.deserialize(child))
+            elif tag == "VERSION":
+                setattr(obj, "version", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

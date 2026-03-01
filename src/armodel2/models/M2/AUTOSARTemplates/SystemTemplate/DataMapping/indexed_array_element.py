@@ -30,9 +30,19 @@ class IndexedArrayElement(ARObject):
         """
         return False
 
+    _XML_TAG = "INDEXED-ARRAY-ELEMENT"
+
+
     application_array_ref: Optional[Any]
     implementation_ref: Optional[Any]
     index: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATION-ARRAY-REF": lambda obj, elem: setattr(obj, "application_array_ref", ARRef.deserialize(elem)),
+        "IMPLEMENTATION-REF": lambda obj, elem: setattr(obj, "implementation_ref", ARRef.deserialize(elem)),
+        "INDEX": lambda obj, elem: setattr(obj, "index", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IndexedArrayElement."""
         super().__init__()
@@ -46,9 +56,8 @@ class IndexedArrayElement(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IndexedArrayElement, self).serialize()
@@ -121,23 +130,16 @@ class IndexedArrayElement(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IndexedArrayElement, cls).deserialize(element)
 
-        # Parse application_array_ref
-        child = SerializationHelper.find_child_element(element, "APPLICATION-ARRAY-REF")
-        if child is not None:
-            application_array_ref_value = ARRef.deserialize(child)
-            obj.application_array_ref = application_array_ref_value
-
-        # Parse implementation_ref
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REF")
-        if child is not None:
-            implementation_ref_value = ARRef.deserialize(child)
-            obj.implementation_ref = implementation_ref_value
-
-        # Parse index
-        child = SerializationHelper.find_child_element(element, "INDEX")
-        if child is not None:
-            index_value = child.text
-            obj.index = index_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "APPLICATION-ARRAY-REF":
+                setattr(obj, "application_array_ref", ARRef.deserialize(child))
+            elif tag == "IMPLEMENTATION-REF":
+                setattr(obj, "implementation_ref", ARRef.deserialize(child))
+            elif tag == "INDEX":
+                setattr(obj, "index", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

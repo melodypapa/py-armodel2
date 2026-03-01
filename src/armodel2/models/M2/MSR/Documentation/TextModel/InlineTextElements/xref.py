@@ -44,6 +44,9 @@ class Xref(ARObject):
         """
         return False
 
+    _XML_TAG = "XREF"
+
+
     label1: Optional[SingleLanguageLongName]
     referrable_ref: Optional[ARRef]
     resolution_policy_enum: Optional[ResolutionPolicyEnum]
@@ -55,6 +58,21 @@ class Xref(ARObject):
     show_resource_page: Optional[ShowResourcePageEnum]
     show_resource_short: Optional[ShowResourceShortNameEnum]
     show_see: Optional[ShowSeeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "LABEL1": lambda obj, elem: setattr(obj, "label1", SerializationHelper.deserialize_by_tag(elem, "SingleLanguageLongName")),
+        "REFERRABLE-REF": ("_POLYMORPHIC", "referrable_ref", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
+        "RESOLUTION-POLICY-ENUM": lambda obj, elem: setattr(obj, "resolution_policy_enum", ResolutionPolicyEnum.deserialize(elem)),
+        "SHOW-CONTENT-ENUM": lambda obj, elem: setattr(obj, "show_content_enum", ShowContentEnum.deserialize(elem)),
+        "SHOW-RESOURCE-ALIAS": lambda obj, elem: setattr(obj, "show_resource_alias", ShowResourceAliasNameEnum.deserialize(elem)),
+        "SHOW-RESOURCE": lambda obj, elem: setattr(obj, "show_resource", ShowResourceTypeEnum.deserialize(elem)),
+        "SHOW-RESOURCE-LONG": lambda obj, elem: setattr(obj, "show_resource_long", ShowResourceLongNameEnum.deserialize(elem)),
+        "SHOW-RESOURCE-NUMBER": lambda obj, elem: setattr(obj, "show_resource_number", ShowResourceNumberEnum.deserialize(elem)),
+        "SHOW-RESOURCE-PAGE": lambda obj, elem: setattr(obj, "show_resource_page", ShowResourcePageEnum.deserialize(elem)),
+        "SHOW-RESOURCE-SHORT": lambda obj, elem: setattr(obj, "show_resource_short", ShowResourceShortNameEnum.deserialize(elem)),
+        "SHOW-SEE": lambda obj, elem: setattr(obj, "show_see", ShowSeeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Xref."""
         super().__init__()
@@ -76,9 +94,8 @@ class Xref(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Xref, self).serialize()
@@ -263,71 +280,32 @@ class Xref(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Xref, cls).deserialize(element)
 
-        # Parse label1
-        child = SerializationHelper.find_child_element(element, "LABEL1")
-        if child is not None:
-            label1_value = SerializationHelper.deserialize_by_tag(child, "SingleLanguageLongName")
-            obj.label1 = label1_value
-
-        # Parse referrable_ref
-        child = SerializationHelper.find_child_element(element, "REFERRABLE-REF")
-        if child is not None:
-            referrable_ref_value = ARRef.deserialize(child)
-            obj.referrable_ref = referrable_ref_value
-
-        # Parse resolution_policy_enum
-        child = SerializationHelper.find_child_element(element, "RESOLUTION-POLICY-ENUM")
-        if child is not None:
-            resolution_policy_enum_value = ResolutionPolicyEnum.deserialize(child)
-            obj.resolution_policy_enum = resolution_policy_enum_value
-
-        # Parse show_content_enum
-        child = SerializationHelper.find_child_element(element, "SHOW-CONTENT-ENUM")
-        if child is not None:
-            show_content_enum_value = ShowContentEnum.deserialize(child)
-            obj.show_content_enum = show_content_enum_value
-
-        # Parse show_resource_alias
-        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-ALIAS")
-        if child is not None:
-            show_resource_alias_value = ShowResourceAliasNameEnum.deserialize(child)
-            obj.show_resource_alias = show_resource_alias_value
-
-        # Parse show_resource
-        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE")
-        if child is not None:
-            show_resource_value = ShowResourceTypeEnum.deserialize(child)
-            obj.show_resource = show_resource_value
-
-        # Parse show_resource_long
-        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-LONG")
-        if child is not None:
-            show_resource_long_value = ShowResourceLongNameEnum.deserialize(child)
-            obj.show_resource_long = show_resource_long_value
-
-        # Parse show_resource_number
-        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-NUMBER")
-        if child is not None:
-            show_resource_number_value = ShowResourceNumberEnum.deserialize(child)
-            obj.show_resource_number = show_resource_number_value
-
-        # Parse show_resource_page
-        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-PAGE")
-        if child is not None:
-            show_resource_page_value = ShowResourcePageEnum.deserialize(child)
-            obj.show_resource_page = show_resource_page_value
-
-        # Parse show_resource_short
-        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-SHORT")
-        if child is not None:
-            show_resource_short_value = ShowResourceShortNameEnum.deserialize(child)
-            obj.show_resource_short = show_resource_short_value
-
-        # Parse show_see
-        child = SerializationHelper.find_child_element(element, "SHOW-SEE")
-        if child is not None:
-            show_see_value = ShowSeeEnum.deserialize(child)
-            obj.show_see = show_see_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LABEL1":
+                setattr(obj, "label1", SerializationHelper.deserialize_by_tag(child, "SingleLanguageLongName"))
+            elif tag == "REFERRABLE-REF":
+                setattr(obj, "referrable_ref", ARRef.deserialize(child))
+            elif tag == "RESOLUTION-POLICY-ENUM":
+                setattr(obj, "resolution_policy_enum", ResolutionPolicyEnum.deserialize(child))
+            elif tag == "SHOW-CONTENT-ENUM":
+                setattr(obj, "show_content_enum", ShowContentEnum.deserialize(child))
+            elif tag == "SHOW-RESOURCE-ALIAS":
+                setattr(obj, "show_resource_alias", ShowResourceAliasNameEnum.deserialize(child))
+            elif tag == "SHOW-RESOURCE":
+                setattr(obj, "show_resource", ShowResourceTypeEnum.deserialize(child))
+            elif tag == "SHOW-RESOURCE-LONG":
+                setattr(obj, "show_resource_long", ShowResourceLongNameEnum.deserialize(child))
+            elif tag == "SHOW-RESOURCE-NUMBER":
+                setattr(obj, "show_resource_number", ShowResourceNumberEnum.deserialize(child))
+            elif tag == "SHOW-RESOURCE-PAGE":
+                setattr(obj, "show_resource_page", ShowResourcePageEnum.deserialize(child))
+            elif tag == "SHOW-RESOURCE-SHORT":
+                setattr(obj, "show_resource_short", ShowResourceShortNameEnum.deserialize(child))
+            elif tag == "SHOW-SEE":
+                setattr(obj, "show_see", ShowSeeEnum.deserialize(child))
 
         return obj
 

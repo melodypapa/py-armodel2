@@ -39,9 +39,19 @@ class LinTpConfig(TpConfig):
         """
         return False
 
+    _XML_TAG = "LIN-TP-CONFIG"
+
+
     tp_addresses: list[TpAddress]
     tp_connections: list[LinTpConnection]
     tp_nodes: list[LinTpNode]
+    _DESERIALIZE_DISPATCH = {
+        "TP-ADDRESSES": lambda obj, elem: obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(elem, "TpAddress")),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SerializationHelper.deserialize_by_tag(elem, "LinTpConnection")),
+        "TP-NODES": lambda obj, elem: obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(elem, "LinTpNode")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinTpConfig."""
         super().__init__()
@@ -55,9 +65,8 @@ class LinTpConfig(TpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinTpConfig, self).serialize()
@@ -118,35 +127,22 @@ class LinTpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinTpConfig, cls).deserialize(element)
 
-        # Parse tp_addresses (list from container "TP-ADDRESSES")
-        obj.tp_addresses = []
-        container = SerializationHelper.find_child_element(element, "TP-ADDRESSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_addresses.append(child_value)
-
-        # Parse tp_connections (list from container "TP-CONNECTIONS")
-        obj.tp_connections = []
-        container = SerializationHelper.find_child_element(element, "TP-CONNECTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_connections.append(child_value)
-
-        # Parse tp_nodes (list from container "TP-NODES")
-        obj.tp_nodes = []
-        container = SerializationHelper.find_child_element(element, "TP-NODES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_nodes.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TP-ADDRESSES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(item_elem, "TpAddress"))
+            elif tag == "TP-CONNECTIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.tp_connections.append(SerializationHelper.deserialize_by_tag(item_elem, "LinTpConnection"))
+            elif tag == "TP-NODES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(item_elem, "LinTpNode"))
 
         return obj
 

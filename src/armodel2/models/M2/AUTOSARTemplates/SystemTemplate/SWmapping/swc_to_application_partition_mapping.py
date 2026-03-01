@@ -37,8 +37,17 @@ class SwcToApplicationPartitionMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "SWC-TO-APPLICATION-PARTITION-MAPPING"
+
+
     application_ref: Optional[ARRef]
     sw_component_prototype_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATION-REF": lambda obj, elem: setattr(obj, "application_ref", ARRef.deserialize(elem)),
+        "SW-COMPONENT-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "sw_component_prototype_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcToApplicationPartitionMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class SwcToApplicationPartitionMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcToApplicationPartitionMapping, self).serialize()
@@ -112,17 +120,14 @@ class SwcToApplicationPartitionMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcToApplicationPartitionMapping, cls).deserialize(element)
 
-        # Parse application_ref
-        child = SerializationHelper.find_child_element(element, "APPLICATION-REF")
-        if child is not None:
-            application_ref_value = ARRef.deserialize(child)
-            obj.application_ref = application_ref_value
-
-        # Parse sw_component_prototype_ref
-        child = SerializationHelper.find_child_element(element, "SW-COMPONENT-PROTOTYPE-REF")
-        if child is not None:
-            sw_component_prototype_ref_value = ARRef.deserialize(child)
-            obj.sw_component_prototype_ref = sw_component_prototype_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "APPLICATION-REF":
+                setattr(obj, "application_ref", ARRef.deserialize(child))
+            elif tag == "SW-COMPONENT-PROTOTYPE-REF":
+                setattr(obj, "sw_component_prototype_ref", ARRef.deserialize(child))
 
         return obj
 

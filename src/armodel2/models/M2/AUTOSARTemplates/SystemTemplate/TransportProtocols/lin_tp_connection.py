@@ -46,6 +46,9 @@ class LinTpConnection(TpConnection):
         """
         return False
 
+    _XML_TAG = "LIN-TP-CONNECTION"
+
+
     data_pdu_ref: Optional[ARRef]
     flow_control_ref: Optional[ARRef]
     lin_tp_n_sdu_ref: Optional[ARRef]
@@ -55,6 +58,19 @@ class LinTpConnection(TpConnection):
     timeout_cr: Optional[TimeValue]
     timeout_cs: Optional[TimeValue]
     transmitter_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-PDU-REF": lambda obj, elem: setattr(obj, "data_pdu_ref", ARRef.deserialize(elem)),
+        "FLOW-CONTROL-REF": lambda obj, elem: setattr(obj, "flow_control_ref", ARRef.deserialize(elem)),
+        "LIN-TP-N-SDU-REF": ("_POLYMORPHIC", "lin_tp_n_sdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
+        "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
+        "RECEIVER-REFS": lambda obj, elem: [obj.receiver_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "TIMEOUT-AS": lambda obj, elem: setattr(obj, "timeout_as", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-CR": lambda obj, elem: setattr(obj, "timeout_cr", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-CS": lambda obj, elem: setattr(obj, "timeout_cs", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TRANSMITTER-REF": lambda obj, elem: setattr(obj, "transmitter_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinTpConnection."""
         super().__init__()
@@ -74,9 +90,8 @@ class LinTpConnection(TpConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinTpConnection, self).serialize()
@@ -236,69 +251,30 @@ class LinTpConnection(TpConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinTpConnection, cls).deserialize(element)
 
-        # Parse data_pdu_ref
-        child = SerializationHelper.find_child_element(element, "DATA-PDU-REF")
-        if child is not None:
-            data_pdu_ref_value = ARRef.deserialize(child)
-            obj.data_pdu_ref = data_pdu_ref_value
-
-        # Parse flow_control_ref
-        child = SerializationHelper.find_child_element(element, "FLOW-CONTROL-REF")
-        if child is not None:
-            flow_control_ref_value = ARRef.deserialize(child)
-            obj.flow_control_ref = flow_control_ref_value
-
-        # Parse lin_tp_n_sdu_ref
-        child = SerializationHelper.find_child_element(element, "LIN-TP-N-SDU-REF")
-        if child is not None:
-            lin_tp_n_sdu_ref_value = ARRef.deserialize(child)
-            obj.lin_tp_n_sdu_ref = lin_tp_n_sdu_ref_value
-
-        # Parse multicast_ref
-        child = SerializationHelper.find_child_element(element, "MULTICAST-REF")
-        if child is not None:
-            multicast_ref_value = ARRef.deserialize(child)
-            obj.multicast_ref = multicast_ref_value
-
-        # Parse receiver_refs (list from container "RECEIVER-REFS")
-        obj.receiver_refs = []
-        container = SerializationHelper.find_child_element(element, "RECEIVER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.receiver_refs.append(child_value)
-
-        # Parse timeout_as
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-AS")
-        if child is not None:
-            timeout_as_value = child.text
-            obj.timeout_as = timeout_as_value
-
-        # Parse timeout_cr
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-CR")
-        if child is not None:
-            timeout_cr_value = child.text
-            obj.timeout_cr = timeout_cr_value
-
-        # Parse timeout_cs
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-CS")
-        if child is not None:
-            timeout_cs_value = child.text
-            obj.timeout_cs = timeout_cs_value
-
-        # Parse transmitter_ref
-        child = SerializationHelper.find_child_element(element, "TRANSMITTER-REF")
-        if child is not None:
-            transmitter_ref_value = ARRef.deserialize(child)
-            obj.transmitter_ref = transmitter_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-PDU-REF":
+                setattr(obj, "data_pdu_ref", ARRef.deserialize(child))
+            elif tag == "FLOW-CONTROL-REF":
+                setattr(obj, "flow_control_ref", ARRef.deserialize(child))
+            elif tag == "LIN-TP-N-SDU-REF":
+                setattr(obj, "lin_tp_n_sdu_ref", ARRef.deserialize(child))
+            elif tag == "MULTICAST-REF":
+                setattr(obj, "multicast_ref", ARRef.deserialize(child))
+            elif tag == "RECEIVER-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.receiver_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "TIMEOUT-AS":
+                setattr(obj, "timeout_as", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-CR":
+                setattr(obj, "timeout_cr", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-CS":
+                setattr(obj, "timeout_cs", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TRANSMITTER-REF":
+                setattr(obj, "transmitter_ref", ARRef.deserialize(child))
 
         return obj
 

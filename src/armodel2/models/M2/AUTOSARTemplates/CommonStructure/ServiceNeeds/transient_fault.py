@@ -30,7 +30,15 @@ class TransientFault(TracedFailure):
         """
         return False
 
+    _XML_TAG = "TRANSIENT-FAULT"
+
+
     possible_error_reactions: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "POSSIBLE-ERROR-REACTIONS": lambda obj, elem: obj.possible_error_reactions.append(SerializationHelper.deserialize_by_tag(elem, "any (PossibleErrorReaction)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TransientFault."""
         super().__init__()
@@ -42,9 +50,8 @@ class TransientFault(TracedFailure):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TransientFault, self).serialize()
@@ -85,15 +92,14 @@ class TransientFault(TracedFailure):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransientFault, cls).deserialize(element)
 
-        # Parse possible_error_reactions (list from container "POSSIBLE-ERROR-REACTIONS")
-        obj.possible_error_reactions = []
-        container = SerializationHelper.find_child_element(element, "POSSIBLE-ERROR-REACTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.possible_error_reactions.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "POSSIBLE-ERROR-REACTIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.possible_error_reactions.append(SerializationHelper.deserialize_by_tag(item_elem, "any (PossibleErrorReaction)"))
 
         return obj
 

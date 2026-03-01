@@ -30,8 +30,17 @@ class FramePid(ARObject):
         """
         return False
 
+    _XML_TAG = "FRAME-PID"
+
+
     index: Optional[Integer]
     pid: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "INDEX": lambda obj, elem: setattr(obj, "index", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "PID": lambda obj, elem: setattr(obj, "pid", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FramePid."""
         super().__init__()
@@ -44,9 +53,8 @@ class FramePid(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FramePid, self).serialize()
@@ -105,17 +113,14 @@ class FramePid(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FramePid, cls).deserialize(element)
 
-        # Parse index
-        child = SerializationHelper.find_child_element(element, "INDEX")
-        if child is not None:
-            index_value = child.text
-            obj.index = index_value
-
-        # Parse pid
-        child = SerializationHelper.find_child_element(element, "PID")
-        if child is not None:
-            pid_value = child.text
-            obj.pid = pid_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INDEX":
+                setattr(obj, "index", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "PID":
+                setattr(obj, "pid", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

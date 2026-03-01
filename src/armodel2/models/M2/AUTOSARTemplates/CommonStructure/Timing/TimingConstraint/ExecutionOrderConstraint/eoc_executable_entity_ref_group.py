@@ -41,6 +41,9 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         """
         return False
 
+    _XML_TAG = "E-O-C-EXECUTABLE-ENTITY-REF-GROUP"
+
+
     let_data_exchange: Optional[LetDataExchangeParadigmEnum]
     let_interval_refs: list[ARRef]
     max_cycle: Optional[PositiveInteger]
@@ -50,6 +53,19 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
     nested_element_refs: list[Any]
     successor_refs: list[Any]
     triggering_event_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "LET-DATA-EXCHANGE": lambda obj, elem: setattr(obj, "let_data_exchange", LetDataExchangeParadigmEnum.deserialize(elem)),
+        "LET-INTERVAL-REFS": ("_POLYMORPHIC_LIST", "let_interval_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "MAX-CYCLE": lambda obj, elem: setattr(obj, "max_cycle", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-CYCLES": lambda obj, elem: setattr(obj, "max_cycles", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MAX-SLOTS": lambda obj, elem: setattr(obj, "max_slots", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MAX-SLOTS-PER": lambda obj, elem: setattr(obj, "max_slots_per", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "NESTED-ELEMENT-REFS": lambda obj, elem: [obj.nested_element_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "SUCCESSOR-REFS": lambda obj, elem: [obj.successor_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "TRIGGERING-EVENT-REF": ("_POLYMORPHIC", "triggering_event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EOCExecutableEntityRefGroup."""
         super().__init__()
@@ -69,9 +85,8 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EOCExecutableEntityRefGroup, self).serialize()
@@ -237,89 +252,33 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EOCExecutableEntityRefGroup, cls).deserialize(element)
 
-        # Parse let_data_exchange
-        child = SerializationHelper.find_child_element(element, "LET-DATA-EXCHANGE")
-        if child is not None:
-            let_data_exchange_value = LetDataExchangeParadigmEnum.deserialize(child)
-            obj.let_data_exchange = let_data_exchange_value
-
-        # Parse let_interval_refs (list from container "LET-INTERVAL-REFS")
-        obj.let_interval_refs = []
-        container = SerializationHelper.find_child_element(element, "LET-INTERVAL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.let_interval_refs.append(child_value)
-
-        # Parse max_cycle
-        child = SerializationHelper.find_child_element(element, "MAX-CYCLE")
-        if child is not None:
-            max_cycle_value = child.text
-            obj.max_cycle = max_cycle_value
-
-        # Parse max_cycles
-        child = SerializationHelper.find_child_element(element, "MAX-CYCLES")
-        if child is not None:
-            max_cycles_value = child.text
-            obj.max_cycles = max_cycles_value
-
-        # Parse max_slots
-        child = SerializationHelper.find_child_element(element, "MAX-SLOTS")
-        if child is not None:
-            max_slots_value = child.text
-            obj.max_slots = max_slots_value
-
-        # Parse max_slots_per
-        child = SerializationHelper.find_child_element(element, "MAX-SLOTS-PER")
-        if child is not None:
-            max_slots_per_value = child.text
-            obj.max_slots_per = max_slots_per_value
-
-        # Parse nested_element_refs (list from container "NESTED-ELEMENT-REFS")
-        obj.nested_element_refs = []
-        container = SerializationHelper.find_child_element(element, "NESTED-ELEMENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.nested_element_refs.append(child_value)
-
-        # Parse successor_refs (list from container "SUCCESSOR-REFS")
-        obj.successor_refs = []
-        container = SerializationHelper.find_child_element(element, "SUCCESSOR-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.successor_refs.append(child_value)
-
-        # Parse triggering_event_ref
-        child = SerializationHelper.find_child_element(element, "TRIGGERING-EVENT-REF")
-        if child is not None:
-            triggering_event_ref_value = ARRef.deserialize(child)
-            obj.triggering_event_ref = triggering_event_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LET-DATA-EXCHANGE":
+                setattr(obj, "let_data_exchange", LetDataExchangeParadigmEnum.deserialize(child))
+            elif tag == "LET-INTERVAL-REFS":
+                for item_elem in child:
+                    obj.let_interval_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "MAX-CYCLE":
+                setattr(obj, "max_cycle", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-CYCLES":
+                setattr(obj, "max_cycles", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MAX-SLOTS":
+                setattr(obj, "max_slots", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MAX-SLOTS-PER":
+                setattr(obj, "max_slots_per", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "NESTED-ELEMENT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.nested_element_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SUCCESSOR-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.successor_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "TRIGGERING-EVENT-REF":
+                setattr(obj, "triggering_event_ref", ARRef.deserialize(child))
 
         return obj
 

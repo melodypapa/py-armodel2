@@ -29,10 +29,21 @@ class EthTSynSubTlvConfig(ARObject):
         """
         return False
 
+    _XML_TAG = "ETH-T-SYN-SUB-TLV-CONFIG"
+
+
     ofs_sub_tlv: Optional[Boolean]
     status_sub_tlv: Optional[Boolean]
     time_sub_tlv: Optional[Boolean]
     user_data_sub_tlv: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "OFS-SUB-TLV": lambda obj, elem: setattr(obj, "ofs_sub_tlv", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "STATUS-SUB-TLV": lambda obj, elem: setattr(obj, "status_sub_tlv", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TIME-SUB-TLV": lambda obj, elem: setattr(obj, "time_sub_tlv", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "USER-DATA-SUB-TLV": lambda obj, elem: setattr(obj, "user_data_sub_tlv", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthTSynSubTlvConfig."""
         super().__init__()
@@ -47,9 +58,8 @@ class EthTSynSubTlvConfig(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthTSynSubTlvConfig, self).serialize()
@@ -136,29 +146,18 @@ class EthTSynSubTlvConfig(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthTSynSubTlvConfig, cls).deserialize(element)
 
-        # Parse ofs_sub_tlv
-        child = SerializationHelper.find_child_element(element, "OFS-SUB-TLV")
-        if child is not None:
-            ofs_sub_tlv_value = child.text
-            obj.ofs_sub_tlv = ofs_sub_tlv_value
-
-        # Parse status_sub_tlv
-        child = SerializationHelper.find_child_element(element, "STATUS-SUB-TLV")
-        if child is not None:
-            status_sub_tlv_value = child.text
-            obj.status_sub_tlv = status_sub_tlv_value
-
-        # Parse time_sub_tlv
-        child = SerializationHelper.find_child_element(element, "TIME-SUB-TLV")
-        if child is not None:
-            time_sub_tlv_value = child.text
-            obj.time_sub_tlv = time_sub_tlv_value
-
-        # Parse user_data_sub_tlv
-        child = SerializationHelper.find_child_element(element, "USER-DATA-SUB-TLV")
-        if child is not None:
-            user_data_sub_tlv_value = child.text
-            obj.user_data_sub_tlv = user_data_sub_tlv_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OFS-SUB-TLV":
+                setattr(obj, "ofs_sub_tlv", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "STATUS-SUB-TLV":
+                setattr(obj, "status_sub_tlv", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TIME-SUB-TLV":
+                setattr(obj, "time_sub_tlv", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "USER-DATA-SUB-TLV":
+                setattr(obj, "user_data_sub_tlv", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

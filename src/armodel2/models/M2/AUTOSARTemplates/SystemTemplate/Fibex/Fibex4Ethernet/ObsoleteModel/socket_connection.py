@@ -42,6 +42,9 @@ class SocketConnection(Describable):
         """
         return False
 
+    _XML_TAG = "SOCKET-CONNECTION"
+
+
     client_ip_addr: Optional[Boolean]
     client_port_ref: Optional[ARRef]
     client_port_from: Optional[Boolean]
@@ -50,6 +53,18 @@ class SocketConnection(Describable):
     runtime_ip: Optional[Any]
     runtime_port: Optional[Any]
     short_label: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "CLIENT-IP-ADDR": lambda obj, elem: setattr(obj, "client_ip_addr", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CLIENT-PORT-REF": lambda obj, elem: setattr(obj, "client_port_ref", ARRef.deserialize(elem)),
+        "CLIENT-PORT-FROM": lambda obj, elem: setattr(obj, "client_port_from", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PDUS": lambda obj, elem: obj.pdus.append(SerializationHelper.deserialize_by_tag(elem, "SocketConnectionIpduIdentifierSet")),
+        "PDU-COLLECTION": lambda obj, elem: setattr(obj, "pdu_collection", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "RUNTIME-IP": lambda obj, elem: setattr(obj, "runtime_ip", SerializationHelper.deserialize_by_tag(elem, "any (RuntimeAddress)")),
+        "RUNTIME-PORT": lambda obj, elem: setattr(obj, "runtime_port", SerializationHelper.deserialize_by_tag(elem, "any (RuntimeAddress)")),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SocketConnection."""
         super().__init__()
@@ -68,9 +83,8 @@ class SocketConnection(Describable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SocketConnection, self).serialize()
@@ -209,57 +223,28 @@ class SocketConnection(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SocketConnection, cls).deserialize(element)
 
-        # Parse client_ip_addr
-        child = SerializationHelper.find_child_element(element, "CLIENT-IP-ADDR")
-        if child is not None:
-            client_ip_addr_value = child.text
-            obj.client_ip_addr = client_ip_addr_value
-
-        # Parse client_port_ref
-        child = SerializationHelper.find_child_element(element, "CLIENT-PORT-REF")
-        if child is not None:
-            client_port_ref_value = ARRef.deserialize(child)
-            obj.client_port_ref = client_port_ref_value
-
-        # Parse client_port_from
-        child = SerializationHelper.find_child_element(element, "CLIENT-PORT-FROM")
-        if child is not None:
-            client_port_from_value = child.text
-            obj.client_port_from = client_port_from_value
-
-        # Parse pdus (list from container "PDUS")
-        obj.pdus = []
-        container = SerializationHelper.find_child_element(element, "PDUS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pdus.append(child_value)
-
-        # Parse pdu_collection
-        child = SerializationHelper.find_child_element(element, "PDU-COLLECTION")
-        if child is not None:
-            pdu_collection_value = child.text
-            obj.pdu_collection = pdu_collection_value
-
-        # Parse runtime_ip
-        child = SerializationHelper.find_child_element(element, "RUNTIME-IP")
-        if child is not None:
-            runtime_ip_value = child.text
-            obj.runtime_ip = runtime_ip_value
-
-        # Parse runtime_port
-        child = SerializationHelper.find_child_element(element, "RUNTIME-PORT")
-        if child is not None:
-            runtime_port_value = child.text
-            obj.runtime_port = runtime_port_value
-
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CLIENT-IP-ADDR":
+                setattr(obj, "client_ip_addr", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CLIENT-PORT-REF":
+                setattr(obj, "client_port_ref", ARRef.deserialize(child))
+            elif tag == "CLIENT-PORT-FROM":
+                setattr(obj, "client_port_from", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PDUS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.pdus.append(SerializationHelper.deserialize_by_tag(item_elem, "SocketConnectionIpduIdentifierSet"))
+            elif tag == "PDU-COLLECTION":
+                setattr(obj, "pdu_collection", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "RUNTIME-IP":
+                setattr(obj, "runtime_ip", SerializationHelper.deserialize_by_tag(child, "any (RuntimeAddress)"))
+            elif tag == "RUNTIME-PORT":
+                setattr(obj, "runtime_port", SerializationHelper.deserialize_by_tag(child, "any (RuntimeAddress)"))
+            elif tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

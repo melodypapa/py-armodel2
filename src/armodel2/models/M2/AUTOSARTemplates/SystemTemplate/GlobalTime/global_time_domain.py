@@ -54,6 +54,9 @@ class GlobalTimeDomain(FibexElement):
         """
         return False
 
+    _XML_TAG = "GLOBAL-TIME-DOMAIN"
+
+
     debounce_time: Optional[TimeValue]
     domain_id: Optional[PositiveInteger]
     gatewaies: list[GlobalTimeGateway]
@@ -65,6 +68,21 @@ class GlobalTimeDomain(FibexElement):
     pdu_triggering_ref: Optional[ARRef]
     slaves: list[GlobalTimeSlave]
     sync_loss: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "DEBOUNCE-TIME": lambda obj, elem: setattr(obj, "debounce_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "DOMAIN-ID": lambda obj, elem: setattr(obj, "domain_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "GATEWAIES": lambda obj, elem: obj.gatewaies.append(SerializationHelper.deserialize_by_tag(elem, "GlobalTimeGateway")),
+        "GLOBAL-TIME": ("_POLYMORPHIC", "global_time", ["CanGlobalTimeDomainProps", "EthGlobalTimeDomainProps", "FrGlobalTimeDomainProps"]),
+        "GLOBAL-TIME-MASTER": ("_POLYMORPHIC", "global_time_master", ["GlobalTimeCanMaster", "GlobalTimeEthMaster", "GlobalTimeFrMaster", "UserDefinedGlobalTimeMaster"]),
+        "GLOBAL-TIME-SUB-REFS": lambda obj, elem: [obj.global_time_sub_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "NETWORK": lambda obj, elem: setattr(obj, "network", SerializationHelper.deserialize_by_tag(elem, "NetworkSegmentIdentification")),
+        "OFFSET-TIME-REF": lambda obj, elem: setattr(obj, "offset_time_ref", ARRef.deserialize(elem)),
+        "PDU-TRIGGERING-REF": lambda obj, elem: setattr(obj, "pdu_triggering_ref", ARRef.deserialize(elem)),
+        "SLAVES": ("_POLYMORPHIC_LIST", "slaves", ["GlobalTimeCanSlave", "GlobalTimeEthSlave", "GlobalTimeFrSlave", "UserDefinedGlobalTimeSlave"]),
+        "SYNC-LOSS": lambda obj, elem: setattr(obj, "sync_loss", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeDomain."""
         super().__init__()
@@ -86,9 +104,8 @@ class GlobalTimeDomain(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeDomain, self).serialize()
@@ -268,89 +285,64 @@ class GlobalTimeDomain(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeDomain, cls).deserialize(element)
 
-        # Parse debounce_time
-        child = SerializationHelper.find_child_element(element, "DEBOUNCE-TIME")
-        if child is not None:
-            debounce_time_value = child.text
-            obj.debounce_time = debounce_time_value
-
-        # Parse domain_id
-        child = SerializationHelper.find_child_element(element, "DOMAIN-ID")
-        if child is not None:
-            domain_id_value = child.text
-            obj.domain_id = domain_id_value
-
-        # Parse gatewaies (list from container "GATEWAIES")
-        obj.gatewaies = []
-        container = SerializationHelper.find_child_element(element, "GATEWAIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.gatewaies.append(child_value)
-
-        # Parse global_time
-        child = SerializationHelper.find_child_element(element, "GLOBAL-TIME")
-        if child is not None:
-            global_time_value = SerializationHelper.deserialize_by_tag(child, "AbstractGlobalTimeDomainProps")
-            obj.global_time = global_time_value
-
-        # Parse global_time_master
-        child = SerializationHelper.find_child_element(element, "GLOBAL-TIME-MASTER")
-        if child is not None:
-            global_time_master_value = SerializationHelper.deserialize_by_tag(child, "GlobalTimeMaster")
-            obj.global_time_master = global_time_master_value
-
-        # Parse global_time_sub_refs (list from container "GLOBAL-TIME-SUB-REFS")
-        obj.global_time_sub_refs = []
-        container = SerializationHelper.find_child_element(element, "GLOBAL-TIME-SUB-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.global_time_sub_refs.append(child_value)
-
-        # Parse network
-        child = SerializationHelper.find_child_element(element, "NETWORK")
-        if child is not None:
-            network_value = SerializationHelper.deserialize_by_tag(child, "NetworkSegmentIdentification")
-            obj.network = network_value
-
-        # Parse offset_time_ref
-        child = SerializationHelper.find_child_element(element, "OFFSET-TIME-REF")
-        if child is not None:
-            offset_time_ref_value = ARRef.deserialize(child)
-            obj.offset_time_ref = offset_time_ref_value
-
-        # Parse pdu_triggering_ref
-        child = SerializationHelper.find_child_element(element, "PDU-TRIGGERING-REF")
-        if child is not None:
-            pdu_triggering_ref_value = ARRef.deserialize(child)
-            obj.pdu_triggering_ref = pdu_triggering_ref_value
-
-        # Parse slaves (list from container "SLAVES")
-        obj.slaves = []
-        container = SerializationHelper.find_child_element(element, "SLAVES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.slaves.append(child_value)
-
-        # Parse sync_loss
-        child = SerializationHelper.find_child_element(element, "SYNC-LOSS")
-        if child is not None:
-            sync_loss_value = child.text
-            obj.sync_loss = sync_loss_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEBOUNCE-TIME":
+                setattr(obj, "debounce_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "DOMAIN-ID":
+                setattr(obj, "domain_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "GATEWAIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.gatewaies.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeGateway"))
+            elif tag == "GLOBAL-TIME":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CAN-GLOBAL-TIME-DOMAIN-PROPS":
+                        setattr(obj, "global_time", SerializationHelper.deserialize_by_tag(child[0], "CanGlobalTimeDomainProps"))
+                    elif concrete_tag == "ETH-GLOBAL-TIME-DOMAIN-PROPS":
+                        setattr(obj, "global_time", SerializationHelper.deserialize_by_tag(child[0], "EthGlobalTimeDomainProps"))
+                    elif concrete_tag == "FR-GLOBAL-TIME-DOMAIN-PROPS":
+                        setattr(obj, "global_time", SerializationHelper.deserialize_by_tag(child[0], "FrGlobalTimeDomainProps"))
+            elif tag == "GLOBAL-TIME-MASTER":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "GLOBAL-TIME-CAN-MASTER":
+                        setattr(obj, "global_time_master", SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeCanMaster"))
+                    elif concrete_tag == "GLOBAL-TIME-ETH-MASTER":
+                        setattr(obj, "global_time_master", SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeEthMaster"))
+                    elif concrete_tag == "GLOBAL-TIME-FR-MASTER":
+                        setattr(obj, "global_time_master", SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeFrMaster"))
+                    elif concrete_tag == "USER-DEFINED-GLOBAL-TIME-MASTER":
+                        setattr(obj, "global_time_master", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedGlobalTimeMaster"))
+            elif tag == "GLOBAL-TIME-SUB-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.global_time_sub_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "NETWORK":
+                setattr(obj, "network", SerializationHelper.deserialize_by_tag(child, "NetworkSegmentIdentification"))
+            elif tag == "OFFSET-TIME-REF":
+                setattr(obj, "offset_time_ref", ARRef.deserialize(child))
+            elif tag == "PDU-TRIGGERING-REF":
+                setattr(obj, "pdu_triggering_ref", ARRef.deserialize(child))
+            elif tag == "SLAVES":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "GLOBAL-TIME-CAN-SLAVE":
+                        obj.slaves.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeCanSlave"))
+                    elif concrete_tag == "GLOBAL-TIME-ETH-SLAVE":
+                        obj.slaves.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeEthSlave"))
+                    elif concrete_tag == "GLOBAL-TIME-FR-SLAVE":
+                        obj.slaves.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeFrSlave"))
+                    elif concrete_tag == "USER-DEFINED-GLOBAL-TIME-SLAVE":
+                        obj.slaves.append(SerializationHelper.deserialize_by_tag(item_elem, "UserDefinedGlobalTimeSlave"))
+            elif tag == "SYNC-LOSS":
+                setattr(obj, "sync_loss", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

@@ -41,8 +41,17 @@ class ArrayValueSpecification(CompositeValueSpecification):
         """
         return False
 
+    _XML_TAG = "ARRAY-VALUE-SPECIFICATION"
+
+
     elements: list[ValueSpecification]
     intended_partial: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ELEMENTS": ("_POLYMORPHIC_LIST", "elements", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "INTENDED-PARTIAL": lambda obj, elem: setattr(obj, "intended_partial", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ArrayValueSpecification."""
         super().__init__()
@@ -55,9 +64,8 @@ class ArrayValueSpecification(CompositeValueSpecification):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ArrayValueSpecification, self).serialize()
@@ -112,21 +120,32 @@ class ArrayValueSpecification(CompositeValueSpecification):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ArrayValueSpecification, cls).deserialize(element)
 
-        # Parse elements (list from container "ELEMENTS")
-        obj.elements = []
-        container = SerializationHelper.find_child_element(element, "ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.elements.append(child_value)
-
-        # Parse intended_partial
-        child = SerializationHelper.find_child_element(element, "INTENDED-PARTIAL")
-        if child is not None:
-            intended_partial_value = child.text
-            obj.intended_partial = intended_partial_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ELEMENTS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "TextValueSpecification"))
+            elif tag == "INTENDED-PARTIAL":
+                setattr(obj, "intended_partial", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -34,8 +34,17 @@ class SecurityEventDefinition(IdsCommonElement):
         """
         return False
 
+    _XML_TAG = "SECURITY-EVENT-DEFINITION"
+
+
     event_symbol_name: Optional[Any]
     id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-SYMBOL-NAME": lambda obj, elem: setattr(obj, "event_symbol_name", SerializationHelper.deserialize_by_tag(elem, "any (SymbolPropsName)")),
+        "ID": lambda obj, elem: setattr(obj, "id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecurityEventDefinition."""
         super().__init__()
@@ -48,9 +57,8 @@ class SecurityEventDefinition(IdsCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecurityEventDefinition, self).serialize()
@@ -109,17 +117,14 @@ class SecurityEventDefinition(IdsCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventDefinition, cls).deserialize(element)
 
-        # Parse event_symbol_name
-        child = SerializationHelper.find_child_element(element, "EVENT-SYMBOL-NAME")
-        if child is not None:
-            event_symbol_name_value = child.text
-            obj.event_symbol_name = event_symbol_name_value
-
-        # Parse id
-        child = SerializationHelper.find_child_element(element, "ID")
-        if child is not None:
-            id_value = child.text
-            obj.id = id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EVENT-SYMBOL-NAME":
+                setattr(obj, "event_symbol_name", SerializationHelper.deserialize_by_tag(child, "any (SymbolPropsName)"))
+            elif tag == "ID":
+                setattr(obj, "id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

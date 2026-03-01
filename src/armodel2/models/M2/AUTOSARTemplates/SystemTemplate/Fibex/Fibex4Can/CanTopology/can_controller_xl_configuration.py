@@ -30,6 +30,9 @@ class CanControllerXlConfiguration(ARObject):
         """
         return False
 
+    _XML_TAG = "CAN-CONTROLLER-XL-CONFIGURATION"
+
+
     error_signaling: Optional[Boolean]
     prop_seg: Optional[PositiveInteger]
     pwm_l: Optional[PositiveInteger]
@@ -40,6 +43,20 @@ class CanControllerXlConfiguration(ARObject):
     time_seg1: Optional[PositiveInteger]
     time_seg2: Optional[PositiveInteger]
     trcv_pwm_mode: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "ERROR-SIGNALING": lambda obj, elem: setattr(obj, "error_signaling", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PROP-SEG": lambda obj, elem: setattr(obj, "prop_seg", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PWM-L": lambda obj, elem: setattr(obj, "pwm_l", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PWM-O": lambda obj, elem: setattr(obj, "pwm_o", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PWM-S": lambda obj, elem: setattr(obj, "pwm_s", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SSP-OFFSET": lambda obj, elem: setattr(obj, "ssp_offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SYNC-JUMP-WIDTH": lambda obj, elem: setattr(obj, "sync_jump_width", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TIME-SEG1": lambda obj, elem: setattr(obj, "time_seg1", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TIME-SEG2": lambda obj, elem: setattr(obj, "time_seg2", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TRCV-PWM-MODE": lambda obj, elem: setattr(obj, "trcv_pwm_mode", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanControllerXlConfiguration."""
         super().__init__()
@@ -60,9 +77,8 @@ class CanControllerXlConfiguration(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanControllerXlConfiguration, self).serialize()
@@ -233,65 +249,30 @@ class CanControllerXlConfiguration(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanControllerXlConfiguration, cls).deserialize(element)
 
-        # Parse error_signaling
-        child = SerializationHelper.find_child_element(element, "ERROR-SIGNALING")
-        if child is not None:
-            error_signaling_value = child.text
-            obj.error_signaling = error_signaling_value
-
-        # Parse prop_seg
-        child = SerializationHelper.find_child_element(element, "PROP-SEG")
-        if child is not None:
-            prop_seg_value = child.text
-            obj.prop_seg = prop_seg_value
-
-        # Parse pwm_l
-        child = SerializationHelper.find_child_element(element, "PWM-L")
-        if child is not None:
-            pwm_l_value = child.text
-            obj.pwm_l = pwm_l_value
-
-        # Parse pwm_o
-        child = SerializationHelper.find_child_element(element, "PWM-O")
-        if child is not None:
-            pwm_o_value = child.text
-            obj.pwm_o = pwm_o_value
-
-        # Parse pwm_s
-        child = SerializationHelper.find_child_element(element, "PWM-S")
-        if child is not None:
-            pwm_s_value = child.text
-            obj.pwm_s = pwm_s_value
-
-        # Parse ssp_offset
-        child = SerializationHelper.find_child_element(element, "SSP-OFFSET")
-        if child is not None:
-            ssp_offset_value = child.text
-            obj.ssp_offset = ssp_offset_value
-
-        # Parse sync_jump_width
-        child = SerializationHelper.find_child_element(element, "SYNC-JUMP-WIDTH")
-        if child is not None:
-            sync_jump_width_value = child.text
-            obj.sync_jump_width = sync_jump_width_value
-
-        # Parse time_seg1
-        child = SerializationHelper.find_child_element(element, "TIME-SEG1")
-        if child is not None:
-            time_seg1_value = child.text
-            obj.time_seg1 = time_seg1_value
-
-        # Parse time_seg2
-        child = SerializationHelper.find_child_element(element, "TIME-SEG2")
-        if child is not None:
-            time_seg2_value = child.text
-            obj.time_seg2 = time_seg2_value
-
-        # Parse trcv_pwm_mode
-        child = SerializationHelper.find_child_element(element, "TRCV-PWM-MODE")
-        if child is not None:
-            trcv_pwm_mode_value = child.text
-            obj.trcv_pwm_mode = trcv_pwm_mode_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ERROR-SIGNALING":
+                setattr(obj, "error_signaling", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PROP-SEG":
+                setattr(obj, "prop_seg", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PWM-L":
+                setattr(obj, "pwm_l", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PWM-O":
+                setattr(obj, "pwm_o", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PWM-S":
+                setattr(obj, "pwm_s", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SSP-OFFSET":
+                setattr(obj, "ssp_offset", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SYNC-JUMP-WIDTH":
+                setattr(obj, "sync_jump_width", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TIME-SEG1":
+                setattr(obj, "time_seg1", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TIME-SEG2":
+                setattr(obj, "time_seg2", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TRCV-PWM-MODE":
+                setattr(obj, "trcv_pwm_mode", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

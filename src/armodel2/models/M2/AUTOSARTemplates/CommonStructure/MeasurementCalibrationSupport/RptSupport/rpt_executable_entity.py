@@ -36,10 +36,21 @@ class RptExecutableEntity(Identifiable):
         """
         return False
 
+    _XML_TAG = "RPT-EXECUTABLE-ENTITY"
+
+
     rpt_executable_entities: list[RptExecutableEntity]
     rpt_reads: list[RoleBasedMcDataAssignment]
     rpt_writes: list[RoleBasedMcDataAssignment]
     symbol: Optional[CIdentifier]
+    _DESERIALIZE_DISPATCH = {
+        "RPT-EXECUTABLE-ENTITIES": lambda obj, elem: obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(elem, "RptExecutableEntity")),
+        "RPT-READS": lambda obj, elem: obj.rpt_reads.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
+        "RPT-WRITES": lambda obj, elem: obj.rpt_writes.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptExecutableEntity."""
         super().__init__()
@@ -54,9 +65,8 @@ class RptExecutableEntity(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptExecutableEntity, self).serialize()
@@ -131,41 +141,24 @@ class RptExecutableEntity(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptExecutableEntity, cls).deserialize(element)
 
-        # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITIES")
-        obj.rpt_executable_entities = []
-        container = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rpt_executable_entities.append(child_value)
-
-        # Parse rpt_reads (list from container "RPT-READS")
-        obj.rpt_reads = []
-        container = SerializationHelper.find_child_element(element, "RPT-READS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rpt_reads.append(child_value)
-
-        # Parse rpt_writes (list from container "RPT-WRITES")
-        obj.rpt_writes = []
-        container = SerializationHelper.find_child_element(element, "RPT-WRITES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rpt_writes.append(child_value)
-
-        # Parse symbol
-        child = SerializationHelper.find_child_element(element, "SYMBOL")
-        if child is not None:
-            symbol_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
-            obj.symbol = symbol_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RPT-EXECUTABLE-ENTITIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(item_elem, "RptExecutableEntity"))
+            elif tag == "RPT-READS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.rpt_reads.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedMcDataAssignment"))
+            elif tag == "RPT-WRITES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.rpt_writes.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedMcDataAssignment"))
+            elif tag == "SYMBOL":
+                setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
 
         return obj
 

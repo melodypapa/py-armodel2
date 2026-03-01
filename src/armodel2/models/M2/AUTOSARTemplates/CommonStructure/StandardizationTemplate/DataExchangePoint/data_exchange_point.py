@@ -39,10 +39,21 @@ class DataExchangePoint(ARElement):
         """
         return False
 
+    _XML_TAG = "DATA-EXCHANGE-POINT"
+
+
     data_format: Optional[DataFormatTailoring]
     kind: DataExchangePoint
     referenced: Baseline
     specification_scope: Optional[SpecificationScope]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-FORMAT": lambda obj, elem: setattr(obj, "data_format", SerializationHelper.deserialize_by_tag(elem, "DataFormatTailoring")),
+        "KIND": lambda obj, elem: setattr(obj, "kind", SerializationHelper.deserialize_by_tag(elem, "DataExchangePoint")),
+        "REFERENCED": lambda obj, elem: setattr(obj, "referenced", SerializationHelper.deserialize_by_tag(elem, "Baseline")),
+        "SPECIFICATION-SCOPE": lambda obj, elem: setattr(obj, "specification_scope", SerializationHelper.deserialize_by_tag(elem, "SpecificationScope")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataExchangePoint."""
         super().__init__()
@@ -57,9 +68,8 @@ class DataExchangePoint(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataExchangePoint, self).serialize()
@@ -146,29 +156,18 @@ class DataExchangePoint(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataExchangePoint, cls).deserialize(element)
 
-        # Parse data_format
-        child = SerializationHelper.find_child_element(element, "DATA-FORMAT")
-        if child is not None:
-            data_format_value = SerializationHelper.deserialize_by_tag(child, "DataFormatTailoring")
-            obj.data_format = data_format_value
-
-        # Parse kind
-        child = SerializationHelper.find_child_element(element, "KIND")
-        if child is not None:
-            kind_value = SerializationHelper.deserialize_by_tag(child, "DataExchangePoint")
-            obj.kind = kind_value
-
-        # Parse referenced
-        child = SerializationHelper.find_child_element(element, "REFERENCED")
-        if child is not None:
-            referenced_value = SerializationHelper.deserialize_by_tag(child, "Baseline")
-            obj.referenced = referenced_value
-
-        # Parse specification_scope
-        child = SerializationHelper.find_child_element(element, "SPECIFICATION-SCOPE")
-        if child is not None:
-            specification_scope_value = SerializationHelper.deserialize_by_tag(child, "SpecificationScope")
-            obj.specification_scope = specification_scope_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-FORMAT":
+                setattr(obj, "data_format", SerializationHelper.deserialize_by_tag(child, "DataFormatTailoring"))
+            elif tag == "KIND":
+                setattr(obj, "kind", SerializationHelper.deserialize_by_tag(child, "DataExchangePoint"))
+            elif tag == "REFERENCED":
+                setattr(obj, "referenced", SerializationHelper.deserialize_by_tag(child, "Baseline"))
+            elif tag == "SPECIFICATION-SCOPE":
+                setattr(obj, "specification_scope", SerializationHelper.deserialize_by_tag(child, "SpecificationScope"))
 
         return obj
 

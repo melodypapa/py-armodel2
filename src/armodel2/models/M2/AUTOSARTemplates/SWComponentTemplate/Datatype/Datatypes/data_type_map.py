@@ -37,8 +37,17 @@ class DataTypeMap(ARObject):
         """
         return False
 
+    _XML_TAG = "DATA-TYPE-MAP"
+
+
     application_data_type_ref: Optional[ARRef]
     implementation_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATION-DATA-TYPE-REF": ("_POLYMORPHIC", "application_data_type_ref", ["ApplicationCompositeDataType", "ApplicationPrimitiveDataType"]),
+        "IMPLEMENTATION-REF": ("_POLYMORPHIC", "implementation_ref", ["ImplementationDataType"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataTypeMap."""
         super().__init__()
@@ -51,9 +60,8 @@ class DataTypeMap(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataTypeMap, self).serialize()
@@ -112,17 +120,14 @@ class DataTypeMap(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataTypeMap, cls).deserialize(element)
 
-        # Parse application_data_type_ref
-        child = SerializationHelper.find_child_element(element, "APPLICATION-DATA-TYPE-REF")
-        if child is not None:
-            application_data_type_ref_value = ARRef.deserialize(child)
-            obj.application_data_type_ref = application_data_type_ref_value
-
-        # Parse implementation_ref
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REF")
-        if child is not None:
-            implementation_ref_value = ARRef.deserialize(child)
-            obj.implementation_ref = implementation_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "APPLICATION-DATA-TYPE-REF":
+                setattr(obj, "application_data_type_ref", ARRef.deserialize(child))
+            elif tag == "IMPLEMENTATION-REF":
+                setattr(obj, "implementation_ref", ARRef.deserialize(child))
 
         return obj
 

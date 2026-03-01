@@ -40,10 +40,21 @@ class Unit(ARElement):
         """
         return False
 
+    _XML_TAG = "UNIT"
+
+
     display_name: Optional[SingleLanguageUnitNames]
     factor_si_to_unit: Optional[Float]
     offset_si_to_unit: Optional[Float]
     physical_dimension_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DISPLAY-NAME": lambda obj, elem: setattr(obj, "display_name", SerializationHelper.deserialize_by_tag(elem, "SingleLanguageUnitNames")),
+        "FACTOR-SI-TO-UNIT": lambda obj, elem: setattr(obj, "factor_si_to_unit", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "OFFSET-SI-TO-UNIT": lambda obj, elem: setattr(obj, "offset_si_to_unit", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "PHYSICAL-DIMENSION-REF": lambda obj, elem: setattr(obj, "physical_dimension_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Unit."""
         super().__init__()
@@ -58,9 +69,8 @@ class Unit(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Unit, self).serialize()
@@ -147,29 +157,18 @@ class Unit(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Unit, cls).deserialize(element)
 
-        # Parse display_name
-        child = SerializationHelper.find_child_element(element, "DISPLAY-NAME")
-        if child is not None:
-            display_name_value = SerializationHelper.deserialize_by_tag(child, "SingleLanguageUnitNames")
-            obj.display_name = display_name_value
-
-        # Parse factor_si_to_unit
-        child = SerializationHelper.find_child_element(element, "FACTOR-SI-TO-UNIT")
-        if child is not None:
-            factor_si_to_unit_value = child.text
-            obj.factor_si_to_unit = factor_si_to_unit_value
-
-        # Parse offset_si_to_unit
-        child = SerializationHelper.find_child_element(element, "OFFSET-SI-TO-UNIT")
-        if child is not None:
-            offset_si_to_unit_value = child.text
-            obj.offset_si_to_unit = offset_si_to_unit_value
-
-        # Parse physical_dimension_ref
-        child = SerializationHelper.find_child_element(element, "PHYSICAL-DIMENSION-REF")
-        if child is not None:
-            physical_dimension_ref_value = ARRef.deserialize(child)
-            obj.physical_dimension_ref = physical_dimension_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DISPLAY-NAME":
+                setattr(obj, "display_name", SerializationHelper.deserialize_by_tag(child, "SingleLanguageUnitNames"))
+            elif tag == "FACTOR-SI-TO-UNIT":
+                setattr(obj, "factor_si_to_unit", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "OFFSET-SI-TO-UNIT":
+                setattr(obj, "offset_si_to_unit", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "PHYSICAL-DIMENSION-REF":
+                setattr(obj, "physical_dimension_ref", ARRef.deserialize(child))
 
         return obj
 

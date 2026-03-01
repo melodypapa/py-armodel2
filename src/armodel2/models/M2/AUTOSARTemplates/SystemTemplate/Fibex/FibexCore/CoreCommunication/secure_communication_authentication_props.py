@@ -33,7 +33,15 @@ class SecureCommunicationAuthenticationProps(Identifiable):
         """
         return False
 
+    _XML_TAG = "SECURE-COMMUNICATION-AUTHENTICATION-PROPS"
+
+
     auth_info_tx: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "AUTH-INFO-TX": lambda obj, elem: setattr(obj, "auth_info_tx", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecureCommunicationAuthenticationProps."""
         super().__init__()
@@ -45,9 +53,8 @@ class SecureCommunicationAuthenticationProps(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecureCommunicationAuthenticationProps, self).serialize()
@@ -92,11 +99,12 @@ class SecureCommunicationAuthenticationProps(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecureCommunicationAuthenticationProps, cls).deserialize(element)
 
-        # Parse auth_info_tx
-        child = SerializationHelper.find_child_element(element, "AUTH-INFO-TX")
-        if child is not None:
-            auth_info_tx_value = child.text
-            obj.auth_info_tx = auth_info_tx_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AUTH-INFO-TX":
+                setattr(obj, "auth_info_tx", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

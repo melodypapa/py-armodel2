@@ -37,8 +37,17 @@ class MacSecParticipantSet(ARElement):
         """
         return False
 
+    _XML_TAG = "MAC-SEC-PARTICIPANT-SET"
+
+
     ethernet_cluster_ref: Optional[ARRef]
     mka_participants: list[MacSecKayParticipant]
+    _DESERIALIZE_DISPATCH = {
+        "ETHERNET-CLUSTER-REF": lambda obj, elem: setattr(obj, "ethernet_cluster_ref", ARRef.deserialize(elem)),
+        "MKA-PARTICIPANTS": lambda obj, elem: obj.mka_participants.append(SerializationHelper.deserialize_by_tag(elem, "MacSecKayParticipant")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MacSecParticipantSet."""
         super().__init__()
@@ -51,9 +60,8 @@ class MacSecParticipantSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MacSecParticipantSet, self).serialize()
@@ -108,21 +116,16 @@ class MacSecParticipantSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacSecParticipantSet, cls).deserialize(element)
 
-        # Parse ethernet_cluster_ref
-        child = SerializationHelper.find_child_element(element, "ETHERNET-CLUSTER-REF")
-        if child is not None:
-            ethernet_cluster_ref_value = ARRef.deserialize(child)
-            obj.ethernet_cluster_ref = ethernet_cluster_ref_value
-
-        # Parse mka_participants (list from container "MKA-PARTICIPANTS")
-        obj.mka_participants = []
-        container = SerializationHelper.find_child_element(element, "MKA-PARTICIPANTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mka_participants.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ETHERNET-CLUSTER-REF":
+                setattr(obj, "ethernet_cluster_ref", ARRef.deserialize(child))
+            elif tag == "MKA-PARTICIPANTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.mka_participants.append(SerializationHelper.deserialize_by_tag(item_elem, "MacSecKayParticipant"))
 
         return obj
 

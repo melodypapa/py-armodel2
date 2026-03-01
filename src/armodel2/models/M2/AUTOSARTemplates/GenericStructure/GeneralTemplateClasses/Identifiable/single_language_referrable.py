@@ -35,6 +35,11 @@ class SingleLanguageReferrable(Referrable, ABC):
         return True
 
     long_name1: Optional[SingleLanguageLongName]
+    _DESERIALIZE_DISPATCH = {
+        "LONG-NAME1": lambda obj, elem: setattr(obj, "long_name1", SerializationHelper.deserialize_by_tag(elem, "SingleLanguageLongName")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SingleLanguageReferrable."""
         super().__init__()
@@ -46,9 +51,8 @@ class SingleLanguageReferrable(Referrable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SingleLanguageReferrable, self).serialize()
@@ -93,11 +97,12 @@ class SingleLanguageReferrable(Referrable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SingleLanguageReferrable, cls).deserialize(element)
 
-        # Parse long_name1
-        child = SerializationHelper.find_child_element(element, "LONG-NAME1")
-        if child is not None:
-            long_name1_value = SerializationHelper.deserialize_by_tag(child, "SingleLanguageLongName")
-            obj.long_name1 = long_name1_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LONG-NAME1":
+                setattr(obj, "long_name1", SerializationHelper.deserialize_by_tag(child, "SingleLanguageLongName"))
 
         return obj
 

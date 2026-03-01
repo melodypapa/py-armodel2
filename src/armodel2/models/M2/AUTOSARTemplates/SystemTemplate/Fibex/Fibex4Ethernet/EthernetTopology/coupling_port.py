@@ -55,6 +55,9 @@ class CouplingPort(Identifiable):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT"
+
+
     connection: Optional[EthernetConnectionNegotiationEnum]
     coupling_port_details: Optional[CouplingPortDetails]
     coupling_port_role_enum: Optional[CouplingPortRoleEnum]
@@ -69,6 +72,24 @@ class CouplingPort(Identifiable):
     vlans: list[VlanMembership]
     vlan_modifier_ref: Optional[Any]
     wakeup_sleep_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CONNECTION": lambda obj, elem: setattr(obj, "connection", EthernetConnectionNegotiationEnum.deserialize(elem)),
+        "COUPLING-PORT-DETAILS": lambda obj, elem: setattr(obj, "coupling_port_details", SerializationHelper.deserialize_by_tag(elem, "CouplingPortDetails")),
+        "COUPLING-PORT-ROLE-ENUM": lambda obj, elem: setattr(obj, "coupling_port_role_enum", CouplingPortRoleEnum.deserialize(elem)),
+        "DEFAULT-VLAN-REF": lambda obj, elem: setattr(obj, "default_vlan_ref", ARRef.deserialize(elem)),
+        "MAC-LAYER-TYPE-ENUM": lambda obj, elem: setattr(obj, "mac_layer_type_enum", EthernetMacLayerTypeEnum.deserialize(elem)),
+        "MAC-MULTICAST-GROUP-REFS": lambda obj, elem: [obj.mac_multicast_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "MAC-SEC-PROPSES": lambda obj, elem: obj.mac_sec_propses.append(SerializationHelper.deserialize_by_tag(elem, "MacSecProps")),
+        "PHYSICAL-LAYER": lambda obj, elem: setattr(obj, "physical_layer", EthernetPhysicalLayerTypeEnum.deserialize(elem)),
+        "PLCA-PROPS": lambda obj, elem: setattr(obj, "plca_props", SerializationHelper.deserialize_by_tag(elem, "PlcaProps")),
+        "PNC-MAPPING-IDENT-REFS": lambda obj, elem: [obj.pnc_mapping_ident_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "RECEIVE-ACTIVITY": lambda obj, elem: setattr(obj, "receive_activity", SerializationHelper.deserialize_by_tag(elem, "any (EthernetSwitchVlan)")),
+        "VLANS": lambda obj, elem: obj.vlans.append(SerializationHelper.deserialize_by_tag(elem, "VlanMembership")),
+        "VLAN-MODIFIER-REF": lambda obj, elem: setattr(obj, "vlan_modifier_ref", ARRef.deserialize(elem)),
+        "WAKEUP-SLEEP-REF": lambda obj, elem: setattr(obj, "wakeup_sleep_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPort."""
         super().__init__()
@@ -93,9 +114,8 @@ class CouplingPort(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPort, self).serialize()
@@ -320,117 +340,46 @@ class CouplingPort(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CouplingPort, cls).deserialize(element)
 
-        # Parse connection
-        child = SerializationHelper.find_child_element(element, "CONNECTION")
-        if child is not None:
-            connection_value = EthernetConnectionNegotiationEnum.deserialize(child)
-            obj.connection = connection_value
-
-        # Parse coupling_port_details
-        child = SerializationHelper.find_child_element(element, "COUPLING-PORT-DETAILS")
-        if child is not None:
-            coupling_port_details_value = SerializationHelper.deserialize_by_tag(child, "CouplingPortDetails")
-            obj.coupling_port_details = coupling_port_details_value
-
-        # Parse coupling_port_role_enum
-        child = SerializationHelper.find_child_element(element, "COUPLING-PORT-ROLE-ENUM")
-        if child is not None:
-            coupling_port_role_enum_value = CouplingPortRoleEnum.deserialize(child)
-            obj.coupling_port_role_enum = coupling_port_role_enum_value
-
-        # Parse default_vlan_ref
-        child = SerializationHelper.find_child_element(element, "DEFAULT-VLAN-REF")
-        if child is not None:
-            default_vlan_ref_value = ARRef.deserialize(child)
-            obj.default_vlan_ref = default_vlan_ref_value
-
-        # Parse mac_layer_type_enum
-        child = SerializationHelper.find_child_element(element, "MAC-LAYER-TYPE-ENUM")
-        if child is not None:
-            mac_layer_type_enum_value = EthernetMacLayerTypeEnum.deserialize(child)
-            obj.mac_layer_type_enum = mac_layer_type_enum_value
-
-        # Parse mac_multicast_group_refs (list from container "MAC-MULTICAST-GROUP-REFS")
-        obj.mac_multicast_group_refs = []
-        container = SerializationHelper.find_child_element(element, "MAC-MULTICAST-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mac_multicast_group_refs.append(child_value)
-
-        # Parse mac_sec_propses (list from container "MAC-SEC-PROPSES")
-        obj.mac_sec_propses = []
-        container = SerializationHelper.find_child_element(element, "MAC-SEC-PROPSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mac_sec_propses.append(child_value)
-
-        # Parse physical_layer
-        child = SerializationHelper.find_child_element(element, "PHYSICAL-LAYER")
-        if child is not None:
-            physical_layer_value = EthernetPhysicalLayerTypeEnum.deserialize(child)
-            obj.physical_layer = physical_layer_value
-
-        # Parse plca_props
-        child = SerializationHelper.find_child_element(element, "PLCA-PROPS")
-        if child is not None:
-            plca_props_value = SerializationHelper.deserialize_by_tag(child, "PlcaProps")
-            obj.plca_props = plca_props_value
-
-        # Parse pnc_mapping_ident_refs (list from container "PNC-MAPPING-IDENT-REFS")
-        obj.pnc_mapping_ident_refs = []
-        container = SerializationHelper.find_child_element(element, "PNC-MAPPING-IDENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pnc_mapping_ident_refs.append(child_value)
-
-        # Parse receive_activity
-        child = SerializationHelper.find_child_element(element, "RECEIVE-ACTIVITY")
-        if child is not None:
-            receive_activity_value = child.text
-            obj.receive_activity = receive_activity_value
-
-        # Parse vlans (list from container "VLANS")
-        obj.vlans = []
-        container = SerializationHelper.find_child_element(element, "VLANS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.vlans.append(child_value)
-
-        # Parse vlan_modifier_ref
-        child = SerializationHelper.find_child_element(element, "VLAN-MODIFIER-REF")
-        if child is not None:
-            vlan_modifier_ref_value = ARRef.deserialize(child)
-            obj.vlan_modifier_ref = vlan_modifier_ref_value
-
-        # Parse wakeup_sleep_ref
-        child = SerializationHelper.find_child_element(element, "WAKEUP-SLEEP-REF")
-        if child is not None:
-            wakeup_sleep_ref_value = ARRef.deserialize(child)
-            obj.wakeup_sleep_ref = wakeup_sleep_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONNECTION":
+                setattr(obj, "connection", EthernetConnectionNegotiationEnum.deserialize(child))
+            elif tag == "COUPLING-PORT-DETAILS":
+                setattr(obj, "coupling_port_details", SerializationHelper.deserialize_by_tag(child, "CouplingPortDetails"))
+            elif tag == "COUPLING-PORT-ROLE-ENUM":
+                setattr(obj, "coupling_port_role_enum", CouplingPortRoleEnum.deserialize(child))
+            elif tag == "DEFAULT-VLAN-REF":
+                setattr(obj, "default_vlan_ref", ARRef.deserialize(child))
+            elif tag == "MAC-LAYER-TYPE-ENUM":
+                setattr(obj, "mac_layer_type_enum", EthernetMacLayerTypeEnum.deserialize(child))
+            elif tag == "MAC-MULTICAST-GROUP-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.mac_multicast_group_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "MAC-SEC-PROPSES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.mac_sec_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "MacSecProps"))
+            elif tag == "PHYSICAL-LAYER":
+                setattr(obj, "physical_layer", EthernetPhysicalLayerTypeEnum.deserialize(child))
+            elif tag == "PLCA-PROPS":
+                setattr(obj, "plca_props", SerializationHelper.deserialize_by_tag(child, "PlcaProps"))
+            elif tag == "PNC-MAPPING-IDENT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.pnc_mapping_ident_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "RECEIVE-ACTIVITY":
+                setattr(obj, "receive_activity", SerializationHelper.deserialize_by_tag(child, "any (EthernetSwitchVlan)"))
+            elif tag == "VLANS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.vlans.append(SerializationHelper.deserialize_by_tag(item_elem, "VlanMembership"))
+            elif tag == "VLAN-MODIFIER-REF":
+                setattr(obj, "vlan_modifier_ref", ARRef.deserialize(child))
+            elif tag == "WAKEUP-SLEEP-REF":
+                setattr(obj, "wakeup_sleep_ref", ARRef.deserialize(child))
 
         return obj
 

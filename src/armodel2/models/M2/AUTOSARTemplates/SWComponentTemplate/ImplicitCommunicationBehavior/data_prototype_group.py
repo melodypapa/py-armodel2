@@ -38,8 +38,17 @@ class DataPrototypeGroup(Identifiable):
         """
         return False
 
+    _XML_TAG = "DATA-PROTOTYPE-GROUP"
+
+
     data_prototype_group_group_in_composition_instance_ref: list[ARRef]
     implicit_data_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS": lambda obj, elem: [obj.data_prototype_group_group_in_composition_instance_ref.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "IMPLICIT-DATA-REFS": lambda obj, elem: [obj.implicit_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataPrototypeGroup."""
         super().__init__()
@@ -52,9 +61,8 @@ class DataPrototypeGroup(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataPrototypeGroup, self).serialize()
@@ -119,37 +127,18 @@ class DataPrototypeGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototypeGroup, cls).deserialize(element)
 
-        # Parse data_prototype_group_group_in_composition_instance_ref (list from container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
-        obj.data_prototype_group_group_in_composition_instance_ref = []
-        container = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_prototype_group_group_in_composition_instance_ref.append(child_value)
-
-        # Parse implicit_data_refs (list from container "IMPLICIT-DATA-REFS")
-        obj.implicit_data_refs = []
-        container = SerializationHelper.find_child_element(element, "IMPLICIT-DATA-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.implicit_data_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.data_prototype_group_group_in_composition_instance_ref.append(ARRef.deserialize(item_elem))
+            elif tag == "IMPLICIT-DATA-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.implicit_data_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

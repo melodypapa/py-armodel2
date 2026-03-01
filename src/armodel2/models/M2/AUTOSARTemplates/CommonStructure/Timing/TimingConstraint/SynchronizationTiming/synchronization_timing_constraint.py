@@ -41,11 +41,23 @@ class SynchronizationTimingConstraint(TimingConstraint):
         """
         return False
 
+    _XML_TAG = "SYNCHRONIZATION-TIMING-CONSTRAINT"
+
+
     event: Optional[EventOccurrenceKindEnum]
     scope_refs: list[ARRef]
     scope_event_refs: list[ARRef]
     synchronization: Optional[SynchronizationTypeEnum]
     tolerance: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT": lambda obj, elem: setattr(obj, "event", EventOccurrenceKindEnum.deserialize(elem)),
+        "SCOPE-REFS": ("_POLYMORPHIC_LIST", "scope_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "SCOPE-EVENT-REFS": ("_POLYMORPHIC_LIST", "scope_event_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "SYNCHRONIZATION": lambda obj, elem: setattr(obj, "synchronization", SynchronizationTypeEnum.deserialize(elem)),
+        "TOLERANCE": lambda obj, elem: setattr(obj, "tolerance", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SynchronizationTimingConstraint."""
         super().__init__()
@@ -61,9 +73,8 @@ class SynchronizationTimingConstraint(TimingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SynchronizationTimingConstraint, self).serialize()
@@ -170,55 +181,22 @@ class SynchronizationTimingConstraint(TimingConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SynchronizationTimingConstraint, cls).deserialize(element)
 
-        # Parse event
-        child = SerializationHelper.find_child_element(element, "EVENT")
-        if child is not None:
-            event_value = EventOccurrenceKindEnum.deserialize(child)
-            obj.event = event_value
-
-        # Parse scope_refs (list from container "SCOPE-REFS")
-        obj.scope_refs = []
-        container = SerializationHelper.find_child_element(element, "SCOPE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.scope_refs.append(child_value)
-
-        # Parse scope_event_refs (list from container "SCOPE-EVENT-REFS")
-        obj.scope_event_refs = []
-        container = SerializationHelper.find_child_element(element, "SCOPE-EVENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.scope_event_refs.append(child_value)
-
-        # Parse synchronization
-        child = SerializationHelper.find_child_element(element, "SYNCHRONIZATION")
-        if child is not None:
-            synchronization_value = SynchronizationTypeEnum.deserialize(child)
-            obj.synchronization = synchronization_value
-
-        # Parse tolerance
-        child = SerializationHelper.find_child_element(element, "TOLERANCE")
-        if child is not None:
-            tolerance_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.tolerance = tolerance_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EVENT":
+                setattr(obj, "event", EventOccurrenceKindEnum.deserialize(child))
+            elif tag == "SCOPE-REFS":
+                for item_elem in child:
+                    obj.scope_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SCOPE-EVENT-REFS":
+                for item_elem in child:
+                    obj.scope_event_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SYNCHRONIZATION":
+                setattr(obj, "synchronization", SynchronizationTypeEnum.deserialize(child))
+            elif tag == "TOLERANCE":
+                setattr(obj, "tolerance", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

@@ -38,9 +38,19 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
         """
         return False
 
+    _XML_TAG = "PLATFORM-MODULE-ETHERNET-ENDPOINT-CONFIGURATION"
+
+
     communication_connector_ref: Optional[ARRef]
     ipv4_multicast_ip_address: Optional[Ip4AddressString]
     ipv6_multicast_ip_address: Optional[Ip6AddressString]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CONNECTOR-REF": lambda obj, elem: setattr(obj, "communication_connector_ref", ARRef.deserialize(elem)),
+        "IPV4-MULTICAST-IP-ADDRESS": lambda obj, elem: setattr(obj, "ipv4_multicast_ip_address", SerializationHelper.deserialize_by_tag(elem, "Ip4AddressString")),
+        "IPV6-MULTICAST-IP-ADDRESS": lambda obj, elem: setattr(obj, "ipv6_multicast_ip_address", SerializationHelper.deserialize_by_tag(elem, "Ip6AddressString")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PlatformModuleEthernetEndpointConfiguration."""
         super().__init__()
@@ -54,9 +64,8 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PlatformModuleEthernetEndpointConfiguration, self).serialize()
@@ -129,23 +138,16 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PlatformModuleEthernetEndpointConfiguration, cls).deserialize(element)
 
-        # Parse communication_connector_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
-        if child is not None:
-            communication_connector_ref_value = ARRef.deserialize(child)
-            obj.communication_connector_ref = communication_connector_ref_value
-
-        # Parse ipv4_multicast_ip_address
-        child = SerializationHelper.find_child_element(element, "IPV4-MULTICAST-IP-ADDRESS")
-        if child is not None:
-            ipv4_multicast_ip_address_value = child.text
-            obj.ipv4_multicast_ip_address = ipv4_multicast_ip_address_value
-
-        # Parse ipv6_multicast_ip_address
-        child = SerializationHelper.find_child_element(element, "IPV6-MULTICAST-IP-ADDRESS")
-        if child is not None:
-            ipv6_multicast_ip_address_value = child.text
-            obj.ipv6_multicast_ip_address = ipv6_multicast_ip_address_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMMUNICATION-CONNECTOR-REF":
+                setattr(obj, "communication_connector_ref", ARRef.deserialize(child))
+            elif tag == "IPV4-MULTICAST-IP-ADDRESS":
+                setattr(obj, "ipv4_multicast_ip_address", SerializationHelper.deserialize_by_tag(child, "Ip4AddressString"))
+            elif tag == "IPV6-MULTICAST-IP-ADDRESS":
+                setattr(obj, "ipv6_multicast_ip_address", SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
 
         return obj
 

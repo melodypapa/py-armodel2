@@ -35,7 +35,15 @@ class VfbTiming(TimingExtension):
         """
         return False
 
+    _XML_TAG = "VFB-TIMING"
+
+
     component_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMPONENT-REF": ("_POLYMORPHIC", "component_ref", ["AtomicSwComponentType", "CompositionSwComponentType", "ParameterSwComponentType"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize VfbTiming."""
         super().__init__()
@@ -47,9 +55,8 @@ class VfbTiming(TimingExtension):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(VfbTiming, self).serialize()
@@ -94,11 +101,12 @@ class VfbTiming(TimingExtension):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(VfbTiming, cls).deserialize(element)
 
-        # Parse component_ref
-        child = SerializationHelper.find_child_element(element, "COMPONENT-REF")
-        if child is not None:
-            component_ref_value = ARRef.deserialize(child)
-            obj.component_ref = component_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMPONENT-REF":
+                setattr(obj, "component_ref", ARRef.deserialize(child))
 
         return obj
 

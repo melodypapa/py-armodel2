@@ -37,9 +37,19 @@ class EndToEndProtectionISignalIPdu(ARObject):
         """
         return False
 
+    _XML_TAG = "END-TO-END-PROTECTION-I-SIGNAL-I-PDU"
+
+
     data_offset: Optional[Integer]
     i_signal_group_ref: Optional[ARRef]
     i_signal_i_pdu_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-OFFSET": lambda obj, elem: setattr(obj, "data_offset", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "I-SIGNAL-GROUP-REF": lambda obj, elem: setattr(obj, "i_signal_group_ref", ARRef.deserialize(elem)),
+        "I-SIGNAL-I-PDU-REF": lambda obj, elem: setattr(obj, "i_signal_i_pdu_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EndToEndProtectionISignalIPdu."""
         super().__init__()
@@ -53,9 +63,8 @@ class EndToEndProtectionISignalIPdu(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EndToEndProtectionISignalIPdu, self).serialize()
@@ -128,23 +137,16 @@ class EndToEndProtectionISignalIPdu(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EndToEndProtectionISignalIPdu, cls).deserialize(element)
 
-        # Parse data_offset
-        child = SerializationHelper.find_child_element(element, "DATA-OFFSET")
-        if child is not None:
-            data_offset_value = child.text
-            obj.data_offset = data_offset_value
-
-        # Parse i_signal_group_ref
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-GROUP-REF")
-        if child is not None:
-            i_signal_group_ref_value = ARRef.deserialize(child)
-            obj.i_signal_group_ref = i_signal_group_ref_value
-
-        # Parse i_signal_i_pdu_ref
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-I-PDU-REF")
-        if child is not None:
-            i_signal_i_pdu_ref_value = ARRef.deserialize(child)
-            obj.i_signal_i_pdu_ref = i_signal_i_pdu_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-OFFSET":
+                setattr(obj, "data_offset", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "I-SIGNAL-GROUP-REF":
+                setattr(obj, "i_signal_group_ref", ARRef.deserialize(child))
+            elif tag == "I-SIGNAL-I-PDU-REF":
+                setattr(obj, "i_signal_i_pdu_ref", ARRef.deserialize(child))
 
         return obj
 

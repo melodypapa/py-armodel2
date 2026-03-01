@@ -36,8 +36,17 @@ class MsrQueryTopic1(Paginateable):
         """
         return False
 
+    _XML_TAG = "MSR-QUERY-TOPIC1"
+
+
     msr_query_props: MsrQueryProps
     msr_query_result_topic1: Optional[MsrQueryResultTopic1]
+    _DESERIALIZE_DISPATCH = {
+        "MSR-QUERY-PROPS": lambda obj, elem: setattr(obj, "msr_query_props", SerializationHelper.deserialize_by_tag(elem, "MsrQueryProps")),
+        "MSR-QUERY-RESULT-TOPIC1": lambda obj, elem: setattr(obj, "msr_query_result_topic1", SerializationHelper.deserialize_by_tag(elem, "MsrQueryResultTopic1")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MsrQueryTopic1."""
         super().__init__()
@@ -50,9 +59,8 @@ class MsrQueryTopic1(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MsrQueryTopic1, self).serialize()
@@ -111,17 +119,14 @@ class MsrQueryTopic1(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MsrQueryTopic1, cls).deserialize(element)
 
-        # Parse msr_query_props
-        child = SerializationHelper.find_child_element(element, "MSR-QUERY-PROPS")
-        if child is not None:
-            msr_query_props_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryProps")
-            obj.msr_query_props = msr_query_props_value
-
-        # Parse msr_query_result_topic1
-        child = SerializationHelper.find_child_element(element, "MSR-QUERY-RESULT-TOPIC1")
-        if child is not None:
-            msr_query_result_topic1_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryResultTopic1")
-            obj.msr_query_result_topic1 = msr_query_result_topic1_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MSR-QUERY-PROPS":
+                setattr(obj, "msr_query_props", SerializationHelper.deserialize_by_tag(child, "MsrQueryProps"))
+            elif tag == "MSR-QUERY-RESULT-TOPIC1":
+                setattr(obj, "msr_query_result_topic1", SerializationHelper.deserialize_by_tag(child, "MsrQueryResultTopic1"))
 
         return obj
 

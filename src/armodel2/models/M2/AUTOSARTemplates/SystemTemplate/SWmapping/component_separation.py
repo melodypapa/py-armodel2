@@ -34,7 +34,15 @@ class ComponentSeparation(MappingConstraint):
         """
         return False
 
+    _XML_TAG = "COMPONENT-SEPARATION"
+
+
     mapping_scope_enum_ref: Optional[MappingScopeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "MAPPING-SCOPE-ENUM-REF": lambda obj, elem: setattr(obj, "mapping_scope_enum_ref", MappingScopeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ComponentSeparation."""
         super().__init__()
@@ -46,9 +54,8 @@ class ComponentSeparation(MappingConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ComponentSeparation, self).serialize()
@@ -93,11 +100,12 @@ class ComponentSeparation(MappingConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ComponentSeparation, cls).deserialize(element)
 
-        # Parse mapping_scope_enum_ref
-        child = SerializationHelper.find_child_element(element, "MAPPING-SCOPE-ENUM-REF")
-        if child is not None:
-            mapping_scope_enum_ref_value = ARRef.deserialize(child)
-            obj.mapping_scope_enum_ref = mapping_scope_enum_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAPPING-SCOPE-ENUM-REF":
+                setattr(obj, "mapping_scope_enum_ref", MappingScopeEnum.deserialize(child))
 
         return obj
 

@@ -49,6 +49,18 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
     memory_entry: Optional[DiagnosticMemoryEntryStorageTriggerEnum]
     status_bit: Optional[Boolean]
     type_of_freeze: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "AGING-REQUIRES": lambda obj, elem: setattr(obj, "aging_requires", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CLEAR-DTC": lambda obj, elem: setattr(obj, "clear_dtc", SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticClearDtc)")),
+        "DTC-STATUS": lambda obj, elem: setattr(obj, "dtc_status", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "EVENT": lambda obj, elem: setattr(obj, "event", SerializationHelper.deserialize_by_tag(elem, "DiagnosticEvent")),
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MEMORY-ENTRY": lambda obj, elem: setattr(obj, "memory_entry", DiagnosticMemoryEntryStorageTriggerEnum.deserialize(elem)),
+        "STATUS-BIT": lambda obj, elem: setattr(obj, "status_bit", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TYPE-OF-FREEZE": lambda obj, elem: setattr(obj, "type_of_freeze", SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticTypeOf)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestination."""
         super().__init__()
@@ -67,9 +79,8 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticMemoryDestination, self).serialize()
@@ -212,53 +223,26 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMemoryDestination, cls).deserialize(element)
 
-        # Parse aging_requires
-        child = SerializationHelper.find_child_element(element, "AGING-REQUIRES")
-        if child is not None:
-            aging_requires_value = child.text
-            obj.aging_requires = aging_requires_value
-
-        # Parse clear_dtc
-        child = SerializationHelper.find_child_element(element, "CLEAR-DTC")
-        if child is not None:
-            clear_dtc_value = child.text
-            obj.clear_dtc = clear_dtc_value
-
-        # Parse dtc_status
-        child = SerializationHelper.find_child_element(element, "DTC-STATUS")
-        if child is not None:
-            dtc_status_value = child.text
-            obj.dtc_status = dtc_status_value
-
-        # Parse event
-        child = SerializationHelper.find_child_element(element, "EVENT")
-        if child is not None:
-            event_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticEvent")
-            obj.event = event_value
-
-        # Parse max_number_of
-        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
-        if child is not None:
-            max_number_of_value = child.text
-            obj.max_number_of = max_number_of_value
-
-        # Parse memory_entry
-        child = SerializationHelper.find_child_element(element, "MEMORY-ENTRY")
-        if child is not None:
-            memory_entry_value = DiagnosticMemoryEntryStorageTriggerEnum.deserialize(child)
-            obj.memory_entry = memory_entry_value
-
-        # Parse status_bit
-        child = SerializationHelper.find_child_element(element, "STATUS-BIT")
-        if child is not None:
-            status_bit_value = child.text
-            obj.status_bit = status_bit_value
-
-        # Parse type_of_freeze
-        child = SerializationHelper.find_child_element(element, "TYPE-OF-FREEZE")
-        if child is not None:
-            type_of_freeze_value = child.text
-            obj.type_of_freeze = type_of_freeze_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AGING-REQUIRES":
+                setattr(obj, "aging_requires", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CLEAR-DTC":
+                setattr(obj, "clear_dtc", SerializationHelper.deserialize_by_tag(child, "any (DiagnosticClearDtc)"))
+            elif tag == "DTC-STATUS":
+                setattr(obj, "dtc_status", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "EVENT":
+                setattr(obj, "event", SerializationHelper.deserialize_by_tag(child, "DiagnosticEvent"))
+            elif tag == "MAX-NUMBER-OF":
+                setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MEMORY-ENTRY":
+                setattr(obj, "memory_entry", DiagnosticMemoryEntryStorageTriggerEnum.deserialize(child))
+            elif tag == "STATUS-BIT":
+                setattr(obj, "status_bit", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TYPE-OF-FREEZE":
+                setattr(obj, "type_of_freeze", SerializationHelper.deserialize_by_tag(child, "any (DiagnosticTypeOf)"))
 
         return obj
 

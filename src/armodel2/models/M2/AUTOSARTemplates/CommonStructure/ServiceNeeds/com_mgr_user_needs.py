@@ -34,7 +34,15 @@ class ComMgrUserNeeds(ServiceNeeds):
         """
         return False
 
+    _XML_TAG = "COM-MGR-USER-NEEDS"
+
+
     max_comm_mode_enum: Optional[MaxCommModeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-COMM-MODE-ENUM": lambda obj, elem: setattr(obj, "max_comm_mode_enum", MaxCommModeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ComMgrUserNeeds."""
         super().__init__()
@@ -46,9 +54,8 @@ class ComMgrUserNeeds(ServiceNeeds):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ComMgrUserNeeds, self).serialize()
@@ -93,11 +100,12 @@ class ComMgrUserNeeds(ServiceNeeds):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ComMgrUserNeeds, cls).deserialize(element)
 
-        # Parse max_comm_mode_enum
-        child = SerializationHelper.find_child_element(element, "MAX-COMM-MODE-ENUM")
-        if child is not None:
-            max_comm_mode_enum_value = MaxCommModeEnum.deserialize(child)
-            obj.max_comm_mode_enum = max_comm_mode_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAX-COMM-MODE-ENUM":
+                setattr(obj, "max_comm_mode_enum", MaxCommModeEnum.deserialize(child))
 
         return obj
 

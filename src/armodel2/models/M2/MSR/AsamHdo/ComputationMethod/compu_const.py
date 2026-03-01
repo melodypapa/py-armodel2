@@ -129,5 +129,4 @@ class CompuConstBuilder:
         Returns:
             CompuConst instance
         """
-        # TODO: Add validation
         return self._obj

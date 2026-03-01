@@ -29,8 +29,17 @@ class TextTableValuePair(ARObject):
         """
         return False
 
+    _XML_TAG = "TEXT-TABLE-VALUE-PAIR"
+
+
     first_value: Optional[Numerical]
     second_value: Optional[Numerical]
+    _DESERIALIZE_DISPATCH = {
+        "FIRST-VALUE": lambda obj, elem: setattr(obj, "first_value", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "SECOND-VALUE": lambda obj, elem: setattr(obj, "second_value", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TextTableValuePair."""
         super().__init__()
@@ -43,9 +52,8 @@ class TextTableValuePair(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TextTableValuePair, self).serialize()
@@ -104,17 +112,14 @@ class TextTableValuePair(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TextTableValuePair, cls).deserialize(element)
 
-        # Parse first_value
-        child = SerializationHelper.find_child_element(element, "FIRST-VALUE")
-        if child is not None:
-            first_value_value = child.text
-            obj.first_value = first_value_value
-
-        # Parse second_value
-        child = SerializationHelper.find_child_element(element, "SECOND-VALUE")
-        if child is not None:
-            second_value_value = child.text
-            obj.second_value = second_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FIRST-VALUE":
+                setattr(obj, "first_value", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "SECOND-VALUE":
+                setattr(obj, "second_value", SerializationHelper.deserialize_by_tag(child, "Numerical"))
 
         return obj
 

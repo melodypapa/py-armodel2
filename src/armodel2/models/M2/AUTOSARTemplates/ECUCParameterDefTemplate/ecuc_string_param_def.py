@@ -29,6 +29,9 @@ class EcucStringParamDef(ARObject):
         """
         return False
 
+    _XML_TAG = "ECUC-STRING-PARAM-DEF"
+
+
     def __init__(self) -> None:
         """Initialize EcucStringParamDef."""
         super().__init__()

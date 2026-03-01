@@ -29,7 +29,15 @@ class TcpIpIcmpv6Props(ARObject):
         """
         return False
 
+    _XML_TAG = "TCP-IP-ICMPV6-PROPS"
+
+
     tcp_ip_icmp: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "TCP-IP-ICMP": lambda obj, elem: setattr(obj, "tcp_ip_icmp", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TcpIpIcmpv6Props."""
         super().__init__()
@@ -41,9 +49,8 @@ class TcpIpIcmpv6Props(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TcpIpIcmpv6Props, self).serialize()
@@ -88,11 +95,12 @@ class TcpIpIcmpv6Props(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TcpIpIcmpv6Props, cls).deserialize(element)
 
-        # Parse tcp_ip_icmp
-        child = SerializationHelper.find_child_element(element, "TCP-IP-ICMP")
-        if child is not None:
-            tcp_ip_icmp_value = child.text
-            obj.tcp_ip_icmp = tcp_ip_icmp_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TCP-IP-ICMP":
+                setattr(obj, "tcp_ip_icmp", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

@@ -38,6 +38,9 @@ class IPSecConfigProps(ARElement):
         """
         return False
 
+    _XML_TAG = "I-P-SEC-CONFIG-PROPS"
+
+
     ah_cipher_suites: list[String]
     dpd_action: Optional[IPsecDpdActionEnum]
     dpd_delay: Optional[TimeValue]
@@ -50,6 +53,22 @@ class IPSecConfigProps(ARElement):
     sa_over_time: Optional[PositiveInteger]
     sa_rand_time: Optional[TimeValue]
     sa_rekey_time: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "AH-CIPHER-SUITES": lambda obj, elem: obj.ah_cipher_suites.append(SerializationHelper.deserialize_by_tag(elem, "String")),
+        "DPD-ACTION": lambda obj, elem: setattr(obj, "dpd_action", IPsecDpdActionEnum.deserialize(elem)),
+        "DPD-DELAY": lambda obj, elem: setattr(obj, "dpd_delay", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "ESP-CIPHER-SUITES": lambda obj, elem: obj.esp_cipher_suites.append(SerializationHelper.deserialize_by_tag(elem, "String")),
+        "IKE-CIPHER-SUITE": lambda obj, elem: setattr(obj, "ike_cipher_suite", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "IKE-OVER-TIME": lambda obj, elem: setattr(obj, "ike_over_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "IKE-RAND-TIME": lambda obj, elem: setattr(obj, "ike_rand_time", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IKE-REAUTH-TIME": lambda obj, elem: setattr(obj, "ike_reauth_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "IKE-REKEY-TIME": lambda obj, elem: setattr(obj, "ike_rekey_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "SA-OVER-TIME": lambda obj, elem: setattr(obj, "sa_over_time", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SA-RAND-TIME": lambda obj, elem: setattr(obj, "sa_rand_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "SA-REKEY-TIME": lambda obj, elem: setattr(obj, "sa_rekey_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IPSecConfigProps."""
         super().__init__()
@@ -72,9 +91,8 @@ class IPSecConfigProps(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IPSecConfigProps, self).serialize()
@@ -279,85 +297,38 @@ class IPSecConfigProps(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IPSecConfigProps, cls).deserialize(element)
 
-        # Parse ah_cipher_suites (list from container "AH-CIPHER-SUITES")
-        obj.ah_cipher_suites = []
-        container = SerializationHelper.find_child_element(element, "AH-CIPHER-SUITES")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (String) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.ah_cipher_suites.append(child_value)
-
-        # Parse dpd_action
-        child = SerializationHelper.find_child_element(element, "DPD-ACTION")
-        if child is not None:
-            dpd_action_value = IPsecDpdActionEnum.deserialize(child)
-            obj.dpd_action = dpd_action_value
-
-        # Parse dpd_delay
-        child = SerializationHelper.find_child_element(element, "DPD-DELAY")
-        if child is not None:
-            dpd_delay_value = child.text
-            obj.dpd_delay = dpd_delay_value
-
-        # Parse esp_cipher_suites (list from container "ESP-CIPHER-SUITES")
-        obj.esp_cipher_suites = []
-        container = SerializationHelper.find_child_element(element, "ESP-CIPHER-SUITES")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (String) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.esp_cipher_suites.append(child_value)
-
-        # Parse ike_cipher_suite
-        child = SerializationHelper.find_child_element(element, "IKE-CIPHER-SUITE")
-        if child is not None:
-            ike_cipher_suite_value = child.text
-            obj.ike_cipher_suite = ike_cipher_suite_value
-
-        # Parse ike_over_time
-        child = SerializationHelper.find_child_element(element, "IKE-OVER-TIME")
-        if child is not None:
-            ike_over_time_value = child.text
-            obj.ike_over_time = ike_over_time_value
-
-        # Parse ike_rand_time
-        child = SerializationHelper.find_child_element(element, "IKE-RAND-TIME")
-        if child is not None:
-            ike_rand_time_value = child.text
-            obj.ike_rand_time = ike_rand_time_value
-
-        # Parse ike_reauth_time
-        child = SerializationHelper.find_child_element(element, "IKE-REAUTH-TIME")
-        if child is not None:
-            ike_reauth_time_value = child.text
-            obj.ike_reauth_time = ike_reauth_time_value
-
-        # Parse ike_rekey_time
-        child = SerializationHelper.find_child_element(element, "IKE-REKEY-TIME")
-        if child is not None:
-            ike_rekey_time_value = child.text
-            obj.ike_rekey_time = ike_rekey_time_value
-
-        # Parse sa_over_time
-        child = SerializationHelper.find_child_element(element, "SA-OVER-TIME")
-        if child is not None:
-            sa_over_time_value = child.text
-            obj.sa_over_time = sa_over_time_value
-
-        # Parse sa_rand_time
-        child = SerializationHelper.find_child_element(element, "SA-RAND-TIME")
-        if child is not None:
-            sa_rand_time_value = child.text
-            obj.sa_rand_time = sa_rand_time_value
-
-        # Parse sa_rekey_time
-        child = SerializationHelper.find_child_element(element, "SA-REKEY-TIME")
-        if child is not None:
-            sa_rekey_time_value = child.text
-            obj.sa_rekey_time = sa_rekey_time_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AH-CIPHER-SUITES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.ah_cipher_suites.append(SerializationHelper.deserialize_by_tag(item_elem, "String"))
+            elif tag == "DPD-ACTION":
+                setattr(obj, "dpd_action", IPsecDpdActionEnum.deserialize(child))
+            elif tag == "DPD-DELAY":
+                setattr(obj, "dpd_delay", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "ESP-CIPHER-SUITES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.esp_cipher_suites.append(SerializationHelper.deserialize_by_tag(item_elem, "String"))
+            elif tag == "IKE-CIPHER-SUITE":
+                setattr(obj, "ike_cipher_suite", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "IKE-OVER-TIME":
+                setattr(obj, "ike_over_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "IKE-RAND-TIME":
+                setattr(obj, "ike_rand_time", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IKE-REAUTH-TIME":
+                setattr(obj, "ike_reauth_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "IKE-REKEY-TIME":
+                setattr(obj, "ike_rekey_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "SA-OVER-TIME":
+                setattr(obj, "sa_over_time", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SA-RAND-TIME":
+                setattr(obj, "sa_rand_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "SA-REKEY-TIME":
+                setattr(obj, "sa_rekey_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

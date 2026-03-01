@@ -34,8 +34,17 @@ class TDEventVariableDataPrototype(TDEventVfbPort):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-VARIABLE-DATA-PROTOTYPE"
+
+
     data_element_ref: Optional[ARRef]
     td_event_variable_type: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "TD-EVENT-VARIABLE-TYPE": lambda obj, elem: setattr(obj, "td_event_variable_type", SerializationHelper.deserialize_by_tag(elem, "any (TDEventVariableData)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventVariableDataPrototype."""
         super().__init__()
@@ -48,9 +57,8 @@ class TDEventVariableDataPrototype(TDEventVfbPort):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventVariableDataPrototype, self).serialize()
@@ -109,17 +117,14 @@ class TDEventVariableDataPrototype(TDEventVfbPort):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventVariableDataPrototype, cls).deserialize(element)
 
-        # Parse data_element_ref
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
-        if child is not None:
-            data_element_ref_value = ARRef.deserialize(child)
-            obj.data_element_ref = data_element_ref_value
-
-        # Parse td_event_variable_type
-        child = SerializationHelper.find_child_element(element, "TD-EVENT-VARIABLE-TYPE")
-        if child is not None:
-            td_event_variable_type_value = child.text
-            obj.td_event_variable_type = td_event_variable_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-ELEMENT-REF":
+                setattr(obj, "data_element_ref", ARRef.deserialize(child))
+            elif tag == "TD-EVENT-VARIABLE-TYPE":
+                setattr(obj, "td_event_variable_type", SerializationHelper.deserialize_by_tag(child, "any (TDEventVariableData)"))
 
         return obj
 

@@ -33,8 +33,17 @@ class SwcExclusiveAreaPolicy(ARObject):
         """
         return False
 
+    _XML_TAG = "SWC-EXCLUSIVE-AREA-POLICY"
+
+
     api_principle_enum: Optional[ApiPrincipleEnum]
     exclusive_area_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "API-PRINCIPLE-ENUM": lambda obj, elem: setattr(obj, "api_principle_enum", ApiPrincipleEnum.deserialize(elem)),
+        "EXCLUSIVE-AREA-REF": lambda obj, elem: setattr(obj, "exclusive_area_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcExclusiveAreaPolicy."""
         super().__init__()
@@ -47,9 +56,8 @@ class SwcExclusiveAreaPolicy(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcExclusiveAreaPolicy, self).serialize()
@@ -108,17 +116,14 @@ class SwcExclusiveAreaPolicy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcExclusiveAreaPolicy, cls).deserialize(element)
 
-        # Parse api_principle_enum
-        child = SerializationHelper.find_child_element(element, "API-PRINCIPLE-ENUM")
-        if child is not None:
-            api_principle_enum_value = ApiPrincipleEnum.deserialize(child)
-            obj.api_principle_enum = api_principle_enum_value
-
-        # Parse exclusive_area_ref
-        child = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-REF")
-        if child is not None:
-            exclusive_area_ref_value = ARRef.deserialize(child)
-            obj.exclusive_area_ref = exclusive_area_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "API-PRINCIPLE-ENUM":
+                setattr(obj, "api_principle_enum", ApiPrincipleEnum.deserialize(child))
+            elif tag == "EXCLUSIVE-AREA-REF":
+                setattr(obj, "exclusive_area_ref", ARRef.deserialize(child))
 
         return obj
 

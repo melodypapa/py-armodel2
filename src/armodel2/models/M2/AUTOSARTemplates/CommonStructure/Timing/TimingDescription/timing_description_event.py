@@ -37,6 +37,12 @@ class TimingDescriptionEvent(TimingDescription, ABC):
 
     clock_reference_ref: Optional[ARRef]
     occurrence: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CLOCK-REFERENCE-REF": ("_POLYMORPHIC", "clock_reference_ref", ["TDLETZoneClock"]),
+        "OCCURRENCE": lambda obj, elem: setattr(obj, "occurrence", SerializationHelper.deserialize_by_tag(elem, "any (TDEventOccurrence)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimingDescriptionEvent."""
         super().__init__()
@@ -49,9 +55,8 @@ class TimingDescriptionEvent(TimingDescription, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimingDescriptionEvent, self).serialize()
@@ -110,17 +115,14 @@ class TimingDescriptionEvent(TimingDescription, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingDescriptionEvent, cls).deserialize(element)
 
-        # Parse clock_reference_ref
-        child = SerializationHelper.find_child_element(element, "CLOCK-REFERENCE-REF")
-        if child is not None:
-            clock_reference_ref_value = ARRef.deserialize(child)
-            obj.clock_reference_ref = clock_reference_ref_value
-
-        # Parse occurrence
-        child = SerializationHelper.find_child_element(element, "OCCURRENCE")
-        if child is not None:
-            occurrence_value = child.text
-            obj.occurrence = occurrence_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CLOCK-REFERENCE-REF":
+                setattr(obj, "clock_reference_ref", ARRef.deserialize(child))
+            elif tag == "OCCURRENCE":
+                setattr(obj, "occurrence", SerializationHelper.deserialize_by_tag(child, "any (TDEventOccurrence)"))
 
         return obj
 

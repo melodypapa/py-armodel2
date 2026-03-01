@@ -36,8 +36,17 @@ class EthTcpIpIcmpProps(ARElement):
         """
         return False
 
+    _XML_TAG = "ETH-TCP-IP-ICMP-PROPS"
+
+
     icmp_v4_props: Optional[TcpIpIcmpv4Props]
     icmp_v6_props: Optional[TcpIpIcmpv6Props]
+    _DESERIALIZE_DISPATCH = {
+        "ICMP-V4-PROPS": lambda obj, elem: setattr(obj, "icmp_v4_props", SerializationHelper.deserialize_by_tag(elem, "TcpIpIcmpv4Props")),
+        "ICMP-V6-PROPS": lambda obj, elem: setattr(obj, "icmp_v6_props", SerializationHelper.deserialize_by_tag(elem, "TcpIpIcmpv6Props")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthTcpIpIcmpProps."""
         super().__init__()
@@ -50,9 +59,8 @@ class EthTcpIpIcmpProps(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthTcpIpIcmpProps, self).serialize()
@@ -111,17 +119,14 @@ class EthTcpIpIcmpProps(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthTcpIpIcmpProps, cls).deserialize(element)
 
-        # Parse icmp_v4_props
-        child = SerializationHelper.find_child_element(element, "ICMP-V4-PROPS")
-        if child is not None:
-            icmp_v4_props_value = SerializationHelper.deserialize_by_tag(child, "TcpIpIcmpv4Props")
-            obj.icmp_v4_props = icmp_v4_props_value
-
-        # Parse icmp_v6_props
-        child = SerializationHelper.find_child_element(element, "ICMP-V6-PROPS")
-        if child is not None:
-            icmp_v6_props_value = SerializationHelper.deserialize_by_tag(child, "TcpIpIcmpv6Props")
-            obj.icmp_v6_props = icmp_v6_props_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ICMP-V4-PROPS":
+                setattr(obj, "icmp_v4_props", SerializationHelper.deserialize_by_tag(child, "TcpIpIcmpv4Props"))
+            elif tag == "ICMP-V6-PROPS":
+                setattr(obj, "icmp_v6_props", SerializationHelper.deserialize_by_tag(child, "TcpIpIcmpv6Props"))
 
         return obj
 

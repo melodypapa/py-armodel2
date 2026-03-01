@@ -39,6 +39,12 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
 
     acf_parts: list[IEEE1722TpAcfBusPart]
     bus_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ACF-PARTS": ("_POLYMORPHIC_LIST", "acf_parts", ["IEEE1722TpAcfCanPart", "IEEE1722TpAcfLinPart"]),
+        "BUS-ID": lambda obj, elem: setattr(obj, "bus_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfBus."""
         super().__init__()
@@ -51,9 +57,8 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpAcfBus, self).serialize()
@@ -108,21 +113,20 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpAcfBus, cls).deserialize(element)
 
-        # Parse acf_parts (list from container "ACF-PARTS")
-        obj.acf_parts = []
-        container = SerializationHelper.find_child_element(element, "ACF-PARTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.acf_parts.append(child_value)
-
-        # Parse bus_id
-        child = SerializationHelper.find_child_element(element, "BUS-ID")
-        if child is not None:
-            bus_id_value = child.text
-            obj.bus_id = bus_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ACF-PARTS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "I-E-E-E1722-TP-ACF-CAN-PART":
+                        obj.acf_parts.append(SerializationHelper.deserialize_by_tag(item_elem, "IEEE1722TpAcfCanPart"))
+                    elif concrete_tag == "I-E-E-E1722-TP-ACF-LIN-PART":
+                        obj.acf_parts.append(SerializationHelper.deserialize_by_tag(item_elem, "IEEE1722TpAcfLinPart"))
+            elif tag == "BUS-ID":
+                setattr(obj, "bus_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

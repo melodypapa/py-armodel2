@@ -37,9 +37,19 @@ class CanNmClusterCoupling(NmClusterCoupling):
         """
         return False
 
+    _XML_TAG = "CAN-NM-CLUSTER-COUPLING"
+
+
     coupled_cluster_refs: list[ARRef]
     nm_busload_reduction: Optional[Any]
     nm_immediate: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "COUPLED-CLUSTER-REFS": lambda obj, elem: [obj.coupled_cluster_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "NM-BUSLOAD-REDUCTION": lambda obj, elem: setattr(obj, "nm_busload_reduction", SerializationHelper.deserialize_by_tag(elem, "any (BooleanEnabled)")),
+        "NM-IMMEDIATE": lambda obj, elem: setattr(obj, "nm_immediate", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanNmClusterCoupling."""
         super().__init__()
@@ -53,9 +63,8 @@ class CanNmClusterCoupling(NmClusterCoupling):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanNmClusterCoupling, self).serialize()
@@ -131,33 +140,18 @@ class CanNmClusterCoupling(NmClusterCoupling):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanNmClusterCoupling, cls).deserialize(element)
 
-        # Parse coupled_cluster_refs (list from container "COUPLED-CLUSTER-REFS")
-        obj.coupled_cluster_refs = []
-        container = SerializationHelper.find_child_element(element, "COUPLED-CLUSTER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.coupled_cluster_refs.append(child_value)
-
-        # Parse nm_busload_reduction
-        child = SerializationHelper.find_child_element(element, "NM-BUSLOAD-REDUCTION")
-        if child is not None:
-            nm_busload_reduction_value = child.text
-            obj.nm_busload_reduction = nm_busload_reduction_value
-
-        # Parse nm_immediate
-        child = SerializationHelper.find_child_element(element, "NM-IMMEDIATE")
-        if child is not None:
-            nm_immediate_value = child.text
-            obj.nm_immediate = nm_immediate_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COUPLED-CLUSTER-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.coupled_cluster_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "NM-BUSLOAD-REDUCTION":
+                setattr(obj, "nm_busload_reduction", SerializationHelper.deserialize_by_tag(child, "any (BooleanEnabled)"))
+            elif tag == "NM-IMMEDIATE":
+                setattr(obj, "nm_immediate", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

@@ -33,7 +33,15 @@ class ReceiverAnnotation(SenderReceiverAnnotation):
         """
         return False
 
+    _XML_TAG = "RECEIVER-ANNOTATION"
+
+
     signal_age: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "SIGNAL-AGE": lambda obj, elem: setattr(obj, "signal_age", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ReceiverAnnotation."""
         super().__init__()
@@ -45,9 +53,8 @@ class ReceiverAnnotation(SenderReceiverAnnotation):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ReceiverAnnotation, self).serialize()
@@ -92,11 +99,12 @@ class ReceiverAnnotation(SenderReceiverAnnotation):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ReceiverAnnotation, cls).deserialize(element)
 
-        # Parse signal_age
-        child = SerializationHelper.find_child_element(element, "SIGNAL-AGE")
-        if child is not None:
-            signal_age_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.signal_age = signal_age_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SIGNAL-AGE":
+                setattr(obj, "signal_age", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

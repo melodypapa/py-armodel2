@@ -31,6 +31,11 @@ class TpConnection(ARObject, ABC):
         return True
 
     ident: Optional[TpConnectionIdent]
+    _DESERIALIZE_DISPATCH = {
+        "IDENT": lambda obj, elem: setattr(obj, "ident", SerializationHelper.deserialize_by_tag(elem, "TpConnectionIdent")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TpConnection."""
         super().__init__()
@@ -42,9 +47,8 @@ class TpConnection(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TpConnection, self).serialize()
@@ -89,11 +93,12 @@ class TpConnection(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TpConnection, cls).deserialize(element)
 
-        # Parse ident
-        child = SerializationHelper.find_child_element(element, "IDENT")
-        if child is not None:
-            ident_value = SerializationHelper.deserialize_by_tag(child, "TpConnectionIdent")
-            obj.ident = ident_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "IDENT":
+                setattr(obj, "ident", SerializationHelper.deserialize_by_tag(child, "TpConnectionIdent"))
 
         return obj
 

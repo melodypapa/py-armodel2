@@ -42,6 +42,9 @@ class EthernetCommunicationController(ARObject):
         """
         return False
 
+    _XML_TAG = "ETHERNET-COMMUNICATION-CONTROLLER"
+
+
     can_xl_config_ref: Optional[Any]
     coupling_ports: list[CouplingPort]
     mac_layer_type: Optional[EthernetMacLayerTypeEnum]
@@ -49,6 +52,17 @@ class EthernetCommunicationController(ARObject):
     maximum: Optional[Integer]
     slave_act_as: Optional[Boolean]
     slave_qualified: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "CAN-XL-CONFIG-REF": lambda obj, elem: setattr(obj, "can_xl_config_ref", ARRef.deserialize(elem)),
+        "COUPLING-PORTS": lambda obj, elem: obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(elem, "CouplingPort")),
+        "MAC-LAYER-TYPE": lambda obj, elem: setattr(obj, "mac_layer_type", EthernetMacLayerTypeEnum.deserialize(elem)),
+        "MAC-UNICAST": lambda obj, elem: setattr(obj, "mac_unicast", SerializationHelper.deserialize_by_tag(elem, "MacAddressString")),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "SLAVE-ACT-AS": lambda obj, elem: setattr(obj, "slave_act_as", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SLAVE-QUALIFIED": lambda obj, elem: setattr(obj, "slave_qualified", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthernetCommunicationController."""
         super().__init__()

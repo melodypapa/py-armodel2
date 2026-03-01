@@ -33,7 +33,15 @@ class BinaryManifestRequireResource(BinaryManifestResource):
         """
         return False
 
+    _XML_TAG = "BINARY-MANIFEST-REQUIRE-RESOURCE"
+
+
     connection_is: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CONNECTION-IS": lambda obj, elem: setattr(obj, "connection_is", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BinaryManifestRequireResource."""
         super().__init__()
@@ -45,9 +53,8 @@ class BinaryManifestRequireResource(BinaryManifestResource):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BinaryManifestRequireResource, self).serialize()
@@ -92,11 +99,12 @@ class BinaryManifestRequireResource(BinaryManifestResource):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BinaryManifestRequireResource, cls).deserialize(element)
 
-        # Parse connection_is
-        child = SerializationHelper.find_child_element(element, "CONNECTION-IS")
-        if child is not None:
-            connection_is_value = child.text
-            obj.connection_is = connection_is_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONNECTION-IS":
+                setattr(obj, "connection_is", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

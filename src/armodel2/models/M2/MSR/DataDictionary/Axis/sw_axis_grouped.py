@@ -43,9 +43,19 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         """
         return False
 
+    _XML_TAG = "SW-AXIS-GROUPED"
+
+
     shared_axis_type_ref: Optional[ARRef]
     sw_axis_index: Optional[AxisIndexType]
     sw_calprm_ref_proxy_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "SHARED-AXIS-TYPE-REF": lambda obj, elem: setattr(obj, "shared_axis_type_ref", ARRef.deserialize(elem)),
+        "SW-AXIS-INDEX": lambda obj, elem: setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(elem, "AxisIndexType")),
+        "SW-CALPRM-REF-PROXY-REF": lambda obj, elem: setattr(obj, "sw_calprm_ref_proxy_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwAxisGrouped."""
         super().__init__()
@@ -59,9 +69,8 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwAxisGrouped, self).serialize()
@@ -134,23 +143,16 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwAxisGrouped, cls).deserialize(element)
 
-        # Parse shared_axis_type_ref
-        child = SerializationHelper.find_child_element(element, "SHARED-AXIS-TYPE-REF")
-        if child is not None:
-            shared_axis_type_ref_value = ARRef.deserialize(child)
-            obj.shared_axis_type_ref = shared_axis_type_ref_value
-
-        # Parse sw_axis_index
-        child = SerializationHelper.find_child_element(element, "SW-AXIS-INDEX")
-        if child is not None:
-            sw_axis_index_value = child.text
-            obj.sw_axis_index = sw_axis_index_value
-
-        # Parse sw_calprm_ref_proxy_ref
-        child = SerializationHelper.find_child_element(element, "SW-CALPRM-REF-PROXY-REF")
-        if child is not None:
-            sw_calprm_ref_proxy_ref_value = ARRef.deserialize(child)
-            obj.sw_calprm_ref_proxy_ref = sw_calprm_ref_proxy_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SHARED-AXIS-TYPE-REF":
+                setattr(obj, "shared_axis_type_ref", ARRef.deserialize(child))
+            elif tag == "SW-AXIS-INDEX":
+                setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(child, "AxisIndexType"))
+            elif tag == "SW-CALPRM-REF-PROXY-REF":
+                setattr(obj, "sw_calprm_ref_proxy_ref", ARRef.deserialize(child))
 
         return obj
 

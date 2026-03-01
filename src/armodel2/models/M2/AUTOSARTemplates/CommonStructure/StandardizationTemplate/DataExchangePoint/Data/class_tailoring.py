@@ -36,6 +36,13 @@ class ClassTailoring(ARObject, ABC):
     class_contents: list[ClassContentConditional]
     multiplicity: Optional[Any]
     variation: Optional[VariationRestrictionWithSeverity]
+    _DESERIALIZE_DISPATCH = {
+        "CLASS-CONTENTS": lambda obj, elem: obj.class_contents.append(SerializationHelper.deserialize_by_tag(elem, "ClassContentConditional")),
+        "MULTIPLICITY": lambda obj, elem: setattr(obj, "multiplicity", SerializationHelper.deserialize_by_tag(elem, "any (MultiplicityRestriction)")),
+        "VARIATION": lambda obj, elem: setattr(obj, "variation", SerializationHelper.deserialize_by_tag(elem, "VariationRestrictionWithSeverity")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClassTailoring."""
         super().__init__()
@@ -49,9 +56,8 @@ class ClassTailoring(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClassTailoring, self).serialize()
@@ -120,27 +126,18 @@ class ClassTailoring(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClassTailoring, cls).deserialize(element)
 
-        # Parse class_contents (list from container "CLASS-CONTENTS")
-        obj.class_contents = []
-        container = SerializationHelper.find_child_element(element, "CLASS-CONTENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.class_contents.append(child_value)
-
-        # Parse multiplicity
-        child = SerializationHelper.find_child_element(element, "MULTIPLICITY")
-        if child is not None:
-            multiplicity_value = child.text
-            obj.multiplicity = multiplicity_value
-
-        # Parse variation
-        child = SerializationHelper.find_child_element(element, "VARIATION")
-        if child is not None:
-            variation_value = SerializationHelper.deserialize_by_tag(child, "VariationRestrictionWithSeverity")
-            obj.variation = variation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CLASS-CONTENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.class_contents.append(SerializationHelper.deserialize_by_tag(item_elem, "ClassContentConditional"))
+            elif tag == "MULTIPLICITY":
+                setattr(obj, "multiplicity", SerializationHelper.deserialize_by_tag(child, "any (MultiplicityRestriction)"))
+            elif tag == "VARIATION":
+                setattr(obj, "variation", SerializationHelper.deserialize_by_tag(child, "VariationRestrictionWithSeverity"))
 
         return obj
 

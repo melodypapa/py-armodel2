@@ -33,7 +33,15 @@ class SecurityEventOneEveryNFilter(AbstractSecurityEventFilter):
         """
         return False
 
+    _XML_TAG = "SECURITY-EVENT-ONE-EVERY-N-FILTER"
+
+
     n: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "N": lambda obj, elem: setattr(obj, "n", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecurityEventOneEveryNFilter."""
         super().__init__()
@@ -45,9 +53,8 @@ class SecurityEventOneEveryNFilter(AbstractSecurityEventFilter):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecurityEventOneEveryNFilter, self).serialize()
@@ -92,11 +99,12 @@ class SecurityEventOneEveryNFilter(AbstractSecurityEventFilter):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventOneEveryNFilter, cls).deserialize(element)
 
-        # Parse n
-        child = SerializationHelper.find_child_element(element, "N")
-        if child is not None:
-            n_value = child.text
-            obj.n = n_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "N":
+                setattr(obj, "n", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

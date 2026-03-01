@@ -36,9 +36,19 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-READ-DATA-BY-PERIODIC-ID-CLASS"
+
+
     max_periodic_did: Optional[PositiveInteger]
     periodic_rates: list[DiagnosticPeriodicRate]
     scheduler_max: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-PERIODIC-DID": lambda obj, elem: setattr(obj, "max_periodic_did", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PERIODIC-RATES": lambda obj, elem: obj.periodic_rates.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticPeriodicRate")),
+        "SCHEDULER-MAX": lambda obj, elem: setattr(obj, "scheduler_max", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticReadDataByPeriodicIDClass."""
         super().__init__()
@@ -52,9 +62,8 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticReadDataByPeriodicIDClass, self).serialize()
@@ -123,27 +132,18 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticReadDataByPeriodicIDClass, cls).deserialize(element)
 
-        # Parse max_periodic_did
-        child = SerializationHelper.find_child_element(element, "MAX-PERIODIC-DID")
-        if child is not None:
-            max_periodic_did_value = child.text
-            obj.max_periodic_did = max_periodic_did_value
-
-        # Parse periodic_rates (list from container "PERIODIC-RATES")
-        obj.periodic_rates = []
-        container = SerializationHelper.find_child_element(element, "PERIODIC-RATES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.periodic_rates.append(child_value)
-
-        # Parse scheduler_max
-        child = SerializationHelper.find_child_element(element, "SCHEDULER-MAX")
-        if child is not None:
-            scheduler_max_value = child.text
-            obj.scheduler_max = scheduler_max_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAX-PERIODIC-DID":
+                setattr(obj, "max_periodic_did", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PERIODIC-RATES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.periodic_rates.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticPeriodicRate"))
+            elif tag == "SCHEDULER-MAX":
+                setattr(obj, "scheduler_max", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

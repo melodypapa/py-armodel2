@@ -34,7 +34,15 @@ class ViewMapSet(ARElement):
         """
         return False
 
+    _XML_TAG = "VIEW-MAP-SET"
+
+
     view_maps: list[ViewMap]
+    _DESERIALIZE_DISPATCH = {
+        "VIEW-MAPS": lambda obj, elem: obj.view_maps.append(SerializationHelper.deserialize_by_tag(elem, "ViewMap")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ViewMapSet."""
         super().__init__()
@@ -46,9 +54,8 @@ class ViewMapSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ViewMapSet, self).serialize()
@@ -89,15 +96,14 @@ class ViewMapSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ViewMapSet, cls).deserialize(element)
 
-        # Parse view_maps (list from container "VIEW-MAPS")
-        obj.view_maps = []
-        container = SerializationHelper.find_child_element(element, "VIEW-MAPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.view_maps.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "VIEW-MAPS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.view_maps.append(SerializationHelper.deserialize_by_tag(item_elem, "ViewMap"))
 
         return obj
 

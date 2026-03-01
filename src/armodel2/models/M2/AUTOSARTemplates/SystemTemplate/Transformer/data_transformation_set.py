@@ -36,8 +36,17 @@ class DataTransformationSet(ARElement):
         """
         return False
 
+    _XML_TAG = "DATA-TRANSFORMATION-SET"
+
+
     datas: list[DataTransformation]
     transformation_technologies: list[TransformationTechnology]
+    _DESERIALIZE_DISPATCH = {
+        "DATAS": lambda obj, elem: obj.datas.append(SerializationHelper.deserialize_by_tag(elem, "DataTransformation")),
+        "TRANSFORMATION-TECHNOLOGIES": lambda obj, elem: obj.transformation_technologies.append(SerializationHelper.deserialize_by_tag(elem, "TransformationTechnology")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataTransformationSet."""
         super().__init__()
@@ -50,9 +59,8 @@ class DataTransformationSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataTransformationSet, self).serialize()
@@ -103,25 +111,18 @@ class DataTransformationSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataTransformationSet, cls).deserialize(element)
 
-        # Parse datas (list from container "DATAS")
-        obj.datas = []
-        container = SerializationHelper.find_child_element(element, "DATAS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.datas.append(child_value)
-
-        # Parse transformation_technologies (list from container "TRANSFORMATION-TECHNOLOGIES")
-        obj.transformation_technologies = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-TECHNOLOGIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.transformation_technologies.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATAS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.datas.append(SerializationHelper.deserialize_by_tag(item_elem, "DataTransformation"))
+            elif tag == "TRANSFORMATION-TECHNOLOGIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.transformation_technologies.append(SerializationHelper.deserialize_by_tag(item_elem, "TransformationTechnology"))
 
         return obj
 

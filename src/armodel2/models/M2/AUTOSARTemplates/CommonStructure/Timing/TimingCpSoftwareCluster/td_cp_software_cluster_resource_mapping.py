@@ -37,8 +37,17 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "T-D-CP-SOFTWARE-CLUSTER-RESOURCE-MAPPING"
+
+
     resource_ref: Optional[ARRef]
     timing_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "RESOURCE-REF": lambda obj, elem: setattr(obj, "resource_ref", ARRef.deserialize(elem)),
+        "TIMING-REF": ("_POLYMORPHIC", "timing_ref", ["TimingDescriptionEvent", "TimingDescriptionEventChain"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDCpSoftwareClusterResourceMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDCpSoftwareClusterResourceMapping, self).serialize()
@@ -112,17 +120,14 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDCpSoftwareClusterResourceMapping, cls).deserialize(element)
 
-        # Parse resource_ref
-        child = SerializationHelper.find_child_element(element, "RESOURCE-REF")
-        if child is not None:
-            resource_ref_value = ARRef.deserialize(child)
-            obj.resource_ref = resource_ref_value
-
-        # Parse timing_ref
-        child = SerializationHelper.find_child_element(element, "TIMING-REF")
-        if child is not None:
-            timing_ref_value = ARRef.deserialize(child)
-            obj.timing_ref = timing_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RESOURCE-REF":
+                setattr(obj, "resource_ref", ARRef.deserialize(child))
+            elif tag == "TIMING-REF":
+                setattr(obj, "timing_ref", ARRef.deserialize(child))
 
         return obj
 

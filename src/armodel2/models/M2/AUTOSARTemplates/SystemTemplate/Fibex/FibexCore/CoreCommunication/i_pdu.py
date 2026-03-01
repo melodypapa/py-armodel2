@@ -36,6 +36,11 @@ class IPdu(Pdu, ABC):
         return True
 
     contained_i_pdu_props: Optional[ContainedIPduProps]
+    _DESERIALIZE_DISPATCH = {
+        "CONTAINED-I-PDU-PROPS": lambda obj, elem: setattr(obj, "contained_i_pdu_props", SerializationHelper.deserialize_by_tag(elem, "ContainedIPduProps")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IPdu."""
         super().__init__()
@@ -47,9 +52,8 @@ class IPdu(Pdu, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IPdu, self).serialize()
@@ -94,11 +98,12 @@ class IPdu(Pdu, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IPdu, cls).deserialize(element)
 
-        # Parse contained_i_pdu_props
-        child = SerializationHelper.find_child_element(element, "CONTAINED-I-PDU-PROPS")
-        if child is not None:
-            contained_i_pdu_props_value = SerializationHelper.deserialize_by_tag(child, "ContainedIPduProps")
-            obj.contained_i_pdu_props = contained_i_pdu_props_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONTAINED-I-PDU-PROPS":
+                setattr(obj, "contained_i_pdu_props", SerializationHelper.deserialize_by_tag(child, "ContainedIPduProps"))
 
         return obj
 

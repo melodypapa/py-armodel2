@@ -29,7 +29,15 @@ class MacSecCipherSuiteConfig(ARObject):
         """
         return False
 
+    _XML_TAG = "MAC-SEC-CIPHER-SUITE-CONFIG"
+
+
     cipher_suite: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CIPHER-SUITE": lambda obj, elem: setattr(obj, "cipher_suite", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MacSecCipherSuiteConfig."""
         super().__init__()
@@ -41,9 +49,8 @@ class MacSecCipherSuiteConfig(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MacSecCipherSuiteConfig, self).serialize()
@@ -88,11 +95,12 @@ class MacSecCipherSuiteConfig(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacSecCipherSuiteConfig, cls).deserialize(element)
 
-        # Parse cipher_suite
-        child = SerializationHelper.find_child_element(element, "CIPHER-SUITE")
-        if child is not None:
-            cipher_suite_value = child.text
-            obj.cipher_suite = cipher_suite_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CIPHER-SUITE":
+                setattr(obj, "cipher_suite", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

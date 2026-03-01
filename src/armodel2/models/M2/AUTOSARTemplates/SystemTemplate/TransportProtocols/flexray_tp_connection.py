@@ -46,6 +46,9 @@ class FlexrayTpConnection(TpConnection):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-TP-CONNECTION"
+
+
     bandwidth: Optional[Boolean]
     direct_tp_sdu_ref: Optional[ARRef]
     multicast_ref: Optional[ARRef]
@@ -55,6 +58,19 @@ class FlexrayTpConnection(TpConnection):
     tp_connection_ref: Optional[ARRef]
     transmitter_ref: Optional[ARRef]
     tx_pdu_pool_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BANDWIDTH": lambda obj, elem: setattr(obj, "bandwidth", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "DIRECT-TP-SDU-REF": ("_POLYMORPHIC", "direct_tp_sdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
+        "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
+        "RECEIVER-REFS": lambda obj, elem: [obj.receiver_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "REVERSED-TP-SDU-REF": ("_POLYMORPHIC", "reversed_tp_sdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
+        "RX-PDU-POOL-REF": lambda obj, elem: setattr(obj, "rx_pdu_pool_ref", ARRef.deserialize(elem)),
+        "TP-CONNECTION-REF": lambda obj, elem: setattr(obj, "tp_connection_ref", ARRef.deserialize(elem)),
+        "TRANSMITTER-REF": lambda obj, elem: setattr(obj, "transmitter_ref", ARRef.deserialize(elem)),
+        "TX-PDU-POOL-REF": lambda obj, elem: setattr(obj, "tx_pdu_pool_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayTpConnection."""
         super().__init__()
@@ -74,9 +90,8 @@ class FlexrayTpConnection(TpConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayTpConnection, self).serialize()
@@ -236,69 +251,30 @@ class FlexrayTpConnection(TpConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayTpConnection, cls).deserialize(element)
 
-        # Parse bandwidth
-        child = SerializationHelper.find_child_element(element, "BANDWIDTH")
-        if child is not None:
-            bandwidth_value = child.text
-            obj.bandwidth = bandwidth_value
-
-        # Parse direct_tp_sdu_ref
-        child = SerializationHelper.find_child_element(element, "DIRECT-TP-SDU-REF")
-        if child is not None:
-            direct_tp_sdu_ref_value = ARRef.deserialize(child)
-            obj.direct_tp_sdu_ref = direct_tp_sdu_ref_value
-
-        # Parse multicast_ref
-        child = SerializationHelper.find_child_element(element, "MULTICAST-REF")
-        if child is not None:
-            multicast_ref_value = ARRef.deserialize(child)
-            obj.multicast_ref = multicast_ref_value
-
-        # Parse receiver_refs (list from container "RECEIVER-REFS")
-        obj.receiver_refs = []
-        container = SerializationHelper.find_child_element(element, "RECEIVER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.receiver_refs.append(child_value)
-
-        # Parse reversed_tp_sdu_ref
-        child = SerializationHelper.find_child_element(element, "REVERSED-TP-SDU-REF")
-        if child is not None:
-            reversed_tp_sdu_ref_value = ARRef.deserialize(child)
-            obj.reversed_tp_sdu_ref = reversed_tp_sdu_ref_value
-
-        # Parse rx_pdu_pool_ref
-        child = SerializationHelper.find_child_element(element, "RX-PDU-POOL-REF")
-        if child is not None:
-            rx_pdu_pool_ref_value = ARRef.deserialize(child)
-            obj.rx_pdu_pool_ref = rx_pdu_pool_ref_value
-
-        # Parse tp_connection_ref
-        child = SerializationHelper.find_child_element(element, "TP-CONNECTION-REF")
-        if child is not None:
-            tp_connection_ref_value = ARRef.deserialize(child)
-            obj.tp_connection_ref = tp_connection_ref_value
-
-        # Parse transmitter_ref
-        child = SerializationHelper.find_child_element(element, "TRANSMITTER-REF")
-        if child is not None:
-            transmitter_ref_value = ARRef.deserialize(child)
-            obj.transmitter_ref = transmitter_ref_value
-
-        # Parse tx_pdu_pool_ref
-        child = SerializationHelper.find_child_element(element, "TX-PDU-POOL-REF")
-        if child is not None:
-            tx_pdu_pool_ref_value = ARRef.deserialize(child)
-            obj.tx_pdu_pool_ref = tx_pdu_pool_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BANDWIDTH":
+                setattr(obj, "bandwidth", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "DIRECT-TP-SDU-REF":
+                setattr(obj, "direct_tp_sdu_ref", ARRef.deserialize(child))
+            elif tag == "MULTICAST-REF":
+                setattr(obj, "multicast_ref", ARRef.deserialize(child))
+            elif tag == "RECEIVER-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.receiver_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "REVERSED-TP-SDU-REF":
+                setattr(obj, "reversed_tp_sdu_ref", ARRef.deserialize(child))
+            elif tag == "RX-PDU-POOL-REF":
+                setattr(obj, "rx_pdu_pool_ref", ARRef.deserialize(child))
+            elif tag == "TP-CONNECTION-REF":
+                setattr(obj, "tp_connection_ref", ARRef.deserialize(child))
+            elif tag == "TRANSMITTER-REF":
+                setattr(obj, "transmitter_ref", ARRef.deserialize(child))
+            elif tag == "TX-PDU-POOL-REF":
+                setattr(obj, "tx_pdu_pool_ref", ARRef.deserialize(child))
 
         return obj
 

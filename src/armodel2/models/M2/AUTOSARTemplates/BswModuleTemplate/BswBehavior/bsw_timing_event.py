@@ -34,7 +34,15 @@ class BswTimingEvent(BswScheduleEvent):
         """
         return False
 
+    _XML_TAG = "BSW-TIMING-EVENT"
+
+
     period: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "PERIOD": lambda obj, elem: setattr(obj, "period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswTimingEvent."""
         super().__init__()
@@ -46,9 +54,8 @@ class BswTimingEvent(BswScheduleEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswTimingEvent, self).serialize()
@@ -93,11 +100,12 @@ class BswTimingEvent(BswScheduleEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswTimingEvent, cls).deserialize(element)
 
-        # Parse period
-        child = SerializationHelper.find_child_element(element, "PERIOD")
-        if child is not None:
-            period_value = child.text
-            obj.period = period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PERIOD":
+                setattr(obj, "period", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

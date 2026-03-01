@@ -44,6 +44,13 @@ class AtpInstanceRef(ARObject, ABC):
     atp_base_ref: ARRef
     atp_context_refs: list[ARRef]
     atp_target_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "ATP-BASE-REF": ("_POLYMORPHIC", "atp_base_ref", ["AtpStructureElement", "AtpType"]),
+        "ATP-CONTEXT-REFS": ("_POLYMORPHIC_LIST", "atp_context_refs", ["DataPrototype", "ModeDeclarationGroupPrototype", "PortPrototype", "RootSwCompositionPrototype", "Sw"]),
+        "ATP-TARGET-REF": ("_POLYMORPHIC", "atp_target_ref", ["AtpPrototype", "AtpStructureElement"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AtpInstanceRef."""
         super().__init__()
@@ -57,9 +64,8 @@ class AtpInstanceRef(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AtpInstanceRef, self).serialize()
@@ -135,33 +141,17 @@ class AtpInstanceRef(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AtpInstanceRef, cls).deserialize(element)
 
-        # Parse atp_base_ref
-        child = SerializationHelper.find_child_element(element, "ATP-BASE-REF")
-        if child is not None:
-            atp_base_ref_value = ARRef.deserialize(child)
-            obj.atp_base_ref = atp_base_ref_value
-
-        # Parse atp_context_refs (list from container "ATP-CONTEXT-REFS")
-        obj.atp_context_refs = []
-        container = SerializationHelper.find_child_element(element, "ATP-CONTEXT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.atp_context_refs.append(child_value)
-
-        # Parse atp_target_ref
-        child = SerializationHelper.find_child_element(element, "ATP-TARGET-REF")
-        if child is not None:
-            atp_target_ref_value = ARRef.deserialize(child)
-            obj.atp_target_ref = atp_target_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ATP-BASE-REF":
+                setattr(obj, "atp_base_ref", ARRef.deserialize(child))
+            elif tag == "ATP-CONTEXT-REFS":
+                for item_elem in child:
+                    obj.atp_context_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "ATP-TARGET-REF":
+                setattr(obj, "atp_target_ref", ARRef.deserialize(child))
 
         return obj
 

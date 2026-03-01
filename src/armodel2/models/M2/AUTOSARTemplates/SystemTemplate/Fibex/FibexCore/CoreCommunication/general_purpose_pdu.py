@@ -30,6 +30,9 @@ class GeneralPurposePdu(Pdu):
         """
         return False
 
+    _XML_TAG = "GENERAL-PURPOSE-PDU"
+
+
     def __init__(self) -> None:
         """Initialize GeneralPurposePdu."""
         super().__init__()
@@ -40,9 +43,8 @@ class GeneralPurposePdu(Pdu):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GeneralPurposePdu, self).serialize()

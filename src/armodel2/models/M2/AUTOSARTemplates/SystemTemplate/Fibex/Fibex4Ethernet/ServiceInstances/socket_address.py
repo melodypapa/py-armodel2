@@ -54,6 +54,9 @@ class SocketAddress(Identifiable):
         """
         return False
 
+    _XML_TAG = "SOCKET-ADDRESS"
+
+
     allowed_i_pv6_ext_ref: Optional[ARRef]
     allowed_tcp_ref: Optional[ARRef]
     application_endpoint_endpoint: Optional[ApplicationEndpoint]
@@ -65,6 +68,21 @@ class SocketAddress(Identifiable):
     pdu_collection: Optional[TimeValue]
     static_sockets: list[StaticSocketConnection]
     udp_checksum: Optional[UdpChecksumCalculationEnum]
+    _DESERIALIZE_DISPATCH = {
+        "ALLOWED-I-PV6-EXT-REF": lambda obj, elem: setattr(obj, "allowed_i_pv6_ext_ref", ARRef.deserialize(elem)),
+        "ALLOWED-TCP-REF": lambda obj, elem: setattr(obj, "allowed_tcp_ref", ARRef.deserialize(elem)),
+        "APPLICATION-ENDPOINT-ENDPOINT": lambda obj, elem: setattr(obj, "application_endpoint_endpoint", SerializationHelper.deserialize_by_tag(elem, "ApplicationEndpoint")),
+        "CONNECTOR-REF": lambda obj, elem: setattr(obj, "connector_ref", ARRef.deserialize(elem)),
+        "DIFFERENTIATED": lambda obj, elem: setattr(obj, "differentiated", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "FLOW-LABEL": lambda obj, elem: setattr(obj, "flow_label", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MULTICAST-REFS": lambda obj, elem: [obj.multicast_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "PATH-MTU": lambda obj, elem: setattr(obj, "path_mtu", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PDU-COLLECTION": lambda obj, elem: setattr(obj, "pdu_collection", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "STATIC-SOCKETS": lambda obj, elem: obj.static_sockets.append(SerializationHelper.deserialize_by_tag(elem, "StaticSocketConnection")),
+        "UDP-CHECKSUM": lambda obj, elem: setattr(obj, "udp_checksum", UdpChecksumCalculationEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SocketAddress."""
         super().__init__()
@@ -86,9 +104,8 @@ class SocketAddress(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SocketAddress, self).serialize()
@@ -272,85 +289,36 @@ class SocketAddress(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SocketAddress, cls).deserialize(element)
 
-        # Parse allowed_i_pv6_ext_ref
-        child = SerializationHelper.find_child_element(element, "ALLOWED-I-PV6-EXT-REF")
-        if child is not None:
-            allowed_i_pv6_ext_ref_value = ARRef.deserialize(child)
-            obj.allowed_i_pv6_ext_ref = allowed_i_pv6_ext_ref_value
-
-        # Parse allowed_tcp_ref
-        child = SerializationHelper.find_child_element(element, "ALLOWED-TCP-REF")
-        if child is not None:
-            allowed_tcp_ref_value = ARRef.deserialize(child)
-            obj.allowed_tcp_ref = allowed_tcp_ref_value
-
-        # Parse application_endpoint_endpoint
-        child = SerializationHelper.find_child_element(element, "APPLICATION-ENDPOINT-ENDPOINT")
-        if child is not None:
-            application_endpoint_endpoint_value = SerializationHelper.deserialize_by_tag(child, "ApplicationEndpoint")
-            obj.application_endpoint_endpoint = application_endpoint_endpoint_value
-
-        # Parse connector_ref
-        child = SerializationHelper.find_child_element(element, "CONNECTOR-REF")
-        if child is not None:
-            connector_ref_value = ARRef.deserialize(child)
-            obj.connector_ref = connector_ref_value
-
-        # Parse differentiated
-        child = SerializationHelper.find_child_element(element, "DIFFERENTIATED")
-        if child is not None:
-            differentiated_value = child.text
-            obj.differentiated = differentiated_value
-
-        # Parse flow_label
-        child = SerializationHelper.find_child_element(element, "FLOW-LABEL")
-        if child is not None:
-            flow_label_value = child.text
-            obj.flow_label = flow_label_value
-
-        # Parse multicast_refs (list from container "MULTICAST-REFS")
-        obj.multicast_refs = []
-        container = SerializationHelper.find_child_element(element, "MULTICAST-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.multicast_refs.append(child_value)
-
-        # Parse path_mtu
-        child = SerializationHelper.find_child_element(element, "PATH-MTU")
-        if child is not None:
-            path_mtu_value = child.text
-            obj.path_mtu = path_mtu_value
-
-        # Parse pdu_collection
-        child = SerializationHelper.find_child_element(element, "PDU-COLLECTION")
-        if child is not None:
-            pdu_collection_value = child.text
-            obj.pdu_collection = pdu_collection_value
-
-        # Parse static_sockets (list from container "STATIC-SOCKETS")
-        obj.static_sockets = []
-        container = SerializationHelper.find_child_element(element, "STATIC-SOCKETS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.static_sockets.append(child_value)
-
-        # Parse udp_checksum
-        child = SerializationHelper.find_child_element(element, "UDP-CHECKSUM")
-        if child is not None:
-            udp_checksum_value = UdpChecksumCalculationEnum.deserialize(child)
-            obj.udp_checksum = udp_checksum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ALLOWED-I-PV6-EXT-REF":
+                setattr(obj, "allowed_i_pv6_ext_ref", ARRef.deserialize(child))
+            elif tag == "ALLOWED-TCP-REF":
+                setattr(obj, "allowed_tcp_ref", ARRef.deserialize(child))
+            elif tag == "APPLICATION-ENDPOINT-ENDPOINT":
+                setattr(obj, "application_endpoint_endpoint", SerializationHelper.deserialize_by_tag(child, "ApplicationEndpoint"))
+            elif tag == "CONNECTOR-REF":
+                setattr(obj, "connector_ref", ARRef.deserialize(child))
+            elif tag == "DIFFERENTIATED":
+                setattr(obj, "differentiated", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "FLOW-LABEL":
+                setattr(obj, "flow_label", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MULTICAST-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.multicast_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "PATH-MTU":
+                setattr(obj, "path_mtu", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PDU-COLLECTION":
+                setattr(obj, "pdu_collection", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "STATIC-SOCKETS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.static_sockets.append(SerializationHelper.deserialize_by_tag(item_elem, "StaticSocketConnection"))
+            elif tag == "UDP-CHECKSUM":
+                setattr(obj, "udp_checksum", UdpChecksumCalculationEnum.deserialize(child))
 
         return obj
 

@@ -37,6 +37,12 @@ class Paginateable(DocumentViewSelectable, ABC):
 
     break_: Optional[ChapterEnumBreak]
     keep_with: Optional[KeepWithPreviousEnum]
+    _DESERIALIZE_DISPATCH = {
+        "BREAK": lambda obj, elem: setattr(obj, "break_", ChapterEnumBreak.deserialize(elem)),
+        "KEEP-WITH": lambda obj, elem: setattr(obj, "keep_with", KeepWithPreviousEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Paginateable."""
         super().__init__()
@@ -49,9 +55,8 @@ class Paginateable(DocumentViewSelectable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Paginateable, self).serialize()
@@ -110,17 +115,14 @@ class Paginateable(DocumentViewSelectable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Paginateable, cls).deserialize(element)
 
-        # Parse break_
-        child = SerializationHelper.find_child_element(element, "BREAK")
-        if child is not None:
-            break__value = ChapterEnumBreak.deserialize(child)
-            obj.break_ = break__value
-
-        # Parse keep_with
-        child = SerializationHelper.find_child_element(element, "KEEP-WITH")
-        if child is not None:
-            keep_with_value = KeepWithPreviousEnum.deserialize(child)
-            obj.keep_with = keep_with_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BREAK":
+                setattr(obj, "break_", ChapterEnumBreak.deserialize(child))
+            elif tag == "KEEP-WITH":
+                setattr(obj, "keep_with", KeepWithPreviousEnum.deserialize(child))
 
         return obj
 

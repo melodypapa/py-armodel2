@@ -34,9 +34,19 @@ class TtcanCluster(ARObject):
         """
         return False
 
+    _XML_TAG = "TTCAN-CLUSTER"
+
+
     basic_cycle_length: Optional[Integer]
     ntu: Optional[TimeValue]
     operation_mode: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "BASIC-CYCLE-LENGTH": lambda obj, elem: setattr(obj, "basic_cycle_length", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NTU": lambda obj, elem: setattr(obj, "ntu", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "OPERATION-MODE": lambda obj, elem: setattr(obj, "operation_mode", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TtcanCluster."""
         super().__init__()

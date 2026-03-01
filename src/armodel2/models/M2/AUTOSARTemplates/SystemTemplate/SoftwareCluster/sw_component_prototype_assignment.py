@@ -26,7 +26,15 @@ class SwComponentPrototypeAssignment(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-COMPONENT-PROTOTYPE-ASSIGNMENT"
+
+
     sw_component: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "SW-COMPONENT": lambda obj, elem: setattr(obj, "sw_component", SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwComponentPrototypeAssignment."""
         super().__init__()
@@ -38,9 +46,8 @@ class SwComponentPrototypeAssignment(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwComponentPrototypeAssignment, self).serialize()
@@ -85,11 +92,12 @@ class SwComponentPrototypeAssignment(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwComponentPrototypeAssignment, cls).deserialize(element)
 
-        # Parse sw_component
-        child = SerializationHelper.find_child_element(element, "SW-COMPONENT")
-        if child is not None:
-            sw_component_value = child.text
-            obj.sw_component = sw_component_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SW-COMPONENT":
+                setattr(obj, "sw_component", SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
 
         return obj
 

@@ -32,8 +32,17 @@ class DdsLiveliness(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-LIVELINESS"
+
+
     liveliness_lease: Optional[Float]
     liveness_kind: Optional[DdsLivenessKindEnum]
+    _DESERIALIZE_DISPATCH = {
+        "LIVELINESS-LEASE": lambda obj, elem: setattr(obj, "liveliness_lease", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "LIVENESS-KIND": lambda obj, elem: setattr(obj, "liveness_kind", DdsLivenessKindEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsLiveliness."""
         super().__init__()
@@ -46,9 +55,8 @@ class DdsLiveliness(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsLiveliness, self).serialize()
@@ -107,17 +115,14 @@ class DdsLiveliness(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsLiveliness, cls).deserialize(element)
 
-        # Parse liveliness_lease
-        child = SerializationHelper.find_child_element(element, "LIVELINESS-LEASE")
-        if child is not None:
-            liveliness_lease_value = child.text
-            obj.liveliness_lease = liveliness_lease_value
-
-        # Parse liveness_kind
-        child = SerializationHelper.find_child_element(element, "LIVENESS-KIND")
-        if child is not None:
-            liveness_kind_value = DdsLivenessKindEnum.deserialize(child)
-            obj.liveness_kind = liveness_kind_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LIVELINESS-LEASE":
+                setattr(obj, "liveliness_lease", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "LIVENESS-KIND":
+                setattr(obj, "liveness_kind", DdsLivenessKindEnum.deserialize(child))
 
         return obj
 

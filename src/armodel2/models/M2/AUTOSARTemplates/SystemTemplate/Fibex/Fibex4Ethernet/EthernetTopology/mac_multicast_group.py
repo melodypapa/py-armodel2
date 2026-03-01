@@ -33,7 +33,15 @@ class MacMulticastGroup(Identifiable):
         """
         return False
 
+    _XML_TAG = "MAC-MULTICAST-GROUP"
+
+
     mac_multicast: Optional[MacAddressString]
+    _DESERIALIZE_DISPATCH = {
+        "MAC-MULTICAST": lambda obj, elem: setattr(obj, "mac_multicast", SerializationHelper.deserialize_by_tag(elem, "MacAddressString")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MacMulticastGroup."""
         super().__init__()
@@ -45,9 +53,8 @@ class MacMulticastGroup(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MacMulticastGroup, self).serialize()
@@ -92,11 +99,12 @@ class MacMulticastGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacMulticastGroup, cls).deserialize(element)
 
-        # Parse mac_multicast
-        child = SerializationHelper.find_child_element(element, "MAC-MULTICAST")
-        if child is not None:
-            mac_multicast_value = child.text
-            obj.mac_multicast = mac_multicast_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAC-MULTICAST":
+                setattr(obj, "mac_multicast", SerializationHelper.deserialize_by_tag(child, "MacAddressString"))
 
         return obj
 

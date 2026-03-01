@@ -38,7 +38,15 @@ class SwSystemconstantValueSet(ARElement):
         """
         return False
 
+    _XML_TAG = "SW-SYSTEMCONSTANT-VALUE-SET"
+
+
     sws: list[SwSystemconstValue]
+    _DESERIALIZE_DISPATCH = {
+        "SWS": lambda obj, elem: obj.sws.append(SerializationHelper.deserialize_by_tag(elem, "SwSystemconstValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwSystemconstantValueSet."""
         super().__init__()
@@ -50,9 +58,8 @@ class SwSystemconstantValueSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwSystemconstantValueSet, self).serialize()
@@ -93,15 +100,14 @@ class SwSystemconstantValueSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwSystemconstantValueSet, cls).deserialize(element)
 
-        # Parse sws (list from container "SWS")
-        obj.sws = []
-        container = SerializationHelper.find_child_element(element, "SWS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sws.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SWS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sws.append(SerializationHelper.deserialize_by_tag(item_elem, "SwSystemconstValue"))
 
         return obj
 

@@ -30,7 +30,15 @@ class EcucDestinationUriDef(Identifiable):
         """
         return False
 
+    _XML_TAG = "ECUC-DESTINATION-URI-DEF"
+
+
     destination_uri: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION-URI": lambda obj, elem: setattr(obj, "destination_uri", SerializationHelper.deserialize_by_tag(elem, "any (EcucDestinationUri)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucDestinationUriDef."""
         super().__init__()
@@ -42,9 +50,8 @@ class EcucDestinationUriDef(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucDestinationUriDef, self).serialize()
@@ -89,11 +96,12 @@ class EcucDestinationUriDef(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucDestinationUriDef, cls).deserialize(element)
 
-        # Parse destination_uri
-        child = SerializationHelper.find_child_element(element, "DESTINATION-URI")
-        if child is not None:
-            destination_uri_value = child.text
-            obj.destination_uri = destination_uri_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DESTINATION-URI":
+                setattr(obj, "destination_uri", SerializationHelper.deserialize_by_tag(child, "any (EcucDestinationUri)"))
 
         return obj
 

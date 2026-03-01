@@ -33,7 +33,15 @@ class EcucAddInfoParamValue(EcucParameterValue):
         """
         return False
 
+    _XML_TAG = "ECUC-ADD-INFO-PARAM-VALUE"
+
+
     value: Optional[DocumentationBlock]
+    _DESERIALIZE_DISPATCH = {
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucAddInfoParamValue."""
         super().__init__()
@@ -45,9 +53,8 @@ class EcucAddInfoParamValue(EcucParameterValue):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucAddInfoParamValue, self).serialize()
@@ -92,11 +99,12 @@ class EcucAddInfoParamValue(EcucParameterValue):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucAddInfoParamValue, cls).deserialize(element)
 
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
 
         return obj
 

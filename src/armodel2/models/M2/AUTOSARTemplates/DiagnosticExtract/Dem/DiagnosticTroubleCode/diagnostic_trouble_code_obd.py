@@ -38,10 +38,21 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-TROUBLE-CODE-OBD"
+
+
     consider_pto: Optional[Boolean]
     dtc_props_props_ref: Optional[ARRef]
     event_readiness: Optional[EventObdReadinessGroup]
     obd_dtc_value: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CONSIDER-PTO": lambda obj, elem: setattr(obj, "consider_pto", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "DTC-PROPS-PROPS-REF": ("_POLYMORPHIC", "dtc_props_props_ref", ["DiagnosticTroubleCodeJ1939", "DiagnosticTroubleCodeObd", "DiagnosticTroubleCodeUds"]),
+        "EVENT-READINESS": lambda obj, elem: setattr(obj, "event_readiness", SerializationHelper.deserialize_by_tag(elem, "EventObdReadinessGroup")),
+        "OBD-DTC-VALUE": lambda obj, elem: setattr(obj, "obd_dtc_value", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeObd."""
         super().__init__()
@@ -56,9 +67,8 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticTroubleCodeObd, self).serialize()
@@ -145,29 +155,18 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTroubleCodeObd, cls).deserialize(element)
 
-        # Parse consider_pto
-        child = SerializationHelper.find_child_element(element, "CONSIDER-PTO")
-        if child is not None:
-            consider_pto_value = child.text
-            obj.consider_pto = consider_pto_value
-
-        # Parse dtc_props_props_ref
-        child = SerializationHelper.find_child_element(element, "DTC-PROPS-PROPS-REF")
-        if child is not None:
-            dtc_props_props_ref_value = ARRef.deserialize(child)
-            obj.dtc_props_props_ref = dtc_props_props_ref_value
-
-        # Parse event_readiness
-        child = SerializationHelper.find_child_element(element, "EVENT-READINESS")
-        if child is not None:
-            event_readiness_value = SerializationHelper.deserialize_by_tag(child, "EventObdReadinessGroup")
-            obj.event_readiness = event_readiness_value
-
-        # Parse obd_dtc_value
-        child = SerializationHelper.find_child_element(element, "OBD-DTC-VALUE")
-        if child is not None:
-            obd_dtc_value_value = child.text
-            obj.obd_dtc_value = obd_dtc_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONSIDER-PTO":
+                setattr(obj, "consider_pto", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "DTC-PROPS-PROPS-REF":
+                setattr(obj, "dtc_props_props_ref", ARRef.deserialize(child))
+            elif tag == "EVENT-READINESS":
+                setattr(obj, "event_readiness", SerializationHelper.deserialize_by_tag(child, "EventObdReadinessGroup"))
+            elif tag == "OBD-DTC-VALUE":
+                setattr(obj, "obd_dtc_value", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

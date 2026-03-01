@@ -33,8 +33,17 @@ class CouplingPortTrafficClassAssignment(Referrable):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT-TRAFFIC-CLASS-ASSIGNMENT"
+
+
     priority: PositiveInteger
     traffic_class: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TRAFFIC-CLASS": lambda obj, elem: setattr(obj, "traffic_class", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPortTrafficClassAssignment."""
         super().__init__()
@@ -47,9 +56,8 @@ class CouplingPortTrafficClassAssignment(Referrable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPortTrafficClassAssignment, self).serialize()
@@ -108,17 +116,14 @@ class CouplingPortTrafficClassAssignment(Referrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CouplingPortTrafficClassAssignment, cls).deserialize(element)
 
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse traffic_class
-        child = SerializationHelper.find_child_element(element, "TRAFFIC-CLASS")
-        if child is not None:
-            traffic_class_value = child.text
-            obj.traffic_class = traffic_class_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TRAFFIC-CLASS":
+                setattr(obj, "traffic_class", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -49,6 +49,15 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
     origin: Optional[String]
     post_build_variant: Optional[Boolean]
     requires_index: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION-URI-REFS": lambda obj, elem: [obj.destination_uri_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "MULTIPLICITIES": lambda obj, elem: obj.multiplicities.append(SerializationHelper.deserialize_by_tag(elem, "EcucMultiplicityConfigurationClass")),
+        "ORIGIN": lambda obj, elem: setattr(obj, "origin", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "REQUIRES-INDEX": lambda obj, elem: setattr(obj, "requires_index", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucContainerDef."""
         super().__init__()
@@ -64,9 +73,8 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucContainerDef, self).serialize()
@@ -166,49 +174,24 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucContainerDef, cls).deserialize(element)
 
-        # Parse destination_uri_refs (list from container "DESTINATION-URI-REFS")
-        obj.destination_uri_refs = []
-        container = SerializationHelper.find_child_element(element, "DESTINATION-URI-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.destination_uri_refs.append(child_value)
-
-        # Parse multiplicities (list from container "MULTIPLICITIES")
-        obj.multiplicities = []
-        container = SerializationHelper.find_child_element(element, "MULTIPLICITIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.multiplicities.append(child_value)
-
-        # Parse origin
-        child = SerializationHelper.find_child_element(element, "ORIGIN")
-        if child is not None:
-            origin_value = child.text
-            obj.origin = origin_value
-
-        # Parse post_build_variant
-        child = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANT")
-        if child is not None:
-            post_build_variant_value = child.text
-            obj.post_build_variant = post_build_variant_value
-
-        # Parse requires_index
-        child = SerializationHelper.find_child_element(element, "REQUIRES-INDEX")
-        if child is not None:
-            requires_index_value = child.text
-            obj.requires_index = requires_index_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DESTINATION-URI-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.destination_uri_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "MULTIPLICITIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.multiplicities.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucMultiplicityConfigurationClass"))
+            elif tag == "ORIGIN":
+                setattr(obj, "origin", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "POST-BUILD-VARIANT":
+                setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "REQUIRES-INDEX":
+                setattr(obj, "requires_index", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

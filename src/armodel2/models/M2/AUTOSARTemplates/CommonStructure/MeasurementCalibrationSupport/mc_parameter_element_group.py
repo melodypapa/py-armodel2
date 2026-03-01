@@ -36,9 +36,19 @@ class McParameterElementGroup(ARObject):
         """
         return False
 
+    _XML_TAG = "MC-PARAMETER-ELEMENT-GROUP"
+
+
     ram_location_ref: Optional[ARRef]
     rom_location_ref: Optional[ARRef]
     short_label: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "RAM-LOCATION-REF": lambda obj, elem: setattr(obj, "ram_location_ref", ARRef.deserialize(elem)),
+        "ROM-LOCATION-REF": lambda obj, elem: setattr(obj, "rom_location_ref", ARRef.deserialize(elem)),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize McParameterElementGroup."""
         super().__init__()
@@ -52,9 +62,8 @@ class McParameterElementGroup(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(McParameterElementGroup, self).serialize()
@@ -127,23 +136,16 @@ class McParameterElementGroup(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(McParameterElementGroup, cls).deserialize(element)
 
-        # Parse ram_location_ref
-        child = SerializationHelper.find_child_element(element, "RAM-LOCATION-REF")
-        if child is not None:
-            ram_location_ref_value = ARRef.deserialize(child)
-            obj.ram_location_ref = ram_location_ref_value
-
-        # Parse rom_location_ref
-        child = SerializationHelper.find_child_element(element, "ROM-LOCATION-REF")
-        if child is not None:
-            rom_location_ref_value = ARRef.deserialize(child)
-            obj.rom_location_ref = rom_location_ref_value
-
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RAM-LOCATION-REF":
+                setattr(obj, "ram_location_ref", ARRef.deserialize(child))
+            elif tag == "ROM-LOCATION-REF":
+                setattr(obj, "rom_location_ref", ARRef.deserialize(child))
+            elif tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

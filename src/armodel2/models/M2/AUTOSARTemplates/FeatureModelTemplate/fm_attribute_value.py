@@ -33,8 +33,17 @@ class FMAttributeValue(ARObject):
         """
         return False
 
+    _XML_TAG = "F-M-ATTRIBUTE-VALUE"
+
+
     definition_ref: Optional[ARRef]
     value: Optional[Numerical]
+    _DESERIALIZE_DISPATCH = {
+        "DEFINITION-REF": lambda obj, elem: setattr(obj, "definition_ref", ARRef.deserialize(elem)),
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FMAttributeValue."""
         super().__init__()
@@ -47,9 +56,8 @@ class FMAttributeValue(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FMAttributeValue, self).serialize()
@@ -108,17 +116,14 @@ class FMAttributeValue(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMAttributeValue, cls).deserialize(element)
 
-        # Parse definition_ref
-        child = SerializationHelper.find_child_element(element, "DEFINITION-REF")
-        if child is not None:
-            definition_ref_value = ARRef.deserialize(child)
-            obj.definition_ref = definition_ref_value
-
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = child.text
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEFINITION-REF":
+                setattr(obj, "definition_ref", ARRef.deserialize(child))
+            elif tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "Numerical"))
 
         return obj
 

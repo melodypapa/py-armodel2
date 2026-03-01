@@ -36,6 +36,11 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
         return True
 
     bsw_module_description_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BSW-MODULE-DESCRIPTION-REF": lambda obj, elem: setattr(obj, "bsw_module_description_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventBsw."""
         super().__init__()
@@ -47,9 +52,8 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventBsw, self).serialize()
@@ -94,11 +98,12 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventBsw, cls).deserialize(element)
 
-        # Parse bsw_module_description_ref
-        child = SerializationHelper.find_child_element(element, "BSW-MODULE-DESCRIPTION-REF")
-        if child is not None:
-            bsw_module_description_ref_value = ARRef.deserialize(child)
-            obj.bsw_module_description_ref = bsw_module_description_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BSW-MODULE-DESCRIPTION-REF":
+                setattr(obj, "bsw_module_description_ref", ARRef.deserialize(child))
 
         return obj
 

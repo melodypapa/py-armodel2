@@ -29,6 +29,9 @@ class EcucFunctionNameDef(ARObject):
         """
         return False
 
+    _XML_TAG = "ECUC-FUNCTION-NAME-DEF"
+
+
     def __init__(self) -> None:
         """Initialize EcucFunctionNameDef."""
         super().__init__()

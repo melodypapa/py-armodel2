@@ -29,9 +29,19 @@ class BusMirrorCanIdRangeMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "BUS-MIRROR-CAN-ID-RANGE-MAPPING"
+
+
     destination_base: Optional[PositiveInteger]
     source_can_id_code: Optional[PositiveInteger]
     source_can_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION-BASE": lambda obj, elem: setattr(obj, "destination_base", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SOURCE-CAN-ID-CODE": lambda obj, elem: setattr(obj, "source_can_id_code", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SOURCE-CAN-ID": lambda obj, elem: setattr(obj, "source_can_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BusMirrorCanIdRangeMapping."""
         super().__init__()
@@ -45,9 +55,8 @@ class BusMirrorCanIdRangeMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BusMirrorCanIdRangeMapping, self).serialize()
@@ -120,23 +129,16 @@ class BusMirrorCanIdRangeMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BusMirrorCanIdRangeMapping, cls).deserialize(element)
 
-        # Parse destination_base
-        child = SerializationHelper.find_child_element(element, "DESTINATION-BASE")
-        if child is not None:
-            destination_base_value = child.text
-            obj.destination_base = destination_base_value
-
-        # Parse source_can_id_code
-        child = SerializationHelper.find_child_element(element, "SOURCE-CAN-ID-CODE")
-        if child is not None:
-            source_can_id_code_value = child.text
-            obj.source_can_id_code = source_can_id_code_value
-
-        # Parse source_can_id
-        child = SerializationHelper.find_child_element(element, "SOURCE-CAN-ID")
-        if child is not None:
-            source_can_id_value = child.text
-            obj.source_can_id = source_can_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DESTINATION-BASE":
+                setattr(obj, "destination_base", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SOURCE-CAN-ID-CODE":
+                setattr(obj, "source_can_id_code", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SOURCE-CAN-ID":
+                setattr(obj, "source_can_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

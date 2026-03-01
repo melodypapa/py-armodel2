@@ -29,7 +29,15 @@ class CompuGenericMath(ARObject):
         """
         return False
 
+    _XML_TAG = "COMPU-GENERIC-MATH"
+
+
     level: Optional[PrimitiveIdentifier]
+    _DESERIALIZE_DISPATCH = {
+        "LEVEL": lambda obj, elem: setattr(obj, "level", SerializationHelper.deserialize_by_tag(elem, "PrimitiveIdentifier")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompuGenericMath."""
         super().__init__()
@@ -41,9 +49,8 @@ class CompuGenericMath(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompuGenericMath, self).serialize()
@@ -88,11 +95,12 @@ class CompuGenericMath(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuGenericMath, cls).deserialize(element)
 
-        # Parse level
-        child = SerializationHelper.find_child_element(element, "LEVEL")
-        if child is not None:
-            level_value = child.text
-            obj.level = level_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LEVEL":
+                setattr(obj, "level", SerializationHelper.deserialize_by_tag(child, "PrimitiveIdentifier"))
 
         return obj
 

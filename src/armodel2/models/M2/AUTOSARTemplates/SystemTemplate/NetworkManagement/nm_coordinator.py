@@ -38,10 +38,21 @@ class NmCoordinator(ARObject):
         """
         return False
 
+    _XML_TAG = "NM-COORDINATOR"
+
+
     index: Optional[Integer]
     nm_coord_sync: Optional[Boolean]
     nm_global: Optional[TimeValue]
     nm_node_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "INDEX": lambda obj, elem: setattr(obj, "index", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NM-COORD-SYNC": lambda obj, elem: setattr(obj, "nm_coord_sync", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-GLOBAL": lambda obj, elem: setattr(obj, "nm_global", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "NM-NODE-REFS": ("_POLYMORPHIC_LIST", "nm_node_refs", ["CanNmNode", "FlexrayNmNode", "J1939NmNode", "UdpNmNode"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NmCoordinator."""
         super().__init__()
@@ -56,9 +67,8 @@ class NmCoordinator(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NmCoordinator, self).serialize()
@@ -148,39 +158,19 @@ class NmCoordinator(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NmCoordinator, cls).deserialize(element)
 
-        # Parse index
-        child = SerializationHelper.find_child_element(element, "INDEX")
-        if child is not None:
-            index_value = child.text
-            obj.index = index_value
-
-        # Parse nm_coord_sync
-        child = SerializationHelper.find_child_element(element, "NM-COORD-SYNC")
-        if child is not None:
-            nm_coord_sync_value = child.text
-            obj.nm_coord_sync = nm_coord_sync_value
-
-        # Parse nm_global
-        child = SerializationHelper.find_child_element(element, "NM-GLOBAL")
-        if child is not None:
-            nm_global_value = child.text
-            obj.nm_global = nm_global_value
-
-        # Parse nm_node_refs (list from container "NM-NODE-REFS")
-        obj.nm_node_refs = []
-        container = SerializationHelper.find_child_element(element, "NM-NODE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.nm_node_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INDEX":
+                setattr(obj, "index", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "NM-COORD-SYNC":
+                setattr(obj, "nm_coord_sync", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-GLOBAL":
+                setattr(obj, "nm_global", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "NM-NODE-REFS":
+                for item_elem in child:
+                    obj.nm_node_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

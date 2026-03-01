@@ -33,8 +33,17 @@ class AnalyzedExecutionTime(ExecutionTime):
         """
         return False
 
+    _XML_TAG = "ANALYZED-EXECUTION-TIME"
+
+
     best_case: Optional[MultidimensionalTime]
     worst_case: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "BEST-CASE": lambda obj, elem: setattr(obj, "best_case", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "WORST-CASE": lambda obj, elem: setattr(obj, "worst_case", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AnalyzedExecutionTime."""
         super().__init__()
@@ -47,9 +56,8 @@ class AnalyzedExecutionTime(ExecutionTime):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AnalyzedExecutionTime, self).serialize()
@@ -108,17 +116,14 @@ class AnalyzedExecutionTime(ExecutionTime):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AnalyzedExecutionTime, cls).deserialize(element)
 
-        # Parse best_case
-        child = SerializationHelper.find_child_element(element, "BEST-CASE")
-        if child is not None:
-            best_case_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.best_case = best_case_value
-
-        # Parse worst_case
-        child = SerializationHelper.find_child_element(element, "WORST-CASE")
-        if child is not None:
-            worst_case_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.worst_case = worst_case_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BEST-CASE":
+                setattr(obj, "best_case", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "WORST-CASE":
+                setattr(obj, "worst_case", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

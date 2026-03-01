@@ -42,11 +42,23 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         """
         return False
 
+    _XML_TAG = "COUPLING-ELEMENT-SWITCH-DETAILS"
+
+
     flow_meterings: list[SwitchFlowMeteringEntry]
     stream_filters: list[SwitchStreamFilterEntry]
     stream_gates: list[SwitchStreamGateEntry]
     switch_streams: list[Any]
     traffic_shapers: list[SwitchAsynchronousTrafficShaperGroupEntry]
+    _DESERIALIZE_DISPATCH = {
+        "FLOW-METERINGS": lambda obj, elem: obj.flow_meterings.append(SerializationHelper.deserialize_by_tag(elem, "SwitchFlowMeteringEntry")),
+        "STREAM-FILTERS": lambda obj, elem: obj.stream_filters.append(SerializationHelper.deserialize_by_tag(elem, "SwitchStreamFilterEntry")),
+        "STREAM-GATES": lambda obj, elem: obj.stream_gates.append(SerializationHelper.deserialize_by_tag(elem, "SwitchStreamGateEntry")),
+        "SWITCH-STREAMS": lambda obj, elem: obj.switch_streams.append(SerializationHelper.deserialize_by_tag(elem, "any (SwitchStream)")),
+        "TRAFFIC-SHAPERS": lambda obj, elem: obj.traffic_shapers.append(SerializationHelper.deserialize_by_tag(elem, "SwitchAsynchronousTrafficShaperGroupEntry")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingElementSwitchDetails."""
         super().__init__()
@@ -62,9 +74,8 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingElementSwitchDetails, self).serialize()
@@ -145,55 +156,30 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CouplingElementSwitchDetails, cls).deserialize(element)
 
-        # Parse flow_meterings (list from container "FLOW-METERINGS")
-        obj.flow_meterings = []
-        container = SerializationHelper.find_child_element(element, "FLOW-METERINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.flow_meterings.append(child_value)
-
-        # Parse stream_filters (list from container "STREAM-FILTERS")
-        obj.stream_filters = []
-        container = SerializationHelper.find_child_element(element, "STREAM-FILTERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.stream_filters.append(child_value)
-
-        # Parse stream_gates (list from container "STREAM-GATES")
-        obj.stream_gates = []
-        container = SerializationHelper.find_child_element(element, "STREAM-GATES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.stream_gates.append(child_value)
-
-        # Parse switch_streams (list from container "SWITCH-STREAMS")
-        obj.switch_streams = []
-        container = SerializationHelper.find_child_element(element, "SWITCH-STREAMS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.switch_streams.append(child_value)
-
-        # Parse traffic_shapers (list from container "TRAFFIC-SHAPERS")
-        obj.traffic_shapers = []
-        container = SerializationHelper.find_child_element(element, "TRAFFIC-SHAPERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.traffic_shapers.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FLOW-METERINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.flow_meterings.append(SerializationHelper.deserialize_by_tag(item_elem, "SwitchFlowMeteringEntry"))
+            elif tag == "STREAM-FILTERS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.stream_filters.append(SerializationHelper.deserialize_by_tag(item_elem, "SwitchStreamFilterEntry"))
+            elif tag == "STREAM-GATES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.stream_gates.append(SerializationHelper.deserialize_by_tag(item_elem, "SwitchStreamGateEntry"))
+            elif tag == "SWITCH-STREAMS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.switch_streams.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwitchStream)"))
+            elif tag == "TRAFFIC-SHAPERS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.traffic_shapers.append(SerializationHelper.deserialize_by_tag(item_elem, "SwitchAsynchronousTrafficShaperGroupEntry"))
 
         return obj
 

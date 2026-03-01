@@ -34,7 +34,15 @@ class TDEventSLLETPort(TDEventSLLET):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-S-L-L-E-T-PORT"
+
+
     port_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventSLLETPort."""
         super().__init__()
@@ -46,9 +54,8 @@ class TDEventSLLETPort(TDEventSLLET):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventSLLETPort, self).serialize()
@@ -93,11 +100,12 @@ class TDEventSLLETPort(TDEventSLLET):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventSLLETPort, cls).deserialize(element)
 
-        # Parse port_ref
-        child = SerializationHelper.find_child_element(element, "PORT-REF")
-        if child is not None:
-            port_ref_value = ARRef.deserialize(child)
-            obj.port_ref = port_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PORT-REF":
+                setattr(obj, "port_ref", ARRef.deserialize(child))
 
         return obj
 

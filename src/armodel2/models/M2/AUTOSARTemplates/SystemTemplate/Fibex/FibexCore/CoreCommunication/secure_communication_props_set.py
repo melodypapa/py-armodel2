@@ -30,8 +30,17 @@ class SecureCommunicationPropsSet(FibexElement):
         """
         return False
 
+    _XML_TAG = "SECURE-COMMUNICATION-PROPS-SET"
+
+
     authentications: list[Any]
     freshness_propses: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "AUTHENTICATIONS": lambda obj, elem: obj.authentications.append(SerializationHelper.deserialize_by_tag(elem, "any (SecureCommunication)")),
+        "FRESHNESS-PROPSES": lambda obj, elem: obj.freshness_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SecureCommunication)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecureCommunicationPropsSet."""
         super().__init__()
@@ -44,9 +53,8 @@ class SecureCommunicationPropsSet(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecureCommunicationPropsSet, self).serialize()
@@ -97,25 +105,18 @@ class SecureCommunicationPropsSet(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecureCommunicationPropsSet, cls).deserialize(element)
 
-        # Parse authentications (list from container "AUTHENTICATIONS")
-        obj.authentications = []
-        container = SerializationHelper.find_child_element(element, "AUTHENTICATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.authentications.append(child_value)
-
-        # Parse freshness_propses (list from container "FRESHNESS-PROPSES")
-        obj.freshness_propses = []
-        container = SerializationHelper.find_child_element(element, "FRESHNESS-PROPSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.freshness_propses.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AUTHENTICATIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.authentications.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SecureCommunication)"))
+            elif tag == "FRESHNESS-PROPSES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.freshness_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SecureCommunication)"))
 
         return obj
 

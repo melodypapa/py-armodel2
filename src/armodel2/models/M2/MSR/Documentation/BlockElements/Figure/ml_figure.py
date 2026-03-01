@@ -47,12 +47,25 @@ class MlFigure(Paginateable):
         """
         return False
 
+    _XML_TAG = "ML-FIGURE"
+
+
     figure_caption: Optional[Caption]
     frame: Optional[FrameEnum]
     help_entry: Optional[String]
     _l_graphics: list[LGraphic]
     pgwide: Optional[PgwideEnum]
     verbatim: Optional[MultiLanguageVerbatim]
+    _DESERIALIZE_DISPATCH = {
+        "FIGURE-CAPTION": lambda obj, elem: setattr(obj, "figure_caption", SerializationHelper.deserialize_by_tag(elem, "Caption")),
+        "FRAME": lambda obj, elem: setattr(obj, "frame", FrameEnum.deserialize(elem)),
+        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "L-GRAPHICS": lambda obj, elem: obj._l_graphics.append(SerializationHelper.deserialize_by_tag(elem, "LGraphic")),
+        "PGWIDE": lambda obj, elem: setattr(obj, "pgwide", PgwideEnum.deserialize(elem)),
+        "VERBATIM": lambda obj, elem: setattr(obj, "verbatim", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageVerbatim")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MlFigure."""
         super().__init__()
@@ -80,9 +93,8 @@ class MlFigure(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MlFigure, self).serialize()
@@ -145,14 +157,15 @@ class MlFigure(Paginateable):
             for item in self.l_graphics:
                 serialized = SerializationHelper.serialize_item(item, "LGraphic")
                 if serialized is not None:
-                    child_elem = ET.Element("L-GRAPHIC")
+                    # Wrap with correct tag from @xml_element_name decorator
+                    wrapped = ET.Element("L-GRAPHIC")
                     if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
+                        wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
-                        child_elem.text = serialized.text
+                        wrapped.text = serialized.text
                     for child in serialized:
-                        child_elem.append(child)
-                    elem.append(child_elem)
+                        wrapped.append(child)
+                    elem.append(wrapped)
         # Serialize pgwide
         if self.pgwide is not None:
             serialized = SerializationHelper.serialize_item(self.pgwide, "PgwideEnum")
@@ -196,44 +209,25 @@ class MlFigure(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MlFigure, cls).deserialize(element)
 
-        # Parse figure_caption
-        child = SerializationHelper.find_child_element(element, "FIGURE-CAPTION")
-        if child is not None:
-            figure_caption_value = SerializationHelper.deserialize_by_tag(child, "Caption")
-            obj.figure_caption = figure_caption_value
-
-        # Parse frame
-        child = SerializationHelper.find_child_element(element, "FRAME")
-        if child is not None:
-            frame_value = FrameEnum.deserialize(child)
-            obj.frame = frame_value
-
-        # Parse help_entry
-        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
-        if child is not None:
-            help_entry_value = child.text
-            obj.help_entry = help_entry_value
-
-        # Parse l_graphics (list of direct "L-GRAPHIC" children, no container)
-        obj.l_graphics = []
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
         for child in element:
-            child_element_tag = SerializationHelper.strip_namespace(child.tag)
-            if child_element_tag == "L-GRAPHIC":                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.l_graphics.append(child_value)
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FIGURE-CAPTION":
+                setattr(obj, "figure_caption", SerializationHelper.deserialize_by_tag(child, "Caption"))
+            elif tag == "FRAME":
+                setattr(obj, "frame", FrameEnum.deserialize(child))
+            elif tag == "HELP-ENTRY":
+                setattr(obj, "help_entry", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "PGWIDE":
+                setattr(obj, "pgwide", PgwideEnum.deserialize(child))
+            elif tag == "VERBATIM":
+                setattr(obj, "verbatim", SerializationHelper.deserialize_by_tag(child, "MultiLanguageVerbatim"))
 
-        # Parse pgwide
-        child = SerializationHelper.find_child_element(element, "PGWIDE")
-        if child is not None:
-            pgwide_value = PgwideEnum.deserialize(child)
-            obj.pgwide = pgwide_value
-
-        # Parse verbatim
-        child = SerializationHelper.find_child_element(element, "VERBATIM")
-        if child is not None:
-            verbatim_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageVerbatim")
-            obj.verbatim = verbatim_value
+        # Parse l_graphics (list with lang_prefix "L-GRAPHIC")
+        for child in SerializationHelper.find_all_child_elements(element, "L-GRAPHIC"):
+            l_graphics_item = SerializationHelper.deserialize_by_tag(child, "LGraphic")
+            obj._l_graphics.append(l_graphics_item)
 
         return obj
 

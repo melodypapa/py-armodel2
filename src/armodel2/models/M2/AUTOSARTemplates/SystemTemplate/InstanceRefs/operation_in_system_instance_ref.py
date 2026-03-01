@@ -39,10 +39,21 @@ class OperationInSystemInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "OPERATION-IN-SYSTEM-INSTANCE-REF"
+
+
     base_ref: Optional[ARRef]
     context_ref: Optional[ARRef]
     context_port_ref: ARRef
     target_operation_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "CONTEXT-REF": lambda obj, elem: setattr(obj, "context_ref", ARRef.deserialize(elem)),
+        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "TARGET-OPERATION-REF": lambda obj, elem: setattr(obj, "target_operation_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize OperationInSystemInstanceRef."""
         super().__init__()
@@ -57,9 +68,8 @@ class OperationInSystemInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(OperationInSystemInstanceRef, self).serialize()
@@ -146,29 +156,18 @@ class OperationInSystemInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(OperationInSystemInstanceRef, cls).deserialize(element)
 
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse context_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-REF")
-        if child is not None:
-            context_ref_value = ARRef.deserialize(child)
-            obj.context_ref = context_ref_value
-
-        # Parse context_port_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-PORT-REF")
-        if child is not None:
-            context_port_ref_value = ARRef.deserialize(child)
-            obj.context_port_ref = context_port_ref_value
-
-        # Parse target_operation_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-OPERATION-REF")
-        if child is not None:
-            target_operation_ref_value = ARRef.deserialize(child)
-            obj.target_operation_ref = target_operation_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BASE-REF":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-REF":
+                setattr(obj, "context_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-PORT-REF":
+                setattr(obj, "context_port_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-OPERATION-REF":
+                setattr(obj, "target_operation_ref", ARRef.deserialize(child))
 
         return obj
 

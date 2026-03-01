@@ -44,6 +44,9 @@ class EndToEndTransformationDescription(TransformationDescription):
         """
         return False
 
+    _XML_TAG = "END-TO-END-TRANSFORMATION-DESCRIPTION"
+
+
     clear_from_valid: Optional[Boolean]
     counter_offset: Optional[PositiveInteger]
     crc_offset: Optional[PositiveInteger]
@@ -62,6 +65,28 @@ class EndToEndTransformationDescription(TransformationDescription):
     upper_header: Optional[PositiveInteger]
     window_size_init: Optional[PositiveInteger]
     window_size: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CLEAR-FROM-VALID": lambda obj, elem: setattr(obj, "clear_from_valid", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "COUNTER-OFFSET": lambda obj, elem: setattr(obj, "counter_offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "CRC-OFFSET": lambda obj, elem: setattr(obj, "crc_offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "DATA-ID-MODE": lambda obj, elem: setattr(obj, "data_id_mode", DataIdModeEnum.deserialize(elem)),
+        "DATA-ID-NIBBLE": lambda obj, elem: setattr(obj, "data_id_nibble", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "E2E-PROFILE-REF": lambda obj, elem: setattr(obj, "e2e_profile_ref", ARRef.deserialize(elem)),
+        "MAX-DELTA": lambda obj, elem: setattr(obj, "max_delta", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-ERROR-STATE": lambda obj, elem: setattr(obj, "max_error_state", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-NO-NEW-OR": lambda obj, elem: setattr(obj, "max_no_new_or", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MIN-OK-STATE-INIT": lambda obj, elem: setattr(obj, "min_ok_state_init", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MIN-OK-STATE": lambda obj, elem: setattr(obj, "min_ok_state", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "OFFSET": lambda obj, elem: setattr(obj, "offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PROFILE-BEHAVIOR-BEHAVIOR-ENUM": lambda obj, elem: setattr(obj, "profile_behavior_behavior_enum", EndToEndProfileBehaviorEnum.deserialize(elem)),
+        "PROFILE-NAME": lambda obj, elem: setattr(obj, "profile_name", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "SYNC-COUNTER-INIT": lambda obj, elem: setattr(obj, "sync_counter_init", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "UPPER-HEADER": lambda obj, elem: setattr(obj, "upper_header", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "WINDOW-SIZE-INIT": lambda obj, elem: setattr(obj, "window_size_init", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "WINDOW-SIZE": lambda obj, elem: setattr(obj, "window_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EndToEndTransformationDescription."""
         super().__init__()
@@ -90,9 +115,8 @@ class EndToEndTransformationDescription(TransformationDescription):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EndToEndTransformationDescription, self).serialize()
@@ -375,113 +399,46 @@ class EndToEndTransformationDescription(TransformationDescription):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EndToEndTransformationDescription, cls).deserialize(element)
 
-        # Parse clear_from_valid
-        child = SerializationHelper.find_child_element(element, "CLEAR-FROM-VALID")
-        if child is not None:
-            clear_from_valid_value = child.text
-            obj.clear_from_valid = clear_from_valid_value
-
-        # Parse counter_offset
-        child = SerializationHelper.find_child_element(element, "COUNTER-OFFSET")
-        if child is not None:
-            counter_offset_value = child.text
-            obj.counter_offset = counter_offset_value
-
-        # Parse crc_offset
-        child = SerializationHelper.find_child_element(element, "CRC-OFFSET")
-        if child is not None:
-            crc_offset_value = child.text
-            obj.crc_offset = crc_offset_value
-
-        # Parse data_id_mode
-        child = SerializationHelper.find_child_element(element, "DATA-ID-MODE")
-        if child is not None:
-            data_id_mode_value = DataIdModeEnum.deserialize(child)
-            obj.data_id_mode = data_id_mode_value
-
-        # Parse data_id_nibble
-        child = SerializationHelper.find_child_element(element, "DATA-ID-NIBBLE")
-        if child is not None:
-            data_id_nibble_value = child.text
-            obj.data_id_nibble = data_id_nibble_value
-
-        # Parse e2e_profile_ref
-        child = SerializationHelper.find_child_element(element, "E2E-PROFILE-REF")
-        if child is not None:
-            e2e_profile_ref_value = ARRef.deserialize(child)
-            obj.e2e_profile_ref = e2e_profile_ref_value
-
-        # Parse max_delta
-        child = SerializationHelper.find_child_element(element, "MAX-DELTA")
-        if child is not None:
-            max_delta_value = child.text
-            obj.max_delta = max_delta_value
-
-        # Parse max_error_state
-        child = SerializationHelper.find_child_element(element, "MAX-ERROR-STATE")
-        if child is not None:
-            max_error_state_value = child.text
-            obj.max_error_state = max_error_state_value
-
-        # Parse max_no_new_or
-        child = SerializationHelper.find_child_element(element, "MAX-NO-NEW-OR")
-        if child is not None:
-            max_no_new_or_value = child.text
-            obj.max_no_new_or = max_no_new_or_value
-
-        # Parse min_ok_state_init
-        child = SerializationHelper.find_child_element(element, "MIN-OK-STATE-INIT")
-        if child is not None:
-            min_ok_state_init_value = child.text
-            obj.min_ok_state_init = min_ok_state_init_value
-
-        # Parse min_ok_state
-        child = SerializationHelper.find_child_element(element, "MIN-OK-STATE")
-        if child is not None:
-            min_ok_state_value = child.text
-            obj.min_ok_state = min_ok_state_value
-
-        # Parse offset
-        child = SerializationHelper.find_child_element(element, "OFFSET")
-        if child is not None:
-            offset_value = child.text
-            obj.offset = offset_value
-
-        # Parse profile_behavior_behavior_enum
-        child = SerializationHelper.find_child_element(element, "PROFILE-BEHAVIOR-BEHAVIOR-ENUM")
-        if child is not None:
-            profile_behavior_behavior_enum_value = EndToEndProfileBehaviorEnum.deserialize(child)
-            obj.profile_behavior_behavior_enum = profile_behavior_behavior_enum_value
-
-        # Parse profile_name
-        child = SerializationHelper.find_child_element(element, "PROFILE-NAME")
-        if child is not None:
-            profile_name_value = child.text
-            obj.profile_name = profile_name_value
-
-        # Parse sync_counter_init
-        child = SerializationHelper.find_child_element(element, "SYNC-COUNTER-INIT")
-        if child is not None:
-            sync_counter_init_value = child.text
-            obj.sync_counter_init = sync_counter_init_value
-
-        # Parse upper_header
-        child = SerializationHelper.find_child_element(element, "UPPER-HEADER")
-        if child is not None:
-            upper_header_value = child.text
-            obj.upper_header = upper_header_value
-
-        # Parse window_size_init
-        child = SerializationHelper.find_child_element(element, "WINDOW-SIZE-INIT")
-        if child is not None:
-            window_size_init_value = child.text
-            obj.window_size_init = window_size_init_value
-
-        # Parse window_size
-        child = SerializationHelper.find_child_element(element, "WINDOW-SIZE")
-        if child is not None:
-            window_size_value = child.text
-            obj.window_size = window_size_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CLEAR-FROM-VALID":
+                setattr(obj, "clear_from_valid", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "COUNTER-OFFSET":
+                setattr(obj, "counter_offset", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "CRC-OFFSET":
+                setattr(obj, "crc_offset", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "DATA-ID-MODE":
+                setattr(obj, "data_id_mode", DataIdModeEnum.deserialize(child))
+            elif tag == "DATA-ID-NIBBLE":
+                setattr(obj, "data_id_nibble", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "E2E-PROFILE-REF":
+                setattr(obj, "e2e_profile_ref", ARRef.deserialize(child))
+            elif tag == "MAX-DELTA":
+                setattr(obj, "max_delta", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-ERROR-STATE":
+                setattr(obj, "max_error_state", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-NO-NEW-OR":
+                setattr(obj, "max_no_new_or", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MIN-OK-STATE-INIT":
+                setattr(obj, "min_ok_state_init", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MIN-OK-STATE":
+                setattr(obj, "min_ok_state", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "OFFSET":
+                setattr(obj, "offset", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PROFILE-BEHAVIOR-BEHAVIOR-ENUM":
+                setattr(obj, "profile_behavior_behavior_enum", EndToEndProfileBehaviorEnum.deserialize(child))
+            elif tag == "PROFILE-NAME":
+                setattr(obj, "profile_name", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "SYNC-COUNTER-INIT":
+                setattr(obj, "sync_counter_init", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "UPPER-HEADER":
+                setattr(obj, "upper_header", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "WINDOW-SIZE-INIT":
+                setattr(obj, "window_size_init", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "WINDOW-SIZE":
+                setattr(obj, "window_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -39,9 +39,19 @@ class InstantiationDataDefProps(ARObject):
         """
         return False
 
+    _XML_TAG = "INSTANTIATION-DATA-DEF-PROPS"
+
+
     parameter_ref: Optional[ARRef]
     sw_data_def: Optional[SwDataDefProps]
     variable_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "PARAMETER-REF": lambda obj, elem: setattr(obj, "parameter_ref", ARRef.deserialize(elem)),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "VARIABLE-INSTANCE-REF": lambda obj, elem: setattr(obj, "variable_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize InstantiationDataDefProps."""
         super().__init__()
@@ -55,9 +65,8 @@ class InstantiationDataDefProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(InstantiationDataDefProps, self).serialize()
@@ -130,23 +139,16 @@ class InstantiationDataDefProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InstantiationDataDefProps, cls).deserialize(element)
 
-        # Parse parameter_ref
-        child = SerializationHelper.find_child_element(element, "PARAMETER-REF")
-        if child is not None:
-            parameter_ref_value = ARRef.deserialize(child)
-            obj.parameter_ref = parameter_ref_value
-
-        # Parse sw_data_def
-        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
-        if child is not None:
-            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.sw_data_def = sw_data_def_value
-
-        # Parse variable_instance_ref
-        child = SerializationHelper.find_child_element(element, "VARIABLE-INSTANCE-REF")
-        if child is not None:
-            variable_instance_ref_value = ARRef.deserialize(child)
-            obj.variable_instance_ref = variable_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PARAMETER-REF":
+                setattr(obj, "parameter_ref", ARRef.deserialize(child))
+            elif tag == "SW-DATA-DEF":
+                setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            elif tag == "VARIABLE-INSTANCE-REF":
+                setattr(obj, "variable_instance_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -33,7 +33,15 @@ class EcuPartition(Identifiable):
         """
         return False
 
+    _XML_TAG = "ECU-PARTITION"
+
+
     exec_in_user: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "EXEC-IN-USER": lambda obj, elem: setattr(obj, "exec_in_user", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcuPartition."""
         super().__init__()
@@ -45,9 +53,8 @@ class EcuPartition(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcuPartition, self).serialize()
@@ -92,11 +99,12 @@ class EcuPartition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcuPartition, cls).deserialize(element)
 
-        # Parse exec_in_user
-        child = SerializationHelper.find_child_element(element, "EXEC-IN-USER")
-        if child is not None:
-            exec_in_user_value = child.text
-            obj.exec_in_user = exec_in_user_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EXEC-IN-USER":
+                setattr(obj, "exec_in_user", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

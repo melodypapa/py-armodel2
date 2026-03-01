@@ -34,6 +34,11 @@ class CommunicationController(Identifiable, ABC):
         return True
 
     wake_up_by_controller_supported: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "WAKE-UP-BY-CONTROLLER-SUPPORTED": lambda obj, elem: setattr(obj, "wake_up_by_controller_supported", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CommunicationController."""
         super().__init__()
@@ -45,9 +50,8 @@ class CommunicationController(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CommunicationController, self).serialize()
@@ -92,11 +96,12 @@ class CommunicationController(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommunicationController, cls).deserialize(element)
 
-        # Parse wake_up_by_controller_supported
-        child = SerializationHelper.find_child_element(element, "WAKE-UP-BY-CONTROLLER-SUPPORTED")
-        if child is not None:
-            wake_up_by_controller_supported_value = child.text
-            obj.wake_up_by_controller_supported = wake_up_by_controller_supported_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "WAKE-UP-BY-CONTROLLER-SUPPORTED":
+                setattr(obj, "wake_up_by_controller_supported", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

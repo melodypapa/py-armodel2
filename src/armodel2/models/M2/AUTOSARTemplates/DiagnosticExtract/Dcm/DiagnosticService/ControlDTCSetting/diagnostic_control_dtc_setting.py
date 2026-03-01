@@ -31,7 +31,15 @@ class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-CONTROL-D-T-C-SETTING"
+
+
     dtc_setting_class_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DTC-SETTING-CLASS-REF": lambda obj, elem: setattr(obj, "dtc_setting_class_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticControlDTCSetting."""
         super().__init__()
@@ -43,9 +51,8 @@ class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticControlDTCSetting, self).serialize()
@@ -90,11 +97,12 @@ class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticControlDTCSetting, cls).deserialize(element)
 
-        # Parse dtc_setting_class_ref
-        child = SerializationHelper.find_child_element(element, "DTC-SETTING-CLASS-REF")
-        if child is not None:
-            dtc_setting_class_ref_value = ARRef.deserialize(child)
-            obj.dtc_setting_class_ref = dtc_setting_class_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DTC-SETTING-CLASS-REF":
+                setattr(obj, "dtc_setting_class_ref", ARRef.deserialize(child))
 
         return obj
 

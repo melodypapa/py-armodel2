@@ -44,6 +44,15 @@ class CommunicationCluster(ARElement, ABC):
     protocol_name: Optional[String]
     protocol_version: Optional[String]
     speed: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "BAUDRATE": lambda obj, elem: setattr(obj, "baudrate", SerializationHelper.deserialize_by_tag(elem, "PositiveUnlimitedInteger")),
+        "PHYSICAL-CHANNELS": ("_POLYMORPHIC_LIST", "physical_channels", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "PROTOCOL-NAME": lambda obj, elem: setattr(obj, "protocol_name", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "PROTOCOL-VERSION": lambda obj, elem: setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "SPEED": lambda obj, elem: setattr(obj, "speed", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CommunicationCluster."""
         super().__init__()
@@ -59,9 +68,8 @@ class CommunicationCluster(ARElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CommunicationCluster, self).serialize()
@@ -158,39 +166,32 @@ class CommunicationCluster(ARElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommunicationCluster, cls).deserialize(element)
 
-        # Parse baudrate
-        child = SerializationHelper.find_child_element(element, "BAUDRATE")
-        if child is not None:
-            baudrate_value = child.text
-            obj.baudrate = baudrate_value
-
-        # Parse physical_channels (list from container "PHYSICAL-CHANNELS")
-        obj.physical_channels = []
-        container = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNELS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.physical_channels.append(child_value)
-
-        # Parse protocol_name
-        child = SerializationHelper.find_child_element(element, "PROTOCOL-NAME")
-        if child is not None:
-            protocol_name_value = child.text
-            obj.protocol_name = protocol_name_value
-
-        # Parse protocol_version
-        child = SerializationHelper.find_child_element(element, "PROTOCOL-VERSION")
-        if child is not None:
-            protocol_version_value = child.text
-            obj.protocol_version = protocol_version_value
-
-        # Parse speed
-        child = SerializationHelper.find_child_element(element, "SPEED")
-        if child is not None:
-            speed_value = child.text
-            obj.speed = speed_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BAUDRATE":
+                setattr(obj, "baudrate", SerializationHelper.deserialize_by_tag(child, "PositiveUnlimitedInteger"))
+            elif tag == "PHYSICAL-CHANNELS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "CAN-PHYSICAL-CHANNEL":
+                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "CanPhysicalChannel"))
+                    elif concrete_tag == "TTCAN-PHYSICAL-CHANNEL":
+                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "TtcanPhysicalChannel"))
+                    elif concrete_tag == "ETHERNET-PHYSICAL-CHANNEL":
+                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "EthernetPhysicalChannel"))
+                    elif concrete_tag == "FLEXRAY-PHYSICAL-CHANNEL":
+                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayPhysicalChannel"))
+                    elif concrete_tag == "LIN-PHYSICAL-CHANNEL":
+                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "LinPhysicalChannel"))
+            elif tag == "PROTOCOL-NAME":
+                setattr(obj, "protocol_name", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "PROTOCOL-VERSION":
+                setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "SPEED":
+                setattr(obj, "speed", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

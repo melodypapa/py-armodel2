@@ -48,11 +48,23 @@ class ImplementationDataType(AbstractImplementationDataType):
         """
         return False
 
+    _XML_TAG = "IMPLEMENTATION-DATA-TYPE"
+
+
     dynamic_array_size_profile: Optional[String]
     is_struct_with_optional_element: Optional[Boolean]
     sub_elements: list[ImplementationDataTypeElement]
     symbol_props: Optional[SymbolProps]
     type_emitter: Optional[NameToken]
+    _DESERIALIZE_DISPATCH = {
+        "DYNAMIC-ARRAY-SIZE-PROFILE": lambda obj, elem: setattr(obj, "dynamic_array_size_profile", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "IS-STRUCT-WITH-OPTIONAL-ELEMENT": lambda obj, elem: setattr(obj, "is_struct_with_optional_element", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SUB-ELEMENTS": lambda obj, elem: obj.sub_elements.append(SerializationHelper.deserialize_by_tag(elem, "ImplementationDataTypeElement")),
+        "SYMBOL-PROPS": lambda obj, elem: setattr(obj, "symbol_props", SerializationHelper.deserialize_by_tag(elem, "SymbolProps")),
+        "TYPE-EMITTER": lambda obj, elem: setattr(obj, "type_emitter", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ImplementationDataType."""
         super().__init__()
@@ -68,9 +80,8 @@ class ImplementationDataType(AbstractImplementationDataType):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ImplementationDataType, self).serialize()
@@ -167,39 +178,22 @@ class ImplementationDataType(AbstractImplementationDataType):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ImplementationDataType, cls).deserialize(element)
 
-        # Parse dynamic_array_size_profile
-        child = SerializationHelper.find_child_element(element, "DYNAMIC-ARRAY-SIZE-PROFILE")
-        if child is not None:
-            dynamic_array_size_profile_value = child.text
-            obj.dynamic_array_size_profile = dynamic_array_size_profile_value
-
-        # Parse is_struct_with_optional_element
-        child = SerializationHelper.find_child_element(element, "IS-STRUCT-WITH-OPTIONAL-ELEMENT")
-        if child is not None:
-            is_struct_with_optional_element_value = child.text
-            obj.is_struct_with_optional_element = is_struct_with_optional_element_value
-
-        # Parse sub_elements (list from container "SUB-ELEMENTS")
-        obj.sub_elements = []
-        container = SerializationHelper.find_child_element(element, "SUB-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sub_elements.append(child_value)
-
-        # Parse symbol_props
-        child = SerializationHelper.find_child_element(element, "SYMBOL-PROPS")
-        if child is not None:
-            symbol_props_value = SerializationHelper.deserialize_by_tag(child, "SymbolProps")
-            obj.symbol_props = symbol_props_value
-
-        # Parse type_emitter
-        child = SerializationHelper.find_child_element(element, "TYPE-EMITTER")
-        if child is not None:
-            type_emitter_value = child.text
-            obj.type_emitter = type_emitter_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DYNAMIC-ARRAY-SIZE-PROFILE":
+                setattr(obj, "dynamic_array_size_profile", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "IS-STRUCT-WITH-OPTIONAL-ELEMENT":
+                setattr(obj, "is_struct_with_optional_element", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SUB-ELEMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sub_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ImplementationDataTypeElement"))
+            elif tag == "SYMBOL-PROPS":
+                setattr(obj, "symbol_props", SerializationHelper.deserialize_by_tag(child, "SymbolProps"))
+            elif tag == "TYPE-EMITTER":
+                setattr(obj, "type_emitter", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

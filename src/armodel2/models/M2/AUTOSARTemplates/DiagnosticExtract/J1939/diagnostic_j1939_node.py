@@ -34,7 +34,15 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-J1939-NODE"
+
+
     nm_node_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "NM-NODE-REF": lambda obj, elem: setattr(obj, "nm_node_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939Node."""
         super().__init__()
@@ -46,9 +54,8 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticJ1939Node, self).serialize()
@@ -93,11 +100,12 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticJ1939Node, cls).deserialize(element)
 
-        # Parse nm_node_ref
-        child = SerializationHelper.find_child_element(element, "NM-NODE-REF")
-        if child is not None:
-            nm_node_ref_value = ARRef.deserialize(child)
-            obj.nm_node_ref = nm_node_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "NM-NODE-REF":
+                setattr(obj, "nm_node_ref", ARRef.deserialize(child))
 
         return obj
 

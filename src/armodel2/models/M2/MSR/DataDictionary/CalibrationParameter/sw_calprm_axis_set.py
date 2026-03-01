@@ -29,7 +29,15 @@ class SwCalprmAxisSet(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-CALPRM-AXIS-SET"
+
+
     sw_calprm_axises: list[SwCalprmAxis]
+    _DESERIALIZE_DISPATCH = {
+        "SW-CALPRM-AXISES": lambda obj, elem: obj.sw_calprm_axises.append(SerializationHelper.deserialize_by_tag(elem, "SwCalprmAxis")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwCalprmAxisSet."""
         super().__init__()
@@ -41,9 +49,8 @@ class SwCalprmAxisSet(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwCalprmAxisSet, self).serialize()
@@ -84,15 +91,14 @@ class SwCalprmAxisSet(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwCalprmAxisSet, cls).deserialize(element)
 
-        # Parse sw_calprm_axises (list from container "SW-CALPRM-AXISES")
-        obj.sw_calprm_axises = []
-        container = SerializationHelper.find_child_element(element, "SW-CALPRM-AXISES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_calprm_axises.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SW-CALPRM-AXISES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sw_calprm_axises.append(SerializationHelper.deserialize_by_tag(item_elem, "SwCalprmAxis"))
 
         return obj
 

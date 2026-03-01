@@ -37,6 +37,14 @@ class EcucAbstractStringParamDef(ARObject, ABC):
     max_length: Optional[PositiveInteger]
     min_length: Optional[PositiveInteger]
     regular: Optional[RegularExpression]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
+        "MAX-LENGTH": lambda obj, elem: setattr(obj, "max_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MIN-LENGTH": lambda obj, elem: setattr(obj, "min_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "REGULAR": lambda obj, elem: setattr(obj, "regular", SerializationHelper.deserialize_by_tag(elem, "RegularExpression")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucAbstractStringParamDef."""
         super().__init__()
@@ -51,9 +59,8 @@ class EcucAbstractStringParamDef(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucAbstractStringParamDef, self).serialize()
@@ -140,29 +147,18 @@ class EcucAbstractStringParamDef(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucAbstractStringParamDef, cls).deserialize(element)
 
-        # Parse default_value
-        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE")
-        if child is not None:
-            default_value_value = SerializationHelper.deserialize_by_tag(child, "VerbatimString")
-            obj.default_value = default_value_value
-
-        # Parse max_length
-        child = SerializationHelper.find_child_element(element, "MAX-LENGTH")
-        if child is not None:
-            max_length_value = child.text
-            obj.max_length = max_length_value
-
-        # Parse min_length
-        child = SerializationHelper.find_child_element(element, "MIN-LENGTH")
-        if child is not None:
-            min_length_value = child.text
-            obj.min_length = min_length_value
-
-        # Parse regular
-        child = SerializationHelper.find_child_element(element, "REGULAR")
-        if child is not None:
-            regular_value = child.text
-            obj.regular = regular_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEFAULT-VALUE":
+                setattr(obj, "default_value", SerializationHelper.deserialize_by_tag(child, "VerbatimString"))
+            elif tag == "MAX-LENGTH":
+                setattr(obj, "max_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MIN-LENGTH":
+                setattr(obj, "min_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "REGULAR":
+                setattr(obj, "regular", SerializationHelper.deserialize_by_tag(child, "RegularExpression"))
 
         return obj
 

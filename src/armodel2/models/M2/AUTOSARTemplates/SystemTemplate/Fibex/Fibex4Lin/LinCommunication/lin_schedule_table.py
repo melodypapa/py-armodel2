@@ -37,9 +37,19 @@ class LinScheduleTable(Identifiable):
         """
         return False
 
+    _XML_TAG = "LIN-SCHEDULE-TABLE"
+
+
     resume_position: Optional[ResumePosition]
     run_mode: Optional[RunMode]
     table_entries: list[ScheduleTableEntry]
+    _DESERIALIZE_DISPATCH = {
+        "RESUME-POSITION": lambda obj, elem: setattr(obj, "resume_position", ResumePosition.deserialize(elem)),
+        "RUN-MODE": lambda obj, elem: setattr(obj, "run_mode", RunMode.deserialize(elem)),
+        "TABLE-ENTRIES": ("_POLYMORPHIC_LIST", "table_entries", ["ApplicationEntry", "FreeFormatEntry", "LinConfigurationEntry"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinScheduleTable."""
         super().__init__()
@@ -53,9 +63,8 @@ class LinScheduleTable(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinScheduleTable, self).serialize()
@@ -124,27 +133,24 @@ class LinScheduleTable(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinScheduleTable, cls).deserialize(element)
 
-        # Parse resume_position
-        child = SerializationHelper.find_child_element(element, "RESUME-POSITION")
-        if child is not None:
-            resume_position_value = ResumePosition.deserialize(child)
-            obj.resume_position = resume_position_value
-
-        # Parse run_mode
-        child = SerializationHelper.find_child_element(element, "RUN-MODE")
-        if child is not None:
-            run_mode_value = RunMode.deserialize(child)
-            obj.run_mode = run_mode_value
-
-        # Parse table_entries (list from container "TABLE-ENTRIES")
-        obj.table_entries = []
-        container = SerializationHelper.find_child_element(element, "TABLE-ENTRIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.table_entries.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RESUME-POSITION":
+                setattr(obj, "resume_position", ResumePosition.deserialize(child))
+            elif tag == "RUN-MODE":
+                setattr(obj, "run_mode", RunMode.deserialize(child))
+            elif tag == "TABLE-ENTRIES":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "APPLICATION-ENTRY":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationEntry"))
+                    elif concrete_tag == "FREE-FORMAT-ENTRY":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "FreeFormatEntry"))
+                    elif concrete_tag == "LIN-CONFIGURATION-ENTRY":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "LinConfigurationEntry"))
 
         return obj
 

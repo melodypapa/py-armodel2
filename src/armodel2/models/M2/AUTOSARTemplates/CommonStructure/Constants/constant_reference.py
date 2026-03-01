@@ -34,7 +34,15 @@ class ConstantReference(ValueSpecification):
         """
         return False
 
+    _XML_TAG = "CONSTANT-REFERENCE"
+
+
     constant_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONSTANT-REF": lambda obj, elem: setattr(obj, "constant_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConstantReference."""
         super().__init__()
@@ -46,9 +54,8 @@ class ConstantReference(ValueSpecification):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConstantReference, self).serialize()
@@ -93,11 +100,12 @@ class ConstantReference(ValueSpecification):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConstantReference, cls).deserialize(element)
 
-        # Parse constant_ref
-        child = SerializationHelper.find_child_element(element, "CONSTANT-REF")
-        if child is not None:
-            constant_ref_value = ARRef.deserialize(child)
-            obj.constant_ref = constant_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONSTANT-REF":
+                setattr(obj, "constant_ref", ARRef.deserialize(child))
 
         return obj
 

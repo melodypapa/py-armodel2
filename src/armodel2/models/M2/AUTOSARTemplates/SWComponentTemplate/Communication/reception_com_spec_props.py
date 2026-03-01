@@ -29,8 +29,17 @@ class ReceptionComSpecProps(ARObject):
         """
         return False
 
+    _XML_TAG = "RECEPTION-COM-SPEC-PROPS"
+
+
     data_update: Optional[TimeValue]
     timeout: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-UPDATE": lambda obj, elem: setattr(obj, "data_update", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ReceptionComSpecProps."""
         super().__init__()
@@ -43,9 +52,8 @@ class ReceptionComSpecProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ReceptionComSpecProps, self).serialize()
@@ -104,17 +112,14 @@ class ReceptionComSpecProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ReceptionComSpecProps, cls).deserialize(element)
 
-        # Parse data_update
-        child = SerializationHelper.find_child_element(element, "DATA-UPDATE")
-        if child is not None:
-            data_update_value = child.text
-            obj.data_update = data_update_value
-
-        # Parse timeout
-        child = SerializationHelper.find_child_element(element, "TIMEOUT")
-        if child is not None:
-            timeout_value = child.text
-            obj.timeout = timeout_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-UPDATE":
+                setattr(obj, "data_update", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT":
+                setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

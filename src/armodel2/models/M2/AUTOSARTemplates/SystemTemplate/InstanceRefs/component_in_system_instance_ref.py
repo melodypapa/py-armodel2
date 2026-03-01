@@ -39,10 +39,21 @@ class ComponentInSystemInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "COMPONENT-IN-SYSTEM-INSTANCE-REF"
+
+
     base_ref: Optional[ARRef]
     context_component_ref: Optional[ARRef]
     context_composition_ref: Optional[ARRef]
     target_component_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "CONTEXT-COMPONENT-REF": lambda obj, elem: setattr(obj, "context_component_ref", ARRef.deserialize(elem)),
+        "CONTEXT-COMPOSITION-REF": lambda obj, elem: setattr(obj, "context_composition_ref", ARRef.deserialize(elem)),
+        "TARGET-COMPONENT-REF": lambda obj, elem: setattr(obj, "target_component_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ComponentInSystemInstanceRef."""
         super().__init__()
@@ -57,9 +68,8 @@ class ComponentInSystemInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ComponentInSystemInstanceRef, self).serialize()
@@ -146,29 +156,18 @@ class ComponentInSystemInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ComponentInSystemInstanceRef, cls).deserialize(element)
 
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse context_component_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-COMPONENT-REF")
-        if child is not None:
-            context_component_ref_value = ARRef.deserialize(child)
-            obj.context_component_ref = context_component_ref_value
-
-        # Parse context_composition_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-COMPOSITION-REF")
-        if child is not None:
-            context_composition_ref_value = ARRef.deserialize(child)
-            obj.context_composition_ref = context_composition_ref_value
-
-        # Parse target_component_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-COMPONENT-REF")
-        if child is not None:
-            target_component_ref_value = ARRef.deserialize(child)
-            obj.target_component_ref = target_component_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BASE-REF":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-COMPONENT-REF":
+                setattr(obj, "context_component_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-COMPOSITION-REF":
+                setattr(obj, "context_composition_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-COMPONENT-REF":
+                setattr(obj, "target_component_ref", ARRef.deserialize(child))
 
         return obj
 

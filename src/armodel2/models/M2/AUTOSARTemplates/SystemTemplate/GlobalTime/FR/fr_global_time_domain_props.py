@@ -33,8 +33,17 @@ class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         """
         return False
 
+    _XML_TAG = "FR-GLOBAL-TIME-DOMAIN-PROPS"
+
+
     ofs_data_id_list: PositiveInteger
     sync_data_id_list: PositiveInteger
+    _DESERIALIZE_DISPATCH = {
+        "OFS-DATA-ID-LIST": lambda obj, elem: setattr(obj, "ofs_data_id_list", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SYNC-DATA-ID-LIST": lambda obj, elem: setattr(obj, "sync_data_id_list", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FrGlobalTimeDomainProps."""
         super().__init__()
@@ -47,9 +56,8 @@ class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FrGlobalTimeDomainProps, self).serialize()
@@ -108,17 +116,14 @@ class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FrGlobalTimeDomainProps, cls).deserialize(element)
 
-        # Parse ofs_data_id_list
-        child = SerializationHelper.find_child_element(element, "OFS-DATA-ID-LIST")
-        if child is not None:
-            ofs_data_id_list_value = child.text
-            obj.ofs_data_id_list = ofs_data_id_list_value
-
-        # Parse sync_data_id_list
-        child = SerializationHelper.find_child_element(element, "SYNC-DATA-ID-LIST")
-        if child is not None:
-            sync_data_id_list_value = child.text
-            obj.sync_data_id_list = sync_data_id_list_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OFS-DATA-ID-LIST":
+                setattr(obj, "ofs_data_id_list", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SYNC-DATA-ID-LIST":
+                setattr(obj, "sync_data_id_list", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

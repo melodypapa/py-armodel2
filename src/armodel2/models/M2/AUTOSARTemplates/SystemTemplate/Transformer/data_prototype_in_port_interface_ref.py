@@ -34,7 +34,15 @@ class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
         """
         return False
 
+    _XML_TAG = "DATA-PROTOTYPE-IN-PORT-INTERFACE-REF"
+
+
     data_prototype_in_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-PROTOTYPE-IN-REF": ("_POLYMORPHIC", "data_prototype_in_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataPrototypeInPortInterfaceRef."""
         super().__init__()
@@ -46,9 +54,8 @@ class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataPrototypeInPortInterfaceRef, self).serialize()
@@ -93,11 +100,12 @@ class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototypeInPortInterfaceRef, cls).deserialize(element)
 
-        # Parse data_prototype_in_ref
-        child = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-IN-REF")
-        if child is not None:
-            data_prototype_in_ref_value = ARRef.deserialize(child)
-            obj.data_prototype_in_ref = data_prototype_in_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-PROTOTYPE-IN-REF":
+                setattr(obj, "data_prototype_in_ref", ARRef.deserialize(child))
 
         return obj
 

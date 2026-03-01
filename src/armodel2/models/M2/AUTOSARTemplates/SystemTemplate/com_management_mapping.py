@@ -37,8 +37,17 @@ class ComManagementMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "COM-MANAGEMENT-MAPPING"
+
+
     com_refs: list[ARRef]
     physical_channel_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COM-REFS": lambda obj, elem: [obj.com_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "physical_channel_refs", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ComManagementMapping."""
         super().__init__()
@@ -51,9 +60,8 @@ class ComManagementMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ComManagementMapping, self).serialize()
@@ -118,37 +126,17 @@ class ComManagementMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ComManagementMapping, cls).deserialize(element)
 
-        # Parse com_refs (list from container "COM-REFS")
-        obj.com_refs = []
-        container = SerializationHelper.find_child_element(element, "COM-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.com_refs.append(child_value)
-
-        # Parse physical_channel_refs (list from container "PHYSICAL-CHANNEL-REFS")
-        obj.physical_channel_refs = []
-        container = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNEL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.physical_channel_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COM-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.com_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "PHYSICAL-CHANNEL-REFS":
+                for item_elem in child:
+                    obj.physical_channel_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

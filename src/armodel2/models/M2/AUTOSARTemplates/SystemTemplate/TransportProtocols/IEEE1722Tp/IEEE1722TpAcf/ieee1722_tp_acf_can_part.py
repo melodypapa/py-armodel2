@@ -44,11 +44,23 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-ACF-CAN-PART"
+
+
     can_addressing: Optional[CanAddressingModeType]
     can_bit_rate_switch: Optional[Boolean]
     can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum]
     can_identifier: Optional[RxIdentifierRange]
     sdu_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CAN-ADDRESSING": lambda obj, elem: setattr(obj, "can_addressing", CanAddressingModeType.deserialize(elem)),
+        "CAN-BIT-RATE-SWITCH": lambda obj, elem: setattr(obj, "can_bit_rate_switch", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CAN-FRAME-TX-BEHAVIOR": lambda obj, elem: setattr(obj, "can_frame_tx_behavior", CanFrameTxBehaviorEnum.deserialize(elem)),
+        "CAN-IDENTIFIER": lambda obj, elem: setattr(obj, "can_identifier", SerializationHelper.deserialize_by_tag(elem, "RxIdentifierRange")),
+        "SDU-REF": lambda obj, elem: setattr(obj, "sdu_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfCanPart."""
         super().__init__()
@@ -64,9 +76,8 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpAcfCanPart, self).serialize()
@@ -167,35 +178,20 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpAcfCanPart, cls).deserialize(element)
 
-        # Parse can_addressing
-        child = SerializationHelper.find_child_element(element, "CAN-ADDRESSING")
-        if child is not None:
-            can_addressing_value = CanAddressingModeType.deserialize(child)
-            obj.can_addressing = can_addressing_value
-
-        # Parse can_bit_rate_switch
-        child = SerializationHelper.find_child_element(element, "CAN-BIT-RATE-SWITCH")
-        if child is not None:
-            can_bit_rate_switch_value = child.text
-            obj.can_bit_rate_switch = can_bit_rate_switch_value
-
-        # Parse can_frame_tx_behavior
-        child = SerializationHelper.find_child_element(element, "CAN-FRAME-TX-BEHAVIOR")
-        if child is not None:
-            can_frame_tx_behavior_value = CanFrameTxBehaviorEnum.deserialize(child)
-            obj.can_frame_tx_behavior = can_frame_tx_behavior_value
-
-        # Parse can_identifier
-        child = SerializationHelper.find_child_element(element, "CAN-IDENTIFIER")
-        if child is not None:
-            can_identifier_value = SerializationHelper.deserialize_by_tag(child, "RxIdentifierRange")
-            obj.can_identifier = can_identifier_value
-
-        # Parse sdu_ref
-        child = SerializationHelper.find_child_element(element, "SDU-REF")
-        if child is not None:
-            sdu_ref_value = ARRef.deserialize(child)
-            obj.sdu_ref = sdu_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CAN-ADDRESSING":
+                setattr(obj, "can_addressing", CanAddressingModeType.deserialize(child))
+            elif tag == "CAN-BIT-RATE-SWITCH":
+                setattr(obj, "can_bit_rate_switch", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CAN-FRAME-TX-BEHAVIOR":
+                setattr(obj, "can_frame_tx_behavior", CanFrameTxBehaviorEnum.deserialize(child))
+            elif tag == "CAN-IDENTIFIER":
+                setattr(obj, "can_identifier", SerializationHelper.deserialize_by_tag(child, "RxIdentifierRange"))
+            elif tag == "SDU-REF":
+                setattr(obj, "sdu_ref", ARRef.deserialize(child))
 
         return obj
 

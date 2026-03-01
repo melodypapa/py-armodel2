@@ -47,11 +47,23 @@ class AclObjectSet(ARElement):
         """
         return False
 
+    _XML_TAG = "ACL-OBJECT-SET"
+
+
     acl_object_clas_refs: list[ReferrableSubtypesEnum]
     acl_scope: AclScopeEnum
     collection_ref: Optional[ARRef]
     derived_from_refs: list[ARRef]
     engineerings: list[AutosarEngineeringObject]
+    _DESERIALIZE_DISPATCH = {
+        "ACL-OBJECT-CLASS-REFS": lambda obj, elem: [obj.acl_object_clas_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "ACL-SCOPE": lambda obj, elem: setattr(obj, "acl_scope", AclScopeEnum.deserialize(elem)),
+        "COLLECTION-REF": lambda obj, elem: setattr(obj, "collection_ref", ARRef.deserialize(elem)),
+        "DERIVED-FROM-REFS": ("_POLYMORPHIC_LIST", "derived_from_refs", ["ARPackage", "AbstractImplementationDataType", "AclObjectSet", "AclOperation", "AclPermission", "AclRole", "AliasNameSet", "ApplicationDataType", "BswEntryRelationshipSet", "BswModuleDescription", "BswModuleEntry", "BuildActionEntity", "BuildActionEnvironment", "BuildActionManifest", "ClientServerInterfaceToBswModuleEntryBlueprintMapping", "CompuMethod", "ConsistencyNeeds", "DataConstr", "DataTypeMappingSet", "EcucDefinitionCollection", "EcucDestinationUriDefSet", "EcucModuleDef", "FlatMap", "ImpositionTime", "ImpositionTimeDefinitionGroup", "KeywordSet", "LifeCycleState", "LifeCycleStateDefinitionGroup", "ModeDeclarationGroup", "PortInterface", "PortInterfaceMapping", "PortInterfaceMappingSet", "PortPrototypeBlueprint", "SwAddrMethod", "SwBaseType", "SwComponentType", "VfbTiming"]),
+        "ENGINEERINGS": lambda obj, elem: obj.engineerings.append(SerializationHelper.deserialize_by_tag(elem, "AutosarEngineeringObject")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AclObjectSet."""
         super().__init__()
@@ -67,9 +79,8 @@ class AclObjectSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AclObjectSet, self).serialize()
@@ -172,59 +183,25 @@ class AclObjectSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AclObjectSet, cls).deserialize(element)
 
-        # Parse acl_object_clas_refs (list from container "ACL-OBJECT-CLASS-REFS")
-        obj.acl_object_clas_refs = []
-        container = SerializationHelper.find_child_element(element, "ACL-OBJECT-CLASS-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.acl_object_clas_refs.append(child_value)
-
-        # Parse acl_scope
-        child = SerializationHelper.find_child_element(element, "ACL-SCOPE")
-        if child is not None:
-            acl_scope_value = AclScopeEnum.deserialize(child)
-            obj.acl_scope = acl_scope_value
-
-        # Parse collection_ref
-        child = SerializationHelper.find_child_element(element, "COLLECTION-REF")
-        if child is not None:
-            collection_ref_value = ARRef.deserialize(child)
-            obj.collection_ref = collection_ref_value
-
-        # Parse derived_from_refs (list from container "DERIVED-FROM-REFS")
-        obj.derived_from_refs = []
-        container = SerializationHelper.find_child_element(element, "DERIVED-FROM-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.derived_from_refs.append(child_value)
-
-        # Parse engineerings (list from container "ENGINEERINGS")
-        obj.engineerings = []
-        container = SerializationHelper.find_child_element(element, "ENGINEERINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.engineerings.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ACL-OBJECT-CLASS-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.acl_object_clas_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "ACL-SCOPE":
+                setattr(obj, "acl_scope", AclScopeEnum.deserialize(child))
+            elif tag == "COLLECTION-REF":
+                setattr(obj, "collection_ref", ARRef.deserialize(child))
+            elif tag == "DERIVED-FROM-REFS":
+                for item_elem in child:
+                    obj.derived_from_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "ENGINEERINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.engineerings.append(SerializationHelper.deserialize_by_tag(item_elem, "AutosarEngineeringObject"))
 
         return obj
 

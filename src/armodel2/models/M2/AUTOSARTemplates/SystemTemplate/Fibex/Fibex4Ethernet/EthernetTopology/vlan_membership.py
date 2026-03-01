@@ -30,10 +30,21 @@ class VlanMembership(ARObject):
         """
         return False
 
+    _XML_TAG = "VLAN-MEMBERSHIP"
+
+
     default_priority: Optional[PositiveInteger]
     dhcp_address: Optional[Any]
     send_activity: Optional[Any]
     vlan_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DEFAULT-PRIORITY": lambda obj, elem: setattr(obj, "default_priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "DHCP-ADDRESS": lambda obj, elem: setattr(obj, "dhcp_address", SerializationHelper.deserialize_by_tag(elem, "any (DhcpServer)")),
+        "SEND-ACTIVITY": lambda obj, elem: setattr(obj, "send_activity", SerializationHelper.deserialize_by_tag(elem, "any (EthernetSwitchVlan)")),
+        "VLAN-REF": lambda obj, elem: setattr(obj, "vlan_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize VlanMembership."""
         super().__init__()
@@ -48,9 +59,8 @@ class VlanMembership(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(VlanMembership, self).serialize()
@@ -137,29 +147,18 @@ class VlanMembership(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(VlanMembership, cls).deserialize(element)
 
-        # Parse default_priority
-        child = SerializationHelper.find_child_element(element, "DEFAULT-PRIORITY")
-        if child is not None:
-            default_priority_value = child.text
-            obj.default_priority = default_priority_value
-
-        # Parse dhcp_address
-        child = SerializationHelper.find_child_element(element, "DHCP-ADDRESS")
-        if child is not None:
-            dhcp_address_value = child.text
-            obj.dhcp_address = dhcp_address_value
-
-        # Parse send_activity
-        child = SerializationHelper.find_child_element(element, "SEND-ACTIVITY")
-        if child is not None:
-            send_activity_value = child.text
-            obj.send_activity = send_activity_value
-
-        # Parse vlan_ref
-        child = SerializationHelper.find_child_element(element, "VLAN-REF")
-        if child is not None:
-            vlan_ref_value = ARRef.deserialize(child)
-            obj.vlan_ref = vlan_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DEFAULT-PRIORITY":
+                setattr(obj, "default_priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "DHCP-ADDRESS":
+                setattr(obj, "dhcp_address", SerializationHelper.deserialize_by_tag(child, "any (DhcpServer)"))
+            elif tag == "SEND-ACTIVITY":
+                setattr(obj, "send_activity", SerializationHelper.deserialize_by_tag(child, "any (EthernetSwitchVlan)"))
+            elif tag == "VLAN-REF":
+                setattr(obj, "vlan_ref", ARRef.deserialize(child))
 
         return obj
 

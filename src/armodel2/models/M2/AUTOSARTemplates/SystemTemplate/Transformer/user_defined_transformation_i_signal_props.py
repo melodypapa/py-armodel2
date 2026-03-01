@@ -29,6 +29,9 @@ class UserDefinedTransformationISignalProps(ARObject):
         """
         return False
 
+    _XML_TAG = "USER-DEFINED-TRANSFORMATION-I-SIGNAL-PROPS"
+
+
     def __init__(self) -> None:
         """Initialize UserDefinedTransformationISignalProps."""
         super().__init__()

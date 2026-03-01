@@ -40,12 +40,25 @@ class MacSecLocalKayProps(ARObject):
         """
         return False
 
+    _XML_TAG = "MAC-SEC-LOCAL-KAY-PROPS"
+
+
     destination_mac: Optional[MacAddressString]
     global_kay_props_ref: Optional[ARRef]
     key_server: Optional[PositiveInteger]
     mka_participant_refs: list[ARRef]
     role: Optional[MacSecRoleEnum]
     source_mac: Optional[MacAddressString]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION-MAC": lambda obj, elem: setattr(obj, "destination_mac", SerializationHelper.deserialize_by_tag(elem, "MacAddressString")),
+        "GLOBAL-KAY-PROPS-REF": lambda obj, elem: setattr(obj, "global_kay_props_ref", ARRef.deserialize(elem)),
+        "KEY-SERVER": lambda obj, elem: setattr(obj, "key_server", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MKA-PARTICIPANT-REFS": lambda obj, elem: [obj.mka_participant_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "ROLE": lambda obj, elem: setattr(obj, "role", MacSecRoleEnum.deserialize(elem)),
+        "SOURCE-MAC": lambda obj, elem: setattr(obj, "source_mac", SerializationHelper.deserialize_by_tag(elem, "MacAddressString")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MacSecLocalKayProps."""
         super().__init__()
@@ -62,9 +75,8 @@ class MacSecLocalKayProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MacSecLocalKayProps, self).serialize()
@@ -182,51 +194,24 @@ class MacSecLocalKayProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacSecLocalKayProps, cls).deserialize(element)
 
-        # Parse destination_mac
-        child = SerializationHelper.find_child_element(element, "DESTINATION-MAC")
-        if child is not None:
-            destination_mac_value = child.text
-            obj.destination_mac = destination_mac_value
-
-        # Parse global_kay_props_ref
-        child = SerializationHelper.find_child_element(element, "GLOBAL-KAY-PROPS-REF")
-        if child is not None:
-            global_kay_props_ref_value = ARRef.deserialize(child)
-            obj.global_kay_props_ref = global_kay_props_ref_value
-
-        # Parse key_server
-        child = SerializationHelper.find_child_element(element, "KEY-SERVER")
-        if child is not None:
-            key_server_value = child.text
-            obj.key_server = key_server_value
-
-        # Parse mka_participant_refs (list from container "MKA-PARTICIPANT-REFS")
-        obj.mka_participant_refs = []
-        container = SerializationHelper.find_child_element(element, "MKA-PARTICIPANT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mka_participant_refs.append(child_value)
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = MacSecRoleEnum.deserialize(child)
-            obj.role = role_value
-
-        # Parse source_mac
-        child = SerializationHelper.find_child_element(element, "SOURCE-MAC")
-        if child is not None:
-            source_mac_value = child.text
-            obj.source_mac = source_mac_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DESTINATION-MAC":
+                setattr(obj, "destination_mac", SerializationHelper.deserialize_by_tag(child, "MacAddressString"))
+            elif tag == "GLOBAL-KAY-PROPS-REF":
+                setattr(obj, "global_kay_props_ref", ARRef.deserialize(child))
+            elif tag == "KEY-SERVER":
+                setattr(obj, "key_server", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MKA-PARTICIPANT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.mka_participant_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "ROLE":
+                setattr(obj, "role", MacSecRoleEnum.deserialize(child))
+            elif tag == "SOURCE-MAC":
+                setattr(obj, "source_mac", SerializationHelper.deserialize_by_tag(child, "MacAddressString"))
 
         return obj
 

@@ -34,8 +34,17 @@ class Keyword(Identifiable):
         """
         return False
 
+    _XML_TAG = "KEYWORD"
+
+
     abbr_name: NameToken
     classifications: list[NameToken]
+    _DESERIALIZE_DISPATCH = {
+        "ABBR-NAME": lambda obj, elem: setattr(obj, "abbr_name", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "CLASSIFICATIONS": lambda obj, elem: obj.classifications.append(SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Keyword."""
         super().__init__()
@@ -48,9 +57,8 @@ class Keyword(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Keyword, self).serialize()
@@ -112,21 +120,16 @@ class Keyword(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Keyword, cls).deserialize(element)
 
-        # Parse abbr_name
-        child = SerializationHelper.find_child_element(element, "ABBR-NAME")
-        if child is not None:
-            abbr_name_value = child.text
-            obj.abbr_name = abbr_name_value
-
-        # Parse classifications (list from container "CLASSIFICATIONS")
-        obj.classifications = []
-        container = SerializationHelper.find_child_element(element, "CLASSIFICATIONS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (NameToken) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.classifications.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ABBR-NAME":
+                setattr(obj, "abbr_name", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "CLASSIFICATIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.classifications.append(SerializationHelper.deserialize_by_tag(item_elem, "NameToken"))
 
         return obj
 

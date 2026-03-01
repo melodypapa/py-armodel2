@@ -39,11 +39,23 @@ class ModeInSwcInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "MODE-IN-SWC-INSTANCE-REF"
+
+
     base_ref: Optional[ARRef]
     context_refs: list[Any]
     context_mode_ref: Optional[ARRef]
     context_port_ref: Optional[ARRef]
     target_mode_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": ("_POLYMORPHIC", "base_ref", ["AtomicSwComponentType", "CompositionSwComponentType", "ParameterSwComponentType"]),
+        "CONTEXT-REFS": lambda obj, elem: [obj.context_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "CONTEXT-MODE-REF": lambda obj, elem: setattr(obj, "context_mode_ref", ARRef.deserialize(elem)),
+        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "TARGET-MODE-REF": lambda obj, elem: setattr(obj, "target_mode_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeInSwcInstanceRef."""
         super().__init__()
@@ -59,9 +71,8 @@ class ModeInSwcInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeInSwcInstanceRef, self).serialize()
@@ -165,45 +176,22 @@ class ModeInSwcInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeInSwcInstanceRef, cls).deserialize(element)
 
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse context_refs (list from container "CONTEXT-REFS")
-        obj.context_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.context_refs.append(child_value)
-
-        # Parse context_mode_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-MODE-REF")
-        if child is not None:
-            context_mode_ref_value = ARRef.deserialize(child)
-            obj.context_mode_ref = context_mode_ref_value
-
-        # Parse context_port_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-PORT-REF")
-        if child is not None:
-            context_port_ref_value = ARRef.deserialize(child)
-            obj.context_port_ref = context_port_ref_value
-
-        # Parse target_mode_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-MODE-REF")
-        if child is not None:
-            target_mode_ref_value = ARRef.deserialize(child)
-            obj.target_mode_ref = target_mode_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BASE-REF":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.context_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "CONTEXT-MODE-REF":
+                setattr(obj, "context_mode_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-PORT-REF":
+                setattr(obj, "context_port_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-MODE-REF":
+                setattr(obj, "target_mode_ref", ARRef.deserialize(child))
 
         return obj
 

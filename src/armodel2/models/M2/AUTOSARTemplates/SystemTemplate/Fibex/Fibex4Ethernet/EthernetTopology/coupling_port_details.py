@@ -45,12 +45,25 @@ class CouplingPortDetails(ARObject):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT-DETAILS"
+
+
     coupling_ports: list[CouplingPortStructuralElement]
     ethernet_priority: EthernetPriorityRegeneration
     ethernet_traffic: CouplingPortTrafficClassAssignment
     global_time_coupling: Optional[GlobalTimeCouplingPortProps]
     last_egress_ref: Optional[ARRef]
     rate_policies: list[CouplingPortRatePolicy]
+    _DESERIALIZE_DISPATCH = {
+        "COUPLING-PORTS": ("_POLYMORPHIC_LIST", "coupling_ports", ["CouplingPortFifo", "CouplingPortScheduler", "CouplingPortShaper"]),
+        "ETHERNET-PRIORITY": lambda obj, elem: setattr(obj, "ethernet_priority", SerializationHelper.deserialize_by_tag(elem, "EthernetPriorityRegeneration")),
+        "ETHERNET-TRAFFIC": lambda obj, elem: setattr(obj, "ethernet_traffic", SerializationHelper.deserialize_by_tag(elem, "CouplingPortTrafficClassAssignment")),
+        "GLOBAL-TIME-COUPLING": lambda obj, elem: setattr(obj, "global_time_coupling", SerializationHelper.deserialize_by_tag(elem, "GlobalTimeCouplingPortProps")),
+        "LAST-EGRESS-REF": lambda obj, elem: setattr(obj, "last_egress_ref", ARRef.deserialize(elem)),
+        "RATE-POLICIES": lambda obj, elem: obj.rate_policies.append(SerializationHelper.deserialize_by_tag(elem, "CouplingPortRatePolicy")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPortDetails."""
         super().__init__()
@@ -67,9 +80,8 @@ class CouplingPortDetails(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPortDetails, self).serialize()
@@ -176,49 +188,32 @@ class CouplingPortDetails(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CouplingPortDetails, cls).deserialize(element)
 
-        # Parse coupling_ports (list from container "COUPLING-PORTS")
-        obj.coupling_ports = []
-        container = SerializationHelper.find_child_element(element, "COUPLING-PORTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.coupling_ports.append(child_value)
-
-        # Parse ethernet_priority
-        child = SerializationHelper.find_child_element(element, "ETHERNET-PRIORITY")
-        if child is not None:
-            ethernet_priority_value = SerializationHelper.deserialize_by_tag(child, "EthernetPriorityRegeneration")
-            obj.ethernet_priority = ethernet_priority_value
-
-        # Parse ethernet_traffic
-        child = SerializationHelper.find_child_element(element, "ETHERNET-TRAFFIC")
-        if child is not None:
-            ethernet_traffic_value = SerializationHelper.deserialize_by_tag(child, "CouplingPortTrafficClassAssignment")
-            obj.ethernet_traffic = ethernet_traffic_value
-
-        # Parse global_time_coupling
-        child = SerializationHelper.find_child_element(element, "GLOBAL-TIME-COUPLING")
-        if child is not None:
-            global_time_coupling_value = SerializationHelper.deserialize_by_tag(child, "GlobalTimeCouplingPortProps")
-            obj.global_time_coupling = global_time_coupling_value
-
-        # Parse last_egress_ref
-        child = SerializationHelper.find_child_element(element, "LAST-EGRESS-REF")
-        if child is not None:
-            last_egress_ref_value = ARRef.deserialize(child)
-            obj.last_egress_ref = last_egress_ref_value
-
-        # Parse rate_policies (list from container "RATE-POLICIES")
-        obj.rate_policies = []
-        container = SerializationHelper.find_child_element(element, "RATE-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rate_policies.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COUPLING-PORTS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "COUPLING-PORT-FIFO":
+                        obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPortFifo"))
+                    elif concrete_tag == "COUPLING-PORT-SCHEDULER":
+                        obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPortScheduler"))
+                    elif concrete_tag == "COUPLING-PORT-SHAPER":
+                        obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPortShaper"))
+            elif tag == "ETHERNET-PRIORITY":
+                setattr(obj, "ethernet_priority", SerializationHelper.deserialize_by_tag(child, "EthernetPriorityRegeneration"))
+            elif tag == "ETHERNET-TRAFFIC":
+                setattr(obj, "ethernet_traffic", SerializationHelper.deserialize_by_tag(child, "CouplingPortTrafficClassAssignment"))
+            elif tag == "GLOBAL-TIME-COUPLING":
+                setattr(obj, "global_time_coupling", SerializationHelper.deserialize_by_tag(child, "GlobalTimeCouplingPortProps"))
+            elif tag == "LAST-EGRESS-REF":
+                setattr(obj, "last_egress_ref", ARRef.deserialize(child))
+            elif tag == "RATE-POLICIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.rate_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPortRatePolicy"))
 
         return obj
 

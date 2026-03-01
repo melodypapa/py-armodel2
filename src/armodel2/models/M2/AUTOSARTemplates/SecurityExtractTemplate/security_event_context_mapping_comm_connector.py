@@ -34,7 +34,15 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
         """
         return False
 
+    _XML_TAG = "SECURITY-EVENT-CONTEXT-MAPPING-COMM-CONNECTOR"
+
+
     comm_connector_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMM-CONNECTOR-REFS": ("_POLYMORPHIC_LIST", "comm_connector_refs", ["CanCommunicationConnector", "TtcanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecurityEventContextMappingCommConnector."""
         super().__init__()
@@ -46,9 +54,8 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecurityEventContextMappingCommConnector, self).serialize()
@@ -96,21 +103,13 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventContextMappingCommConnector, cls).deserialize(element)
 
-        # Parse comm_connector_refs (list from container "COMM-CONNECTOR-REFS")
-        obj.comm_connector_refs = []
-        container = SerializationHelper.find_child_element(element, "COMM-CONNECTOR-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.comm_connector_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMM-CONNECTOR-REFS":
+                for item_elem in child:
+                    obj.comm_connector_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

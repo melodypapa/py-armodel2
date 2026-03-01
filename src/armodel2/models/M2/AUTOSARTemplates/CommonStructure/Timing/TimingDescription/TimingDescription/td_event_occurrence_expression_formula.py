@@ -36,10 +36,21 @@ class TDEventOccurrenceExpressionFormula(ARObject):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-OCCURRENCE-EXPRESSION-FORMULA"
+
+
     argument_ref: Optional[ARRef]
     event_ref: Optional[ARRef]
     mode_ref: Optional[ARRef]
     variable_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ARGUMENT-REF": lambda obj, elem: setattr(obj, "argument_ref", ARRef.deserialize(elem)),
+        "EVENT-REF": ("_POLYMORPHIC", "event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "MODE-REF": lambda obj, elem: setattr(obj, "mode_ref", ARRef.deserialize(elem)),
+        "VARIABLE-REF": lambda obj, elem: setattr(obj, "variable_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventOccurrenceExpressionFormula."""
         super().__init__()
@@ -54,9 +65,8 @@ class TDEventOccurrenceExpressionFormula(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventOccurrenceExpressionFormula, self).serialize()
@@ -143,29 +153,18 @@ class TDEventOccurrenceExpressionFormula(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventOccurrenceExpressionFormula, cls).deserialize(element)
 
-        # Parse argument_ref
-        child = SerializationHelper.find_child_element(element, "ARGUMENT-REF")
-        if child is not None:
-            argument_ref_value = ARRef.deserialize(child)
-            obj.argument_ref = argument_ref_value
-
-        # Parse event_ref
-        child = SerializationHelper.find_child_element(element, "EVENT-REF")
-        if child is not None:
-            event_ref_value = ARRef.deserialize(child)
-            obj.event_ref = event_ref_value
-
-        # Parse mode_ref
-        child = SerializationHelper.find_child_element(element, "MODE-REF")
-        if child is not None:
-            mode_ref_value = ARRef.deserialize(child)
-            obj.mode_ref = mode_ref_value
-
-        # Parse variable_ref
-        child = SerializationHelper.find_child_element(element, "VARIABLE-REF")
-        if child is not None:
-            variable_ref_value = ARRef.deserialize(child)
-            obj.variable_ref = variable_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ARGUMENT-REF":
+                setattr(obj, "argument_ref", ARRef.deserialize(child))
+            elif tag == "EVENT-REF":
+                setattr(obj, "event_ref", ARRef.deserialize(child))
+            elif tag == "MODE-REF":
+                setattr(obj, "mode_ref", ARRef.deserialize(child))
+            elif tag == "VARIABLE-REF":
+                setattr(obj, "variable_ref", ARRef.deserialize(child))
 
         return obj
 

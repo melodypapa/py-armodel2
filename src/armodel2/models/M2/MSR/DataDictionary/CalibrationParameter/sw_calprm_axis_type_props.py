@@ -35,6 +35,12 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
 
     max_gradient: Optional[Float]
     monotony: Optional[MonotonyEnum]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-GRADIENT": lambda obj, elem: setattr(obj, "max_gradient", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "MONOTONY": lambda obj, elem: setattr(obj, "monotony", MonotonyEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwCalprmAxisTypeProps."""
         super().__init__()
@@ -47,9 +53,8 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwCalprmAxisTypeProps, self).serialize()
@@ -108,17 +113,14 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwCalprmAxisTypeProps, cls).deserialize(element)
 
-        # Parse max_gradient
-        child = SerializationHelper.find_child_element(element, "MAX-GRADIENT")
-        if child is not None:
-            max_gradient_value = child.text
-            obj.max_gradient = max_gradient_value
-
-        # Parse monotony
-        child = SerializationHelper.find_child_element(element, "MONOTONY")
-        if child is not None:
-            monotony_value = MonotonyEnum.deserialize(child)
-            obj.monotony = monotony_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAX-GRADIENT":
+                setattr(obj, "max_gradient", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "MONOTONY":
+                setattr(obj, "monotony", MonotonyEnum.deserialize(child))
 
         return obj
 

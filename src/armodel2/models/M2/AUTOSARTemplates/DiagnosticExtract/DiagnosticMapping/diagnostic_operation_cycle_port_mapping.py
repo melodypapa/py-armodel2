@@ -31,9 +31,19 @@ class DiagnosticOperationCyclePortMapping(DiagnosticSwMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-OPERATION-CYCLE-PORT-MAPPING"
+
+
     operation_cycle_ref: Optional[Any]
     swc_flat_service_ref: Optional[Any]
     swc_service: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "OPERATION-CYCLE-REF": lambda obj, elem: setattr(obj, "operation_cycle_ref", ARRef.deserialize(elem)),
+        "SWC-FLAT-SERVICE-REF": lambda obj, elem: setattr(obj, "swc_flat_service_ref", ARRef.deserialize(elem)),
+        "SWC-SERVICE": lambda obj, elem: setattr(obj, "swc_service", SerializationHelper.deserialize_by_tag(elem, "any (SwcService)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticOperationCyclePortMapping."""
         super().__init__()
@@ -47,9 +57,8 @@ class DiagnosticOperationCyclePortMapping(DiagnosticSwMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticOperationCyclePortMapping, self).serialize()
@@ -122,23 +131,16 @@ class DiagnosticOperationCyclePortMapping(DiagnosticSwMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticOperationCyclePortMapping, cls).deserialize(element)
 
-        # Parse operation_cycle_ref
-        child = SerializationHelper.find_child_element(element, "OPERATION-CYCLE-REF")
-        if child is not None:
-            operation_cycle_ref_value = ARRef.deserialize(child)
-            obj.operation_cycle_ref = operation_cycle_ref_value
-
-        # Parse swc_flat_service_ref
-        child = SerializationHelper.find_child_element(element, "SWC-FLAT-SERVICE-REF")
-        if child is not None:
-            swc_flat_service_ref_value = ARRef.deserialize(child)
-            obj.swc_flat_service_ref = swc_flat_service_ref_value
-
-        # Parse swc_service
-        child = SerializationHelper.find_child_element(element, "SWC-SERVICE")
-        if child is not None:
-            swc_service_value = child.text
-            obj.swc_service = swc_service_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OPERATION-CYCLE-REF":
+                setattr(obj, "operation_cycle_ref", ARRef.deserialize(child))
+            elif tag == "SWC-FLAT-SERVICE-REF":
+                setattr(obj, "swc_flat_service_ref", ARRef.deserialize(child))
+            elif tag == "SWC-SERVICE":
+                setattr(obj, "swc_service", SerializationHelper.deserialize_by_tag(child, "any (SwcService)"))
 
         return obj
 

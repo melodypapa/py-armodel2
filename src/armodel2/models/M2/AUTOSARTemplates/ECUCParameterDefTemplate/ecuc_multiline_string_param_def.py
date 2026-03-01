@@ -29,6 +29,9 @@ class EcucMultilineStringParamDef(ARObject):
         """
         return False
 
+    _XML_TAG = "ECUC-MULTILINE-STRING-PARAM-DEF"
+
+
     def __init__(self) -> None:
         """Initialize EcucMultilineStringParamDef."""
         super().__init__()

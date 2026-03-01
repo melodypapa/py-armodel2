@@ -35,9 +35,19 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
         """
         return False
 
+    _XML_TAG = "DIAG-EVENT-DEBOUNCE-TIME-BASED"
+
+
     time_based_fdc: Optional[TimeValue]
     time_failed: Optional[TimeValue]
     time_passed: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "TIME-BASED-FDC": lambda obj, elem: setattr(obj, "time_based_fdc", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIME-FAILED": lambda obj, elem: setattr(obj, "time_failed", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIME-PASSED": lambda obj, elem: setattr(obj, "time_passed", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagEventDebounceTimeBased."""
         super().__init__()
@@ -51,9 +61,8 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagEventDebounceTimeBased, self).serialize()
@@ -126,23 +135,16 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagEventDebounceTimeBased, cls).deserialize(element)
 
-        # Parse time_based_fdc
-        child = SerializationHelper.find_child_element(element, "TIME-BASED-FDC")
-        if child is not None:
-            time_based_fdc_value = child.text
-            obj.time_based_fdc = time_based_fdc_value
-
-        # Parse time_failed
-        child = SerializationHelper.find_child_element(element, "TIME-FAILED")
-        if child is not None:
-            time_failed_value = child.text
-            obj.time_failed = time_failed_value
-
-        # Parse time_passed
-        child = SerializationHelper.find_child_element(element, "TIME-PASSED")
-        if child is not None:
-            time_passed_value = child.text
-            obj.time_passed = time_passed_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TIME-BASED-FDC":
+                setattr(obj, "time_based_fdc", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIME-FAILED":
+                setattr(obj, "time_failed", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIME-PASSED":
+                setattr(obj, "time_passed", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

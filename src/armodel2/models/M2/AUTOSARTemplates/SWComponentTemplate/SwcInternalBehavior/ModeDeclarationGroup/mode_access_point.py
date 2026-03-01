@@ -34,8 +34,17 @@ class ModeAccessPoint(ARObject):
         """
         return False
 
+    _XML_TAG = "MODE-ACCESS-POINT"
+
+
     ident: Optional[ModeAccessPointIdent]
     mode_group_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "IDENT": lambda obj, elem: setattr(obj, "ident", SerializationHelper.deserialize_by_tag(elem, "ModeAccessPointIdent")),
+        "MODE-GROUP-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "mode_group_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeAccessPoint."""
         super().__init__()
@@ -48,9 +57,8 @@ class ModeAccessPoint(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeAccessPoint, self).serialize()
@@ -109,17 +117,14 @@ class ModeAccessPoint(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeAccessPoint, cls).deserialize(element)
 
-        # Parse ident
-        child = SerializationHelper.find_child_element(element, "IDENT")
-        if child is not None:
-            ident_value = SerializationHelper.deserialize_by_tag(child, "ModeAccessPointIdent")
-            obj.ident = ident_value
-
-        # Parse mode_group_instance_ref
-        child = SerializationHelper.find_child_element(element, "MODE-GROUP-INSTANCE-REF-REF")
-        if child is not None:
-            mode_group_instance_ref_value = ARRef.deserialize(child)
-            obj.mode_group_instance_ref = mode_group_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "IDENT":
+                setattr(obj, "ident", SerializationHelper.deserialize_by_tag(child, "ModeAccessPointIdent"))
+            elif tag == "MODE-GROUP-INSTANCE-REF-REF":
+                setattr(obj, "mode_group_instance_ref", ARRef.deserialize(child))
 
         return obj
 

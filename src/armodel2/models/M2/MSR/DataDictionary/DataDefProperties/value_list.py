@@ -35,7 +35,15 @@ class ValueList(ARObject):
         """
         return False
 
+    _XML_TAG = "VALUE-LIST"
+
+
     v: Optional[Numerical]
+    _DESERIALIZE_DISPATCH = {
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ValueList."""
         super().__init__()

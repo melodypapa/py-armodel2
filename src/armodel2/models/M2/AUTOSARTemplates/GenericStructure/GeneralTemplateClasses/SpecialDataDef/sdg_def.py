@@ -34,7 +34,15 @@ class SdgDef(ARElement):
         """
         return False
 
+    _XML_TAG = "SDG-DEF"
+
+
     sdg_classes: list[SdgClass]
+    _DESERIALIZE_DISPATCH = {
+        "SDG-CLASSES": lambda obj, elem: obj.sdg_classes.append(SerializationHelper.deserialize_by_tag(elem, "SdgClass")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SdgDef."""
         super().__init__()
@@ -46,9 +54,8 @@ class SdgDef(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SdgDef, self).serialize()
@@ -89,15 +96,14 @@ class SdgDef(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SdgDef, cls).deserialize(element)
 
-        # Parse sdg_classes (list from container "SDG-CLASSES")
-        obj.sdg_classes = []
-        container = SerializationHelper.find_child_element(element, "SDG-CLASSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sdg_classes.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SDG-CLASSES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sdg_classes.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgClass"))
 
         return obj
 

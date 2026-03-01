@@ -36,6 +36,11 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
         return True
 
     data_identifier_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-IDENTIFIER-REF": ("_POLYMORPHIC", "data_identifier_ref", ["DiagnosticDataIdentifier", "DiagnosticDynamicDataIdentifier"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticDataByIdentifier."""
         super().__init__()
@@ -47,9 +52,8 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticDataByIdentifier, self).serialize()
@@ -94,11 +98,12 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDataByIdentifier, cls).deserialize(element)
 
-        # Parse data_identifier_ref
-        child = SerializationHelper.find_child_element(element, "DATA-IDENTIFIER-REF")
-        if child is not None:
-            data_identifier_ref_value = ARRef.deserialize(child)
-            obj.data_identifier_ref = data_identifier_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-IDENTIFIER-REF":
+                setattr(obj, "data_identifier_ref", ARRef.deserialize(child))
 
         return obj
 

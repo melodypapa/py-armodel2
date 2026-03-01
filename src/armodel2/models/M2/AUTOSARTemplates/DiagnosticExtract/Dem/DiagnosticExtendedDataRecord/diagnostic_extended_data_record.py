@@ -41,11 +41,23 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-EXTENDED-DATA-RECORD"
+
+
     custom_trigger: Optional[String]
     record_elements: list[DiagnosticParameter]
     record_number: Optional[PositiveInteger]
     trigger: Optional[DiagnosticRecordTriggerEnum]
     update: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CUSTOM-TRIGGER": lambda obj, elem: setattr(obj, "custom_trigger", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "RECORD-ELEMENTS": lambda obj, elem: obj.record_elements.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
+        "RECORD-NUMBER": lambda obj, elem: setattr(obj, "record_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TRIGGER": lambda obj, elem: setattr(obj, "trigger", DiagnosticRecordTriggerEnum.deserialize(elem)),
+        "UPDATE": lambda obj, elem: setattr(obj, "update", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticExtendedDataRecord."""
         super().__init__()
@@ -61,9 +73,8 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticExtendedDataRecord, self).serialize()
@@ -160,39 +171,22 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticExtendedDataRecord, cls).deserialize(element)
 
-        # Parse custom_trigger
-        child = SerializationHelper.find_child_element(element, "CUSTOM-TRIGGER")
-        if child is not None:
-            custom_trigger_value = child.text
-            obj.custom_trigger = custom_trigger_value
-
-        # Parse record_elements (list from container "RECORD-ELEMENTS")
-        obj.record_elements = []
-        container = SerializationHelper.find_child_element(element, "RECORD-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.record_elements.append(child_value)
-
-        # Parse record_number
-        child = SerializationHelper.find_child_element(element, "RECORD-NUMBER")
-        if child is not None:
-            record_number_value = child.text
-            obj.record_number = record_number_value
-
-        # Parse trigger
-        child = SerializationHelper.find_child_element(element, "TRIGGER")
-        if child is not None:
-            trigger_value = DiagnosticRecordTriggerEnum.deserialize(child)
-            obj.trigger = trigger_value
-
-        # Parse update
-        child = SerializationHelper.find_child_element(element, "UPDATE")
-        if child is not None:
-            update_value = child.text
-            obj.update = update_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CUSTOM-TRIGGER":
+                setattr(obj, "custom_trigger", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "RECORD-ELEMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.record_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticParameter"))
+            elif tag == "RECORD-NUMBER":
+                setattr(obj, "record_number", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TRIGGER":
+                setattr(obj, "trigger", DiagnosticRecordTriggerEnum.deserialize(child))
+            elif tag == "UPDATE":
+                setattr(obj, "update", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

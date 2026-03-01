@@ -30,9 +30,19 @@ class RptSwPrototypingAccess(ARObject):
         """
         return False
 
+    _XML_TAG = "RPT-SW-PROTOTYPING-ACCESS"
+
+
     rpt_hook_access: Optional[RptAccessEnum]
     rpt_read_access: Optional[RptAccessEnum]
     rpt_write_access: Optional[RptAccessEnum]
+    _DESERIALIZE_DISPATCH = {
+        "RPT-HOOK-ACCESS": lambda obj, elem: setattr(obj, "rpt_hook_access", RptAccessEnum.deserialize(elem)),
+        "RPT-READ-ACCESS": lambda obj, elem: setattr(obj, "rpt_read_access", RptAccessEnum.deserialize(elem)),
+        "RPT-WRITE-ACCESS": lambda obj, elem: setattr(obj, "rpt_write_access", RptAccessEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptSwPrototypingAccess."""
         super().__init__()
@@ -46,9 +56,8 @@ class RptSwPrototypingAccess(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptSwPrototypingAccess, self).serialize()
@@ -121,23 +130,16 @@ class RptSwPrototypingAccess(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptSwPrototypingAccess, cls).deserialize(element)
 
-        # Parse rpt_hook_access
-        child = SerializationHelper.find_child_element(element, "RPT-HOOK-ACCESS")
-        if child is not None:
-            rpt_hook_access_value = RptAccessEnum.deserialize(child)
-            obj.rpt_hook_access = rpt_hook_access_value
-
-        # Parse rpt_read_access
-        child = SerializationHelper.find_child_element(element, "RPT-READ-ACCESS")
-        if child is not None:
-            rpt_read_access_value = RptAccessEnum.deserialize(child)
-            obj.rpt_read_access = rpt_read_access_value
-
-        # Parse rpt_write_access
-        child = SerializationHelper.find_child_element(element, "RPT-WRITE-ACCESS")
-        if child is not None:
-            rpt_write_access_value = RptAccessEnum.deserialize(child)
-            obj.rpt_write_access = rpt_write_access_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RPT-HOOK-ACCESS":
+                setattr(obj, "rpt_hook_access", RptAccessEnum.deserialize(child))
+            elif tag == "RPT-READ-ACCESS":
+                setattr(obj, "rpt_read_access", RptAccessEnum.deserialize(child))
+            elif tag == "RPT-WRITE-ACCESS":
+                setattr(obj, "rpt_write_access", RptAccessEnum.deserialize(child))
 
         return obj
 

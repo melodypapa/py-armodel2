@@ -32,9 +32,19 @@ class ConfidenceInterval(ARObject):
         """
         return False
 
+    _XML_TAG = "CONFIDENCE-INTERVAL"
+
+
     lower_bound: Optional[MultidimensionalTime]
     propability: Optional[Float]
     upper_bound: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "LOWER-BOUND": lambda obj, elem: setattr(obj, "lower_bound", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "PROPABILITY": lambda obj, elem: setattr(obj, "propability", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "UPPER-BOUND": lambda obj, elem: setattr(obj, "upper_bound", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConfidenceInterval."""
         super().__init__()
@@ -48,9 +58,8 @@ class ConfidenceInterval(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConfidenceInterval, self).serialize()
@@ -123,23 +132,16 @@ class ConfidenceInterval(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConfidenceInterval, cls).deserialize(element)
 
-        # Parse lower_bound
-        child = SerializationHelper.find_child_element(element, "LOWER-BOUND")
-        if child is not None:
-            lower_bound_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.lower_bound = lower_bound_value
-
-        # Parse propability
-        child = SerializationHelper.find_child_element(element, "PROPABILITY")
-        if child is not None:
-            propability_value = child.text
-            obj.propability = propability_value
-
-        # Parse upper_bound
-        child = SerializationHelper.find_child_element(element, "UPPER-BOUND")
-        if child is not None:
-            upper_bound_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.upper_bound = upper_bound_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LOWER-BOUND":
+                setattr(obj, "lower_bound", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "PROPABILITY":
+                setattr(obj, "propability", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "UPPER-BOUND":
+                setattr(obj, "upper_bound", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

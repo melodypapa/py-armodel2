@@ -37,9 +37,19 @@ class TimingClockSyncAccuracy(Identifiable):
         """
         return False
 
+    _XML_TAG = "TIMING-CLOCK-SYNC-ACCURACY"
+
+
     accuracy: Optional[MultidimensionalTime]
     lower_ref: Optional[ARRef]
     upper_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ACCURACY": lambda obj, elem: setattr(obj, "accuracy", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "LOWER-REF": ("_POLYMORPHIC", "lower_ref", ["TDLETZoneClock"]),
+        "UPPER-REF": ("_POLYMORPHIC", "upper_ref", ["TDLETZoneClock"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimingClockSyncAccuracy."""
         super().__init__()
@@ -53,9 +63,8 @@ class TimingClockSyncAccuracy(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimingClockSyncAccuracy, self).serialize()
@@ -128,23 +137,16 @@ class TimingClockSyncAccuracy(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingClockSyncAccuracy, cls).deserialize(element)
 
-        # Parse accuracy
-        child = SerializationHelper.find_child_element(element, "ACCURACY")
-        if child is not None:
-            accuracy_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.accuracy = accuracy_value
-
-        # Parse lower_ref
-        child = SerializationHelper.find_child_element(element, "LOWER-REF")
-        if child is not None:
-            lower_ref_value = ARRef.deserialize(child)
-            obj.lower_ref = lower_ref_value
-
-        # Parse upper_ref
-        child = SerializationHelper.find_child_element(element, "UPPER-REF")
-        if child is not None:
-            upper_ref_value = ARRef.deserialize(child)
-            obj.upper_ref = upper_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ACCURACY":
+                setattr(obj, "accuracy", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "LOWER-REF":
+                setattr(obj, "lower_ref", ARRef.deserialize(child))
+            elif tag == "UPPER-REF":
+                setattr(obj, "upper_ref", ARRef.deserialize(child))
 
         return obj
 

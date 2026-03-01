@@ -40,12 +40,25 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         """
         return False
 
+    _XML_TAG = "ETH-GLOBAL-TIME-DOMAIN-PROPS"
+
+
     crc_flags: Optional[EthTSynCrcFlags]
     destination: Optional[MacAddressString]
     fup_data_id_list: PositiveInteger
     manageds: list[Any]
     message: Optional[EthGlobalTimeMessageFormatEnum]
     vlan_priority: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "CRC-FLAGS": lambda obj, elem: setattr(obj, "crc_flags", SerializationHelper.deserialize_by_tag(elem, "EthTSynCrcFlags")),
+        "DESTINATION": lambda obj, elem: setattr(obj, "destination", SerializationHelper.deserialize_by_tag(elem, "MacAddressString")),
+        "FUP-DATA-ID-LIST": lambda obj, elem: setattr(obj, "fup_data_id_list", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MANAGEDS": lambda obj, elem: obj.manageds.append(SerializationHelper.deserialize_by_tag(elem, "any (EthGlobalTime)")),
+        "MESSAGE": lambda obj, elem: setattr(obj, "message", EthGlobalTimeMessageFormatEnum.deserialize(elem)),
+        "VLAN-PRIORITY": lambda obj, elem: setattr(obj, "vlan_priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EthGlobalTimeDomainProps."""
         super().__init__()
@@ -62,9 +75,8 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EthGlobalTimeDomainProps, self).serialize()
@@ -175,45 +187,24 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthGlobalTimeDomainProps, cls).deserialize(element)
 
-        # Parse crc_flags
-        child = SerializationHelper.find_child_element(element, "CRC-FLAGS")
-        if child is not None:
-            crc_flags_value = SerializationHelper.deserialize_by_tag(child, "EthTSynCrcFlags")
-            obj.crc_flags = crc_flags_value
-
-        # Parse destination
-        child = SerializationHelper.find_child_element(element, "DESTINATION")
-        if child is not None:
-            destination_value = child.text
-            obj.destination = destination_value
-
-        # Parse fup_data_id_list
-        child = SerializationHelper.find_child_element(element, "FUP-DATA-ID-LIST")
-        if child is not None:
-            fup_data_id_list_value = child.text
-            obj.fup_data_id_list = fup_data_id_list_value
-
-        # Parse manageds (list from container "MANAGEDS")
-        obj.manageds = []
-        container = SerializationHelper.find_child_element(element, "MANAGEDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.manageds.append(child_value)
-
-        # Parse message
-        child = SerializationHelper.find_child_element(element, "MESSAGE")
-        if child is not None:
-            message_value = EthGlobalTimeMessageFormatEnum.deserialize(child)
-            obj.message = message_value
-
-        # Parse vlan_priority
-        child = SerializationHelper.find_child_element(element, "VLAN-PRIORITY")
-        if child is not None:
-            vlan_priority_value = child.text
-            obj.vlan_priority = vlan_priority_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CRC-FLAGS":
+                setattr(obj, "crc_flags", SerializationHelper.deserialize_by_tag(child, "EthTSynCrcFlags"))
+            elif tag == "DESTINATION":
+                setattr(obj, "destination", SerializationHelper.deserialize_by_tag(child, "MacAddressString"))
+            elif tag == "FUP-DATA-ID-LIST":
+                setattr(obj, "fup_data_id_list", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MANAGEDS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.manageds.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EthGlobalTime)"))
+            elif tag == "MESSAGE":
+                setattr(obj, "message", EthGlobalTimeMessageFormatEnum.deserialize(child))
+            elif tag == "VLAN-PRIORITY":
+                setattr(obj, "vlan_priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -37,6 +37,11 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
         return True
 
     required_com_specs: list[RPortComSpec]
+    _DESERIALIZE_DISPATCH = {
+        "REQUIRED-COM-SPECS": ("_POLYMORPHIC_LIST", "required_com_specs", ["ClientComSpec", "ModeSwitchReceiverComSpec", "NvRequireComSpec", "ParameterRequireComSpec"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AbstractRequiredPortPrototype."""
         super().__init__()
@@ -48,9 +53,8 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AbstractRequiredPortPrototype, self).serialize()
@@ -91,15 +95,22 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractRequiredPortPrototype, cls).deserialize(element)
 
-        # Parse required_com_specs (list from container "REQUIRED-COM-SPECS")
-        obj.required_com_specs = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-COM-SPECS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.required_com_specs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "REQUIRED-COM-SPECS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "CLIENT-COM-SPEC":
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientComSpec"))
+                    elif concrete_tag == "MODE-SWITCH-RECEIVER-COM-SPEC":
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchReceiverComSpec"))
+                    elif concrete_tag == "NV-REQUIRE-COM-SPEC":
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvRequireComSpec"))
+                    elif concrete_tag == "PARAMETER-REQUIRE-COM-SPEC":
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterRequireComSpec"))
 
         return obj
 

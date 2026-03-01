@@ -34,9 +34,19 @@ class CryptoServicePrimitive(ARElement):
         """
         return False
 
+    _XML_TAG = "CRYPTO-SERVICE-PRIMITIVE"
+
+
     algorithm_family: Optional[String]
     algorithm_mode: Optional[String]
     algorithm: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "ALGORITHM-FAMILY": lambda obj, elem: setattr(obj, "algorithm_family", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ALGORITHM-MODE": lambda obj, elem: setattr(obj, "algorithm_mode", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ALGORITHM": lambda obj, elem: setattr(obj, "algorithm", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CryptoServicePrimitive."""
         super().__init__()
@@ -50,9 +60,8 @@ class CryptoServicePrimitive(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CryptoServicePrimitive, self).serialize()
@@ -125,23 +134,16 @@ class CryptoServicePrimitive(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CryptoServicePrimitive, cls).deserialize(element)
 
-        # Parse algorithm_family
-        child = SerializationHelper.find_child_element(element, "ALGORITHM-FAMILY")
-        if child is not None:
-            algorithm_family_value = child.text
-            obj.algorithm_family = algorithm_family_value
-
-        # Parse algorithm_mode
-        child = SerializationHelper.find_child_element(element, "ALGORITHM-MODE")
-        if child is not None:
-            algorithm_mode_value = child.text
-            obj.algorithm_mode = algorithm_mode_value
-
-        # Parse algorithm
-        child = SerializationHelper.find_child_element(element, "ALGORITHM")
-        if child is not None:
-            algorithm_value = child.text
-            obj.algorithm = algorithm_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ALGORITHM-FAMILY":
+                setattr(obj, "algorithm_family", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ALGORITHM-MODE":
+                setattr(obj, "algorithm_mode", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ALGORITHM":
+                setattr(obj, "algorithm", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

@@ -33,6 +33,9 @@ class TtcanCommunicationController(ARObject):
         """
         return False
 
+    _XML_TAG = "TTCAN-COMMUNICATION-CONTROLLER"
+
+
     appl_watchdog: Optional[Integer]
     expected_tx: Optional[Integer]
     external_clock: Optional[Boolean]
@@ -41,6 +44,18 @@ class TtcanCommunicationController(ARObject):
     time_master: Optional[Integer]
     time_triggered: Optional[Integer]
     tx_enable: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "APPL-WATCHDOG": lambda obj, elem: setattr(obj, "appl_watchdog", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "EXPECTED-TX": lambda obj, elem: setattr(obj, "expected_tx", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "EXTERNAL-CLOCK": lambda obj, elem: setattr(obj, "external_clock", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "INITIAL-REF-OFFSET": lambda obj, elem: setattr(obj, "initial_ref_offset", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MASTER": lambda obj, elem: setattr(obj, "master", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TIME-MASTER": lambda obj, elem: setattr(obj, "time_master", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "TIME-TRIGGERED": lambda obj, elem: setattr(obj, "time_triggered", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "TX-ENABLE": lambda obj, elem: setattr(obj, "tx_enable", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TtcanCommunicationController."""
         super().__init__()

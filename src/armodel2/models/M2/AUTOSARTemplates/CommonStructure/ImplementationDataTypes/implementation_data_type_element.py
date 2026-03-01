@@ -49,12 +49,25 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         """
         return False
 
+    _XML_TAG = "IMPLEMENTATION-DATA-TYPE-ELEMENT"
+
+
     array_impl_policy_enum: Optional[ArrayImplPolicyEnum]
     array_size: Optional[ArraySizeSemanticsEnum]
     array_size_handling: Optional[ArraySizeHandlingEnum]
     is_optional: Optional[Boolean]
     sub_elements: list[Any]
     sw_data_def: Optional[SwDataDefProps]
+    _DESERIALIZE_DISPATCH = {
+        "ARRAY-IMPL-POLICY-ENUM": lambda obj, elem: setattr(obj, "array_impl_policy_enum", ArrayImplPolicyEnum.deserialize(elem)),
+        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(elem)),
+        "ARRAY-SIZE-HANDLING": lambda obj, elem: setattr(obj, "array_size_handling", ArraySizeHandlingEnum.deserialize(elem)),
+        "IS-OPTIONAL": lambda obj, elem: setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SUB-ELEMENTS": lambda obj, elem: obj.sub_elements.append(SerializationHelper.deserialize_by_tag(elem, "any (ImplementationData)")),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ImplementationDataTypeElement."""
         super().__init__()
@@ -71,9 +84,8 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ImplementationDataTypeElement, self).serialize()
@@ -184,45 +196,24 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ImplementationDataTypeElement, cls).deserialize(element)
 
-        # Parse array_impl_policy_enum
-        child = SerializationHelper.find_child_element(element, "ARRAY-IMPL-POLICY-ENUM")
-        if child is not None:
-            array_impl_policy_enum_value = ArrayImplPolicyEnum.deserialize(child)
-            obj.array_impl_policy_enum = array_impl_policy_enum_value
-
-        # Parse array_size
-        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE")
-        if child is not None:
-            array_size_value = ArraySizeSemanticsEnum.deserialize(child)
-            obj.array_size = array_size_value
-
-        # Parse array_size_handling
-        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE-HANDLING")
-        if child is not None:
-            array_size_handling_value = ArraySizeHandlingEnum.deserialize(child)
-            obj.array_size_handling = array_size_handling_value
-
-        # Parse is_optional
-        child = SerializationHelper.find_child_element(element, "IS-OPTIONAL")
-        if child is not None:
-            is_optional_value = child.text
-            obj.is_optional = is_optional_value
-
-        # Parse sub_elements (list from container "SUB-ELEMENTS")
-        obj.sub_elements = []
-        container = SerializationHelper.find_child_element(element, "SUB-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sub_elements.append(child_value)
-
-        # Parse sw_data_def
-        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
-        if child is not None:
-            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.sw_data_def = sw_data_def_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ARRAY-IMPL-POLICY-ENUM":
+                setattr(obj, "array_impl_policy_enum", ArrayImplPolicyEnum.deserialize(child))
+            elif tag == "ARRAY-SIZE":
+                setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(child))
+            elif tag == "ARRAY-SIZE-HANDLING":
+                setattr(obj, "array_size_handling", ArraySizeHandlingEnum.deserialize(child))
+            elif tag == "IS-OPTIONAL":
+                setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SUB-ELEMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sub_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ImplementationData)"))
+            elif tag == "SW-DATA-DEF":
+                setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
         return obj
 

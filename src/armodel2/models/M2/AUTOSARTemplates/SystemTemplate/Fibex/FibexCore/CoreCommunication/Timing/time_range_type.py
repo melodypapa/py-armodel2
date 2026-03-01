@@ -29,8 +29,17 @@ class TimeRangeType(ARObject):
         """
         return False
 
+    _XML_TAG = "TIME-RANGE-TYPE"
+
+
     tolerance: Optional[TimeRangeTypeTolerance]
     value: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "TOLERANCE": lambda obj, elem: setattr(obj, "tolerance", SerializationHelper.deserialize_by_tag(elem, "TimeRangeTypeTolerance")),
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimeRangeType."""
         super().__init__()
@@ -43,9 +52,8 @@ class TimeRangeType(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimeRangeType, self).serialize()
@@ -104,17 +112,14 @@ class TimeRangeType(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimeRangeType, cls).deserialize(element)
 
-        # Parse tolerance
-        child = SerializationHelper.find_child_element(element, "TOLERANCE")
-        if child is not None:
-            tolerance_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeTypeTolerance")
-            obj.tolerance = tolerance_value
-
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = child.text
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TOLERANCE":
+                setattr(obj, "tolerance", SerializationHelper.deserialize_by_tag(child, "TimeRangeTypeTolerance"))
+            elif tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

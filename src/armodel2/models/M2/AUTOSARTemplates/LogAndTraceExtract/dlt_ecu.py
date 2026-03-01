@@ -37,8 +37,17 @@ class DltEcu(ARElement):
         """
         return False
 
+    _XML_TAG = "DLT-ECU"
+
+
     applications: list[DltApplication]
     ecu_id: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATIONS": lambda obj, elem: obj.applications.append(SerializationHelper.deserialize_by_tag(elem, "DltApplication")),
+        "ECU-ID": lambda obj, elem: setattr(obj, "ecu_id", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DltEcu."""
         super().__init__()
@@ -51,9 +60,8 @@ class DltEcu(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DltEcu, self).serialize()
@@ -108,21 +116,16 @@ class DltEcu(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DltEcu, cls).deserialize(element)
 
-        # Parse applications (list from container "APPLICATIONS")
-        obj.applications = []
-        container = SerializationHelper.find_child_element(element, "APPLICATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.applications.append(child_value)
-
-        # Parse ecu_id
-        child = SerializationHelper.find_child_element(element, "ECU-ID")
-        if child is not None:
-            ecu_id_value = child.text
-            obj.ecu_id = ecu_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "APPLICATIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.applications.append(SerializationHelper.deserialize_by_tag(item_elem, "DltApplication"))
+            elif tag == "ECU-ID":
+                setattr(obj, "ecu_id", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

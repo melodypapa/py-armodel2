@@ -38,10 +38,21 @@ class TextTableMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "TEXT-TABLE-MAPPING"
+
+
     bitfield_text_table: Optional[PositiveInteger]
     identical: Optional[Boolean]
     mapping_ref: Optional[MappingDirectionEnum]
     value_pairs: list[TextTableValuePair]
+    _DESERIALIZE_DISPATCH = {
+        "BITFIELD-TEXT-TABLE": lambda obj, elem: setattr(obj, "bitfield_text_table", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IDENTICAL": lambda obj, elem: setattr(obj, "identical", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "MAPPING-REF": lambda obj, elem: setattr(obj, "mapping_ref", MappingDirectionEnum.deserialize(elem)),
+        "VALUE-PAIRS": lambda obj, elem: obj.value_pairs.append(SerializationHelper.deserialize_by_tag(elem, "TextTableValuePair")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TextTableMapping."""
         super().__init__()
@@ -56,9 +67,8 @@ class TextTableMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TextTableMapping, self).serialize()
@@ -141,33 +151,20 @@ class TextTableMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TextTableMapping, cls).deserialize(element)
 
-        # Parse bitfield_text_table
-        child = SerializationHelper.find_child_element(element, "BITFIELD-TEXT-TABLE")
-        if child is not None:
-            bitfield_text_table_value = child.text
-            obj.bitfield_text_table = bitfield_text_table_value
-
-        # Parse identical
-        child = SerializationHelper.find_child_element(element, "IDENTICAL")
-        if child is not None:
-            identical_value = child.text
-            obj.identical = identical_value
-
-        # Parse mapping_ref
-        child = SerializationHelper.find_child_element(element, "MAPPING-REF")
-        if child is not None:
-            mapping_ref_value = ARRef.deserialize(child)
-            obj.mapping_ref = mapping_ref_value
-
-        # Parse value_pairs (list from container "VALUE-PAIRS")
-        obj.value_pairs = []
-        container = SerializationHelper.find_child_element(element, "VALUE-PAIRS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.value_pairs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BITFIELD-TEXT-TABLE":
+                setattr(obj, "bitfield_text_table", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IDENTICAL":
+                setattr(obj, "identical", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "MAPPING-REF":
+                setattr(obj, "mapping_ref", MappingDirectionEnum.deserialize(child))
+            elif tag == "VALUE-PAIRS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.value_pairs.append(SerializationHelper.deserialize_by_tag(item_elem, "TextTableValuePair"))
 
         return obj
 

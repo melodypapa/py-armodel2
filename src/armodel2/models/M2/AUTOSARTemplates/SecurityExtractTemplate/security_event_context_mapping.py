@@ -38,6 +38,13 @@ class SecurityEventContextMapping(IdsMapping, ABC):
     filter_chain_ref: Optional[Any]
     idsm_instance_ref: Optional[ARRef]
     mapped_securities: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "FILTER-CHAIN-REF": lambda obj, elem: setattr(obj, "filter_chain_ref", ARRef.deserialize(elem)),
+        "IDSM-INSTANCE-REF": lambda obj, elem: setattr(obj, "idsm_instance_ref", ARRef.deserialize(elem)),
+        "MAPPED-SECURITIES": lambda obj, elem: obj.mapped_securities.append(SerializationHelper.deserialize_by_tag(elem, "any (SecurityEventContext)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecurityEventContextMapping."""
         super().__init__()
@@ -51,9 +58,8 @@ class SecurityEventContextMapping(IdsMapping, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecurityEventContextMapping, self).serialize()
@@ -122,27 +128,18 @@ class SecurityEventContextMapping(IdsMapping, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventContextMapping, cls).deserialize(element)
 
-        # Parse filter_chain_ref
-        child = SerializationHelper.find_child_element(element, "FILTER-CHAIN-REF")
-        if child is not None:
-            filter_chain_ref_value = ARRef.deserialize(child)
-            obj.filter_chain_ref = filter_chain_ref_value
-
-        # Parse idsm_instance_ref
-        child = SerializationHelper.find_child_element(element, "IDSM-INSTANCE-REF")
-        if child is not None:
-            idsm_instance_ref_value = ARRef.deserialize(child)
-            obj.idsm_instance_ref = idsm_instance_ref_value
-
-        # Parse mapped_securities (list from container "MAPPED-SECURITIES")
-        obj.mapped_securities = []
-        container = SerializationHelper.find_child_element(element, "MAPPED-SECURITIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mapped_securities.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FILTER-CHAIN-REF":
+                setattr(obj, "filter_chain_ref", ARRef.deserialize(child))
+            elif tag == "IDSM-INSTANCE-REF":
+                setattr(obj, "idsm_instance_ref", ARRef.deserialize(child))
+            elif tag == "MAPPED-SECURITIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.mapped_securities.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SecurityEventContext)"))
 
         return obj
 

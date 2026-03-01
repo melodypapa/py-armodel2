@@ -34,8 +34,17 @@ class RptServicePoint(Identifiable):
         """
         return False
 
+    _XML_TAG = "RPT-SERVICE-POINT"
+
+
     service_id: Optional[PositiveInteger]
     symbol: Optional[CIdentifier]
+    _DESERIALIZE_DISPATCH = {
+        "SERVICE-ID": lambda obj, elem: setattr(obj, "service_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptServicePoint."""
         super().__init__()
@@ -48,9 +57,8 @@ class RptServicePoint(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptServicePoint, self).serialize()
@@ -109,17 +117,14 @@ class RptServicePoint(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptServicePoint, cls).deserialize(element)
 
-        # Parse service_id
-        child = SerializationHelper.find_child_element(element, "SERVICE-ID")
-        if child is not None:
-            service_id_value = child.text
-            obj.service_id = service_id_value
-
-        # Parse symbol
-        child = SerializationHelper.find_child_element(element, "SYMBOL")
-        if child is not None:
-            symbol_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
-            obj.symbol = symbol_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SERVICE-ID":
+                setattr(obj, "service_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SYMBOL":
+                setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
 
         return obj
 

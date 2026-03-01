@@ -36,9 +36,19 @@ class ClientServerOperationBlueprintMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "CLIENT-SERVER-OPERATION-BLUEPRINT-MAPPING"
+
+
     blueprint: Optional[DocumentationBlock]
     bsw_module_entry_ref: ARRef
     client_server_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "BLUEPRINT": lambda obj, elem: setattr(obj, "blueprint", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "BSW-MODULE-ENTRY-REF": lambda obj, elem: setattr(obj, "bsw_module_entry_ref", ARRef.deserialize(elem)),
+        "CLIENT-SERVER-REF": lambda obj, elem: setattr(obj, "client_server_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientServerOperationBlueprintMapping."""
         super().__init__()
@@ -52,9 +62,8 @@ class ClientServerOperationBlueprintMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientServerOperationBlueprintMapping, self).serialize()
@@ -127,23 +136,16 @@ class ClientServerOperationBlueprintMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerOperationBlueprintMapping, cls).deserialize(element)
 
-        # Parse blueprint
-        child = SerializationHelper.find_child_element(element, "BLUEPRINT")
-        if child is not None:
-            blueprint_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.blueprint = blueprint_value
-
-        # Parse bsw_module_entry_ref
-        child = SerializationHelper.find_child_element(element, "BSW-MODULE-ENTRY-REF")
-        if child is not None:
-            bsw_module_entry_ref_value = ARRef.deserialize(child)
-            obj.bsw_module_entry_ref = bsw_module_entry_ref_value
-
-        # Parse client_server_ref
-        child = SerializationHelper.find_child_element(element, "CLIENT-SERVER-REF")
-        if child is not None:
-            client_server_ref_value = ARRef.deserialize(child)
-            obj.client_server_ref = client_server_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BLUEPRINT":
+                setattr(obj, "blueprint", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "BSW-MODULE-ENTRY-REF":
+                setattr(obj, "bsw_module_entry_ref", ARRef.deserialize(child))
+            elif tag == "CLIENT-SERVER-REF":
+                setattr(obj, "client_server_ref", ARRef.deserialize(child))
 
         return obj
 

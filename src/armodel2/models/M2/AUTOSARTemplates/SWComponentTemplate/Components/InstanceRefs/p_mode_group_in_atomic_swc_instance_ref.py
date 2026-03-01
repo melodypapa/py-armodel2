@@ -37,8 +37,17 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         """
         return False
 
+    _XML_TAG = "P-MODE-GROUP-IN-ATOMIC-SWC-INSTANCE-REF"
+
+
     context_p_port_ref: Optional[ARRef]
     target_mode_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXT-P-PORT-REF": ("_POLYMORPHIC", "context_p_port_ref", ["PPortPrototype", "PRPortPrototype"]),
+        "TARGET-MODE-REF": lambda obj, elem: setattr(obj, "target_mode_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PModeGroupInAtomicSwcInstanceRef."""
         super().__init__()
@@ -51,9 +60,8 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PModeGroupInAtomicSwcInstanceRef, self).serialize()
@@ -112,17 +120,14 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PModeGroupInAtomicSwcInstanceRef, cls).deserialize(element)
 
-        # Parse context_p_port_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-P-PORT-REF")
-        if child is not None:
-            context_p_port_ref_value = ARRef.deserialize(child)
-            obj.context_p_port_ref = context_p_port_ref_value
-
-        # Parse target_mode_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-MODE-REF")
-        if child is not None:
-            target_mode_ref_value = ARRef.deserialize(child)
-            obj.target_mode_ref = target_mode_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONTEXT-P-PORT-REF":
+                setattr(obj, "context_p_port_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-MODE-REF":
+                setattr(obj, "target_mode_ref", ARRef.deserialize(child))
 
         return obj
 

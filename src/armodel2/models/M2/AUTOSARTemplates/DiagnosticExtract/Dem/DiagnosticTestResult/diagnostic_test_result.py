@@ -38,10 +38,21 @@ class DiagnosticTestResult(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-TEST-RESULT"
+
+
     diagnostic_event_ref: Optional[ARRef]
     monitored_ref: Optional[Any]
     test_identifier: Optional[DiagnosticTestIdentifier]
     update_kind: Optional[DiagnosticTestResult]
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTIC-EVENT-REF": lambda obj, elem: setattr(obj, "diagnostic_event_ref", ARRef.deserialize(elem)),
+        "MONITORED-REF": lambda obj, elem: setattr(obj, "monitored_ref", ARRef.deserialize(elem)),
+        "TEST-IDENTIFIER": lambda obj, elem: setattr(obj, "test_identifier", SerializationHelper.deserialize_by_tag(elem, "DiagnosticTestIdentifier")),
+        "UPDATE-KIND": lambda obj, elem: setattr(obj, "update_kind", SerializationHelper.deserialize_by_tag(elem, "DiagnosticTestResult")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticTestResult."""
         super().__init__()
@@ -56,9 +67,8 @@ class DiagnosticTestResult(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticTestResult, self).serialize()
@@ -145,29 +155,18 @@ class DiagnosticTestResult(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTestResult, cls).deserialize(element)
 
-        # Parse diagnostic_event_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-EVENT-REF")
-        if child is not None:
-            diagnostic_event_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_event_ref = diagnostic_event_ref_value
-
-        # Parse monitored_ref
-        child = SerializationHelper.find_child_element(element, "MONITORED-REF")
-        if child is not None:
-            monitored_ref_value = ARRef.deserialize(child)
-            obj.monitored_ref = monitored_ref_value
-
-        # Parse test_identifier
-        child = SerializationHelper.find_child_element(element, "TEST-IDENTIFIER")
-        if child is not None:
-            test_identifier_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticTestIdentifier")
-            obj.test_identifier = test_identifier_value
-
-        # Parse update_kind
-        child = SerializationHelper.find_child_element(element, "UPDATE-KIND")
-        if child is not None:
-            update_kind_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticTestResult")
-            obj.update_kind = update_kind_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DIAGNOSTIC-EVENT-REF":
+                setattr(obj, "diagnostic_event_ref", ARRef.deserialize(child))
+            elif tag == "MONITORED-REF":
+                setattr(obj, "monitored_ref", ARRef.deserialize(child))
+            elif tag == "TEST-IDENTIFIER":
+                setattr(obj, "test_identifier", SerializationHelper.deserialize_by_tag(child, "DiagnosticTestIdentifier"))
+            elif tag == "UPDATE-KIND":
+                setattr(obj, "update_kind", SerializationHelper.deserialize_by_tag(child, "DiagnosticTestResult"))
 
         return obj
 

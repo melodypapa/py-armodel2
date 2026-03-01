@@ -43,11 +43,23 @@ class MlFormula(Paginateable):
         """
         return False
 
+    _XML_TAG = "ML-FORMULA"
+
+
     formula_caption: Optional[Caption]
     generic_math: Optional[MultiLanguagePlainText]
     l_graphics: list[LGraphic]
     tex_math: Optional[MultiLanguagePlainText]
     verbatim: Optional[MultiLanguageVerbatim]
+    _DESERIALIZE_DISPATCH = {
+        "FORMULA-CAPTION": lambda obj, elem: setattr(obj, "formula_caption", SerializationHelper.deserialize_by_tag(elem, "Caption")),
+        "GENERIC-MATH": lambda obj, elem: setattr(obj, "generic_math", SerializationHelper.deserialize_by_tag(elem, "MultiLanguagePlainText")),
+        "L-GRAPHICS": lambda obj, elem: obj.l_graphics.append(SerializationHelper.deserialize_by_tag(elem, "LGraphic")),
+        "TEX-MATH": lambda obj, elem: setattr(obj, "tex_math", SerializationHelper.deserialize_by_tag(elem, "MultiLanguagePlainText")),
+        "VERBATIM": lambda obj, elem: setattr(obj, "verbatim", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageVerbatim")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MlFormula."""
         super().__init__()
@@ -63,9 +75,8 @@ class MlFormula(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MlFormula, self).serialize()
@@ -162,39 +173,22 @@ class MlFormula(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MlFormula, cls).deserialize(element)
 
-        # Parse formula_caption
-        child = SerializationHelper.find_child_element(element, "FORMULA-CAPTION")
-        if child is not None:
-            formula_caption_value = SerializationHelper.deserialize_by_tag(child, "Caption")
-            obj.formula_caption = formula_caption_value
-
-        # Parse generic_math
-        child = SerializationHelper.find_child_element(element, "GENERIC-MATH")
-        if child is not None:
-            generic_math_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText")
-            obj.generic_math = generic_math_value
-
-        # Parse l_graphics (list from container "L-GRAPHICS")
-        obj.l_graphics = []
-        container = SerializationHelper.find_child_element(element, "L-GRAPHICS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.l_graphics.append(child_value)
-
-        # Parse tex_math
-        child = SerializationHelper.find_child_element(element, "TEX-MATH")
-        if child is not None:
-            tex_math_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText")
-            obj.tex_math = tex_math_value
-
-        # Parse verbatim
-        child = SerializationHelper.find_child_element(element, "VERBATIM")
-        if child is not None:
-            verbatim_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageVerbatim")
-            obj.verbatim = verbatim_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FORMULA-CAPTION":
+                setattr(obj, "formula_caption", SerializationHelper.deserialize_by_tag(child, "Caption"))
+            elif tag == "GENERIC-MATH":
+                setattr(obj, "generic_math", SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText"))
+            elif tag == "L-GRAPHICS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.l_graphics.append(SerializationHelper.deserialize_by_tag(item_elem, "LGraphic"))
+            elif tag == "TEX-MATH":
+                setattr(obj, "tex_math", SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText"))
+            elif tag == "VERBATIM":
+                setattr(obj, "verbatim", SerializationHelper.deserialize_by_tag(child, "MultiLanguageVerbatim"))
 
         return obj
 

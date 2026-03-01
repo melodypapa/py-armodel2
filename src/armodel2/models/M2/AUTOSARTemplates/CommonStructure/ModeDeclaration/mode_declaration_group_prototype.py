@@ -41,8 +41,17 @@ class ModeDeclarationGroupPrototype(Identifiable):
         """
         return False
 
+    _XML_TAG = "MODE-DECLARATION-GROUP-PROTOTYPE"
+
+
     sw_calibration_access: Optional[SwCalibrationAccessEnum]
     type_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "SW-CALIBRATION-ACCESS": lambda obj, elem: setattr(obj, "sw_calibration_access", SwCalibrationAccessEnum.deserialize(elem)),
+        "TYPE-TREF": lambda obj, elem: setattr(obj, "type_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroupPrototype."""
         super().__init__()
@@ -55,9 +64,8 @@ class ModeDeclarationGroupPrototype(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeDeclarationGroupPrototype, self).serialize()
@@ -116,17 +124,14 @@ class ModeDeclarationGroupPrototype(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeDeclarationGroupPrototype, cls).deserialize(element)
 
-        # Parse sw_calibration_access
-        child = SerializationHelper.find_child_element(element, "SW-CALIBRATION-ACCESS")
-        if child is not None:
-            sw_calibration_access_value = SwCalibrationAccessEnum.deserialize(child)
-            obj.sw_calibration_access = sw_calibration_access_value
-
-        # Parse type_ref
-        child = SerializationHelper.find_child_element(element, "TYPE-TREF")
-        if child is not None:
-            type_ref_value = ARRef.deserialize(child)
-            obj.type_ref = type_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SW-CALIBRATION-ACCESS":
+                setattr(obj, "sw_calibration_access", SwCalibrationAccessEnum.deserialize(child))
+            elif tag == "TYPE-TREF":
+                setattr(obj, "type_ref", ARRef.deserialize(child))
 
         return obj
 

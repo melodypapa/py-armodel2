@@ -33,8 +33,17 @@ class AccessCount(ARObject):
         """
         return False
 
+    _XML_TAG = "ACCESS-COUNT"
+
+
     access_point_ref: Optional[ARRef]
     value: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESS-POINT-REF": ("_POLYMORPHIC", "access_point_ref", ["AsynchronousServerCallResultPoint", "ExternalTriggeringPointIdent", "InternalTriggeringPoint", "ModeAccessPointIdent", "ModeSwitchPoint", "ParameterAccess", "ServerCallPoint", "VariableAccess"]),
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AccessCount."""
         super().__init__()
@@ -47,9 +56,8 @@ class AccessCount(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AccessCount, self).serialize()
@@ -108,17 +116,14 @@ class AccessCount(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AccessCount, cls).deserialize(element)
 
-        # Parse access_point_ref
-        child = SerializationHelper.find_child_element(element, "ACCESS-POINT-REF")
-        if child is not None:
-            access_point_ref_value = ARRef.deserialize(child)
-            obj.access_point_ref = access_point_ref_value
-
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = child.text
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ACCESS-POINT-REF":
+                setattr(obj, "access_point_ref", ARRef.deserialize(child))
+            elif tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

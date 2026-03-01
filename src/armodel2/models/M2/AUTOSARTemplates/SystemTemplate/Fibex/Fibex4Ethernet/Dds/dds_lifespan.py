@@ -29,7 +29,15 @@ class DdsLifespan(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-LIFESPAN"
+
+
     lifespan_duration: Optional[Float]
+    _DESERIALIZE_DISPATCH = {
+        "LIFESPAN-DURATION": lambda obj, elem: setattr(obj, "lifespan_duration", SerializationHelper.deserialize_by_tag(elem, "Float")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsLifespan."""
         super().__init__()
@@ -41,9 +49,8 @@ class DdsLifespan(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsLifespan, self).serialize()
@@ -88,11 +95,12 @@ class DdsLifespan(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsLifespan, cls).deserialize(element)
 
-        # Parse lifespan_duration
-        child = SerializationHelper.find_child_element(element, "LIFESPAN-DURATION")
-        if child is not None:
-            lifespan_duration_value = child.text
-            obj.lifespan_duration = lifespan_duration_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LIFESPAN-DURATION":
+                setattr(obj, "lifespan_duration", SerializationHelper.deserialize_by_tag(child, "Float"))
 
         return obj
 

@@ -38,6 +38,11 @@ class SwConnector(Identifiable, ABC):
         return True
 
     mapping_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "MAPPING-REF": ("_POLYMORPHIC", "mapping_ref", ["ClientServerInterfaceMapping", "ModeInterfaceMapping", "TriggerInterfaceMapping", "VariableAndParameter"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwConnector."""
         super().__init__()
@@ -49,9 +54,8 @@ class SwConnector(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwConnector, self).serialize()
@@ -96,11 +100,12 @@ class SwConnector(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwConnector, cls).deserialize(element)
 
-        # Parse mapping_ref
-        child = SerializationHelper.find_child_element(element, "MAPPING-REF")
-        if child is not None:
-            mapping_ref_value = ARRef.deserialize(child)
-            obj.mapping_ref = mapping_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAPPING-REF":
+                setattr(obj, "mapping_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -37,6 +37,12 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
 
     provider_ref: Optional[ARRef]
     requester_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "PROVIDER-REF": lambda obj, elem: setattr(obj, "provider_ref", ARRef.deserialize(elem)),
+        "REQUESTER-REF": lambda obj, elem: setattr(obj, "requester_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticMapping."""
         super().__init__()
@@ -49,9 +55,8 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticMapping, self).serialize()
@@ -110,17 +115,14 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMapping, cls).deserialize(element)
 
-        # Parse provider_ref
-        child = SerializationHelper.find_child_element(element, "PROVIDER-REF")
-        if child is not None:
-            provider_ref_value = ARRef.deserialize(child)
-            obj.provider_ref = provider_ref_value
-
-        # Parse requester_ref
-        child = SerializationHelper.find_child_element(element, "REQUESTER-REF")
-        if child is not None:
-            requester_ref_value = ARRef.deserialize(child)
-            obj.requester_ref = requester_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PROVIDER-REF":
+                setattr(obj, "provider_ref", ARRef.deserialize(child))
+            elif tag == "REQUESTER-REF":
+                setattr(obj, "requester_ref", ARRef.deserialize(child))
 
         return obj
 

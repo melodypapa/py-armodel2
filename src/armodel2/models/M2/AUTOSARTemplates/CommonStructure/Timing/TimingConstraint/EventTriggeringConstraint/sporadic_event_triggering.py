@@ -33,10 +33,21 @@ class SporadicEventTriggering(EventTriggeringConstraint):
         """
         return False
 
+    _XML_TAG = "SPORADIC-EVENT-TRIGGERING"
+
+
     jitter: Optional[MultidimensionalTime]
     maximum_inter: Optional[MultidimensionalTime]
     minimum_inter: Optional[MultidimensionalTime]
     period: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "JITTER": lambda obj, elem: setattr(obj, "jitter", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "MAXIMUM-INTER": lambda obj, elem: setattr(obj, "maximum_inter", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "MINIMUM-INTER": lambda obj, elem: setattr(obj, "minimum_inter", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "PERIOD": lambda obj, elem: setattr(obj, "period", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SporadicEventTriggering."""
         super().__init__()
@@ -51,9 +62,8 @@ class SporadicEventTriggering(EventTriggeringConstraint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SporadicEventTriggering, self).serialize()
@@ -140,29 +150,18 @@ class SporadicEventTriggering(EventTriggeringConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SporadicEventTriggering, cls).deserialize(element)
 
-        # Parse jitter
-        child = SerializationHelper.find_child_element(element, "JITTER")
-        if child is not None:
-            jitter_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.jitter = jitter_value
-
-        # Parse maximum_inter
-        child = SerializationHelper.find_child_element(element, "MAXIMUM-INTER")
-        if child is not None:
-            maximum_inter_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.maximum_inter = maximum_inter_value
-
-        # Parse minimum_inter
-        child = SerializationHelper.find_child_element(element, "MINIMUM-INTER")
-        if child is not None:
-            minimum_inter_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.minimum_inter = minimum_inter_value
-
-        # Parse period
-        child = SerializationHelper.find_child_element(element, "PERIOD")
-        if child is not None:
-            period_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.period = period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "JITTER":
+                setattr(obj, "jitter", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "MAXIMUM-INTER":
+                setattr(obj, "maximum_inter", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "MINIMUM-INTER":
+                setattr(obj, "minimum_inter", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "PERIOD":
+                setattr(obj, "period", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

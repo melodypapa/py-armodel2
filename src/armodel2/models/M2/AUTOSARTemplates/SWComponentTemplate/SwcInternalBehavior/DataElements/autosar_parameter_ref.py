@@ -34,8 +34,17 @@ class AutosarParameterRef(ARObject):
         """
         return False
 
+    _XML_TAG = "AUTOSAR-PARAMETER-REF"
+
+
     autosar_ref: Optional[ARRef]
     local_parameter_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AUTOSAR-REF": ("_POLYMORPHIC", "autosar_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "LOCAL-PARAMETER-REF": ("_POLYMORPHIC", "local_parameter_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AutosarParameterRef."""
         super().__init__()
@@ -48,9 +57,8 @@ class AutosarParameterRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AutosarParameterRef, self).serialize()
@@ -109,17 +117,14 @@ class AutosarParameterRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AutosarParameterRef, cls).deserialize(element)
 
-        # Parse autosar_ref
-        child = SerializationHelper.find_child_element(element, "AUTOSAR-REF")
-        if child is not None:
-            autosar_ref_value = ARRef.deserialize(child)
-            obj.autosar_ref = autosar_ref_value
-
-        # Parse local_parameter_ref
-        child = SerializationHelper.find_child_element(element, "LOCAL-PARAMETER-REF")
-        if child is not None:
-            local_parameter_ref_value = ARRef.deserialize(child)
-            obj.local_parameter_ref = local_parameter_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AUTOSAR-REF":
+                setattr(obj, "autosar_ref", ARRef.deserialize(child))
+            elif tag == "LOCAL-PARAMETER-REF":
+                setattr(obj, "local_parameter_ref", ARRef.deserialize(child))
 
         return obj
 

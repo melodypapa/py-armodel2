@@ -34,9 +34,19 @@ class HwPin(Identifiable):
         """
         return False
 
+    _XML_TAG = "HW-PIN"
+
+
     function_names: list[String]
     packaging_pin: Optional[String]
     pin_number: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "FUNCTION-NAMES": lambda obj, elem: obj.function_names.append(SerializationHelper.deserialize_by_tag(elem, "String")),
+        "PACKAGING-PIN": lambda obj, elem: setattr(obj, "packaging_pin", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "PIN-NUMBER": lambda obj, elem: setattr(obj, "pin_number", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize HwPin."""
         super().__init__()
@@ -50,9 +60,8 @@ class HwPin(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(HwPin, self).serialize()
@@ -128,27 +137,18 @@ class HwPin(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwPin, cls).deserialize(element)
 
-        # Parse function_names (list from container "FUNCTION-NAMES")
-        obj.function_names = []
-        container = SerializationHelper.find_child_element(element, "FUNCTION-NAMES")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (String) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.function_names.append(child_value)
-
-        # Parse packaging_pin
-        child = SerializationHelper.find_child_element(element, "PACKAGING-PIN")
-        if child is not None:
-            packaging_pin_value = child.text
-            obj.packaging_pin = packaging_pin_value
-
-        # Parse pin_number
-        child = SerializationHelper.find_child_element(element, "PIN-NUMBER")
-        if child is not None:
-            pin_number_value = child.text
-            obj.pin_number = pin_number_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FUNCTION-NAMES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.function_names.append(SerializationHelper.deserialize_by_tag(item_elem, "String"))
+            elif tag == "PACKAGING-PIN":
+                setattr(obj, "packaging_pin", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "PIN-NUMBER":
+                setattr(obj, "pin_number", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

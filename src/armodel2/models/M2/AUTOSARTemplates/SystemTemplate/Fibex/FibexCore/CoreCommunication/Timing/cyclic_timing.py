@@ -33,8 +33,17 @@ class CyclicTiming(Describable):
         """
         return False
 
+    _XML_TAG = "CYCLIC-TIMING"
+
+
     time_offset: Optional[TimeRangeType]
     time_period: Optional[TimeRangeType]
+    _DESERIALIZE_DISPATCH = {
+        "TIME-OFFSET": lambda obj, elem: setattr(obj, "time_offset", SerializationHelper.deserialize_by_tag(elem, "TimeRangeType")),
+        "TIME-PERIOD": lambda obj, elem: setattr(obj, "time_period", SerializationHelper.deserialize_by_tag(elem, "TimeRangeType")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CyclicTiming."""
         super().__init__()
@@ -47,9 +56,8 @@ class CyclicTiming(Describable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CyclicTiming, self).serialize()
@@ -108,17 +116,14 @@ class CyclicTiming(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CyclicTiming, cls).deserialize(element)
 
-        # Parse time_offset
-        child = SerializationHelper.find_child_element(element, "TIME-OFFSET")
-        if child is not None:
-            time_offset_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeType")
-            obj.time_offset = time_offset_value
-
-        # Parse time_period
-        child = SerializationHelper.find_child_element(element, "TIME-PERIOD")
-        if child is not None:
-            time_period_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeType")
-            obj.time_period = time_period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TIME-OFFSET":
+                setattr(obj, "time_offset", SerializationHelper.deserialize_by_tag(child, "TimeRangeType"))
+            elif tag == "TIME-PERIOD":
+                setattr(obj, "time_period", SerializationHelper.deserialize_by_tag(child, "TimeRangeType"))
 
         return obj
 

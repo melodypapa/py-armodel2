@@ -38,7 +38,15 @@ class PPortPrototype(AbstractProvidedPortPrototype):
         """
         return False
 
+    _XML_TAG = "P-PORT-PROTOTYPE"
+
+
     provided_interface_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "PROVIDED-INTERFACE-TREF": ("_POLYMORPHIC", "provided_interface_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PPortPrototype."""
         super().__init__()
@@ -50,9 +58,8 @@ class PPortPrototype(AbstractProvidedPortPrototype):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PPortPrototype, self).serialize()
@@ -97,11 +104,12 @@ class PPortPrototype(AbstractProvidedPortPrototype):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PPortPrototype, cls).deserialize(element)
 
-        # Parse provided_interface_ref
-        child = SerializationHelper.find_child_element(element, "PROVIDED-INTERFACE-TREF")
-        if child is not None:
-            provided_interface_ref_value = ARRef.deserialize(child)
-            obj.provided_interface_ref = provided_interface_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "PROVIDED-INTERFACE-TREF":
+                setattr(obj, "provided_interface_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -50,6 +50,13 @@ class HwDescriptionEntity(Identifiable, ABC):
     hw_attribute_values: list[HwAttributeValue]
     hw_category_refs: list[ARRef]
     hw_type_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "HW-ATTRIBUTE-VALUES": lambda obj, elem: obj.hw_attribute_values.append(SerializationHelper.deserialize_by_tag(elem, "HwAttributeValue")),
+        "HW-CATEGORY-REFS": lambda obj, elem: [obj.hw_category_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "HW-TYPE-REF": lambda obj, elem: setattr(obj, "hw_type_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize HwDescriptionEntity."""
         super().__init__()
@@ -63,9 +70,8 @@ class HwDescriptionEntity(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(HwDescriptionEntity, self).serialize()
@@ -137,37 +143,20 @@ class HwDescriptionEntity(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwDescriptionEntity, cls).deserialize(element)
 
-        # Parse hw_attribute_values (list from container "HW-ATTRIBUTE-VALUES")
-        obj.hw_attribute_values = []
-        container = SerializationHelper.find_child_element(element, "HW-ATTRIBUTE-VALUES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.hw_attribute_values.append(child_value)
-
-        # Parse hw_category_refs (list from container "HW-CATEGORY-REFS")
-        obj.hw_category_refs = []
-        container = SerializationHelper.find_child_element(element, "HW-CATEGORY-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.hw_category_refs.append(child_value)
-
-        # Parse hw_type_ref
-        child = SerializationHelper.find_child_element(element, "HW-TYPE-REF")
-        if child is not None:
-            hw_type_ref_value = ARRef.deserialize(child)
-            obj.hw_type_ref = hw_type_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "HW-ATTRIBUTE-VALUES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.hw_attribute_values.append(SerializationHelper.deserialize_by_tag(item_elem, "HwAttributeValue"))
+            elif tag == "HW-CATEGORY-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.hw_category_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "HW-TYPE-REF":
+                setattr(obj, "hw_type_ref", ARRef.deserialize(child))
 
         return obj
 

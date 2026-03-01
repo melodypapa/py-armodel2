@@ -44,6 +44,9 @@ class J1939TpConnection(TpConnection):
         """
         return False
 
+    _XML_TAG = "J1939-TP-CONNECTION"
+
+
     broadcast: Optional[Boolean]
     buffer_ratio: Optional[PositiveInteger]
     cancellation: Optional[Boolean]
@@ -56,6 +59,22 @@ class J1939TpConnection(TpConnection):
     retry: Optional[Boolean]
     tp_pgs: list[J1939TpPg]
     transmitter_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BROADCAST": lambda obj, elem: setattr(obj, "broadcast", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "BUFFER-RATIO": lambda obj, elem: setattr(obj, "buffer_ratio", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "CANCELLATION": lambda obj, elem: setattr(obj, "cancellation", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "DATA-PDU-REF": lambda obj, elem: setattr(obj, "data_pdu_ref", ARRef.deserialize(elem)),
+        "DYNAMIC-BS": lambda obj, elem: setattr(obj, "dynamic_bs", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "FLOW-CONTROL-PDU": lambda obj, elem: setattr(obj, "flow_control_pdu", SerializationHelper.deserialize_by_tag(elem, "NPdu")),
+        "MAX-BS": lambda obj, elem: setattr(obj, "max_bs", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-EXP-BS": lambda obj, elem: setattr(obj, "max_exp_bs", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "RECEIVER-REFS": lambda obj, elem: [obj.receiver_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "RETRY": lambda obj, elem: setattr(obj, "retry", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TP-PGS": lambda obj, elem: obj.tp_pgs.append(SerializationHelper.deserialize_by_tag(elem, "J1939TpPg")),
+        "TRANSMITTER-REF": lambda obj, elem: setattr(obj, "transmitter_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939TpConnection."""
         super().__init__()
@@ -78,9 +97,8 @@ class J1939TpConnection(TpConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939TpConnection, self).serialize()
@@ -278,91 +296,38 @@ class J1939TpConnection(TpConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939TpConnection, cls).deserialize(element)
 
-        # Parse broadcast
-        child = SerializationHelper.find_child_element(element, "BROADCAST")
-        if child is not None:
-            broadcast_value = child.text
-            obj.broadcast = broadcast_value
-
-        # Parse buffer_ratio
-        child = SerializationHelper.find_child_element(element, "BUFFER-RATIO")
-        if child is not None:
-            buffer_ratio_value = child.text
-            obj.buffer_ratio = buffer_ratio_value
-
-        # Parse cancellation
-        child = SerializationHelper.find_child_element(element, "CANCELLATION")
-        if child is not None:
-            cancellation_value = child.text
-            obj.cancellation = cancellation_value
-
-        # Parse data_pdu_ref
-        child = SerializationHelper.find_child_element(element, "DATA-PDU-REF")
-        if child is not None:
-            data_pdu_ref_value = ARRef.deserialize(child)
-            obj.data_pdu_ref = data_pdu_ref_value
-
-        # Parse dynamic_bs
-        child = SerializationHelper.find_child_element(element, "DYNAMIC-BS")
-        if child is not None:
-            dynamic_bs_value = child.text
-            obj.dynamic_bs = dynamic_bs_value
-
-        # Parse flow_control_pdu
-        child = SerializationHelper.find_child_element(element, "FLOW-CONTROL-PDU")
-        if child is not None:
-            flow_control_pdu_value = SerializationHelper.deserialize_by_tag(child, "NPdu")
-            obj.flow_control_pdu = flow_control_pdu_value
-
-        # Parse max_bs
-        child = SerializationHelper.find_child_element(element, "MAX-BS")
-        if child is not None:
-            max_bs_value = child.text
-            obj.max_bs = max_bs_value
-
-        # Parse max_exp_bs
-        child = SerializationHelper.find_child_element(element, "MAX-EXP-BS")
-        if child is not None:
-            max_exp_bs_value = child.text
-            obj.max_exp_bs = max_exp_bs_value
-
-        # Parse receiver_refs (list from container "RECEIVER-REFS")
-        obj.receiver_refs = []
-        container = SerializationHelper.find_child_element(element, "RECEIVER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.receiver_refs.append(child_value)
-
-        # Parse retry
-        child = SerializationHelper.find_child_element(element, "RETRY")
-        if child is not None:
-            retry_value = child.text
-            obj.retry = retry_value
-
-        # Parse tp_pgs (list from container "TP-PGS")
-        obj.tp_pgs = []
-        container = SerializationHelper.find_child_element(element, "TP-PGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_pgs.append(child_value)
-
-        # Parse transmitter_ref
-        child = SerializationHelper.find_child_element(element, "TRANSMITTER-REF")
-        if child is not None:
-            transmitter_ref_value = ARRef.deserialize(child)
-            obj.transmitter_ref = transmitter_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BROADCAST":
+                setattr(obj, "broadcast", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "BUFFER-RATIO":
+                setattr(obj, "buffer_ratio", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "CANCELLATION":
+                setattr(obj, "cancellation", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "DATA-PDU-REF":
+                setattr(obj, "data_pdu_ref", ARRef.deserialize(child))
+            elif tag == "DYNAMIC-BS":
+                setattr(obj, "dynamic_bs", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "FLOW-CONTROL-PDU":
+                setattr(obj, "flow_control_pdu", SerializationHelper.deserialize_by_tag(child, "NPdu"))
+            elif tag == "MAX-BS":
+                setattr(obj, "max_bs", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-EXP-BS":
+                setattr(obj, "max_exp_bs", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "RECEIVER-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.receiver_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "RETRY":
+                setattr(obj, "retry", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TP-PGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.tp_pgs.append(SerializationHelper.deserialize_by_tag(item_elem, "J1939TpPg"))
+            elif tag == "TRANSMITTER-REF":
+                setattr(obj, "transmitter_ref", ARRef.deserialize(child))
 
         return obj
 

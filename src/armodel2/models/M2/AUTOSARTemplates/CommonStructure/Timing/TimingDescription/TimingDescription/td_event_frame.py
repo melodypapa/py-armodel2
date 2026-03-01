@@ -40,9 +40,19 @@ class TDEventFrame(TDEventCom):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-FRAME"
+
+
     frame_ref: Optional[ARRef]
     physical_channel_ref: Optional[ARRef]
     td_event_type_enum: Optional[TDEventFrameTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "FRAME-REF": ("_POLYMORPHIC", "frame_ref", ["AbstractEthernetFrame", "CanFrame", "FlexrayFrame", "LinFrame"]),
+        "PHYSICAL-CHANNEL-REF": ("_POLYMORPHIC", "physical_channel_ref", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "TD-EVENT-TYPE-ENUM": lambda obj, elem: setattr(obj, "td_event_type_enum", TDEventFrameTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventFrame."""
         super().__init__()
@@ -56,9 +66,8 @@ class TDEventFrame(TDEventCom):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventFrame, self).serialize()
@@ -131,23 +140,16 @@ class TDEventFrame(TDEventCom):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventFrame, cls).deserialize(element)
 
-        # Parse frame_ref
-        child = SerializationHelper.find_child_element(element, "FRAME-REF")
-        if child is not None:
-            frame_ref_value = ARRef.deserialize(child)
-            obj.frame_ref = frame_ref_value
-
-        # Parse physical_channel_ref
-        child = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNEL-REF")
-        if child is not None:
-            physical_channel_ref_value = ARRef.deserialize(child)
-            obj.physical_channel_ref = physical_channel_ref_value
-
-        # Parse td_event_type_enum
-        child = SerializationHelper.find_child_element(element, "TD-EVENT-TYPE-ENUM")
-        if child is not None:
-            td_event_type_enum_value = TDEventFrameTypeEnum.deserialize(child)
-            obj.td_event_type_enum = td_event_type_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FRAME-REF":
+                setattr(obj, "frame_ref", ARRef.deserialize(child))
+            elif tag == "PHYSICAL-CHANNEL-REF":
+                setattr(obj, "physical_channel_ref", ARRef.deserialize(child))
+            elif tag == "TD-EVENT-TYPE-ENUM":
+                setattr(obj, "td_event_type_enum", TDEventFrameTypeEnum.deserialize(child))
 
         return obj
 

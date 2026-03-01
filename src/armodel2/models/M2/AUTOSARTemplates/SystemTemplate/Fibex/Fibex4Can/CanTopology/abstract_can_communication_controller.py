@@ -31,6 +31,11 @@ class AbstractCanCommunicationController(CommunicationController, ABC):
         return True
 
     can_controller_controller_attributes: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CAN-CONTROLLER-CONTROLLER-ATTRIBUTES": lambda obj, elem: setattr(obj, "can_controller_controller_attributes", SerializationHelper.deserialize_by_tag(elem, "any (AbstractCan)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AbstractCanCommunicationController."""
         super().__init__()
@@ -42,9 +47,8 @@ class AbstractCanCommunicationController(CommunicationController, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AbstractCanCommunicationController, self).serialize()
@@ -89,11 +93,12 @@ class AbstractCanCommunicationController(CommunicationController, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractCanCommunicationController, cls).deserialize(element)
 
-        # Parse can_controller_controller_attributes
-        child = SerializationHelper.find_child_element(element, "CAN-CONTROLLER-CONTROLLER-ATTRIBUTES")
-        if child is not None:
-            can_controller_controller_attributes_value = child.text
-            obj.can_controller_controller_attributes = can_controller_controller_attributes_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CAN-CONTROLLER-CONTROLLER-ATTRIBUTES":
+                setattr(obj, "can_controller_controller_attributes", SerializationHelper.deserialize_by_tag(child, "any (AbstractCan)"))
 
         return obj
 

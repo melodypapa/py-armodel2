@@ -130,5 +130,4 @@ class MultilanguageLongNameBuilder:
         Returns:
             MultilanguageLongName instance
         """
-        # TODO: Add validation
         return self._obj

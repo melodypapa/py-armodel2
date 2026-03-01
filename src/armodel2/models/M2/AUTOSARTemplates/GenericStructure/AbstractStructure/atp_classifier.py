@@ -35,6 +35,11 @@ class AtpClassifier(Identifiable, ABC):
         return True
 
     atp_features: list[AtpFeature]
+    _DESERIALIZE_DISPATCH = {
+        "ATP-FEATURES": ("_POLYMORPHIC_LIST", "atp_features", ["AtpPrototype", "AtpStructureElement"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AtpClassifier."""
         super().__init__()
@@ -46,9 +51,8 @@ class AtpClassifier(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AtpClassifier, self).serialize()
@@ -89,15 +93,18 @@ class AtpClassifier(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AtpClassifier, cls).deserialize(element)
 
-        # Parse atp_features (list from container "ATP-FEATURES")
-        obj.atp_features = []
-        container = SerializationHelper.find_child_element(element, "ATP-FEATURES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.atp_features.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ATP-FEATURES":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "ATP-PROTOTYPE":
+                        obj.atp_features.append(SerializationHelper.deserialize_by_tag(item_elem, "AtpPrototype"))
+                    elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
+                        obj.atp_features.append(SerializationHelper.deserialize_by_tag(item_elem, "AtpStructureElement"))
 
         return obj
 

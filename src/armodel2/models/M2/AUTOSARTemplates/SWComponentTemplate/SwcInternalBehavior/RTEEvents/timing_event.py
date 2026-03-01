@@ -34,8 +34,17 @@ class TimingEvent(RTEEvent):
         """
         return False
 
+    _XML_TAG = "TIMING-EVENT"
+
+
     offset: Optional[TimeValue]
     period: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "OFFSET": lambda obj, elem: setattr(obj, "offset", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "PERIOD": lambda obj, elem: setattr(obj, "period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimingEvent."""
         super().__init__()
@@ -48,9 +57,8 @@ class TimingEvent(RTEEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimingEvent, self).serialize()
@@ -109,17 +117,14 @@ class TimingEvent(RTEEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingEvent, cls).deserialize(element)
 
-        # Parse offset
-        child = SerializationHelper.find_child_element(element, "OFFSET")
-        if child is not None:
-            offset_value = child.text
-            obj.offset = offset_value
-
-        # Parse period
-        child = SerializationHelper.find_child_element(element, "PERIOD")
-        if child is not None:
-            period_value = child.text
-            obj.period = period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OFFSET":
+                setattr(obj, "offset", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "PERIOD":
+                setattr(obj, "period", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

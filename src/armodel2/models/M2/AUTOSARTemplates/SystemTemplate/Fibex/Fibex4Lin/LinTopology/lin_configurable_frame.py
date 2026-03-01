@@ -33,8 +33,17 @@ class LinConfigurableFrame(ARObject):
         """
         return False
 
+    _XML_TAG = "LIN-CONFIGURABLE-FRAME"
+
+
     frame_ref: Optional[ARRef]
     message_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "FRAME-REF": ("_POLYMORPHIC", "frame_ref", ["LinEventTriggeredFrame", "LinSporadicFrame", "LinUnconditionalFrame"]),
+        "MESSAGE-ID": lambda obj, elem: setattr(obj, "message_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinConfigurableFrame."""
         super().__init__()
@@ -47,9 +56,8 @@ class LinConfigurableFrame(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinConfigurableFrame, self).serialize()
@@ -108,17 +116,14 @@ class LinConfigurableFrame(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinConfigurableFrame, cls).deserialize(element)
 
-        # Parse frame_ref
-        child = SerializationHelper.find_child_element(element, "FRAME-REF")
-        if child is not None:
-            frame_ref_value = ARRef.deserialize(child)
-            obj.frame_ref = frame_ref_value
-
-        # Parse message_id
-        child = SerializationHelper.find_child_element(element, "MESSAGE-ID")
-        if child is not None:
-            message_id_value = child.text
-            obj.message_id = message_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FRAME-REF":
+                setattr(obj, "frame_ref", ARRef.deserialize(child))
+            elif tag == "MESSAGE-ID":
+                setattr(obj, "message_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

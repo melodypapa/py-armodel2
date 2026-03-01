@@ -33,7 +33,15 @@ class DiagnosticMemoryDestinationPrimary(DiagnosticMemoryDestination):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-MEMORY-DESTINATION-PRIMARY"
+
+
     type_of_dtc: Optional[DiagnosticTypeOfDtcSupportedEnum]
+    _DESERIALIZE_DISPATCH = {
+        "TYPE-OF-DTC": lambda obj, elem: setattr(obj, "type_of_dtc", DiagnosticTypeOfDtcSupportedEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestinationPrimary."""
         super().__init__()
@@ -45,9 +53,8 @@ class DiagnosticMemoryDestinationPrimary(DiagnosticMemoryDestination):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticMemoryDestinationPrimary, self).serialize()
@@ -92,11 +99,12 @@ class DiagnosticMemoryDestinationPrimary(DiagnosticMemoryDestination):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMemoryDestinationPrimary, cls).deserialize(element)
 
-        # Parse type_of_dtc
-        child = SerializationHelper.find_child_element(element, "TYPE-OF-DTC")
-        if child is not None:
-            type_of_dtc_value = DiagnosticTypeOfDtcSupportedEnum.deserialize(child)
-            obj.type_of_dtc = type_of_dtc_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TYPE-OF-DTC":
+                setattr(obj, "type_of_dtc", DiagnosticTypeOfDtcSupportedEnum.deserialize(child))
 
         return obj
 

@@ -49,6 +49,9 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         """
         return False
 
+    _XML_TAG = "NONQUEUED-RECEIVER-COM-SPEC"
+
+
     alive_timeout: Optional[TimeValue]
     enable_update: Optional[Boolean]
     filter: Optional[DataFilter]
@@ -57,6 +60,18 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
     handle_timeout_type: Optional[HandleTimeoutEnum]
     _init_value: Optional[ValueSpecification]
     timeout_substitution_value: Optional[ValueSpecification]
+    _DESERIALIZE_DISPATCH = {
+        "ALIVE-TIMEOUT": lambda obj, elem: setattr(obj, "alive_timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "ENABLE-UPDATE": lambda obj, elem: setattr(obj, "enable_update", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "FILTER": lambda obj, elem: setattr(obj, "filter", SerializationHelper.deserialize_by_tag(elem, "DataFilter")),
+        "HANDLE-DATA-STATUS": lambda obj, elem: setattr(obj, "handle_data_status", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "HANDLE-NEVER-RECEIVED": lambda obj, elem: setattr(obj, "handle_never_received", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "HANDLE-TIMEOUT-TYPE": lambda obj, elem: setattr(obj, "handle_timeout_type", HandleTimeoutEnum.deserialize(elem)),
+        "INIT-VALUE": ("_POLYMORPHIC", "_init_value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "TIMEOUT-SUBSTITUTION-VALUE": ("_POLYMORPHIC", "timeout_substitution_value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NonqueuedReceiverComSpec."""
         super().__init__()
@@ -86,9 +101,8 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NonqueuedReceiverComSpec, self).serialize()
@@ -226,53 +240,62 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NonqueuedReceiverComSpec, cls).deserialize(element)
 
-        # Parse alive_timeout
-        child = SerializationHelper.find_child_element(element, "ALIVE-TIMEOUT")
-        if child is not None:
-            alive_timeout_value = child.text
-            obj.alive_timeout = alive_timeout_value
-
-        # Parse enable_update
-        child = SerializationHelper.find_child_element(element, "ENABLE-UPDATE")
-        if child is not None:
-            enable_update_value = child.text
-            obj.enable_update = enable_update_value
-
-        # Parse filter
-        child = SerializationHelper.find_child_element(element, "FILTER")
-        if child is not None:
-            filter_value = SerializationHelper.deserialize_by_tag(child, "DataFilter")
-            obj.filter = filter_value
-
-        # Parse handle_data_status
-        child = SerializationHelper.find_child_element(element, "HANDLE-DATA-STATUS")
-        if child is not None:
-            handle_data_status_value = child.text
-            obj.handle_data_status = handle_data_status_value
-
-        # Parse handle_never_received
-        child = SerializationHelper.find_child_element(element, "HANDLE-NEVER-RECEIVED")
-        if child is not None:
-            handle_never_received_value = child.text
-            obj.handle_never_received = handle_never_received_value
-
-        # Parse handle_timeout_type
-        child = SerializationHelper.find_child_element(element, "HANDLE-TIMEOUT-TYPE")
-        if child is not None:
-            handle_timeout_type_value = HandleTimeoutEnum.deserialize(child)
-            obj.handle_timeout_type = handle_timeout_type_value
-
-        # Parse init_value (polymorphic wrapper "INIT-VALUE")
-        wrapper = SerializationHelper.find_child_element(element, "INIT-VALUE")
-        if wrapper is not None:
-            init_value_value = SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
-            obj.init_value = init_value_value
-
-        # Parse timeout_substitution_value
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-SUBSTITUTION-VALUE")
-        if child is not None:
-            timeout_substitution_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
-            obj.timeout_substitution_value = timeout_substitution_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ALIVE-TIMEOUT":
+                setattr(obj, "alive_timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "ENABLE-UPDATE":
+                setattr(obj, "enable_update", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "FILTER":
+                setattr(obj, "filter", SerializationHelper.deserialize_by_tag(child, "DataFilter"))
+            elif tag == "HANDLE-DATA-STATUS":
+                setattr(obj, "handle_data_status", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "HANDLE-NEVER-RECEIVED":
+                setattr(obj, "handle_never_received", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "HANDLE-TIMEOUT-TYPE":
+                setattr(obj, "handle_timeout_type", HandleTimeoutEnum.deserialize(child))
+            elif tag == "INIT-VALUE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
+            elif tag == "TIMEOUT-SUBSTITUTION-VALUE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
 
         return obj
 

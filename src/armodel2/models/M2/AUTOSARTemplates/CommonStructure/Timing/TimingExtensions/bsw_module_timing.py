@@ -34,7 +34,15 @@ class BswModuleTiming(TimingExtension):
         """
         return False
 
+    _XML_TAG = "BSW-MODULE-TIMING"
+
+
     behavior_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BEHAVIOR-REF": lambda obj, elem: setattr(obj, "behavior_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswModuleTiming."""
         super().__init__()
@@ -46,9 +54,8 @@ class BswModuleTiming(TimingExtension):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswModuleTiming, self).serialize()
@@ -93,11 +100,12 @@ class BswModuleTiming(TimingExtension):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleTiming, cls).deserialize(element)
 
-        # Parse behavior_ref
-        child = SerializationHelper.find_child_element(element, "BEHAVIOR-REF")
-        if child is not None:
-            behavior_ref_value = ARRef.deserialize(child)
-            obj.behavior_ref = behavior_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BEHAVIOR-REF":
+                setattr(obj, "behavior_ref", ARRef.deserialize(child))
 
         return obj
 

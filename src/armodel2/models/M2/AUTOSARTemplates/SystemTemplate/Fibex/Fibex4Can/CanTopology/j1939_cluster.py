@@ -34,9 +34,19 @@ class J1939Cluster(ARObject):
         """
         return False
 
+    _XML_TAG = "J1939-CLUSTER"
+
+
     network_id: Optional[PositiveInteger]
     request2_support: Optional[Boolean]
     uses_address: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "NETWORK-ID": lambda obj, elem: setattr(obj, "network_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "REQUEST2-SUPPORT": lambda obj, elem: setattr(obj, "request2_support", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "USES-ADDRESS": lambda obj, elem: setattr(obj, "uses_address", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939Cluster."""
         super().__init__()

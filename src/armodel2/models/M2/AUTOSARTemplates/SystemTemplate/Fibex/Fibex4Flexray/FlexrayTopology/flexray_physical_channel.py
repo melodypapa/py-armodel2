@@ -33,7 +33,15 @@ class FlexrayPhysicalChannel(PhysicalChannel):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-PHYSICAL-CHANNEL"
+
+
     channel_name: Optional[FlexrayChannelName]
+    _DESERIALIZE_DISPATCH = {
+        "CHANNEL-NAME": lambda obj, elem: setattr(obj, "channel_name", FlexrayChannelName.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayPhysicalChannel."""
         super().__init__()
@@ -45,9 +53,8 @@ class FlexrayPhysicalChannel(PhysicalChannel):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayPhysicalChannel, self).serialize()
@@ -92,11 +99,12 @@ class FlexrayPhysicalChannel(PhysicalChannel):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayPhysicalChannel, cls).deserialize(element)
 
-        # Parse channel_name
-        child = SerializationHelper.find_child_element(element, "CHANNEL-NAME")
-        if child is not None:
-            channel_name_value = FlexrayChannelName.deserialize(child)
-            obj.channel_name = channel_name_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CHANNEL-NAME":
+                setattr(obj, "channel_name", FlexrayChannelName.deserialize(child))
 
         return obj
 

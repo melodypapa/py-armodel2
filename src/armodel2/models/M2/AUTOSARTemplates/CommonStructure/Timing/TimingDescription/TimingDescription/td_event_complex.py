@@ -30,6 +30,9 @@ class TDEventComplex(TimingDescriptionEvent):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-COMPLEX"
+
+
     def __init__(self) -> None:
         """Initialize TDEventComplex."""
         super().__init__()
@@ -40,9 +43,8 @@ class TDEventComplex(TimingDescriptionEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventComplex, self).serialize()

@@ -33,8 +33,17 @@ class HwPortMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "HW-PORT-MAPPING"
+
+
     communication_connector_ref: Optional[ARRef]
     hw_pin_group_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION-CONNECTOR-REF": ("_POLYMORPHIC", "communication_connector_ref", ["CanCommunicationConnector", "TtcanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "HW-PIN-GROUP-REF": lambda obj, elem: setattr(obj, "hw_pin_group_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize HwPortMapping."""
         super().__init__()
@@ -47,9 +56,8 @@ class HwPortMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(HwPortMapping, self).serialize()
@@ -108,17 +116,14 @@ class HwPortMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwPortMapping, cls).deserialize(element)
 
-        # Parse communication_connector_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
-        if child is not None:
-            communication_connector_ref_value = ARRef.deserialize(child)
-            obj.communication_connector_ref = communication_connector_ref_value
-
-        # Parse hw_pin_group_ref
-        child = SerializationHelper.find_child_element(element, "HW-PIN-GROUP-REF")
-        if child is not None:
-            hw_pin_group_ref_value = ARRef.deserialize(child)
-            obj.hw_pin_group_ref = hw_pin_group_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMMUNICATION-CONNECTOR-REF":
+                setattr(obj, "communication_connector_ref", ARRef.deserialize(child))
+            elif tag == "HW-PIN-GROUP-REF":
+                setattr(obj, "hw_pin_group_ref", ARRef.deserialize(child))
 
         return obj
 

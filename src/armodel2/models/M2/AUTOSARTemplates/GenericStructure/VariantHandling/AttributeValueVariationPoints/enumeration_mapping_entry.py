@@ -30,8 +30,17 @@ class EnumerationMappingEntry(ARObject):
         """
         return False
 
+    _XML_TAG = "ENUMERATION-MAPPING-ENTRY"
+
+
     enumerator: NameToken
     numerical_value: PositiveInteger
+    _DESERIALIZE_DISPATCH = {
+        "ENUMERATOR": lambda obj, elem: setattr(obj, "enumerator", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "NUMERICAL-VALUE": lambda obj, elem: setattr(obj, "numerical_value", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EnumerationMappingEntry."""
         super().__init__()
@@ -44,9 +53,8 @@ class EnumerationMappingEntry(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EnumerationMappingEntry, self).serialize()
@@ -105,17 +113,14 @@ class EnumerationMappingEntry(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EnumerationMappingEntry, cls).deserialize(element)
 
-        # Parse enumerator
-        child = SerializationHelper.find_child_element(element, "ENUMERATOR")
-        if child is not None:
-            enumerator_value = child.text
-            obj.enumerator = enumerator_value
-
-        # Parse numerical_value
-        child = SerializationHelper.find_child_element(element, "NUMERICAL-VALUE")
-        if child is not None:
-            numerical_value_value = child.text
-            obj.numerical_value = numerical_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ENUMERATOR":
+                setattr(obj, "enumerator", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "NUMERICAL-VALUE":
+                setattr(obj, "numerical_value", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

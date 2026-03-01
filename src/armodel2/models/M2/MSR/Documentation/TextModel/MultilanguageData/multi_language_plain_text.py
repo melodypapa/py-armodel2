@@ -128,5 +128,4 @@ class MultiLanguagePlainTextBuilder:
         Returns:
             MultiLanguagePlainText instance
         """
-        # TODO: Add validation
         return self._obj

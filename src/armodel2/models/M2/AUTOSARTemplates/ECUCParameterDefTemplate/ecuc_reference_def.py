@@ -36,7 +36,15 @@ class EcucReferenceDef(EcucAbstractInternalReferenceDef):
         """
         return False
 
+    _XML_TAG = "ECUC-REFERENCE-DEF"
+
+
     destination_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DESTINATION-REF": ("_POLYMORPHIC", "destination_ref", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucReferenceDef."""
         super().__init__()
@@ -48,9 +56,8 @@ class EcucReferenceDef(EcucAbstractInternalReferenceDef):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucReferenceDef, self).serialize()
@@ -95,11 +102,12 @@ class EcucReferenceDef(EcucAbstractInternalReferenceDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucReferenceDef, cls).deserialize(element)
 
-        # Parse destination_ref
-        child = SerializationHelper.find_child_element(element, "DESTINATION-REF")
-        if child is not None:
-            destination_ref_value = ARRef.deserialize(child)
-            obj.destination_ref = destination_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DESTINATION-REF":
+                setattr(obj, "destination_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -33,8 +33,17 @@ class Prms(Paginateable):
         """
         return False
 
+    _XML_TAG = "PRMS"
+
+
     label: Optional[MultilanguageLongName]
     prm: Any
+    _DESERIALIZE_DISPATCH = {
+        "LABEL": lambda obj, elem: setattr(obj, "label", SerializationHelper.deserialize_by_tag(elem, "MultilanguageLongName")),
+        "PRM": lambda obj, elem: setattr(obj, "prm", SerializationHelper.deserialize_by_tag(elem, "any (GeneralParameter)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Prms."""
         super().__init__()
@@ -47,9 +56,8 @@ class Prms(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Prms, self).serialize()
@@ -108,17 +116,14 @@ class Prms(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Prms, cls).deserialize(element)
 
-        # Parse label
-        child = SerializationHelper.find_child_element(element, "LABEL")
-        if child is not None:
-            label_value = SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName")
-            obj.label = label_value
-
-        # Parse prm
-        child = SerializationHelper.find_child_element(element, "PRM")
-        if child is not None:
-            prm_value = child.text
-            obj.prm = prm_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LABEL":
+                setattr(obj, "label", SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName"))
+            elif tag == "PRM":
+                setattr(obj, "prm", SerializationHelper.deserialize_by_tag(child, "any (GeneralParameter)"))
 
         return obj
 

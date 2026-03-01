@@ -41,10 +41,21 @@ class ISignalIPduGroup(FibexElement):
         """
         return False
 
+    _XML_TAG = "I-SIGNAL-I-PDU-GROUP"
+
+
     communication: Optional[String]
     contained_refs: list[ARRef]
     i_signal_i_pdu_refs: list[ARRef]
     nm_pdu_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "COMMUNICATION": lambda obj, elem: setattr(obj, "communication", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "CONTAINED-REFS": lambda obj, elem: [obj.contained_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "I-SIGNAL-I-PDU-REFS": lambda obj, elem: [obj.i_signal_i_pdu_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "NM-PDU-REFS": lambda obj, elem: [obj.nm_pdu_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize ISignalIPduGroup."""
         super().__init__()
@@ -59,9 +70,8 @@ class ISignalIPduGroup(FibexElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ISignalIPduGroup, self).serialize()
@@ -157,59 +167,24 @@ class ISignalIPduGroup(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignalIPduGroup, cls).deserialize(element)
 
-        # Parse communication
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION")
-        if child is not None:
-            communication_value = child.text
-            obj.communication = communication_value
-
-        # Parse contained_refs (list from container "CONTAINED-REFS")
-        obj.contained_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTAINED-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.contained_refs.append(child_value)
-
-        # Parse i_signal_i_pdu_refs (list from container "I-SIGNAL-I-PDU-REFS")
-        obj.i_signal_i_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-I-PDU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.i_signal_i_pdu_refs.append(child_value)
-
-        # Parse nm_pdu_refs (list from container "NM-PDU-REFS")
-        obj.nm_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "NM-PDU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.nm_pdu_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "COMMUNICATION":
+                setattr(obj, "communication", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "CONTAINED-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.contained_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "I-SIGNAL-I-PDU-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.i_signal_i_pdu_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "NM-PDU-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.nm_pdu_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

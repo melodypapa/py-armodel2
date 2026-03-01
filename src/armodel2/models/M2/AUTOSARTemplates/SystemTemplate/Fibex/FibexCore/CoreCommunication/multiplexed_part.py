@@ -31,6 +31,11 @@ class MultiplexedPart(ARObject, ABC):
         return True
 
     segment_positions: list[SegmentPosition]
+    _DESERIALIZE_DISPATCH = {
+        "SEGMENT-POSITIONS": lambda obj, elem: obj.segment_positions.append(SerializationHelper.deserialize_by_tag(elem, "SegmentPosition")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MultiplexedPart."""
         super().__init__()
@@ -42,9 +47,8 @@ class MultiplexedPart(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MultiplexedPart, self).serialize()
@@ -85,15 +89,14 @@ class MultiplexedPart(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MultiplexedPart, cls).deserialize(element)
 
-        # Parse segment_positions (list from container "SEGMENT-POSITIONS")
-        obj.segment_positions = []
-        container = SerializationHelper.find_child_element(element, "SEGMENT-POSITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.segment_positions.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SEGMENT-POSITIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.segment_positions.append(SerializationHelper.deserialize_by_tag(item_elem, "SegmentPosition"))
 
         return obj
 

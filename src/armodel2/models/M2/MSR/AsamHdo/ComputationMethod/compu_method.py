@@ -223,5 +223,4 @@ class CompuMethodBuilder:
         Returns:
             CompuMethod instance
         """
-        # TODO: Add validation
         return self._obj

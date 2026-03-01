@@ -36,8 +36,17 @@ class GlobalTimeCanMaster(GlobalTimeMaster):
         """
         return False
 
+    _XML_TAG = "GLOBAL-TIME-CAN-MASTER"
+
+
     crc_secured: Optional[GlobalTimeCrcSupportEnum]
     sync: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "CRC-SECURED": lambda obj, elem: setattr(obj, "crc_secured", GlobalTimeCrcSupportEnum.deserialize(elem)),
+        "SYNC": lambda obj, elem: setattr(obj, "sync", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeCanMaster."""
         super().__init__()
@@ -50,9 +59,8 @@ class GlobalTimeCanMaster(GlobalTimeMaster):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeCanMaster, self).serialize()
@@ -111,17 +119,14 @@ class GlobalTimeCanMaster(GlobalTimeMaster):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeCanMaster, cls).deserialize(element)
 
-        # Parse crc_secured
-        child = SerializationHelper.find_child_element(element, "CRC-SECURED")
-        if child is not None:
-            crc_secured_value = GlobalTimeCrcSupportEnum.deserialize(child)
-            obj.crc_secured = crc_secured_value
-
-        # Parse sync
-        child = SerializationHelper.find_child_element(element, "SYNC")
-        if child is not None:
-            sync_value = child.text
-            obj.sync = sync_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CRC-SECURED":
+                setattr(obj, "crc_secured", GlobalTimeCrcSupportEnum.deserialize(child))
+            elif tag == "SYNC":
+                setattr(obj, "sync", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

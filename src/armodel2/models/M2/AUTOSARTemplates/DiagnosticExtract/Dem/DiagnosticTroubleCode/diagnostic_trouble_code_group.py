@@ -37,8 +37,17 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-TROUBLE-CODE-GROUP"
+
+
     dtc_refs: list[ARRef]
     group_number: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DTC-REFS": ("_POLYMORPHIC_LIST", "dtc_refs", ["DiagnosticTroubleCodeJ1939", "DiagnosticTroubleCodeObd", "DiagnosticTroubleCodeUds"]),
+        "GROUP-NUMBER": lambda obj, elem: setattr(obj, "group_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeGroup."""
         super().__init__()
@@ -51,9 +60,8 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticTroubleCodeGroup, self).serialize()
@@ -115,27 +123,15 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTroubleCodeGroup, cls).deserialize(element)
 
-        # Parse dtc_refs (list from container "DTC-REFS")
-        obj.dtc_refs = []
-        container = SerializationHelper.find_child_element(element, "DTC-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dtc_refs.append(child_value)
-
-        # Parse group_number
-        child = SerializationHelper.find_child_element(element, "GROUP-NUMBER")
-        if child is not None:
-            group_number_value = child.text
-            obj.group_number = group_number_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DTC-REFS":
+                for item_elem in child:
+                    obj.dtc_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "GROUP-NUMBER":
+                setattr(obj, "group_number", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

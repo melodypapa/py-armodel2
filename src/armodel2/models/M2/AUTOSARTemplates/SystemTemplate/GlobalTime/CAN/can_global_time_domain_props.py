@@ -33,10 +33,21 @@ class CanGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         """
         return False
 
+    _XML_TAG = "CAN-GLOBAL-TIME-DOMAIN-PROPS"
+
+
     fup_data_id_list: PositiveInteger
     ofns_data_id_list: PositiveInteger
     ofs_data_id_list: PositiveInteger
     sync_data_id_list: PositiveInteger
+    _DESERIALIZE_DISPATCH = {
+        "FUP-DATA-ID-LIST": lambda obj, elem: setattr(obj, "fup_data_id_list", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "OFNS-DATA-ID-LIST": lambda obj, elem: setattr(obj, "ofns_data_id_list", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "OFS-DATA-ID-LIST": lambda obj, elem: setattr(obj, "ofs_data_id_list", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SYNC-DATA-ID-LIST": lambda obj, elem: setattr(obj, "sync_data_id_list", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanGlobalTimeDomainProps."""
         super().__init__()
@@ -51,9 +62,8 @@ class CanGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanGlobalTimeDomainProps, self).serialize()
@@ -140,29 +150,18 @@ class CanGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanGlobalTimeDomainProps, cls).deserialize(element)
 
-        # Parse fup_data_id_list
-        child = SerializationHelper.find_child_element(element, "FUP-DATA-ID-LIST")
-        if child is not None:
-            fup_data_id_list_value = child.text
-            obj.fup_data_id_list = fup_data_id_list_value
-
-        # Parse ofns_data_id_list
-        child = SerializationHelper.find_child_element(element, "OFNS-DATA-ID-LIST")
-        if child is not None:
-            ofns_data_id_list_value = child.text
-            obj.ofns_data_id_list = ofns_data_id_list_value
-
-        # Parse ofs_data_id_list
-        child = SerializationHelper.find_child_element(element, "OFS-DATA-ID-LIST")
-        if child is not None:
-            ofs_data_id_list_value = child.text
-            obj.ofs_data_id_list = ofs_data_id_list_value
-
-        # Parse sync_data_id_list
-        child = SerializationHelper.find_child_element(element, "SYNC-DATA-ID-LIST")
-        if child is not None:
-            sync_data_id_list_value = child.text
-            obj.sync_data_id_list = sync_data_id_list_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FUP-DATA-ID-LIST":
+                setattr(obj, "fup_data_id_list", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "OFNS-DATA-ID-LIST":
+                setattr(obj, "ofns_data_id_list", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "OFS-DATA-ID-LIST":
+                setattr(obj, "ofs_data_id_list", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SYNC-DATA-ID-LIST":
+                setattr(obj, "sync_data_id_list", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

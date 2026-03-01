@@ -33,9 +33,19 @@ class MeasuredExecutionTime(ExecutionTime):
         """
         return False
 
+    _XML_TAG = "MEASURED-EXECUTION-TIME"
+
+
     maximum_execution_time: Optional[MultidimensionalTime]
     minimum_execution_time: Optional[MultidimensionalTime]
     nominal_execution_time: Optional[MultidimensionalTime]
+    _DESERIALIZE_DISPATCH = {
+        "MAXIMUM-EXECUTION-TIME": lambda obj, elem: setattr(obj, "maximum_execution_time", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "MINIMUM-EXECUTION-TIME": lambda obj, elem: setattr(obj, "minimum_execution_time", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "NOMINAL-EXECUTION-TIME": lambda obj, elem: setattr(obj, "nominal_execution_time", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MeasuredExecutionTime."""
         super().__init__()
@@ -49,9 +59,8 @@ class MeasuredExecutionTime(ExecutionTime):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MeasuredExecutionTime, self).serialize()
@@ -124,23 +133,16 @@ class MeasuredExecutionTime(ExecutionTime):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MeasuredExecutionTime, cls).deserialize(element)
 
-        # Parse maximum_execution_time
-        child = SerializationHelper.find_child_element(element, "MAXIMUM-EXECUTION-TIME")
-        if child is not None:
-            maximum_execution_time_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.maximum_execution_time = maximum_execution_time_value
-
-        # Parse minimum_execution_time
-        child = SerializationHelper.find_child_element(element, "MINIMUM-EXECUTION-TIME")
-        if child is not None:
-            minimum_execution_time_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.minimum_execution_time = minimum_execution_time_value
-
-        # Parse nominal_execution_time
-        child = SerializationHelper.find_child_element(element, "NOMINAL-EXECUTION-TIME")
-        if child is not None:
-            nominal_execution_time_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.nominal_execution_time = nominal_execution_time_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAXIMUM-EXECUTION-TIME":
+                setattr(obj, "maximum_execution_time", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "MINIMUM-EXECUTION-TIME":
+                setattr(obj, "minimum_execution_time", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "NOMINAL-EXECUTION-TIME":
+                setattr(obj, "nominal_execution_time", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

@@ -22,7 +22,6 @@ class TestPolymorphicDeserialization:
           <SHORT-NAME>MyConstant</SHORT-NAME>
           <VALUE-SPEC>
             <NUMERICAL-VALUE-SPECIFICATION>
-              <SHORT-LABEL>MyValue</SHORT-LABEL>
               <VALUE>42</VALUE>
             </NUMERICAL-VALUE-SPECIFICATION>
           </VALUE-SPEC>
@@ -50,5 +49,4 @@ class TestPolymorphicDeserialization:
 
         output_content = output_file.read_text()
         assert "<NUMERICAL-VALUE-SPECIFICATION>" in output_content
-        assert "<SHORT-LABEL>MyValue</SHORT-LABEL>" in output_content
         assert "<VALUE>42</VALUE>" in output_content

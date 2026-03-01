@@ -34,6 +34,9 @@ class DataFilter(ARObject):
         """
         return False
 
+    _XML_TAG = "DATA-FILTER"
+
+
     data_filter_type: Optional[DataFilterTypeEnum]
     mask: Optional[UnlimitedInteger]
     max: Optional[UnlimitedInteger]
@@ -41,6 +44,17 @@ class DataFilter(ARObject):
     offset: Optional[PositiveInteger]
     period: Optional[PositiveInteger]
     x: Optional[UnlimitedInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DATA-FILTER-TYPE": lambda obj, elem: setattr(obj, "data_filter_type", DataFilterTypeEnum.deserialize(elem)),
+        "MASK": lambda obj, elem: setattr(obj, "mask", SerializationHelper.deserialize_by_tag(elem, "UnlimitedInteger")),
+        "MAX": lambda obj, elem: setattr(obj, "max", SerializationHelper.deserialize_by_tag(elem, "UnlimitedInteger")),
+        "MIN": lambda obj, elem: setattr(obj, "min", SerializationHelper.deserialize_by_tag(elem, "UnlimitedInteger")),
+        "OFFSET": lambda obj, elem: setattr(obj, "offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PERIOD": lambda obj, elem: setattr(obj, "period", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "X": lambda obj, elem: setattr(obj, "x", SerializationHelper.deserialize_by_tag(elem, "UnlimitedInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataFilter."""
         super().__init__()
@@ -58,9 +72,8 @@ class DataFilter(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataFilter, self).serialize()
@@ -189,47 +202,24 @@ class DataFilter(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataFilter, cls).deserialize(element)
 
-        # Parse data_filter_type
-        child = SerializationHelper.find_child_element(element, "DATA-FILTER-TYPE")
-        if child is not None:
-            data_filter_type_value = DataFilterTypeEnum.deserialize(child)
-            obj.data_filter_type = data_filter_type_value
-
-        # Parse mask
-        child = SerializationHelper.find_child_element(element, "MASK")
-        if child is not None:
-            mask_value = child.text
-            obj.mask = mask_value
-
-        # Parse max
-        child = SerializationHelper.find_child_element(element, "MAX")
-        if child is not None:
-            max_value = child.text
-            obj.max = max_value
-
-        # Parse min
-        child = SerializationHelper.find_child_element(element, "MIN")
-        if child is not None:
-            min_value = child.text
-            obj.min = min_value
-
-        # Parse offset
-        child = SerializationHelper.find_child_element(element, "OFFSET")
-        if child is not None:
-            offset_value = child.text
-            obj.offset = offset_value
-
-        # Parse period
-        child = SerializationHelper.find_child_element(element, "PERIOD")
-        if child is not None:
-            period_value = child.text
-            obj.period = period_value
-
-        # Parse x
-        child = SerializationHelper.find_child_element(element, "X")
-        if child is not None:
-            x_value = child.text
-            obj.x = x_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DATA-FILTER-TYPE":
+                setattr(obj, "data_filter_type", DataFilterTypeEnum.deserialize(child))
+            elif tag == "MASK":
+                setattr(obj, "mask", SerializationHelper.deserialize_by_tag(child, "UnlimitedInteger"))
+            elif tag == "MAX":
+                setattr(obj, "max", SerializationHelper.deserialize_by_tag(child, "UnlimitedInteger"))
+            elif tag == "MIN":
+                setattr(obj, "min", SerializationHelper.deserialize_by_tag(child, "UnlimitedInteger"))
+            elif tag == "OFFSET":
+                setattr(obj, "offset", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PERIOD":
+                setattr(obj, "period", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "X":
+                setattr(obj, "x", SerializationHelper.deserialize_by_tag(child, "UnlimitedInteger"))
 
         return obj
 

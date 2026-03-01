@@ -36,8 +36,17 @@ class Row(Paginateable):
         """
         return False
 
+    _XML_TAG = "ROW"
+
+
     rowsep: Optional[TableSeparatorString]
     valign: Optional[ValignEnum]
+    _DESERIALIZE_DISPATCH = {
+        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", SerializationHelper.deserialize_by_tag(elem, "TableSeparatorString")),
+        "VALIGN": lambda obj, elem: setattr(obj, "valign", ValignEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Row."""
         super().__init__()
@@ -50,9 +59,8 @@ class Row(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Row, self).serialize()
@@ -111,17 +119,14 @@ class Row(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Row, cls).deserialize(element)
 
-        # Parse rowsep
-        child = SerializationHelper.find_child_element(element, "ROWSEP")
-        if child is not None:
-            rowsep_value = child.text
-            obj.rowsep = rowsep_value
-
-        # Parse valign
-        child = SerializationHelper.find_child_element(element, "VALIGN")
-        if child is not None:
-            valign_value = ValignEnum.deserialize(child)
-            obj.valign = valign_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ROWSEP":
+                setattr(obj, "rowsep", SerializationHelper.deserialize_by_tag(child, "TableSeparatorString"))
+            elif tag == "VALIGN":
+                setattr(obj, "valign", ValignEnum.deserialize(child))
 
         return obj
 

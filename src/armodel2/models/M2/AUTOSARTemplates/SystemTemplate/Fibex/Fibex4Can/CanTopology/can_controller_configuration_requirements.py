@@ -33,12 +33,25 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
         """
         return False
 
+    _XML_TAG = "CAN-CONTROLLER-CONFIGURATION-REQUIREMENTS"
+
+
     max_number_of_time_quanta_per: Optional[Any]
     max_sample: Optional[Float]
     max_sync_jump: Optional[Float]
     min_number_of_time_quanta_per: Optional[Any]
     min_sample_point: Optional[Float]
     min_sync_jump: Optional[Float]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-NUMBER-OF-TIME-QUANTA-PER": lambda obj, elem: setattr(obj, "max_number_of_time_quanta_per", SerializationHelper.deserialize_by_tag(elem, "any (IntegerBit)")),
+        "MAX-SAMPLE": lambda obj, elem: setattr(obj, "max_sample", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "MAX-SYNC-JUMP": lambda obj, elem: setattr(obj, "max_sync_jump", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "MIN-NUMBER-OF-TIME-QUANTA-PER": lambda obj, elem: setattr(obj, "min_number_of_time_quanta_per", SerializationHelper.deserialize_by_tag(elem, "any (IntegerBit)")),
+        "MIN-SAMPLE-POINT": lambda obj, elem: setattr(obj, "min_sample_point", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "MIN-SYNC-JUMP": lambda obj, elem: setattr(obj, "min_sync_jump", SerializationHelper.deserialize_by_tag(elem, "Float")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanControllerConfigurationRequirements."""
         super().__init__()
@@ -55,9 +68,8 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanControllerConfigurationRequirements, self).serialize()
@@ -172,41 +184,22 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanControllerConfigurationRequirements, cls).deserialize(element)
 
-        # Parse max_number_of_time_quanta_per
-        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF-TIME-QUANTA-PER")
-        if child is not None:
-            max_number_of_time_quanta_per_value = child.text
-            obj.max_number_of_time_quanta_per = max_number_of_time_quanta_per_value
-
-        # Parse max_sample
-        child = SerializationHelper.find_child_element(element, "MAX-SAMPLE")
-        if child is not None:
-            max_sample_value = child.text
-            obj.max_sample = max_sample_value
-
-        # Parse max_sync_jump
-        child = SerializationHelper.find_child_element(element, "MAX-SYNC-JUMP")
-        if child is not None:
-            max_sync_jump_value = child.text
-            obj.max_sync_jump = max_sync_jump_value
-
-        # Parse min_number_of_time_quanta_per
-        child = SerializationHelper.find_child_element(element, "MIN-NUMBER-OF-TIME-QUANTA-PER")
-        if child is not None:
-            min_number_of_time_quanta_per_value = child.text
-            obj.min_number_of_time_quanta_per = min_number_of_time_quanta_per_value
-
-        # Parse min_sample_point
-        child = SerializationHelper.find_child_element(element, "MIN-SAMPLE-POINT")
-        if child is not None:
-            min_sample_point_value = child.text
-            obj.min_sample_point = min_sample_point_value
-
-        # Parse min_sync_jump
-        child = SerializationHelper.find_child_element(element, "MIN-SYNC-JUMP")
-        if child is not None:
-            min_sync_jump_value = child.text
-            obj.min_sync_jump = min_sync_jump_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAX-NUMBER-OF-TIME-QUANTA-PER":
+                setattr(obj, "max_number_of_time_quanta_per", SerializationHelper.deserialize_by_tag(child, "any (IntegerBit)"))
+            elif tag == "MAX-SAMPLE":
+                setattr(obj, "max_sample", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "MAX-SYNC-JUMP":
+                setattr(obj, "max_sync_jump", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "MIN-NUMBER-OF-TIME-QUANTA-PER":
+                setattr(obj, "min_number_of_time_quanta_per", SerializationHelper.deserialize_by_tag(child, "any (IntegerBit)"))
+            elif tag == "MIN-SAMPLE-POINT":
+                setattr(obj, "min_sample_point", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "MIN-SYNC-JUMP":
+                setattr(obj, "min_sync_jump", SerializationHelper.deserialize_by_tag(child, "Float"))
 
         return obj
 

@@ -29,8 +29,17 @@ class DiagnosticTestIdentifier(ARObject):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-TEST-IDENTIFIER"
+
+
     id: Optional[PositiveInteger]
     uas_id: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ID": lambda obj, elem: setattr(obj, "id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "UAS-ID": lambda obj, elem: setattr(obj, "uas_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticTestIdentifier."""
         super().__init__()
@@ -43,9 +52,8 @@ class DiagnosticTestIdentifier(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticTestIdentifier, self).serialize()
@@ -104,17 +112,14 @@ class DiagnosticTestIdentifier(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTestIdentifier, cls).deserialize(element)
 
-        # Parse id
-        child = SerializationHelper.find_child_element(element, "ID")
-        if child is not None:
-            id_value = child.text
-            obj.id = id_value
-
-        # Parse uas_id
-        child = SerializationHelper.find_child_element(element, "UAS-ID")
-        if child is not None:
-            uas_id_value = child.text
-            obj.uas_id = uas_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ID":
+                setattr(obj, "id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "UAS-ID":
+                setattr(obj, "uas_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

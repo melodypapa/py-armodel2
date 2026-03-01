@@ -35,6 +35,12 @@ class FormulaExpression(ARObject, ABC):
 
     atp_reference_refs: list[ARRef]
     atp_string_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ATP-REFERENCE-REFS": ("_POLYMORPHIC_LIST", "atp_reference_refs", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
+        "ATP-STRING-REFS": ("_POLYMORPHIC_LIST", "atp_string_refs", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FormulaExpression."""
         super().__init__()
@@ -47,9 +53,8 @@ class FormulaExpression(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FormulaExpression, self).serialize()
@@ -114,37 +119,16 @@ class FormulaExpression(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FormulaExpression, cls).deserialize(element)
 
-        # Parse atp_reference_refs (list from container "ATP-REFERENCE-REFS")
-        obj.atp_reference_refs = []
-        container = SerializationHelper.find_child_element(element, "ATP-REFERENCE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.atp_reference_refs.append(child_value)
-
-        # Parse atp_string_refs (list from container "ATP-STRING-REFS")
-        obj.atp_string_refs = []
-        container = SerializationHelper.find_child_element(element, "ATP-STRING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.atp_string_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ATP-REFERENCE-REFS":
+                for item_elem in child:
+                    obj.atp_reference_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "ATP-STRING-REFS":
+                for item_elem in child:
+                    obj.atp_string_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

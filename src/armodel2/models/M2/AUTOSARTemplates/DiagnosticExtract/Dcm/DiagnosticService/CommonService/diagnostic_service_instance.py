@@ -40,6 +40,12 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
 
     access_ref: Optional[ARRef]
     service_class_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ACCESS-REF": lambda obj, elem: setattr(obj, "access_ref", ARRef.deserialize(elem)),
+        "SERVICE-CLASS-REF": ("_POLYMORPHIC", "service_class_ref", ["DiagnosticAuthenticationClass", "DiagnosticClearDiagnosticInformationClass", "DiagnosticClearResetEmissionRelatedInfoClass", "DiagnosticComControlClass", "DiagnosticControlDTCSettingClass", "DiagnosticCustomServiceClass", "DiagnosticDataTransferClass", "DiagnosticDynamicallyDefineDataIdentifierClass", "DiagnosticEcuResetClass", "DiagnosticIoControlClass", "DiagnosticReadDTCInformationClass", "DiagnosticReadDataByIdentifierClass", "DiagnosticReadDataByPeriodicIDClass", "DiagnosticReadMemoryByAddressClass", "DiagnosticReadScalingDataByIdentifierClass", "DiagnosticRequestControlOfOnBoardDeviceClass", "DiagnosticRequestCurrentPowertrainDataClass", "DiagnosticRequestDownloadClass", "DiagnosticRequestEmissionRelatedDTCClass", "DiagnosticRequestEmissionRelatedDTCPermanentStatusClass", "DiagnosticRequestFileTransferClass", "DiagnosticRequestOnBoardMonitoringTestResultsClass", "DiagnosticRequestPowertrainFreezeFrameDataClass", "DiagnosticRequestUploadClass", "DiagnosticRequestVehicleInfoClass", "DiagnosticResponseOnEventClass", "DiagnosticRoutineControlClass", "DiagnosticSecurityAccessClass", "DiagnosticSessionControlClass", "DiagnosticTransferExitClass", "DiagnosticWriteDataByIdentifierClass", "DiagnosticWriteMemoryByAddressClass"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticServiceInstance."""
         super().__init__()
@@ -52,9 +58,8 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticServiceInstance, self).serialize()
@@ -113,17 +118,14 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticServiceInstance, cls).deserialize(element)
 
-        # Parse access_ref
-        child = SerializationHelper.find_child_element(element, "ACCESS-REF")
-        if child is not None:
-            access_ref_value = ARRef.deserialize(child)
-            obj.access_ref = access_ref_value
-
-        # Parse service_class_ref
-        child = SerializationHelper.find_child_element(element, "SERVICE-CLASS-REF")
-        if child is not None:
-            service_class_ref_value = ARRef.deserialize(child)
-            obj.service_class_ref = service_class_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ACCESS-REF":
+                setattr(obj, "access_ref", ARRef.deserialize(child))
+            elif tag == "SERVICE-CLASS-REF":
+                setattr(obj, "service_class_ref", ARRef.deserialize(child))
 
         return obj
 

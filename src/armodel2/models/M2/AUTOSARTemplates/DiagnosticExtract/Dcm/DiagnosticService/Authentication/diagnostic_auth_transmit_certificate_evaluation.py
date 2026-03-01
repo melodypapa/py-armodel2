@@ -34,8 +34,17 @@ class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-AUTH-TRANSMIT-CERTIFICATE-EVALUATION"
+
+
     evaluation_id: Optional[PositiveInteger]
     function: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "EVALUATION-ID": lambda obj, elem: setattr(obj, "evaluation_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "FUNCTION": lambda obj, elem: setattr(obj, "function", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticAuthTransmitCertificateEvaluation."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticAuthTransmitCertificateEvaluation, self).serialize()
@@ -109,17 +117,14 @@ class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAuthTransmitCertificateEvaluation, cls).deserialize(element)
 
-        # Parse evaluation_id
-        child = SerializationHelper.find_child_element(element, "EVALUATION-ID")
-        if child is not None:
-            evaluation_id_value = child.text
-            obj.evaluation_id = evaluation_id_value
-
-        # Parse function
-        child = SerializationHelper.find_child_element(element, "FUNCTION")
-        if child is not None:
-            function_value = child.text
-            obj.function = function_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EVALUATION-ID":
+                setattr(obj, "evaluation_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "FUNCTION":
+                setattr(obj, "function", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

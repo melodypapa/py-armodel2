@@ -40,11 +40,23 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-TROUBLE-CODE-J1939"
+
+
     dtc_props_props_ref: Optional[ARRef]
     fmi: Optional[PositiveInteger]
     kind: Optional[DiagnosticTroubleCode]
     node_ref: Optional[ARRef]
     spn_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DTC-PROPS-PROPS-REF": ("_POLYMORPHIC", "dtc_props_props_ref", ["DiagnosticTroubleCodeJ1939", "DiagnosticTroubleCodeObd", "DiagnosticTroubleCodeUds"]),
+        "FMI": lambda obj, elem: setattr(obj, "fmi", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "KIND": ("_POLYMORPHIC", "kind", ["DiagnosticTroubleCodeJ1939", "DiagnosticTroubleCodeObd", "DiagnosticTroubleCodeUds"]),
+        "NODE-REF": lambda obj, elem: setattr(obj, "node_ref", ARRef.deserialize(elem)),
+        "SPN-REF": lambda obj, elem: setattr(obj, "spn_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeJ1939."""
         super().__init__()
@@ -60,9 +72,8 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticTroubleCodeJ1939, self).serialize()
@@ -163,35 +174,28 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTroubleCodeJ1939, cls).deserialize(element)
 
-        # Parse dtc_props_props_ref
-        child = SerializationHelper.find_child_element(element, "DTC-PROPS-PROPS-REF")
-        if child is not None:
-            dtc_props_props_ref_value = ARRef.deserialize(child)
-            obj.dtc_props_props_ref = dtc_props_props_ref_value
-
-        # Parse fmi
-        child = SerializationHelper.find_child_element(element, "FMI")
-        if child is not None:
-            fmi_value = child.text
-            obj.fmi = fmi_value
-
-        # Parse kind
-        child = SerializationHelper.find_child_element(element, "KIND")
-        if child is not None:
-            kind_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticTroubleCode")
-            obj.kind = kind_value
-
-        # Parse node_ref
-        child = SerializationHelper.find_child_element(element, "NODE-REF")
-        if child is not None:
-            node_ref_value = ARRef.deserialize(child)
-            obj.node_ref = node_ref_value
-
-        # Parse spn_ref
-        child = SerializationHelper.find_child_element(element, "SPN-REF")
-        if child is not None:
-            spn_ref_value = ARRef.deserialize(child)
-            obj.spn_ref = spn_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DTC-PROPS-PROPS-REF":
+                setattr(obj, "dtc_props_props_ref", ARRef.deserialize(child))
+            elif tag == "FMI":
+                setattr(obj, "fmi", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "KIND":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-J1939":
+                        setattr(obj, "kind", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeJ1939"))
+                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-OBD":
+                        setattr(obj, "kind", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeObd"))
+                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-UDS":
+                        setattr(obj, "kind", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeUds"))
+            elif tag == "NODE-REF":
+                setattr(obj, "node_ref", ARRef.deserialize(child))
+            elif tag == "SPN-REF":
+                setattr(obj, "spn_ref", ARRef.deserialize(child))
 
         return obj
 

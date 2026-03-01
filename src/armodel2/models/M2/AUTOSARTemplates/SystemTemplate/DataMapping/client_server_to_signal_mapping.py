@@ -37,9 +37,19 @@ class ClientServerToSignalMapping(DataMapping):
         """
         return False
 
+    _XML_TAG = "CLIENT-SERVER-TO-SIGNAL-MAPPING"
+
+
     call_signal_ref: Optional[ARRef]
     client_server: Optional[ClientServerOperation]
     return_signal_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CALL-SIGNAL-REF": lambda obj, elem: setattr(obj, "call_signal_ref", ARRef.deserialize(elem)),
+        "CLIENT-SERVER": lambda obj, elem: setattr(obj, "client_server", SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
+        "RETURN-SIGNAL-REF": lambda obj, elem: setattr(obj, "return_signal_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ClientServerToSignalMapping."""
         super().__init__()
@@ -53,9 +63,8 @@ class ClientServerToSignalMapping(DataMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ClientServerToSignalMapping, self).serialize()
@@ -128,23 +137,16 @@ class ClientServerToSignalMapping(DataMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerToSignalMapping, cls).deserialize(element)
 
-        # Parse call_signal_ref
-        child = SerializationHelper.find_child_element(element, "CALL-SIGNAL-REF")
-        if child is not None:
-            call_signal_ref_value = ARRef.deserialize(child)
-            obj.call_signal_ref = call_signal_ref_value
-
-        # Parse client_server
-        child = SerializationHelper.find_child_element(element, "CLIENT-SERVER")
-        if child is not None:
-            client_server_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
-            obj.client_server = client_server_value
-
-        # Parse return_signal_ref
-        child = SerializationHelper.find_child_element(element, "RETURN-SIGNAL-REF")
-        if child is not None:
-            return_signal_ref_value = ARRef.deserialize(child)
-            obj.return_signal_ref = return_signal_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CALL-SIGNAL-REF":
+                setattr(obj, "call_signal_ref", ARRef.deserialize(child))
+            elif tag == "CLIENT-SERVER":
+                setattr(obj, "client_server", SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
+            elif tag == "RETURN-SIGNAL-REF":
+                setattr(obj, "return_signal_ref", ARRef.deserialize(child))
 
         return obj
 

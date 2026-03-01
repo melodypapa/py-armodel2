@@ -30,6 +30,9 @@ class UserDefinedGlobalTimeSlave(GlobalTimeSlave):
         """
         return False
 
+    _XML_TAG = "USER-DEFINED-GLOBAL-TIME-SLAVE"
+
+
     def __init__(self) -> None:
         """Initialize UserDefinedGlobalTimeSlave."""
         super().__init__()
@@ -40,9 +43,8 @@ class UserDefinedGlobalTimeSlave(GlobalTimeSlave):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(UserDefinedGlobalTimeSlave, self).serialize()

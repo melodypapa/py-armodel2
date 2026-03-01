@@ -35,10 +35,21 @@ class CryptoServiceNeeds(ServiceNeeds):
         """
         return False
 
+    _XML_TAG = "CRYPTO-SERVICE-NEEDS"
+
+
     algorithm_family: Optional[String]
     algorithm_mode: Optional[String]
     crypto_key: Optional[String]
     maximum_key: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ALGORITHM-FAMILY": lambda obj, elem: setattr(obj, "algorithm_family", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ALGORITHM-MODE": lambda obj, elem: setattr(obj, "algorithm_mode", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "CRYPTO-KEY": lambda obj, elem: setattr(obj, "crypto_key", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "MAXIMUM-KEY": lambda obj, elem: setattr(obj, "maximum_key", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CryptoServiceNeeds."""
         super().__init__()
@@ -53,9 +64,8 @@ class CryptoServiceNeeds(ServiceNeeds):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CryptoServiceNeeds, self).serialize()
@@ -142,29 +152,18 @@ class CryptoServiceNeeds(ServiceNeeds):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CryptoServiceNeeds, cls).deserialize(element)
 
-        # Parse algorithm_family
-        child = SerializationHelper.find_child_element(element, "ALGORITHM-FAMILY")
-        if child is not None:
-            algorithm_family_value = child.text
-            obj.algorithm_family = algorithm_family_value
-
-        # Parse algorithm_mode
-        child = SerializationHelper.find_child_element(element, "ALGORITHM-MODE")
-        if child is not None:
-            algorithm_mode_value = child.text
-            obj.algorithm_mode = algorithm_mode_value
-
-        # Parse crypto_key
-        child = SerializationHelper.find_child_element(element, "CRYPTO-KEY")
-        if child is not None:
-            crypto_key_value = child.text
-            obj.crypto_key = crypto_key_value
-
-        # Parse maximum_key
-        child = SerializationHelper.find_child_element(element, "MAXIMUM-KEY")
-        if child is not None:
-            maximum_key_value = child.text
-            obj.maximum_key = maximum_key_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ALGORITHM-FAMILY":
+                setattr(obj, "algorithm_family", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ALGORITHM-MODE":
+                setattr(obj, "algorithm_mode", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "CRYPTO-KEY":
+                setattr(obj, "crypto_key", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "MAXIMUM-KEY":
+                setattr(obj, "maximum_key", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

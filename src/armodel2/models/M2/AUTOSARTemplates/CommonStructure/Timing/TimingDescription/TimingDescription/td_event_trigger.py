@@ -37,8 +37,17 @@ class TDEventTrigger(TDEventVfbPort):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-TRIGGER"
+
+
     td_event_trigger_ref: Optional[TDEventTriggerTypeEnum]
     trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "TD-EVENT-TRIGGER-REF": lambda obj, elem: setattr(obj, "td_event_trigger_ref", TDEventTriggerTypeEnum.deserialize(elem)),
+        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventTrigger."""
         super().__init__()
@@ -51,9 +60,8 @@ class TDEventTrigger(TDEventVfbPort):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventTrigger, self).serialize()
@@ -112,17 +120,14 @@ class TDEventTrigger(TDEventVfbPort):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventTrigger, cls).deserialize(element)
 
-        # Parse td_event_trigger_ref
-        child = SerializationHelper.find_child_element(element, "TD-EVENT-TRIGGER-REF")
-        if child is not None:
-            td_event_trigger_ref_value = ARRef.deserialize(child)
-            obj.td_event_trigger_ref = td_event_trigger_ref_value
-
-        # Parse trigger_ref
-        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
-        if child is not None:
-            trigger_ref_value = ARRef.deserialize(child)
-            obj.trigger_ref = trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TD-EVENT-TRIGGER-REF":
+                setattr(obj, "td_event_trigger_ref", TDEventTriggerTypeEnum.deserialize(child))
+            elif tag == "TRIGGER-REF":
+                setattr(obj, "trigger_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -45,6 +45,9 @@ class SwRecordLayoutV(ARObject):
         """
         return False
 
+    _XML_TAG = "SW-RECORD-LAYOUT-V"
+
+
     short_label: Optional[Identifier]
     base_type_ref: Optional[ARRef]
     desc: Optional[MultiLanguageOverviewParagraph]
@@ -53,6 +56,18 @@ class SwRecordLayoutV(ARObject):
     sw_record_layout_v_fix_value: Optional[Integer]
     sw_record_layout_v_index: Optional[NameTokens]
     sw_record_layout_v_prop: Optional[NameToken]
+    _DESERIALIZE_DISPATCH = {
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "BASE-TYPE-REF": lambda obj, elem: setattr(obj, "base_type_ref", ARRef.deserialize(elem)),
+        "DESC": lambda obj, elem: setattr(obj, "desc", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageOverviewParagraph")),
+        "SW-GENERIC-AXIS-PARAM-TYPE-REF": lambda obj, elem: setattr(obj, "sw_generic_axis_param_type_ref", ARRef.deserialize(elem)),
+        "SW-RECORD-LAYOUT-V-AXIS": lambda obj, elem: setattr(obj, "sw_record_layout_v_axis", SerializationHelper.deserialize_by_tag(elem, "AxisIndexType")),
+        "SW-RECORD-LAYOUT-V-FIX-VALUE": lambda obj, elem: setattr(obj, "sw_record_layout_v_fix_value", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "SW-RECORD-LAYOUT-V-INDEX": lambda obj, elem: setattr(obj, "sw_record_layout_v_index", SerializationHelper.deserialize_by_tag(elem, "NameTokens")),
+        "SW-RECORD-LAYOUT-V-PROP": lambda obj, elem: setattr(obj, "sw_record_layout_v_prop", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwRecordLayoutV."""
         super().__init__()
@@ -71,9 +86,8 @@ class SwRecordLayoutV(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwRecordLayoutV, self).serialize()
@@ -216,53 +230,26 @@ class SwRecordLayoutV(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwRecordLayoutV, cls).deserialize(element)
 
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
-
-        # Parse base_type_ref
-        child = SerializationHelper.find_child_element(element, "BASE-TYPE-REF")
-        if child is not None:
-            base_type_ref_value = ARRef.deserialize(child)
-            obj.base_type_ref = base_type_ref_value
-
-        # Parse desc
-        child = SerializationHelper.find_child_element(element, "DESC")
-        if child is not None:
-            desc_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
-            obj.desc = desc_value
-
-        # Parse sw_generic_axis_param_type_ref
-        child = SerializationHelper.find_child_element(element, "SW-GENERIC-AXIS-PARAM-TYPE-REF")
-        if child is not None:
-            sw_generic_axis_param_type_ref_value = ARRef.deserialize(child)
-            obj.sw_generic_axis_param_type_ref = sw_generic_axis_param_type_ref_value
-
-        # Parse sw_record_layout_v_axis
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-V-AXIS")
-        if child is not None:
-            sw_record_layout_v_axis_value = child.text
-            obj.sw_record_layout_v_axis = sw_record_layout_v_axis_value
-
-        # Parse sw_record_layout_v_fix_value
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-V-FIX-VALUE")
-        if child is not None:
-            sw_record_layout_v_fix_value_value = child.text
-            obj.sw_record_layout_v_fix_value = sw_record_layout_v_fix_value_value
-
-        # Parse sw_record_layout_v_index
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-V-INDEX")
-        if child is not None:
-            sw_record_layout_v_index_value = child.text
-            obj.sw_record_layout_v_index = sw_record_layout_v_index_value
-
-        # Parse sw_record_layout_v_prop
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-V-PROP")
-        if child is not None:
-            sw_record_layout_v_prop_value = child.text
-            obj.sw_record_layout_v_prop = sw_record_layout_v_prop_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "BASE-TYPE-REF":
+                setattr(obj, "base_type_ref", ARRef.deserialize(child))
+            elif tag == "DESC":
+                setattr(obj, "desc", SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph"))
+            elif tag == "SW-GENERIC-AXIS-PARAM-TYPE-REF":
+                setattr(obj, "sw_generic_axis_param_type_ref", ARRef.deserialize(child))
+            elif tag == "SW-RECORD-LAYOUT-V-AXIS":
+                setattr(obj, "sw_record_layout_v_axis", SerializationHelper.deserialize_by_tag(child, "AxisIndexType"))
+            elif tag == "SW-RECORD-LAYOUT-V-FIX-VALUE":
+                setattr(obj, "sw_record_layout_v_fix_value", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "SW-RECORD-LAYOUT-V-INDEX":
+                setattr(obj, "sw_record_layout_v_index", SerializationHelper.deserialize_by_tag(child, "NameTokens"))
+            elif tag == "SW-RECORD-LAYOUT-V-PROP":
+                setattr(obj, "sw_record_layout_v_prop", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

@@ -37,10 +37,21 @@ class RuleArguments(ARObject):
         """
         return False
 
+    _XML_TAG = "RULE-ARGUMENTS"
+
+
     v: Optional[Numerical]
     vf: Optional[Numerical]
     vt: Optional[VerbatimString]
     vtf: Optional[NumericalOrText]
+    _DESERIALIZE_DISPATCH = {
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VF": lambda obj, elem: setattr(obj, "vf", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VT": lambda obj, elem: setattr(obj, "vt", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
+        "VTF": lambda obj, elem: setattr(obj, "vtf", SerializationHelper.deserialize_by_tag(elem, "NumericalOrText")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RuleArguments."""
         super().__init__()

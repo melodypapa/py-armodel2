@@ -33,8 +33,17 @@ class CanTpEcu(ARObject):
         """
         return False
 
+    _XML_TAG = "CAN-TP-ECU"
+
+
     cycle_time_main: Optional[TimeValue]
     ecu_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CYCLE-TIME-MAIN": lambda obj, elem: setattr(obj, "cycle_time_main", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CanTpEcu."""
         super().__init__()
@@ -47,9 +56,8 @@ class CanTpEcu(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CanTpEcu, self).serialize()
@@ -108,17 +116,14 @@ class CanTpEcu(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanTpEcu, cls).deserialize(element)
 
-        # Parse cycle_time_main
-        child = SerializationHelper.find_child_element(element, "CYCLE-TIME-MAIN")
-        if child is not None:
-            cycle_time_main_value = child.text
-            obj.cycle_time_main = cycle_time_main_value
-
-        # Parse ecu_instance_ref
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
-        if child is not None:
-            ecu_instance_ref_value = ARRef.deserialize(child)
-            obj.ecu_instance_ref = ecu_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CYCLE-TIME-MAIN":
+                setattr(obj, "cycle_time_main", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "ECU-INSTANCE-REF":
+                setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
 
         return obj
 

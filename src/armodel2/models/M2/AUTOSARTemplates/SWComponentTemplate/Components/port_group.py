@@ -38,8 +38,17 @@ class PortGroup(Identifiable):
         """
         return False
 
+    _XML_TAG = "PORT-GROUP"
+
+
     inner_group_refs: list[ARRef]
     outer_port_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "INNER-GROUP-REFS": lambda obj, elem: [obj.inner_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "OUTER-PORT-REFS": ("_POLYMORPHIC_LIST", "outer_port_refs", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PortGroup."""
         super().__init__()
@@ -52,9 +61,8 @@ class PortGroup(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PortGroup, self).serialize()
@@ -119,37 +127,17 @@ class PortGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortGroup, cls).deserialize(element)
 
-        # Parse inner_group_refs (list from container "INNER-GROUP-REFS")
-        obj.inner_group_refs = []
-        container = SerializationHelper.find_child_element(element, "INNER-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.inner_group_refs.append(child_value)
-
-        # Parse outer_port_refs (list from container "OUTER-PORT-REFS")
-        obj.outer_port_refs = []
-        container = SerializationHelper.find_child_element(element, "OUTER-PORT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.outer_port_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INNER-GROUP-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.inner_group_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "OUTER-PORT-REFS":
+                for item_elem in child:
+                    obj.outer_port_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

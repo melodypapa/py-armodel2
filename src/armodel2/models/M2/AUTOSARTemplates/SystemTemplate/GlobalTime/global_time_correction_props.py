@@ -30,9 +30,19 @@ class GlobalTimeCorrectionProps(ARObject):
         """
         return False
 
+    _XML_TAG = "GLOBAL-TIME-CORRECTION-PROPS"
+
+
     offset_correction: Optional[TimeValue]
     rate_correction: Optional[TimeValue]
     rate_corrections: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "OFFSET-CORRECTION": lambda obj, elem: setattr(obj, "offset_correction", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "RATE-CORRECTION": lambda obj, elem: setattr(obj, "rate_correction", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "RATE-CORRECTIONS": lambda obj, elem: setattr(obj, "rate_corrections", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize GlobalTimeCorrectionProps."""
         super().__init__()
@@ -46,9 +56,8 @@ class GlobalTimeCorrectionProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(GlobalTimeCorrectionProps, self).serialize()
@@ -121,23 +130,16 @@ class GlobalTimeCorrectionProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeCorrectionProps, cls).deserialize(element)
 
-        # Parse offset_correction
-        child = SerializationHelper.find_child_element(element, "OFFSET-CORRECTION")
-        if child is not None:
-            offset_correction_value = child.text
-            obj.offset_correction = offset_correction_value
-
-        # Parse rate_correction
-        child = SerializationHelper.find_child_element(element, "RATE-CORRECTION")
-        if child is not None:
-            rate_correction_value = child.text
-            obj.rate_correction = rate_correction_value
-
-        # Parse rate_corrections
-        child = SerializationHelper.find_child_element(element, "RATE-CORRECTIONS")
-        if child is not None:
-            rate_corrections_value = child.text
-            obj.rate_corrections = rate_corrections_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OFFSET-CORRECTION":
+                setattr(obj, "offset_correction", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "RATE-CORRECTION":
+                setattr(obj, "rate_correction", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "RATE-CORRECTIONS":
+                setattr(obj, "rate_corrections", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

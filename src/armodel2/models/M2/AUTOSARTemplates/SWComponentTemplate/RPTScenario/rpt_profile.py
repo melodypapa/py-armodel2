@@ -37,10 +37,21 @@ class RptProfile(Identifiable):
         """
         return False
 
+    _XML_TAG = "RPT-PROFILE"
+
+
     max_service: Optional[PositiveInteger]
     min_service_point: Optional[PositiveInteger]
     service_point: Optional[CIdentifier]
     stim_enabler: Optional[RptEnablerImplTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-SERVICE": lambda obj, elem: setattr(obj, "max_service", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MIN-SERVICE-POINT": lambda obj, elem: setattr(obj, "min_service_point", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SERVICE-POINT": lambda obj, elem: setattr(obj, "service_point", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
+        "STIM-ENABLER": lambda obj, elem: setattr(obj, "stim_enabler", RptEnablerImplTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RptProfile."""
         super().__init__()
@@ -55,9 +66,8 @@ class RptProfile(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RptProfile, self).serialize()
@@ -144,29 +154,18 @@ class RptProfile(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptProfile, cls).deserialize(element)
 
-        # Parse max_service
-        child = SerializationHelper.find_child_element(element, "MAX-SERVICE")
-        if child is not None:
-            max_service_value = child.text
-            obj.max_service = max_service_value
-
-        # Parse min_service_point
-        child = SerializationHelper.find_child_element(element, "MIN-SERVICE-POINT")
-        if child is not None:
-            min_service_point_value = child.text
-            obj.min_service_point = min_service_point_value
-
-        # Parse service_point
-        child = SerializationHelper.find_child_element(element, "SERVICE-POINT")
-        if child is not None:
-            service_point_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
-            obj.service_point = service_point_value
-
-        # Parse stim_enabler
-        child = SerializationHelper.find_child_element(element, "STIM-ENABLER")
-        if child is not None:
-            stim_enabler_value = RptEnablerImplTypeEnum.deserialize(child)
-            obj.stim_enabler = stim_enabler_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAX-SERVICE":
+                setattr(obj, "max_service", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MIN-SERVICE-POINT":
+                setattr(obj, "min_service_point", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SERVICE-POINT":
+                setattr(obj, "service_point", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
+            elif tag == "STIM-ENABLER":
+                setattr(obj, "stim_enabler", RptEnablerImplTypeEnum.deserialize(child))
 
         return obj
 

@@ -30,8 +30,17 @@ class TpPort(ARObject):
         """
         return False
 
+    _XML_TAG = "TP-PORT"
+
+
     dynamically: Optional[Boolean]
     port_number: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DYNAMICALLY": lambda obj, elem: setattr(obj, "dynamically", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PORT-NUMBER": lambda obj, elem: setattr(obj, "port_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TpPort."""
         super().__init__()
@@ -44,9 +53,8 @@ class TpPort(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TpPort, self).serialize()
@@ -105,17 +113,14 @@ class TpPort(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TpPort, cls).deserialize(element)
 
-        # Parse dynamically
-        child = SerializationHelper.find_child_element(element, "DYNAMICALLY")
-        if child is not None:
-            dynamically_value = child.text
-            obj.dynamically = dynamically_value
-
-        # Parse port_number
-        child = SerializationHelper.find_child_element(element, "PORT-NUMBER")
-        if child is not None:
-            port_number_value = child.text
-            obj.port_number = port_number_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DYNAMICALLY":
+                setattr(obj, "dynamically", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PORT-NUMBER":
+                setattr(obj, "port_number", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -29,9 +29,19 @@ class DdsResourceLimits(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-RESOURCE-LIMITS"
+
+
     max_instances: Optional[PositiveInteger]
     max_samples: Optional[PositiveInteger]
     max_samples_per_instance: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "MAX-INSTANCES": lambda obj, elem: setattr(obj, "max_instances", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-SAMPLES": lambda obj, elem: setattr(obj, "max_samples", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-SAMPLES-PER-INSTANCE": lambda obj, elem: setattr(obj, "max_samples_per_instance", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsResourceLimits."""
         super().__init__()
@@ -45,9 +55,8 @@ class DdsResourceLimits(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsResourceLimits, self).serialize()
@@ -120,23 +129,16 @@ class DdsResourceLimits(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsResourceLimits, cls).deserialize(element)
 
-        # Parse max_instances
-        child = SerializationHelper.find_child_element(element, "MAX-INSTANCES")
-        if child is not None:
-            max_instances_value = child.text
-            obj.max_instances = max_instances_value
-
-        # Parse max_samples
-        child = SerializationHelper.find_child_element(element, "MAX-SAMPLES")
-        if child is not None:
-            max_samples_value = child.text
-            obj.max_samples = max_samples_value
-
-        # Parse max_samples_per_instance
-        child = SerializationHelper.find_child_element(element, "MAX-SAMPLES-PER-INSTANCE")
-        if child is not None:
-            max_samples_per_instance_value = child.text
-            obj.max_samples_per_instance = max_samples_per_instance_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAX-INSTANCES":
+                setattr(obj, "max_instances", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-SAMPLES":
+                setattr(obj, "max_samples", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-SAMPLES-PER-INSTANCE":
+                setattr(obj, "max_samples_per_instance", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

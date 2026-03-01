@@ -34,8 +34,17 @@ class DiagnosticEventToOperationCycleMapping(DiagnosticMapping):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-EVENT-TO-OPERATION-CYCLE-MAPPING"
+
+
     diagnostic_event_ref: Optional[ARRef]
     operation_cycle_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTIC-EVENT-REF": lambda obj, elem: setattr(obj, "diagnostic_event_ref", ARRef.deserialize(elem)),
+        "OPERATION-CYCLE-REF": lambda obj, elem: setattr(obj, "operation_cycle_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticEventToOperationCycleMapping."""
         super().__init__()
@@ -48,9 +57,8 @@ class DiagnosticEventToOperationCycleMapping(DiagnosticMapping):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticEventToOperationCycleMapping, self).serialize()
@@ -109,17 +117,14 @@ class DiagnosticEventToOperationCycleMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventToOperationCycleMapping, cls).deserialize(element)
 
-        # Parse diagnostic_event_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-EVENT-REF")
-        if child is not None:
-            diagnostic_event_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_event_ref = diagnostic_event_ref_value
-
-        # Parse operation_cycle_ref
-        child = SerializationHelper.find_child_element(element, "OPERATION-CYCLE-REF")
-        if child is not None:
-            operation_cycle_ref_value = ARRef.deserialize(child)
-            obj.operation_cycle_ref = operation_cycle_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DIAGNOSTIC-EVENT-REF":
+                setattr(obj, "diagnostic_event_ref", ARRef.deserialize(child))
+            elif tag == "OPERATION-CYCLE-REF":
+                setattr(obj, "operation_cycle_ref", ARRef.deserialize(child))
 
         return obj
 

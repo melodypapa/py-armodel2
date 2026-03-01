@@ -34,10 +34,21 @@ class MeasuredHeapUsage(HeapUsage):
         """
         return False
 
+    _XML_TAG = "MEASURED-HEAP-USAGE"
+
+
     average_memory_consumption: Optional[PositiveInteger]
     maximum_memory_consumption: Optional[PositiveInteger]
     minimum_memory_consumption: Optional[PositiveInteger]
     test_pattern: Optional[String]
+    _DESERIALIZE_DISPATCH = {
+        "AVERAGE-MEMORY-CONSUMPTION": lambda obj, elem: setattr(obj, "average_memory_consumption", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAXIMUM-MEMORY-CONSUMPTION": lambda obj, elem: setattr(obj, "maximum_memory_consumption", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MINIMUM-MEMORY-CONSUMPTION": lambda obj, elem: setattr(obj, "minimum_memory_consumption", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TEST-PATTERN": lambda obj, elem: setattr(obj, "test_pattern", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MeasuredHeapUsage."""
         super().__init__()
@@ -52,9 +63,8 @@ class MeasuredHeapUsage(HeapUsage):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MeasuredHeapUsage, self).serialize()
@@ -141,29 +151,18 @@ class MeasuredHeapUsage(HeapUsage):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MeasuredHeapUsage, cls).deserialize(element)
 
-        # Parse average_memory_consumption
-        child = SerializationHelper.find_child_element(element, "AVERAGE-MEMORY-CONSUMPTION")
-        if child is not None:
-            average_memory_consumption_value = child.text
-            obj.average_memory_consumption = average_memory_consumption_value
-
-        # Parse maximum_memory_consumption
-        child = SerializationHelper.find_child_element(element, "MAXIMUM-MEMORY-CONSUMPTION")
-        if child is not None:
-            maximum_memory_consumption_value = child.text
-            obj.maximum_memory_consumption = maximum_memory_consumption_value
-
-        # Parse minimum_memory_consumption
-        child = SerializationHelper.find_child_element(element, "MINIMUM-MEMORY-CONSUMPTION")
-        if child is not None:
-            minimum_memory_consumption_value = child.text
-            obj.minimum_memory_consumption = minimum_memory_consumption_value
-
-        # Parse test_pattern
-        child = SerializationHelper.find_child_element(element, "TEST-PATTERN")
-        if child is not None:
-            test_pattern_value = child.text
-            obj.test_pattern = test_pattern_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AVERAGE-MEMORY-CONSUMPTION":
+                setattr(obj, "average_memory_consumption", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAXIMUM-MEMORY-CONSUMPTION":
+                setattr(obj, "maximum_memory_consumption", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MINIMUM-MEMORY-CONSUMPTION":
+                setattr(obj, "minimum_memory_consumption", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TEST-PATTERN":
+                setattr(obj, "test_pattern", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

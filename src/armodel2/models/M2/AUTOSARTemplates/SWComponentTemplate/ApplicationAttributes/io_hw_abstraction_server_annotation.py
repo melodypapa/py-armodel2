@@ -56,6 +56,9 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         """
         return False
 
+    _XML_TAG = "IO-HW-ABSTRACTION-SERVER-ANNOTATION"
+
+
     age: Optional[MultidimensionalTime]
     argument_ref: Optional[ARRef]
     bsw_resolution: Optional[Float]
@@ -64,6 +67,18 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
     filtering: Optional[FilterDebouncingEnum]
     pulse_test: Optional[PulseTestEnum]
     trigger_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "AGE": lambda obj, elem: setattr(obj, "age", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "ARGUMENT-REF": lambda obj, elem: setattr(obj, "argument_ref", ARRef.deserialize(elem)),
+        "BSW-RESOLUTION": lambda obj, elem: setattr(obj, "bsw_resolution", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "FAILURE-REF": ("_POLYMORPHIC", "failure_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "FILTERING": lambda obj, elem: setattr(obj, "filtering", FilterDebouncingEnum.deserialize(elem)),
+        "PULSE-TEST": lambda obj, elem: setattr(obj, "pulse_test", PulseTestEnum.deserialize(elem)),
+        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IoHwAbstractionServerAnnotation."""
         super().__init__()
@@ -82,9 +97,8 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IoHwAbstractionServerAnnotation, self).serialize()
@@ -227,53 +241,26 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IoHwAbstractionServerAnnotation, cls).deserialize(element)
 
-        # Parse age
-        child = SerializationHelper.find_child_element(element, "AGE")
-        if child is not None:
-            age_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.age = age_value
-
-        # Parse argument_ref
-        child = SerializationHelper.find_child_element(element, "ARGUMENT-REF")
-        if child is not None:
-            argument_ref_value = ARRef.deserialize(child)
-            obj.argument_ref = argument_ref_value
-
-        # Parse bsw_resolution
-        child = SerializationHelper.find_child_element(element, "BSW-RESOLUTION")
-        if child is not None:
-            bsw_resolution_value = child.text
-            obj.bsw_resolution = bsw_resolution_value
-
-        # Parse data_element_ref
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
-        if child is not None:
-            data_element_ref_value = ARRef.deserialize(child)
-            obj.data_element_ref = data_element_ref_value
-
-        # Parse failure_ref
-        child = SerializationHelper.find_child_element(element, "FAILURE-REF")
-        if child is not None:
-            failure_ref_value = ARRef.deserialize(child)
-            obj.failure_ref = failure_ref_value
-
-        # Parse filtering
-        child = SerializationHelper.find_child_element(element, "FILTERING")
-        if child is not None:
-            filtering_value = FilterDebouncingEnum.deserialize(child)
-            obj.filtering = filtering_value
-
-        # Parse pulse_test
-        child = SerializationHelper.find_child_element(element, "PULSE-TEST")
-        if child is not None:
-            pulse_test_value = PulseTestEnum.deserialize(child)
-            obj.pulse_test = pulse_test_value
-
-        # Parse trigger_ref
-        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
-        if child is not None:
-            trigger_ref_value = ARRef.deserialize(child)
-            obj.trigger_ref = trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AGE":
+                setattr(obj, "age", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "ARGUMENT-REF":
+                setattr(obj, "argument_ref", ARRef.deserialize(child))
+            elif tag == "BSW-RESOLUTION":
+                setattr(obj, "bsw_resolution", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "DATA-ELEMENT-REF":
+                setattr(obj, "data_element_ref", ARRef.deserialize(child))
+            elif tag == "FAILURE-REF":
+                setattr(obj, "failure_ref", ARRef.deserialize(child))
+            elif tag == "FILTERING":
+                setattr(obj, "filtering", FilterDebouncingEnum.deserialize(child))
+            elif tag == "PULSE-TEST":
+                setattr(obj, "pulse_test", PulseTestEnum.deserialize(child))
+            elif tag == "TRIGGER-REF":
+                setattr(obj, "trigger_ref", ARRef.deserialize(child))
 
         return obj
 

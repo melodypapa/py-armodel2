@@ -40,6 +40,13 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
     abstract_context_component_ref: Optional[ARRef]
     base_ref: Optional[ARRef]
     target_port_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ABSTRACT-CONTEXT-COMPONENT-REF": lambda obj, elem: setattr(obj, "abstract_context_component_ref", ARRef.deserialize(elem)),
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "TARGET-PORT-REF": ("_POLYMORPHIC", "target_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PortInCompositionTypeInstanceRef."""
         super().__init__()
@@ -53,9 +60,8 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PortInCompositionTypeInstanceRef, self).serialize()
@@ -128,23 +134,16 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortInCompositionTypeInstanceRef, cls).deserialize(element)
 
-        # Parse abstract_context_component_ref
-        child = SerializationHelper.find_child_element(element, "ABSTRACT-CONTEXT-COMPONENT-REF")
-        if child is not None:
-            abstract_context_component_ref_value = ARRef.deserialize(child)
-            obj.abstract_context_component_ref = abstract_context_component_ref_value
-
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse target_port_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-PORT-REF")
-        if child is not None:
-            target_port_ref_value = ARRef.deserialize(child)
-            obj.target_port_ref = target_port_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ABSTRACT-CONTEXT-COMPONENT-REF":
+                setattr(obj, "abstract_context_component_ref", ARRef.deserialize(child))
+            elif tag == "BASE-REF":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-PORT-REF":
+                setattr(obj, "target_port_ref", ARRef.deserialize(child))
 
         return obj
 

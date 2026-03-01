@@ -50,6 +50,9 @@ class IPSecRule(Identifiable):
         """
         return False
 
+    _XML_TAG = "I-P-SEC-RULE"
+
+
     direction: Optional[Any]
     header_type: Optional[IPsecHeaderTypeEnum]
     ip_protocol: Optional[IPsecIpProtocolEnum]
@@ -64,6 +67,24 @@ class IPSecRule(Identifiable):
     remote_id: Optional[String]
     remote_ip_refs: list[ARRef]
     remote_port: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "DIRECTION": lambda obj, elem: setattr(obj, "direction", SerializationHelper.deserialize_by_tag(elem, "any (Communication)")),
+        "HEADER-TYPE": lambda obj, elem: setattr(obj, "header_type", IPsecHeaderTypeEnum.deserialize(elem)),
+        "IP-PROTOCOL": lambda obj, elem: setattr(obj, "ip_protocol", IPsecIpProtocolEnum.deserialize(elem)),
+        "LOCAL-CERTIFICATE-REFS": lambda obj, elem: [obj.local_certificate_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "LOCAL-ID": lambda obj, elem: setattr(obj, "local_id", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "LOCAL-PORT-RANGE": lambda obj, elem: setattr(obj, "local_port_range", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MODE": lambda obj, elem: setattr(obj, "mode", IPsecModeEnum.deserialize(elem)),
+        "POLICY": lambda obj, elem: setattr(obj, "policy", IPsecPolicyEnum.deserialize(elem)),
+        "PRE-SHARED-KEY-REF": lambda obj, elem: setattr(obj, "pre_shared_key_ref", ARRef.deserialize(elem)),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "REMOTE-REFS": lambda obj, elem: [obj.remote_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "REMOTE-ID": lambda obj, elem: setattr(obj, "remote_id", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "REMOTE-IP-REFS": lambda obj, elem: [obj.remote_ip_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "REMOTE-PORT": lambda obj, elem: setattr(obj, "remote_port", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IPSecRule."""
         super().__init__()
@@ -88,9 +109,8 @@ class IPSecRule(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IPSecRule, self).serialize()
@@ -326,119 +346,44 @@ class IPSecRule(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IPSecRule, cls).deserialize(element)
 
-        # Parse direction
-        child = SerializationHelper.find_child_element(element, "DIRECTION")
-        if child is not None:
-            direction_value = child.text
-            obj.direction = direction_value
-
-        # Parse header_type
-        child = SerializationHelper.find_child_element(element, "HEADER-TYPE")
-        if child is not None:
-            header_type_value = IPsecHeaderTypeEnum.deserialize(child)
-            obj.header_type = header_type_value
-
-        # Parse ip_protocol
-        child = SerializationHelper.find_child_element(element, "IP-PROTOCOL")
-        if child is not None:
-            ip_protocol_value = IPsecIpProtocolEnum.deserialize(child)
-            obj.ip_protocol = ip_protocol_value
-
-        # Parse local_certificate_refs (list from container "LOCAL-CERTIFICATE-REFS")
-        obj.local_certificate_refs = []
-        container = SerializationHelper.find_child_element(element, "LOCAL-CERTIFICATE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.local_certificate_refs.append(child_value)
-
-        # Parse local_id
-        child = SerializationHelper.find_child_element(element, "LOCAL-ID")
-        if child is not None:
-            local_id_value = child.text
-            obj.local_id = local_id_value
-
-        # Parse local_port_range
-        child = SerializationHelper.find_child_element(element, "LOCAL-PORT-RANGE")
-        if child is not None:
-            local_port_range_value = child.text
-            obj.local_port_range = local_port_range_value
-
-        # Parse mode
-        child = SerializationHelper.find_child_element(element, "MODE")
-        if child is not None:
-            mode_value = IPsecModeEnum.deserialize(child)
-            obj.mode = mode_value
-
-        # Parse policy
-        child = SerializationHelper.find_child_element(element, "POLICY")
-        if child is not None:
-            policy_value = IPsecPolicyEnum.deserialize(child)
-            obj.policy = policy_value
-
-        # Parse pre_shared_key_ref
-        child = SerializationHelper.find_child_element(element, "PRE-SHARED-KEY-REF")
-        if child is not None:
-            pre_shared_key_ref_value = ARRef.deserialize(child)
-            obj.pre_shared_key_ref = pre_shared_key_ref_value
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse remote_refs (list from container "REMOTE-REFS")
-        obj.remote_refs = []
-        container = SerializationHelper.find_child_element(element, "REMOTE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.remote_refs.append(child_value)
-
-        # Parse remote_id
-        child = SerializationHelper.find_child_element(element, "REMOTE-ID")
-        if child is not None:
-            remote_id_value = child.text
-            obj.remote_id = remote_id_value
-
-        # Parse remote_ip_refs (list from container "REMOTE-IP-REFS")
-        obj.remote_ip_refs = []
-        container = SerializationHelper.find_child_element(element, "REMOTE-IP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.remote_ip_refs.append(child_value)
-
-        # Parse remote_port
-        child = SerializationHelper.find_child_element(element, "REMOTE-PORT")
-        if child is not None:
-            remote_port_value = child.text
-            obj.remote_port = remote_port_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DIRECTION":
+                setattr(obj, "direction", SerializationHelper.deserialize_by_tag(child, "any (Communication)"))
+            elif tag == "HEADER-TYPE":
+                setattr(obj, "header_type", IPsecHeaderTypeEnum.deserialize(child))
+            elif tag == "IP-PROTOCOL":
+                setattr(obj, "ip_protocol", IPsecIpProtocolEnum.deserialize(child))
+            elif tag == "LOCAL-CERTIFICATE-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.local_certificate_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "LOCAL-ID":
+                setattr(obj, "local_id", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "LOCAL-PORT-RANGE":
+                setattr(obj, "local_port_range", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MODE":
+                setattr(obj, "mode", IPsecModeEnum.deserialize(child))
+            elif tag == "POLICY":
+                setattr(obj, "policy", IPsecPolicyEnum.deserialize(child))
+            elif tag == "PRE-SHARED-KEY-REF":
+                setattr(obj, "pre_shared_key_ref", ARRef.deserialize(child))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "REMOTE-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.remote_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "REMOTE-ID":
+                setattr(obj, "remote_id", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "REMOTE-IP-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.remote_ip_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "REMOTE-PORT":
+                setattr(obj, "remote_port", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

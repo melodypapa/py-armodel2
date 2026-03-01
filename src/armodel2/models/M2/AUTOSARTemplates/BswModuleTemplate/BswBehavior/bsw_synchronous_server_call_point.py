@@ -37,8 +37,17 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
         """
         return False
 
+    _XML_TAG = "BSW-SYNCHRONOUS-SERVER-CALL-POINT"
+
+
     called_entry_entry_ref: Optional[ARRef]
     called_from_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CALLED-ENTRY-ENTRY-REF": lambda obj, elem: setattr(obj, "called_entry_entry_ref", ARRef.deserialize(elem)),
+        "CALLED-FROM-REF": lambda obj, elem: setattr(obj, "called_from_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BswSynchronousServerCallPoint."""
         super().__init__()
@@ -51,9 +60,8 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BswSynchronousServerCallPoint, self).serialize()
@@ -112,17 +120,14 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswSynchronousServerCallPoint, cls).deserialize(element)
 
-        # Parse called_entry_entry_ref
-        child = SerializationHelper.find_child_element(element, "CALLED-ENTRY-ENTRY-REF")
-        if child is not None:
-            called_entry_entry_ref_value = ARRef.deserialize(child)
-            obj.called_entry_entry_ref = called_entry_entry_ref_value
-
-        # Parse called_from_ref
-        child = SerializationHelper.find_child_element(element, "CALLED-FROM-REF")
-        if child is not None:
-            called_from_ref_value = ARRef.deserialize(child)
-            obj.called_from_ref = called_from_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CALLED-ENTRY-ENTRY-REF":
+                setattr(obj, "called_entry_entry_ref", ARRef.deserialize(child))
+            elif tag == "CALLED-FROM-REF":
+                setattr(obj, "called_from_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -32,7 +32,15 @@ class ConditionByFormula(ARObject):
         """
         return False
 
+    _XML_TAG = "CONDITION-BY-FORMULA"
+
+
     binding_time_enum: BindingTimeEnum
+    _DESERIALIZE_DISPATCH = {
+        "BINDING-TIME-ENUM": lambda obj, elem: setattr(obj, "binding_time_enum", BindingTimeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConditionByFormula."""
         super().__init__()
@@ -44,9 +52,8 @@ class ConditionByFormula(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConditionByFormula, self).serialize()
@@ -91,11 +98,12 @@ class ConditionByFormula(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConditionByFormula, cls).deserialize(element)
 
-        # Parse binding_time_enum
-        child = SerializationHelper.find_child_element(element, "BINDING-TIME-ENUM")
-        if child is not None:
-            binding_time_enum_value = BindingTimeEnum.deserialize(child)
-            obj.binding_time_enum = binding_time_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BINDING-TIME-ENUM":
+                setattr(obj, "binding_time_enum", BindingTimeEnum.deserialize(child))
 
         return obj
 

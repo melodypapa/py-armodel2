@@ -34,9 +34,19 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-FUNCTION-IDENTIFIER-INHIBIT"
+
+
     function_ref: Optional[Any]
     inhibition_mask: Optional[DiagnosticInhibitionMaskEnum]
     inhibit_sources: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "FUNCTION-REF": lambda obj, elem: setattr(obj, "function_ref", ARRef.deserialize(elem)),
+        "INHIBITION-MASK": lambda obj, elem: setattr(obj, "inhibition_mask", DiagnosticInhibitionMaskEnum.deserialize(elem)),
+        "INHIBIT-SOURCES": lambda obj, elem: obj.inhibit_sources.append(SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticFunction)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticFunctionIdentifierInhibit."""
         super().__init__()
@@ -50,9 +60,8 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticFunctionIdentifierInhibit, self).serialize()
@@ -121,27 +130,18 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticFunctionIdentifierInhibit, cls).deserialize(element)
 
-        # Parse function_ref
-        child = SerializationHelper.find_child_element(element, "FUNCTION-REF")
-        if child is not None:
-            function_ref_value = ARRef.deserialize(child)
-            obj.function_ref = function_ref_value
-
-        # Parse inhibition_mask
-        child = SerializationHelper.find_child_element(element, "INHIBITION-MASK")
-        if child is not None:
-            inhibition_mask_value = DiagnosticInhibitionMaskEnum.deserialize(child)
-            obj.inhibition_mask = inhibition_mask_value
-
-        # Parse inhibit_sources (list from container "INHIBIT-SOURCES")
-        obj.inhibit_sources = []
-        container = SerializationHelper.find_child_element(element, "INHIBIT-SOURCES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.inhibit_sources.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FUNCTION-REF":
+                setattr(obj, "function_ref", ARRef.deserialize(child))
+            elif tag == "INHIBITION-MASK":
+                setattr(obj, "inhibition_mask", DiagnosticInhibitionMaskEnum.deserialize(child))
+            elif tag == "INHIBIT-SOURCES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.inhibit_sources.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticFunction)"))
 
         return obj
 

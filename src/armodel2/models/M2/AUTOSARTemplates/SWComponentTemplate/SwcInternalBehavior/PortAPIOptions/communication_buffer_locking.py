@@ -33,7 +33,15 @@ class CommunicationBufferLocking(SwcSupportedFeature):
         """
         return False
 
+    _XML_TAG = "COMMUNICATION-BUFFER-LOCKING"
+
+
     support_buffer_locking: Optional[SupportBufferLockingEnum]
+    _DESERIALIZE_DISPATCH = {
+        "SUPPORT-BUFFER-LOCKING": lambda obj, elem: setattr(obj, "support_buffer_locking", SupportBufferLockingEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CommunicationBufferLocking."""
         super().__init__()
@@ -45,9 +53,8 @@ class CommunicationBufferLocking(SwcSupportedFeature):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CommunicationBufferLocking, self).serialize()
@@ -92,11 +99,12 @@ class CommunicationBufferLocking(SwcSupportedFeature):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommunicationBufferLocking, cls).deserialize(element)
 
-        # Parse support_buffer_locking
-        child = SerializationHelper.find_child_element(element, "SUPPORT-BUFFER-LOCKING")
-        if child is not None:
-            support_buffer_locking_value = SupportBufferLockingEnum.deserialize(child)
-            obj.support_buffer_locking = support_buffer_locking_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SUPPORT-BUFFER-LOCKING":
+                setattr(obj, "support_buffer_locking", SupportBufferLockingEnum.deserialize(child))
 
         return obj
 

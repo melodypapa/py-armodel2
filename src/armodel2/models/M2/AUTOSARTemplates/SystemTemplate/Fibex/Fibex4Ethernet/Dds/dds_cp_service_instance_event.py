@@ -36,9 +36,19 @@ class DdsCpServiceInstanceEvent(ARObject):
         """
         return False
 
+    _XML_TAG = "DDS-CP-SERVICE-INSTANCE-EVENT"
+
+
     dds_event_ref: Optional[ARRef]
     dds_event_qos_ref: Optional[ARRef]
     dds_event_topic_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "DDS-EVENT-REF": lambda obj, elem: setattr(obj, "dds_event_ref", ARRef.deserialize(elem)),
+        "DDS-EVENT-QOS-REF": lambda obj, elem: setattr(obj, "dds_event_qos_ref", ARRef.deserialize(elem)),
+        "DDS-EVENT-TOPIC-REF": lambda obj, elem: setattr(obj, "dds_event_topic_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DdsCpServiceInstanceEvent."""
         super().__init__()
@@ -52,9 +62,8 @@ class DdsCpServiceInstanceEvent(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DdsCpServiceInstanceEvent, self).serialize()
@@ -127,23 +136,16 @@ class DdsCpServiceInstanceEvent(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpServiceInstanceEvent, cls).deserialize(element)
 
-        # Parse dds_event_ref
-        child = SerializationHelper.find_child_element(element, "DDS-EVENT-REF")
-        if child is not None:
-            dds_event_ref_value = ARRef.deserialize(child)
-            obj.dds_event_ref = dds_event_ref_value
-
-        # Parse dds_event_qos_ref
-        child = SerializationHelper.find_child_element(element, "DDS-EVENT-QOS-REF")
-        if child is not None:
-            dds_event_qos_ref_value = ARRef.deserialize(child)
-            obj.dds_event_qos_ref = dds_event_qos_ref_value
-
-        # Parse dds_event_topic_ref
-        child = SerializationHelper.find_child_element(element, "DDS-EVENT-TOPIC-REF")
-        if child is not None:
-            dds_event_topic_ref_value = ARRef.deserialize(child)
-            obj.dds_event_topic_ref = dds_event_topic_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DDS-EVENT-REF":
+                setattr(obj, "dds_event_ref", ARRef.deserialize(child))
+            elif tag == "DDS-EVENT-QOS-REF":
+                setattr(obj, "dds_event_qos_ref", ARRef.deserialize(child))
+            elif tag == "DDS-EVENT-TOPIC-REF":
+                setattr(obj, "dds_event_topic_ref", ARRef.deserialize(child))
 
         return obj
 

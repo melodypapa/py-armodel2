@@ -34,7 +34,15 @@ class ExecutableEntityActivationReason(ImplementationProps):
         """
         return False
 
+    _XML_TAG = "EXECUTABLE-ENTITY-ACTIVATION-REASON"
+
+
     bit_position: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "BIT-POSITION": lambda obj, elem: setattr(obj, "bit_position", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ExecutableEntityActivationReason."""
         super().__init__()
@@ -46,9 +54,8 @@ class ExecutableEntityActivationReason(ImplementationProps):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ExecutableEntityActivationReason, self).serialize()
@@ -93,11 +100,12 @@ class ExecutableEntityActivationReason(ImplementationProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ExecutableEntityActivationReason, cls).deserialize(element)
 
-        # Parse bit_position
-        child = SerializationHelper.find_child_element(element, "BIT-POSITION")
-        if child is not None:
-            bit_position_value = child.text
-            obj.bit_position = bit_position_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BIT-POSITION":
+                setattr(obj, "bit_position", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

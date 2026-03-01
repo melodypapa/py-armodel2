@@ -34,7 +34,15 @@ class E2EProfileCompatibilityProps(ARElement):
         """
         return False
 
+    _XML_TAG = "E2-E-PROFILE-COMPATIBILITY-PROPS"
+
+
     transit_to_invalid: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "TRANSIT-TO-INVALID": lambda obj, elem: setattr(obj, "transit_to_invalid", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize E2EProfileCompatibilityProps."""
         super().__init__()
@@ -46,9 +54,8 @@ class E2EProfileCompatibilityProps(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(E2EProfileCompatibilityProps, self).serialize()
@@ -93,11 +100,12 @@ class E2EProfileCompatibilityProps(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(E2EProfileCompatibilityProps, cls).deserialize(element)
 
-        # Parse transit_to_invalid
-        child = SerializationHelper.find_child_element(element, "TRANSIT-TO-INVALID")
-        if child is not None:
-            transit_to_invalid_value = child.text
-            obj.transit_to_invalid = transit_to_invalid_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TRANSIT-TO-INVALID":
+                setattr(obj, "transit_to_invalid", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

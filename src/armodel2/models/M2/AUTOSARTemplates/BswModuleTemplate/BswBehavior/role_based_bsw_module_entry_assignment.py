@@ -33,8 +33,17 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
         """
         return False
 
+    _XML_TAG = "ROLE-BASED-BSW-MODULE-ENTRY-ASSIGNMENT"
+
+
     assigned_entry_ref: Optional[ARRef]
     role: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "ASSIGNED-ENTRY-REF": lambda obj, elem: setattr(obj, "assigned_entry_ref", ARRef.deserialize(elem)),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RoleBasedBswModuleEntryAssignment."""
         super().__init__()
@@ -47,9 +56,8 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RoleBasedBswModuleEntryAssignment, self).serialize()
@@ -108,17 +116,14 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RoleBasedBswModuleEntryAssignment, cls).deserialize(element)
 
-        # Parse assigned_entry_ref
-        child = SerializationHelper.find_child_element(element, "ASSIGNED-ENTRY-REF")
-        if child is not None:
-            assigned_entry_ref_value = ARRef.deserialize(child)
-            obj.assigned_entry_ref = assigned_entry_ref_value
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ASSIGNED-ENTRY-REF":
+                setattr(obj, "assigned_entry_ref", ARRef.deserialize(child))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

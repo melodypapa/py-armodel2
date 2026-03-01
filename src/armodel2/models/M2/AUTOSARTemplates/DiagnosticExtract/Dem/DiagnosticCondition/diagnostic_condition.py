@@ -36,6 +36,11 @@ class DiagnosticCondition(DiagnosticCommonElement, ABC):
         return True
 
     _init_value: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "INIT-VALUE": lambda obj, elem: setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticCondition."""
         super().__init__()
@@ -58,9 +63,8 @@ class DiagnosticCondition(DiagnosticCommonElement, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticCondition, self).serialize()
@@ -100,11 +104,12 @@ class DiagnosticCondition(DiagnosticCommonElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticCondition, cls).deserialize(element)
 
-        # Parse init_value (polymorphic wrapper "INIT-VALUE")
-        wrapper = SerializationHelper.find_child_element(element, "INIT-VALUE")
-        if wrapper is not None:
-            init_value_value = SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
-            obj.init_value = init_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INIT-VALUE":
+                setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

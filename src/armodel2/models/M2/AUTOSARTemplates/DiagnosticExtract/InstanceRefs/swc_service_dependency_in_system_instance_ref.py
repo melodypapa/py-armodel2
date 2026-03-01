@@ -30,9 +30,19 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "SWC-SERVICE-DEPENDENCY-IN-SYSTEM-INSTANCE-REF"
+
+
     context_root_sw_ref: Optional[ARRef]
     context_sw_prototype_refs: list[Any]
     target_swc_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CONTEXT-ROOT-SW-REF": lambda obj, elem: setattr(obj, "context_root_sw_ref", ARRef.deserialize(elem)),
+        "CONTEXT-SW-PROTOTYPE-REFS": lambda obj, elem: [obj.context_sw_prototype_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "TARGET-SWC-REF": lambda obj, elem: setattr(obj, "target_swc_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SwcServiceDependencyInSystemInstanceRef."""
         super().__init__()
@@ -46,9 +56,8 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SwcServiceDependencyInSystemInstanceRef, self).serialize()
@@ -124,33 +133,18 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcServiceDependencyInSystemInstanceRef, cls).deserialize(element)
 
-        # Parse context_root_sw_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-ROOT-SW-REF")
-        if child is not None:
-            context_root_sw_ref_value = ARRef.deserialize(child)
-            obj.context_root_sw_ref = context_root_sw_ref_value
-
-        # Parse context_sw_prototype_refs (list from container "CONTEXT-SW-PROTOTYPE-REFS")
-        obj.context_sw_prototype_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-SW-PROTOTYPE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.context_sw_prototype_refs.append(child_value)
-
-        # Parse target_swc_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-SWC-REF")
-        if child is not None:
-            target_swc_ref_value = ARRef.deserialize(child)
-            obj.target_swc_ref = target_swc_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONTEXT-ROOT-SW-REF":
+                setattr(obj, "context_root_sw_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-SW-PROTOTYPE-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.context_sw_prototype_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "TARGET-SWC-REF":
+                setattr(obj, "target_swc_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -49,12 +49,25 @@ class PortElementToCommunicationResourceMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "PORT-ELEMENT-TO-COMMUNICATION-RESOURCE-MAPPING"
+
+
     client_server_instance_ref: Optional[ClientServerOperation]
     communication_ref: Optional[ARRef]
     mode_ref: Optional[ARRef]
     parameter_data_in_system_instance_ref: Optional[ARRef]
     trigger_ref: Optional[ARRef]
     variable_data_system_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CLIENT-SERVER-INSTANCE-REF": lambda obj, elem: setattr(obj, "client_server_instance_ref", SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
+        "COMMUNICATION-REF": lambda obj, elem: setattr(obj, "communication_ref", ARRef.deserialize(elem)),
+        "MODE-REF": lambda obj, elem: setattr(obj, "mode_ref", ARRef.deserialize(elem)),
+        "PARAMETER-DATA-IN-SYSTEM-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "parameter_data_in_system_instance_ref", ARRef.deserialize(elem)),
+        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),
+        "VARIABLE-DATA-SYSTEM-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "variable_data_system_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize PortElementToCommunicationResourceMapping."""
         super().__init__()
@@ -71,9 +84,8 @@ class PortElementToCommunicationResourceMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PortElementToCommunicationResourceMapping, self).serialize()
@@ -188,41 +200,22 @@ class PortElementToCommunicationResourceMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortElementToCommunicationResourceMapping, cls).deserialize(element)
 
-        # Parse client_server_instance_ref
-        child = SerializationHelper.find_child_element(element, "CLIENT-SERVER-INSTANCE-REF")
-        if child is not None:
-            client_server_instance_ref_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
-            obj.client_server_instance_ref = client_server_instance_ref_value
-
-        # Parse communication_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-REF")
-        if child is not None:
-            communication_ref_value = ARRef.deserialize(child)
-            obj.communication_ref = communication_ref_value
-
-        # Parse mode_ref
-        child = SerializationHelper.find_child_element(element, "MODE-REF")
-        if child is not None:
-            mode_ref_value = ARRef.deserialize(child)
-            obj.mode_ref = mode_ref_value
-
-        # Parse parameter_data_in_system_instance_ref
-        child = SerializationHelper.find_child_element(element, "PARAMETER-DATA-IN-SYSTEM-INSTANCE-REF-REF")
-        if child is not None:
-            parameter_data_in_system_instance_ref_value = ARRef.deserialize(child)
-            obj.parameter_data_in_system_instance_ref = parameter_data_in_system_instance_ref_value
-
-        # Parse trigger_ref
-        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
-        if child is not None:
-            trigger_ref_value = ARRef.deserialize(child)
-            obj.trigger_ref = trigger_ref_value
-
-        # Parse variable_data_system_instance_ref
-        child = SerializationHelper.find_child_element(element, "VARIABLE-DATA-SYSTEM-INSTANCE-REF-REF")
-        if child is not None:
-            variable_data_system_instance_ref_value = ARRef.deserialize(child)
-            obj.variable_data_system_instance_ref = variable_data_system_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CLIENT-SERVER-INSTANCE-REF":
+                setattr(obj, "client_server_instance_ref", SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
+            elif tag == "COMMUNICATION-REF":
+                setattr(obj, "communication_ref", ARRef.deserialize(child))
+            elif tag == "MODE-REF":
+                setattr(obj, "mode_ref", ARRef.deserialize(child))
+            elif tag == "PARAMETER-DATA-IN-SYSTEM-INSTANCE-REF-REF":
+                setattr(obj, "parameter_data_in_system_instance_ref", ARRef.deserialize(child))
+            elif tag == "TRIGGER-REF":
+                setattr(obj, "trigger_ref", ARRef.deserialize(child))
+            elif tag == "VARIABLE-DATA-SYSTEM-INSTANCE-REF-REF":
+                setattr(obj, "variable_data_system_instance_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -33,7 +33,15 @@ class AggregationTailoring(AttributeTailoring):
         """
         return False
 
+    _XML_TAG = "AGGREGATION-TAILORING"
+
+
     type_tailorings: list[ClassTailoring]
+    _DESERIALIZE_DISPATCH = {
+        "TYPE-TAILORINGS": ("_POLYMORPHIC_LIST", "type_tailorings", ["AbstractClassTailoring", "ConcreteClassTailoring"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize AggregationTailoring."""
         super().__init__()
@@ -45,9 +53,8 @@ class AggregationTailoring(AttributeTailoring):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(AggregationTailoring, self).serialize()
@@ -88,15 +95,18 @@ class AggregationTailoring(AttributeTailoring):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AggregationTailoring, cls).deserialize(element)
 
-        # Parse type_tailorings (list from container "TYPE-TAILORINGS")
-        obj.type_tailorings = []
-        container = SerializationHelper.find_child_element(element, "TYPE-TAILORINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.type_tailorings.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TYPE-TAILORINGS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "ABSTRACT-CLASS-TAILORING":
+                        obj.type_tailorings.append(SerializationHelper.deserialize_by_tag(item_elem, "AbstractClassTailoring"))
+                    elif concrete_tag == "CONCRETE-CLASS-TAILORING":
+                        obj.type_tailorings.append(SerializationHelper.deserialize_by_tag(item_elem, "ConcreteClassTailoring"))
 
         return obj
 

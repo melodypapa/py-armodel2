@@ -38,8 +38,17 @@ class RunnableEntityGroup(Identifiable):
         """
         return False
 
+    _XML_TAG = "RUNNABLE-ENTITY-GROUP"
+
+
     runnable_entities: list[RunnableEntity]
     runnable_entity_group_group_in_composition_instance_ref: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "RUNNABLE-ENTITIES": lambda obj, elem: obj.runnable_entities.append(SerializationHelper.deserialize_by_tag(elem, "RunnableEntity")),
+        "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS": lambda obj, elem: [obj.runnable_entity_group_group_in_composition_instance_ref.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize RunnableEntityGroup."""
         super().__init__()
@@ -52,9 +61,8 @@ class RunnableEntityGroup(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RunnableEntityGroup, self).serialize()
@@ -112,31 +120,18 @@ class RunnableEntityGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RunnableEntityGroup, cls).deserialize(element)
 
-        # Parse runnable_entities (list from container "RUNNABLE-ENTITIES")
-        obj.runnable_entities = []
-        container = SerializationHelper.find_child_element(element, "RUNNABLE-ENTITIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.runnable_entities.append(child_value)
-
-        # Parse runnable_entity_group_group_in_composition_instance_ref (list from container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
-        obj.runnable_entity_group_group_in_composition_instance_ref = []
-        container = SerializationHelper.find_child_element(element, "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.runnable_entity_group_group_in_composition_instance_ref.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RUNNABLE-ENTITIES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.runnable_entities.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntity"))
+            elif tag == "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.runnable_entity_group_group_in_composition_instance_ref.append(ARRef.deserialize(item_elem))
 
         return obj
 

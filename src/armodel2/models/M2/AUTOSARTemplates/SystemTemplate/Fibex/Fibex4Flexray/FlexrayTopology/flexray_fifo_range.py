@@ -29,8 +29,17 @@ class FlexrayFifoRange(ARObject):
         """
         return False
 
+    _XML_TAG = "FLEXRAY-FIFO-RANGE"
+
+
     range_max: Optional[Integer]
     range_min: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "RANGE-MAX": lambda obj, elem: setattr(obj, "range_max", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "RANGE-MIN": lambda obj, elem: setattr(obj, "range_min", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize FlexrayFifoRange."""
         super().__init__()
@@ -43,9 +52,8 @@ class FlexrayFifoRange(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(FlexrayFifoRange, self).serialize()
@@ -104,17 +112,14 @@ class FlexrayFifoRange(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayFifoRange, cls).deserialize(element)
 
-        # Parse range_max
-        child = SerializationHelper.find_child_element(element, "RANGE-MAX")
-        if child is not None:
-            range_max_value = child.text
-            obj.range_max = range_max_value
-
-        # Parse range_min
-        child = SerializationHelper.find_child_element(element, "RANGE-MIN")
-        if child is not None:
-            range_min_value = child.text
-            obj.range_min = range_min_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "RANGE-MAX":
+                setattr(obj, "range_max", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "RANGE-MIN":
+                setattr(obj, "range_min", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

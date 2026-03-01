@@ -35,7 +35,15 @@ class ModeSwitchPoint(AbstractAccessPoint):
         """
         return False
 
+    _XML_TAG = "MODE-SWITCH-POINT"
+
+
     mode_group_swc_instance_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "MODE-GROUP-SWC-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "mode_group_swc_instance_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeSwitchPoint."""
         super().__init__()
@@ -47,9 +55,8 @@ class ModeSwitchPoint(AbstractAccessPoint):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeSwitchPoint, self).serialize()
@@ -94,11 +101,12 @@ class ModeSwitchPoint(AbstractAccessPoint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeSwitchPoint, cls).deserialize(element)
 
-        # Parse mode_group_swc_instance_ref
-        child = SerializationHelper.find_child_element(element, "MODE-GROUP-SWC-INSTANCE-REF-REF")
-        if child is not None:
-            mode_group_swc_instance_ref_value = ARRef.deserialize(child)
-            obj.mode_group_swc_instance_ref = mode_group_swc_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MODE-GROUP-SWC-INSTANCE-REF-REF":
+                setattr(obj, "mode_group_swc_instance_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -32,6 +32,9 @@ class CanCommunicationController(AbstractCanCommunicationController):
         """
         return False
 
+    _XML_TAG = "CAN-COMMUNICATION-CONTROLLER"
+
+
     def __init__(self) -> None:
         """Initialize CanCommunicationController."""
         super().__init__()

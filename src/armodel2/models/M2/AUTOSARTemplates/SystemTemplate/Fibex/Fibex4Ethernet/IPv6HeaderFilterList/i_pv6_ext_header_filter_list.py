@@ -33,7 +33,15 @@ class IPv6ExtHeaderFilterList(Identifiable):
         """
         return False
 
+    _XML_TAG = "I-PV6-EXT-HEADER-FILTER-LIST"
+
+
     allowed_i_pv6_exts: list[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "ALLOWED-I-PV6-EXTS": lambda obj, elem: obj.allowed_i_pv6_exts.append(SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IPv6ExtHeaderFilterList."""
         super().__init__()
@@ -45,9 +53,8 @@ class IPv6ExtHeaderFilterList(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IPv6ExtHeaderFilterList, self).serialize()
@@ -95,15 +102,14 @@ class IPv6ExtHeaderFilterList(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IPv6ExtHeaderFilterList, cls).deserialize(element)
 
-        # Parse allowed_i_pv6_exts (list from container "ALLOWED-I-PV6-EXTS")
-        obj.allowed_i_pv6_exts = []
-        container = SerializationHelper.find_child_element(element, "ALLOWED-I-PV6-EXTS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (PositiveInteger) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.allowed_i_pv6_exts.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ALLOWED-I-PV6-EXTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.allowed_i_pv6_exts.append(SerializationHelper.deserialize_by_tag(item_elem, "PositiveInteger"))
 
         return obj
 

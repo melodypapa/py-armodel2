@@ -43,9 +43,19 @@ class RootSwCompositionPrototype(Identifiable):
         """
         return False
 
+    _XML_TAG = "ROOT-SW-COMPOSITION-PROTOTYPE"
+
+
     calibration_parameter_value_set_refs: list[ARRef]
     flat_map_ref: Optional[ARRef]
     software_composition_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "CALIBRATION-PARAMETER-VALUE-SET-REFS": lambda obj, elem: [obj.calibration_parameter_value_set_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "FLAT-MAP-REF": lambda obj, elem: setattr(obj, "flat_map_ref", ARRef.deserialize(elem)),
+        "SOFTWARE-COMPOSITION-TREF": lambda obj, elem: setattr(obj, "software_composition_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RootSwCompositionPrototype."""
         super().__init__()
@@ -59,9 +69,8 @@ class RootSwCompositionPrototype(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RootSwCompositionPrototype, self).serialize()
@@ -137,33 +146,18 @@ class RootSwCompositionPrototype(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RootSwCompositionPrototype, cls).deserialize(element)
 
-        # Parse calibration_parameter_value_set_refs (list from container "CALIBRATION-PARAMETER-VALUE-SET-REFS")
-        obj.calibration_parameter_value_set_refs = []
-        container = SerializationHelper.find_child_element(element, "CALIBRATION-PARAMETER-VALUE-SET-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.calibration_parameter_value_set_refs.append(child_value)
-
-        # Parse flat_map_ref
-        child = SerializationHelper.find_child_element(element, "FLAT-MAP-REF")
-        if child is not None:
-            flat_map_ref_value = ARRef.deserialize(child)
-            obj.flat_map_ref = flat_map_ref_value
-
-        # Parse software_composition_ref
-        child = SerializationHelper.find_child_element(element, "SOFTWARE-COMPOSITION-TREF")
-        if child is not None:
-            software_composition_ref_value = ARRef.deserialize(child)
-            obj.software_composition_ref = software_composition_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CALIBRATION-PARAMETER-VALUE-SET-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.calibration_parameter_value_set_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "FLAT-MAP-REF":
+                setattr(obj, "flat_map_ref", ARRef.deserialize(child))
+            elif tag == "SOFTWARE-COMPOSITION-TREF":
+                setattr(obj, "software_composition_ref", ARRef.deserialize(child))
 
         return obj
 

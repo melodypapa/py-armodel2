@@ -34,8 +34,17 @@ class BinaryManifestItemPointerValue(BinaryManifestItemValue):
         """
         return False
 
+    _XML_TAG = "BINARY-MANIFEST-ITEM-POINTER-VALUE"
+
+
     address: Optional[Address]
     symbol: Optional[SymbolString]
+    _DESERIALIZE_DISPATCH = {
+        "ADDRESS": lambda obj, elem: setattr(obj, "address", SerializationHelper.deserialize_by_tag(elem, "Address")),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(elem, "SymbolString")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BinaryManifestItemPointerValue."""
         super().__init__()
@@ -48,9 +57,8 @@ class BinaryManifestItemPointerValue(BinaryManifestItemValue):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BinaryManifestItemPointerValue, self).serialize()
@@ -109,17 +117,14 @@ class BinaryManifestItemPointerValue(BinaryManifestItemValue):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BinaryManifestItemPointerValue, cls).deserialize(element)
 
-        # Parse address
-        child = SerializationHelper.find_child_element(element, "ADDRESS")
-        if child is not None:
-            address_value = child.text
-            obj.address = address_value
-
-        # Parse symbol
-        child = SerializationHelper.find_child_element(element, "SYMBOL")
-        if child is not None:
-            symbol_value = SerializationHelper.deserialize_by_tag(child, "SymbolString")
-            obj.symbol = symbol_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ADDRESS":
+                setattr(obj, "address", SerializationHelper.deserialize_by_tag(child, "Address"))
+            elif tag == "SYMBOL":
+                setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "SymbolString"))
 
         return obj
 

@@ -105,6 +105,9 @@ class SystemMapping(Identifiable):
         """
         return False
 
+    _XML_TAG = "SYSTEM-MAPPING"
+
+
     application_partition_to_ecu_partition_mappings: list[ApplicationPartitionToEcuPartitionMapping]
     app_os_task_proxy_to_ecu_task_proxy_mappings: list[AppOsTaskProxyToEcuTaskProxyMapping]
     com_management_mappings: list[ComManagementMapping]
@@ -129,6 +132,34 @@ class SystemMapping(Identifiable):
     sw_mappings: list[SwcToEcuMapping]
     system_signal_group_to_com_resource_mappings: list[SystemSignalGroupToCommunicationResourceMapping]
     system_signal_to_com_resource_mappings: list[SystemSignalToCommunicationResourceMapping]
+    _DESERIALIZE_DISPATCH = {
+        "APPLICATION-PARTITION-TO-ECU-PARTITION-MAPPINGS": lambda obj, elem: obj.application_partition_to_ecu_partition_mappings.append(SerializationHelper.deserialize_by_tag(elem, "ApplicationPartitionToEcuPartitionMapping")),
+        "APP-OS-TASK-PROXY-TO-ECU-TASK-PROXY-MAPPINGS": lambda obj, elem: obj.app_os_task_proxy_to_ecu_task_proxy_mappings.append(SerializationHelper.deserialize_by_tag(elem, "AppOsTaskProxyToEcuTaskProxyMapping")),
+        "COM-MANAGEMENT-MAPPINGS": lambda obj, elem: obj.com_management_mappings.append(SerializationHelper.deserialize_by_tag(elem, "ComManagementMapping")),
+        "CRYPTO-SERVICE-MAPPINGS": ("_POLYMORPHIC_LIST", "crypto_service_mappings", ["SecOcCryptoServiceMapping", "TlsCryptoServiceMapping"]),
+        "DATA-MAPPINGS": ("_POLYMORPHIC_LIST", "data_mappings", ["ClientServerToSignalMapping", "SenderReceiverCompositeElementToSignalMapping", "SenderReceiverToSignalGroupMapping", "SenderReceiverToSignalMapping", "TriggerToSignalMapping"]),
+        "DDS-I-SIGNAL-TO-TOPIC-MAPPINGS": lambda obj, elem: obj.dds_i_signal_to_topic_mappings.append(SerializationHelper.deserialize_by_tag(elem, "DdsCpISignalToDdsTopicMapping")),
+        "ECU-RESOURCES-MAPPINGS": lambda obj, elem: obj.ecu_resources_mappings.append(SerializationHelper.deserialize_by_tag(elem, "ECUMapping")),
+        "J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPINGS": lambda obj, elem: obj.j1939_controller_application_to_j1939_nm_node_mappings.append(SerializationHelper.deserialize_by_tag(elem, "J1939ControllerApplicationToJ1939NmNodeMapping")),
+        "MAPPING-CONSTRAINTS": ("_POLYMORPHIC_LIST", "mapping_constraints", ["ComponentClustering", "ComponentSeparation"]),
+        "PNC-MAPPINGS": lambda obj, elem: obj.pnc_mappings.append(SerializationHelper.deserialize_by_tag(elem, "PncMapping")),
+        "PORT-ELEMENT-TO-COM-RESOURCE-MAPPINGS": lambda obj, elem: obj.port_element_to_com_resource_mappings.append(SerializationHelper.deserialize_by_tag(elem, "PortElementToCommunicationResourceMapping")),
+        "RESOURCE-ESTIMATIONS": lambda obj, elem: obj.resource_estimations.append(SerializationHelper.deserialize_by_tag(elem, "EcuResourceEstimation")),
+        "RESOURCE-TO-APPLICATION-PARTITION-MAPPINGS": lambda obj, elem: obj.resource_to_application_partition_mappings.append(SerializationHelper.deserialize_by_tag(elem, "CpSoftwareClusterResourceToApplicationPartitionMapping")),
+        "RTE-EVENT-SEPARATIONS": lambda obj, elem: obj.rte_event_separations.append(SerializationHelper.deserialize_by_tag(elem, "RteEventInSystemSeparation")),
+        "RTE-EVENT-TO-OS-TASK-PROXY-MAPPINGS": lambda obj, elem: obj.rte_event_to_os_task_proxy_mappings.append(SerializationHelper.deserialize_by_tag(elem, "RteEventInSystemToOsTaskProxyMapping")),
+        "SIGNAL-PATH-CONSTRAINTS": ("_POLYMORPHIC_LIST", "signal_path_constraints", ["CommonSignalPath", "ForbiddenSignalPath", "PermissibleSignalPath", "SeparateSignalPath"]),
+        "SOFTWARE-CLUSTER-TO-APPLICATION-PARTITION-MAPPINGS": lambda obj, elem: obj.software_cluster_to_application_partition_mappings.append(SerializationHelper.deserialize_by_tag(elem, "CpSoftwareClusterToApplicationPartitionMapping")),
+        "SW-CLUSTER-TO-RESOURCE-MAPPINGS": lambda obj, elem: obj.sw_cluster_to_resource_mappings.append(SerializationHelper.deserialize_by_tag(elem, "CpSoftwareClusterToResourceMapping")),
+        "SW-CLUSTER-MAPPINGS": lambda obj, elem: obj.sw_cluster_mappings.append(SerializationHelper.deserialize_by_tag(elem, "CpSoftwareClusterToEcuInstanceMapping")),
+        "SWC-TO-APPLICATION-PARTITION-MAPPINGS": lambda obj, elem: obj.swc_to_application_partition_mappings.append(SerializationHelper.deserialize_by_tag(elem, "SwcToApplicationPartitionMapping")),
+        "SW-IMPL-MAPPINGS": lambda obj, elem: obj.sw_impl_mappings.append(SerializationHelper.deserialize_by_tag(elem, "SwcToImplMapping")),
+        "SW-MAPPINGS": lambda obj, elem: obj.sw_mappings.append(SerializationHelper.deserialize_by_tag(elem, "SwcToEcuMapping")),
+        "SYSTEM-SIGNAL-GROUP-TO-COM-RESOURCE-MAPPINGS": lambda obj, elem: obj.system_signal_group_to_com_resource_mappings.append(SerializationHelper.deserialize_by_tag(elem, "SystemSignalGroupToCommunicationResourceMapping")),
+        "SYSTEM-SIGNAL-TO-COM-RESOURCE-MAPPINGS": lambda obj, elem: obj.system_signal_to_com_resource_mappings.append(SerializationHelper.deserialize_by_tag(elem, "SystemSignalToCommunicationResourceMapping")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SystemMapping."""
         super().__init__()
@@ -163,9 +194,8 @@ class SystemMapping(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SystemMapping, self).serialize()
@@ -436,245 +466,132 @@ class SystemMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SystemMapping, cls).deserialize(element)
 
-        # Parse application_partition_to_ecu_partition_mappings (list from container "APPLICATION-PARTITION-TO-ECU-PARTITION-MAPPINGS")
-        obj.application_partition_to_ecu_partition_mappings = []
-        container = SerializationHelper.find_child_element(element, "APPLICATION-PARTITION-TO-ECU-PARTITION-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.application_partition_to_ecu_partition_mappings.append(child_value)
-
-        # Parse app_os_task_proxy_to_ecu_task_proxy_mappings (list from container "APP-OS-TASK-PROXY-TO-ECU-TASK-PROXY-MAPPINGS")
-        obj.app_os_task_proxy_to_ecu_task_proxy_mappings = []
-        container = SerializationHelper.find_child_element(element, "APP-OS-TASK-PROXY-TO-ECU-TASK-PROXY-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.app_os_task_proxy_to_ecu_task_proxy_mappings.append(child_value)
-
-        # Parse com_management_mappings (list from container "COM-MANAGEMENT-MAPPINGS")
-        obj.com_management_mappings = []
-        container = SerializationHelper.find_child_element(element, "COM-MANAGEMENT-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.com_management_mappings.append(child_value)
-
-        # Parse crypto_service_mappings (list from container "CRYPTO-SERVICE-MAPPINGS")
-        obj.crypto_service_mappings = []
-        container = SerializationHelper.find_child_element(element, "CRYPTO-SERVICE-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.crypto_service_mappings.append(child_value)
-
-        # Parse data_mappings (list from container "DATA-MAPPINGS")
-        obj.data_mappings = []
-        container = SerializationHelper.find_child_element(element, "DATA-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_mappings.append(child_value)
-
-        # Parse dds_i_signal_to_topic_mappings (list from container "DDS-I-SIGNAL-TO-TOPIC-MAPPINGS")
-        obj.dds_i_signal_to_topic_mappings = []
-        container = SerializationHelper.find_child_element(element, "DDS-I-SIGNAL-TO-TOPIC-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dds_i_signal_to_topic_mappings.append(child_value)
-
-        # Parse ecu_resources_mappings (list from container "ECU-RESOURCES-MAPPINGS")
-        obj.ecu_resources_mappings = []
-        container = SerializationHelper.find_child_element(element, "ECU-RESOURCES-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ecu_resources_mappings.append(child_value)
-
-        # Parse j1939_controller_application_to_j1939_nm_node_mappings (list from container "J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPINGS")
-        obj.j1939_controller_application_to_j1939_nm_node_mappings = []
-        container = SerializationHelper.find_child_element(element, "J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.j1939_controller_application_to_j1939_nm_node_mappings.append(child_value)
-
-        # Parse mapping_constraints (list from container "MAPPING-CONSTRAINTS")
-        obj.mapping_constraints = []
-        container = SerializationHelper.find_child_element(element, "MAPPING-CONSTRAINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mapping_constraints.append(child_value)
-
-        # Parse pnc_mappings (list from container "PNC-MAPPINGS")
-        obj.pnc_mappings = []
-        container = SerializationHelper.find_child_element(element, "PNC-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pnc_mappings.append(child_value)
-
-        # Parse port_element_to_com_resource_mappings (list from container "PORT-ELEMENT-TO-COM-RESOURCE-MAPPINGS")
-        obj.port_element_to_com_resource_mappings = []
-        container = SerializationHelper.find_child_element(element, "PORT-ELEMENT-TO-COM-RESOURCE-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.port_element_to_com_resource_mappings.append(child_value)
-
-        # Parse resource_estimations (list from container "RESOURCE-ESTIMATIONS")
-        obj.resource_estimations = []
-        container = SerializationHelper.find_child_element(element, "RESOURCE-ESTIMATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.resource_estimations.append(child_value)
-
-        # Parse resource_to_application_partition_mappings (list from container "RESOURCE-TO-APPLICATION-PARTITION-MAPPINGS")
-        obj.resource_to_application_partition_mappings = []
-        container = SerializationHelper.find_child_element(element, "RESOURCE-TO-APPLICATION-PARTITION-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.resource_to_application_partition_mappings.append(child_value)
-
-        # Parse rte_event_separations (list from container "RTE-EVENT-SEPARATIONS")
-        obj.rte_event_separations = []
-        container = SerializationHelper.find_child_element(element, "RTE-EVENT-SEPARATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rte_event_separations.append(child_value)
-
-        # Parse rte_event_to_os_task_proxy_mappings (list from container "RTE-EVENT-TO-OS-TASK-PROXY-MAPPINGS")
-        obj.rte_event_to_os_task_proxy_mappings = []
-        container = SerializationHelper.find_child_element(element, "RTE-EVENT-TO-OS-TASK-PROXY-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rte_event_to_os_task_proxy_mappings.append(child_value)
-
-        # Parse signal_path_constraints (list from container "SIGNAL-PATH-CONSTRAINTS")
-        obj.signal_path_constraints = []
-        container = SerializationHelper.find_child_element(element, "SIGNAL-PATH-CONSTRAINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.signal_path_constraints.append(child_value)
-
-        # Parse software_cluster_to_application_partition_mappings (list from container "SOFTWARE-CLUSTER-TO-APPLICATION-PARTITION-MAPPINGS")
-        obj.software_cluster_to_application_partition_mappings = []
-        container = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTER-TO-APPLICATION-PARTITION-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.software_cluster_to_application_partition_mappings.append(child_value)
-
-        # Parse sw_cluster_to_resource_mappings (list from container "SW-CLUSTER-TO-RESOURCE-MAPPINGS")
-        obj.sw_cluster_to_resource_mappings = []
-        container = SerializationHelper.find_child_element(element, "SW-CLUSTER-TO-RESOURCE-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_cluster_to_resource_mappings.append(child_value)
-
-        # Parse sw_cluster_mappings (list from container "SW-CLUSTER-MAPPINGS")
-        obj.sw_cluster_mappings = []
-        container = SerializationHelper.find_child_element(element, "SW-CLUSTER-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_cluster_mappings.append(child_value)
-
-        # Parse swc_to_application_partition_mappings (list from container "SWC-TO-APPLICATION-PARTITION-MAPPINGS")
-        obj.swc_to_application_partition_mappings = []
-        container = SerializationHelper.find_child_element(element, "SWC-TO-APPLICATION-PARTITION-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.swc_to_application_partition_mappings.append(child_value)
-
-        # Parse sw_impl_mappings (list from container "SW-IMPL-MAPPINGS")
-        obj.sw_impl_mappings = []
-        container = SerializationHelper.find_child_element(element, "SW-IMPL-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_impl_mappings.append(child_value)
-
-        # Parse sw_mappings (list from container "SW-MAPPINGS")
-        obj.sw_mappings = []
-        container = SerializationHelper.find_child_element(element, "SW-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_mappings.append(child_value)
-
-        # Parse system_signal_group_to_com_resource_mappings (list from container "SYSTEM-SIGNAL-GROUP-TO-COM-RESOURCE-MAPPINGS")
-        obj.system_signal_group_to_com_resource_mappings = []
-        container = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-GROUP-TO-COM-RESOURCE-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.system_signal_group_to_com_resource_mappings.append(child_value)
-
-        # Parse system_signal_to_com_resource_mappings (list from container "SYSTEM-SIGNAL-TO-COM-RESOURCE-MAPPINGS")
-        obj.system_signal_to_com_resource_mappings = []
-        container = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-TO-COM-RESOURCE-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.system_signal_to_com_resource_mappings.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "APPLICATION-PARTITION-TO-ECU-PARTITION-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.application_partition_to_ecu_partition_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationPartitionToEcuPartitionMapping"))
+            elif tag == "APP-OS-TASK-PROXY-TO-ECU-TASK-PROXY-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.app_os_task_proxy_to_ecu_task_proxy_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "AppOsTaskProxyToEcuTaskProxyMapping"))
+            elif tag == "COM-MANAGEMENT-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.com_management_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ComManagementMapping"))
+            elif tag == "CRYPTO-SERVICE-MAPPINGS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "SEC-OC-CRYPTO-SERVICE-MAPPING":
+                        obj.crypto_service_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SecOcCryptoServiceMapping"))
+                    elif concrete_tag == "TLS-CRYPTO-SERVICE-MAPPING":
+                        obj.crypto_service_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "TlsCryptoServiceMapping"))
+            elif tag == "DATA-MAPPINGS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "CLIENT-SERVER-TO-SIGNAL-MAPPING":
+                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientServerToSignalMapping"))
+                    elif concrete_tag == "SENDER-RECEIVER-COMPOSITE-ELEMENT-TO-SIGNAL-MAPPING":
+                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderReceiverCompositeElementToSignalMapping"))
+                    elif concrete_tag == "SENDER-RECEIVER-TO-SIGNAL-GROUP-MAPPING":
+                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderReceiverToSignalGroupMapping"))
+                    elif concrete_tag == "SENDER-RECEIVER-TO-SIGNAL-MAPPING":
+                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderReceiverToSignalMapping"))
+                    elif concrete_tag == "TRIGGER-TO-SIGNAL-MAPPING":
+                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "TriggerToSignalMapping"))
+            elif tag == "DDS-I-SIGNAL-TO-TOPIC-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.dds_i_signal_to_topic_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "DdsCpISignalToDdsTopicMapping"))
+            elif tag == "ECU-RESOURCES-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.ecu_resources_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ECUMapping"))
+            elif tag == "J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.j1939_controller_application_to_j1939_nm_node_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "J1939ControllerApplicationToJ1939NmNodeMapping"))
+            elif tag == "MAPPING-CONSTRAINTS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "COMPONENT-CLUSTERING":
+                        obj.mapping_constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "ComponentClustering"))
+                    elif concrete_tag == "COMPONENT-SEPARATION":
+                        obj.mapping_constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "ComponentSeparation"))
+            elif tag == "PNC-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.pnc_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "PncMapping"))
+            elif tag == "PORT-ELEMENT-TO-COM-RESOURCE-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.port_element_to_com_resource_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "PortElementToCommunicationResourceMapping"))
+            elif tag == "RESOURCE-ESTIMATIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.resource_estimations.append(SerializationHelper.deserialize_by_tag(item_elem, "EcuResourceEstimation"))
+            elif tag == "RESOURCE-TO-APPLICATION-PARTITION-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.resource_to_application_partition_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareClusterResourceToApplicationPartitionMapping"))
+            elif tag == "RTE-EVENT-SEPARATIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.rte_event_separations.append(SerializationHelper.deserialize_by_tag(item_elem, "RteEventInSystemSeparation"))
+            elif tag == "RTE-EVENT-TO-OS-TASK-PROXY-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.rte_event_to_os_task_proxy_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "RteEventInSystemToOsTaskProxyMapping"))
+            elif tag == "SIGNAL-PATH-CONSTRAINTS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "COMMON-SIGNAL-PATH":
+                        obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "CommonSignalPath"))
+                    elif concrete_tag == "FORBIDDEN-SIGNAL-PATH":
+                        obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "ForbiddenSignalPath"))
+                    elif concrete_tag == "PERMISSIBLE-SIGNAL-PATH":
+                        obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "PermissibleSignalPath"))
+                    elif concrete_tag == "SEPARATE-SIGNAL-PATH":
+                        obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "SeparateSignalPath"))
+            elif tag == "SOFTWARE-CLUSTER-TO-APPLICATION-PARTITION-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.software_cluster_to_application_partition_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareClusterToApplicationPartitionMapping"))
+            elif tag == "SW-CLUSTER-TO-RESOURCE-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sw_cluster_to_resource_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareClusterToResourceMapping"))
+            elif tag == "SW-CLUSTER-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sw_cluster_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareClusterToEcuInstanceMapping"))
+            elif tag == "SWC-TO-APPLICATION-PARTITION-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.swc_to_application_partition_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToApplicationPartitionMapping"))
+            elif tag == "SW-IMPL-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sw_impl_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToImplMapping"))
+            elif tag == "SW-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.sw_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToEcuMapping"))
+            elif tag == "SYSTEM-SIGNAL-GROUP-TO-COM-RESOURCE-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.system_signal_group_to_com_resource_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SystemSignalGroupToCommunicationResourceMapping"))
+            elif tag == "SYSTEM-SIGNAL-TO-COM-RESOURCE-MAPPINGS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.system_signal_to_com_resource_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SystemSignalToCommunicationResourceMapping"))
 
         return obj
 

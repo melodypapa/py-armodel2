@@ -37,8 +37,17 @@ class CouplingPortShaper(CouplingPortStructuralElement):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT-SHAPER"
+
+
     idle_slope: Optional[PositiveInteger]
     predecessor_fifo_ref: ARRef
+    _DESERIALIZE_DISPATCH = {
+        "IDLE-SLOPE": lambda obj, elem: setattr(obj, "idle_slope", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PREDECESSOR-FIFO-REF": lambda obj, elem: setattr(obj, "predecessor_fifo_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPortShaper."""
         super().__init__()
@@ -51,9 +60,8 @@ class CouplingPortShaper(CouplingPortStructuralElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPortShaper, self).serialize()
@@ -112,17 +120,14 @@ class CouplingPortShaper(CouplingPortStructuralElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CouplingPortShaper, cls).deserialize(element)
 
-        # Parse idle_slope
-        child = SerializationHelper.find_child_element(element, "IDLE-SLOPE")
-        if child is not None:
-            idle_slope_value = child.text
-            obj.idle_slope = idle_slope_value
-
-        # Parse predecessor_fifo_ref
-        child = SerializationHelper.find_child_element(element, "PREDECESSOR-FIFO-REF")
-        if child is not None:
-            predecessor_fifo_ref_value = ARRef.deserialize(child)
-            obj.predecessor_fifo_ref = predecessor_fifo_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "IDLE-SLOPE":
+                setattr(obj, "idle_slope", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PREDECESSOR-FIFO-REF":
+                setattr(obj, "predecessor_fifo_ref", ARRef.deserialize(child))
 
         return obj
 

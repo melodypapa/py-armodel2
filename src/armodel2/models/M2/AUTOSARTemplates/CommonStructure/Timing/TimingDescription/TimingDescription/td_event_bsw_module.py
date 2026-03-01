@@ -34,8 +34,17 @@ class TDEventBswModule(TDEventBsw):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-BSW-MODULE"
+
+
     bsw_module_entry_entry_ref: Optional[ARRef]
     td_event_bsw: Optional[TDEventBswModule]
+    _DESERIALIZE_DISPATCH = {
+        "BSW-MODULE-ENTRY-ENTRY-REF": lambda obj, elem: setattr(obj, "bsw_module_entry_entry_ref", ARRef.deserialize(elem)),
+        "TD-EVENT-BSW": lambda obj, elem: setattr(obj, "td_event_bsw", SerializationHelper.deserialize_by_tag(elem, "TDEventBswModule")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventBswModule."""
         super().__init__()
@@ -48,9 +57,8 @@ class TDEventBswModule(TDEventBsw):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventBswModule, self).serialize()
@@ -109,17 +117,14 @@ class TDEventBswModule(TDEventBsw):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventBswModule, cls).deserialize(element)
 
-        # Parse bsw_module_entry_entry_ref
-        child = SerializationHelper.find_child_element(element, "BSW-MODULE-ENTRY-ENTRY-REF")
-        if child is not None:
-            bsw_module_entry_entry_ref_value = ARRef.deserialize(child)
-            obj.bsw_module_entry_entry_ref = bsw_module_entry_entry_ref_value
-
-        # Parse td_event_bsw
-        child = SerializationHelper.find_child_element(element, "TD-EVENT-BSW")
-        if child is not None:
-            td_event_bsw_value = SerializationHelper.deserialize_by_tag(child, "TDEventBswModule")
-            obj.td_event_bsw = td_event_bsw_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BSW-MODULE-ENTRY-ENTRY-REF":
+                setattr(obj, "bsw_module_entry_entry_ref", ARRef.deserialize(child))
+            elif tag == "TD-EVENT-BSW":
+                setattr(obj, "td_event_bsw", SerializationHelper.deserialize_by_tag(child, "TDEventBswModule"))
 
         return obj
 

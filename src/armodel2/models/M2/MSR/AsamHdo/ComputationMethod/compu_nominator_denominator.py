@@ -30,7 +30,15 @@ class CompuNominatorDenominator(ARObject):
         """
         return False
 
+    _XML_TAG = "COMPU-NOMINATOR-DENOMINATOR"
+
+
     _vs: list[Numerical]
+    _DESERIALIZE_DISPATCH = {
+        "V": lambda obj, elem: obj._vs.append(SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CompuNominatorDenominator."""
         super().__init__()
@@ -53,9 +61,8 @@ class CompuNominatorDenominator(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CompuNominatorDenominator, self).serialize()
@@ -76,14 +83,15 @@ class CompuNominatorDenominator(ARObject):
             for item in self.vs:
                 serialized = SerializationHelper.serialize_item(item, "Numerical")
                 if serialized is not None:
-                    child_elem = ET.Element("V")
+                    # Wrap with correct tag from @xml_element_name decorator
+                    wrapped = ET.Element("V")
                     if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
+                        wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
-                        child_elem.text = serialized.text
+                        wrapped.text = serialized.text
                     for child in serialized:
-                        child_elem.append(child)
-                    elem.append(child_elem)
+                        wrapped.append(child)
+                    elem.append(wrapped)
         return elem
 
     @classmethod
@@ -99,14 +107,12 @@ class CompuNominatorDenominator(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuNominatorDenominator, cls).deserialize(element)
 
-        # Parse vs (list of direct "V" children, no container)
-        obj.vs = []
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
         for child in element:
-            child_element_tag = SerializationHelper.strip_namespace(child.tag)
-            if child_element_tag == "V":                # Extract primitive value (Numerical) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.vs.append(child_value)
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "V":
+                obj._vs.append(SerializationHelper.deserialize_by_tag(child, "Numerical"))
 
         return obj
 

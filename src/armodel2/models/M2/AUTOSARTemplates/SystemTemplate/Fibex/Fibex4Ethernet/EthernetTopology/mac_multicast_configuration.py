@@ -34,7 +34,15 @@ class MacMulticastConfiguration(NetworkEndpointAddress):
         """
         return False
 
+    _XML_TAG = "MAC-MULTICAST-CONFIGURATION"
+
+
     mac_multicast_group_group_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "MAC-MULTICAST-GROUP-GROUP-REF": lambda obj, elem: setattr(obj, "mac_multicast_group_group_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MacMulticastConfiguration."""
         super().__init__()
@@ -46,9 +54,8 @@ class MacMulticastConfiguration(NetworkEndpointAddress):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MacMulticastConfiguration, self).serialize()
@@ -93,11 +100,12 @@ class MacMulticastConfiguration(NetworkEndpointAddress):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacMulticastConfiguration, cls).deserialize(element)
 
-        # Parse mac_multicast_group_group_ref
-        child = SerializationHelper.find_child_element(element, "MAC-MULTICAST-GROUP-GROUP-REF")
-        if child is not None:
-            mac_multicast_group_group_ref_value = ARRef.deserialize(child)
-            obj.mac_multicast_group_group_ref = mac_multicast_group_group_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MAC-MULTICAST-GROUP-GROUP-REF":
+                setattr(obj, "mac_multicast_group_group_ref", ARRef.deserialize(child))
 
         return obj
 

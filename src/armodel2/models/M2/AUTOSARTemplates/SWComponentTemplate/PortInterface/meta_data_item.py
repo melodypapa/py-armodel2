@@ -33,8 +33,17 @@ class MetaDataItem(ARObject):
         """
         return False
 
+    _XML_TAG = "META-DATA-ITEM"
+
+
     length: Optional[PositiveInteger]
     meta_data_item: Optional[TextValueSpecification]
+    _DESERIALIZE_DISPATCH = {
+        "LENGTH": lambda obj, elem: setattr(obj, "length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "META-DATA-ITEM": lambda obj, elem: setattr(obj, "meta_data_item", SerializationHelper.deserialize_by_tag(elem, "TextValueSpecification")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MetaDataItem."""
         super().__init__()
@@ -47,9 +56,8 @@ class MetaDataItem(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MetaDataItem, self).serialize()
@@ -108,17 +116,14 @@ class MetaDataItem(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MetaDataItem, cls).deserialize(element)
 
-        # Parse length
-        child = SerializationHelper.find_child_element(element, "LENGTH")
-        if child is not None:
-            length_value = child.text
-            obj.length = length_value
-
-        # Parse meta_data_item
-        child = SerializationHelper.find_child_element(element, "META-DATA-ITEM")
-        if child is not None:
-            meta_data_item_value = SerializationHelper.deserialize_by_tag(child, "TextValueSpecification")
-            obj.meta_data_item = meta_data_item_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LENGTH":
+                setattr(obj, "length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "META-DATA-ITEM":
+                setattr(obj, "meta_data_item", SerializationHelper.deserialize_by_tag(child, "TextValueSpecification"))
 
         return obj
 

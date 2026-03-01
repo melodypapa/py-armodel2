@@ -39,9 +39,19 @@ class RoleBasedMcDataAssignment(ARObject):
         """
         return False
 
+    _XML_TAG = "ROLE-BASED-MC-DATA-ASSIGNMENT"
+
+
     execution_refs: list[ARRef]
     mc_data_instance_refs: list[ARRef]
     role: Optional[Identifier]
+    _DESERIALIZE_DISPATCH = {
+        "EXECUTION-REFS": lambda obj, elem: [obj.execution_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "MC-DATA-INSTANCE-REFS": lambda obj, elem: [obj.mc_data_instance_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize RoleBasedMcDataAssignment."""
         super().__init__()
@@ -55,9 +65,8 @@ class RoleBasedMcDataAssignment(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(RoleBasedMcDataAssignment, self).serialize()
@@ -136,43 +145,20 @@ class RoleBasedMcDataAssignment(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RoleBasedMcDataAssignment, cls).deserialize(element)
 
-        # Parse execution_refs (list from container "EXECUTION-REFS")
-        obj.execution_refs = []
-        container = SerializationHelper.find_child_element(element, "EXECUTION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.execution_refs.append(child_value)
-
-        # Parse mc_data_instance_refs (list from container "MC-DATA-INSTANCE-REFS")
-        obj.mc_data_instance_refs = []
-        container = SerializationHelper.find_child_element(element, "MC-DATA-INSTANCE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mc_data_instance_refs.append(child_value)
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EXECUTION-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.execution_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "MC-DATA-INSTANCE-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.mc_data_instance_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

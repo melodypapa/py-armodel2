@@ -39,10 +39,21 @@ class SecurityEventFilterChain(IdsCommonElement):
         """
         return False
 
+    _XML_TAG = "SECURITY-EVENT-FILTER-CHAIN"
+
+
     aggregation: Optional[Any]
     one_every_n: Optional[SecurityEventOneEveryNFilter]
     state: Optional[SecurityEventStateFilter]
     threshold: Optional[SecurityEventThresholdFilter]
+    _DESERIALIZE_DISPATCH = {
+        "AGGREGATION": lambda obj, elem: setattr(obj, "aggregation", SerializationHelper.deserialize_by_tag(elem, "any (SecurityEvent)")),
+        "ONE-EVERY-N": lambda obj, elem: setattr(obj, "one_every_n", SerializationHelper.deserialize_by_tag(elem, "SecurityEventOneEveryNFilter")),
+        "STATE": lambda obj, elem: setattr(obj, "state", SerializationHelper.deserialize_by_tag(elem, "SecurityEventStateFilter")),
+        "THRESHOLD": lambda obj, elem: setattr(obj, "threshold", SerializationHelper.deserialize_by_tag(elem, "SecurityEventThresholdFilter")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecurityEventFilterChain."""
         super().__init__()
@@ -57,9 +68,8 @@ class SecurityEventFilterChain(IdsCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecurityEventFilterChain, self).serialize()
@@ -146,29 +156,18 @@ class SecurityEventFilterChain(IdsCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventFilterChain, cls).deserialize(element)
 
-        # Parse aggregation
-        child = SerializationHelper.find_child_element(element, "AGGREGATION")
-        if child is not None:
-            aggregation_value = child.text
-            obj.aggregation = aggregation_value
-
-        # Parse one_every_n
-        child = SerializationHelper.find_child_element(element, "ONE-EVERY-N")
-        if child is not None:
-            one_every_n_value = SerializationHelper.deserialize_by_tag(child, "SecurityEventOneEveryNFilter")
-            obj.one_every_n = one_every_n_value
-
-        # Parse state
-        child = SerializationHelper.find_child_element(element, "STATE")
-        if child is not None:
-            state_value = SerializationHelper.deserialize_by_tag(child, "SecurityEventStateFilter")
-            obj.state = state_value
-
-        # Parse threshold
-        child = SerializationHelper.find_child_element(element, "THRESHOLD")
-        if child is not None:
-            threshold_value = SerializationHelper.deserialize_by_tag(child, "SecurityEventThresholdFilter")
-            obj.threshold = threshold_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AGGREGATION":
+                setattr(obj, "aggregation", SerializationHelper.deserialize_by_tag(child, "any (SecurityEvent)"))
+            elif tag == "ONE-EVERY-N":
+                setattr(obj, "one_every_n", SerializationHelper.deserialize_by_tag(child, "SecurityEventOneEveryNFilter"))
+            elif tag == "STATE":
+                setattr(obj, "state", SerializationHelper.deserialize_by_tag(child, "SecurityEventStateFilter"))
+            elif tag == "THRESHOLD":
+                setattr(obj, "threshold", SerializationHelper.deserialize_by_tag(child, "SecurityEventThresholdFilter"))
 
         return obj
 

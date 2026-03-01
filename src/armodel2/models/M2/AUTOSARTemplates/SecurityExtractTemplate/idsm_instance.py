@@ -50,6 +50,9 @@ class IdsmInstance(IdsCommonElement):
         """
         return False
 
+    _XML_TAG = "IDSM-INSTANCE"
+
+
     block_states: list[BlockState]
     ecu_instance_ref: Optional[ARRef]
     idsm_instance_id: Optional[PositiveInteger]
@@ -58,6 +61,18 @@ class IdsmInstance(IdsCommonElement):
     signature: Optional[Any]
     timestamp: Optional[String]
     traffic_limitation_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BLOCK-STATES": lambda obj, elem: obj.block_states.append(SerializationHelper.deserialize_by_tag(elem, "BlockState")),
+        "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
+        "IDSM-INSTANCE-ID": lambda obj, elem: setattr(obj, "idsm_instance_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IDSM-MODULE-REF": lambda obj, elem: setattr(obj, "idsm_module_ref", ARRef.deserialize(elem)),
+        "RATE-LIMITATION-REF": lambda obj, elem: setattr(obj, "rate_limitation_ref", ARRef.deserialize(elem)),
+        "SIGNATURE": lambda obj, elem: setattr(obj, "signature", SerializationHelper.deserialize_by_tag(elem, "any (IdsmSignatureSupport)")),
+        "TIMESTAMP": lambda obj, elem: setattr(obj, "timestamp", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "TRAFFIC-LIMITATION-REF": lambda obj, elem: setattr(obj, "traffic_limitation_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IdsmInstance."""
         super().__init__()
@@ -76,9 +91,8 @@ class IdsmInstance(IdsCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IdsmInstance, self).serialize()
@@ -217,57 +231,28 @@ class IdsmInstance(IdsCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IdsmInstance, cls).deserialize(element)
 
-        # Parse block_states (list from container "BLOCK-STATES")
-        obj.block_states = []
-        container = SerializationHelper.find_child_element(element, "BLOCK-STATES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.block_states.append(child_value)
-
-        # Parse ecu_instance_ref
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
-        if child is not None:
-            ecu_instance_ref_value = ARRef.deserialize(child)
-            obj.ecu_instance_ref = ecu_instance_ref_value
-
-        # Parse idsm_instance_id
-        child = SerializationHelper.find_child_element(element, "IDSM-INSTANCE-ID")
-        if child is not None:
-            idsm_instance_id_value = child.text
-            obj.idsm_instance_id = idsm_instance_id_value
-
-        # Parse idsm_module_ref
-        child = SerializationHelper.find_child_element(element, "IDSM-MODULE-REF")
-        if child is not None:
-            idsm_module_ref_value = ARRef.deserialize(child)
-            obj.idsm_module_ref = idsm_module_ref_value
-
-        # Parse rate_limitation_ref
-        child = SerializationHelper.find_child_element(element, "RATE-LIMITATION-REF")
-        if child is not None:
-            rate_limitation_ref_value = ARRef.deserialize(child)
-            obj.rate_limitation_ref = rate_limitation_ref_value
-
-        # Parse signature
-        child = SerializationHelper.find_child_element(element, "SIGNATURE")
-        if child is not None:
-            signature_value = child.text
-            obj.signature = signature_value
-
-        # Parse timestamp
-        child = SerializationHelper.find_child_element(element, "TIMESTAMP")
-        if child is not None:
-            timestamp_value = child.text
-            obj.timestamp = timestamp_value
-
-        # Parse traffic_limitation_ref
-        child = SerializationHelper.find_child_element(element, "TRAFFIC-LIMITATION-REF")
-        if child is not None:
-            traffic_limitation_ref_value = ARRef.deserialize(child)
-            obj.traffic_limitation_ref = traffic_limitation_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BLOCK-STATES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.block_states.append(SerializationHelper.deserialize_by_tag(item_elem, "BlockState"))
+            elif tag == "ECU-INSTANCE-REF":
+                setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
+            elif tag == "IDSM-INSTANCE-ID":
+                setattr(obj, "idsm_instance_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IDSM-MODULE-REF":
+                setattr(obj, "idsm_module_ref", ARRef.deserialize(child))
+            elif tag == "RATE-LIMITATION-REF":
+                setattr(obj, "rate_limitation_ref", ARRef.deserialize(child))
+            elif tag == "SIGNATURE":
+                setattr(obj, "signature", SerializationHelper.deserialize_by_tag(child, "any (IdsmSignatureSupport)"))
+            elif tag == "TIMESTAMP":
+                setattr(obj, "timestamp", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "TRAFFIC-LIMITATION-REF":
+                setattr(obj, "traffic_limitation_ref", ARRef.deserialize(child))
 
         return obj
 

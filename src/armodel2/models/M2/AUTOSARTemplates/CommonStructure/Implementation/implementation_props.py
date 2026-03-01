@@ -37,6 +37,11 @@ class ImplementationProps(Referrable, ABC):
         return True
 
     symbol: Optional[CIdentifier]
+    _DESERIALIZE_DISPATCH = {
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ImplementationProps."""
         super().__init__()
@@ -48,9 +53,8 @@ class ImplementationProps(Referrable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ImplementationProps, self).serialize()
@@ -95,11 +99,12 @@ class ImplementationProps(Referrable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ImplementationProps, cls).deserialize(element)
 
-        # Parse symbol
-        child = SerializationHelper.find_child_element(element, "SYMBOL")
-        if child is not None:
-            symbol_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
-            obj.symbol = symbol_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SYMBOL":
+                setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
 
         return obj
 

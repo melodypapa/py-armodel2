@@ -39,8 +39,17 @@ class LabeledList(Paginateable):
         """
         return False
 
+    _XML_TAG = "LABELED-LIST"
+
+
     indent_sample: Optional[IndentSample]
     labeled_item_label: LabeledItem
+    _DESERIALIZE_DISPATCH = {
+        "INDENT-SAMPLE": lambda obj, elem: setattr(obj, "indent_sample", SerializationHelper.deserialize_by_tag(elem, "IndentSample")),
+        "LABELED-ITEM-LABEL": lambda obj, elem: setattr(obj, "labeled_item_label", SerializationHelper.deserialize_by_tag(elem, "LabeledItem")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LabeledList."""
         super().__init__()
@@ -53,9 +62,8 @@ class LabeledList(Paginateable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LabeledList, self).serialize()
@@ -114,17 +122,14 @@ class LabeledList(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LabeledList, cls).deserialize(element)
 
-        # Parse indent_sample
-        child = SerializationHelper.find_child_element(element, "INDENT-SAMPLE")
-        if child is not None:
-            indent_sample_value = SerializationHelper.deserialize_by_tag(child, "IndentSample")
-            obj.indent_sample = indent_sample_value
-
-        # Parse labeled_item_label
-        child = SerializationHelper.find_child_element(element, "LABELED-ITEM-LABEL")
-        if child is not None:
-            labeled_item_label_value = SerializationHelper.deserialize_by_tag(child, "LabeledItem")
-            obj.labeled_item_label = labeled_item_label_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "INDENT-SAMPLE":
+                setattr(obj, "indent_sample", SerializationHelper.deserialize_by_tag(child, "IndentSample"))
+            elif tag == "LABELED-ITEM-LABEL":
+                setattr(obj, "labeled_item_label", SerializationHelper.deserialize_by_tag(child, "LabeledItem"))
 
         return obj
 

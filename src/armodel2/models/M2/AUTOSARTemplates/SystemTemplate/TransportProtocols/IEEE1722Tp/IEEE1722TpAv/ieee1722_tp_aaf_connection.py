@@ -38,6 +38,9 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         """
         return False
 
+    _XML_TAG = "I-E-E-E1722-TP-AAF-CONNECTION"
+
+
     aaf_aes3_data: Optional[IEEE1722TpAafAes3DataTypeEnum]
     aaf_format_enum: Optional[IEEE1722TpAafFormatEnum]
     aaf_nominal_rate: Optional[Any]
@@ -48,6 +51,20 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
     pcm_bit_depth: Optional[PositiveInteger]
     sparse: Optional[Boolean]
     streams_per: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "AAF-AES3-DATA": lambda obj, elem: setattr(obj, "aaf_aes3_data", IEEE1722TpAafAes3DataTypeEnum.deserialize(elem)),
+        "AAF-FORMAT-ENUM": lambda obj, elem: setattr(obj, "aaf_format_enum", IEEE1722TpAafFormatEnum.deserialize(elem)),
+        "AAF-NOMINAL-RATE": lambda obj, elem: setattr(obj, "aaf_nominal_rate", SerializationHelper.deserialize_by_tag(elem, "any (IEEE1722TpAaf)")),
+        "AES3-DATA-TYPE-H": lambda obj, elem: setattr(obj, "aes3_data_type_h", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "AES3-DATA-TYPE-L": lambda obj, elem: setattr(obj, "aes3_data_type_l", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "CHANNELS-PER": lambda obj, elem: setattr(obj, "channels_per", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "EVENT-DEFAULT": lambda obj, elem: setattr(obj, "event_default", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PCM-BIT-DEPTH": lambda obj, elem: setattr(obj, "pcm_bit_depth", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SPARSE": lambda obj, elem: setattr(obj, "sparse", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "STREAMS-PER": lambda obj, elem: setattr(obj, "streams_per", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IEEE1722TpAafConnection."""
         super().__init__()
@@ -68,9 +85,8 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IEEE1722TpAafConnection, self).serialize()
@@ -241,65 +257,30 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpAafConnection, cls).deserialize(element)
 
-        # Parse aaf_aes3_data
-        child = SerializationHelper.find_child_element(element, "AAF-AES3-DATA")
-        if child is not None:
-            aaf_aes3_data_value = IEEE1722TpAafAes3DataTypeEnum.deserialize(child)
-            obj.aaf_aes3_data = aaf_aes3_data_value
-
-        # Parse aaf_format_enum
-        child = SerializationHelper.find_child_element(element, "AAF-FORMAT-ENUM")
-        if child is not None:
-            aaf_format_enum_value = IEEE1722TpAafFormatEnum.deserialize(child)
-            obj.aaf_format_enum = aaf_format_enum_value
-
-        # Parse aaf_nominal_rate
-        child = SerializationHelper.find_child_element(element, "AAF-NOMINAL-RATE")
-        if child is not None:
-            aaf_nominal_rate_value = child.text
-            obj.aaf_nominal_rate = aaf_nominal_rate_value
-
-        # Parse aes3_data_type_h
-        child = SerializationHelper.find_child_element(element, "AES3-DATA-TYPE-H")
-        if child is not None:
-            aes3_data_type_h_value = child.text
-            obj.aes3_data_type_h = aes3_data_type_h_value
-
-        # Parse aes3_data_type_l
-        child = SerializationHelper.find_child_element(element, "AES3-DATA-TYPE-L")
-        if child is not None:
-            aes3_data_type_l_value = child.text
-            obj.aes3_data_type_l = aes3_data_type_l_value
-
-        # Parse channels_per
-        child = SerializationHelper.find_child_element(element, "CHANNELS-PER")
-        if child is not None:
-            channels_per_value = child.text
-            obj.channels_per = channels_per_value
-
-        # Parse event_default
-        child = SerializationHelper.find_child_element(element, "EVENT-DEFAULT")
-        if child is not None:
-            event_default_value = child.text
-            obj.event_default = event_default_value
-
-        # Parse pcm_bit_depth
-        child = SerializationHelper.find_child_element(element, "PCM-BIT-DEPTH")
-        if child is not None:
-            pcm_bit_depth_value = child.text
-            obj.pcm_bit_depth = pcm_bit_depth_value
-
-        # Parse sparse
-        child = SerializationHelper.find_child_element(element, "SPARSE")
-        if child is not None:
-            sparse_value = child.text
-            obj.sparse = sparse_value
-
-        # Parse streams_per
-        child = SerializationHelper.find_child_element(element, "STREAMS-PER")
-        if child is not None:
-            streams_per_value = child.text
-            obj.streams_per = streams_per_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AAF-AES3-DATA":
+                setattr(obj, "aaf_aes3_data", IEEE1722TpAafAes3DataTypeEnum.deserialize(child))
+            elif tag == "AAF-FORMAT-ENUM":
+                setattr(obj, "aaf_format_enum", IEEE1722TpAafFormatEnum.deserialize(child))
+            elif tag == "AAF-NOMINAL-RATE":
+                setattr(obj, "aaf_nominal_rate", SerializationHelper.deserialize_by_tag(child, "any (IEEE1722TpAaf)"))
+            elif tag == "AES3-DATA-TYPE-H":
+                setattr(obj, "aes3_data_type_h", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "AES3-DATA-TYPE-L":
+                setattr(obj, "aes3_data_type_l", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "CHANNELS-PER":
+                setattr(obj, "channels_per", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "EVENT-DEFAULT":
+                setattr(obj, "event_default", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PCM-BIT-DEPTH":
+                setattr(obj, "pcm_bit_depth", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SPARSE":
+                setattr(obj, "sparse", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "STREAMS-PER":
+                setattr(obj, "streams_per", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

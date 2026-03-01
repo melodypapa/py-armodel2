@@ -30,8 +30,17 @@ class ConstantSpecificationMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "CONSTANT-SPECIFICATION-MAPPING"
+
+
     appl_constant_ref: Optional[ARRef]
     impl_constant_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "APPL-CONSTANT-REF": lambda obj, elem: setattr(obj, "appl_constant_ref", ARRef.deserialize(elem)),
+        "IMPL-CONSTANT-REF": lambda obj, elem: setattr(obj, "impl_constant_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ConstantSpecificationMapping."""
         super().__init__()
@@ -44,9 +53,8 @@ class ConstantSpecificationMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ConstantSpecificationMapping, self).serialize()
@@ -105,17 +113,14 @@ class ConstantSpecificationMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConstantSpecificationMapping, cls).deserialize(element)
 
-        # Parse appl_constant_ref
-        child = SerializationHelper.find_child_element(element, "APPL-CONSTANT-REF")
-        if child is not None:
-            appl_constant_ref_value = ARRef.deserialize(child)
-            obj.appl_constant_ref = appl_constant_ref_value
-
-        # Parse impl_constant_ref
-        child = SerializationHelper.find_child_element(element, "IMPL-CONSTANT-REF")
-        if child is not None:
-            impl_constant_ref_value = ARRef.deserialize(child)
-            obj.impl_constant_ref = impl_constant_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "APPL-CONSTANT-REF":
+                setattr(obj, "appl_constant_ref", ARRef.deserialize(child))
+            elif tag == "IMPL-CONSTANT-REF":
+                setattr(obj, "impl_constant_ref", ARRef.deserialize(child))
 
         return obj
 

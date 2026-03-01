@@ -34,8 +34,17 @@ class J1939DcmIPdu(IPdu):
         """
         return False
 
+    _XML_TAG = "J1939-DCM-I-PDU"
+
+
     diagnostic: Optional[PositiveInteger]
     message_type: Any
+    _DESERIALIZE_DISPATCH = {
+        "DIAGNOSTIC": lambda obj, elem: setattr(obj, "diagnostic", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MESSAGE-TYPE": lambda obj, elem: setattr(obj, "message_type", SerializationHelper.deserialize_by_tag(elem, "any (e.g)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize J1939DcmIPdu."""
         super().__init__()
@@ -48,9 +57,8 @@ class J1939DcmIPdu(IPdu):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(J1939DcmIPdu, self).serialize()
@@ -109,17 +117,14 @@ class J1939DcmIPdu(IPdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939DcmIPdu, cls).deserialize(element)
 
-        # Parse diagnostic
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC")
-        if child is not None:
-            diagnostic_value = child.text
-            obj.diagnostic = diagnostic_value
-
-        # Parse message_type
-        child = SerializationHelper.find_child_element(element, "MESSAGE-TYPE")
-        if child is not None:
-            message_type_value = child.text
-            obj.message_type = message_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DIAGNOSTIC":
+                setattr(obj, "diagnostic", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MESSAGE-TYPE":
+                setattr(obj, "message_type", SerializationHelper.deserialize_by_tag(child, "any (e.g)"))
 
         return obj
 

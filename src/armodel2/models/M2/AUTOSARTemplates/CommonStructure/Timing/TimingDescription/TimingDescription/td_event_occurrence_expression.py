@@ -32,10 +32,21 @@ class TDEventOccurrenceExpression(ARObject):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-OCCURRENCE-EXPRESSION"
+
+
     arguments: list[AutosarOperationArgumentInstance]
     formula: Optional[Any]
     modes: list[TimingModeInstance]
     variables: list[Any]
+    _DESERIALIZE_DISPATCH = {
+        "ARGUMENTS": lambda obj, elem: obj.arguments.append(SerializationHelper.deserialize_by_tag(elem, "AutosarOperationArgumentInstance")),
+        "FORMULA": lambda obj, elem: setattr(obj, "formula", SerializationHelper.deserialize_by_tag(elem, "any (TDEventOccurrence)")),
+        "MODES": lambda obj, elem: obj.modes.append(SerializationHelper.deserialize_by_tag(elem, "TimingModeInstance")),
+        "VARIABLES": lambda obj, elem: obj.variables.append(SerializationHelper.deserialize_by_tag(elem, "any (AutosarVariable)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventOccurrenceExpression."""
         super().__init__()
@@ -50,9 +61,8 @@ class TDEventOccurrenceExpression(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventOccurrenceExpression, self).serialize()
@@ -127,41 +137,24 @@ class TDEventOccurrenceExpression(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventOccurrenceExpression, cls).deserialize(element)
 
-        # Parse arguments (list from container "ARGUMENTS")
-        obj.arguments = []
-        container = SerializationHelper.find_child_element(element, "ARGUMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.arguments.append(child_value)
-
-        # Parse formula
-        child = SerializationHelper.find_child_element(element, "FORMULA")
-        if child is not None:
-            formula_value = child.text
-            obj.formula = formula_value
-
-        # Parse modes (list from container "MODES")
-        obj.modes = []
-        container = SerializationHelper.find_child_element(element, "MODES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.modes.append(child_value)
-
-        # Parse variables (list from container "VARIABLES")
-        obj.variables = []
-        container = SerializationHelper.find_child_element(element, "VARIABLES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.variables.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ARGUMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "AutosarOperationArgumentInstance"))
+            elif tag == "FORMULA":
+                setattr(obj, "formula", SerializationHelper.deserialize_by_tag(child, "any (TDEventOccurrence)"))
+            elif tag == "MODES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.modes.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingModeInstance"))
+            elif tag == "VARIABLES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.variables.append(SerializationHelper.deserialize_by_tag(item_elem, "any (AutosarVariable)"))
 
         return obj
 

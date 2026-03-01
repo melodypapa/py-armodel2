@@ -29,7 +29,15 @@ class EventObdReadinessGroup(ARObject):
         """
         return False
 
+    _XML_TAG = "EVENT-OBD-READINESS-GROUP"
+
+
     event_obd: Optional[NameToken]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-OBD": lambda obj, elem: setattr(obj, "event_obd", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EventObdReadinessGroup."""
         super().__init__()
@@ -41,9 +49,8 @@ class EventObdReadinessGroup(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EventObdReadinessGroup, self).serialize()
@@ -88,11 +95,12 @@ class EventObdReadinessGroup(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EventObdReadinessGroup, cls).deserialize(element)
 
-        # Parse event_obd
-        child = SerializationHelper.find_child_element(element, "EVENT-OBD")
-        if child is not None:
-            event_obd_value = child.text
-            obj.event_obd = event_obd_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EVENT-OBD":
+                setattr(obj, "event_obd", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

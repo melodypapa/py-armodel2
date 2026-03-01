@@ -33,8 +33,17 @@ class LinOrderedConfigurableFrame(ARObject):
         """
         return False
 
+    _XML_TAG = "LIN-ORDERED-CONFIGURABLE-FRAME"
+
+
     frame_ref: Optional[ARRef]
     index: Optional[Integer]
+    _DESERIALIZE_DISPATCH = {
+        "FRAME-REF": ("_POLYMORPHIC", "frame_ref", ["LinEventTriggeredFrame", "LinSporadicFrame", "LinUnconditionalFrame"]),
+        "INDEX": lambda obj, elem: setattr(obj, "index", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize LinOrderedConfigurableFrame."""
         super().__init__()
@@ -47,9 +56,8 @@ class LinOrderedConfigurableFrame(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LinOrderedConfigurableFrame, self).serialize()
@@ -108,17 +116,14 @@ class LinOrderedConfigurableFrame(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinOrderedConfigurableFrame, cls).deserialize(element)
 
-        # Parse frame_ref
-        child = SerializationHelper.find_child_element(element, "FRAME-REF")
-        if child is not None:
-            frame_ref_value = ARRef.deserialize(child)
-            obj.frame_ref = frame_ref_value
-
-        # Parse index
-        child = SerializationHelper.find_child_element(element, "INDEX")
-        if child is not None:
-            index_value = child.text
-            obj.index = index_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FRAME-REF":
+                setattr(obj, "frame_ref", ARRef.deserialize(child))
+            elif tag == "INDEX":
+                setattr(obj, "index", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

@@ -33,7 +33,15 @@ class IdsMgrNeeds(ServiceNeeds):
         """
         return False
 
+    _XML_TAG = "IDS-MGR-NEEDS"
+
+
     use_smart: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "USE-SMART": lambda obj, elem: setattr(obj, "use_smart", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize IdsMgrNeeds."""
         super().__init__()
@@ -45,9 +53,8 @@ class IdsMgrNeeds(ServiceNeeds):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(IdsMgrNeeds, self).serialize()
@@ -92,11 +99,12 @@ class IdsMgrNeeds(ServiceNeeds):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IdsMgrNeeds, cls).deserialize(element)
 
-        # Parse use_smart
-        child = SerializationHelper.find_child_element(element, "USE-SMART")
-        if child is not None:
-            use_smart_value = child.text
-            obj.use_smart = use_smart_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "USE-SMART":
+                setattr(obj, "use_smart", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

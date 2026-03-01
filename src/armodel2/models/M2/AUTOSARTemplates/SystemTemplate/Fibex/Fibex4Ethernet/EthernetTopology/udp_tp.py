@@ -33,7 +33,15 @@ class UdpTp(TcpUdpConfig):
         """
         return False
 
+    _XML_TAG = "UDP-TP"
+
+
     udp_tp_port: Optional[TpPort]
+    _DESERIALIZE_DISPATCH = {
+        "UDP-TP-PORT": lambda obj, elem: setattr(obj, "udp_tp_port", SerializationHelper.deserialize_by_tag(elem, "TpPort")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize UdpTp."""
         super().__init__()
@@ -45,9 +53,8 @@ class UdpTp(TcpUdpConfig):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(UdpTp, self).serialize()
@@ -92,11 +99,12 @@ class UdpTp(TcpUdpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(UdpTp, cls).deserialize(element)
 
-        # Parse udp_tp_port
-        child = SerializationHelper.find_child_element(element, "UDP-TP-PORT")
-        if child is not None:
-            udp_tp_port_value = SerializationHelper.deserialize_by_tag(child, "TpPort")
-            obj.udp_tp_port = udp_tp_port_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "UDP-TP-PORT":
+                setattr(obj, "udp_tp_port", SerializationHelper.deserialize_by_tag(child, "TpPort"))
 
         return obj
 

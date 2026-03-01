@@ -22,7 +22,13 @@ xml_tag_mappings:
   V2X-DATA-MANAGER-NEEDS: V2xDataManagerNeeds
   VT: CompuConstTextContent
   BSW-MODULE-ENTRY-REF-CONDITIONAL: BswModuleClientServerEntry
+  LIMIT: Limit
+  INTERVAL-TYPE-ENUM: IntervalTypeEnum
+  NUMERICAL: Numerical
 class_import_paths:
+  Limit: armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.limit
+  IntervalTypeEnum: armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.interval_type_enum
+  Numerical: armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.numerical
   BswModuleDescription: armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description
   ModeInBswModuleDescriptionInstanceRef: armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.InstanceRefs.mode_in_bsw_module_description_instance_ref
   BswModuleEntry: armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry
@@ -2067,6 +2073,16 @@ polymorphic_types:
   - BswInterruptEvent
   - BswOperationInvokedEvent
   - BswScheduleEvent
+  - BswAsynchronousServerCallReturnsEvent
+  - BswBackgroundEvent
+  - BswDataReceivedEvent
+  - BswExternalTriggerOccurredEvent
+  - BswInternalTriggerOccurredEvent
+  - BswModeManagerErrorEvent
+  - BswModeSwitchEvent
+  - BswModeSwitchedAckEvent
+  - BswOsTaskExecutionEvent
+  - BswTimingEvent
   BswScheduleEvent:
   - BswAsynchronousServerCallReturnsEvent
   - BswBackgroundEvent
@@ -2755,8 +2771,9 @@ polymorphic_types:
   - ServiceProxySwComponentType
   - ServiceSwComponentType
   PortPrototype:
-  - AbstractProvidedPortPrototype
-  - AbstractRequiredPortPrototype
+  - PPortPrototype
+  - RPortPrototype
+  - PRPortPrototype
   SwComponentType:
   - AtomicSwComponentType
   - CompositionSwComponentType
@@ -2980,18 +2997,21 @@ polymorphic_types:
   - LinCluster
   - UserDefinedCluster
   PhysicalChannel:
-  - AbstractCanPhysicalChannel
+  - CanPhysicalChannel
+  - TtcanPhysicalChannel
   - EthernetPhysicalChannel
   - FlexrayPhysicalChannel
   - LinPhysicalChannel
   CommunicationController:
-  - AbstractCanCommunicationController
+  - CanCommunicationController
+  - TtcanCommunicationController
   - EthernetCommunicationController
   - FlexrayCommunicationController
   - LinCommunicationController
   - UserDefinedCommunicationController
   CommunicationConnector:
-  - AbstractCanCommunicationConnector
+  - CanCommunicationConnector
+  - TtcanCommunicationConnector
   - EthernetCommunicationConnector
   - FlexrayCommunicationConnector
   - LinCommunicationConnector

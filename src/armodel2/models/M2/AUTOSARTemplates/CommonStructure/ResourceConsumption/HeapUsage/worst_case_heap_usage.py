@@ -33,7 +33,15 @@ class WorstCaseHeapUsage(HeapUsage):
         """
         return False
 
+    _XML_TAG = "WORST-CASE-HEAP-USAGE"
+
+
     memory_consumption: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "MEMORY-CONSUMPTION": lambda obj, elem: setattr(obj, "memory_consumption", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize WorstCaseHeapUsage."""
         super().__init__()
@@ -45,9 +53,8 @@ class WorstCaseHeapUsage(HeapUsage):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(WorstCaseHeapUsage, self).serialize()
@@ -92,11 +99,12 @@ class WorstCaseHeapUsage(HeapUsage):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(WorstCaseHeapUsage, cls).deserialize(element)
 
-        # Parse memory_consumption
-        child = SerializationHelper.find_child_element(element, "MEMORY-CONSUMPTION")
-        if child is not None:
-            memory_consumption_value = child.text
-            obj.memory_consumption = memory_consumption_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "MEMORY-CONSUMPTION":
+                setattr(obj, "memory_consumption", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

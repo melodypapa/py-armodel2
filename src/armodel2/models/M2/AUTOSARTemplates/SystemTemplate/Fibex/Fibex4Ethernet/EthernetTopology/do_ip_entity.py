@@ -29,7 +29,15 @@ class DoIpEntity(ARObject):
         """
         return False
 
+    _XML_TAG = "DO-IP-ENTITY"
+
+
     do_ip_entity_role_enum: Optional[DoIpEntityRoleEnum]
+    _DESERIALIZE_DISPATCH = {
+        "DO-IP-ENTITY-ROLE-ENUM": lambda obj, elem: setattr(obj, "do_ip_entity_role_enum", DoIpEntityRoleEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DoIpEntity."""
         super().__init__()
@@ -41,9 +49,8 @@ class DoIpEntity(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DoIpEntity, self).serialize()
@@ -88,11 +95,12 @@ class DoIpEntity(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpEntity, cls).deserialize(element)
 
-        # Parse do_ip_entity_role_enum
-        child = SerializationHelper.find_child_element(element, "DO-IP-ENTITY-ROLE-ENUM")
-        if child is not None:
-            do_ip_entity_role_enum_value = DoIpEntityRoleEnum.deserialize(child)
-            obj.do_ip_entity_role_enum = do_ip_entity_role_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DO-IP-ENTITY-ROLE-ENUM":
+                setattr(obj, "do_ip_entity_role_enum", DoIpEntityRoleEnum.deserialize(child))
 
         return obj
 

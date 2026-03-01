@@ -33,11 +33,23 @@ class NvBlockDataMapping(ARObject):
         """
         return False
 
+    _XML_TAG = "NV-BLOCK-DATA-MAPPING"
+
+
     bitfield_text_table: Optional[PositiveInteger]
     nv_ram_block_ref: Optional[ARRef]
     read_nv_data_ref: Optional[ARRef]
     written_nv_data_ref: Optional[ARRef]
     written_read_nv_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BITFIELD-TEXT-TABLE": lambda obj, elem: setattr(obj, "bitfield_text_table", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "NV-RAM-BLOCK-REF": lambda obj, elem: setattr(obj, "nv_ram_block_ref", ARRef.deserialize(elem)),
+        "READ-NV-DATA-REF": lambda obj, elem: setattr(obj, "read_nv_data_ref", ARRef.deserialize(elem)),
+        "WRITTEN-NV-DATA-REF": lambda obj, elem: setattr(obj, "written_nv_data_ref", ARRef.deserialize(elem)),
+        "WRITTEN-READ-NV-REF": lambda obj, elem: setattr(obj, "written_read_nv_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize NvBlockDataMapping."""
         super().__init__()
@@ -53,9 +65,8 @@ class NvBlockDataMapping(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(NvBlockDataMapping, self).serialize()
@@ -156,35 +167,20 @@ class NvBlockDataMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NvBlockDataMapping, cls).deserialize(element)
 
-        # Parse bitfield_text_table
-        child = SerializationHelper.find_child_element(element, "BITFIELD-TEXT-TABLE")
-        if child is not None:
-            bitfield_text_table_value = child.text
-            obj.bitfield_text_table = bitfield_text_table_value
-
-        # Parse nv_ram_block_ref
-        child = SerializationHelper.find_child_element(element, "NV-RAM-BLOCK-REF")
-        if child is not None:
-            nv_ram_block_ref_value = ARRef.deserialize(child)
-            obj.nv_ram_block_ref = nv_ram_block_ref_value
-
-        # Parse read_nv_data_ref
-        child = SerializationHelper.find_child_element(element, "READ-NV-DATA-REF")
-        if child is not None:
-            read_nv_data_ref_value = ARRef.deserialize(child)
-            obj.read_nv_data_ref = read_nv_data_ref_value
-
-        # Parse written_nv_data_ref
-        child = SerializationHelper.find_child_element(element, "WRITTEN-NV-DATA-REF")
-        if child is not None:
-            written_nv_data_ref_value = ARRef.deserialize(child)
-            obj.written_nv_data_ref = written_nv_data_ref_value
-
-        # Parse written_read_nv_ref
-        child = SerializationHelper.find_child_element(element, "WRITTEN-READ-NV-REF")
-        if child is not None:
-            written_read_nv_ref_value = ARRef.deserialize(child)
-            obj.written_read_nv_ref = written_read_nv_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BITFIELD-TEXT-TABLE":
+                setattr(obj, "bitfield_text_table", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "NV-RAM-BLOCK-REF":
+                setattr(obj, "nv_ram_block_ref", ARRef.deserialize(child))
+            elif tag == "READ-NV-DATA-REF":
+                setattr(obj, "read_nv_data_ref", ARRef.deserialize(child))
+            elif tag == "WRITTEN-NV-DATA-REF":
+                setattr(obj, "written_nv_data_ref", ARRef.deserialize(child))
+            elif tag == "WRITTEN-READ-NV-REF":
+                setattr(obj, "written_read_nv_ref", ARRef.deserialize(child))
 
         return obj
 

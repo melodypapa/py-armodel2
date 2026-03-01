@@ -37,7 +37,15 @@ class OperationInvokedEvent(RTEEvent):
         """
         return False
 
+    _XML_TAG = "OPERATION-INVOKED-EVENT"
+
+
     _operation_iref: Optional[POperationInAtomicSwcInstanceRef]
+    _DESERIALIZE_DISPATCH = {
+        "OPERATION-IREF": lambda obj, elem: setattr(obj, "_operation_iref", SerializationHelper.deserialize_by_tag(elem, "POperationInAtomicSwcInstanceRef")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize OperationInvokedEvent."""
         super().__init__()
@@ -60,9 +68,8 @@ class OperationInvokedEvent(RTEEvent):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(OperationInvokedEvent, self).serialize()
@@ -104,12 +111,12 @@ class OperationInvokedEvent(RTEEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(OperationInvokedEvent, cls).deserialize(element)
 
-        # Parse operation_iref (instance reference from wrapper "OPERATION-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "OPERATION-IREF")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            operation_iref_value = SerializationHelper.deserialize_by_tag(wrapper, "POperationInAtomicSwcInstanceRef")
-            obj.operation_iref = operation_iref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "OPERATION-IREF":
+                setattr(obj, "_operation_iref", SerializationHelper.deserialize_by_tag(child, "POperationInAtomicSwcInstanceRef"))
 
         return obj
 

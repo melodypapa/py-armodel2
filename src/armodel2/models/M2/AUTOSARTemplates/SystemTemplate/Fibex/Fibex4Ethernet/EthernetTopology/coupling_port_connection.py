@@ -33,11 +33,23 @@ class CouplingPortConnection(ARObject):
         """
         return False
 
+    _XML_TAG = "COUPLING-PORT-CONNECTION"
+
+
     first_port_ref: Optional[ARRef]
     node_port_refs: list[ARRef]
     plca_local_node: Optional[PositiveInteger]
     plca_transmit: Optional[PositiveInteger]
     second_port_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FIRST-PORT-REF": lambda obj, elem: setattr(obj, "first_port_ref", ARRef.deserialize(elem)),
+        "NODE-PORT-REFS": lambda obj, elem: [obj.node_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "PLCA-LOCAL-NODE": lambda obj, elem: setattr(obj, "plca_local_node", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PLCA-TRANSMIT": lambda obj, elem: setattr(obj, "plca_transmit", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SECOND-PORT-REF": lambda obj, elem: setattr(obj, "second_port_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize CouplingPortConnection."""
         super().__init__()
@@ -53,9 +65,8 @@ class CouplingPortConnection(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(CouplingPortConnection, self).serialize()
@@ -159,45 +170,22 @@ class CouplingPortConnection(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CouplingPortConnection, cls).deserialize(element)
 
-        # Parse first_port_ref
-        child = SerializationHelper.find_child_element(element, "FIRST-PORT-REF")
-        if child is not None:
-            first_port_ref_value = ARRef.deserialize(child)
-            obj.first_port_ref = first_port_ref_value
-
-        # Parse node_port_refs (list from container "NODE-PORT-REFS")
-        obj.node_port_refs = []
-        container = SerializationHelper.find_child_element(element, "NODE-PORT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.node_port_refs.append(child_value)
-
-        # Parse plca_local_node
-        child = SerializationHelper.find_child_element(element, "PLCA-LOCAL-NODE")
-        if child is not None:
-            plca_local_node_value = child.text
-            obj.plca_local_node = plca_local_node_value
-
-        # Parse plca_transmit
-        child = SerializationHelper.find_child_element(element, "PLCA-TRANSMIT")
-        if child is not None:
-            plca_transmit_value = child.text
-            obj.plca_transmit = plca_transmit_value
-
-        # Parse second_port_ref
-        child = SerializationHelper.find_child_element(element, "SECOND-PORT-REF")
-        if child is not None:
-            second_port_ref_value = ARRef.deserialize(child)
-            obj.second_port_ref = second_port_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FIRST-PORT-REF":
+                setattr(obj, "first_port_ref", ARRef.deserialize(child))
+            elif tag == "NODE-PORT-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.node_port_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "PLCA-LOCAL-NODE":
+                setattr(obj, "plca_local_node", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PLCA-TRANSMIT":
+                setattr(obj, "plca_transmit", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SECOND-PORT-REF":
+                setattr(obj, "second_port_ref", ARRef.deserialize(child))
 
         return obj
 

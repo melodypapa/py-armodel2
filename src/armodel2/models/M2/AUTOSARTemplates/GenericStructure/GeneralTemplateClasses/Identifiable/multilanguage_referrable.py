@@ -41,6 +41,11 @@ class MultilanguageReferrable(Referrable, ABC):
         return True
 
     long_name: Optional[MultilanguageLongName]
+    _DESERIALIZE_DISPATCH = {
+        "LONG-NAME": lambda obj, elem: setattr(obj, "long_name", SerializationHelper.deserialize_by_tag(elem, "MultilanguageLongName")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MultilanguageReferrable."""
         super().__init__()
@@ -52,9 +57,8 @@ class MultilanguageReferrable(Referrable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MultilanguageReferrable, self).serialize()
@@ -99,11 +103,12 @@ class MultilanguageReferrable(Referrable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MultilanguageReferrable, cls).deserialize(element)
 
-        # Parse long_name
-        child = SerializationHelper.find_child_element(element, "LONG-NAME")
-        if child is not None:
-            long_name_value = SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName")
-            obj.long_name = long_name_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "LONG-NAME":
+                setattr(obj, "long_name", SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName"))
 
         return obj
 

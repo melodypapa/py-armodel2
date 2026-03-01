@@ -43,11 +43,23 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
         """
         return False
 
+    _XML_TAG = "BASE-TYPE-DIRECT-DEFINITION"
+
+
     base_type_encoding: Optional[BaseTypeEncodingString]
     base_type_size: Optional[PositiveInteger]
     byte_order: Optional[ByteOrderEnum]
     mem_alignment: Optional[PositiveInteger]
     native: Optional[NativeDeclarationString]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-TYPE-ENCODING": lambda obj, elem: setattr(obj, "base_type_encoding", SerializationHelper.deserialize_by_tag(elem, "BaseTypeEncodingString")),
+        "BASE-TYPE-SIZE": lambda obj, elem: setattr(obj, "base_type_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "BYTE-ORDER": lambda obj, elem: setattr(obj, "byte_order", ByteOrderEnum.deserialize(elem)),
+        "MEM-ALIGNMENT": lambda obj, elem: setattr(obj, "mem_alignment", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "NATIVE": lambda obj, elem: setattr(obj, "native", SerializationHelper.deserialize_by_tag(elem, "NativeDeclarationString")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize BaseTypeDirectDefinition."""
         super().__init__()
@@ -63,9 +75,8 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(BaseTypeDirectDefinition, self).serialize()
@@ -166,35 +177,20 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BaseTypeDirectDefinition, cls).deserialize(element)
 
-        # Parse base_type_encoding
-        child = SerializationHelper.find_child_element(element, "BASE-TYPE-ENCODING")
-        if child is not None:
-            base_type_encoding_value = child.text
-            obj.base_type_encoding = base_type_encoding_value
-
-        # Parse base_type_size
-        child = SerializationHelper.find_child_element(element, "BASE-TYPE-SIZE")
-        if child is not None:
-            base_type_size_value = child.text
-            obj.base_type_size = base_type_size_value
-
-        # Parse byte_order
-        child = SerializationHelper.find_child_element(element, "BYTE-ORDER")
-        if child is not None:
-            byte_order_value = ByteOrderEnum.deserialize(child)
-            obj.byte_order = byte_order_value
-
-        # Parse mem_alignment
-        child = SerializationHelper.find_child_element(element, "MEM-ALIGNMENT")
-        if child is not None:
-            mem_alignment_value = child.text
-            obj.mem_alignment = mem_alignment_value
-
-        # Parse native
-        child = SerializationHelper.find_child_element(element, "NATIVE")
-        if child is not None:
-            native_value = child.text
-            obj.native = native_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BASE-TYPE-ENCODING":
+                setattr(obj, "base_type_encoding", SerializationHelper.deserialize_by_tag(child, "BaseTypeEncodingString"))
+            elif tag == "BASE-TYPE-SIZE":
+                setattr(obj, "base_type_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "BYTE-ORDER":
+                setattr(obj, "byte_order", ByteOrderEnum.deserialize(child))
+            elif tag == "MEM-ALIGNMENT":
+                setattr(obj, "mem_alignment", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "NATIVE":
+                setattr(obj, "native", SerializationHelper.deserialize_by_tag(child, "NativeDeclarationString"))
 
         return obj
 

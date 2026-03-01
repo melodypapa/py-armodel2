@@ -48,6 +48,14 @@ class Describable(ARObject, ABC):
     category: Optional[CategoryString]
     desc: Optional[MultiLanguageOverviewParagraph]
     introduction: Optional[DocumentationBlock]
+    _DESERIALIZE_DISPATCH = {
+        "ADMIN-DATA": lambda obj, elem: setattr(obj, "admin_data", SerializationHelper.deserialize_by_tag(elem, "AdminData")),
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", SerializationHelper.deserialize_by_tag(elem, "CategoryString")),
+        "DESC": lambda obj, elem: setattr(obj, "desc", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageOverviewParagraph")),
+        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize Describable."""
         super().__init__()
@@ -62,9 +70,8 @@ class Describable(ARObject, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Describable, self).serialize()
@@ -151,29 +158,18 @@ class Describable(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Describable, cls).deserialize(element)
 
-        # Parse admin_data
-        child = SerializationHelper.find_child_element(element, "ADMIN-DATA")
-        if child is not None:
-            admin_data_value = SerializationHelper.deserialize_by_tag(child, "AdminData")
-            obj.admin_data = admin_data_value
-
-        # Parse category
-        child = SerializationHelper.find_child_element(element, "CATEGORY")
-        if child is not None:
-            category_value = child.text
-            obj.category = category_value
-
-        # Parse desc
-        child = SerializationHelper.find_child_element(element, "DESC")
-        if child is not None:
-            desc_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
-            obj.desc = desc_value
-
-        # Parse introduction
-        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
-        if child is not None:
-            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.introduction = introduction_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ADMIN-DATA":
+                setattr(obj, "admin_data", SerializationHelper.deserialize_by_tag(child, "AdminData"))
+            elif tag == "CATEGORY":
+                setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "CategoryString"))
+            elif tag == "DESC":
+                setattr(obj, "desc", SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph"))
+            elif tag == "INTRODUCTION":
+                setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
 
         return obj
 

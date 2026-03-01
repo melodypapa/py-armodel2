@@ -34,7 +34,15 @@ class TDEventFrClusterCycleStart(TDEventCycleStart):
         """
         return False
 
+    _XML_TAG = "T-D-EVENT-FR-CLUSTER-CYCLE-START"
+
+
     fr_cluster_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "FR-CLUSTER-REF": lambda obj, elem: setattr(obj, "fr_cluster_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TDEventFrClusterCycleStart."""
         super().__init__()
@@ -46,9 +54,8 @@ class TDEventFrClusterCycleStart(TDEventCycleStart):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TDEventFrClusterCycleStart, self).serialize()
@@ -93,11 +100,12 @@ class TDEventFrClusterCycleStart(TDEventCycleStart):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventFrClusterCycleStart, cls).deserialize(element)
 
-        # Parse fr_cluster_ref
-        child = SerializationHelper.find_child_element(element, "FR-CLUSTER-REF")
-        if child is not None:
-            fr_cluster_ref_value = ARRef.deserialize(child)
-            obj.fr_cluster_ref = fr_cluster_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FR-CLUSTER-REF":
+                setattr(obj, "fr_cluster_ref", ARRef.deserialize(child))
 
         return obj
 

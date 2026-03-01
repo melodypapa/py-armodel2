@@ -46,10 +46,21 @@ class StaticSocketConnection(Identifiable):
         """
         return False
 
+    _XML_TAG = "STATIC-SOCKET-CONNECTION"
+
+
     i_pdu_identifier_refs: list[ARRef]
     remote_address_ref: Optional[ARRef]
     tcp_connect: Optional[TimeValue]
     tcp_role: Optional[TcpRoleEnum]
+    _DESERIALIZE_DISPATCH = {
+        "I-PDU-IDENTIFIER-REFS": lambda obj, elem: [obj.i_pdu_identifier_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "REMOTE-ADDRESS-REF": lambda obj, elem: setattr(obj, "remote_address_ref", ARRef.deserialize(elem)),
+        "TCP-CONNECT": lambda obj, elem: setattr(obj, "tcp_connect", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-ROLE": lambda obj, elem: setattr(obj, "tcp_role", TcpRoleEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize StaticSocketConnection."""
         super().__init__()
@@ -64,9 +75,8 @@ class StaticSocketConnection(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(StaticSocketConnection, self).serialize()
@@ -156,39 +166,20 @@ class StaticSocketConnection(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StaticSocketConnection, cls).deserialize(element)
 
-        # Parse i_pdu_identifier_refs (list from container "I-PDU-IDENTIFIER-REFS")
-        obj.i_pdu_identifier_refs = []
-        container = SerializationHelper.find_child_element(element, "I-PDU-IDENTIFIER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.i_pdu_identifier_refs.append(child_value)
-
-        # Parse remote_address_ref
-        child = SerializationHelper.find_child_element(element, "REMOTE-ADDRESS-REF")
-        if child is not None:
-            remote_address_ref_value = ARRef.deserialize(child)
-            obj.remote_address_ref = remote_address_ref_value
-
-        # Parse tcp_connect
-        child = SerializationHelper.find_child_element(element, "TCP-CONNECT")
-        if child is not None:
-            tcp_connect_value = child.text
-            obj.tcp_connect = tcp_connect_value
-
-        # Parse tcp_role
-        child = SerializationHelper.find_child_element(element, "TCP-ROLE")
-        if child is not None:
-            tcp_role_value = TcpRoleEnum.deserialize(child)
-            obj.tcp_role = tcp_role_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "I-PDU-IDENTIFIER-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.i_pdu_identifier_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "REMOTE-ADDRESS-REF":
+                setattr(obj, "remote_address_ref", ARRef.deserialize(child))
+            elif tag == "TCP-CONNECT":
+                setattr(obj, "tcp_connect", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-ROLE":
+                setattr(obj, "tcp_role", TcpRoleEnum.deserialize(child))
 
         return obj
 

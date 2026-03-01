@@ -29,6 +29,9 @@ class SecureCommunicationProps(ARObject):
         """
         return False
 
+    _XML_TAG = "SECURE-COMMUNICATION-PROPS"
+
+
     auth_data: Optional[PositiveInteger]
     authentication: Optional[PositiveInteger]
     data_id: Optional[PositiveInteger]
@@ -36,6 +39,17 @@ class SecureCommunicationProps(ARObject):
     message_link: Optional[PositiveInteger]
     secondary: Optional[PositiveInteger]
     secured_area: Optional[PositiveInteger]
+    _DESERIALIZE_DISPATCH = {
+        "AUTH-DATA": lambda obj, elem: setattr(obj, "auth_data", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "AUTHENTICATION": lambda obj, elem: setattr(obj, "authentication", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "DATA-ID": lambda obj, elem: setattr(obj, "data_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "FRESHNESS-VALUE": lambda obj, elem: setattr(obj, "freshness_value", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MESSAGE-LINK": lambda obj, elem: setattr(obj, "message_link", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SECONDARY": lambda obj, elem: setattr(obj, "secondary", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SECURED-AREA": lambda obj, elem: setattr(obj, "secured_area", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize SecureCommunicationProps."""
         super().__init__()
@@ -53,9 +67,8 @@ class SecureCommunicationProps(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(SecureCommunicationProps, self).serialize()
@@ -184,47 +197,24 @@ class SecureCommunicationProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecureCommunicationProps, cls).deserialize(element)
 
-        # Parse auth_data
-        child = SerializationHelper.find_child_element(element, "AUTH-DATA")
-        if child is not None:
-            auth_data_value = child.text
-            obj.auth_data = auth_data_value
-
-        # Parse authentication
-        child = SerializationHelper.find_child_element(element, "AUTHENTICATION")
-        if child is not None:
-            authentication_value = child.text
-            obj.authentication = authentication_value
-
-        # Parse data_id
-        child = SerializationHelper.find_child_element(element, "DATA-ID")
-        if child is not None:
-            data_id_value = child.text
-            obj.data_id = data_id_value
-
-        # Parse freshness_value
-        child = SerializationHelper.find_child_element(element, "FRESHNESS-VALUE")
-        if child is not None:
-            freshness_value_value = child.text
-            obj.freshness_value = freshness_value_value
-
-        # Parse message_link
-        child = SerializationHelper.find_child_element(element, "MESSAGE-LINK")
-        if child is not None:
-            message_link_value = child.text
-            obj.message_link = message_link_value
-
-        # Parse secondary
-        child = SerializationHelper.find_child_element(element, "SECONDARY")
-        if child is not None:
-            secondary_value = child.text
-            obj.secondary = secondary_value
-
-        # Parse secured_area
-        child = SerializationHelper.find_child_element(element, "SECURED-AREA")
-        if child is not None:
-            secured_area_value = child.text
-            obj.secured_area = secured_area_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "AUTH-DATA":
+                setattr(obj, "auth_data", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "AUTHENTICATION":
+                setattr(obj, "authentication", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "DATA-ID":
+                setattr(obj, "data_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "FRESHNESS-VALUE":
+                setattr(obj, "freshness_value", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MESSAGE-LINK":
+                setattr(obj, "message_link", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SECONDARY":
+                setattr(obj, "secondary", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SECURED-AREA":
+                setattr(obj, "secured_area", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

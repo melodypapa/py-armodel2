@@ -37,8 +37,17 @@ class PduActivationRoutingGroup(Identifiable):
         """
         return False
 
+    _XML_TAG = "PDU-ACTIVATION-ROUTING-GROUP"
+
+
     event_group_ref: Optional[EventGroupControlTypeEnum]
     i_pdu_identifier_refs: list[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-GROUP-REF": lambda obj, elem: setattr(obj, "event_group_ref", EventGroupControlTypeEnum.deserialize(elem)),
+        "I-PDU-IDENTIFIER-REFS": lambda obj, elem: [obj.i_pdu_identifier_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+    }
+
+
     def __init__(self) -> None:
         """Initialize PduActivationRoutingGroup."""
         super().__init__()
@@ -51,9 +60,8 @@ class PduActivationRoutingGroup(Identifiable):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(PduActivationRoutingGroup, self).serialize()
@@ -115,27 +123,16 @@ class PduActivationRoutingGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PduActivationRoutingGroup, cls).deserialize(element)
 
-        # Parse event_group_ref
-        child = SerializationHelper.find_child_element(element, "EVENT-GROUP-REF")
-        if child is not None:
-            event_group_ref_value = ARRef.deserialize(child)
-            obj.event_group_ref = event_group_ref_value
-
-        # Parse i_pdu_identifier_refs (list from container "I-PDU-IDENTIFIER-REFS")
-        obj.i_pdu_identifier_refs = []
-        container = SerializationHelper.find_child_element(element, "I-PDU-IDENTIFIER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.i_pdu_identifier_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EVENT-GROUP-REF":
+                setattr(obj, "event_group_ref", EventGroupControlTypeEnum.deserialize(child))
+            elif tag == "I-PDU-IDENTIFIER-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.i_pdu_identifier_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -33,7 +33,15 @@ class MultiLanguageOverviewParagraph(ARObject):
         """
         return False
 
+    _XML_TAG = "MULTI-LANGUAGE-OVERVIEW-PARAGRAPH"
+
+
     _l2: list[LOverviewParagraph]
+    _DESERIALIZE_DISPATCH = {
+        "L2": lambda obj, elem: obj._l2.append(SerializationHelper.deserialize_by_tag(elem, "LOverviewParagraph")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize MultiLanguageOverviewParagraph."""
         super().__init__()
@@ -56,9 +64,8 @@ class MultiLanguageOverviewParagraph(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(MultiLanguageOverviewParagraph, self).serialize()
@@ -103,11 +110,15 @@ class MultiLanguageOverviewParagraph(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MultiLanguageOverviewParagraph, cls).deserialize(element)
 
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+
         # Parse l2 (list with lang_prefix "L-2")
-        obj.l2 = []
         for child in SerializationHelper.find_all_child_elements(element, "L-2"):
-            l2_value = SerializationHelper.deserialize_by_tag(child, "LOverviewParagraph")
-            obj.l2.append(l2_value)
+            l2_item = SerializationHelper.deserialize_by_tag(child, "LOverviewParagraph")
+            obj._l2.append(l2_item)
 
         return obj
 

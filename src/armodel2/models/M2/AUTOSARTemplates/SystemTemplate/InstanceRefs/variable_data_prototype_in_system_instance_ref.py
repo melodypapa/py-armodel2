@@ -42,11 +42,23 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
         """
         return False
 
+    _XML_TAG = "VARIABLE-DATA-PROTOTYPE-IN-SYSTEM-INSTANCE-REF"
+
+
     base_ref: Optional[ARRef]
     context_component_ref: Optional[ARRef]
     context_composition_ref: Optional[ARRef]
     context_port_ref: ARRef
     target_data_prototype_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
+        "CONTEXT-COMPONENT-REF": lambda obj, elem: setattr(obj, "context_component_ref", ARRef.deserialize(elem)),
+        "CONTEXT-COMPOSITION-REF": lambda obj, elem: setattr(obj, "context_composition_ref", ARRef.deserialize(elem)),
+        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "TARGET-DATA-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "target_data_prototype_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize VariableDataPrototypeInSystemInstanceRef."""
         super().__init__()
@@ -62,9 +74,8 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(VariableDataPrototypeInSystemInstanceRef, self).serialize()
@@ -165,35 +176,20 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(VariableDataPrototypeInSystemInstanceRef, cls).deserialize(element)
 
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse context_component_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-COMPONENT-REF")
-        if child is not None:
-            context_component_ref_value = ARRef.deserialize(child)
-            obj.context_component_ref = context_component_ref_value
-
-        # Parse context_composition_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-COMPOSITION-REF")
-        if child is not None:
-            context_composition_ref_value = ARRef.deserialize(child)
-            obj.context_composition_ref = context_composition_ref_value
-
-        # Parse context_port_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-PORT-REF")
-        if child is not None:
-            context_port_ref_value = ARRef.deserialize(child)
-            obj.context_port_ref = context_port_ref_value
-
-        # Parse target_data_prototype_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-DATA-PROTOTYPE-REF")
-        if child is not None:
-            target_data_prototype_ref_value = ARRef.deserialize(child)
-            obj.target_data_prototype_ref = target_data_prototype_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "BASE-REF":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-COMPONENT-REF":
+                setattr(obj, "context_component_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-COMPOSITION-REF":
+                setattr(obj, "context_composition_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-PORT-REF":
+                setattr(obj, "context_port_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-DATA-PROTOTYPE-REF":
+                setattr(obj, "target_data_prototype_ref", ARRef.deserialize(child))
 
         return obj
 

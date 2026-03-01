@@ -49,12 +49,25 @@ class EcucModuleConfigurationValues(ARElement):
         """
         return False
 
+    _XML_TAG = "ECUC-MODULE-CONFIGURATION-VALUES"
+
+
     containers: list[EcucContainerValue]
     definition_ref: Optional[ARRef]
     ecuc_def_edition: Optional[RevisionLabelString]
     implementation: Optional[Any]
     module_ref: Optional[ARRef]
     post_build_variant: Optional[Boolean]
+    _DESERIALIZE_DISPATCH = {
+        "CONTAINERS": lambda obj, elem: obj.containers.append(SerializationHelper.deserialize_by_tag(elem, "EcucContainerValue")),
+        "DEFINITION-REF": lambda obj, elem: setattr(obj, "definition_ref", ARRef.deserialize(elem)),
+        "ECUC-DEF-EDITION": lambda obj, elem: setattr(obj, "ecuc_def_edition", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
+        "IMPLEMENTATION": lambda obj, elem: setattr(obj, "implementation", SerializationHelper.deserialize_by_tag(elem, "any (EcucConfiguration)")),
+        "MODULE-REF": lambda obj, elem: setattr(obj, "module_ref", ARRef.deserialize(elem)),
+        "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EcucModuleConfigurationValues."""
         super().__init__()
@@ -71,9 +84,8 @@ class EcucModuleConfigurationValues(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EcucModuleConfigurationValues, self).serialize()
@@ -184,45 +196,24 @@ class EcucModuleConfigurationValues(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucModuleConfigurationValues, cls).deserialize(element)
 
-        # Parse containers (list from container "CONTAINERS")
-        obj.containers = []
-        container = SerializationHelper.find_child_element(element, "CONTAINERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.containers.append(child_value)
-
-        # Parse definition_ref
-        child = SerializationHelper.find_child_element(element, "DEFINITION-REF")
-        if child is not None:
-            definition_ref_value = ARRef.deserialize(child)
-            obj.definition_ref = definition_ref_value
-
-        # Parse ecuc_def_edition
-        child = SerializationHelper.find_child_element(element, "ECUC-DEF-EDITION")
-        if child is not None:
-            ecuc_def_edition_value = child.text
-            obj.ecuc_def_edition = ecuc_def_edition_value
-
-        # Parse implementation
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION")
-        if child is not None:
-            implementation_value = child.text
-            obj.implementation = implementation_value
-
-        # Parse module_ref
-        child = SerializationHelper.find_child_element(element, "MODULE-REF")
-        if child is not None:
-            module_ref_value = ARRef.deserialize(child)
-            obj.module_ref = module_ref_value
-
-        # Parse post_build_variant
-        child = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANT")
-        if child is not None:
-            post_build_variant_value = child.text
-            obj.post_build_variant = post_build_variant_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CONTAINERS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.containers.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucContainerValue"))
+            elif tag == "DEFINITION-REF":
+                setattr(obj, "definition_ref", ARRef.deserialize(child))
+            elif tag == "ECUC-DEF-EDITION":
+                setattr(obj, "ecuc_def_edition", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
+            elif tag == "IMPLEMENTATION":
+                setattr(obj, "implementation", SerializationHelper.deserialize_by_tag(child, "any (EcucConfiguration)"))
+            elif tag == "MODULE-REF":
+                setattr(obj, "module_ref", ARRef.deserialize(child))
+            elif tag == "POST-BUILD-VARIANT":
+                setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

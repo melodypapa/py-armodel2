@@ -35,8 +35,17 @@ class TopicOrMsrQuery(ARObject):
         """
         return False
 
+    _XML_TAG = "TOPIC-OR-MSR-QUERY"
+
+
     msr_query: MsrQueryTopic1
     topic1: Topic1
+    _DESERIALIZE_DISPATCH = {
+        "MSR-QUERY": lambda obj, elem: setattr(obj, "msr_query", SerializationHelper.deserialize_by_tag(elem, "MsrQueryTopic1")),
+        "TOPIC1": lambda obj, elem: setattr(obj, "topic1", SerializationHelper.deserialize_by_tag(elem, "Topic1")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TopicOrMsrQuery."""
         super().__init__()

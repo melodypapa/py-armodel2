@@ -33,7 +33,15 @@ class TlvDataIdDefinitionSet(ARElement):
         """
         return False
 
+    _XML_TAG = "TLV-DATA-ID-DEFINITION-SET"
+
+
     tlv_data_ids: list[TlvDataIdDefinition]
+    _DESERIALIZE_DISPATCH = {
+        "TLV-DATA-IDS": lambda obj, elem: obj.tlv_data_ids.append(SerializationHelper.deserialize_by_tag(elem, "TlvDataIdDefinition")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TlvDataIdDefinitionSet."""
         super().__init__()
@@ -45,9 +53,8 @@ class TlvDataIdDefinitionSet(ARElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TlvDataIdDefinitionSet, self).serialize()
@@ -88,15 +95,14 @@ class TlvDataIdDefinitionSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TlvDataIdDefinitionSet, cls).deserialize(element)
 
-        # Parse tlv_data_ids (list from container "TLV-DATA-IDS")
-        obj.tlv_data_ids = []
-        container = SerializationHelper.find_child_element(element, "TLV-DATA-IDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tlv_data_ids.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TLV-DATA-IDS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.tlv_data_ids.append(SerializationHelper.deserialize_by_tag(item_elem, "TlvDataIdDefinition"))
 
         return obj
 

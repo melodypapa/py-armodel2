@@ -43,6 +43,11 @@ class DataPrototype(Identifiable, ABC):
         return True
 
     sw_data_def_props: Optional[SwDataDefProps]
+    _DESERIALIZE_DISPATCH = {
+        "SW-DATA-DEF-PROPS": lambda obj, elem: setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DataPrototype."""
         super().__init__()
@@ -54,9 +59,8 @@ class DataPrototype(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DataPrototype, self).serialize()
@@ -101,11 +105,12 @@ class DataPrototype(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototype, cls).deserialize(element)
 
-        # Parse sw_data_def_props
-        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF-PROPS")
-        if child is not None:
-            sw_data_def_props_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.sw_data_def_props = sw_data_def_props_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "SW-DATA-DEF-PROPS":
+                setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
         return obj
 

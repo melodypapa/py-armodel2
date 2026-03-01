@@ -35,7 +35,15 @@ class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-ROUTINE-NEEDS"
+
+
     diag_routine: Optional[DiagnosticRoutineTypeEnum]
+    _DESERIALIZE_DISPATCH = {
+        "DIAG-ROUTINE": lambda obj, elem: setattr(obj, "diag_routine", DiagnosticRoutineTypeEnum.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticRoutineNeeds."""
         super().__init__()
@@ -47,9 +55,8 @@ class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticRoutineNeeds, self).serialize()
@@ -94,11 +101,12 @@ class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRoutineNeeds, cls).deserialize(element)
 
-        # Parse diag_routine
-        child = SerializationHelper.find_child_element(element, "DIAG-ROUTINE")
-        if child is not None:
-            diag_routine_value = DiagnosticRoutineTypeEnum.deserialize(child)
-            obj.diag_routine = diag_routine_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "DIAG-ROUTINE":
+                setattr(obj, "diag_routine", DiagnosticRoutineTypeEnum.deserialize(child))
 
         return obj
 

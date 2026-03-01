@@ -30,7 +30,15 @@ class DiagnosticOperationCycle(DiagnosticCommonElement):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-OPERATION-CYCLE"
+
+
     type_cycle_type_enum: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "TYPE-CYCLE-TYPE-ENUM": lambda obj, elem: setattr(obj, "type_cycle_type_enum", SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticOperation)")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticOperationCycle."""
         super().__init__()
@@ -42,9 +50,8 @@ class DiagnosticOperationCycle(DiagnosticCommonElement):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticOperationCycle, self).serialize()
@@ -89,11 +96,12 @@ class DiagnosticOperationCycle(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticOperationCycle, cls).deserialize(element)
 
-        # Parse type_cycle_type_enum
-        child = SerializationHelper.find_child_element(element, "TYPE-CYCLE-TYPE-ENUM")
-        if child is not None:
-            type_cycle_type_enum_value = child.text
-            obj.type_cycle_type_enum = type_cycle_type_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "TYPE-CYCLE-TYPE-ENUM":
+                setattr(obj, "type_cycle_type_enum", SerializationHelper.deserialize_by_tag(child, "any (DiagnosticOperation)"))
 
         return obj
 

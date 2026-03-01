@@ -31,7 +31,15 @@ class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-CUSTOM-SERVICE-INSTANCE"
+
+
     custom_service_ref: Optional[Any]
+    _DESERIALIZE_DISPATCH = {
+        "CUSTOM-SERVICE-REF": lambda obj, elem: setattr(obj, "custom_service_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticCustomServiceInstance."""
         super().__init__()
@@ -43,9 +51,8 @@ class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticCustomServiceInstance, self).serialize()
@@ -90,11 +97,12 @@ class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticCustomServiceInstance, cls).deserialize(element)
 
-        # Parse custom_service_ref
-        child = SerializationHelper.find_child_element(element, "CUSTOM-SERVICE-REF")
-        if child is not None:
-            custom_service_ref_value = ARRef.deserialize(child)
-            obj.custom_service_ref = custom_service_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "CUSTOM-SERVICE-REF":
+                setattr(obj, "custom_service_ref", ARRef.deserialize(child))
 
         return obj
 

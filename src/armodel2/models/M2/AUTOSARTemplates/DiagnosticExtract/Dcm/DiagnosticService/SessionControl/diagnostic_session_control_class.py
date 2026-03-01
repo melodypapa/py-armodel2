@@ -33,7 +33,15 @@ class DiagnosticSessionControlClass(DiagnosticServiceClass):
         """
         return False
 
+    _XML_TAG = "DIAGNOSTIC-SESSION-CONTROL-CLASS"
+
+
     s3_server: Optional[TimeValue]
+    _DESERIALIZE_DISPATCH = {
+        "S3-SERVER": lambda obj, elem: setattr(obj, "s3_server", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize DiagnosticSessionControlClass."""
         super().__init__()
@@ -45,9 +53,8 @@ class DiagnosticSessionControlClass(DiagnosticServiceClass):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagnosticSessionControlClass, self).serialize()
@@ -92,11 +99,12 @@ class DiagnosticSessionControlClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSessionControlClass, cls).deserialize(element)
 
-        # Parse s3_server
-        child = SerializationHelper.find_child_element(element, "S3-SERVER")
-        if child is not None:
-            s3_server_value = child.text
-            obj.s3_server = s3_server_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "S3-SERVER":
+                setattr(obj, "s3_server", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

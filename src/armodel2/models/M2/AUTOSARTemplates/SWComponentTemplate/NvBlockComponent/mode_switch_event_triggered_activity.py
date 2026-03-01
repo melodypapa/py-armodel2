@@ -33,8 +33,17 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         """
         return False
 
+    _XML_TAG = "MODE-SWITCH-EVENT-TRIGGERED-ACTIVITY"
+
+
     role: Optional[Identifier]
     swc_mode_switch_event_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "SWC-MODE-SWITCH-EVENT-REF": lambda obj, elem: setattr(obj, "swc_mode_switch_event_ref", ARRef.deserialize(elem)),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ModeSwitchEventTriggeredActivity."""
         super().__init__()
@@ -47,9 +56,8 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ModeSwitchEventTriggeredActivity, self).serialize()
@@ -108,17 +116,14 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeSwitchEventTriggeredActivity, cls).deserialize(element)
 
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
-
-        # Parse swc_mode_switch_event_ref
-        child = SerializationHelper.find_child_element(element, "SWC-MODE-SWITCH-EVENT-REF")
-        if child is not None:
-            swc_mode_switch_event_ref_value = ARRef.deserialize(child)
-            obj.swc_mode_switch_event_ref = swc_mode_switch_event_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "SWC-MODE-SWITCH-EVENT-REF":
+                setattr(obj, "swc_mode_switch_event_ref", ARRef.deserialize(child))
 
         return obj
 

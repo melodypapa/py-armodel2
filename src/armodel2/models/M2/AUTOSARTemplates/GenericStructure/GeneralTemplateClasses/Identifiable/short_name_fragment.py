@@ -30,8 +30,17 @@ class ShortNameFragment(ARObject):
         """
         return False
 
+    _XML_TAG = "SHORT-NAME-FRAGMENT"
+
+
     fragment: Identifier
     role: String
+    _DESERIALIZE_DISPATCH = {
+        "FRAGMENT": lambda obj, elem: setattr(obj, "fragment", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "String")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ShortNameFragment."""
         super().__init__()
@@ -44,9 +53,8 @@ class ShortNameFragment(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ShortNameFragment, self).serialize()
@@ -105,17 +113,14 @@ class ShortNameFragment(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ShortNameFragment, cls).deserialize(element)
 
-        # Parse fragment
-        child = SerializationHelper.find_child_element(element, "FRAGMENT")
-        if child is not None:
-            fragment_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.fragment = fragment_value
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = child.text
-            obj.role = role_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "FRAGMENT":
+                setattr(obj, "fragment", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

@@ -36,6 +36,11 @@ class EventTriggeringConstraint(TimingConstraint, ABC):
         return True
 
     event_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "EVENT-REF": ("_POLYMORPHIC", "event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize EventTriggeringConstraint."""
         super().__init__()
@@ -47,9 +52,8 @@ class EventTriggeringConstraint(TimingConstraint, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(EventTriggeringConstraint, self).serialize()
@@ -94,11 +98,12 @@ class EventTriggeringConstraint(TimingConstraint, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EventTriggeringConstraint, cls).deserialize(element)
 
-        # Parse event_ref
-        child = SerializationHelper.find_child_element(element, "EVENT-REF")
-        if child is not None:
-            event_ref_value = ARRef.deserialize(child)
-            obj.event_ref = event_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EVENT-REF":
+                setattr(obj, "event_ref", ARRef.deserialize(child))
 
         return obj
 

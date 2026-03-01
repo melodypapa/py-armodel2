@@ -37,10 +37,21 @@ class TimingDescriptionEventChain(TimingDescription):
         """
         return False
 
+    _XML_TAG = "TIMING-DESCRIPTION-EVENT-CHAIN"
+
+
     is_pipelining: Optional[Boolean]
     response_ref: Optional[ARRef]
     segment_refs: list[ARRef]
     stimulus_ref: Optional[ARRef]
+    _DESERIALIZE_DISPATCH = {
+        "IS-PIPELINING": lambda obj, elem: setattr(obj, "is_pipelining", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RESPONSE-REF": ("_POLYMORPHIC", "response_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "SEGMENT-REFS": ("_POLYMORPHIC_LIST", "segment_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "STIMULUS-REF": ("_POLYMORPHIC", "stimulus_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+    }
+
+
     def __init__(self) -> None:
         """Initialize TimingDescriptionEventChain."""
         super().__init__()
@@ -55,9 +66,8 @@ class TimingDescriptionEventChain(TimingDescription):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(TimingDescriptionEventChain, self).serialize()
@@ -147,39 +157,19 @@ class TimingDescriptionEventChain(TimingDescription):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingDescriptionEventChain, cls).deserialize(element)
 
-        # Parse is_pipelining
-        child = SerializationHelper.find_child_element(element, "IS-PIPELINING")
-        if child is not None:
-            is_pipelining_value = child.text
-            obj.is_pipelining = is_pipelining_value
-
-        # Parse response_ref
-        child = SerializationHelper.find_child_element(element, "RESPONSE-REF")
-        if child is not None:
-            response_ref_value = ARRef.deserialize(child)
-            obj.response_ref = response_ref_value
-
-        # Parse segment_refs (list from container "SEGMENT-REFS")
-        obj.segment_refs = []
-        container = SerializationHelper.find_child_element(element, "SEGMENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.segment_refs.append(child_value)
-
-        # Parse stimulus_ref
-        child = SerializationHelper.find_child_element(element, "STIMULUS-REF")
-        if child is not None:
-            stimulus_ref_value = ARRef.deserialize(child)
-            obj.stimulus_ref = stimulus_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "IS-PIPELINING":
+                setattr(obj, "is_pipelining", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RESPONSE-REF":
+                setattr(obj, "response_ref", ARRef.deserialize(child))
+            elif tag == "SEGMENT-REFS":
+                for item_elem in child:
+                    obj.segment_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "STIMULUS-REF":
+                setattr(obj, "stimulus_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -32,6 +32,9 @@ class DiagEventDebounceMonitorInternal(DiagEventDebounceAlgorithm):
         """
         return False
 
+    _XML_TAG = "DIAG-EVENT-DEBOUNCE-MONITOR-INTERNAL"
+
+
     def __init__(self) -> None:
         """Initialize DiagEventDebounceMonitorInternal."""
         super().__init__()
@@ -42,9 +45,8 @@ class DiagEventDebounceMonitorInternal(DiagEventDebounceAlgorithm):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(DiagEventDebounceMonitorInternal, self).serialize()

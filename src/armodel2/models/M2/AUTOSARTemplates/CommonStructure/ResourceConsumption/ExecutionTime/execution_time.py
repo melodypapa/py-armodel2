@@ -61,6 +61,17 @@ class ExecutionTime(Identifiable, ABC):
     included_library_refs: list[ARRef]
     memory_section_locations: list[MemorySectionLocation]
     software_context: Optional[SoftwareContext]
+    _DESERIALIZE_DISPATCH = {
+        "EXCLUSIVE-AREA-REF": lambda obj, elem: setattr(obj, "exclusive_area_ref", ARRef.deserialize(elem)),
+        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswModuleEntity", "RunnableEntity"]),
+        "HARDWARE": lambda obj, elem: setattr(obj, "hardware", SerializationHelper.deserialize_by_tag(elem, "HardwareConfiguration")),
+        "HW-ELEMENT-REF": lambda obj, elem: setattr(obj, "hw_element_ref", ARRef.deserialize(elem)),
+        "INCLUDED-LIBRARY-REFS": lambda obj, elem: [obj.included_library_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "MEMORY-SECTION-LOCATIONS": lambda obj, elem: obj.memory_section_locations.append(SerializationHelper.deserialize_by_tag(elem, "MemorySectionLocation")),
+        "SOFTWARE-CONTEXT": lambda obj, elem: setattr(obj, "software_context", SerializationHelper.deserialize_by_tag(elem, "SoftwareContext")),
+    }
+
+
     def __init__(self) -> None:
         """Initialize ExecutionTime."""
         super().__init__()
@@ -78,9 +89,8 @@ class ExecutionTime(Identifiable, ABC):
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Use pre-computed _XML_TAG constant
+        elem = ET.Element(self._XML_TAG)
 
         # First, call parent's serialize to handle inherited attributes
         parent_elem = super(ExecutionTime, self).serialize()
@@ -208,61 +218,28 @@ class ExecutionTime(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ExecutionTime, cls).deserialize(element)
 
-        # Parse exclusive_area_ref
-        child = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-REF")
-        if child is not None:
-            exclusive_area_ref_value = ARRef.deserialize(child)
-            obj.exclusive_area_ref = exclusive_area_ref_value
-
-        # Parse executable_entity_ref
-        child = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITY-REF")
-        if child is not None:
-            executable_entity_ref_value = ARRef.deserialize(child)
-            obj.executable_entity_ref = executable_entity_ref_value
-
-        # Parse hardware
-        child = SerializationHelper.find_child_element(element, "HARDWARE")
-        if child is not None:
-            hardware_value = SerializationHelper.deserialize_by_tag(child, "HardwareConfiguration")
-            obj.hardware = hardware_value
-
-        # Parse hw_element_ref
-        child = SerializationHelper.find_child_element(element, "HW-ELEMENT-REF")
-        if child is not None:
-            hw_element_ref_value = ARRef.deserialize(child)
-            obj.hw_element_ref = hw_element_ref_value
-
-        # Parse included_library_refs (list from container "INCLUDED-LIBRARY-REFS")
-        obj.included_library_refs = []
-        container = SerializationHelper.find_child_element(element, "INCLUDED-LIBRARY-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.included_library_refs.append(child_value)
-
-        # Parse memory_section_locations (list from container "MEMORY-SECTION-LOCATIONS")
-        obj.memory_section_locations = []
-        container = SerializationHelper.find_child_element(element, "MEMORY-SECTION-LOCATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.memory_section_locations.append(child_value)
-
-        # Parse software_context
-        child = SerializationHelper.find_child_element(element, "SOFTWARE-CONTEXT")
-        if child is not None:
-            software_context_value = SerializationHelper.deserialize_by_tag(child, "SoftwareContext")
-            obj.software_context = software_context_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            if tag == "EXCLUSIVE-AREA-REF":
+                setattr(obj, "exclusive_area_ref", ARRef.deserialize(child))
+            elif tag == "EXECUTABLE-ENTITY-REF":
+                setattr(obj, "executable_entity_ref", ARRef.deserialize(child))
+            elif tag == "HARDWARE":
+                setattr(obj, "hardware", SerializationHelper.deserialize_by_tag(child, "HardwareConfiguration"))
+            elif tag == "HW-ELEMENT-REF":
+                setattr(obj, "hw_element_ref", ARRef.deserialize(child))
+            elif tag == "INCLUDED-LIBRARY-REFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.included_library_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "MEMORY-SECTION-LOCATIONS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.memory_section_locations.append(SerializationHelper.deserialize_by_tag(item_elem, "MemorySectionLocation"))
+            elif tag == "SOFTWARE-CONTEXT":
+                setattr(obj, "software_context", SerializationHelper.deserialize_by_tag(child, "SoftwareContext"))
 
         return obj
 
