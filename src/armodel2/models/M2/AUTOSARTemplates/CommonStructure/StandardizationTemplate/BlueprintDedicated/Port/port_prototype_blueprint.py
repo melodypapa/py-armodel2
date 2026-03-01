@@ -53,8 +53,8 @@ class PortPrototypeBlueprint(ARElement):
     _DESERIALIZE_DISPATCH = {
         "INIT-VALUE-REFS": lambda obj, elem: [obj._init_value_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "INTERFACE-REF": ("_POLYMORPHIC", "interface_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "NvDataInterface", "ParameterInterface", "SenderReceiverInterface", "TriggerInterface"]),
-        "PROVIDED-COMS": ("_POLYMORPHIC_LIST", "provided_coms", ["ModeSwitchSenderComSpec", "NonqueuedSenderComSpec", "NvProvideComSpec", "ParameterProvideComSpec", "QueuedSenderComSpec", "SenderComSpec"]),
-        "REQUIRED-COMS": ("_POLYMORPHIC_LIST", "required_coms", ["ClientComSpec", "ModeSwitchReceiverComSpec", "NvRequireComSpec", "ParameterRequireComSpec"]),
+        "PROVIDED-COMS": ("_POLYMORPHIC_LIST", "provided_coms", ["ModeSwitchSenderComSpec", "NonqueuedSenderComSpec", "NvProvideComSpec", "ParameterProvideComSpec", "QueuedSenderComSpec", "SenderComSpec", "ServerComSpec"]),
+        "REQUIRED-COMS": ("_POLYMORPHIC_LIST", "required_coms", ["ClientComSpec", "ModeSwitchReceiverComSpec", "NonqueuedReceiverComSpec", "NvRequireComSpec", "ParameterRequireComSpec", "QueuedReceiverComSpec"]),
     }
 
 
@@ -192,6 +192,8 @@ class PortPrototypeBlueprint(ARElement):
                         obj.provided_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "QueuedSenderComSpec"))
                     elif concrete_tag == "SENDER-COM-SPEC":
                         obj.provided_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderComSpec"))
+                    elif concrete_tag == "SERVER-COM-SPEC":
+                        obj.provided_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "ServerComSpec"))
             elif tag == "REQUIRED-COMS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
@@ -200,10 +202,14 @@ class PortPrototypeBlueprint(ARElement):
                         obj.required_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientComSpec"))
                     elif concrete_tag == "MODE-SWITCH-RECEIVER-COM-SPEC":
                         obj.required_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchReceiverComSpec"))
+                    elif concrete_tag == "NONQUEUED-RECEIVER-COM-SPEC":
+                        obj.required_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "NonqueuedReceiverComSpec"))
                     elif concrete_tag == "NV-REQUIRE-COM-SPEC":
                         obj.required_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "NvRequireComSpec"))
                     elif concrete_tag == "PARAMETER-REQUIRE-COM-SPEC":
                         obj.required_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterRequireComSpec"))
+                    elif concrete_tag == "QUEUED-RECEIVER-COM-SPEC":
+                        obj.required_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "QueuedReceiverComSpec"))
 
         return obj
 

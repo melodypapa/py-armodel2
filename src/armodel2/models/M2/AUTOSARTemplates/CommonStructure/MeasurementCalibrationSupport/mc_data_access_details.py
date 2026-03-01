@@ -42,7 +42,7 @@ class McDataAccessDetails(ARObject):
     variable_accesses: list[VariableAccess]
     _DESERIALIZE_DISPATCH = {
         "RTE-EVENT-REFS": ("_POLYMORPHIC_LIST", "rte_event_refs", ["AsynchronousServerCallReturnsEvent", "BackgroundEvent", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "ExternalTriggerOccurredEvent", "InitEvent", "InternalTriggerOccurredEvent", "ModeSwitchedAckEvent", "OperationInvokedEvent", "OsTaskExecutionEvent", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "TimingEvent", "TransformerHardErrorEvent"]),
-        "VARIABLE-ACCESSES": lambda obj, elem: obj.variable_accesses.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "VARIABLE-ACCESSS": lambda obj, elem: obj.variable_accesses.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
     }
 
 
@@ -85,9 +85,9 @@ class McDataAccessDetails(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize variable_accesses (list to container "VARIABLE-ACCESSES")
+        # Serialize variable_accesses (list to container "VARIABLE-ACCESSS")
         if self.variable_accesses:
-            wrapper = ET.Element("VARIABLE-ACCESSES")
+            wrapper = ET.Element("VARIABLE-ACCESSS")
             for item in self.variable_accesses:
                 serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
@@ -150,7 +150,7 @@ class McDataAccessDetails(ARObject):
                         obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingEvent"))
                     elif concrete_tag == "TRANSFORMER-HARD-ERROR-EVENT":
                         obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "TransformerHardErrorEvent"))
-            elif tag == "VARIABLE-ACCESSES":
+            elif tag == "VARIABLE-ACCESSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.variable_accesses.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))

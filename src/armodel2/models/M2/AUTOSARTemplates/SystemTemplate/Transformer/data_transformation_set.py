@@ -43,7 +43,7 @@ class DataTransformationSet(ARElement):
     transformation_technologies: list[TransformationTechnology]
     _DESERIALIZE_DISPATCH = {
         "DATAS": lambda obj, elem: obj.datas.append(SerializationHelper.deserialize_by_tag(elem, "DataTransformation")),
-        "TRANSFORMATION-TECHNOLOGIES": lambda obj, elem: obj.transformation_technologies.append(SerializationHelper.deserialize_by_tag(elem, "TransformationTechnology")),
+        "TRANSFORMATION-TECHNOLOGYS": lambda obj, elem: obj.transformation_technologies.append(SerializationHelper.deserialize_by_tag(elem, "TransformationTechnology")),
     }
 
 
@@ -86,9 +86,9 @@ class DataTransformationSet(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize transformation_technologies (list to container "TRANSFORMATION-TECHNOLOGIES")
+        # Serialize transformation_technologies (list to container "TRANSFORMATION-TECHNOLOGYS")
         if self.transformation_technologies:
-            wrapper = ET.Element("TRANSFORMATION-TECHNOLOGIES")
+            wrapper = ET.Element("TRANSFORMATION-TECHNOLOGYS")
             for item in self.transformation_technologies:
                 serialized = SerializationHelper.serialize_item(item, "TransformationTechnology")
                 if serialized is not None:
@@ -119,7 +119,7 @@ class DataTransformationSet(ARElement):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.datas.append(SerializationHelper.deserialize_by_tag(item_elem, "DataTransformation"))
-            elif tag == "TRANSFORMATION-TECHNOLOGIES":
+            elif tag == "TRANSFORMATION-TECHNOLOGYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.transformation_technologies.append(SerializationHelper.deserialize_by_tag(item_elem, "TransformationTechnology"))

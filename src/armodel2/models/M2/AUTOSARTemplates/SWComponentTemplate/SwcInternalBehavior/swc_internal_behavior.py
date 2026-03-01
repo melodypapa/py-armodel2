@@ -101,23 +101,23 @@ class SwcInternalBehavior(InternalBehavior):
     support_multiple_instantiations: Optional[Boolean]
     variation_point_proxies: list[VariationPointProxy]
     _DESERIALIZE_DISPATCH = {
-        "AR-TYPED-PER-INSTANCE-MEMORIES": lambda obj, elem: obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
+        "AR-TYPED-PER-INSTANCE-MEMORYS": lambda obj, elem: obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
         "EVENTS": ("_POLYMORPHIC_LIST", "events", ["AsynchronousServerCallReturnsEvent", "BackgroundEvent", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "ExternalTriggerOccurredEvent", "InitEvent", "InternalTriggerOccurredEvent", "ModeSwitchedAckEvent", "OperationInvokedEvent", "OsTaskExecutionEvent", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "TimingEvent", "TransformerHardErrorEvent"]),
-        "EXCLUSIVE-AREA-POLICIES": lambda obj, elem: obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(elem, "SwcExclusiveAreaPolicy")),
+        "EXCLUSIVE-AREA-POLICYS": lambda obj, elem: obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(elem, "SwcExclusiveAreaPolicy")),
         "EXPLICIT-INTER-RUNNABLE-VARIABLES": lambda obj, elem: obj.explicit_inter_runnable_variables.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
         "HANDLE-TERMINATION-AND-RESTART": lambda obj, elem: setattr(obj, "handle_termination_and_restart", HandleTerminationAndRestartEnum.deserialize(elem)),
         "IMPLICIT-INTER-RUNNABLE-VARIABLES": lambda obj, elem: obj.implicit_inter_runnable_variables.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
         "INCLUDED-DATA-TYPE-SETS": lambda obj, elem: obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedDataTypeSet")),
         "INCLUDED-MODE-DECLARATION-GROUP-SETS": lambda obj, elem: obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedModeDeclarationGroupSet")),
         "INSTANTIATION-DATA-DEF-PROPS": lambda obj, elem: obj.instantiation_data_def_props.append(SerializationHelper.deserialize_by_tag(elem, "InstantiationDataDefProps")),
-        "PER-INSTANCE-MEMORIES": lambda obj, elem: obj.per_instance_memories.append(SerializationHelper.deserialize_by_tag(elem, "PerInstanceMemory")),
+        "PER-INSTANCE-MEMORYS": lambda obj, elem: obj.per_instance_memories.append(SerializationHelper.deserialize_by_tag(elem, "PerInstanceMemory")),
         "PER-INSTANCE-PARAMETERS": lambda obj, elem: obj.per_instance_parameters.append(SerializationHelper.deserialize_by_tag(elem, "ParameterDataPrototype")),
         "PORT-API-OPTIONS": lambda obj, elem: obj.port_api_options.append(SerializationHelper.deserialize_by_tag(elem, "PortAPIOption")),
         "RUNNABLES": lambda obj, elem: obj.runnables.append(SerializationHelper.deserialize_by_tag(elem, "RunnableEntity")),
-        "SERVICE-DEPENDENCIES": lambda obj, elem: obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "SwcServiceDependency")),
+        "SERVICE-DEPENDENCYS": lambda obj, elem: obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "SwcServiceDependency")),
         "SHARED-PARAMETERS": lambda obj, elem: obj.shared_parameters.append(SerializationHelper.deserialize_by_tag(elem, "ParameterDataPrototype")),
         "SUPPORT-MULTIPLE-INSTANTIATIONS": lambda obj, elem: setattr(obj, "support_multiple_instantiations", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "VARIATION-POINT-PROXIES": lambda obj, elem: obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(elem, "VariationPointProxy")),
+        "VARIATION-POINT-PROXYS": lambda obj, elem: obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(elem, "VariationPointProxy")),
     }
 
 
@@ -165,9 +165,9 @@ class SwcInternalBehavior(InternalBehavior):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ar_typed_per_instance_memories (list to container "AR-TYPED-PER-INSTANCE-MEMORIES")
+        # Serialize ar_typed_per_instance_memories (list to container "AR-TYPED-PER-INSTANCE-MEMORYS")
         if self.ar_typed_per_instance_memories:
-            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORIES")
+            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORYS")
             for item in self.ar_typed_per_instance_memories:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
@@ -185,9 +185,9 @@ class SwcInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize exclusive_area_policies (list to container "EXCLUSIVE-AREA-POLICIES")
+        # Serialize exclusive_area_policies (list to container "EXCLUSIVE-AREA-POLICYS")
         if self.exclusive_area_policies:
-            wrapper = ET.Element("EXCLUSIVE-AREA-POLICIES")
+            wrapper = ET.Element("EXCLUSIVE-AREA-POLICYS")
             for item in self.exclusive_area_policies:
                 serialized = SerializationHelper.serialize_item(item, "SwcExclusiveAreaPolicy")
                 if serialized is not None:
@@ -259,9 +259,9 @@ class SwcInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize per_instance_memories (list to container "PER-INSTANCE-MEMORIES")
+        # Serialize per_instance_memories (list to container "PER-INSTANCE-MEMORYS")
         if self.per_instance_memories:
-            wrapper = ET.Element("PER-INSTANCE-MEMORIES")
+            wrapper = ET.Element("PER-INSTANCE-MEMORYS")
             for item in self.per_instance_memories:
                 serialized = SerializationHelper.serialize_item(item, "PerInstanceMemory")
                 if serialized is not None:
@@ -299,9 +299,9 @@ class SwcInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize service_dependencies (list to container "SERVICE-DEPENDENCIES")
+        # Serialize service_dependencies (list to container "SERVICE-DEPENDENCYS")
         if self.service_dependencies:
-            wrapper = ET.Element("SERVICE-DEPENDENCIES")
+            wrapper = ET.Element("SERVICE-DEPENDENCYS")
             for item in self.service_dependencies:
                 serialized = SerializationHelper.serialize_item(item, "SwcServiceDependency")
                 if serialized is not None:
@@ -333,9 +333,9 @@ class SwcInternalBehavior(InternalBehavior):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXIES")
+        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXYS")
         if self.variation_point_proxies:
-            wrapper = ET.Element("VARIATION-POINT-PROXIES")
+            wrapper = ET.Element("VARIATION-POINT-PROXYS")
             for item in self.variation_point_proxies:
                 serialized = SerializationHelper.serialize_item(item, "VariationPointProxy")
                 if serialized is not None:
@@ -362,7 +362,7 @@ class SwcInternalBehavior(InternalBehavior):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "AR-TYPED-PER-INSTANCE-MEMORIES":
+            if tag == "AR-TYPED-PER-INSTANCE-MEMORYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
@@ -402,7 +402,7 @@ class SwcInternalBehavior(InternalBehavior):
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingEvent"))
                     elif concrete_tag == "TRANSFORMER-HARD-ERROR-EVENT":
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "TransformerHardErrorEvent"))
-            elif tag == "EXCLUSIVE-AREA-POLICIES":
+            elif tag == "EXCLUSIVE-AREA-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcExclusiveAreaPolicy"))
@@ -428,7 +428,7 @@ class SwcInternalBehavior(InternalBehavior):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.instantiation_data_def_props.append(SerializationHelper.deserialize_by_tag(item_elem, "InstantiationDataDefProps"))
-            elif tag == "PER-INSTANCE-MEMORIES":
+            elif tag == "PER-INSTANCE-MEMORYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.per_instance_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "PerInstanceMemory"))
@@ -444,7 +444,7 @@ class SwcInternalBehavior(InternalBehavior):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.runnables.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntity"))
-            elif tag == "SERVICE-DEPENDENCIES":
+            elif tag == "SERVICE-DEPENDENCYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcServiceDependency"))
@@ -454,7 +454,7 @@ class SwcInternalBehavior(InternalBehavior):
                     obj.shared_parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
             elif tag == "SUPPORT-MULTIPLE-INSTANTIATIONS":
                 setattr(obj, "support_multiple_instantiations", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "VARIATION-POINT-PROXIES":
+            elif tag == "VARIATION-POINT-PROXYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(item_elem, "VariationPointProxy"))

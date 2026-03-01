@@ -38,7 +38,7 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
 
     required_com_specs: list[RPortComSpec]
     _DESERIALIZE_DISPATCH = {
-        "REQUIRED-COM-SPECS": ("_POLYMORPHIC_LIST", "required_com_specs", ["ClientComSpec", "ModeSwitchReceiverComSpec", "NvRequireComSpec", "ParameterRequireComSpec"]),
+        "REQUIRED-COM-SPECS": ("_POLYMORPHIC_LIST", "required_com_specs", ["ClientComSpec", "ModeSwitchReceiverComSpec", "NonqueuedReceiverComSpec", "NvRequireComSpec", "ParameterRequireComSpec", "QueuedReceiverComSpec"]),
     }
 
 
@@ -107,10 +107,14 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
                         obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientComSpec"))
                     elif concrete_tag == "MODE-SWITCH-RECEIVER-COM-SPEC":
                         obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchReceiverComSpec"))
+                    elif concrete_tag == "NONQUEUED-RECEIVER-COM-SPEC":
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NonqueuedReceiverComSpec"))
                     elif concrete_tag == "NV-REQUIRE-COM-SPEC":
                         obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvRequireComSpec"))
                     elif concrete_tag == "PARAMETER-REQUIRE-COM-SPEC":
                         obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterRequireComSpec"))
+                    elif concrete_tag == "QUEUED-RECEIVER-COM-SPEC":
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "QueuedReceiverComSpec"))
 
         return obj
 

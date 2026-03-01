@@ -36,7 +36,7 @@ class AbstractProvidedPortPrototype(PortPrototype, ABC):
 
     provided_com_specs: list[PPortComSpec]
     _DESERIALIZE_DISPATCH = {
-        "PROVIDED-COM-SPECS": ("_POLYMORPHIC_LIST", "provided_com_specs", ["ModeSwitchSenderComSpec", "NonqueuedSenderComSpec", "NvProvideComSpec", "ParameterProvideComSpec", "QueuedSenderComSpec", "SenderComSpec"]),
+        "PROVIDED-COM-SPECS": ("_POLYMORPHIC_LIST", "provided_com_specs", ["ModeSwitchSenderComSpec", "NonqueuedSenderComSpec", "NvProvideComSpec", "ParameterProvideComSpec", "QueuedSenderComSpec", "SenderComSpec", "ServerComSpec"]),
     }
 
 
@@ -113,6 +113,8 @@ class AbstractProvidedPortPrototype(PortPrototype, ABC):
                         obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "QueuedSenderComSpec"))
                     elif concrete_tag == "SENDER-COM-SPEC":
                         obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderComSpec"))
+                    elif concrete_tag == "SERVER-COM-SPEC":
+                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ServerComSpec"))
 
         return obj
 

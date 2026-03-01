@@ -34,7 +34,7 @@ class SwCalprmAxisSet(ARObject):
 
     sw_calprm_axises: list[SwCalprmAxis]
     _DESERIALIZE_DISPATCH = {
-        "SW-CALPRM-AXISES": lambda obj, elem: obj.sw_calprm_axises.append(SerializationHelper.deserialize_by_tag(elem, "SwCalprmAxis")),
+        "SW-CALPRM-AXISS": lambda obj, elem: obj.sw_calprm_axises.append(SerializationHelper.deserialize_by_tag(elem, "SwCalprmAxis")),
     }
 
 
@@ -66,9 +66,9 @@ class SwCalprmAxisSet(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sw_calprm_axises (list to container "SW-CALPRM-AXISES")
+        # Serialize sw_calprm_axises (list to container "SW-CALPRM-AXISS")
         if self.sw_calprm_axises:
-            wrapper = ET.Element("SW-CALPRM-AXISES")
+            wrapper = ET.Element("SW-CALPRM-AXISS")
             for item in self.sw_calprm_axises:
                 serialized = SerializationHelper.serialize_item(item, "SwCalprmAxis")
                 if serialized is not None:
@@ -95,7 +95,7 @@ class SwCalprmAxisSet(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "SW-CALPRM-AXISES":
+            if tag == "SW-CALPRM-AXISS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.sw_calprm_axises.append(SerializationHelper.deserialize_by_tag(item_elem, "SwCalprmAxis"))

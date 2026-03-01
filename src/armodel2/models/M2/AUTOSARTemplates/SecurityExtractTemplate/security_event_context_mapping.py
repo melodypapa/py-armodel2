@@ -41,7 +41,7 @@ class SecurityEventContextMapping(IdsMapping, ABC):
     _DESERIALIZE_DISPATCH = {
         "FILTER-CHAIN-REF": lambda obj, elem: setattr(obj, "filter_chain_ref", ARRef.deserialize(elem)),
         "IDSM-INSTANCE-REF": lambda obj, elem: setattr(obj, "idsm_instance_ref", ARRef.deserialize(elem)),
-        "MAPPED-SECURITIES": lambda obj, elem: obj.mapped_securities.append(SerializationHelper.deserialize_by_tag(elem, "any (SecurityEventContext)")),
+        "MAPPED-SECURITYS": lambda obj, elem: obj.mapped_securities.append(SerializationHelper.deserialize_by_tag(elem, "any (SecurityEventContext)")),
     }
 
 
@@ -103,9 +103,9 @@ class SecurityEventContextMapping(IdsMapping, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mapped_securities (list to container "MAPPED-SECURITIES")
+        # Serialize mapped_securities (list to container "MAPPED-SECURITYS")
         if self.mapped_securities:
-            wrapper = ET.Element("MAPPED-SECURITIES")
+            wrapper = ET.Element("MAPPED-SECURITYS")
             for item in self.mapped_securities:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -136,7 +136,7 @@ class SecurityEventContextMapping(IdsMapping, ABC):
                 setattr(obj, "filter_chain_ref", ARRef.deserialize(child))
             elif tag == "IDSM-INSTANCE-REF":
                 setattr(obj, "idsm_instance_ref", ARRef.deserialize(child))
-            elif tag == "MAPPED-SECURITIES":
+            elif tag == "MAPPED-SECURITYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.mapped_securities.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SecurityEventContext)"))

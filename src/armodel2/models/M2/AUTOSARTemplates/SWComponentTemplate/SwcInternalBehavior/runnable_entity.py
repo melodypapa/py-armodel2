@@ -13,6 +13,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInter
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import xml_element_name
 
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
@@ -72,39 +73,39 @@ class RunnableEntity(ExecutableEntity):
 
     arguments: list[RunnableEntity]
     asynchronous_servers: list[Any]
-    can_be_invoked: Optional[Boolean]
+    can_be_invoked_concurrently: Optional[Boolean]
     data_reads: list[VariableAccess]
-    data_receives: list[VariableAccess]
+    _data_receive_point_by_arguments: list[VariableAccess]
     data_send_points: list[VariableAccess]
-    data_writes: list[VariableAccess]
+    _data_write_accesses: list[VariableAccess]
     external_refs: list[ARRef]
     internal_refs: list[ARRef]
     mode_access_points: list[ModeAccessPoint]
     mode_switch_points: list[ModeSwitchPoint]
     parameter_accesses: list[ParameterAccess]
-    read_locals: list[VariableAccess]
+    _read_local_variables: list[VariableAccess]
     server_call_points: list[ServerCallPoint]
     symbol: Optional[CIdentifier]
     wait_points: list[WaitPoint]
-    written_locals: list[VariableAccess]
+    _written_local_variables: list[VariableAccess]
     _DESERIALIZE_DISPATCH = {
         "ARGUMENTS": lambda obj, elem: obj.arguments.append(SerializationHelper.deserialize_by_tag(elem, "RunnableEntity")),
         "ASYNCHRONOUS-SERVERS": lambda obj, elem: obj.asynchronous_servers.append(SerializationHelper.deserialize_by_tag(elem, "any (AsynchronousServer)")),
-        "CAN-BE-INVOKED": lambda obj, elem: setattr(obj, "can_be_invoked", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CAN-BE-INVOKED-CONCURRENTLY": lambda obj, elem: setattr(obj, "can_be_invoked_concurrently", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "DATA-READS": lambda obj, elem: obj.data_reads.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
-        "DATA-RECEIVES": lambda obj, elem: obj.data_receives.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "DATA-RECEIVE-POINT-BY-ARGUMENTS": lambda obj, elem: obj._data_receive_point_by_arguments.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
         "DATA-SEND-POINTS": lambda obj, elem: obj.data_send_points.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
-        "DATA-WRITES": lambda obj, elem: obj.data_writes.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "DATA-WRITE-ACCESSS": lambda obj, elem: obj._data_write_accesses.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
         "EXTERNAL-REFS": lambda obj, elem: [obj.external_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "INTERNAL-REFS": lambda obj, elem: [obj.internal_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "MODE-ACCESS-POINTS": lambda obj, elem: obj.mode_access_points.append(SerializationHelper.deserialize_by_tag(elem, "ModeAccessPoint")),
         "MODE-SWITCH-POINTS": lambda obj, elem: obj.mode_switch_points.append(SerializationHelper.deserialize_by_tag(elem, "ModeSwitchPoint")),
-        "PARAMETER-ACCESSES": lambda obj, elem: obj.parameter_accesses.append(SerializationHelper.deserialize_by_tag(elem, "ParameterAccess")),
-        "READ-LOCALS": lambda obj, elem: obj.read_locals.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "PARAMETER-ACCESSS": lambda obj, elem: obj.parameter_accesses.append(SerializationHelper.deserialize_by_tag(elem, "ParameterAccess")),
+        "READ-LOCAL-VARIABLES": lambda obj, elem: obj._read_local_variables.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
         "SERVER-CALL-POINTS": ("_POLYMORPHIC_LIST", "server_call_points", ["AsynchronousServerCallPoint", "SynchronousServerCallPoint"]),
         "SYMBOL": lambda obj, elem: setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
         "WAIT-POINTS": lambda obj, elem: obj.wait_points.append(SerializationHelper.deserialize_by_tag(elem, "WaitPoint")),
-        "WRITTEN-LOCALS": lambda obj, elem: obj.written_locals.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "WRITTEN-LOCAL-VARIABLES": lambda obj, elem: obj._written_local_variables.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
     }
 
 
@@ -113,21 +114,65 @@ class RunnableEntity(ExecutableEntity):
         super().__init__()
         self.arguments: list[RunnableEntity] = []
         self.asynchronous_servers: list[Any] = []
-        self.can_be_invoked: Optional[Boolean] = None
+        self.can_be_invoked_concurrently: Optional[Boolean] = None
         self.data_reads: list[VariableAccess] = []
-        self.data_receives: list[VariableAccess] = []
+        self._data_receive_point_by_arguments: list[VariableAccess] = []
         self.data_send_points: list[VariableAccess] = []
-        self.data_writes: list[VariableAccess] = []
+        self._data_write_accesses: list[VariableAccess] = []
         self.external_refs: list[ARRef] = []
         self.internal_refs: list[ARRef] = []
         self.mode_access_points: list[ModeAccessPoint] = []
         self.mode_switch_points: list[ModeSwitchPoint] = []
         self.parameter_accesses: list[ParameterAccess] = []
-        self.read_locals: list[VariableAccess] = []
+        self._read_local_variables: list[VariableAccess] = []
         self.server_call_points: list[ServerCallPoint] = []
         self.symbol: Optional[CIdentifier] = None
         self.wait_points: list[WaitPoint] = []
-        self.written_locals: list[VariableAccess] = []
+        self._written_local_variables: list[VariableAccess] = []
+    @property
+    @xml_element_name("DATA-RECEIVE-POINT-BY-ARGUMENTS")
+    def data_receive_point_by_arguments(self) -> list[VariableAccess]:
+        """Get data_receive_point_by_arguments with custom XML element name."""
+        return self._data_receive_point_by_arguments
+
+    @data_receive_point_by_arguments.setter
+    def data_receive_point_by_arguments(self, value: list[VariableAccess]) -> None:
+        """Set data_receive_point_by_arguments with custom XML element name."""
+        self._data_receive_point_by_arguments = value
+
+    @property
+    @xml_element_name("DATA-WRITE-ACCESSS")
+    def data_write_accesses(self) -> list[VariableAccess]:
+        """Get data_write_accesses with custom XML element name."""
+        return self._data_write_accesses
+
+    @data_write_accesses.setter
+    def data_write_accesses(self, value: list[VariableAccess]) -> None:
+        """Set data_write_accesses with custom XML element name."""
+        self._data_write_accesses = value
+
+    @property
+    @xml_element_name("READ-LOCAL-VARIABLES")
+    def read_local_variables(self) -> list[VariableAccess]:
+        """Get read_local_variables with custom XML element name."""
+        return self._read_local_variables
+
+    @read_local_variables.setter
+    def read_local_variables(self, value: list[VariableAccess]) -> None:
+        """Set read_local_variables with custom XML element name."""
+        self._read_local_variables = value
+
+    @property
+    @xml_element_name("WRITTEN-LOCAL-VARIABLES")
+    def written_local_variables(self) -> list[VariableAccess]:
+        """Get written_local_variables with custom XML element name."""
+        return self._written_local_variables
+
+    @written_local_variables.setter
+    def written_local_variables(self, value: list[VariableAccess]) -> None:
+        """Set written_local_variables with custom XML element name."""
+        self._written_local_variables = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize RunnableEntity to XML element.
@@ -172,12 +217,12 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize can_be_invoked
-        if self.can_be_invoked is not None:
-            serialized = SerializationHelper.serialize_item(self.can_be_invoked, "Boolean")
+        # Serialize can_be_invoked_concurrently
+        if self.can_be_invoked_concurrently is not None:
+            serialized = SerializationHelper.serialize_item(self.can_be_invoked_concurrently, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CAN-BE-INVOKED")
+                wrapped = ET.Element("CAN-BE-INVOKED-CONCURRENTLY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -196,10 +241,10 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_receives (list to container "DATA-RECEIVES")
-        if self.data_receives:
-            wrapper = ET.Element("DATA-RECEIVES")
-            for item in self.data_receives:
+        # Serialize data_receive_point_by_arguments (list to container "DATA-RECEIVE-POINT-BY-ARGUMENTS")
+        if self.data_receive_point_by_arguments:
+            wrapper = ET.Element("DATA-RECEIVE-POINT-BY-ARGUMENTS")
+            for item in self.data_receive_point_by_arguments:
                 serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -216,10 +261,10 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_writes (list to container "DATA-WRITES")
-        if self.data_writes:
-            wrapper = ET.Element("DATA-WRITES")
-            for item in self.data_writes:
+        # Serialize data_write_accesses (list to container "DATA-WRITE-ACCESSS")
+        if self.data_write_accesses:
+            wrapper = ET.Element("DATA-WRITE-ACCESSS")
+            for item in self.data_write_accesses:
                 serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -280,9 +325,9 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize parameter_accesses (list to container "PARAMETER-ACCESSES")
+        # Serialize parameter_accesses (list to container "PARAMETER-ACCESSS")
         if self.parameter_accesses:
-            wrapper = ET.Element("PARAMETER-ACCESSES")
+            wrapper = ET.Element("PARAMETER-ACCESSS")
             for item in self.parameter_accesses:
                 serialized = SerializationHelper.serialize_item(item, "ParameterAccess")
                 if serialized is not None:
@@ -290,10 +335,10 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize read_locals (list to container "READ-LOCALS")
-        if self.read_locals:
-            wrapper = ET.Element("READ-LOCALS")
-            for item in self.read_locals:
+        # Serialize read_local_variables (list to container "READ-LOCAL-VARIABLES")
+        if self.read_local_variables:
+            wrapper = ET.Element("READ-LOCAL-VARIABLES")
+            for item in self.read_local_variables:
                 serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -334,10 +379,10 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize written_locals (list to container "WRITTEN-LOCALS")
-        if self.written_locals:
-            wrapper = ET.Element("WRITTEN-LOCALS")
-            for item in self.written_locals:
+        # Serialize written_local_variables (list to container "WRITTEN-LOCAL-VARIABLES")
+        if self.written_local_variables:
+            wrapper = ET.Element("WRITTEN-LOCAL-VARIABLES")
+            for item in self.written_local_variables:
                 serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -371,24 +416,24 @@ class RunnableEntity(ExecutableEntity):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.asynchronous_servers.append(SerializationHelper.deserialize_by_tag(item_elem, "any (AsynchronousServer)"))
-            elif tag == "CAN-BE-INVOKED":
-                setattr(obj, "can_be_invoked", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CAN-BE-INVOKED-CONCURRENTLY":
+                setattr(obj, "can_be_invoked_concurrently", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "DATA-READS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.data_reads.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
-            elif tag == "DATA-RECEIVES":
+            elif tag == "DATA-RECEIVE-POINT-BY-ARGUMENTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.data_receives.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
+                    obj._data_receive_point_by_arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
             elif tag == "DATA-SEND-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.data_send_points.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
-            elif tag == "DATA-WRITES":
+            elif tag == "DATA-WRITE-ACCESSS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.data_writes.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
+                    obj._data_write_accesses.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
             elif tag == "EXTERNAL-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -405,14 +450,14 @@ class RunnableEntity(ExecutableEntity):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.mode_switch_points.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchPoint"))
-            elif tag == "PARAMETER-ACCESSES":
+            elif tag == "PARAMETER-ACCESSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.parameter_accesses.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterAccess"))
-            elif tag == "READ-LOCALS":
+            elif tag == "READ-LOCAL-VARIABLES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.read_locals.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
+                    obj._read_local_variables.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
             elif tag == "SERVER-CALL-POINTS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
@@ -427,10 +472,10 @@ class RunnableEntity(ExecutableEntity):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.wait_points.append(SerializationHelper.deserialize_by_tag(item_elem, "WaitPoint"))
-            elif tag == "WRITTEN-LOCALS":
+            elif tag == "WRITTEN-LOCAL-VARIABLES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.written_locals.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
+                    obj._written_local_variables.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
 
         return obj
 
@@ -469,8 +514,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.asynchronous_servers = list(items) if items else []
         return self
 
-    def with_can_be_invoked(self, value: Optional[Boolean]) -> "RunnableEntityBuilder":
-        """Set can_be_invoked attribute.
+    def with_can_be_invoked_concurrently(self, value: Optional[Boolean]) -> "RunnableEntityBuilder":
+        """Set can_be_invoked_concurrently attribute.
 
         Args:
             value: Value to set
@@ -480,7 +525,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.can_be_invoked = value
+        self._obj.can_be_invoked_concurrently = value
         return self
 
     def with_data_reads(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
@@ -495,8 +540,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.data_reads = list(items) if items else []
         return self
 
-    def with_data_receives(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
-        """Set data_receives list attribute.
+    def with_data_receive_point_by_arguments(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
+        """Set data_receive_point_by_arguments list attribute.
 
         Args:
             items: List of items to set
@@ -504,7 +549,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.data_receives = list(items) if items else []
+        self._obj.data_receive_point_by_arguments = list(items) if items else []
         return self
 
     def with_data_send_points(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
@@ -519,8 +564,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.data_send_points = list(items) if items else []
         return self
 
-    def with_data_writes(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
-        """Set data_writes list attribute.
+    def with_data_write_accesses(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
+        """Set data_write_accesses list attribute.
 
         Args:
             items: List of items to set
@@ -528,7 +573,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.data_writes = list(items) if items else []
+        self._obj.data_write_accesses = list(items) if items else []
         return self
 
     def with_externals(self, items: list[ExternalTriggeringPoint]) -> "RunnableEntityBuilder":
@@ -591,8 +636,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.parameter_accesses = list(items) if items else []
         return self
 
-    def with_read_locals(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
-        """Set read_locals list attribute.
+    def with_read_local_variables(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
+        """Set read_local_variables list attribute.
 
         Args:
             items: List of items to set
@@ -600,7 +645,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.read_locals = list(items) if items else []
+        self._obj.read_local_variables = list(items) if items else []
         return self
 
     def with_server_call_points(self, items: list[ServerCallPoint]) -> "RunnableEntityBuilder":
@@ -641,8 +686,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.wait_points = list(items) if items else []
         return self
 
-    def with_written_locals(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
-        """Set written_locals list attribute.
+    def with_written_local_variables(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
+        """Set written_local_variables list attribute.
 
         Args:
             items: List of items to set
@@ -650,7 +695,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.written_locals = list(items) if items else []
+        self._obj.written_local_variables = list(items) if items else []
         return self
 
 
@@ -717,8 +762,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.data_reads = []
         return self
 
-    def add_data_receif(self, item: VariableAccess) -> "RunnableEntityBuilder":
-        """Add a single item to data_receives list.
+    def add_data_receive_point_by_argument(self, item: VariableAccess) -> "RunnableEntityBuilder":
+        """Add a single item to data_receive_point_by_arguments list.
 
         Args:
             item: Item to add
@@ -726,16 +771,16 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.data_receives.append(item)
+        self._obj.data_receive_point_by_arguments.append(item)
         return self
 
-    def clear_data_receives(self) -> "RunnableEntityBuilder":
-        """Clear all items from data_receives list.
+    def clear_data_receive_point_by_arguments(self) -> "RunnableEntityBuilder":
+        """Clear all items from data_receive_point_by_arguments list.
 
         Returns:
             self for method chaining
         """
-        self._obj.data_receives = []
+        self._obj.data_receive_point_by_arguments = []
         return self
 
     def add_data_send_point(self, item: VariableAccess) -> "RunnableEntityBuilder":
@@ -759,8 +804,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.data_send_points = []
         return self
 
-    def add_data_write(self, item: VariableAccess) -> "RunnableEntityBuilder":
-        """Add a single item to data_writes list.
+    def add_data_write_access(self, item: VariableAccess) -> "RunnableEntityBuilder":
+        """Add a single item to data_write_accesses list.
 
         Args:
             item: Item to add
@@ -768,16 +813,16 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.data_writes.append(item)
+        self._obj.data_write_accesses.append(item)
         return self
 
-    def clear_data_writes(self) -> "RunnableEntityBuilder":
-        """Clear all items from data_writes list.
+    def clear_data_write_accesses(self) -> "RunnableEntityBuilder":
+        """Clear all items from data_write_accesses list.
 
         Returns:
             self for method chaining
         """
-        self._obj.data_writes = []
+        self._obj.data_write_accesses = []
         return self
 
     def add_external(self, item: ExternalTriggeringPoint) -> "RunnableEntityBuilder":
@@ -885,8 +930,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.parameter_accesses = []
         return self
 
-    def add_read_local(self, item: VariableAccess) -> "RunnableEntityBuilder":
-        """Add a single item to read_locals list.
+    def add_read_local_variable(self, item: VariableAccess) -> "RunnableEntityBuilder":
+        """Add a single item to read_local_variables list.
 
         Args:
             item: Item to add
@@ -894,16 +939,16 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.read_locals.append(item)
+        self._obj.read_local_variables.append(item)
         return self
 
-    def clear_read_locals(self) -> "RunnableEntityBuilder":
-        """Clear all items from read_locals list.
+    def clear_read_local_variables(self) -> "RunnableEntityBuilder":
+        """Clear all items from read_local_variables list.
 
         Returns:
             self for method chaining
         """
-        self._obj.read_locals = []
+        self._obj.read_local_variables = []
         return self
 
     def add_server_call_point(self, item: ServerCallPoint) -> "RunnableEntityBuilder":
@@ -948,8 +993,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.wait_points = []
         return self
 
-    def add_written_local(self, item: VariableAccess) -> "RunnableEntityBuilder":
-        """Add a single item to written_locals list.
+    def add_written_local_variable(self, item: VariableAccess) -> "RunnableEntityBuilder":
+        """Add a single item to written_local_variables list.
 
         Args:
             item: Item to add
@@ -957,16 +1002,16 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.written_locals.append(item)
+        self._obj.written_local_variables.append(item)
         return self
 
-    def clear_written_locals(self) -> "RunnableEntityBuilder":
-        """Clear all items from written_locals list.
+    def clear_written_local_variables(self) -> "RunnableEntityBuilder":
+        """Clear all items from written_local_variables list.
 
         Returns:
             self for method chaining
         """
-        self._obj.written_locals = []
+        self._obj.written_local_variables = []
         return self
 
 

@@ -86,7 +86,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
         "RECEPTION-PROPS": lambda obj, elem: setattr(obj, "reception_props", SerializationHelper.deserialize_by_tag(elem, "ReceptionComSpecProps")),
         "REPLACE-WITH": lambda obj, elem: setattr(obj, "replace_with", SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
         "SYNC-COUNTER-INIT": lambda obj, elem: setattr(obj, "sync_counter_init", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "TRANSFORMATION-COM-SPEC-PROPSES": ("_POLYMORPHIC_LIST", "transformation_com_spec_propses", ["EndToEndTransformationComSpecProps", "UserDefinedTransformationComSpecProps"]),
+        "TRANSFORMATION-COM-SPEC-PROPSS": ("_POLYMORPHIC_LIST", "transformation_com_spec_propses", ["EndToEndTransformationComSpecProps", "UserDefinedTransformationComSpecProps"]),
         "USES-END-TO-END-PROTECTION": lambda obj, elem: setattr(obj, "uses_end_to_end_protection", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
@@ -266,9 +266,9 @@ class ReceiverComSpec(RPortComSpec, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transformation_com_spec_propses (list to container "TRANSFORMATION-COM-SPEC-PROPSES")
+        # Serialize transformation_com_spec_propses (list to container "TRANSFORMATION-COM-SPEC-PROPSS")
         if self.transformation_com_spec_propses:
-            wrapper = ET.Element("TRANSFORMATION-COM-SPEC-PROPSES")
+            wrapper = ET.Element("TRANSFORMATION-COM-SPEC-PROPSS")
             for item in self.transformation_com_spec_propses:
                 serialized = SerializationHelper.serialize_item(item, "TransformationComSpecProps")
                 if serialized is not None:
@@ -331,7 +331,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
                 setattr(obj, "replace_with", SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
             elif tag == "SYNC-COUNTER-INIT":
                 setattr(obj, "sync_counter_init", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "TRANSFORMATION-COM-SPEC-PROPSES":
+            elif tag == "TRANSFORMATION-COM-SPEC-PROPSS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag

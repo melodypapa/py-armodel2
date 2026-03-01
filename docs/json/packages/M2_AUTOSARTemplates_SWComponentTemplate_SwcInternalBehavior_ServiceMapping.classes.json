@@ -114,7 +114,7 @@
     },
     {
       "name": "SwcServiceDependency",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServiceMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -156,20 +156,20 @@
       ],
       "attributes": {
         "assignedData": {
-          "type": "any (RoleBasedData)",
+          "type": "RoleBasedDataAssignment",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Defines the role of an associated data object of the same atpVariation"
         },
         "assignedPort": {
           "type": "RoleBasedPortAssignment",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Defines the role of an associated port of the same atpVariation"
         },
-        "representedPort": {
+        "representedPortGroup": {
           "type": "PortGroup",
           "multiplicity": "0..1",
           "kind": "ref",
@@ -179,7 +179,7 @@
         "serviceNeeds": {
           "type": "ServiceNeeds",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "The associated ServiceNeeds."
         }

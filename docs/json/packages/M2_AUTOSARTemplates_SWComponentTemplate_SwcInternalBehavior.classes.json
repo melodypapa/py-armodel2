@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "RunnableEntity",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -81,12 +81,12 @@
           "is_ref": false,
           "note": "The server call result point admits a runnable to fetch the result of an asynchronous server call. aggregation of AsynchronousServerCallResultPoint to variability with the purpose to support the of client server PortPrototypes and existence of server call result points in the atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "canBeInvoked": {
+        "canBeInvokedConcurrently": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "If the value of this attribute is set to \"true\" the enclosing"
+          "note": "If the value of this attribute is set to \"true\" the enclosing runnable can be invoked concurrently"
         },
         "dataRead": {
           "type": "VariableAccess",
@@ -95,12 +95,13 @@
           "is_ref": false,
           "note": "RunnableEntity has implicit read access to dataElement"
         },
-        "dataReceif": {
+        "dataReceivePointByArgument": {
           "type": "VariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
-          "note": "RunnableEntity has explicit read access to dataElement"
+          "decorator": "xml_element_name:DATA-RECEIVE-POINT-BY-ARGUMENTS",
+          "note": "RunnableEntity has explicit read access to dataElement by arguments"
         },
         "dataSendPoint": {
           "type": "VariableAccess",
@@ -109,11 +110,12 @@
           "is_ref": false,
           "note": "RunnableEntity has explicit write access to dataElement"
         },
-        "dataWrite": {
+        "dataWriteAccess": {
           "type": "VariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "xml_element_name:DATA-WRITE-ACCESSS",
           "note": "RunnableEntity has implicit write access to dataElement"
         },
         "external": {
@@ -151,12 +153,13 @@
           "is_ref": false,
           "note": "The presence of a ParameterAccess implies that a needs read only access to a Parameter may either be local or within a Port of ParameterAccess is subject to the purpose to support the conditional parameter ports and component local well as the variant existence of Parameter in the implementation. atpVariation"
         },
-        "readLocal": {
+        "readLocalVariable": {
           "type": "VariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The presence of a readLocalVariable implies that a"
+          "decorator": "xml_element_name:READ-LOCAL-VARIABLES",
+          "note": "The presence of a readLocalVariable implies that a runnable reads a local variable"
         },
         "serverCallPoint": {
           "type": "ServerCallPoint",
@@ -179,12 +182,13 @@
           "is_ref": false,
           "note": "The WaitPoint associated with the RunnableEntity."
         },
-        "writtenLocal": {
+        "writtenLocalVariable": {
           "type": "VariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The presence of a writtenLocalVariable implies that a"
+          "decorator": "xml_element_name:WRITTEN-LOCAL-VARIABLES",
+          "note": "The presence of a writtenLocalVariable implies that a runnable writes a local variable"
         }
       }
     },

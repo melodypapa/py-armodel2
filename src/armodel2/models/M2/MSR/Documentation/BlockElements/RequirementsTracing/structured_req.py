@@ -67,7 +67,7 @@ class StructuredReq(Paginateable):
     type: String
     use_case: Optional[DocumentationBlock]
     _DESERIALIZE_DISPATCH = {
-        "APPLIES-TOES": lambda obj, elem: obj.applies_toes.append(StandardNameEnum.deserialize(elem)),
+        "APPLIES-TOS": lambda obj, elem: obj.applies_toes.append(StandardNameEnum.deserialize(elem)),
         "CONFLICTS": lambda obj, elem: setattr(obj, "conflicts", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
         "DATE": lambda obj, elem: setattr(obj, "date", SerializationHelper.deserialize_by_tag(elem, "DateTime")),
         "DEPENDENCIES": lambda obj, elem: setattr(obj, "dependencies", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
@@ -123,13 +123,13 @@ class StructuredReq(Paginateable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize applies_toes (list to container "APPLIES-TOES")
+        # Serialize applies_toes (list to container "APPLIES-TOS")
         if self.applies_toes:
-            wrapper = ET.Element("APPLIES-TOES")
+            wrapper = ET.Element("APPLIES-TOS")
             for item in self.applies_toes:
                 serialized = SerializationHelper.serialize_item(item, "StandardNameEnum")
                 if serialized is not None:
-                    child_elem = ET.Element("APPLIES-TOE")
+                    child_elem = ET.Element("APPLIES-TO")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -330,7 +330,7 @@ class StructuredReq(Paginateable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "APPLIES-TOES":
+            if tag == "APPLIES-TOS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.applies_toes.append(SerializationHelper.deserialize_by_tag(item_elem, "StandardNameEnum"))

@@ -5689,11 +5689,14 @@ polymorphic_types:
   - ParameterProvideComSpec
   - QueuedSenderComSpec
   - SenderComSpec
+  - ServerComSpec
   RPortComSpec:
   - ClientComSpec
   - ModeSwitchReceiverComSpec
+  - NonqueuedReceiverComSpec
   - NvRequireComSpec
   - ParameterRequireComSpec
+  - QueuedReceiverComSpec
   ReceiverComSpec:
   - NonqueuedReceiverComSpec
   - QueuedReceiverComSpec

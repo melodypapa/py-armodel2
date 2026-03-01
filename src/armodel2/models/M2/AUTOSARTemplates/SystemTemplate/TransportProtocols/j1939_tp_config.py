@@ -46,7 +46,7 @@ class J1939TpConfig(TpConfig):
     tp_connections: list[J1939TpConnection]
     tp_nodes: list[J1939TpNode]
     _DESERIALIZE_DISPATCH = {
-        "TP-ADDRESSES": lambda obj, elem: obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(elem, "TpAddress")),
+        "TP-ADDRESSS": lambda obj, elem: obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(elem, "TpAddress")),
         "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SerializationHelper.deserialize_by_tag(elem, "J1939TpConnection")),
         "TP-NODES": lambda obj, elem: obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(elem, "J1939TpNode")),
     }
@@ -82,9 +82,9 @@ class J1939TpConfig(TpConfig):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize tp_addresses (list to container "TP-ADDRESSES")
+        # Serialize tp_addresses (list to container "TP-ADDRESSS")
         if self.tp_addresses:
-            wrapper = ET.Element("TP-ADDRESSES")
+            wrapper = ET.Element("TP-ADDRESSS")
             for item in self.tp_addresses:
                 serialized = SerializationHelper.serialize_item(item, "TpAddress")
                 if serialized is not None:
@@ -131,7 +131,7 @@ class J1939TpConfig(TpConfig):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "TP-ADDRESSES":
+            if tag == "TP-ADDRESSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(item_elem, "TpAddress"))

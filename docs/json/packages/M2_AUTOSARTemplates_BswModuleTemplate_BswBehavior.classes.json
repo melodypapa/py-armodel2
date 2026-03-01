@@ -1747,7 +1747,7 @@
     },
     {
       "name": "BswServiceDependency",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -1786,30 +1786,30 @@
       ],
       "attributes": {
         "assignedData": {
-          "type": "any (RoleBasedData)",
+          "type": "RoleBasedDataAssignment",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Defines the role of an associated data object (owned by module or cluster) in the context of the ServiceNeeds atpVariation"
         },
-        "assignedEntry": {
+        "assignedEntryRole": {
           "type": "RoleBasedBswModuleEntryAssignment",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Defines the role of an associated BswModuleEntry in the context of the ServiceNeeds element. atpVariation"
         },
         "ident": {
-          "type": "any (BswService)",
+          "type": "BswServiceDependencyIdent",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This adds the ability to become referrable to BswService"
         },
         "serviceNeeds": {
           "type": "ServiceNeeds",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "The associated ServiceNeeds."
         }

@@ -42,7 +42,7 @@ class DoIpTpConfig(TpConfig):
     do_ip_logic_address_addresses: list[DoIpLogicAddress]
     tp_connections: list[DoIpTpConnection]
     _DESERIALIZE_DISPATCH = {
-        "DO-IP-LOGIC-ADDRESS-ADDRESSES": lambda obj, elem: obj.do_ip_logic_address_addresses.append(SerializationHelper.deserialize_by_tag(elem, "DoIpLogicAddress")),
+        "DO-IP-LOGIC-ADDRESS-ADDRESSS": lambda obj, elem: obj.do_ip_logic_address_addresses.append(SerializationHelper.deserialize_by_tag(elem, "DoIpLogicAddress")),
         "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SerializationHelper.deserialize_by_tag(elem, "DoIpTpConnection")),
     }
 
@@ -76,9 +76,9 @@ class DoIpTpConfig(TpConfig):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize do_ip_logic_address_addresses (list to container "DO-IP-LOGIC-ADDRESS-ADDRESSES")
+        # Serialize do_ip_logic_address_addresses (list to container "DO-IP-LOGIC-ADDRESS-ADDRESSS")
         if self.do_ip_logic_address_addresses:
-            wrapper = ET.Element("DO-IP-LOGIC-ADDRESS-ADDRESSES")
+            wrapper = ET.Element("DO-IP-LOGIC-ADDRESS-ADDRESSS")
             for item in self.do_ip_logic_address_addresses:
                 serialized = SerializationHelper.serialize_item(item, "DoIpLogicAddress")
                 if serialized is not None:
@@ -115,7 +115,7 @@ class DoIpTpConfig(TpConfig):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DO-IP-LOGIC-ADDRESS-ADDRESSES":
+            if tag == "DO-IP-LOGIC-ADDRESS-ADDRESSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.do_ip_logic_address_addresses.append(SerializationHelper.deserialize_by_tag(item_elem, "DoIpLogicAddress"))

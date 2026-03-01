@@ -35,7 +35,7 @@ class SignalServiceTranslationPropsSet(ARElement):
 
     signal_service_propses: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "SIGNAL-SERVICE-PROPSES": lambda obj, elem: obj.signal_service_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
+        "SIGNAL-SERVICE-PROPSS": lambda obj, elem: obj.signal_service_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
     }
 
 
@@ -67,9 +67,9 @@ class SignalServiceTranslationPropsSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize signal_service_propses (list to container "SIGNAL-SERVICE-PROPSES")
+        # Serialize signal_service_propses (list to container "SIGNAL-SERVICE-PROPSS")
         if self.signal_service_propses:
-            wrapper = ET.Element("SIGNAL-SERVICE-PROPSES")
+            wrapper = ET.Element("SIGNAL-SERVICE-PROPSS")
             for item in self.signal_service_propses:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -96,7 +96,7 @@ class SignalServiceTranslationPropsSet(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "SIGNAL-SERVICE-PROPSES":
+            if tag == "SIGNAL-SERVICE-PROPSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.signal_service_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SignalService)"))

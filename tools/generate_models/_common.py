@@ -372,3 +372,26 @@ def to_plural(name: str) -> str:
 
     # Default: add 's'
     return name + "s"
+
+
+def to_autosar_plural(name: str) -> str:
+    """AUTOSAR XML pluralization: always add 'S'.
+
+    AUTOSAR XML uses simple 'S' suffix for all plurals, not English grammar rules.
+    For example:
+    - memory -> MEMORYS (not MEMORIES)
+    - access -> ACCESSS (not ACCESSES)
+    - policy -> POLICYS (not POLICIES)
+    - proxy -> PROXYS (not PROXIES)
+    - dependency -> DEPENDENCYS (not DEPENDENCIES)
+
+    Args:
+        name: Singular name (in snake_case or UPPER-CASE-WITH-HYPHENS)
+
+    Returns:
+        Plural form with 's' or 'S' appended (matching the case of the last character)
+    """
+    # Match the case of the last character - uppercase gets 'S', lowercase gets 's'
+    if name and name[-1].isupper():
+        return name + "S"
+    return name + "s"

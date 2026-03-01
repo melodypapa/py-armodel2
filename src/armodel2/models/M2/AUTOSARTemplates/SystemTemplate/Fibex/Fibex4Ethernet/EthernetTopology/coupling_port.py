@@ -79,7 +79,7 @@ class CouplingPort(Identifiable):
         "DEFAULT-VLAN-REF": lambda obj, elem: setattr(obj, "default_vlan_ref", ARRef.deserialize(elem)),
         "MAC-LAYER-TYPE-ENUM": lambda obj, elem: setattr(obj, "mac_layer_type_enum", EthernetMacLayerTypeEnum.deserialize(elem)),
         "MAC-MULTICAST-GROUP-REFS": lambda obj, elem: [obj.mac_multicast_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "MAC-SEC-PROPSES": lambda obj, elem: obj.mac_sec_propses.append(SerializationHelper.deserialize_by_tag(elem, "MacSecProps")),
+        "MAC-SEC-PROPSS": lambda obj, elem: obj.mac_sec_propses.append(SerializationHelper.deserialize_by_tag(elem, "MacSecProps")),
         "PHYSICAL-LAYER": lambda obj, elem: setattr(obj, "physical_layer", EthernetPhysicalLayerTypeEnum.deserialize(elem)),
         "PLCA-PROPS": lambda obj, elem: setattr(obj, "plca_props", SerializationHelper.deserialize_by_tag(elem, "PlcaProps")),
         "PNC-MAPPING-IDENT-REFS": lambda obj, elem: [obj.pnc_mapping_ident_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
@@ -218,9 +218,9 @@ class CouplingPort(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mac_sec_propses (list to container "MAC-SEC-PROPSES")
+        # Serialize mac_sec_propses (list to container "MAC-SEC-PROPSS")
         if self.mac_sec_propses:
-            wrapper = ET.Element("MAC-SEC-PROPSES")
+            wrapper = ET.Element("MAC-SEC-PROPSS")
             for item in self.mac_sec_propses:
                 serialized = SerializationHelper.serialize_item(item, "MacSecProps")
                 if serialized is not None:
@@ -358,7 +358,7 @@ class CouplingPort(Identifiable):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.mac_multicast_group_refs.append(ARRef.deserialize(item_elem))
-            elif tag == "MAC-SEC-PROPSES":
+            elif tag == "MAC-SEC-PROPSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.mac_sec_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "MacSecProps"))

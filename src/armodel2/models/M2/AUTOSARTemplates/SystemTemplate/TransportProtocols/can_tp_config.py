@@ -54,7 +54,7 @@ class CanTpConfig(TpConfig):
     tp_ecus: list[CanTpEcu]
     tp_nodes: list[CanTpNode]
     _DESERIALIZE_DISPATCH = {
-        "TP-ADDRESSES": lambda obj, elem: obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(elem, "CanTpAddress")),
+        "TP-ADDRESSS": lambda obj, elem: obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(elem, "CanTpAddress")),
         "TP-CHANNELS": lambda obj, elem: obj.tp_channels.append(SerializationHelper.deserialize_by_tag(elem, "CanTpChannel")),
         "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SerializationHelper.deserialize_by_tag(elem, "CanTpConnection")),
         "TP-ECUS": lambda obj, elem: obj.tp_ecus.append(SerializationHelper.deserialize_by_tag(elem, "CanTpEcu")),
@@ -94,9 +94,9 @@ class CanTpConfig(TpConfig):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize tp_addresses (list to container "TP-ADDRESSES")
+        # Serialize tp_addresses (list to container "TP-ADDRESSS")
         if self.tp_addresses:
-            wrapper = ET.Element("TP-ADDRESSES")
+            wrapper = ET.Element("TP-ADDRESSS")
             for item in self.tp_addresses:
                 serialized = SerializationHelper.serialize_item(item, "CanTpAddress")
                 if serialized is not None:
@@ -163,7 +163,7 @@ class CanTpConfig(TpConfig):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "TP-ADDRESSES":
+            if tag == "TP-ADDRESSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(item_elem, "CanTpAddress"))

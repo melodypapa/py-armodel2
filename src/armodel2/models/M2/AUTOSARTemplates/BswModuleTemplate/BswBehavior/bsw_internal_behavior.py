@@ -109,28 +109,28 @@ class BswInternalBehavior(InternalBehavior):
     trigger_direct_implementations: list[BswTriggerDirectImplementation]
     variation_point_proxies: list[VariationPointProxy]
     _DESERIALIZE_DISPATCH = {
-        "AR-TYPED-PER-INSTANCE-MEMORIES": lambda obj, elem: obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
-        "BSW-PER-INSTANCE-MEMORY-POLICIES": lambda obj, elem: obj.bsw_per_instance_memory_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswPerInstanceMemoryPolicy")),
-        "CLIENT-POLICIES": lambda obj, elem: obj.client_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswClientPolicy")),
+        "AR-TYPED-PER-INSTANCE-MEMORYS": lambda obj, elem: obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
+        "BSW-PER-INSTANCE-MEMORY-POLICYS": lambda obj, elem: obj.bsw_per_instance_memory_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswPerInstanceMemoryPolicy")),
+        "CLIENT-POLICYS": lambda obj, elem: obj.client_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswClientPolicy")),
         "DISTINGUISHED-PARTITIONS": lambda obj, elem: obj.distinguished_partitions.append(SerializationHelper.deserialize_by_tag(elem, "BswDistinguishedPartition")),
         "ENTITIES": ("_POLYMORPHIC_LIST", "_entities", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
         "EVENTS": ("_POLYMORPHIC_LIST", "events", ["BswAsynchronousServerCallReturnsEvent", "BswBackgroundEvent", "BswDataReceivedEvent", "BswExternalTriggerOccurredEvent", "BswInternalTriggerOccurredEvent", "BswInterruptEvent", "BswModeManagerErrorEvent", "BswModeSwitchEvent", "BswModeSwitchedAckEvent", "BswOperationInvokedEvent", "BswOsTaskExecutionEvent", "BswScheduleEvent", "BswTimingEvent"]),
-        "EXCLUSIVE-AREA-POLICIES": lambda obj, elem: obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswExclusiveAreaPolicy")),
+        "EXCLUSIVE-AREA-POLICYS": lambda obj, elem: obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswExclusiveAreaPolicy")),
         "INCLUDED-DATA-TYPE-SETS": lambda obj, elem: obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedDataTypeSet")),
         "INCLUDED-MODE-DECLARATION-GROUP-SETS": lambda obj, elem: obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedModeDeclarationGroupSet")),
         "INTERNAL-TRIGGERING-POINTS": lambda obj, elem: obj.internal_triggering_points.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalTriggeringPoint")),
-        "INTERNAL-TRIGGERING-POINT-POLICIES": lambda obj, elem: obj.internal_triggering_point_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalTriggeringPointPolicy")),
-        "MODE-RECEIVER-POLICIES": lambda obj, elem: obj.mode_receiver_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswModeReceiverPolicy")),
-        "MODE-SENDER-POLICIES": lambda obj, elem: obj.mode_sender_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswModeSenderPolicy")),
-        "PARAMETER-POLICIES": lambda obj, elem: obj.parameter_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswParameterPolicy")),
+        "INTERNAL-TRIGGERING-POINT-POLICYS": lambda obj, elem: obj.internal_triggering_point_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalTriggeringPointPolicy")),
+        "MODE-RECEIVER-POLICYS": lambda obj, elem: obj.mode_receiver_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswModeReceiverPolicy")),
+        "MODE-SENDER-POLICYS": lambda obj, elem: obj.mode_sender_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswModeSenderPolicy")),
+        "PARAMETER-POLICYS": lambda obj, elem: obj.parameter_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswParameterPolicy")),
         "PER-INSTANCE-PARAMETERS": lambda obj, elem: obj.per_instance_parameters.append(SerializationHelper.deserialize_by_tag(elem, "ParameterDataPrototype")),
-        "RECEPTION-POLICIES": ("_POLYMORPHIC_LIST", "reception_policies", ["BswQueuedDataReceptionPolicy"]),
-        "RELEASED-TRIGGER-POLICIES": lambda obj, elem: obj.released_trigger_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswReleasedTriggerPolicy")),
-        "SCHEDULER-NAME-PREFIXES": lambda obj, elem: obj.scheduler_name_prefixes.append(SerializationHelper.deserialize_by_tag(elem, "BswSchedulerNamePrefix")),
-        "SEND-POLICIES": lambda obj, elem: obj.send_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswDataSendPolicy")),
-        "SERVICE-DEPENDENCIES": lambda obj, elem: obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "BswServiceDependency")),
+        "RECEPTION-POLICYS": ("_POLYMORPHIC_LIST", "reception_policies", ["BswQueuedDataReceptionPolicy"]),
+        "RELEASED-TRIGGER-POLICYS": lambda obj, elem: obj.released_trigger_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswReleasedTriggerPolicy")),
+        "SCHEDULER-NAME-PREFIXS": lambda obj, elem: obj.scheduler_name_prefixes.append(SerializationHelper.deserialize_by_tag(elem, "BswSchedulerNamePrefix")),
+        "SEND-POLICYS": lambda obj, elem: obj.send_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswDataSendPolicy")),
+        "SERVICE-DEPENDENCYS": lambda obj, elem: obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "BswServiceDependency")),
         "TRIGGER-DIRECT-IMPLEMENTATIONS": lambda obj, elem: obj.trigger_direct_implementations.append(SerializationHelper.deserialize_by_tag(elem, "BswTriggerDirectImplementation")),
-        "VARIATION-POINT-PROXIES": lambda obj, elem: obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(elem, "VariationPointProxy")),
+        "VARIATION-POINT-PROXYS": lambda obj, elem: obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(elem, "VariationPointProxy")),
     }
 
 
@@ -194,9 +194,9 @@ class BswInternalBehavior(InternalBehavior):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ar_typed_per_instance_memories (list to container "AR-TYPED-PER-INSTANCE-MEMORIES")
+        # Serialize ar_typed_per_instance_memories (list to container "AR-TYPED-PER-INSTANCE-MEMORYS")
         if self.ar_typed_per_instance_memories:
-            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORIES")
+            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORYS")
             for item in self.ar_typed_per_instance_memories:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
@@ -204,9 +204,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize bsw_per_instance_memory_policies (list to container "BSW-PER-INSTANCE-MEMORY-POLICIES")
+        # Serialize bsw_per_instance_memory_policies (list to container "BSW-PER-INSTANCE-MEMORY-POLICYS")
         if self.bsw_per_instance_memory_policies:
-            wrapper = ET.Element("BSW-PER-INSTANCE-MEMORY-POLICIES")
+            wrapper = ET.Element("BSW-PER-INSTANCE-MEMORY-POLICYS")
             for item in self.bsw_per_instance_memory_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswPerInstanceMemoryPolicy")
                 if serialized is not None:
@@ -214,9 +214,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize client_policies (list to container "CLIENT-POLICIES")
+        # Serialize client_policies (list to container "CLIENT-POLICYS")
         if self.client_policies:
-            wrapper = ET.Element("CLIENT-POLICIES")
+            wrapper = ET.Element("CLIENT-POLICYS")
             for item in self.client_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswClientPolicy")
                 if serialized is not None:
@@ -254,9 +254,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize exclusive_area_policies (list to container "EXCLUSIVE-AREA-POLICIES")
+        # Serialize exclusive_area_policies (list to container "EXCLUSIVE-AREA-POLICYS")
         if self.exclusive_area_policies:
-            wrapper = ET.Element("EXCLUSIVE-AREA-POLICIES")
+            wrapper = ET.Element("EXCLUSIVE-AREA-POLICYS")
             for item in self.exclusive_area_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswExclusiveAreaPolicy")
                 if serialized is not None:
@@ -294,9 +294,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize internal_triggering_point_policies (list to container "INTERNAL-TRIGGERING-POINT-POLICIES")
+        # Serialize internal_triggering_point_policies (list to container "INTERNAL-TRIGGERING-POINT-POLICYS")
         if self.internal_triggering_point_policies:
-            wrapper = ET.Element("INTERNAL-TRIGGERING-POINT-POLICIES")
+            wrapper = ET.Element("INTERNAL-TRIGGERING-POINT-POLICYS")
             for item in self.internal_triggering_point_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswInternalTriggeringPointPolicy")
                 if serialized is not None:
@@ -304,9 +304,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mode_receiver_policies (list to container "MODE-RECEIVER-POLICIES")
+        # Serialize mode_receiver_policies (list to container "MODE-RECEIVER-POLICYS")
         if self.mode_receiver_policies:
-            wrapper = ET.Element("MODE-RECEIVER-POLICIES")
+            wrapper = ET.Element("MODE-RECEIVER-POLICYS")
             for item in self.mode_receiver_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswModeReceiverPolicy")
                 if serialized is not None:
@@ -314,9 +314,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mode_sender_policies (list to container "MODE-SENDER-POLICIES")
+        # Serialize mode_sender_policies (list to container "MODE-SENDER-POLICYS")
         if self.mode_sender_policies:
-            wrapper = ET.Element("MODE-SENDER-POLICIES")
+            wrapper = ET.Element("MODE-SENDER-POLICYS")
             for item in self.mode_sender_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswModeSenderPolicy")
                 if serialized is not None:
@@ -324,9 +324,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize parameter_policies (list to container "PARAMETER-POLICIES")
+        # Serialize parameter_policies (list to container "PARAMETER-POLICYS")
         if self.parameter_policies:
-            wrapper = ET.Element("PARAMETER-POLICIES")
+            wrapper = ET.Element("PARAMETER-POLICYS")
             for item in self.parameter_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswParameterPolicy")
                 if serialized is not None:
@@ -344,9 +344,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize reception_policies (list to container "RECEPTION-POLICIES")
+        # Serialize reception_policies (list to container "RECEPTION-POLICYS")
         if self.reception_policies:
-            wrapper = ET.Element("RECEPTION-POLICIES")
+            wrapper = ET.Element("RECEPTION-POLICYS")
             for item in self.reception_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswDataReceptionPolicy")
                 if serialized is not None:
@@ -354,9 +354,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize released_trigger_policies (list to container "RELEASED-TRIGGER-POLICIES")
+        # Serialize released_trigger_policies (list to container "RELEASED-TRIGGER-POLICYS")
         if self.released_trigger_policies:
-            wrapper = ET.Element("RELEASED-TRIGGER-POLICIES")
+            wrapper = ET.Element("RELEASED-TRIGGER-POLICYS")
             for item in self.released_trigger_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswReleasedTriggerPolicy")
                 if serialized is not None:
@@ -364,9 +364,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize scheduler_name_prefixes (list to container "SCHEDULER-NAME-PREFIXES")
+        # Serialize scheduler_name_prefixes (list to container "SCHEDULER-NAME-PREFIXS")
         if self.scheduler_name_prefixes:
-            wrapper = ET.Element("SCHEDULER-NAME-PREFIXES")
+            wrapper = ET.Element("SCHEDULER-NAME-PREFIXS")
             for item in self.scheduler_name_prefixes:
                 serialized = SerializationHelper.serialize_item(item, "BswSchedulerNamePrefix")
                 if serialized is not None:
@@ -374,9 +374,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize send_policies (list to container "SEND-POLICIES")
+        # Serialize send_policies (list to container "SEND-POLICYS")
         if self.send_policies:
-            wrapper = ET.Element("SEND-POLICIES")
+            wrapper = ET.Element("SEND-POLICYS")
             for item in self.send_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswDataSendPolicy")
                 if serialized is not None:
@@ -384,9 +384,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize service_dependencies (list to container "SERVICE-DEPENDENCIES")
+        # Serialize service_dependencies (list to container "SERVICE-DEPENDENCYS")
         if self.service_dependencies:
-            wrapper = ET.Element("SERVICE-DEPENDENCIES")
+            wrapper = ET.Element("SERVICE-DEPENDENCYS")
             for item in self.service_dependencies:
                 serialized = SerializationHelper.serialize_item(item, "BswServiceDependency")
                 if serialized is not None:
@@ -404,9 +404,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXIES")
+        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXYS")
         if self.variation_point_proxies:
-            wrapper = ET.Element("VARIATION-POINT-PROXIES")
+            wrapper = ET.Element("VARIATION-POINT-PROXYS")
             for item in self.variation_point_proxies:
                 serialized = SerializationHelper.serialize_item(item, "VariationPointProxy")
                 if serialized is not None:
@@ -433,15 +433,15 @@ class BswInternalBehavior(InternalBehavior):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "AR-TYPED-PER-INSTANCE-MEMORIES":
+            if tag == "AR-TYPED-PER-INSTANCE-MEMORYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
-            elif tag == "BSW-PER-INSTANCE-MEMORY-POLICIES":
+            elif tag == "BSW-PER-INSTANCE-MEMORY-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.bsw_per_instance_memory_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswPerInstanceMemoryPolicy"))
-            elif tag == "CLIENT-POLICIES":
+            elif tag == "CLIENT-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.client_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswClientPolicy"))
@@ -489,7 +489,7 @@ class BswInternalBehavior(InternalBehavior):
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswScheduleEvent"))
                     elif concrete_tag == "BSW-TIMING-EVENT":
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswTimingEvent"))
-            elif tag == "EXCLUSIVE-AREA-POLICIES":
+            elif tag == "EXCLUSIVE-AREA-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswExclusiveAreaPolicy"))
@@ -505,19 +505,19 @@ class BswInternalBehavior(InternalBehavior):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.internal_triggering_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggeringPoint"))
-            elif tag == "INTERNAL-TRIGGERING-POINT-POLICIES":
+            elif tag == "INTERNAL-TRIGGERING-POINT-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.internal_triggering_point_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggeringPointPolicy"))
-            elif tag == "MODE-RECEIVER-POLICIES":
+            elif tag == "MODE-RECEIVER-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.mode_receiver_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModeReceiverPolicy"))
-            elif tag == "MODE-SENDER-POLICIES":
+            elif tag == "MODE-SENDER-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.mode_sender_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModeSenderPolicy"))
-            elif tag == "PARAMETER-POLICIES":
+            elif tag == "PARAMETER-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.parameter_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswParameterPolicy"))
@@ -525,25 +525,25 @@ class BswInternalBehavior(InternalBehavior):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.per_instance_parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
-            elif tag == "RECEPTION-POLICIES":
+            elif tag == "RECEPTION-POLICYS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "BSW-QUEUED-DATA-RECEPTION-POLICY":
                         obj.reception_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswQueuedDataReceptionPolicy"))
-            elif tag == "RELEASED-TRIGGER-POLICIES":
+            elif tag == "RELEASED-TRIGGER-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.released_trigger_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswReleasedTriggerPolicy"))
-            elif tag == "SCHEDULER-NAME-PREFIXES":
+            elif tag == "SCHEDULER-NAME-PREFIXS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.scheduler_name_prefixes.append(SerializationHelper.deserialize_by_tag(item_elem, "BswSchedulerNamePrefix"))
-            elif tag == "SEND-POLICIES":
+            elif tag == "SEND-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.send_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswDataSendPolicy"))
-            elif tag == "SERVICE-DEPENDENCIES":
+            elif tag == "SERVICE-DEPENDENCYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswServiceDependency"))
@@ -551,7 +551,7 @@ class BswInternalBehavior(InternalBehavior):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.trigger_direct_implementations.append(SerializationHelper.deserialize_by_tag(item_elem, "BswTriggerDirectImplementation"))
-            elif tag == "VARIATION-POINT-PROXIES":
+            elif tag == "VARIATION-POINT-PROXYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(item_elem, "VariationPointProxy"))

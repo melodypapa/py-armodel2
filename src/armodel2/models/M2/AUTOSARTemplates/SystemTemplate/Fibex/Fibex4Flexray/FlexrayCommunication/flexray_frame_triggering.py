@@ -45,7 +45,7 @@ class FlexrayFrameTriggering(FrameTriggering):
     message_id: Optional[PositiveInteger]
     payload_preamble: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "ABSOLUTELIES": lambda obj, elem: obj.absolutelies.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayAbsolutelyScheduledTiming")),
+        "ABSOLUTELYS": lambda obj, elem: obj.absolutelies.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayAbsolutelyScheduledTiming")),
         "ALLOW-DYNAMIC": lambda obj, elem: setattr(obj, "allow_dynamic", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "MESSAGE-ID": lambda obj, elem: setattr(obj, "message_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PAYLOAD-PREAMBLE": lambda obj, elem: setattr(obj, "payload_preamble", SerializationHelper.deserialize_by_tag(elem, "any (BooleanIndicator)")),
@@ -83,9 +83,9 @@ class FlexrayFrameTriggering(FrameTriggering):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize absolutelies (list to container "ABSOLUTELIES")
+        # Serialize absolutelies (list to container "ABSOLUTELYS")
         if self.absolutelies:
-            wrapper = ET.Element("ABSOLUTELIES")
+            wrapper = ET.Element("ABSOLUTELYS")
             for item in self.absolutelies:
                 serialized = SerializationHelper.serialize_item(item, "FlexrayAbsolutelyScheduledTiming")
                 if serialized is not None:
@@ -154,7 +154,7 @@ class FlexrayFrameTriggering(FrameTriggering):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ABSOLUTELIES":
+            if tag == "ABSOLUTELYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.absolutelies.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayAbsolutelyScheduledTiming"))

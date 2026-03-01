@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "NvBlockDescriptor",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::NvBlockComponent",
       "is_abstract": false,
       "atp_type": null,
@@ -39,67 +39,67 @@
         "clientServerPort": {
           "type": "RoleBasedPortAssignment",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "The RoleBasedPortAssignement defines which client port of the NvBlockSwComponentType serves for of service or notification. In case of common callback function is provided by for each individual kind of notification defined by of RoleBasedPortAssignment is subject with the purpose to support the conditional ports. atpVariation"
         },
-        "constantValue": {
-          "type": "ConstantSpecification",
+        "constantValueMapping": {
+          "type": "ConstantSpecificationMappingSet",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the ConstantSpecificationMapping to be applied for the particular NVRAM Block"
         },
-        "dataType": {
+        "dataTypeMapping": {
           "type": "DataTypeMappingSet",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the DataTypeMapping to be applied for the NVRAM Block."
         },
-        "instantiationDataDef": {
+        "instantiationDataDefProps": {
           "type": "InstantiationDataDefProps",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "The purpose of InstantiationDataDefProps are the refinement of some data def properties of individual the context of a NvBlockSw of InstantiationDataDefProps is subject with the purpose to support the conditional ports, component internal memory objects attributes. atpVariation"
         },
-        "modeSwitchEvent": {
-          "type": "any (ModeSwitchEvent)",
+        "modeSwitchEventTriggeredActivity": {
+          "type": "ModeSwitchEventTriggeredActivity",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents the collection of ModeSwitchEvent TriggeredActivities related to the enclosing NvBlock atpVariation 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
-        "nvBlockData": {
+        "nvBlockDataMapping": {
           "type": "NvBlockDataMapping",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Defines the mapping between the VariableData in the NvBlockComponents ports and the the RAM Block. of NvBlockDataMapping is subject to the purpose to support the conditional nv data ports. atpVariation"
         },
         "nvBlockNeeds": {
           "type": "NvBlockNeeds",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Specifies the abstract needs on the configuration of the"
         },
         "ramBlock": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Defines the RAM Block of the NVRAM Block provided by"
         },
         "romBlock": {
           "type": "ParameterDataPrototype",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Defines the ROM Block of the NVRAM Block provided by"
         },
-        "supportDirty": {
+        "supportDirtyFlag": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -114,9 +114,9 @@
           "note": "this reference can be taken to identify the TimingEvent to by the RTE for implementing a cyclic writing this block"
         },
         "writingStrategy": {
-          "type": "any (RoleBasedData)",
+          "type": "RoleBasedDataAssignment",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This attribute allows for assigning a specific writing for an incoming AutosarDataPrototype."
         }

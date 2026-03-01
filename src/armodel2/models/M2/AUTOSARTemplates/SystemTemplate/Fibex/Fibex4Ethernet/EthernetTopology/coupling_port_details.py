@@ -60,7 +60,7 @@ class CouplingPortDetails(ARObject):
         "ETHERNET-TRAFFIC": lambda obj, elem: setattr(obj, "ethernet_traffic", SerializationHelper.deserialize_by_tag(elem, "CouplingPortTrafficClassAssignment")),
         "GLOBAL-TIME-COUPLING": lambda obj, elem: setattr(obj, "global_time_coupling", SerializationHelper.deserialize_by_tag(elem, "GlobalTimeCouplingPortProps")),
         "LAST-EGRESS-REF": lambda obj, elem: setattr(obj, "last_egress_ref", ARRef.deserialize(elem)),
-        "RATE-POLICIES": lambda obj, elem: obj.rate_policies.append(SerializationHelper.deserialize_by_tag(elem, "CouplingPortRatePolicy")),
+        "RATE-POLICYS": lambda obj, elem: obj.rate_policies.append(SerializationHelper.deserialize_by_tag(elem, "CouplingPortRatePolicy")),
     }
 
 
@@ -163,9 +163,9 @@ class CouplingPortDetails(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rate_policies (list to container "RATE-POLICIES")
+        # Serialize rate_policies (list to container "RATE-POLICYS")
         if self.rate_policies:
-            wrapper = ET.Element("RATE-POLICIES")
+            wrapper = ET.Element("RATE-POLICYS")
             for item in self.rate_policies:
                 serialized = SerializationHelper.serialize_item(item, "CouplingPortRatePolicy")
                 if serialized is not None:
@@ -210,7 +210,7 @@ class CouplingPortDetails(ARObject):
                 setattr(obj, "global_time_coupling", SerializationHelper.deserialize_by_tag(child, "GlobalTimeCouplingPortProps"))
             elif tag == "LAST-EGRESS-REF":
                 setattr(obj, "last_egress_ref", ARRef.deserialize(child))
-            elif tag == "RATE-POLICIES":
+            elif tag == "RATE-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.rate_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPortRatePolicy"))

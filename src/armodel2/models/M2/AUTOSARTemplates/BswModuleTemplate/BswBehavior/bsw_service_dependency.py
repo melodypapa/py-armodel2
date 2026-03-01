@@ -8,7 +8,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_dependency import (
@@ -16,8 +16,14 @@ from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_de
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_dependency import ServiceDependencyBuilder
+from armodel2.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.ServiceMapping.bsw_service_dependency_ident import (
+    BswServiceDependencyIdent,
+)
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.role_based_bsw_module_entry_assignment import (
     RoleBasedBswModuleEntryAssignment,
+)
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.role_based_data_assignment import (
+    RoleBasedDataAssignment,
 )
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
@@ -41,14 +47,14 @@ class BswServiceDependency(ServiceDependency):
     _XML_TAG = "BSW-SERVICE-DEPENDENCY"
 
 
-    assigned_datas: list[Any]
-    assigned_entries: list[RoleBasedBswModuleEntryAssignment]
-    ident: Optional[Any]
+    assigned_datas: list[RoleBasedDataAssignment]
+    assigned_entry_roles: list[RoleBasedBswModuleEntryAssignment]
+    ident: Optional[BswServiceDependencyIdent]
     service_needs: Optional[ServiceNeeds]
     _DESERIALIZE_DISPATCH = {
-        "ASSIGNED-DATAS": lambda obj, elem: obj.assigned_datas.append(SerializationHelper.deserialize_by_tag(elem, "any (RoleBasedData)")),
-        "ASSIGNED-ENTRIES": lambda obj, elem: obj.assigned_entries.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedBswModuleEntryAssignment")),
-        "IDENT": lambda obj, elem: setattr(obj, "ident", SerializationHelper.deserialize_by_tag(elem, "any (BswService)")),
+        "ASSIGNED-DATAS": lambda obj, elem: obj.assigned_datas.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedDataAssignment")),
+        "ASSIGNED-ENTRY-ROLES": lambda obj, elem: obj.assigned_entry_roles.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedBswModuleEntryAssignment")),
+        "IDENT": lambda obj, elem: setattr(obj, "ident", SerializationHelper.deserialize_by_tag(elem, "BswServiceDependencyIdent")),
         "SERVICE-NEEDS": ("_POLYMORPHIC", "service_needs", ["BswMgrNeeds", "ComMgrUserNeeds", "CryptoKeyManagementNeeds", "CryptoServiceJobNeeds", "CryptoServiceNeeds", "DiagnosticCapabilityElement", "DiagnosticCommunicationManagerNeeds", "DiagnosticComponentNeeds", "DiagnosticControlNeeds", "DiagnosticEnableConditionNeeds", "DiagnosticEventInfoNeeds", "DiagnosticEventManagerNeeds", "DiagnosticEventNeeds", "DiagnosticIoControlNeeds", "DiagnosticOperationCycleNeeds", "DiagnosticRequestFileTransferNeeds", "DiagnosticRoutineNeeds", "DiagnosticStorageConditionNeeds", "DiagnosticUploadDownloadNeeds", "DiagnosticValueNeeds", "DiagnosticsCommunicationSecurityNeeds", "DltUserNeeds", "DoIpActivationLineNeeds", "DoIpGidNeeds", "DoIpGidSynchronizationNeeds", "DoIpPowerModeStatusNeeds", "DoIpRoutingActivationAuthenticationNeeds", "DoIpRoutingActivationConfirmationNeeds", "DoIpServiceNeeds", "DtcStatusChangeNotificationNeeds", "EcuStateMgrUserNeeds", "ErrorTracerNeeds", "FunctionInhibitionAvailabilityNeeds", "FunctionInhibitionNeeds", "GlobalSupervisionNeeds", "HardwareTestNeeds", "IdsMgrCustomTimestampNeeds", "IdsMgrNeeds", "IndicatorStatusNeeds", "J1939DcmDm19Support", "J1939RmIncomingRequestServiceNeeds", "J1939RmOutgoingRequestServiceNeeds", "NvBlockNeeds", "ObdControlServiceNeeds", "ObdInfoServiceNeeds", "ObdMonitorServiceNeeds", "ObdPidServiceNeeds", "ObdRatioDenominatorNeeds", "ObdRatioServiceNeeds", "SecureOnBoardCommunicationNeeds", "SupervisedEntityCheckpointNeeds", "SupervisedEntityNeeds", "SyncTimeBaseMgrUserNeeds", "V2xDataManagerNeeds", "V2xFacUserNeeds", "V2xMUserNeeds", "VendorSpecificServiceNeeds"]),
     }
 
@@ -56,9 +62,9 @@ class BswServiceDependency(ServiceDependency):
     def __init__(self) -> None:
         """Initialize BswServiceDependency."""
         super().__init__()
-        self.assigned_datas: list[Any] = []
-        self.assigned_entries: list[RoleBasedBswModuleEntryAssignment] = []
-        self.ident: Optional[Any] = None
+        self.assigned_datas: list[RoleBasedDataAssignment] = []
+        self.assigned_entry_roles: list[RoleBasedBswModuleEntryAssignment] = []
+        self.ident: Optional[BswServiceDependencyIdent] = None
         self.service_needs: Optional[ServiceNeeds] = None
 
     def serialize(self) -> ET.Element:
@@ -88,16 +94,16 @@ class BswServiceDependency(ServiceDependency):
         if self.assigned_datas:
             wrapper = ET.Element("ASSIGNED-DATAS")
             for item in self.assigned_datas:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "RoleBasedDataAssignment")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize assigned_entries (list to container "ASSIGNED-ENTRIES")
-        if self.assigned_entries:
-            wrapper = ET.Element("ASSIGNED-ENTRIES")
-            for item in self.assigned_entries:
+        # Serialize assigned_entry_roles (list to container "ASSIGNED-ENTRY-ROLES")
+        if self.assigned_entry_roles:
+            wrapper = ET.Element("ASSIGNED-ENTRY-ROLES")
+            for item in self.assigned_entry_roles:
                 serialized = SerializationHelper.serialize_item(item, "RoleBasedBswModuleEntryAssignment")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -106,7 +112,7 @@ class BswServiceDependency(ServiceDependency):
 
         # Serialize ident
         if self.ident is not None:
-            serialized = SerializationHelper.serialize_item(self.ident, "Any")
+            serialized = SerializationHelper.serialize_item(self.ident, "BswServiceDependencyIdent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDENT")
@@ -154,13 +160,13 @@ class BswServiceDependency(ServiceDependency):
             if tag == "ASSIGNED-DATAS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.assigned_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "any (RoleBasedData)"))
-            elif tag == "ASSIGNED-ENTRIES":
+                    obj.assigned_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedDataAssignment"))
+            elif tag == "ASSIGNED-ENTRY-ROLES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.assigned_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedBswModuleEntryAssignment"))
+                    obj.assigned_entry_roles.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedBswModuleEntryAssignment"))
             elif tag == "IDENT":
-                setattr(obj, "ident", SerializationHelper.deserialize_by_tag(child, "any (BswService)"))
+                setattr(obj, "ident", SerializationHelper.deserialize_by_tag(child, "BswServiceDependencyIdent"))
             elif tag == "SERVICE-NEEDS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -293,7 +299,7 @@ class BswServiceDependencyBuilder(ServiceDependencyBuilder):
         self._obj: BswServiceDependency = BswServiceDependency()
 
 
-    def with_assigned_datas(self, items: list[any (RoleBasedData)]) -> "BswServiceDependencyBuilder":
+    def with_assigned_datas(self, items: list[RoleBasedDataAssignment]) -> "BswServiceDependencyBuilder":
         """Set assigned_datas list attribute.
 
         Args:
@@ -305,8 +311,8 @@ class BswServiceDependencyBuilder(ServiceDependencyBuilder):
         self._obj.assigned_datas = list(items) if items else []
         return self
 
-    def with_assigned_entries(self, items: list[RoleBasedBswModuleEntryAssignment]) -> "BswServiceDependencyBuilder":
-        """Set assigned_entries list attribute.
+    def with_assigned_entry_roles(self, items: list[RoleBasedBswModuleEntryAssignment]) -> "BswServiceDependencyBuilder":
+        """Set assigned_entry_roles list attribute.
 
         Args:
             items: List of items to set
@@ -314,10 +320,10 @@ class BswServiceDependencyBuilder(ServiceDependencyBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.assigned_entries = list(items) if items else []
+        self._obj.assigned_entry_roles = list(items) if items else []
         return self
 
-    def with_ident(self, value: Optional[any (BswService)]) -> "BswServiceDependencyBuilder":
+    def with_ident(self, value: Optional[BswServiceDependencyIdent]) -> "BswServiceDependencyBuilder":
         """Set ident attribute.
 
         Args:
@@ -346,7 +352,7 @@ class BswServiceDependencyBuilder(ServiceDependencyBuilder):
         return self
 
 
-    def add_assigned_data(self, item: any (RoleBasedData)) -> "BswServiceDependencyBuilder":
+    def add_assigned_data(self, item: RoleBasedDataAssignment) -> "BswServiceDependencyBuilder":
         """Add a single item to assigned_datas list.
 
         Args:
@@ -367,8 +373,8 @@ class BswServiceDependencyBuilder(ServiceDependencyBuilder):
         self._obj.assigned_datas = []
         return self
 
-    def add_assigned_entry(self, item: RoleBasedBswModuleEntryAssignment) -> "BswServiceDependencyBuilder":
-        """Add a single item to assigned_entries list.
+    def add_assigned_entry_role(self, item: RoleBasedBswModuleEntryAssignment) -> "BswServiceDependencyBuilder":
+        """Add a single item to assigned_entry_roles list.
 
         Args:
             item: Item to add
@@ -376,16 +382,16 @@ class BswServiceDependencyBuilder(ServiceDependencyBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.assigned_entries.append(item)
+        self._obj.assigned_entry_roles.append(item)
         return self
 
-    def clear_assigned_entries(self) -> "BswServiceDependencyBuilder":
-        """Clear all items from assigned_entries list.
+    def clear_assigned_entry_roles(self) -> "BswServiceDependencyBuilder":
+        """Clear all items from assigned_entry_roles list.
 
         Returns:
             self for method chaining
         """
-        self._obj.assigned_entries = []
+        self._obj.assigned_entry_roles = []
         return self
 
 

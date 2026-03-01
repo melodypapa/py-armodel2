@@ -47,10 +47,10 @@ class CpSoftwareClusterMappingSet(ARElement):
     software_clusters: list[Any]
     swc_toes: list[SwcToApplicationPartitionMapping]
     _DESERIALIZE_DISPATCH = {
-        "PORT-ELEMENT-TOES": lambda obj, elem: obj.port_element_toes.append(SerializationHelper.deserialize_by_tag(elem, "PortElementToCommunicationResourceMapping")),
-        "RESOURCE-TOES": lambda obj, elem: obj.resource_toes.append(SerializationHelper.deserialize_by_tag(elem, "CpSoftwareCluster")),
+        "PORT-ELEMENT-TOS": lambda obj, elem: obj.port_element_toes.append(SerializationHelper.deserialize_by_tag(elem, "PortElementToCommunicationResourceMapping")),
+        "RESOURCE-TOS": lambda obj, elem: obj.resource_toes.append(SerializationHelper.deserialize_by_tag(elem, "CpSoftwareCluster")),
         "SOFTWARE-CLUSTERS": lambda obj, elem: obj.software_clusters.append(SerializationHelper.deserialize_by_tag(elem, "any (CpSoftwareClusterTo)")),
-        "SWC-TOES": lambda obj, elem: obj.swc_toes.append(SerializationHelper.deserialize_by_tag(elem, "SwcToApplicationPartitionMapping")),
+        "SWC-TOS": lambda obj, elem: obj.swc_toes.append(SerializationHelper.deserialize_by_tag(elem, "SwcToApplicationPartitionMapping")),
     }
 
 
@@ -85,9 +85,9 @@ class CpSoftwareClusterMappingSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize port_element_toes (list to container "PORT-ELEMENT-TOES")
+        # Serialize port_element_toes (list to container "PORT-ELEMENT-TOS")
         if self.port_element_toes:
-            wrapper = ET.Element("PORT-ELEMENT-TOES")
+            wrapper = ET.Element("PORT-ELEMENT-TOS")
             for item in self.port_element_toes:
                 serialized = SerializationHelper.serialize_item(item, "PortElementToCommunicationResourceMapping")
                 if serialized is not None:
@@ -95,9 +95,9 @@ class CpSoftwareClusterMappingSet(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize resource_toes (list to container "RESOURCE-TOES")
+        # Serialize resource_toes (list to container "RESOURCE-TOS")
         if self.resource_toes:
-            wrapper = ET.Element("RESOURCE-TOES")
+            wrapper = ET.Element("RESOURCE-TOS")
             for item in self.resource_toes:
                 serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
@@ -115,9 +115,9 @@ class CpSoftwareClusterMappingSet(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize swc_toes (list to container "SWC-TOES")
+        # Serialize swc_toes (list to container "SWC-TOS")
         if self.swc_toes:
-            wrapper = ET.Element("SWC-TOES")
+            wrapper = ET.Element("SWC-TOS")
             for item in self.swc_toes:
                 serialized = SerializationHelper.serialize_item(item, "SwcToApplicationPartitionMapping")
                 if serialized is not None:
@@ -144,11 +144,11 @@ class CpSoftwareClusterMappingSet(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "PORT-ELEMENT-TOES":
+            if tag == "PORT-ELEMENT-TOS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.port_element_toes.append(SerializationHelper.deserialize_by_tag(item_elem, "PortElementToCommunicationResourceMapping"))
-            elif tag == "RESOURCE-TOES":
+            elif tag == "RESOURCE-TOS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.resource_toes.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareCluster"))
@@ -156,7 +156,7 @@ class CpSoftwareClusterMappingSet(ARElement):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.software_clusters.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CpSoftwareClusterTo)"))
-            elif tag == "SWC-TOES":
+            elif tag == "SWC-TOS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.swc_toes.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToApplicationPartitionMapping"))

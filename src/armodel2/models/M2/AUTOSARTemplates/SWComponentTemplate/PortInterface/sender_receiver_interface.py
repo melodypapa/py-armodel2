@@ -52,7 +52,7 @@ class SenderReceiverInterface(DataInterface):
     meta_data_item_sets: list[MetaDataItemSet]
     _DESERIALIZE_DISPATCH = {
         "DATA-ELEMENTS": lambda obj, elem: obj.data_elements.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
-        "INVALIDATION-POLICY-POLICIES": lambda obj, elem: obj.invalidation_policy_policies.append(SerializationHelper.deserialize_by_tag(elem, "InvalidationPolicy")),
+        "INVALIDATION-POLICY-POLICYS": lambda obj, elem: obj.invalidation_policy_policies.append(SerializationHelper.deserialize_by_tag(elem, "InvalidationPolicy")),
         "META-DATA-ITEM-SETS": lambda obj, elem: obj.meta_data_item_sets.append(SerializationHelper.deserialize_by_tag(elem, "MetaDataItemSet")),
     }
 
@@ -97,9 +97,9 @@ class SenderReceiverInterface(DataInterface):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize invalidation_policy_policies (list to container "INVALIDATION-POLICY-POLICIES")
+        # Serialize invalidation_policy_policies (list to container "INVALIDATION-POLICY-POLICYS")
         if self.invalidation_policy_policies:
-            wrapper = ET.Element("INVALIDATION-POLICY-POLICIES")
+            wrapper = ET.Element("INVALIDATION-POLICY-POLICYS")
             for item in self.invalidation_policy_policies:
                 serialized = SerializationHelper.serialize_item(item, "InvalidationPolicy")
                 if serialized is not None:
@@ -140,7 +140,7 @@ class SenderReceiverInterface(DataInterface):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.data_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
-            elif tag == "INVALIDATION-POLICY-POLICIES":
+            elif tag == "INVALIDATION-POLICY-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.invalidation_policy_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "InvalidationPolicy"))

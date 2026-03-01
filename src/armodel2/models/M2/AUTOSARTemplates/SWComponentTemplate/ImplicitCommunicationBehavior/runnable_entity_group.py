@@ -44,7 +44,7 @@ class RunnableEntityGroup(Identifiable):
     runnable_entities: list[RunnableEntity]
     runnable_entity_group_group_in_composition_instance_ref: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "RUNNABLE-ENTITIES": lambda obj, elem: obj.runnable_entities.append(SerializationHelper.deserialize_by_tag(elem, "RunnableEntity")),
+        "RUNNABLE-ENTITYS": lambda obj, elem: obj.runnable_entities.append(SerializationHelper.deserialize_by_tag(elem, "RunnableEntity")),
         "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS": lambda obj, elem: [obj.runnable_entity_group_group_in_composition_instance_ref.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
@@ -78,9 +78,9 @@ class RunnableEntityGroup(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize runnable_entities (list to container "RUNNABLE-ENTITIES")
+        # Serialize runnable_entities (list to container "RUNNABLE-ENTITYS")
         if self.runnable_entities:
-            wrapper = ET.Element("RUNNABLE-ENTITIES")
+            wrapper = ET.Element("RUNNABLE-ENTITYS")
             for item in self.runnable_entities:
                 serialized = SerializationHelper.serialize_item(item, "RunnableEntity")
                 if serialized is not None:
@@ -124,7 +124,7 @@ class RunnableEntityGroup(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "RUNNABLE-ENTITIES":
+            if tag == "RUNNABLE-ENTITYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.runnable_entities.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntity"))

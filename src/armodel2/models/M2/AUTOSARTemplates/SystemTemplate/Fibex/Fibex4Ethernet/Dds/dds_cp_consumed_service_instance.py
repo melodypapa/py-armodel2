@@ -45,7 +45,7 @@ class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
     minor_version: Optional[AnyVersionString]
     static_remote_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONSUMED-DDSES": ("_POLYMORPHIC_LIST", "consumed_ddses", ["DdsCpConsumedServiceInstance", "DdsCpProvidedServiceInstance"]),
+        "CONSUMED-DDSS": ("_POLYMORPHIC_LIST", "consumed_ddses", ["DdsCpConsumedServiceInstance", "DdsCpProvidedServiceInstance"]),
         "LOCAL-UNICAST-REF": lambda obj, elem: setattr(obj, "local_unicast_ref", ARRef.deserialize(elem)),
         "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(elem, "AnyVersionString")),
         "STATIC-REMOTE-REF": lambda obj, elem: setattr(obj, "static_remote_ref", ARRef.deserialize(elem)),
@@ -83,9 +83,9 @@ class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize consumed_ddses (list to container "CONSUMED-DDSES")
+        # Serialize consumed_ddses (list to container "CONSUMED-DDSS")
         if self.consumed_ddses:
-            wrapper = ET.Element("CONSUMED-DDSES")
+            wrapper = ET.Element("CONSUMED-DDSS")
             for item in self.consumed_ddses:
                 serialized = SerializationHelper.serialize_item(item, "DdsCpServiceInstance")
                 if serialized is not None:
@@ -154,7 +154,7 @@ class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONSUMED-DDSES":
+            if tag == "CONSUMED-DDSS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag

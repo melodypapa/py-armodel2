@@ -55,7 +55,7 @@ class FlexrayTpConfig(TpConfig):
     tp_nodes: list[FlexrayTpNode]
     _DESERIALIZE_DISPATCH = {
         "PDU-POOLS": lambda obj, elem: obj.pdu_pools.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayTpPduPool")),
-        "TP-ADDRESSES": lambda obj, elem: obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(elem, "TpAddress")),
+        "TP-ADDRESSS": lambda obj, elem: obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(elem, "TpAddress")),
         "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayTpConnection")),
         "TP-ECUS": lambda obj, elem: obj.tp_ecus.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayTpEcu")),
         "TP-NODES": lambda obj, elem: obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayTpNode")),
@@ -104,9 +104,9 @@ class FlexrayTpConfig(TpConfig):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize tp_addresses (list to container "TP-ADDRESSES")
+        # Serialize tp_addresses (list to container "TP-ADDRESSS")
         if self.tp_addresses:
-            wrapper = ET.Element("TP-ADDRESSES")
+            wrapper = ET.Element("TP-ADDRESSS")
             for item in self.tp_addresses:
                 serialized = SerializationHelper.serialize_item(item, "TpAddress")
                 if serialized is not None:
@@ -167,7 +167,7 @@ class FlexrayTpConfig(TpConfig):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.pdu_pools.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayTpPduPool"))
-            elif tag == "TP-ADDRESSES":
+            elif tag == "TP-ADDRESSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(item_elem, "TpAddress"))

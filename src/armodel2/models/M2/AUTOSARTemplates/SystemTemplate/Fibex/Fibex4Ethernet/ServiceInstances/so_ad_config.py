@@ -39,7 +39,7 @@ class SoAdConfig(ARObject):
     socket_addresses: list[SocketAddress]
     _DESERIALIZE_DISPATCH = {
         "CONNECTIONS": lambda obj, elem: obj.connections.append(SerializationHelper.deserialize_by_tag(elem, "SocketConnection")),
-        "SOCKET-ADDRESSES": lambda obj, elem: obj.socket_addresses.append(SerializationHelper.deserialize_by_tag(elem, "SocketAddress")),
+        "SOCKET-ADDRESSS": lambda obj, elem: obj.socket_addresses.append(SerializationHelper.deserialize_by_tag(elem, "SocketAddress")),
     }
 
 
@@ -82,9 +82,9 @@ class SoAdConfig(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize socket_addresses (list to container "SOCKET-ADDRESSES")
+        # Serialize socket_addresses (list to container "SOCKET-ADDRESSS")
         if self.socket_addresses:
-            wrapper = ET.Element("SOCKET-ADDRESSES")
+            wrapper = ET.Element("SOCKET-ADDRESSS")
             for item in self.socket_addresses:
                 serialized = SerializationHelper.serialize_item(item, "SocketAddress")
                 if serialized is not None:
@@ -115,7 +115,7 @@ class SoAdConfig(ARObject):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.connections.append(SerializationHelper.deserialize_by_tag(item_elem, "SocketConnection"))
-            elif tag == "SOCKET-ADDRESSES":
+            elif tag == "SOCKET-ADDRESSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.socket_addresses.append(SerializationHelper.deserialize_by_tag(item_elem, "SocketAddress"))

@@ -48,7 +48,7 @@ class RptComponent(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "MC-DATAS": lambda obj, elem: obj.mc_datas.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
         "RP-IMPL-POLICY": lambda obj, elem: setattr(obj, "rp_impl_policy", SerializationHelper.deserialize_by_tag(elem, "RptImplPolicy")),
-        "RPT-EXECUTABLE-ENTITIES": lambda obj, elem: obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(elem, "RptExecutableEntity")),
+        "RPT-EXECUTABLE-ENTITYS": lambda obj, elem: obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(elem, "RptExecutableEntity")),
     }
 
 
@@ -106,9 +106,9 @@ class RptComponent(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rpt_executable_entities (list to container "RPT-EXECUTABLE-ENTITIES")
+        # Serialize rpt_executable_entities (list to container "RPT-EXECUTABLE-ENTITYS")
         if self.rpt_executable_entities:
-            wrapper = ET.Element("RPT-EXECUTABLE-ENTITIES")
+            wrapper = ET.Element("RPT-EXECUTABLE-ENTITYS")
             for item in self.rpt_executable_entities:
                 serialized = SerializationHelper.serialize_item(item, "RptExecutableEntity")
                 if serialized is not None:
@@ -141,7 +141,7 @@ class RptComponent(Identifiable):
                     obj.mc_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedMcDataAssignment"))
             elif tag == "RP-IMPL-POLICY":
                 setattr(obj, "rp_impl_policy", SerializationHelper.deserialize_by_tag(child, "RptImplPolicy"))
-            elif tag == "RPT-EXECUTABLE-ENTITIES":
+            elif tag == "RPT-EXECUTABLE-ENTITYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(item_elem, "RptExecutableEntity"))
