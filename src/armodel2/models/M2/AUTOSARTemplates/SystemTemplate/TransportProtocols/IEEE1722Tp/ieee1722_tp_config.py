@@ -39,7 +39,7 @@ class IEEE1722TpConfig(TpConfig):
 
     tp_connection_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TP-CONNECTION-REFS": ("_POLYMORPHIC_LIST", "tp_connection_refs", ["IEEE1722TpAcfConnection", "IEEE1722TpAvConnection"]),
+        "TP-CONNECTION-REFS": ("_POLYMORPHIC_LIST", "tp_connection_refs", ["IEEE1722TpAafConnection", "IEEE1722TpAcfConnection", "IEEE1722TpAvConnection", "IEEE1722TpCrfConnection", "IEEE1722TpIidcConnection"]),
     }
 
 

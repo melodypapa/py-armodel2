@@ -50,7 +50,7 @@ class StackUsage(Identifiable, ABC):
     hw_element_ref: Optional[ARRef]
     software_context: Optional[SoftwareContext]
     _DESERIALIZE_DISPATCH = {
-        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswModuleEntity", "RunnableEntity"]),
+        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswCalledEntity", "BswInterruptEntity", "BswModuleEntity", "BswSchedulableEntity", "RunnableEntity"]),
         "HARDWARE": lambda obj, elem: setattr(obj, "hardware", SerializationHelper.deserialize_by_tag(elem, "HardwareConfiguration")),
         "HW-ELEMENT-REF": lambda obj, elem: setattr(obj, "hw_element_ref", ARRef.deserialize(elem)),
         "SOFTWARE-CONTEXT": lambda obj, elem: setattr(obj, "software_context", SerializationHelper.deserialize_by_tag(elem, "SoftwareContext")),

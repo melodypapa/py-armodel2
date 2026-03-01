@@ -43,9 +43,9 @@ class SynchronizationPointConstraint(TimingConstraint):
     target_event_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "SOURCE-EEC-REFS": lambda obj, elem: [obj.source_eec_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "SOURCE-EVENT-REFS": ("_POLYMORPHIC_LIST", "source_event_refs", ["BswEvent", "RTEEvent"]),
+        "SOURCE-EVENT-REFS": ("_POLYMORPHIC_LIST", "source_event_refs", ["AsynchronousServerCallReturnsEvent", "BackgroundEvent", "BswAsynchronousServerCallReturnsEvent", "BswBackgroundEvent", "BswDataReceivedEvent", "BswEvent", "BswExternalTriggerOccurredEvent", "BswInternalTriggerOccurredEvent", "BswInterruptEvent", "BswModeManagerErrorEvent", "BswModeSwitchEvent", "BswModeSwitchedAckEvent", "BswOperationInvokedEvent", "BswOsTaskExecutionEvent", "BswTimingEvent", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "ExternalTriggerOccurredEvent", "InitEvent", "InternalTriggerOccurredEvent", "ModeSwitchedAckEvent", "OperationInvokedEvent", "OsTaskExecutionEvent", "RTEEvent", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "TimingEvent", "TransformerHardErrorEvent"]),
         "TARGET-EEC-REFS": lambda obj, elem: [obj.target_eec_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "TARGET-EVENT-REFS": ("_POLYMORPHIC_LIST", "target_event_refs", ["BswEvent", "RTEEvent"]),
+        "TARGET-EVENT-REFS": ("_POLYMORPHIC_LIST", "target_event_refs", ["AsynchronousServerCallReturnsEvent", "BackgroundEvent", "BswAsynchronousServerCallReturnsEvent", "BswBackgroundEvent", "BswDataReceivedEvent", "BswEvent", "BswExternalTriggerOccurredEvent", "BswInternalTriggerOccurredEvent", "BswInterruptEvent", "BswModeManagerErrorEvent", "BswModeSwitchEvent", "BswModeSwitchedAckEvent", "BswOperationInvokedEvent", "BswOsTaskExecutionEvent", "BswTimingEvent", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "ExternalTriggerOccurredEvent", "InitEvent", "InternalTriggerOccurredEvent", "ModeSwitchedAckEvent", "OperationInvokedEvent", "OsTaskExecutionEvent", "RTEEvent", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "TimingEvent", "TransformerHardErrorEvent"]),
     }
 
 

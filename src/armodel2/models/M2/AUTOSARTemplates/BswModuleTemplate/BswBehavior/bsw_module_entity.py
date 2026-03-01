@@ -70,7 +70,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
     _DESERIALIZE_DISPATCH = {
         "ACCESSED-MODE-GROUP-REFS": lambda obj, elem: [obj.accessed_mode_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ACTIVATION-POINT-REFS": lambda obj, elem: [obj.activation_point_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "CALL-POINTS": ("_POLYMORPHIC_LIST", "call_points", ["BswAsynchronousServerCallPoint", "BswAsynchronousServerCallResultPoint", "BswDirectCallPoint", "Bsw"]),
+        "CALL-POINTS": ("_POLYMORPHIC_LIST", "call_points", ["Bsw", "BswAsynchronousServerCallPoint", "BswAsynchronousServerCallResultPoint", "BswDirectCallPoint"]),
         "DATA-RECEIVE-POINTS": lambda obj, elem: obj.data_receive_points.append(SerializationHelper.deserialize_by_tag(elem, "BswVariableAccess")),
         "DATA-SEND-POINTS": lambda obj, elem: obj.data_send_points.append(SerializationHelper.deserialize_by_tag(elem, "BswVariableAccess")),
         "IMPLEMENTED-ENTRY-REF": lambda obj, elem: setattr(obj, "implemented_entry_ref", ARRef.deserialize(elem)),
@@ -273,14 +273,14 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
-                    if concrete_tag == "BSW-ASYNCHRONOUS-SERVER-CALL-POINT":
+                    if concrete_tag == "BSW":
+                        obj.call_points.append(SerializationHelper.deserialize_by_tag(item_elem, "Bsw"))
+                    elif concrete_tag == "BSW-ASYNCHRONOUS-SERVER-CALL-POINT":
                         obj.call_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswAsynchronousServerCallPoint"))
                     elif concrete_tag == "BSW-ASYNCHRONOUS-SERVER-CALL-RESULT-POINT":
                         obj.call_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswAsynchronousServerCallResultPoint"))
                     elif concrete_tag == "BSW-DIRECT-CALL-POINT":
                         obj.call_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswDirectCallPoint"))
-                    elif concrete_tag == "BSW":
-                        obj.call_points.append(SerializationHelper.deserialize_by_tag(item_elem, "Bsw"))
             elif tag == "DATA-RECEIVE-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:

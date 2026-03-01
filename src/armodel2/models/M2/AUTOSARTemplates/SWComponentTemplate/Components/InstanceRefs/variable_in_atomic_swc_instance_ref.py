@@ -43,7 +43,7 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
     _DESERIALIZE_DISPATCH = {
         "ABSTRACT-TARGET-REF": lambda obj, elem: setattr(obj, "abstract_target_ref", ARRef.deserialize(elem)),
         "BASE-REF": ("_POLYMORPHIC", "base_ref", ["ApplicationSwComponentType", "ComplexDeviceDriverSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
-        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
     }
 
 

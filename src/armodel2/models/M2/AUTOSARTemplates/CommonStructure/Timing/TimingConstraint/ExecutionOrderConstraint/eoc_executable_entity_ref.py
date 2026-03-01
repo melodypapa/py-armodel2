@@ -47,7 +47,7 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
     _DESERIALIZE_DISPATCH = {
         "BSW-MODULE-REF": lambda obj, elem: setattr(obj, "bsw_module_ref", ARRef.deserialize(elem)),
         "COMPONENT": lambda obj, elem: setattr(obj, "component", SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
-        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswModuleEntity", "RunnableEntity"]),
+        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswCalledEntity", "BswInterruptEntity", "BswModuleEntity", "BswSchedulableEntity", "RunnableEntity"]),
         "SUCCESSOR-REFS": lambda obj, elem: [obj.successor_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 

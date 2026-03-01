@@ -58,7 +58,7 @@ class PduTriggering(Identifiable):
     trigger_i_pdu_send_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "I-PDU-PORT-REFS": lambda obj, elem: [obj.i_pdu_port_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "I-PDU-REF": ("_POLYMORPHIC", "i_pdu_ref", ["GeneralPurposePdu", "IPdu", "NmPdu", "UserDefinedPdu"]),
+        "I-PDU-REF": ("_POLYMORPHIC", "i_pdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "GeneralPurposePdu", "IPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "NmPdu", "SecuredIPdu", "UserDefinedIPdu", "UserDefinedPdu"]),
         "I-SIGNAL-REFS": lambda obj, elem: [obj.i_signal_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SEC-OC-CRYPTO-SERVICE-REF": lambda obj, elem: setattr(obj, "sec_oc_crypto_service_ref", ARRef.deserialize(elem)),
         "TRIGGER-I-PDU-SEND-REFS": lambda obj, elem: [obj.trigger_i_pdu_send_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],

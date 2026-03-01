@@ -43,7 +43,7 @@ class ConstantSpecification(ARElement):
 
     _value_spec: Optional[ValueSpecification]
     _DESERIALIZE_DISPATCH = {
-        "VALUE-SPEC": ("_POLYMORPHIC", "_value_spec", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "VALUE-SPEC": ("_POLYMORPHIC", "_value_spec", ["AbstractRuleBasedValueSpecification", "ApplicationRuleBasedValueSpecification", "ApplicationValueSpecification", "ArrayValueSpecification", "CompositeRuleBasedValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "RecordValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
     }
 
 
@@ -120,8 +120,14 @@ class ConstantSpecification(ARElement):
                     concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
                     if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
                         setattr(obj, "_value_spec", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "_value_spec", SerializationHelper.deserialize_by_tag(child[0], "ApplicationRuleBasedValueSpecification"))
                     elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
                         setattr(obj, "_value_spec", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "ARRAY-VALUE-SPECIFICATION":
+                        setattr(obj, "_value_spec", SerializationHelper.deserialize_by_tag(child[0], "ArrayValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "_value_spec", SerializationHelper.deserialize_by_tag(child[0], "CompositeRuleBasedValueSpecification"))
                     elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
                         setattr(obj, "_value_spec", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
                     elif concrete_tag == "CONSTANT-REFERENCE":
@@ -130,6 +136,8 @@ class ConstantSpecification(ARElement):
                         setattr(obj, "_value_spec", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
                     elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
                         setattr(obj, "_value_spec", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "RECORD-VALUE-SPECIFICATION":
+                        setattr(obj, "_value_spec", SerializationHelper.deserialize_by_tag(child[0], "RecordValueSpecification"))
                     elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
                         setattr(obj, "_value_spec", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
                     elif concrete_tag == "TEXT-VALUE-SPECIFICATION":

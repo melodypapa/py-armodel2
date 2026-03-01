@@ -114,7 +114,7 @@ class BswInternalBehavior(InternalBehavior):
         "CLIENT-POLICIES": lambda obj, elem: obj.client_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswClientPolicy")),
         "DISTINGUISHED-PARTITIONS": lambda obj, elem: obj.distinguished_partitions.append(SerializationHelper.deserialize_by_tag(elem, "BswDistinguishedPartition")),
         "ENTITIES": ("_POLYMORPHIC_LIST", "_entities", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
-        "EVENTS": ("_POLYMORPHIC_LIST", "events", ["BswInterruptEvent", "BswOperationInvokedEvent", "BswScheduleEvent", "BswAsynchronousServerCallReturnsEvent", "BswBackgroundEvent", "BswDataReceivedEvent", "BswExternalTriggerOccurredEvent", "BswInternalTriggerOccurredEvent", "BswModeManagerErrorEvent", "BswModeSwitchEvent", "BswModeSwitchedAckEvent", "BswOsTaskExecutionEvent", "BswTimingEvent"]),
+        "EVENTS": ("_POLYMORPHIC_LIST", "events", ["BswAsynchronousServerCallReturnsEvent", "BswBackgroundEvent", "BswDataReceivedEvent", "BswExternalTriggerOccurredEvent", "BswInternalTriggerOccurredEvent", "BswInterruptEvent", "BswModeManagerErrorEvent", "BswModeSwitchEvent", "BswModeSwitchedAckEvent", "BswOperationInvokedEvent", "BswOsTaskExecutionEvent", "BswScheduleEvent", "BswTimingEvent"]),
         "EXCLUSIVE-AREA-POLICIES": lambda obj, elem: obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswExclusiveAreaPolicy")),
         "INCLUDED-DATA-TYPE-SETS": lambda obj, elem: obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedDataTypeSet")),
         "INCLUDED-MODE-DECLARATION-GROUP-SETS": lambda obj, elem: obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedModeDeclarationGroupSet")),
@@ -463,13 +463,7 @@ class BswInternalBehavior(InternalBehavior):
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
-                    if concrete_tag == "BSW-INTERRUPT-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInterruptEvent"))
-                    elif concrete_tag == "BSW-OPERATION-INVOKED-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswOperationInvokedEvent"))
-                    elif concrete_tag == "BSW-SCHEDULE-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswScheduleEvent"))
-                    elif concrete_tag == "BSW-ASYNCHRONOUS-SERVER-CALL-RETURNS-EVENT":
+                    if concrete_tag == "BSW-ASYNCHRONOUS-SERVER-CALL-RETURNS-EVENT":
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswAsynchronousServerCallReturnsEvent"))
                     elif concrete_tag == "BSW-BACKGROUND-EVENT":
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswBackgroundEvent"))
@@ -479,14 +473,20 @@ class BswInternalBehavior(InternalBehavior):
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswExternalTriggerOccurredEvent"))
                     elif concrete_tag == "BSW-INTERNAL-TRIGGER-OCCURRED-EVENT":
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggerOccurredEvent"))
+                    elif concrete_tag == "BSW-INTERRUPT-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInterruptEvent"))
                     elif concrete_tag == "BSW-MODE-MANAGER-ERROR-EVENT":
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModeManagerErrorEvent"))
                     elif concrete_tag == "BSW-MODE-SWITCH-EVENT":
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModeSwitchEvent"))
                     elif concrete_tag == "BSW-MODE-SWITCHED-ACK-EVENT":
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModeSwitchedAckEvent"))
+                    elif concrete_tag == "BSW-OPERATION-INVOKED-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswOperationInvokedEvent"))
                     elif concrete_tag == "BSW-OS-TASK-EXECUTION-EVENT":
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswOsTaskExecutionEvent"))
+                    elif concrete_tag == "BSW-SCHEDULE-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswScheduleEvent"))
                     elif concrete_tag == "BSW-TIMING-EVENT":
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswTimingEvent"))
             elif tag == "EXCLUSIVE-AREA-POLICIES":

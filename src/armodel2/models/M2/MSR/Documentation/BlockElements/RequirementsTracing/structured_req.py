@@ -77,7 +77,7 @@ class StructuredReq(Paginateable):
         "RATIONALE": lambda obj, elem: setattr(obj, "rationale", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
         "REMARK": lambda obj, elem: setattr(obj, "remark", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
         "SUPPORTING": lambda obj, elem: setattr(obj, "supporting", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
-        "TESTED-ITEM-REFS": ("_POLYMORPHIC_LIST", "tested_item_refs", ["StructuredReq", "TimingConstraint", "TraceableTable", "TraceableText"]),
+        "TESTED-ITEM-REFS": ("_POLYMORPHIC_LIST", "tested_item_refs", ["AgeConstraint", "ArbitraryEventTriggering", "BurstPatternEventTriggering", "ConcretePatternEventTriggering", "ExecutionOrderConstraint", "ExecutionTimeConstraint", "LatencyTimingConstraint", "OffsetTimingConstraint", "PeriodicEventTriggering", "SporadicEventTriggering", "StructuredReq", "SynchronizationPointConstraint", "TimingConstraint", "TraceableTable", "TraceableText"]),
         "TYPE": lambda obj, elem: setattr(obj, "type", SerializationHelper.deserialize_by_tag(elem, "String")),
         "USE-CASE": lambda obj, elem: setattr(obj, "use_case", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
     }

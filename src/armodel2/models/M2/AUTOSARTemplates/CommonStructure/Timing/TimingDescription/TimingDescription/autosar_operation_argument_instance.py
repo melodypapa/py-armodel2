@@ -39,7 +39,7 @@ class AutosarOperationArgumentInstance(Identifiable):
 
     operation_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "OPERATION-REF": ("_POLYMORPHIC", "operation_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "OPERATION-REF": ("_POLYMORPHIC", "operation_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
     }
 
 

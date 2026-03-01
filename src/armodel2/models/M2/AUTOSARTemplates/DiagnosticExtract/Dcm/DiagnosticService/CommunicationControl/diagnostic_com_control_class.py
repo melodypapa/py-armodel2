@@ -45,7 +45,7 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
     specific_channels: list[DiagnosticComControl]
     sub_nodes: list[DiagnosticComControl]
     _DESERIALIZE_DISPATCH = {
-        "ALL-CHANNELS-REFS": ("_POLYMORPHIC_LIST", "all_channel_refs", ["AbstractCanCluster", "EthernetCluster", "FlexrayCluster", "LinCluster", "UserDefinedCluster"]),
+        "ALL-CHANNELS-REFS": ("_POLYMORPHIC_LIST", "all_channel_refs", ["AbstractCanCluster", "CanCluster", "EthernetCluster", "FlexrayCluster", "J1939Cluster", "LinCluster", "TtcanCluster", "UserDefinedCluster"]),
         "ALL-PHYSICAL-REFS": lambda obj, elem: [obj.all_physical_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SPECIFIC-CHANNELS": lambda obj, elem: obj.specific_channels.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticComControl")),
         "SUB-NODES": lambda obj, elem: obj.sub_nodes.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticComControl")),

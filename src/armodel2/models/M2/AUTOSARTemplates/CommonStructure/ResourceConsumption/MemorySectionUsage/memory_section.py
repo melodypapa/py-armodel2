@@ -59,7 +59,7 @@ class MemorySection(Identifiable):
     symbol: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
         "ALIGNMENT": lambda obj, elem: setattr(obj, "alignment", SerializationHelper.deserialize_by_tag(elem, "AlignmentType")),
-        "EXECUTABLE-ENTITY-REFS": ("_POLYMORPHIC_LIST", "executable_entity_refs", ["BswModuleEntity", "RunnableEntity"]),
+        "EXECUTABLE-ENTITY-REFS": ("_POLYMORPHIC_LIST", "executable_entity_refs", ["BswCalledEntity", "BswInterruptEntity", "BswModuleEntity", "BswSchedulableEntity", "RunnableEntity"]),
         "OPTIONS": lambda obj, elem: obj.options.append(SerializationHelper.deserialize_by_tag(elem, "Identifier")),
         "PREFIX-REF": lambda obj, elem: setattr(obj, "prefix_ref", ARRef.deserialize(elem)),
         "SIZE": lambda obj, elem: setattr(obj, "size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),

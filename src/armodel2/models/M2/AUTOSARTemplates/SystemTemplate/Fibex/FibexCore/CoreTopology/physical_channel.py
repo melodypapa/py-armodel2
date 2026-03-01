@@ -53,10 +53,10 @@ class PhysicalChannel(Identifiable, ABC):
     managed_physical_channel_refs: list[ARRef]
     pdu_triggerings: list[PduTriggering]
     _DESERIALIZE_DISPATCH = {
-        "COMM-CONNECTOR-REFS": ("_POLYMORPHIC_LIST", "_comm_connector_refs", ["CanCommunicationConnector", "TtcanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "COMM-CONNECTOR-REFS": ("_POLYMORPHIC_LIST", "_comm_connector_refs", ["AbstractCanCommunicationConnector", "CanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "TtcanCommunicationConnector", "UserDefinedCommunicationConnector"]),
         "FRAME-TRIGGERINGS": ("_POLYMORPHIC_LIST", "frame_triggerings", ["CanFrameTriggering", "EthernetFrameTriggering", "FlexrayFrameTriggering", "LinFrameTriggering"]),
         "I-SIGNAL-TRIGGERINGS": lambda obj, elem: obj.i_signal_triggerings.append(SerializationHelper.deserialize_by_tag(elem, "ISignalTriggering")),
-        "MANAGED-PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "managed_physical_channel_refs", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "MANAGED-PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "managed_physical_channel_refs", ["AbstractCanPhysicalChannel", "CanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel", "TtcanPhysicalChannel"]),
         "PDU-TRIGGERINGS": lambda obj, elem: obj.pdu_triggerings.append(SerializationHelper.deserialize_by_tag(elem, "PduTriggering")),
     }
 

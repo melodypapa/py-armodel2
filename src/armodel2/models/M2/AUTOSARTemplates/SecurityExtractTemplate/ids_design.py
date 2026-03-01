@@ -39,7 +39,7 @@ class IdsDesign(ARElement):
 
     element_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ELEMENT-REFS": ("_POLYMORPHIC_LIST", "element_refs", ["IdsMapping", "IdsmInstance", "IdsmProperties", "SecurityEventDefinition", "SecurityEventFilterChain"]),
+        "ELEMENT-REFS": ("_POLYMORPHIC_LIST", "element_refs", ["IdsMapping", "IdsmInstance", "IdsmProperties", "SecurityEventContextMappingApplication", "SecurityEventContextMappingBswModule", "SecurityEventContextMappingCommConnector", "SecurityEventContextMappingFunctionalCluster", "SecurityEventDefinition", "SecurityEventFilterChain"]),
     }
 
 

@@ -44,9 +44,9 @@ class ViewMap(Identifiable):
     role: Optional[Identifier]
     second_elements: list[AtpFeature]
     _DESERIALIZE_DISPATCH = {
-        "FIRST-ELEMENTS": ("_POLYMORPHIC_LIST", "first_elements", ["AtpPrototype", "AtpStructureElement"]),
+        "FIRST-ELEMENTS": ("_POLYMORPHIC_LIST", "first_elements", ["ApplicationArrayElement", "ApplicationRecordElement", "ArgumentDataPrototype", "AssemblySwConnector", "AsynchronousServerCallPoint", "AsynchronousServerCallResultPoint", "AsynchronousServerCallReturnsEvent", "AtpPrototype", "AtpStructureElement", "BackgroundEvent", "BswInternalBehavior", "BswModuleDescription", "BswServiceDependencyIdent", "BulkNvDataDescriptor", "ClientServerOperation", "DataPrototypeGroup", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "DelegationSwConnector", "DiagnosticParameterIdent", "ExternalTriggerOccurredEvent", "ExternalTriggeringPointIdent", "ImplementationDataTypeElement", "InitEvent", "InternalTriggerOccurredEvent", "InternalTriggeringPoint", "ModeAccessPointIdent", "ModeDeclaration", "ModeDeclarationGroupPrototype", "ModeDeclarationMapping", "ModeSwitchPoint", "ModeSwitchedAckEvent", "ModeTransition", "NvBlockDescriptor", "OperationInvokedEvent", "OsTaskExecutionEvent", "PPortPrototype", "PRPortPrototype", "ParameterAccess", "ParameterDataPrototype", "PassThroughSwConnector", "PerInstanceMemory", "PortGroup", "PortPrototypeBlueprint", "RPortPrototype", "RootSwCompositionPrototype", "RunnableEntity", "RunnableEntityGroup", "SwcBswMapping", "SwcInternalBehavior", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "SwcServiceDependency", "SynchronousServerCallPoint", "System", "TimingEvent", "TransformerHardErrorEvent", "Trigger", "VariableAccess", "VariableDataPrototype"]),
         "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
-        "SECOND-ELEMENTS": ("_POLYMORPHIC_LIST", "second_elements", ["AtpPrototype", "AtpStructureElement"]),
+        "SECOND-ELEMENTS": ("_POLYMORPHIC_LIST", "second_elements", ["ApplicationArrayElement", "ApplicationRecordElement", "ArgumentDataPrototype", "AssemblySwConnector", "AsynchronousServerCallPoint", "AsynchronousServerCallResultPoint", "AsynchronousServerCallReturnsEvent", "AtpPrototype", "AtpStructureElement", "BackgroundEvent", "BswInternalBehavior", "BswModuleDescription", "BswServiceDependencyIdent", "BulkNvDataDescriptor", "ClientServerOperation", "DataPrototypeGroup", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "DelegationSwConnector", "DiagnosticParameterIdent", "ExternalTriggerOccurredEvent", "ExternalTriggeringPointIdent", "ImplementationDataTypeElement", "InitEvent", "InternalTriggerOccurredEvent", "InternalTriggeringPoint", "ModeAccessPointIdent", "ModeDeclaration", "ModeDeclarationGroupPrototype", "ModeDeclarationMapping", "ModeSwitchPoint", "ModeSwitchedAckEvent", "ModeTransition", "NvBlockDescriptor", "OperationInvokedEvent", "OsTaskExecutionEvent", "PPortPrototype", "PRPortPrototype", "ParameterAccess", "ParameterDataPrototype", "PassThroughSwConnector", "PerInstanceMemory", "PortGroup", "PortPrototypeBlueprint", "RPortPrototype", "RootSwCompositionPrototype", "RunnableEntity", "RunnableEntityGroup", "SwcBswMapping", "SwcInternalBehavior", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "SwcServiceDependency", "SynchronousServerCallPoint", "System", "TimingEvent", "TransformerHardErrorEvent", "Trigger", "VariableAccess", "VariableDataPrototype"]),
     }
 
 
@@ -137,20 +137,260 @@ class ViewMap(Identifiable):
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
-                    if concrete_tag == "ATP-PROTOTYPE":
+                    if concrete_tag == "APPLICATION-ARRAY-ELEMENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationArrayElement"))
+                    elif concrete_tag == "APPLICATION-RECORD-ELEMENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationRecordElement"))
+                    elif concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ArgumentDataPrototype"))
+                    elif concrete_tag == "ASSEMBLY-SW-CONNECTOR":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AssemblySwConnector"))
+                    elif concrete_tag == "ASYNCHRONOUS-SERVER-CALL-POINT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AsynchronousServerCallPoint"))
+                    elif concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RESULT-POINT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AsynchronousServerCallResultPoint"))
+                    elif concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RETURNS-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AsynchronousServerCallReturnsEvent"))
+                    elif concrete_tag == "ATP-PROTOTYPE":
                         obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AtpPrototype"))
                     elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
                         obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AtpStructureElement"))
+                    elif concrete_tag == "BACKGROUND-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "BackgroundEvent"))
+                    elif concrete_tag == "BSW-INTERNAL-BEHAVIOR":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalBehavior"))
+                    elif concrete_tag == "BSW-MODULE-DESCRIPTION":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleDescription"))
+                    elif concrete_tag == "BSW-SERVICE-DEPENDENCY-IDENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "BswServiceDependencyIdent"))
+                    elif concrete_tag == "BULK-NV-DATA-DESCRIPTOR":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "BulkNvDataDescriptor"))
+                    elif concrete_tag == "CLIENT-SERVER-OPERATION":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientServerOperation"))
+                    elif concrete_tag == "DATA-PROTOTYPE-GROUP":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DataPrototypeGroup"))
+                    elif concrete_tag == "DATA-RECEIVE-ERROR-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DataReceiveErrorEvent"))
+                    elif concrete_tag == "DATA-RECEIVED-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DataReceivedEvent"))
+                    elif concrete_tag == "DATA-SEND-COMPLETED-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DataSendCompletedEvent"))
+                    elif concrete_tag == "DATA-WRITE-COMPLETED-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DataWriteCompletedEvent"))
+                    elif concrete_tag == "DELEGATION-SW-CONNECTOR":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DelegationSwConnector"))
+                    elif concrete_tag == "DIAGNOSTIC-PARAMETER-IDENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticParameterIdent"))
+                    elif concrete_tag == "EXTERNAL-TRIGGER-OCCURRED-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ExternalTriggerOccurredEvent"))
+                    elif concrete_tag == "EXTERNAL-TRIGGERING-POINT-IDENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ExternalTriggeringPointIdent"))
+                    elif concrete_tag == "IMPLEMENTATION-DATA-TYPE-ELEMENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ImplementationDataTypeElement"))
+                    elif concrete_tag == "INIT-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "InitEvent"))
+                    elif concrete_tag == "INTERNAL-TRIGGER-OCCURRED-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "InternalTriggerOccurredEvent"))
+                    elif concrete_tag == "INTERNAL-TRIGGERING-POINT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "InternalTriggeringPoint"))
+                    elif concrete_tag == "MODE-ACCESS-POINT-IDENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeAccessPointIdent"))
+                    elif concrete_tag == "MODE-DECLARATION":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclaration"))
+                    elif concrete_tag == "MODE-DECLARATION-GROUP-PROTOTYPE":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroupPrototype"))
+                    elif concrete_tag == "MODE-DECLARATION-MAPPING":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationMapping"))
+                    elif concrete_tag == "MODE-SWITCH-POINT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchPoint"))
+                    elif concrete_tag == "MODE-SWITCHED-ACK-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchedAckEvent"))
+                    elif concrete_tag == "MODE-TRANSITION":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeTransition"))
+                    elif concrete_tag == "NV-BLOCK-DESCRIPTOR":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "NvBlockDescriptor"))
+                    elif concrete_tag == "OPERATION-INVOKED-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "OperationInvokedEvent"))
+                    elif concrete_tag == "OS-TASK-EXECUTION-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "OsTaskExecutionEvent"))
+                    elif concrete_tag == "P-PORT-PROTOTYPE":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "PPortPrototype"))
+                    elif concrete_tag == "P-R-PORT-PROTOTYPE":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "PRPortPrototype"))
+                    elif concrete_tag == "PARAMETER-ACCESS":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterAccess"))
+                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
+                    elif concrete_tag == "PASS-THROUGH-SW-CONNECTOR":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "PassThroughSwConnector"))
+                    elif concrete_tag == "PER-INSTANCE-MEMORY":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "PerInstanceMemory"))
+                    elif concrete_tag == "PORT-GROUP":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "PortGroup"))
+                    elif concrete_tag == "PORT-PROTOTYPE-BLUEPRINT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "PortPrototypeBlueprint"))
+                    elif concrete_tag == "R-PORT-PROTOTYPE":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "RPortPrototype"))
+                    elif concrete_tag == "ROOT-SW-COMPOSITION-PROTOTYPE":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "RootSwCompositionPrototype"))
+                    elif concrete_tag == "RUNNABLE-ENTITY":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntity"))
+                    elif concrete_tag == "RUNNABLE-ENTITY-GROUP":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntityGroup"))
+                    elif concrete_tag == "SWC-BSW-MAPPING":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcBswMapping"))
+                    elif concrete_tag == "SWC-INTERNAL-BEHAVIOR":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcInternalBehavior"))
+                    elif concrete_tag == "SWC-MODE-MANAGER-ERROR-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcModeManagerErrorEvent"))
+                    elif concrete_tag == "SWC-MODE-SWITCH-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcModeSwitchEvent"))
+                    elif concrete_tag == "SWC-SERVICE-DEPENDENCY":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcServiceDependency"))
+                    elif concrete_tag == "SYNCHRONOUS-SERVER-CALL-POINT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "SynchronousServerCallPoint"))
+                    elif concrete_tag == "SYSTEM":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "System"))
+                    elif concrete_tag == "TIMING-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingEvent"))
+                    elif concrete_tag == "TRANSFORMER-HARD-ERROR-EVENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "TransformerHardErrorEvent"))
+                    elif concrete_tag == "TRIGGER":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
+                    elif concrete_tag == "VARIABLE-ACCESS":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
+                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "ROLE":
                 setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "SECOND-ELEMENTS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
-                    if concrete_tag == "ATP-PROTOTYPE":
+                    if concrete_tag == "APPLICATION-ARRAY-ELEMENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationArrayElement"))
+                    elif concrete_tag == "APPLICATION-RECORD-ELEMENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationRecordElement"))
+                    elif concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ArgumentDataPrototype"))
+                    elif concrete_tag == "ASSEMBLY-SW-CONNECTOR":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AssemblySwConnector"))
+                    elif concrete_tag == "ASYNCHRONOUS-SERVER-CALL-POINT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AsynchronousServerCallPoint"))
+                    elif concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RESULT-POINT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AsynchronousServerCallResultPoint"))
+                    elif concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RETURNS-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AsynchronousServerCallReturnsEvent"))
+                    elif concrete_tag == "ATP-PROTOTYPE":
                         obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AtpPrototype"))
                     elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
                         obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AtpStructureElement"))
+                    elif concrete_tag == "BACKGROUND-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "BackgroundEvent"))
+                    elif concrete_tag == "BSW-INTERNAL-BEHAVIOR":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalBehavior"))
+                    elif concrete_tag == "BSW-MODULE-DESCRIPTION":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleDescription"))
+                    elif concrete_tag == "BSW-SERVICE-DEPENDENCY-IDENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "BswServiceDependencyIdent"))
+                    elif concrete_tag == "BULK-NV-DATA-DESCRIPTOR":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "BulkNvDataDescriptor"))
+                    elif concrete_tag == "CLIENT-SERVER-OPERATION":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientServerOperation"))
+                    elif concrete_tag == "DATA-PROTOTYPE-GROUP":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DataPrototypeGroup"))
+                    elif concrete_tag == "DATA-RECEIVE-ERROR-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DataReceiveErrorEvent"))
+                    elif concrete_tag == "DATA-RECEIVED-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DataReceivedEvent"))
+                    elif concrete_tag == "DATA-SEND-COMPLETED-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DataSendCompletedEvent"))
+                    elif concrete_tag == "DATA-WRITE-COMPLETED-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DataWriteCompletedEvent"))
+                    elif concrete_tag == "DELEGATION-SW-CONNECTOR":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DelegationSwConnector"))
+                    elif concrete_tag == "DIAGNOSTIC-PARAMETER-IDENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticParameterIdent"))
+                    elif concrete_tag == "EXTERNAL-TRIGGER-OCCURRED-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ExternalTriggerOccurredEvent"))
+                    elif concrete_tag == "EXTERNAL-TRIGGERING-POINT-IDENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ExternalTriggeringPointIdent"))
+                    elif concrete_tag == "IMPLEMENTATION-DATA-TYPE-ELEMENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ImplementationDataTypeElement"))
+                    elif concrete_tag == "INIT-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "InitEvent"))
+                    elif concrete_tag == "INTERNAL-TRIGGER-OCCURRED-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "InternalTriggerOccurredEvent"))
+                    elif concrete_tag == "INTERNAL-TRIGGERING-POINT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "InternalTriggeringPoint"))
+                    elif concrete_tag == "MODE-ACCESS-POINT-IDENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeAccessPointIdent"))
+                    elif concrete_tag == "MODE-DECLARATION":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclaration"))
+                    elif concrete_tag == "MODE-DECLARATION-GROUP-PROTOTYPE":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroupPrototype"))
+                    elif concrete_tag == "MODE-DECLARATION-MAPPING":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationMapping"))
+                    elif concrete_tag == "MODE-SWITCH-POINT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchPoint"))
+                    elif concrete_tag == "MODE-SWITCHED-ACK-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchedAckEvent"))
+                    elif concrete_tag == "MODE-TRANSITION":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeTransition"))
+                    elif concrete_tag == "NV-BLOCK-DESCRIPTOR":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "NvBlockDescriptor"))
+                    elif concrete_tag == "OPERATION-INVOKED-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "OperationInvokedEvent"))
+                    elif concrete_tag == "OS-TASK-EXECUTION-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "OsTaskExecutionEvent"))
+                    elif concrete_tag == "P-PORT-PROTOTYPE":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "PPortPrototype"))
+                    elif concrete_tag == "P-R-PORT-PROTOTYPE":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "PRPortPrototype"))
+                    elif concrete_tag == "PARAMETER-ACCESS":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterAccess"))
+                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
+                    elif concrete_tag == "PASS-THROUGH-SW-CONNECTOR":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "PassThroughSwConnector"))
+                    elif concrete_tag == "PER-INSTANCE-MEMORY":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "PerInstanceMemory"))
+                    elif concrete_tag == "PORT-GROUP":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "PortGroup"))
+                    elif concrete_tag == "PORT-PROTOTYPE-BLUEPRINT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "PortPrototypeBlueprint"))
+                    elif concrete_tag == "R-PORT-PROTOTYPE":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "RPortPrototype"))
+                    elif concrete_tag == "ROOT-SW-COMPOSITION-PROTOTYPE":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "RootSwCompositionPrototype"))
+                    elif concrete_tag == "RUNNABLE-ENTITY":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntity"))
+                    elif concrete_tag == "RUNNABLE-ENTITY-GROUP":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntityGroup"))
+                    elif concrete_tag == "SWC-BSW-MAPPING":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcBswMapping"))
+                    elif concrete_tag == "SWC-INTERNAL-BEHAVIOR":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcInternalBehavior"))
+                    elif concrete_tag == "SWC-MODE-MANAGER-ERROR-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcModeManagerErrorEvent"))
+                    elif concrete_tag == "SWC-MODE-SWITCH-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcModeSwitchEvent"))
+                    elif concrete_tag == "SWC-SERVICE-DEPENDENCY":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcServiceDependency"))
+                    elif concrete_tag == "SYNCHRONOUS-SERVER-CALL-POINT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "SynchronousServerCallPoint"))
+                    elif concrete_tag == "SYSTEM":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "System"))
+                    elif concrete_tag == "TIMING-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingEvent"))
+                    elif concrete_tag == "TRANSFORMER-HARD-ERROR-EVENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "TransformerHardErrorEvent"))
+                    elif concrete_tag == "TRIGGER":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
+                    elif concrete_tag == "VARIABLE-ACCESS":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
+                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
 
         return obj
 

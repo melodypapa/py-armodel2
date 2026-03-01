@@ -39,7 +39,7 @@ class AccessCount(ARObject):
     access_point_ref: Optional[ARRef]
     value: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ACCESS-POINT-REF": ("_POLYMORPHIC", "access_point_ref", ["AsynchronousServerCallResultPoint", "ExternalTriggeringPointIdent", "InternalTriggeringPoint", "ModeAccessPointIdent", "ModeSwitchPoint", "ParameterAccess", "ServerCallPoint", "VariableAccess"]),
+        "ACCESS-POINT-REF": ("_POLYMORPHIC", "access_point_ref", ["AsynchronousServerCallPoint", "AsynchronousServerCallResultPoint", "ExternalTriggeringPointIdent", "InternalTriggeringPoint", "ModeAccessPointIdent", "ModeSwitchPoint", "ParameterAccess", "ServerCallPoint", "SynchronousServerCallPoint", "VariableAccess"]),
         "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 

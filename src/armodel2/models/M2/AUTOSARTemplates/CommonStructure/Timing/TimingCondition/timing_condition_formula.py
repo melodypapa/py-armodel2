@@ -50,7 +50,7 @@ class TimingConditionFormula(ARObject):
     _DESERIALIZE_DISPATCH = {
         "TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF": lambda obj, elem: setattr(obj, "timing_argument_argument_instance_ref", ARRef.deserialize(elem)),
         "TIMING-CONDITION-REF": lambda obj, elem: setattr(obj, "timing_condition_ref", ARRef.deserialize(elem)),
-        "TIMING-EVENT-REF": ("_POLYMORPHIC", "timing_event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "TIMING-EVENT-REF": ("_POLYMORPHIC", "timing_event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventBswModeDeclaration", "TDEventBswModule", "TDEventCom", "TDEventComplex", "TDEventFrClusterCycleStart", "TDEventFrame", "TDEventFrameEthernet", "TDEventIPdu", "TDEventISignal", "TDEventModeDeclaration", "TDEventOperation", "TDEventSLLET", "TDEventSLLETPort", "TDEventSwc", "TDEventSwcInternalBehavior", "TDEventSwcInternalBehaviorReference", "TDEventTTCanCycleStart", "TDEventTrigger", "TDEventVariableDataPrototype", "TDEventVfb", "TDEventVfbReference"]),
         "TIMING-MODE-REF": lambda obj, elem: setattr(obj, "timing_mode_ref", ARRef.deserialize(elem)),
         "TIMING-VARIABLE-INSTANCE-REF": lambda obj, elem: setattr(obj, "timing_variable_instance_ref", ARRef.deserialize(elem)),
     }

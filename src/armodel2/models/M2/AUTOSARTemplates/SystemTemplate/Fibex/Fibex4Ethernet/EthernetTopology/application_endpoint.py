@@ -60,7 +60,7 @@ class ApplicationEndpoint(Identifiable):
         "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PROVIDED-SERVICES": lambda obj, elem: obj.provided_services.append(SerializationHelper.deserialize_by_tag(elem, "any (ProvidedService)")),
         "TLS-CRYPTO-SERVICE-REF": lambda obj, elem: setattr(obj, "tls_crypto_service_ref", ARRef.deserialize(elem)),
-        "TP-CONFIGURATION-CONFIGURATION": ("_POLYMORPHIC", "tp_configuration_configuration", ["GenericTp", "HttpTp", "Ieee1722Tp", "RtpTp", "TcpUdpConfig"]),
+        "TP-CONFIGURATION-CONFIGURATION": ("_POLYMORPHIC", "tp_configuration_configuration", ["GenericTp", "HttpTp", "Ieee1722Tp", "RtpTp", "TcpTp", "TcpUdpConfig", "UdpTp"]),
     }
 
 
@@ -235,8 +235,12 @@ class ApplicationEndpoint(Identifiable):
                         setattr(obj, "tp_configuration_configuration", SerializationHelper.deserialize_by_tag(child[0], "Ieee1722Tp"))
                     elif concrete_tag == "RTP-TP":
                         setattr(obj, "tp_configuration_configuration", SerializationHelper.deserialize_by_tag(child[0], "RtpTp"))
+                    elif concrete_tag == "TCP-TP":
+                        setattr(obj, "tp_configuration_configuration", SerializationHelper.deserialize_by_tag(child[0], "TcpTp"))
                     elif concrete_tag == "TCP-UDP-CONFIG":
                         setattr(obj, "tp_configuration_configuration", SerializationHelper.deserialize_by_tag(child[0], "TcpUdpConfig"))
+                    elif concrete_tag == "UDP-TP":
+                        setattr(obj, "tp_configuration_configuration", SerializationHelper.deserialize_by_tag(child[0], "UdpTp"))
 
         return obj
 

@@ -41,7 +41,7 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
 
     provided: Optional[PortInterface]
     _DESERIALIZE_DISPATCH = {
-        "PROVIDED": ("_POLYMORPHIC", "provided", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
+        "PROVIDED": ("_POLYMORPHIC", "provided", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "NvDataInterface", "ParameterInterface", "SenderReceiverInterface", "TriggerInterface"]),
     }
 
 
@@ -116,6 +116,12 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
                         setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "DataInterface"))
                     elif concrete_tag == "MODE-SWITCH-INTERFACE":
                         setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchInterface"))
+                    elif concrete_tag == "NV-DATA-INTERFACE":
+                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "NvDataInterface"))
+                    elif concrete_tag == "PARAMETER-INTERFACE":
+                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "ParameterInterface"))
+                    elif concrete_tag == "SENDER-RECEIVER-INTERFACE":
+                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "SenderReceiverInterface"))
                     elif concrete_tag == "TRIGGER-INTERFACE":
                         setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "TriggerInterface"))
 

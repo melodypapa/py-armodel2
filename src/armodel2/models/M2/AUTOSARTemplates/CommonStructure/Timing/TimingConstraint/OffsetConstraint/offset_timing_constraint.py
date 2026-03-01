@@ -47,8 +47,8 @@ class OffsetTimingConstraint(TimingConstraint):
     _DESERIALIZE_DISPATCH = {
         "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
         "MINIMUM": lambda obj, elem: setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
-        "SOURCE-REF": ("_POLYMORPHIC", "source_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
-        "TARGET-REF": ("_POLYMORPHIC", "target_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "SOURCE-REF": ("_POLYMORPHIC", "source_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventBswModeDeclaration", "TDEventBswModule", "TDEventCom", "TDEventComplex", "TDEventFrClusterCycleStart", "TDEventFrame", "TDEventFrameEthernet", "TDEventIPdu", "TDEventISignal", "TDEventModeDeclaration", "TDEventOperation", "TDEventSLLET", "TDEventSLLETPort", "TDEventSwc", "TDEventSwcInternalBehavior", "TDEventSwcInternalBehaviorReference", "TDEventTTCanCycleStart", "TDEventTrigger", "TDEventVariableDataPrototype", "TDEventVfb", "TDEventVfbReference"]),
+        "TARGET-REF": ("_POLYMORPHIC", "target_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventBswModeDeclaration", "TDEventBswModule", "TDEventCom", "TDEventComplex", "TDEventFrClusterCycleStart", "TDEventFrame", "TDEventFrameEthernet", "TDEventIPdu", "TDEventISignal", "TDEventModeDeclaration", "TDEventOperation", "TDEventSLLET", "TDEventSLLETPort", "TDEventSwc", "TDEventSwcInternalBehavior", "TDEventSwcInternalBehaviorReference", "TDEventTTCanCycleStart", "TDEventTrigger", "TDEventVariableDataPrototype", "TDEventVfb", "TDEventVfbReference"]),
     }
 
 

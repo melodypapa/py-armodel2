@@ -46,7 +46,7 @@ class DataPrototypeTransformationProps(ARObject):
     network: Optional[SwDataDefProps]
     transformation_props_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DATA-PROTOTYPE-IN-REF": ("_POLYMORPHIC", "data_prototype_in_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "DATA-PROTOTYPE-IN-REF": ("_POLYMORPHIC", "data_prototype_in_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "NETWORK": lambda obj, elem: setattr(obj, "network", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
         "TRANSFORMATION-PROPS-REF": ("_POLYMORPHIC", "transformation_props_ref", ["SOMEIPTransformationProps", "UserDefinedTransformationProps"]),
     }

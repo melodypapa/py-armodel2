@@ -39,7 +39,7 @@ class AutosarVariableInstance(Identifiable):
 
     variable_instance_instance_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "VARIABLE-INSTANCE-INSTANCE-REF-REF": ("_POLYMORPHIC", "variable_instance_instance_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "VARIABLE-INSTANCE-INSTANCE-REF-REF": ("_POLYMORPHIC", "variable_instance_instance_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
     }
 
 

@@ -45,7 +45,7 @@ class PortGroup(Identifiable):
     outer_port_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "INNER-GROUP-REFS": lambda obj, elem: [obj.inner_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "OUTER-PORT-REFS": ("_POLYMORPHIC_LIST", "outer_port_refs", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "OUTER-PORT-REFS": ("_POLYMORPHIC_LIST", "outer_port_refs", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
     }
 
 

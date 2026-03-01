@@ -36,7 +36,7 @@ class TDEventVfbReference(TDEventVfb):
 
     referenced_td_event_vfb_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "REFERENCED-TD-EVENT-VFB-REF": ("_POLYMORPHIC", "referenced_td_event_vfb_ref", ["TDEventVfbPort", "TDEventVfbReference"]),
+        "REFERENCED-TD-EVENT-VFB-REF": ("_POLYMORPHIC", "referenced_td_event_vfb_ref", ["TDEventModeDeclaration", "TDEventOperation", "TDEventTrigger", "TDEventVariableDataPrototype", "TDEventVfbPort", "TDEventVfbReference"]),
     }
 
 

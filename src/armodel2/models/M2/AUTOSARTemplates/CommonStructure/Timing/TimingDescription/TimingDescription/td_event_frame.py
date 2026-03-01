@@ -47,8 +47,8 @@ class TDEventFrame(TDEventCom):
     physical_channel_ref: Optional[ARRef]
     td_event_type_enum: Optional[TDEventFrameTypeEnum]
     _DESERIALIZE_DISPATCH = {
-        "FRAME-REF": ("_POLYMORPHIC", "frame_ref", ["AbstractEthernetFrame", "CanFrame", "FlexrayFrame", "LinFrame"]),
-        "PHYSICAL-CHANNEL-REF": ("_POLYMORPHIC", "physical_channel_ref", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "FRAME-REF": ("_POLYMORPHIC", "frame_ref", ["AbstractEthernetFrame", "CanFrame", "FlexrayFrame", "GenericEthernetFrame", "Ieee1722TpEthernetFrame", "LinEventTriggeredFrame", "LinFrame", "LinSporadicFrame", "LinUnconditionalFrame", "UserDefinedEthernetFrame"]),
+        "PHYSICAL-CHANNEL-REF": ("_POLYMORPHIC", "physical_channel_ref", ["AbstractCanPhysicalChannel", "CanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel", "TtcanPhysicalChannel"]),
         "TD-EVENT-TYPE-ENUM": lambda obj, elem: setattr(obj, "td_event_type_enum", TDEventFrameTypeEnum.deserialize(elem)),
     }
 

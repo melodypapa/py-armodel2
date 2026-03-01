@@ -42,7 +42,7 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
     target_operation_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": ("_POLYMORPHIC", "base_ref", ["ApplicationSwComponentType", "ComplexDeviceDriverSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
-        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
+        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
         "TARGET-OPERATION-REF": lambda obj, elem: setattr(obj, "target_operation_ref", ARRef.deserialize(elem)),
     }
 

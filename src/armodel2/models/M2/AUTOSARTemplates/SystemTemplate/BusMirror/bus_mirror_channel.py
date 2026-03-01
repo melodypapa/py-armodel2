@@ -40,7 +40,7 @@ class BusMirrorChannel(ARObject):
     channel_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BUS-MIRROR": lambda obj, elem: setattr(obj, "bus_mirror", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "CHANNEL-REF": ("_POLYMORPHIC", "channel_ref", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "CHANNEL-REF": ("_POLYMORPHIC", "channel_ref", ["AbstractCanPhysicalChannel", "CanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel", "TtcanPhysicalChannel"]),
     }
 
 

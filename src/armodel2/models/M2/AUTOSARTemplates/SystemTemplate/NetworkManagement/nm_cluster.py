@@ -48,7 +48,7 @@ class NmCluster(Identifiable, ABC):
     nm: Optional[Boolean]
     pnc_cluster: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CLUSTER-REF": ("_POLYMORPHIC", "communication_cluster_ref", ["AbstractCanCluster", "EthernetCluster", "FlexrayCluster", "LinCluster", "UserDefinedCluster"]),
+        "COMMUNICATION-CLUSTER-REF": ("_POLYMORPHIC", "communication_cluster_ref", ["AbstractCanCluster", "CanCluster", "EthernetCluster", "FlexrayCluster", "J1939Cluster", "LinCluster", "TtcanCluster", "UserDefinedCluster"]),
         "NM-CHANNEL": lambda obj, elem: setattr(obj, "nm_channel", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "NM-NODE": lambda obj, elem: setattr(obj, "nm_node", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "NM-NODE-ID-ENABLED": lambda obj, elem: setattr(obj, "nm_node_id_enabled", SerializationHelper.deserialize_by_tag(elem, "Boolean")),

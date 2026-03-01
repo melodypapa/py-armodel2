@@ -43,7 +43,7 @@ class DataTypeMap(ARObject):
     application_data_type_ref: Optional[ARRef]
     implementation_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "APPLICATION-DATA-TYPE-REF": ("_POLYMORPHIC", "application_data_type_ref", ["ApplicationCompositeDataType", "ApplicationPrimitiveDataType"]),
+        "APPLICATION-DATA-TYPE-REF": ("_POLYMORPHIC", "application_data_type_ref", ["ApplicationArrayDataType", "ApplicationCompositeDataType", "ApplicationPrimitiveDataType", "ApplicationRecordDataType"]),
         "IMPLEMENTATION-REF": ("_POLYMORPHIC", "implementation_ref", ["ImplementationDataType"]),
     }
 

@@ -50,7 +50,7 @@ class SdgClass(SdgElementWithGid):
     extends_meta: Optional[MetaClassName]
     sdg_constraint_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ATTRIBUTES": ("_POLYMORPHIC_LIST", "attributes", ["SdgAbstractForeignReference", "SdgAbstractPrimitiveAttribute", "SdgAggregationWithVariation", "Sdg"]),
+        "ATTRIBUTES": ("_POLYMORPHIC_LIST", "attributes", ["Sdg", "SdgAbstractForeignReference", "SdgAbstractPrimitiveAttribute", "SdgAggregationWithVariation", "SdgForeignReference", "SdgForeignReferenceWithVariation", "SdgPrimitiveAttribute", "SdgPrimitiveAttributeWithVariation"]),
         "CAPTION": lambda obj, elem: setattr(obj, "caption", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "EXTENDS-META": lambda obj, elem: setattr(obj, "extends_meta", SerializationHelper.deserialize_by_tag(elem, "MetaClassName")),
         "SDG-CONSTRAINT-REFS": lambda obj, elem: [obj.sdg_constraint_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
@@ -166,14 +166,22 @@ class SdgClass(SdgElementWithGid):
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
-                    if concrete_tag == "SDG-ABSTRACT-FOREIGN-REFERENCE":
+                    if concrete_tag == "SDG":
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "Sdg"))
+                    elif concrete_tag == "SDG-ABSTRACT-FOREIGN-REFERENCE":
                         obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgAbstractForeignReference"))
                     elif concrete_tag == "SDG-ABSTRACT-PRIMITIVE-ATTRIBUTE":
                         obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgAbstractPrimitiveAttribute"))
                     elif concrete_tag == "SDG-AGGREGATION-WITH-VARIATION":
                         obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgAggregationWithVariation"))
-                    elif concrete_tag == "SDG":
-                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "Sdg"))
+                    elif concrete_tag == "SDG-FOREIGN-REFERENCE":
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgForeignReference"))
+                    elif concrete_tag == "SDG-FOREIGN-REFERENCE-WITH-VARIATION":
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgForeignReferenceWithVariation"))
+                    elif concrete_tag == "SDG-PRIMITIVE-ATTRIBUTE":
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgPrimitiveAttribute"))
+                    elif concrete_tag == "SDG-PRIMITIVE-ATTRIBUTE-WITH-VARIATION":
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgPrimitiveAttributeWithVariation"))
             elif tag == "CAPTION":
                 setattr(obj, "caption", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "EXTENDS-META":

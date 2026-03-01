@@ -50,7 +50,7 @@ class ExecutionTimeConstraint(TimingConstraint):
     minimum: Optional[MultidimensionalTime]
     _DESERIALIZE_DISPATCH = {
         "COMPONENT": lambda obj, elem: setattr(obj, "component", SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
-        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswModuleEntity", "RunnableEntity"]),
+        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswCalledEntity", "BswInterruptEntity", "BswModuleEntity", "BswSchedulableEntity", "RunnableEntity"]),
         "EXECUTION-TIME": lambda obj, elem: setattr(obj, "execution_time", ExecutionTimeTypeEnum.deserialize(elem)),
         "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
         "MINIMUM": lambda obj, elem: setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),

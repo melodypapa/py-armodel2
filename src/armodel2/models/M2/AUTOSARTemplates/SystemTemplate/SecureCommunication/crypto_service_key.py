@@ -51,7 +51,7 @@ class CryptoServiceKey(ARElement):
     length: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
         "ALGORITHM-FAMILY": lambda obj, elem: setattr(obj, "algorithm_family", SerializationHelper.deserialize_by_tag(elem, "String")),
-        "DEVELOPMENT": ("_POLYMORPHIC", "development", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "DEVELOPMENT": ("_POLYMORPHIC", "development", ["AbstractRuleBasedValueSpecification", "ApplicationRuleBasedValueSpecification", "ApplicationValueSpecification", "ArrayValueSpecification", "CompositeRuleBasedValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "RecordValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
         "KEY-GENERATION": lambda obj, elem: setattr(obj, "key_generation", SerializationHelper.deserialize_by_tag(elem, "CryptoServiceKey")),
         "KEY-STORAGE-TYPE": lambda obj, elem: setattr(obj, "key_storage_type", SerializationHelper.deserialize_by_tag(elem, "String")),
         "LENGTH": lambda obj, elem: setattr(obj, "length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
@@ -187,8 +187,14 @@ class CryptoServiceKey(ARElement):
                     concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
                     if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
                         setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "ApplicationRuleBasedValueSpecification"))
                     elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
                         setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "ARRAY-VALUE-SPECIFICATION":
+                        setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "ArrayValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "CompositeRuleBasedValueSpecification"))
                     elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
                         setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
                     elif concrete_tag == "CONSTANT-REFERENCE":
@@ -197,6 +203,8 @@ class CryptoServiceKey(ARElement):
                         setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
                     elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
                         setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "RECORD-VALUE-SPECIFICATION":
+                        setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "RecordValueSpecification"))
                     elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
                         setattr(obj, "development", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
                     elif concrete_tag == "TEXT-VALUE-SPECIFICATION":

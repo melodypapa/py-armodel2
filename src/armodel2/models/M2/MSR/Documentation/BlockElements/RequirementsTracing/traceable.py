@@ -35,7 +35,7 @@ class Traceable(MultilanguageReferrable, ABC):
 
     trace_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TRACE-REFS": ("_POLYMORPHIC_LIST", "trace_refs", ["StructuredReq", "TimingConstraint", "TraceableTable", "TraceableText"]),
+        "TRACE-REFS": ("_POLYMORPHIC_LIST", "trace_refs", ["AgeConstraint", "ArbitraryEventTriggering", "BurstPatternEventTriggering", "ConcretePatternEventTriggering", "ExecutionOrderConstraint", "ExecutionTimeConstraint", "LatencyTimingConstraint", "OffsetTimingConstraint", "PeriodicEventTriggering", "SporadicEventTriggering", "StructuredReq", "SynchronizationPointConstraint", "TimingConstraint", "TraceableTable", "TraceableText"]),
     }
 
 

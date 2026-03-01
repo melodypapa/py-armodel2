@@ -37,7 +37,7 @@ class AtpPrototype(Identifiable, ABC):
 
     atp_type_ref: ARRef
     _DESERIALIZE_DISPATCH = {
-        "ATP-TYPE-REF": ("_POLYMORPHIC", "atp_type_ref", ["AutosarDataType", "ModeDeclarationGroup", "ModeDeclarationMappingSet", "PortInterface", "SwComponentType"]),
+        "ATP-TYPE-REF": ("_POLYMORPHIC", "atp_type_ref", ["ApplicationArrayDataType", "ApplicationPrimitiveDataType", "ApplicationRecordDataType", "ApplicationSwComponentType", "AutosarDataType", "ClientServerInterface", "ComplexDeviceDriverSwComponentType", "CompositionSwComponentType", "EcuAbstractionSwComponentType", "ImplementationDataType", "ModeDeclarationGroup", "ModeDeclarationMappingSet", "ModeSwitchInterface", "NvBlockSwComponentType", "NvDataInterface", "ParameterInterface", "ParameterSwComponentType", "PortInterface", "SenderReceiverInterface", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType", "SwComponentType", "TriggerInterface"]),
     }
 
 

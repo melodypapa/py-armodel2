@@ -63,7 +63,7 @@ class ExecutionTime(Identifiable, ABC):
     software_context: Optional[SoftwareContext]
     _DESERIALIZE_DISPATCH = {
         "EXCLUSIVE-AREA-REF": lambda obj, elem: setattr(obj, "exclusive_area_ref", ARRef.deserialize(elem)),
-        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswModuleEntity", "RunnableEntity"]),
+        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswCalledEntity", "BswInterruptEntity", "BswModuleEntity", "BswSchedulableEntity", "RunnableEntity"]),
         "HARDWARE": lambda obj, elem: setattr(obj, "hardware", SerializationHelper.deserialize_by_tag(elem, "HardwareConfiguration")),
         "HW-ELEMENT-REF": lambda obj, elem: setattr(obj, "hw_element_ref", ARRef.deserialize(elem)),
         "INCLUDED-LIBRARY-REFS": lambda obj, elem: [obj.included_library_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],

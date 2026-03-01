@@ -46,7 +46,7 @@ class BuildActionIoElement(ARObject):
     sdgs: list[Sdg]
     _DESERIALIZE_DISPATCH = {
         "CATEGORY": lambda obj, elem: setattr(obj, "category", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
-        "ECUC-DEFINITION-REF": ("_POLYMORPHIC", "ecuc_definition_ref", ["EcucCommonAttributes", "EcucContainerDef", "EcucModuleDef"]),
+        "ECUC-DEFINITION-REF": ("_POLYMORPHIC", "ecuc_definition_ref", ["EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucChoiceContainerDef", "EcucChoiceReferenceDef", "EcucCommonAttributes", "EcucContainerDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucForeignReferenceDef", "EcucFunctionNameDef", "EcucInstanceReferenceDef", "EcucIntegerParamDef", "EcucLinkerSymbolDef", "EcucModuleDef", "EcucMultilineStringParamDef", "EcucParamConfContainerDef", "EcucReferenceDef", "EcucStringParamDef", "EcucUriReferenceDef"]),
         "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
         "SDGS": lambda obj, elem: obj.sdgs.append(SerializationHelper.deserialize_by_tag(elem, "Sdg")),
     }

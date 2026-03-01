@@ -51,7 +51,7 @@ class ClassContentConditional(Identifiable):
     sdg_tailorings: list[SdgTailoring]
     _DESERIALIZE_DISPATCH = {
         "ATTRIBUTES": ("_POLYMORPHIC_LIST", "attributes", ["AggregationTailoring", "PrimitiveAttributeTailoring", "ReferenceTailoring"]),
-        "CONDITION": ("_POLYMORPHIC", "condition", ["AttributeCondition", "InvertCondition", "TextualCondition"]),
+        "CONDITION": ("_POLYMORPHIC", "condition", ["AggregationCondition", "AttributeCondition", "InvertCondition", "PrimitiveAttributeCondition", "ReferenceCondition", "TextualCondition"]),
         "CONSTRAINTS": lambda obj, elem: obj.constraints.append(SerializationHelper.deserialize_by_tag(elem, "ConstraintTailoring")),
         "SDG-TAILORINGS": lambda obj, elem: obj.sdg_tailorings.append(SerializationHelper.deserialize_by_tag(elem, "SdgTailoring")),
     }
@@ -165,10 +165,16 @@ class ClassContentConditional(Identifiable):
                 # Check first child element for concrete type
                 if len(child) > 0:
                     concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ATTRIBUTE-CONDITION":
+                    if concrete_tag == "AGGREGATION-CONDITION":
+                        setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child[0], "AggregationCondition"))
+                    elif concrete_tag == "ATTRIBUTE-CONDITION":
                         setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child[0], "AttributeCondition"))
                     elif concrete_tag == "INVERT-CONDITION":
                         setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child[0], "InvertCondition"))
+                    elif concrete_tag == "PRIMITIVE-ATTRIBUTE-CONDITION":
+                        setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child[0], "PrimitiveAttributeCondition"))
+                    elif concrete_tag == "REFERENCE-CONDITION":
+                        setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child[0], "ReferenceCondition"))
                     elif concrete_tag == "TEXTUAL-CONDITION":
                         setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child[0], "TextualCondition"))
             elif tag == "CONSTRAINTS":

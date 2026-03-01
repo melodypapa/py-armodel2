@@ -85,7 +85,7 @@ class MixedContentForParagraph(ARObject, ABC):
         "STD": lambda obj, elem: setattr(obj, "std", SerializationHelper.deserialize_by_tag(elem, "Std")),
         "SUB": lambda obj, elem: setattr(obj, "sub", SerializationHelper.deserialize_by_tag(elem, "Superscript")),
         "SUP": lambda obj, elem: setattr(obj, "sup", SerializationHelper.deserialize_by_tag(elem, "Superscript")),
-        "TRACE-REF": ("_POLYMORPHIC", "trace_ref", ["StructuredReq", "TimingConstraint", "TraceableTable", "TraceableText"]),
+        "TRACE-REF": ("_POLYMORPHIC", "trace_ref", ["AgeConstraint", "ArbitraryEventTriggering", "BurstPatternEventTriggering", "ConcretePatternEventTriggering", "ExecutionOrderConstraint", "ExecutionTimeConstraint", "LatencyTimingConstraint", "OffsetTimingConstraint", "PeriodicEventTriggering", "SporadicEventTriggering", "StructuredReq", "SynchronizationPointConstraint", "TimingConstraint", "TraceableTable", "TraceableText"]),
         "TT": lambda obj, elem: setattr(obj, "tt", SerializationHelper.deserialize_by_tag(elem, "Tt")),
         "XDOC": lambda obj, elem: setattr(obj, "xdoc", SerializationHelper.deserialize_by_tag(elem, "Xdoc")),
         "XFILE": lambda obj, elem: setattr(obj, "xfile", SerializationHelper.deserialize_by_tag(elem, "Xfile")),

@@ -45,7 +45,7 @@ class TDEventOccurrenceExpressionFormula(ARObject):
     variable_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
         "ARGUMENT-REF": lambda obj, elem: setattr(obj, "argument_ref", ARRef.deserialize(elem)),
-        "EVENT-REF": ("_POLYMORPHIC", "event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "EVENT-REF": ("_POLYMORPHIC", "event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventBswModeDeclaration", "TDEventBswModule", "TDEventCom", "TDEventComplex", "TDEventFrClusterCycleStart", "TDEventFrame", "TDEventFrameEthernet", "TDEventIPdu", "TDEventISignal", "TDEventModeDeclaration", "TDEventOperation", "TDEventSLLET", "TDEventSLLETPort", "TDEventSwc", "TDEventSwcInternalBehavior", "TDEventSwcInternalBehaviorReference", "TDEventTTCanCycleStart", "TDEventTrigger", "TDEventVariableDataPrototype", "TDEventVfb", "TDEventVfbReference"]),
         "MODE-REF": lambda obj, elem: setattr(obj, "mode_ref", ARRef.deserialize(elem)),
         "VARIABLE-REF": lambda obj, elem: setattr(obj, "variable_ref", ARRef.deserialize(elem)),
     }

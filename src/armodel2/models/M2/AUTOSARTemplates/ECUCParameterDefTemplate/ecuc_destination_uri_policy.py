@@ -43,7 +43,7 @@ class EcucDestinationUriPolicy(ARObject):
     _DESERIALIZE_DISPATCH = {
         "CONTAINERS": ("_POLYMORPHIC_LIST", "containers", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
         "DESTINATION-URI": lambda obj, elem: setattr(obj, "destination_uri", SerializationHelper.deserialize_by_tag(elem, "any (EcucDestinationUri)")),
-        "PARAMETERS": ("_POLYMORPHIC_LIST", "parameters", ["EcucAbstractStringParamDef", "EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucIntegerParamDef"]),
+        "PARAMETERS": ("_POLYMORPHIC_LIST", "parameters", ["EcucAbstractStringParamDef", "EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucFunctionNameDef", "EcucIntegerParamDef", "EcucLinkerSymbolDef", "EcucMultilineStringParamDef", "EcucStringParamDef"]),
         "REFERENCE-REFS": lambda obj, elem: [obj.reference_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
@@ -173,8 +173,16 @@ class EcucDestinationUriPolicy(ARObject):
                         obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucEnumerationParamDef"))
                     elif concrete_tag == "ECUC-FLOAT-PARAM-DEF":
                         obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucFloatParamDef"))
+                    elif concrete_tag == "ECUC-FUNCTION-NAME-DEF":
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucFunctionNameDef"))
                     elif concrete_tag == "ECUC-INTEGER-PARAM-DEF":
                         obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucIntegerParamDef"))
+                    elif concrete_tag == "ECUC-LINKER-SYMBOL-DEF":
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucLinkerSymbolDef"))
+                    elif concrete_tag == "ECUC-MULTILINE-STRING-PARAM-DEF":
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucMultilineStringParamDef"))
+                    elif concrete_tag == "ECUC-STRING-PARAM-DEF":
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucStringParamDef"))
             elif tag == "REFERENCE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:

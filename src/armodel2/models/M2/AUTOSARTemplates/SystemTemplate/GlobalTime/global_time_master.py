@@ -48,7 +48,7 @@ class GlobalTimeMaster(Identifiable, ABC):
     is_system_wide: Optional[Boolean]
     sync_period: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CONNECTOR-REF": ("_POLYMORPHIC", "communication_connector_ref", ["CanCommunicationConnector", "TtcanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "COMMUNICATION-CONNECTOR-REF": ("_POLYMORPHIC", "communication_connector_ref", ["AbstractCanCommunicationConnector", "CanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "TtcanCommunicationConnector", "UserDefinedCommunicationConnector"]),
         "ICV-SECURED": lambda obj, elem: setattr(obj, "icv_secured", GlobalTimeIcvSupportEnum.deserialize(elem)),
         "IMMEDIATE": lambda obj, elem: setattr(obj, "immediate", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "IS-SYSTEM-WIDE": lambda obj, elem: setattr(obj, "is_system_wide", SerializationHelper.deserialize_by_tag(elem, "Boolean")),

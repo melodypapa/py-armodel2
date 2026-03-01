@@ -50,7 +50,7 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
     _DESERIALIZE_DISPATCH = {
         "DIAGNOSTIC-DATA-REF": lambda obj, elem: setattr(obj, "diagnostic_data_ref", ARRef.deserialize(elem)),
         "DIAGNOSTIC-REF": lambda obj, elem: setattr(obj, "diagnostic_ref", ARRef.deserialize(elem)),
-        "MAPPED-DATA-REF": ("_POLYMORPHIC", "mapped_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "MAPPED-DATA-REF": ("_POLYMORPHIC", "mapped_data_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "PARAMETER": lambda obj, elem: setattr(obj, "parameter", SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
     }
 

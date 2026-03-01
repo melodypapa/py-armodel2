@@ -46,7 +46,7 @@ class RptHook(ARObject):
     _DESERIALIZE_DISPATCH = {
         "CODE-LABEL": lambda obj, elem: setattr(obj, "code_label", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
         "MCD-IDENTIFIER": lambda obj, elem: setattr(obj, "mcd_identifier", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
-        "RPT-AR-HOOK": ("_POLYMORPHIC", "rpt_ar_hook", ["AtpPrototype", "AtpStructureElement"]),
+        "RPT-AR-HOOK": ("_POLYMORPHIC", "rpt_ar_hook", ["ApplicationArrayElement", "ApplicationRecordElement", "ArgumentDataPrototype", "AssemblySwConnector", "AsynchronousServerCallPoint", "AsynchronousServerCallResultPoint", "AsynchronousServerCallReturnsEvent", "AtpPrototype", "AtpStructureElement", "BackgroundEvent", "BswInternalBehavior", "BswModuleDescription", "BswServiceDependencyIdent", "BulkNvDataDescriptor", "ClientServerOperation", "DataPrototypeGroup", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "DelegationSwConnector", "DiagnosticParameterIdent", "ExternalTriggerOccurredEvent", "ExternalTriggeringPointIdent", "ImplementationDataTypeElement", "InitEvent", "InternalTriggerOccurredEvent", "InternalTriggeringPoint", "ModeAccessPointIdent", "ModeDeclaration", "ModeDeclarationGroupPrototype", "ModeDeclarationMapping", "ModeSwitchPoint", "ModeSwitchedAckEvent", "ModeTransition", "NvBlockDescriptor", "OperationInvokedEvent", "OsTaskExecutionEvent", "PPortPrototype", "PRPortPrototype", "ParameterAccess", "ParameterDataPrototype", "PassThroughSwConnector", "PerInstanceMemory", "PortGroup", "PortPrototypeBlueprint", "RPortPrototype", "RootSwCompositionPrototype", "RunnableEntity", "RunnableEntityGroup", "SwcBswMapping", "SwcInternalBehavior", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "SwcServiceDependency", "SynchronousServerCallPoint", "System", "TimingEvent", "TransformerHardErrorEvent", "Trigger", "VariableAccess", "VariableDataPrototype"]),
         "SDGS": lambda obj, elem: obj.sdgs.append(SerializationHelper.deserialize_by_tag(elem, "Sdg")),
     }
 
@@ -161,10 +161,130 @@ class RptHook(ARObject):
                 # Check first child element for concrete type
                 if len(child) > 0:
                     concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ATP-PROTOTYPE":
+                    if concrete_tag == "APPLICATION-ARRAY-ELEMENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ApplicationArrayElement"))
+                    elif concrete_tag == "APPLICATION-RECORD-ELEMENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ApplicationRecordElement"))
+                    elif concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
+                    elif concrete_tag == "ASSEMBLY-SW-CONNECTOR":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "AssemblySwConnector"))
+                    elif concrete_tag == "ASYNCHRONOUS-SERVER-CALL-POINT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "AsynchronousServerCallPoint"))
+                    elif concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RESULT-POINT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "AsynchronousServerCallResultPoint"))
+                    elif concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RETURNS-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "AsynchronousServerCallReturnsEvent"))
+                    elif concrete_tag == "ATP-PROTOTYPE":
                         setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
                     elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
                         setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
+                    elif concrete_tag == "BACKGROUND-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "BackgroundEvent"))
+                    elif concrete_tag == "BSW-INTERNAL-BEHAVIOR":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "BswInternalBehavior"))
+                    elif concrete_tag == "BSW-MODULE-DESCRIPTION":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "BswModuleDescription"))
+                    elif concrete_tag == "BSW-SERVICE-DEPENDENCY-IDENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "BswServiceDependencyIdent"))
+                    elif concrete_tag == "BULK-NV-DATA-DESCRIPTOR":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "BulkNvDataDescriptor"))
+                    elif concrete_tag == "CLIENT-SERVER-OPERATION":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ClientServerOperation"))
+                    elif concrete_tag == "DATA-PROTOTYPE-GROUP":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "DataPrototypeGroup"))
+                    elif concrete_tag == "DATA-RECEIVE-ERROR-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "DataReceiveErrorEvent"))
+                    elif concrete_tag == "DATA-RECEIVED-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "DataReceivedEvent"))
+                    elif concrete_tag == "DATA-SEND-COMPLETED-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "DataSendCompletedEvent"))
+                    elif concrete_tag == "DATA-WRITE-COMPLETED-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "DataWriteCompletedEvent"))
+                    elif concrete_tag == "DELEGATION-SW-CONNECTOR":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "DelegationSwConnector"))
+                    elif concrete_tag == "DIAGNOSTIC-PARAMETER-IDENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticParameterIdent"))
+                    elif concrete_tag == "EXTERNAL-TRIGGER-OCCURRED-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ExternalTriggerOccurredEvent"))
+                    elif concrete_tag == "EXTERNAL-TRIGGERING-POINT-IDENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ExternalTriggeringPointIdent"))
+                    elif concrete_tag == "IMPLEMENTATION-DATA-TYPE-ELEMENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ImplementationDataTypeElement"))
+                    elif concrete_tag == "INIT-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "InitEvent"))
+                    elif concrete_tag == "INTERNAL-TRIGGER-OCCURRED-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "InternalTriggerOccurredEvent"))
+                    elif concrete_tag == "INTERNAL-TRIGGERING-POINT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "InternalTriggeringPoint"))
+                    elif concrete_tag == "MODE-ACCESS-POINT-IDENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ModeAccessPointIdent"))
+                    elif concrete_tag == "MODE-DECLARATION":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ModeDeclaration"))
+                    elif concrete_tag == "MODE-DECLARATION-GROUP-PROTOTYPE":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ModeDeclarationGroupPrototype"))
+                    elif concrete_tag == "MODE-DECLARATION-MAPPING":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ModeDeclarationMapping"))
+                    elif concrete_tag == "MODE-SWITCH-POINT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchPoint"))
+                    elif concrete_tag == "MODE-SWITCHED-ACK-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchedAckEvent"))
+                    elif concrete_tag == "MODE-TRANSITION":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ModeTransition"))
+                    elif concrete_tag == "NV-BLOCK-DESCRIPTOR":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "NvBlockDescriptor"))
+                    elif concrete_tag == "OPERATION-INVOKED-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "OperationInvokedEvent"))
+                    elif concrete_tag == "OS-TASK-EXECUTION-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "OsTaskExecutionEvent"))
+                    elif concrete_tag == "P-PORT-PROTOTYPE":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "PPortPrototype"))
+                    elif concrete_tag == "P-R-PORT-PROTOTYPE":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "PRPortPrototype"))
+                    elif concrete_tag == "PARAMETER-ACCESS":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ParameterAccess"))
+                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
+                    elif concrete_tag == "PASS-THROUGH-SW-CONNECTOR":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "PassThroughSwConnector"))
+                    elif concrete_tag == "PER-INSTANCE-MEMORY":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "PerInstanceMemory"))
+                    elif concrete_tag == "PORT-GROUP":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "PortGroup"))
+                    elif concrete_tag == "PORT-PROTOTYPE-BLUEPRINT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "PortPrototypeBlueprint"))
+                    elif concrete_tag == "R-PORT-PROTOTYPE":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "RPortPrototype"))
+                    elif concrete_tag == "ROOT-SW-COMPOSITION-PROTOTYPE":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "RootSwCompositionPrototype"))
+                    elif concrete_tag == "RUNNABLE-ENTITY":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "RunnableEntity"))
+                    elif concrete_tag == "RUNNABLE-ENTITY-GROUP":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "RunnableEntityGroup"))
+                    elif concrete_tag == "SWC-BSW-MAPPING":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "SwcBswMapping"))
+                    elif concrete_tag == "SWC-INTERNAL-BEHAVIOR":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "SwcInternalBehavior"))
+                    elif concrete_tag == "SWC-MODE-MANAGER-ERROR-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "SwcModeManagerErrorEvent"))
+                    elif concrete_tag == "SWC-MODE-SWITCH-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "SwcModeSwitchEvent"))
+                    elif concrete_tag == "SWC-SERVICE-DEPENDENCY":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "SwcServiceDependency"))
+                    elif concrete_tag == "SYNCHRONOUS-SERVER-CALL-POINT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "SynchronousServerCallPoint"))
+                    elif concrete_tag == "SYSTEM":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "System"))
+                    elif concrete_tag == "TIMING-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "TimingEvent"))
+                    elif concrete_tag == "TRANSFORMER-HARD-ERROR-EVENT":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "TransformerHardErrorEvent"))
+                    elif concrete_tag == "TRIGGER":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "Trigger"))
+                    elif concrete_tag == "VARIABLE-ACCESS":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "VariableAccess"))
+                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
+                        setattr(obj, "rpt_ar_hook", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
             elif tag == "SDGS":
                 # Iterate through wrapper children
                 for item_elem in child:

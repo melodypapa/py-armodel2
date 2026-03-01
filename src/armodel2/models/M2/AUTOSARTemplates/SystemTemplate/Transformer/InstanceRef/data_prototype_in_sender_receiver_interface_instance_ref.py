@@ -48,7 +48,7 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRef(DataPrototypeInPortInter
         "BASE-INTERFACE-REF": lambda obj, elem: setattr(obj, "base_interface_ref", ARRef.deserialize(elem)),
         "CONTEXT-DATA-REFS": lambda obj, elem: [obj.context_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ROOT-DATA-PROTOTYPE-IN-SR-REF": ("_POLYMORPHIC", "root_data_prototype_in_sr_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
-        "TARGET-DATA-PROTOTYPE-IN-SR-REF": ("_POLYMORPHIC", "target_data_prototype_in_sr_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "TARGET-DATA-PROTOTYPE-IN-SR-REF": ("_POLYMORPHIC", "target_data_prototype_in_sr_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
     }
 
 

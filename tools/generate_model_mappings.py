@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 from datetime import datetime
 
 
@@ -113,8 +113,68 @@ def generate_import_paths(mapping_json: Dict[str, Any]) -> Dict[str, str]:
     return paths
 
 
+def get_all_concrete_subclasses(
+    class_name: str,
+    class_data: Dict[str, Dict[str, Any]],
+    visited: Optional[set[str]] = None
+) -> List[str]:
+    """Recursively collect all concrete subclasses of a given class.
+
+    Args:
+        class_name: Name of the class to find concrete subclasses for
+        class_data: Dictionary mapping class names to their class information
+        visited: Set of already visited classes to prevent infinite recursion
+
+    Returns:
+        List of all concrete subclass names
+    """
+    if visited is None:
+        visited = set()
+
+    # Prevent infinite recursion from circular inheritance
+    if class_name in visited:
+        return []
+
+    visited.add(class_name)
+
+    concrete_classes = []
+
+    # Get class information
+    info = class_data.get(class_name)
+    if not info:
+        return concrete_classes
+
+    # Get direct subclasses
+    subclasses = info.get("subclasses", [])
+
+    for subclass_name in subclasses:
+        subclass_info = class_data.get(subclass_name)
+
+        if not subclass_info:
+            continue
+
+        # Check if subclass is concrete
+        if not subclass_info.get("is_abstract", False):
+            # Add concrete class to results
+            concrete_classes.append(subclass_name)
+        else:
+            # Recursively get concrete subclasses of this abstract subclass
+            concrete_classes.extend(
+                get_all_concrete_subclasses(
+                    subclass_name,
+                    class_data,
+                    visited.copy()  # Use copy to allow different traversal paths
+                )
+            )
+
+    return concrete_classes
+
+
 def generate_polymorphic_mappings(package_files: List[Path]) -> Dict[str, List[str]]:
     """Generate polymorphic type mappings from package JSON files.
+
+    This function now recursively traverses inheritance hierarchies to find
+    all concrete implementations of abstract base classes, not just direct subclasses.
 
     Args:
         package_files: List of package JSON file paths
@@ -124,7 +184,9 @@ def generate_polymorphic_mappings(package_files: List[Path]) -> Dict[str, List[s
     """
 
     polymorphic_types = {}
+    class_data = {}  # Store all class data for recursive traversal
 
+    # First pass: collect all class data
     for package_file in package_files:
         try:
             # Try UTF-8 first, then latin-1 as fallback for non-UTF-8 files
@@ -139,15 +201,29 @@ def generate_polymorphic_mappings(package_files: List[Path]) -> Dict[str, List[s
             continue
 
         for class_info in data.get("classes", []):
-            # Check if this is an abstract base class
-            if class_info.get("is_abstract", False):
-                base_class = class_info["name"]
+            class_name = class_info["name"]
+            class_data[class_name] = class_info
 
-                # Get concrete implementations
-                subclasses = class_info.get("subclasses", [])
+    # Second pass: generate polymorphic mappings with recursive traversal
+    for class_name, class_info in class_data.items():
+        # Check if this is an abstract base class
+        if class_info.get("is_abstract", False):
+            # Get direct subclasses (both abstract and concrete)
+            direct_subclasses = class_info.get("subclasses", [])
 
-                if subclasses:
-                    polymorphic_types[base_class] = subclasses
+            # Recursively collect all concrete subclasses
+            concrete_subclasses = get_all_concrete_subclasses(
+                class_name,
+                class_data
+            )
+
+            # Combine direct subclasses with concrete subclasses
+            # This allows ModelFactory to verify class hierarchy while
+            # allowing code generator to find all concrete implementations
+            if direct_subclasses:
+                # Remove duplicates and sort for consistent output
+                all_subclasses = sorted(list(set(direct_subclasses + concrete_subclasses)))
+                polymorphic_types[class_name] = all_subclasses
 
     return polymorphic_types
 
@@ -214,6 +290,10 @@ def generate_yaml_mappings(
         "VT": "CompuConstTextContent",
         # Conditional variant
         "BSW-MODULE-ENTRY-REF-CONDITIONAL": "BswModuleClientServerEntry",
+        # API acronym - keep uppercase (not Api)
+        "PORT-API-OPTION": "PortAPIOption",
+        # RTE acronym - keep uppercase (not Rte)
+        "RTE-EVENT": "RTEEvent",
     }
     
     # Only keep exceptional cases in xml_tag_mappings

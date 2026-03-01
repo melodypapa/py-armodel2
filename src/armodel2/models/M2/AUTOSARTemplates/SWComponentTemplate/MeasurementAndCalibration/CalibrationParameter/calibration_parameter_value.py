@@ -44,8 +44,8 @@ class CalibrationParameterValue(ARObject):
     impl_init_value: Optional[ValueSpecification]
     initialized_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "APPL-INIT-VALUE": ("_POLYMORPHIC", "appl_init_value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
-        "IMPL-INIT-VALUE": ("_POLYMORPHIC", "impl_init_value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "APPL-INIT-VALUE": ("_POLYMORPHIC", "appl_init_value", ["AbstractRuleBasedValueSpecification", "ApplicationRuleBasedValueSpecification", "ApplicationValueSpecification", "ArrayValueSpecification", "CompositeRuleBasedValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "RecordValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "IMPL-INIT-VALUE": ("_POLYMORPHIC", "impl_init_value", ["AbstractRuleBasedValueSpecification", "ApplicationRuleBasedValueSpecification", "ApplicationValueSpecification", "ArrayValueSpecification", "CompositeRuleBasedValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "RecordValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
         "INITIALIZED-REF": lambda obj, elem: setattr(obj, "initialized_ref", ARRef.deserialize(elem)),
     }
 
@@ -147,8 +147,14 @@ class CalibrationParameterValue(ARObject):
                     concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
                     if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
                         setattr(obj, "appl_init_value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "appl_init_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationRuleBasedValueSpecification"))
                     elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
                         setattr(obj, "appl_init_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "ARRAY-VALUE-SPECIFICATION":
+                        setattr(obj, "appl_init_value", SerializationHelper.deserialize_by_tag(child[0], "ArrayValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "appl_init_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeRuleBasedValueSpecification"))
                     elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
                         setattr(obj, "appl_init_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
                     elif concrete_tag == "CONSTANT-REFERENCE":
@@ -157,6 +163,8 @@ class CalibrationParameterValue(ARObject):
                         setattr(obj, "appl_init_value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
                     elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
                         setattr(obj, "appl_init_value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "RECORD-VALUE-SPECIFICATION":
+                        setattr(obj, "appl_init_value", SerializationHelper.deserialize_by_tag(child[0], "RecordValueSpecification"))
                     elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
                         setattr(obj, "appl_init_value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
                     elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
@@ -167,8 +175,14 @@ class CalibrationParameterValue(ARObject):
                     concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
                     if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
                         setattr(obj, "impl_init_value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "impl_init_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationRuleBasedValueSpecification"))
                     elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
                         setattr(obj, "impl_init_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "ARRAY-VALUE-SPECIFICATION":
+                        setattr(obj, "impl_init_value", SerializationHelper.deserialize_by_tag(child[0], "ArrayValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "impl_init_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeRuleBasedValueSpecification"))
                     elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
                         setattr(obj, "impl_init_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
                     elif concrete_tag == "CONSTANT-REFERENCE":
@@ -177,6 +191,8 @@ class CalibrationParameterValue(ARObject):
                         setattr(obj, "impl_init_value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
                     elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
                         setattr(obj, "impl_init_value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "RECORD-VALUE-SPECIFICATION":
+                        setattr(obj, "impl_init_value", SerializationHelper.deserialize_by_tag(child[0], "RecordValueSpecification"))
                     elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
                         setattr(obj, "impl_init_value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
                     elif concrete_tag == "TEXT-VALUE-SPECIFICATION":

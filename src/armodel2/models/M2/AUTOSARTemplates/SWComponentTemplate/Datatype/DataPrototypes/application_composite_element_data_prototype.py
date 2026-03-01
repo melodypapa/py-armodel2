@@ -38,7 +38,7 @@ class ApplicationCompositeElementDataPrototype(DataPrototype, ABC):
 
     type_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TYPE-TREF": ("_POLYMORPHIC", "type_ref", ["ApplicationCompositeDataType", "ApplicationPrimitiveDataType"]),
+        "TYPE-TREF": ("_POLYMORPHIC", "type_ref", ["ApplicationArrayDataType", "ApplicationCompositeDataType", "ApplicationPrimitiveDataType", "ApplicationRecordDataType"]),
     }
 
 

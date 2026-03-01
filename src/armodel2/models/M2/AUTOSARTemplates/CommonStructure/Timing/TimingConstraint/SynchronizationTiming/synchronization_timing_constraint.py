@@ -51,8 +51,8 @@ class SynchronizationTimingConstraint(TimingConstraint):
     tolerance: Optional[MultidimensionalTime]
     _DESERIALIZE_DISPATCH = {
         "EVENT": lambda obj, elem: setattr(obj, "event", EventOccurrenceKindEnum.deserialize(elem)),
-        "SCOPE-REFS": ("_POLYMORPHIC_LIST", "scope_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
-        "SCOPE-EVENT-REFS": ("_POLYMORPHIC_LIST", "scope_event_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "SCOPE-REFS": ("_POLYMORPHIC_LIST", "scope_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventBswModeDeclaration", "TDEventBswModule", "TDEventCom", "TDEventComplex", "TDEventFrClusterCycleStart", "TDEventFrame", "TDEventFrameEthernet", "TDEventIPdu", "TDEventISignal", "TDEventModeDeclaration", "TDEventOperation", "TDEventSLLET", "TDEventSLLETPort", "TDEventSwc", "TDEventSwcInternalBehavior", "TDEventSwcInternalBehaviorReference", "TDEventTTCanCycleStart", "TDEventTrigger", "TDEventVariableDataPrototype", "TDEventVfb", "TDEventVfbReference"]),
+        "SCOPE-EVENT-REFS": ("_POLYMORPHIC_LIST", "scope_event_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventBswModeDeclaration", "TDEventBswModule", "TDEventCom", "TDEventComplex", "TDEventFrClusterCycleStart", "TDEventFrame", "TDEventFrameEthernet", "TDEventIPdu", "TDEventISignal", "TDEventModeDeclaration", "TDEventOperation", "TDEventSLLET", "TDEventSLLETPort", "TDEventSwc", "TDEventSwcInternalBehavior", "TDEventSwcInternalBehaviorReference", "TDEventTTCanCycleStart", "TDEventTrigger", "TDEventVariableDataPrototype", "TDEventVfb", "TDEventVfbReference"]),
         "SYNCHRONIZATION": lambda obj, elem: setattr(obj, "synchronization", SynchronizationTypeEnum.deserialize(elem)),
         "TOLERANCE": lambda obj, elem: setattr(obj, "tolerance", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
     }
