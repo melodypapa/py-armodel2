@@ -46,7 +46,7 @@ class CommunicationCluster(ARElement, ABC):
     speed: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
         "BAUDRATE": lambda obj, elem: setattr(obj, "baudrate", SerializationHelper.deserialize_by_tag(elem, "PositiveUnlimitedInteger")),
-        "PHYSICAL-CHANNELS": ("_POLYMORPHIC_LIST", "physical_channels", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "PHYSICAL-CHANNELS": ("_POLYMORPHIC_LIST", "physical_channels", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
         "PROTOCOL-NAME": lambda obj, elem: setattr(obj, "protocol_name", SerializationHelper.deserialize_by_tag(elem, "String")),
         "PROTOCOL-VERSION": lambda obj, elem: setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(elem, "String")),
         "SPEED": lambda obj, elem: setattr(obj, "speed", SerializationHelper.deserialize_by_tag(elem, "Integer")),
@@ -176,8 +176,10 @@ class CommunicationCluster(ARElement, ABC):
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
-                    if concrete_tag == "ABSTRACT-CAN-PHYSICAL-CHANNEL":
-                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "AbstractCanPhysicalChannel"))
+                    if concrete_tag == "CAN-PHYSICAL-CHANNEL":
+                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "CanPhysicalChannel"))
+                    elif concrete_tag == "TTCAN-PHYSICAL-CHANNEL":
+                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "TtcanPhysicalChannel"))
                     elif concrete_tag == "ETHERNET-PHYSICAL-CHANNEL":
                         obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "EthernetPhysicalChannel"))
                     elif concrete_tag == "FLEXRAY-PHYSICAL-CHANNEL":

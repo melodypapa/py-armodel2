@@ -78,7 +78,7 @@ class PncMapping(Describable):
     _DESERIALIZE_DISPATCH = {
         "DYNAMIC-PNC-REFS": lambda obj, elem: [obj.dynamic_pnc_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "IDENT-REF": lambda obj, elem: setattr(obj, "ident_ref", ARRef.deserialize(elem)),
-        "PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "physical_channel_refs", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "physical_channel_refs", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
         "PNC-CONSUMED-REFS": lambda obj, elem: [obj.pnc_consumed_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PNC-GROUP-REFS": lambda obj, elem: [obj.pnc_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PNC-IDENTIFIER": lambda obj, elem: setattr(obj, "pnc_identifier", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),

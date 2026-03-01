@@ -1321,12 +1321,24 @@ def _generate_deserialize_method(
                     xml_tag = decorator_params
                 else:
                     xml_tag = snake_name.upper().replace("_", "-")
+            # Check for ref_conditional decorator with params
+            elif decorator_name == "ref_conditional":
+                # Use decorator_params value for XML container tag (e.g., "FIBEX-ELEMENTS")
+                decorator_params = attr_info.get("decorator_params")
+                if decorator_params:
+                    xml_tag = decorator_params
+                else:
+                    xml_tag = snake_name.upper().replace("_", "-")
             # For list attributes, determine the correct container tag
             elif multiplicity in ("*", "0..*"):
                 if is_ref and kind != "iref":
                     # For reference lists, container is SINGULAR-NAME + "-REFS" (e.g., USE-INSTEAD-REFS)
                     singular_xml_tag = snake_name.upper().replace("_", "-")
                     xml_tag = f"{singular_xml_tag}-REFS"
+                elif kind == "iref":
+                    # For instance reference lists, container is SINGULAR-NAME + "-IREFS" (e.g., COMPONENT-IREFS)
+                    singular_xml_tag = snake_name.upper().replace("_", "-")
+                    xml_tag = f"{singular_xml_tag}-IREFS"
                 else:
                     # For non-reference lists, pluralize the tag
                     from ._common import to_plural as pluralize_snake
@@ -1337,8 +1349,8 @@ def _generate_deserialize_method(
             if is_ref and multiplicity not in ("*", "0..*", "1..*") and kind != "iref":
                 xml_tag = f"{xml_tag}-TREF" if kind == "tref" else f"{xml_tag}-REF"
 
-            # Add -IREF suffix for instance_ref attributes (iref kind)
-            if kind == "iref":
+            # Add -IREF suffix for non-list instance_ref attributes (iref kind)
+            if kind == "iref" and multiplicity not in ("*", "0..*", "1..*"):
                 xml_tag = f"{xml_tag}-IREF"
 
             # For tag comparison in deserialize, extract container tag from multi-level paths
@@ -1365,7 +1377,16 @@ def _generate_deserialize_method(
                     if is_list:
                         # For lists, the xml_tag is the container (e.g., USE-INSTEAD-REFS)
                         # and we need to iterate through children (e.g., USE-INSTEAD-REF)
-                        handler_code = f'for item_elem in child:\n                    obj.{target_attr}.append(ARRef.deserialize(item_elem))'
+                        if decorator_name == "ref_conditional":
+                            # ref_conditional pattern: each child is -REF-CONDITIONAL wrapper
+                            handler_code = f'''# Unwrap ref_conditional pattern
+                for item_elem in child:
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj.{target_attr}.append(ARRef.deserialize(ref_elem))'''
+                        else:
+                            handler_code = f'for item_elem in child:\n                    obj.{target_attr}.append(ARRef.deserialize(item_elem))'
                     else:
                         handler_code = f'setattr(obj, "{target_attr}", ARRef.deserialize(child))'
                     all_branches.append((compare_tag, handler_code, False))
@@ -1387,16 +1408,26 @@ def _generate_deserialize_method(
                     if is_list:
                         # For polymorphic LISTS, iterate through ALL child elements
                         # Each child may be a different concrete type
-                        branch_lines.append(f'{indent}# Iterate through all child elements and deserialize each based on its concrete type')
-                        branch_lines.append(f'{indent}for item_elem in child:')
-                        branch_lines.append(f'{indent}    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{{") else item_elem.tag')
+                        if decorator_name == "ref_conditional" and is_ref and kind != "iref":
+                            # ref_conditional pattern with references: each child is -REF-CONDITIONAL wrapper
+                            # Unwrap and deserialize as ARRef (concrete type is in DEST attribute)
+                            branch_lines.append(f'{indent}# Unwrap ref_conditional pattern and deserialize as ARRef')
+                            branch_lines.append(f'{indent}for item_elem in child:')
+                            branch_lines.append(f'{indent}    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF')
+                            branch_lines.append(f'{indent}    if len(item_elem) > 0:')
+                            branch_lines.append(f'{indent}        ref_elem = item_elem[0]')
+                            branch_lines.append(f'{indent}        obj.{target_attr}.append(ARRef.deserialize(ref_elem))')
+                        else:
+                            branch_lines.append(f'{indent}# Iterate through all child elements and deserialize each based on its concrete type')
+                            branch_lines.append(f'{indent}for item_elem in child:')
+                            branch_lines.append(f'{indent}    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{{") else item_elem.tag')
 
-                        for i, concrete_type in enumerate(concrete_types):
-                            xml_concrete_tag = NameConverter.to_xml_tag(concrete_type)
-                            if_str = "if" if i == 0 else "elif"
-                            deserializer = f'SerializationHelper.deserialize_by_tag(item_elem, "{concrete_type}")'
-                            branch_lines.append(f'{indent}    {if_str} concrete_tag == "{xml_concrete_tag}":')
-                            branch_lines.append(f'{indent}        obj.{target_attr}.append({deserializer})')
+                            for i, concrete_type in enumerate(concrete_types):
+                                xml_concrete_tag = NameConverter.to_xml_tag(concrete_type)
+                                if_str = "if" if i == 0 else "elif"
+                                deserializer = f'SerializationHelper.deserialize_by_tag(item_elem, "{concrete_type}")'
+                                branch_lines.append(f'{indent}    {if_str} concrete_tag == "{xml_concrete_tag}":')
+                                branch_lines.append(f'{indent}        obj.{target_attr}.append({deserializer})')
                     else:
                         # For polymorphic SINGLE values, only check the first child element
                         branch_lines.append(f'{indent}# Check first child element for concrete type')
@@ -1432,7 +1463,7 @@ def _generate_deserialize_method(
                     check_tag = compare_tag if is_multi_level else xml_tag
                     known_direct_children = {"ITEM", "ENTRY", "V", "VALUE", "NAME", "TYPE", "REF"}
                     is_direct_child = (
-                        not is_multi_level and decorator_name == "xml_element_name" and (
+                        not is_multi_level and decorator_name == "xml_element_name" and decorator_name != "ref_conditional" and (
                             check_tag in known_direct_children or
                             (len(check_tag) <= 4 and check_tag.endswith("S")) or
                             not check_tag.endswith("S")
@@ -1447,8 +1478,18 @@ def _generate_deserialize_method(
                     else:
                         # Wrapper container (e.g., DATA-CONSTR-RULES) - iterate through children
                         if is_ref and kind != "iref":
-                            # For reference lists, each child is a -REF element that should be deserialized as ARRef
-                            handler_code = f'# Iterate through wrapper children\n                for item_elem in child:\n                    obj.{target_attr}.append(ARRef.deserialize(item_elem))'
+                            if decorator_name == "ref_conditional":
+                                # ref_conditional pattern: each child is -REF-CONDITIONAL wrapper
+                                # Need to unwrap to get the actual -REF element inside
+                                handler_code = f'''# Unwrap ref_conditional pattern
+                for item_elem in child:
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj.{target_attr}.append(ARRef.deserialize(ref_elem))'''
+                            else:
+                                # For reference lists, each child is a -REF element that should be deserialized as ARRef
+                                handler_code = f'# Iterate through wrapper children\n                for item_elem in child:\n                    obj.{target_attr}.append(ARRef.deserialize(item_elem))'
                         else:
                             handler_code = f'# Iterate through wrapper children\n                for item_elem in child:\n                    obj.{target_attr}.append(SerializationHelper.deserialize_by_tag(item_elem, "{attr_type}"))'
                 else:

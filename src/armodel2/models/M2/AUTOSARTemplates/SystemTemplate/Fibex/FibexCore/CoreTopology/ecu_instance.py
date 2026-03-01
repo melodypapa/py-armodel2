@@ -116,8 +116,8 @@ class EcuInstance(FibexElement):
         "COM-CONFIGURATION-RX-TIME-BASE": lambda obj, elem: setattr(obj, "com_configuration_rx_time_base", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "COM-CONFIGURATION-TX-TIME-BASE": lambda obj, elem: setattr(obj, "com_configuration_tx_time_base", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION": lambda obj, elem: setattr(obj, "com_enable_mdt_for_cyclic_transmission", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "COMM-CONTROLLERS": ("_POLYMORPHIC_LIST", "comm_controllers", ["AbstractCanCommunicationController", "EthernetCommunicationController", "FlexrayCommunicationController", "LinCommunicationController", "UserDefinedCommunicationController"]),
-        "CONNECTORS": ("_POLYMORPHIC_LIST", "connectors", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "COMM-CONTROLLERS": ("_POLYMORPHIC_LIST", "comm_controllers", ["CanCommunicationController", "TtcanCommunicationController", "EthernetCommunicationController", "FlexrayCommunicationController", "LinCommunicationController", "UserDefinedCommunicationController"]),
+        "CONNECTORS": ("_POLYMORPHIC_LIST", "connectors", ["CanCommunicationConnector", "TtcanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
         "DLT-CONFIG": lambda obj, elem: setattr(obj, "dlt_config", SerializationHelper.deserialize_by_tag(elem, "DltConfig")),
         "DO-IP-CONFIG": lambda obj, elem: setattr(obj, "do_ip_config", SerializationHelper.deserialize_by_tag(elem, "DoIpConfig")),
         "ECU-TASK-PROXY-REFS": lambda obj, elem: [obj.ecu_task_proxy_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
@@ -603,8 +603,10 @@ class EcuInstance(FibexElement):
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
-                    if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONTROLLER":
-                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(item_elem, "AbstractCanCommunicationController"))
+                    if concrete_tag == "CAN-COMMUNICATION-CONTROLLER":
+                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(item_elem, "CanCommunicationController"))
+                    elif concrete_tag == "TTCAN-COMMUNICATION-CONTROLLER":
+                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(item_elem, "TtcanCommunicationController"))
                     elif concrete_tag == "ETHERNET-COMMUNICATION-CONTROLLER":
                         obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(item_elem, "EthernetCommunicationController"))
                     elif concrete_tag == "FLEXRAY-COMMUNICATION-CONTROLLER":
@@ -617,8 +619,10 @@ class EcuInstance(FibexElement):
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
-                    if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONNECTOR":
-                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "AbstractCanCommunicationConnector"))
+                    if concrete_tag == "CAN-COMMUNICATION-CONNECTOR":
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "CanCommunicationConnector"))
+                    elif concrete_tag == "TTCAN-COMMUNICATION-CONNECTOR":
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "TtcanCommunicationConnector"))
                     elif concrete_tag == "ETHERNET-COMMUNICATION-CONNECTOR":
                         obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "EthernetCommunicationConnector"))
                     elif concrete_tag == "FLEXRAY-COMMUNICATION-CONNECTOR":

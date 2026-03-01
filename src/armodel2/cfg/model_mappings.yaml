@@ -2997,18 +2997,21 @@ polymorphic_types:
   - LinCluster
   - UserDefinedCluster
   PhysicalChannel:
-  - AbstractCanPhysicalChannel
+  - CanPhysicalChannel
+  - TtcanPhysicalChannel
   - EthernetPhysicalChannel
   - FlexrayPhysicalChannel
   - LinPhysicalChannel
   CommunicationController:
-  - AbstractCanCommunicationController
+  - CanCommunicationController
+  - TtcanCommunicationController
   - EthernetCommunicationController
   - FlexrayCommunicationController
   - LinCommunicationController
   - UserDefinedCommunicationController
   CommunicationConnector:
-  - AbstractCanCommunicationConnector
+  - CanCommunicationConnector
+  - TtcanCommunicationConnector
   - EthernetCommunicationConnector
   - FlexrayCommunicationConnector
   - LinCommunicationConnector

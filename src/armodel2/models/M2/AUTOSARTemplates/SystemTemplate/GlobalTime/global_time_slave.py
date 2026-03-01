@@ -46,7 +46,7 @@ class GlobalTimeSlave(Identifiable, ABC):
     time_leap: Optional[PositiveInteger]
     time_leap_past: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CONNECTOR-REF": ("_POLYMORPHIC", "communication_connector_ref", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "COMMUNICATION-CONNECTOR-REF": ("_POLYMORPHIC", "communication_connector_ref", ["CanCommunicationConnector", "TtcanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
         "FOLLOW-UP-TIMEOUT-VALUE": lambda obj, elem: setattr(obj, "follow_up_timeout_value", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "ICV-VERIFICATION": lambda obj, elem: setattr(obj, "icv_verification", SerializationHelper.deserialize_by_tag(elem, "any (GlobalTimeIcv)")),
         "TIME-LEAP-FUTURE": lambda obj, elem: setattr(obj, "time_leap_future", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),

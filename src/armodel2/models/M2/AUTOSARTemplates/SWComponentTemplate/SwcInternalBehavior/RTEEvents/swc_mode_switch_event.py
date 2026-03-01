@@ -139,7 +139,7 @@ class SwcModeSwitchEvent(RTEEvent):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ACTIVATION":
                 setattr(obj, "activation", ModeActivationKind.deserialize(child))
-            elif tag == "MODES-IREF":
+            elif tag == "MODE-IREFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._mode_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "RModeInAtomicSwcInstanceRef"))

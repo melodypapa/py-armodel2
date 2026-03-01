@@ -53,7 +53,7 @@ class CommunicationConnector(Identifiable, ABC):
     pnc_filter_array_masks: list[PositiveInteger]
     pnc_gateway_type: Optional[PncGatewayTypeEnum]
     _DESERIALIZE_DISPATCH = {
-        "COMM-CONTROLLER-REF": ("_POLYMORPHIC", "comm_controller_ref", ["AbstractCanCommunicationController", "EthernetCommunicationController", "FlexrayCommunicationController", "LinCommunicationController", "UserDefinedCommunicationController"]),
+        "COMM-CONTROLLER-REF": ("_POLYMORPHIC", "comm_controller_ref", ["CanCommunicationController", "TtcanCommunicationController", "EthernetCommunicationController", "FlexrayCommunicationController", "LinCommunicationController", "UserDefinedCommunicationController"]),
         "CREATE-ECU-WAKEUP-SOURCE": lambda obj, elem: setattr(obj, "create_ecu_wakeup_source", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED": lambda obj, elem: setattr(obj, "dynamic_pnc_to_channel_mapping_enabled", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "ECU-COMM-PORT-INSTANCES": ("_POLYMORPHIC_LIST", "ecu_comm_port_instances", ["FramePort", "IPduPort", "ISignalPort"]),

@@ -48,7 +48,7 @@ class TDEventISignal(TDEventCom):
     td_event_type_enum: Optional[TDEventISignalTypeEnum]
     _DESERIALIZE_DISPATCH = {
         "I-SIGNAL-REF": lambda obj, elem: setattr(obj, "i_signal_ref", ARRef.deserialize(elem)),
-        "PHYSICAL-CHANNEL-REF": ("_POLYMORPHIC", "physical_channel_ref", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "PHYSICAL-CHANNEL-REF": ("_POLYMORPHIC", "physical_channel_ref", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
         "TD-EVENT-TYPE-ENUM": lambda obj, elem: setattr(obj, "td_event_type_enum", TDEventISignalTypeEnum.deserialize(elem)),
     }
 

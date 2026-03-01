@@ -53,10 +53,10 @@ class PhysicalChannel(Identifiable, ABC):
     managed_physical_channel_refs: list[ARRef]
     pdu_triggerings: list[PduTriggering]
     _DESERIALIZE_DISPATCH = {
-        "COMM-CONNECTOR-REFS": ("_POLYMORPHIC_LIST", "_comm_connector_refs", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "COMM-CONNECTOR-REFS": ("_POLYMORPHIC_LIST", "_comm_connector_refs", ["CanCommunicationConnector", "TtcanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
         "FRAME-TRIGGERINGS": ("_POLYMORPHIC_LIST", "frame_triggerings", ["CanFrameTriggering", "EthernetFrameTriggering", "FlexrayFrameTriggering", "LinFrameTriggering"]),
         "I-SIGNAL-TRIGGERINGS": lambda obj, elem: obj.i_signal_triggerings.append(SerializationHelper.deserialize_by_tag(elem, "ISignalTriggering")),
-        "MANAGED-PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "managed_physical_channel_refs", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "MANAGED-PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "managed_physical_channel_refs", ["CanPhysicalChannel", "TtcanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
         "PDU-TRIGGERINGS": lambda obj, elem: obj.pdu_triggerings.append(SerializationHelper.deserialize_by_tag(elem, "PduTriggering")),
     }
 
@@ -190,9 +190,13 @@ class PhysicalChannel(Identifiable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "COMM-CONNECTOR-REFS":
+            if tag == "COMM-CONNECTORS":
+                # Unwrap ref_conditional pattern
                 for item_elem in child:
-                    obj._comm_connector_refs.append(ARRef.deserialize(item_elem))
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj._comm_connector_refs.append(ARRef.deserialize(ref_elem))
             elif tag == "FRAME-TRIGGERINGS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:

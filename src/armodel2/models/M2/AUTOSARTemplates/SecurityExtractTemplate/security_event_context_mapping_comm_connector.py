@@ -39,7 +39,7 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
 
     comm_connector_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMM-CONNECTOR-REFS": ("_POLYMORPHIC_LIST", "comm_connector_refs", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "COMM-CONNECTOR-REFS": ("_POLYMORPHIC_LIST", "comm_connector_refs", ["CanCommunicationConnector", "TtcanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
     }
 
 

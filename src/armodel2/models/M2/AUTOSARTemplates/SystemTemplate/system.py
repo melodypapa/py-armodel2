@@ -364,9 +364,13 @@ class System(ARElement):
                 setattr(obj, "container_i_pdu_header_byte_order", ByteOrderEnum.deserialize(child))
             elif tag == "ECU-EXTRACT-VERSION":
                 setattr(obj, "ecu_extract_version", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
-            elif tag == "FIBEX-ELEMENT-REFS":
+            elif tag == "FIBEX-ELEMENTS":
+                # Unwrap ref_conditional pattern
                 for item_elem in child:
-                    obj._fibex_element_refs.append(ARRef.deserialize(item_elem))
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj._fibex_element_refs.append(ARRef.deserialize(ref_elem))
             elif tag == "INTERPOLATION-ROUTINE-MAPPING-SET-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:

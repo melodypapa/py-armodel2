@@ -39,7 +39,7 @@ class HwPortMapping(ARObject):
     communication_connector_ref: Optional[ARRef]
     hw_pin_group_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CONNECTOR-REF": ("_POLYMORPHIC", "communication_connector_ref", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "COMMUNICATION-CONNECTOR-REF": ("_POLYMORPHIC", "communication_connector_ref", ["CanCommunicationConnector", "TtcanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
         "HW-PIN-GROUP-REF": lambda obj, elem: setattr(obj, "hw_pin_group_ref", ARRef.deserialize(elem)),
     }
 

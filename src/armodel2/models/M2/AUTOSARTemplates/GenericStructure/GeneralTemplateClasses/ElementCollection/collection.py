@@ -244,7 +244,7 @@ class Collection(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "AUTO-COLLECT":
                 setattr(obj, "auto_collect", AutoCollectEnum.deserialize(child))
-            elif tag == "COLLECTED-INSTANCES-IREF":
+            elif tag == "COLLECTED-INSTANCE-IREFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._collected_instance_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "AnyInstanceRef"))
@@ -258,7 +258,7 @@ class Collection(ARElement):
             elif tag == "SOURCE-ELEMENT-REFS":
                 for item_elem in child:
                     obj.source_element_refs.append(ARRef.deserialize(item_elem))
-            elif tag == "SOURCE-INSTANCES-IREF":
+            elif tag == "SOURCE-INSTANCE-IREFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._source_instance_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "AnyInstanceRef"))

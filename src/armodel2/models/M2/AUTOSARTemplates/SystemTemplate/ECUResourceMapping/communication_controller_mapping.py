@@ -39,7 +39,7 @@ class CommunicationControllerMapping(ARObject):
     communication_controller_ref: Optional[ARRef]
     hw_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CONTROLLER-REF": ("_POLYMORPHIC", "communication_controller_ref", ["AbstractCanCommunicationController", "EthernetCommunicationController", "FlexrayCommunicationController", "LinCommunicationController", "UserDefinedCommunicationController"]),
+        "COMMUNICATION-CONTROLLER-REF": ("_POLYMORPHIC", "communication_controller_ref", ["CanCommunicationController", "TtcanCommunicationController", "EthernetCommunicationController", "FlexrayCommunicationController", "LinCommunicationController", "UserDefinedCommunicationController"]),
         "HW-REF": lambda obj, elem: setattr(obj, "hw_ref", ARRef.deserialize(elem)),
     }
 

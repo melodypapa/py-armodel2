@@ -143,7 +143,7 @@ class RTEEvent(AbstractEvent, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DISABLED-MODES-IREF":
+            if tag == "DISABLED-MODE-IREFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._disabled_mode_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "RModeInAtomicSwcInstanceRef"))
