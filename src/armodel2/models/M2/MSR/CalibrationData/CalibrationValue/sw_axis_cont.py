@@ -329,6 +329,20 @@ class SwAxisContBuilder(BuilderBase):
         self._obj.sw_axis_index = value
         return self
 
+    def with_v(self, value: Optional[Numerical]) -> "SwAxisContBuilder":
+        """Set v attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.v = value
+        return self
+
     def with_vf(self, value: Optional[Numerical]) -> "SwAxisContBuilder":
         """Set vf attribute.
 
