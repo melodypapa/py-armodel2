@@ -123,7 +123,6 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "NRC-VALUE":
                 setattr(obj, "nrc_value", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "OP":

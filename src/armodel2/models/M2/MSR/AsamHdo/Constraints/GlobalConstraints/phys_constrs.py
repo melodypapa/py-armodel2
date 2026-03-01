@@ -209,7 +209,6 @@ class PhysConstrs(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "LOWER-LIMIT":
                 setattr(obj, "lower_limit", SerializationHelper.deserialize_by_tag(child, "Limit"))
             elif tag == "MAX-DIFF":
@@ -221,7 +220,6 @@ class PhysConstrs(ARObject):
             elif tag == "SCALE-CONSTRS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.scale_constrs.append(SerializationHelper.deserialize_by_tag(item_elem, "ScaleConstr"))
             elif tag == "UPPER-LIMIT":
                 setattr(obj, "upper_limit", SerializationHelper.deserialize_by_tag(child, "Limit"))

@@ -135,7 +135,6 @@ class DiagnosticEnableConditionPortMapping(DiagnosticSwMapping):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ENABLE-CONDITION-REF":
                 setattr(obj, "enable_condition_ref", ARRef.deserialize(child))
             elif tag == "SWC-FLAT-SERVICE-REF":

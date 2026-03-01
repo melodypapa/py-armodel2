@@ -241,7 +241,6 @@ class DiagnosticEvent(DiagnosticCommonElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ASSOCIATED":
                 setattr(obj, "associated", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "CLEAR-EVENT":
@@ -251,7 +250,6 @@ class DiagnosticEvent(DiagnosticCommonElement):
             elif tag == "CONNECTEDS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.connecteds.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticConnected)"))
             elif tag == "EVENT-CLEAR":
                 setattr(obj, "event_clear", DiagnosticEventClearAllowedEnum.deserialize(child))

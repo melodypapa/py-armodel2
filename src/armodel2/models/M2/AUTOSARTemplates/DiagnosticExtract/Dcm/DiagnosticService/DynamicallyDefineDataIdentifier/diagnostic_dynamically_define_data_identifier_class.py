@@ -136,7 +136,6 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CHECK-PER":
                 setattr(obj, "check_per", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "CONFIGURATION":
@@ -144,7 +143,6 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
             elif tag == "SUBFUNCTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.subfunctions.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticDynamically)"))
 
         return obj

@@ -107,5 +107,4 @@ class ItemBuilder:
         Returns:
             Item instance
         """
-        # TODO: Add validation
         return self._obj

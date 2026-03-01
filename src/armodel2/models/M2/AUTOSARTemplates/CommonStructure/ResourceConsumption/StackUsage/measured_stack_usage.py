@@ -155,7 +155,6 @@ class MeasuredStackUsage(StackUsage):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "AVERAGE-MEMORY-CONSUMPTION":
                 setattr(obj, "average_memory_consumption", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "MAXIMUM-MEMORY-CONSUMPTION":

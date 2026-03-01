@@ -150,7 +150,6 @@ class EthTSynSubTlvConfig(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "OFS-SUB-TLV":
                 setattr(obj, "ofs_sub_tlv", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "STATUS-SUB-TLV":

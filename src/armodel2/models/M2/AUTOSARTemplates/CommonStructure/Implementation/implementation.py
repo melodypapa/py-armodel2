@@ -354,33 +354,27 @@ class Implementation(ARElement, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "BUILD-ACTION-MANIFEST-REF":
                 setattr(obj, "build_action_manifest_ref", ARRef.deserialize(child))
             elif tag == "CODE-DESCRIPTORS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.code_descriptors.append(SerializationHelper.deserialize_by_tag(item_elem, "Code"))
             elif tag == "COMPILERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.compilers.append(SerializationHelper.deserialize_by_tag(item_elem, "Compiler"))
             elif tag == "GENERATED-ARTIFACTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.generated_artifacts.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyOnArtifact"))
             elif tag == "HW-ELEMENTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.hw_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "HwElement"))
             elif tag == "LINKERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.linkers.append(SerializationHelper.deserialize_by_tag(item_elem, "Linker"))
             elif tag == "MC-SUPPORT":
                 setattr(obj, "mc_support", SerializationHelper.deserialize_by_tag(child, "McSupportData"))
@@ -389,12 +383,10 @@ class Implementation(ARElement, ABC):
             elif tag == "REQUIRED-ARTIFACTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.required_artifacts.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyOnArtifact"))
             elif tag == "REQUIRED-GENERATOR-TOOLS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.required_generator_tools.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyOnArtifact"))
             elif tag == "RESOURCE-CONSUMPTION":
                 setattr(obj, "resource_consumption", SerializationHelper.deserialize_by_tag(child, "ResourceConsumption"))

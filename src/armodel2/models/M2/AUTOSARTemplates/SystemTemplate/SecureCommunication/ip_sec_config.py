@@ -119,13 +119,11 @@ class IPSecConfig(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "IP-SEC-CONFIG-REF":
                 setattr(obj, "ip_sec_config_ref", ARRef.deserialize(child))
             elif tag == "IP-SEC-RULES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.ip_sec_rules.append(SerializationHelper.deserialize_by_tag(item_elem, "IPSecRule"))
 
         return obj

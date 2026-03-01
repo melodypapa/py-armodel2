@@ -127,13 +127,11 @@ class BulkNvDataDescriptor(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "BULK-NV-BLOCK-REF":
                 setattr(obj, "bulk_nv_block_ref", ARRef.deserialize(child))
             elif tag == "NV-BLOCK-DATAS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.nv_block_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvBlockDataMapping"))
 
         return obj

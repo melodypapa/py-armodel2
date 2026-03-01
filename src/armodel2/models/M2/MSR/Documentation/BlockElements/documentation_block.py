@@ -377,5 +377,4 @@ class DocumentationBlockBuilder:
         Returns:
             DocumentationBlock instance
         """
-        # TODO: Add validation
         return self._obj

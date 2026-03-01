@@ -121,16 +121,13 @@ class DataTypeMappingSet(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DATA-TYPE-MAPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.data_type_maps.append(SerializationHelper.deserialize_by_tag(item_elem, "DataTypeMap"))
             elif tag == "MODE-REQUEST-TYPE-MAPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.mode_request_type_maps.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeRequestTypeMap"))
 
         return obj

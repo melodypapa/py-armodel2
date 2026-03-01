@@ -167,20 +167,17 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "AUTHENTICATION":
                 setattr(obj, "authentication", SerializationHelper.deserialize_by_tag(child, "DiagnosticAuthRole"))
             elif tag == "DIAGNOSTIC-SESSIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.diagnostic_session_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticSession"))
             elif tag == "ENVIRONMENTAL-REF":
                 setattr(obj, "environmental_ref", ARRef.deserialize(child))
             elif tag == "SECURITY-LEVELS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.security_level_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticSecurityLevel"))
 
         return obj

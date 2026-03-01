@@ -344,7 +344,6 @@ class CouplingPort(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CONNECTION":
                 setattr(obj, "connection", EthernetConnectionNegotiationEnum.deserialize(child))
             elif tag == "COUPLING-PORT-DETAILS":
@@ -358,12 +357,10 @@ class CouplingPort(Identifiable):
             elif tag == "MAC-MULTICAST-GROUPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.mac_multicast_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "MacMulticastGroup"))
             elif tag == "MAC-SEC-PROPSES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.mac_sec_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "MacSecProps"))
             elif tag == "PHYSICAL-LAYER":
                 setattr(obj, "physical_layer", EthernetPhysicalLayerTypeEnum.deserialize(child))
@@ -372,14 +369,12 @@ class CouplingPort(Identifiable):
             elif tag == "PNC-MAPPING-IDENTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.pnc_mapping_ident_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PncMappingIdent"))
             elif tag == "RECEIVE-ACTIVITY":
                 setattr(obj, "receive_activity", SerializationHelper.deserialize_by_tag(child, "any (EthernetSwitchVlan)"))
             elif tag == "VLANS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.vlans.append(SerializationHelper.deserialize_by_tag(item_elem, "VlanMembership"))
             elif tag == "VLAN-MODIFIER-REF":
                 setattr(obj, "vlan_modifier_ref", ARRef.deserialize(child))

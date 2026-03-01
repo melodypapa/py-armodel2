@@ -124,7 +124,6 @@ class J1939NmNode(NmNode):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ADDRESS":
                 setattr(obj, "address", J1939NmAddressConfigurationCapabilityEnum.deserialize(child))
             elif tag == "NODE-NAME":

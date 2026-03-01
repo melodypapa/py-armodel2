@@ -260,18 +260,15 @@ class DltLogChannel(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "APPLICATIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.application_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DltContext"))
             elif tag == "DEFAULT-TRACE":
                 setattr(obj, "default_trace", DltDefaultTraceStateEnum.deserialize(child))
             elif tag == "DLT-MESSAGES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.dlt_message_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DltMessage"))
             elif tag == "LOG-CHANNEL-ID":
                 setattr(obj, "log_channel_id", SerializationHelper.deserialize_by_tag(child, "String"))

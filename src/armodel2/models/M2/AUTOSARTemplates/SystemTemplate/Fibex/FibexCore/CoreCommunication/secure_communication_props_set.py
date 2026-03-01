@@ -109,16 +109,13 @@ class SecureCommunicationPropsSet(FibexElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "AUTHENTICATIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.authentications.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SecureCommunication)"))
             elif tag == "FRESHNESS-PROPSES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.freshness_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SecureCommunication)"))
 
         return obj

@@ -182,7 +182,6 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CAN-ADDRESSING":
                 setattr(obj, "can_addressing", CanAddressingModeType.deserialize(child))
             elif tag == "CAN-BIT-RATE-SWITCH":

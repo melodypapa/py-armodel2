@@ -121,7 +121,6 @@ class IdsmTrafficLimitation(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "MAX-BYTES-IN":
                 setattr(obj, "max_bytes_in", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "TIME-INTERVAL":

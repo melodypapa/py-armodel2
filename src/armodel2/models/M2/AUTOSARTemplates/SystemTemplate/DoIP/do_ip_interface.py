@@ -324,7 +324,6 @@ class DoIpInterface(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ALIVE-CHECK":
                 setattr(obj, "alive_check", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "DOIP-CHANNEL-REF":
@@ -332,12 +331,10 @@ class DoIpInterface(Identifiable):
             elif tag == "DOIP-CONNECTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.doip_connection_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SocketConnection"))
             elif tag == "DO-IP-ROUTINGS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.do_ip_routings.append(SerializationHelper.deserialize_by_tag(item_elem, "DoIpRoutingActivation"))
             elif tag == "GENERAL-INACTIVITY":
                 setattr(obj, "general_inactivity", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
@@ -352,7 +349,6 @@ class DoIpInterface(Identifiable):
             elif tag == "SOCKETS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.socket_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "StaticSocketConnection"))
             elif tag == "USE-MAC-ADDRESS":
                 setattr(obj, "use_mac_address", SerializationHelper.deserialize_by_tag(child, "Boolean"))

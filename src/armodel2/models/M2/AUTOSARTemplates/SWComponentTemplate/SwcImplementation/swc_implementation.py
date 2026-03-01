@@ -142,13 +142,11 @@ class SwcImplementation(Implementation):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "BEHAVIOR-REF":
                 setattr(obj, "behavior_ref", ARRef.deserialize(child))
             elif tag == "PER-INSTANCE-MEMORY-SIZES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.per_instance_memory_sizes.append(SerializationHelper.deserialize_by_tag(item_elem, "PerInstanceMemorySize"))
             elif tag == "REQUIRED-RTE-VENDOR":
                 setattr(obj, "required_rte_vendor", SerializationHelper.deserialize_by_tag(child, "String"))

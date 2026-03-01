@@ -137,7 +137,6 @@ class ServerComSpec(PPortComSpec):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "OPERATION-REF":
                 setattr(obj, "operation_ref", ARRef.deserialize(child))
             elif tag == "QUEUE-LENGTH":
@@ -145,7 +144,6 @@ class ServerComSpec(PPortComSpec):
             elif tag == "TRANSFORMATION-COMS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.transformation_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "any (TransformationCom)"))
 
         return obj

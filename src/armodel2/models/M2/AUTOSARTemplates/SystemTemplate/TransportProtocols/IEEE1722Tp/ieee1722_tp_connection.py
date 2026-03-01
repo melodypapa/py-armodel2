@@ -191,7 +191,6 @@ class IEEE1722TpConnection(ARElement, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DESTINATION-MAC":
                 setattr(obj, "destination_mac", SerializationHelper.deserialize_by_tag(child, "MacAddressString"))
             elif tag == "MAC-ADDRESS-STRING":

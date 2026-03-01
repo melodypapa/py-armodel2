@@ -239,21 +239,17 @@ class ExecutableEntity(Identifiable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ACTIVATION-REASONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.activation_reasons.append(SerializationHelper.deserialize_by_tag(item_elem, "ExecutableEntityActivationReason"))
             elif tag == "CAN-ENTERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj._can_enter_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveArea"))
             elif tag == "EXCLUSIVE-AREA-NESTING-ORDERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.exclusive_area_nesting_order_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveAreaNestingOrder"))
             elif tag == "MINIMUM-START-INTERVAL":
                 setattr(obj, "minimum_start_interval", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
@@ -262,7 +258,6 @@ class ExecutableEntity(Identifiable, ABC):
             elif tag == "RUNS-INSIDES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.runs_inside_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveArea"))
             elif tag == "SW-ADDR-METHOD-REF":
                 setattr(obj, "sw_addr_method_ref", ARRef.deserialize(child))

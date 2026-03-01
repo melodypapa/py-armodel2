@@ -160,16 +160,13 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "KEY-EXCHANGES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.key_exchange_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CryptoServicePrimitive"))
             elif tag == "TLS-CIPHER-SUITES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.tls_cipher_suites.append(SerializationHelper.deserialize_by_tag(item_elem, "TlsCryptoCipherSuite"))
             elif tag == "USE-CLIENT":
                 setattr(obj, "use_client", SerializationHelper.deserialize_by_tag(child, "Boolean"))

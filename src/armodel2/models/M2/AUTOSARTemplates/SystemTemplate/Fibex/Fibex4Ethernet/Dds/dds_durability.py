@@ -99,7 +99,6 @@ class DdsDurability(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DURABILITY-KIND":
                 setattr(obj, "durability_kind", DdsDurabilityKindEnum.deserialize(child))
 

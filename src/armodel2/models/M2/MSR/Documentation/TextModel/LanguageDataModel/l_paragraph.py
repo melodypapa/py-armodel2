@@ -171,5 +171,4 @@ class LParagraphBuilder:
         Returns:
             LParagraph instance
         """
-        # TODO: Add validation
         return self._obj

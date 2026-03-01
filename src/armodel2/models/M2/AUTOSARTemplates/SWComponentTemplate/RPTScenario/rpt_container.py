@@ -216,7 +216,6 @@ class RptContainer(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "BY-PASS-POINTS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -228,12 +227,10 @@ class RptContainer(Identifiable):
             elif tag == "EXPLICIT-RPTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.explicit_rpt_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RptProfile"))
             elif tag == "RPT-CONTAINERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.rpt_containers.append(SerializationHelper.deserialize_by_tag(item_elem, "RptContainer"))
             elif tag == "RPT-EXECUTABLE-ENTITY":
                 setattr(obj, "rpt_executable_entity", SerializationHelper.deserialize_by_tag(child, "RptExecutableEntity"))

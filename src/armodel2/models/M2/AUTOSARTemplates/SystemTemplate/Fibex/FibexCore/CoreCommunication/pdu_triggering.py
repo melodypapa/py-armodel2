@@ -195,11 +195,9 @@ class PduTriggering(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "I-PDU-PORTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.i_pdu_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "IPduPort"))
             elif tag == "I-PDU-REF":
                 # Check first child element for concrete type
@@ -216,14 +214,12 @@ class PduTriggering(Identifiable):
             elif tag == "I-SIGNALS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.i_signal_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalTriggering"))
             elif tag == "SEC-OC-CRYPTO-SERVICE-REF":
                 setattr(obj, "sec_oc_crypto_service_ref", ARRef.deserialize(child))
             elif tag == "TRIGGER-I-PDU-SENDS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.trigger_i_pdu_send_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "TriggerIPduSendCondition"))
 
         return obj

@@ -116,7 +116,6 @@ class CompuRationalCoeffs(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "COMPU-NUMERATOR":
                 setattr(obj, "compu_numerator", SerializationHelper.deserialize_by_tag(child, "CompuNominatorDenominator"))
             elif tag == "COMPU-DENOMINATOR":

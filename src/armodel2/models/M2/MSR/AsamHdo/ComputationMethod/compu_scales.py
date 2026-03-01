@@ -114,5 +114,4 @@ class CompuScalesBuilder:
         Returns:
             CompuScales instance
         """
-        # TODO: Add validation
         return self._obj

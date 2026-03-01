@@ -102,7 +102,6 @@ class BswQueuedDataReceptionPolicy(BswDataReceptionPolicy):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "QUEUE-LENGTH":
                 setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

@@ -119,7 +119,6 @@ class IndentSample(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ITEM-LABEL-POS-ENUM":
                 setattr(obj, "item_label_pos_enum", ItemLabelPosEnum.deserialize(child))
             elif tag == "L2":

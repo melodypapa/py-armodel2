@@ -268,11 +268,9 @@ class CanFrameTriggering(FrameTriggering):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ABSOLUTELY-CAN-FRAME-TRIGGERINGS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.absolutely_can_frame_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "TtcanAbsolutelyScheduledTiming"))
             elif tag == "CAN-ADDRESSING-MODE":
                 setattr(obj, "can_addressing_mode", CanAddressingModeType.deserialize(child))

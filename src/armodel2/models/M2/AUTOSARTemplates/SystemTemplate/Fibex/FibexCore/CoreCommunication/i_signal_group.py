@@ -161,20 +161,17 @@ class ISignalGroup(FibexElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "COM-BASED-REF":
                 setattr(obj, "com_based_ref", ARRef.deserialize(child))
             elif tag == "I-SIGNALS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.i_signal_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignal"))
             elif tag == "SYSTEM-SIGNAL-GROUP-REF":
                 setattr(obj, "system_signal_group_ref", ARRef.deserialize(child))
             elif tag == "TRANSFORMATION-I-SIGNALS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.transformation_i_signals.append(SerializationHelper.deserialize_by_tag(item_elem, "any (TransformationISignal)"))
 
         return obj

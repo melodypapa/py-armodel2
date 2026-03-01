@@ -119,7 +119,6 @@ class InfrastructureServices(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DO-IP-ENTITY":
                 setattr(obj, "do_ip_entity", SerializationHelper.deserialize_by_tag(child, "DoIpEntity"))
             elif tag == "TIME":

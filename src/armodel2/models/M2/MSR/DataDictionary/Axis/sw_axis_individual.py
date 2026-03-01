@@ -247,7 +247,6 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "COMPU-METHOD-REF":
                 setattr(obj, "compu_method_ref", ARRef.deserialize(child))
             elif tag == "DATA-CONSTR-REF":
@@ -263,7 +262,6 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
             elif tag == "SW-VARIABLE-REF-PROXIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.sw_variable_ref_proxy_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwVariableRefProxy"))
             elif tag == "UNIT-REF":
                 setattr(obj, "unit_ref", ARRef.deserialize(child))

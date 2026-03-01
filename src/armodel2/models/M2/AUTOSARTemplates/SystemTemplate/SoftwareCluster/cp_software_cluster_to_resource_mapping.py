@@ -141,13 +141,11 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "PROVIDER-REF":
                 setattr(obj, "provider_ref", ARRef.deserialize(child))
             elif tag == "REQUESTERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.requester_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareCluster"))
             elif tag == "SERVICE-REF":
                 setattr(obj, "service_ref", ARRef.deserialize(child))

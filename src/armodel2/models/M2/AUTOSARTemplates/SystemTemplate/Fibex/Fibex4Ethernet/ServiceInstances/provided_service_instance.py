@@ -324,18 +324,15 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ALLOWED-SERVICES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.allowed_service_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NetworkEndpoint"))
             elif tag == "AUTO-AVAILABLE":
                 setattr(obj, "auto_available", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "EVENT-HANDLERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.event_handlers.append(SerializationHelper.deserialize_by_tag(item_elem, "EventHandler"))
             elif tag == "INSTANCE":
                 setattr(obj, "instance", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
@@ -350,12 +347,10 @@ class ProvidedServiceInstance(AbstractServiceInstance):
             elif tag == "REMOTE-MULTICASTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.remote_multicast_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationEndpoint"))
             elif tag == "REMOTE-UNICASTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.remote_unicast_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationEndpoint"))
             elif tag == "SD-SERVER-CONFIG":
                 setattr(obj, "sd_server_config", SerializationHelper.deserialize_by_tag(child, "any (SdServerConfig)"))

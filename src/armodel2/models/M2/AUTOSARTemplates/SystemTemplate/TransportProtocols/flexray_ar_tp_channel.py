@@ -418,7 +418,6 @@ class FlexrayArTpChannel(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ACK-TYPE":
                 setattr(obj, "ack_type", FrArTpAckType.deserialize(child))
             elif tag == "CANCELLATION":
@@ -444,7 +443,6 @@ class FlexrayArTpChannel(ARObject):
             elif tag == "N-PDUS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.n_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NPdu"))
             elif tag == "TIME-BR":
                 setattr(obj, "time_br", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
@@ -461,7 +459,6 @@ class FlexrayArTpChannel(ARObject):
             elif tag == "TP-CONNECTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.tp_connections.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayArTpConnection"))
 
         return obj

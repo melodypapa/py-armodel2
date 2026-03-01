@@ -147,16 +147,13 @@ class HwDescriptionEntity(Identifiable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "HW-ATTRIBUTE-VALUES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.hw_attribute_values.append(SerializationHelper.deserialize_by_tag(item_elem, "HwAttributeValue"))
             elif tag == "HW-CATEGORIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.hw_category_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "HwCategory"))
             elif tag == "HW-TYPE-REF":
                 setattr(obj, "hw_type_ref", ARRef.deserialize(child))

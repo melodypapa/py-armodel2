@@ -99,11 +99,9 @@ class EcucDestinationUriDefSet(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DESTINATION-URI-DEFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.destination_uri_defs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucDestinationUriDef"))
 
         return obj

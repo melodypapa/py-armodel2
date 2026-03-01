@@ -333,7 +333,6 @@ class TlsCryptoCipherSuite(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "AUTHENTICATION-REF":
                 setattr(obj, "authentication_ref", ARRef.deserialize(child))
             elif tag == "CERTIFICATE-REF":
@@ -345,14 +344,12 @@ class TlsCryptoCipherSuite(Identifiable):
             elif tag == "ELLIPTIC-CURVES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.elliptic_curf_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CryptoEllipticCurveProps"))
             elif tag == "ENCRYPTION-REF":
                 setattr(obj, "encryption_ref", ARRef.deserialize(child))
             elif tag == "KEY-EXCHANGES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.key_exchange_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CryptoServicePrimitive"))
             elif tag == "PRIORITY":
                 setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
@@ -365,7 +362,6 @@ class TlsCryptoCipherSuite(Identifiable):
             elif tag == "SIGNATURES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.signature_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CryptoSignatureScheme"))
             elif tag == "VERSION":
                 setattr(obj, "version", TlsVersionEnum.deserialize(child))

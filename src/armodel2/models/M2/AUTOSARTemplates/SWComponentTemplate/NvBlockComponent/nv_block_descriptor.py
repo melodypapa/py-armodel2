@@ -311,36 +311,29 @@ class NvBlockDescriptor(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CLIENT-SERVER-PORTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.client_server_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedPortAssignment"))
             elif tag == "CONSTANT-VALUES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.constant_value_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstantSpecification"))
             elif tag == "DATA-TYPES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.data_type_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataTypeMappingSet"))
             elif tag == "INSTANTIATION-DATA-DEFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.instantiation_data_defs.append(SerializationHelper.deserialize_by_tag(item_elem, "InstantiationDataDefProps"))
             elif tag == "MODE-SWITCH-EVENTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.mode_switch_events.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ModeSwitchEvent)"))
             elif tag == "NV-BLOCK-DATAS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.nv_block_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvBlockDataMapping"))
             elif tag == "NV-BLOCK-NEEDS":
                 setattr(obj, "nv_block_needs", SerializationHelper.deserialize_by_tag(child, "NvBlockNeeds"))
@@ -355,7 +348,6 @@ class NvBlockDescriptor(Identifiable):
             elif tag == "WRITING-STRATEGIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.writing_strategies.append(SerializationHelper.deserialize_by_tag(item_elem, "any (RoleBasedData)"))
 
         return obj

@@ -121,7 +121,6 @@ class DiagnosticSessionControl(DiagnosticServiceInstance):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DIAGNOSTIC-SESSION-SESSION-REF":
                 setattr(obj, "diagnostic_session_session_ref", ARRef.deserialize(child))
             elif tag == "SESSION-CONTROL-REF":

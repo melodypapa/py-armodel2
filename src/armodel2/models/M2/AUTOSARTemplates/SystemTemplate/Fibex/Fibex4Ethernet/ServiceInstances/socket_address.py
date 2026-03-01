@@ -293,7 +293,6 @@ class SocketAddress(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ALLOWED-I-PV6-EXT-REF":
                 setattr(obj, "allowed_i_pv6_ext_ref", ARRef.deserialize(child))
             elif tag == "ALLOWED-TCP-REF":
@@ -309,7 +308,6 @@ class SocketAddress(Identifiable):
             elif tag == "MULTICASTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.multicast_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EthernetCommunication)"))
             elif tag == "PATH-MTU":
                 setattr(obj, "path_mtu", SerializationHelper.deserialize_by_tag(child, "Boolean"))
@@ -318,7 +316,6 @@ class SocketAddress(Identifiable):
             elif tag == "STATIC-SOCKETS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.static_sockets.append(SerializationHelper.deserialize_by_tag(item_elem, "StaticSocketConnection"))
             elif tag == "UDP-CHECKSUM":
                 setattr(obj, "udp_checksum", UdpChecksumCalculationEnum.deserialize(child))

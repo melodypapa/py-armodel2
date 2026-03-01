@@ -300,7 +300,6 @@ class J1939TpConnection(TpConnection):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "BROADCAST":
                 setattr(obj, "broadcast", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "BUFFER-RATIO":
@@ -320,14 +319,12 @@ class J1939TpConnection(TpConnection):
             elif tag == "RECEIVERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.receiver_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "J1939TpNode"))
             elif tag == "RETRY":
                 setattr(obj, "retry", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "TP-PGS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.tp_pgs.append(SerializationHelper.deserialize_by_tag(item_elem, "J1939TpPg"))
             elif tag == "TRANSMITTER-REF":
                 setattr(obj, "transmitter_ref", ARRef.deserialize(child))

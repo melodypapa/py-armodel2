@@ -143,21 +143,17 @@ class FMFeatureSelectionSet(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "FEATURE-MODELS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.feature_model_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureModel"))
             elif tag == "INCLUDES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.include_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureSelectionSet"))
             elif tag == "SELECTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.selections.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureSelection"))
 
         return obj

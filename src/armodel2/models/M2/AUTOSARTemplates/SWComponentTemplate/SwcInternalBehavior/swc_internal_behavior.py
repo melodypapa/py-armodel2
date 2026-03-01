@@ -362,11 +362,9 @@ class SwcInternalBehavior(InternalBehavior):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "AR-TYPED-PER-INSTANCE-MEMORIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "EVENTS":
                 # Check first child element for concrete type
@@ -407,71 +405,58 @@ class SwcInternalBehavior(InternalBehavior):
             elif tag == "EXCLUSIVE-AREA-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcExclusiveAreaPolicy"))
             elif tag == "EXPLICIT-INTER-RUNNABLE-VARIABLES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.explicit_inter_runnable_variables.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "HANDLE-TERMINATION-AND-RESTART":
                 setattr(obj, "handle_termination_and_restart", HandleTerminationAndRestartEnum.deserialize(child))
             elif tag == "IMPLICIT-INTER-RUNNABLE-VARIABLES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.implicit_inter_runnable_variables.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "INCLUDED-DATA-TYPE-SETS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(item_elem, "IncludedDataTypeSet"))
             elif tag == "INCLUDED-MODE-DECLARATION-GROUP-SETS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(item_elem, "IncludedModeDeclarationGroupSet"))
             elif tag == "INSTANTIATION-DATA-DEF-PROPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.instantiation_data_def_props.append(SerializationHelper.deserialize_by_tag(item_elem, "InstantiationDataDefProps"))
             elif tag == "PER-INSTANCE-MEMORIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.per_instance_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "PerInstanceMemory"))
             elif tag == "PER-INSTANCE-PARAMETERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.per_instance_parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
             elif tag == "PORT-API-OPTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.port_api_options.append(SerializationHelper.deserialize_by_tag(item_elem, "PortAPIOption"))
             elif tag == "RUNNABLES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.runnables.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntity"))
             elif tag == "SERVICE-DEPENDENCIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcServiceDependency"))
             elif tag == "SHARED-PARAMETERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.shared_parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
             elif tag == "SUPPORT-MULTIPLE-INSTANTIATIONS":
                 setattr(obj, "support_multiple_instantiations", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "VARIATION-POINT-PROXIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(item_elem, "VariationPointProxy"))
 
         return obj

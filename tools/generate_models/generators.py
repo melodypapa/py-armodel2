@@ -1336,7 +1336,7 @@ def _generate_deserialize_method(
                 if is_list:
                     # For list attributes, the xml_tag is the wrapper container (e.g., DATA-CONSTR-RULES)
                     # We need to iterate through the wrapper's children to get the actual items
-                    handler_code = f'# Iterate through wrapper children\n                for item_elem in child:\n                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{{") else item_elem.tag\n                    obj.{target_attr}.append(SerializationHelper.deserialize_by_tag(item_elem, "{attr_type}"))'
+                    handler_code = f'# Iterate through wrapper children\n                for item_elem in child:\n                    obj.{target_attr}.append(SerializationHelper.deserialize_by_tag(item_elem, "{attr_type}"))'
                 else:
                     handler_code = f'setattr(obj, "{target_attr}", {value_code})'
 
@@ -1347,7 +1347,6 @@ def _generate_deserialize_method(
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
 """
 
     # Add all branches with proper if/elif (indented to be inside the for loop)

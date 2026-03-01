@@ -421,26 +421,21 @@ class BswInternalBehavior(InternalBehavior):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "AR-TYPED-PER-INSTANCE-MEMORIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "BSW-PER-INSTANCE-MEMORY-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.bsw_per_instance_memory_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswPerInstanceMemoryPolicy"))
             elif tag == "CLIENT-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.client_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswClientPolicy"))
             elif tag == "DISTINGUISHED-PARTITIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.distinguished_partitions.append(SerializationHelper.deserialize_by_tag(item_elem, "BswDistinguishedPartition"))
             elif tag == "ENTITIES":
                 # Check first child element for concrete type
@@ -465,47 +460,38 @@ class BswInternalBehavior(InternalBehavior):
             elif tag == "EXCLUSIVE-AREA-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswExclusiveAreaPolicy"))
             elif tag == "INCLUDED-DATA-TYPE-SETS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(item_elem, "IncludedDataTypeSet"))
             elif tag == "INCLUDED-MODE-DECLARATION-GROUP-SETS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(item_elem, "IncludedModeDeclarationGroupSet"))
             elif tag == "INTERNAL-TRIGGERING-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.internal_triggering_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggeringPoint"))
             elif tag == "INTERNAL-TRIGGERING-POINT-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.internal_triggering_point_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggeringPointPolicy"))
             elif tag == "MODE-RECEIVER-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.mode_receiver_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModeReceiverPolicy"))
             elif tag == "MODE-SENDER-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.mode_sender_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModeSenderPolicy"))
             elif tag == "PARAMETER-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.parameter_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswParameterPolicy"))
             elif tag == "PER-INSTANCE-PARAMETERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.per_instance_parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
             elif tag == "RECEPTION-POLICIES":
                 # Check first child element for concrete type
@@ -516,32 +502,26 @@ class BswInternalBehavior(InternalBehavior):
             elif tag == "RELEASED-TRIGGER-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.released_trigger_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswReleasedTriggerPolicy"))
             elif tag == "SCHEDULER-NAME-PREFIXES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.scheduler_name_prefixes.append(SerializationHelper.deserialize_by_tag(item_elem, "BswSchedulerNamePrefix"))
             elif tag == "SEND-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.send_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswDataSendPolicy"))
             elif tag == "SERVICE-DEPENDENCIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswServiceDependency"))
             elif tag == "TRIGGER-DIRECT-IMPLEMENTATIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.trigger_direct_implementations.append(SerializationHelper.deserialize_by_tag(item_elem, "BswTriggerDirectImplementation"))
             elif tag == "VARIATION-POINT-PROXIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(item_elem, "VariationPointProxy"))
 
         return obj

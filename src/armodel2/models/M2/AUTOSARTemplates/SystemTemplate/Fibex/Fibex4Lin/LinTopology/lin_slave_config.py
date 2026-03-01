@@ -258,7 +258,6 @@ class LinSlaveConfig(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CONFIGURED-NAD":
                 setattr(obj, "configured_nad", SerializationHelper.deserialize_by_tag(child, "Integer"))
             elif tag == "FUNCTION-ID":
@@ -270,14 +269,12 @@ class LinSlaveConfig(ARObject):
             elif tag == "LIN-CONFIGURABLE-FRAMES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.lin_configurable_frames.append(SerializationHelper.deserialize_by_tag(item_elem, "LinConfigurableFrame"))
             elif tag == "LIN-ERROR-RESPONSE":
                 setattr(obj, "lin_error_response", SerializationHelper.deserialize_by_tag(child, "LinErrorResponse"))
             elif tag == "LIN-ORDEREDS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.lin_ordereds.append(SerializationHelper.deserialize_by_tag(item_elem, "LinOrderedConfigurableFrame"))
             elif tag == "PROTOCOL-VERSION":
                 setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(child, "String"))

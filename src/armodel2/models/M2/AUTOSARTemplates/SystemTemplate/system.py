@@ -356,11 +356,9 @@ class System(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CLIENT-ID-DEFINITION-SETS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.client_id_definition_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientIdDefinitionSet"))
             elif tag == "CONTAINER-I-PDU-HEADER-BYTE-ORDER":
                 setattr(obj, "container_i_pdu_header_byte_order", ByteOrderEnum.deserialize(child))
@@ -413,17 +411,14 @@ class System(ARElement):
             elif tag == "INTERPOLATION-ROUTINE-MAPPING-SETS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.interpolation_routine_mapping_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "InterpolationRoutineMappingSet"))
             elif tag == "J1939-SHARED-ADDRESS-CLUSTERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.j1939_shared_address_clusters.append(SerializationHelper.deserialize_by_tag(item_elem, "J1939SharedAddressCluster"))
             elif tag == "MAPPINGS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SystemMapping"))
             elif tag == "PNC-VECTOR-LENGTH":
                 setattr(obj, "pnc_vector_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
@@ -432,17 +427,14 @@ class System(ARElement):
             elif tag == "ROOT-SOFTWARE-COMPOSITIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.root_software_compositions.append(SerializationHelper.deserialize_by_tag(item_elem, "RootSwCompositionPrototype"))
             elif tag == "SW-CLUSTERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.sw_cluster_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareCluster"))
             elif tag == "SYSTEM-DOCUMENTATIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.system_documentations.append(SerializationHelper.deserialize_by_tag(item_elem, "Chapter"))
             elif tag == "SYSTEM-VERSION":
                 setattr(obj, "system_version", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))

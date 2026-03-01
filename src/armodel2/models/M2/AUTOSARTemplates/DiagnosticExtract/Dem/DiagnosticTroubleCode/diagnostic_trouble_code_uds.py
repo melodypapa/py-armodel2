@@ -231,7 +231,6 @@ class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CONSIDER-PTO":
                 setattr(obj, "consider_pto", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "DTC-PROPS-PROPS-REF":

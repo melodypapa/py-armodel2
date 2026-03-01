@@ -123,7 +123,6 @@ class EthIpProps(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "IPV4-PROPS":
                 setattr(obj, "ipv4_props", SerializationHelper.deserialize_by_tag(child, "Ipv4Props"))
             elif tag == "IPV6-PROPS":

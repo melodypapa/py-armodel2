@@ -120,7 +120,6 @@ class EcucEnumerationLiteralDef(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ECUC-COND":
                 setattr(obj, "ecuc_cond", SerializationHelper.deserialize_by_tag(child, "any (EcucCondition)"))
             elif tag == "ORIGIN":

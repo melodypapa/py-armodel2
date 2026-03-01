@@ -289,7 +289,6 @@ class GlobalTimeDomain(FibexElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DEBOUNCE-TIME":
                 setattr(obj, "debounce_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "DOMAIN-ID":
@@ -297,7 +296,6 @@ class GlobalTimeDomain(FibexElement):
             elif tag == "GATEWAIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.gatewaies.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeGateway"))
             elif tag == "GLOBAL-TIME":
                 # Check first child element for concrete type
@@ -324,7 +322,6 @@ class GlobalTimeDomain(FibexElement):
             elif tag == "GLOBAL-TIME-SUBS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.global_time_sub_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeDomain"))
             elif tag == "NETWORK":
                 setattr(obj, "network", SerializationHelper.deserialize_by_tag(child, "NetworkSegmentIdentification"))

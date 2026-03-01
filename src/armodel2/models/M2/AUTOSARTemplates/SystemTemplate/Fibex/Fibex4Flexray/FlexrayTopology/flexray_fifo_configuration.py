@@ -222,7 +222,6 @@ class FlexrayFifoConfiguration(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ADMIT-WITHOUT":
                 setattr(obj, "admit_without", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "BASE-CYCLE":
@@ -236,7 +235,6 @@ class FlexrayFifoConfiguration(ARObject):
             elif tag == "FIFO-RANGES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.fifo_ranges.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayFifoRange"))
             elif tag == "MSG-ID-MASK":
                 setattr(obj, "msg_id_mask", SerializationHelper.deserialize_by_tag(child, "Integer"))

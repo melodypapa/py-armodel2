@@ -168,7 +168,6 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ARRAY-SIZE-HANDLING":
                 setattr(obj, "array_size_handling", ArraySizeHandlingEnum.deserialize(child))
             elif tag == "ARRAY-SIZE-SEMANTICS":

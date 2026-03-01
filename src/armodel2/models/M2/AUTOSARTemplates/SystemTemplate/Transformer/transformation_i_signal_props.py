@@ -138,7 +138,6 @@ class TransformationISignalProps(ARObject, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CS-ERROR-REACTION":
                 setattr(obj, "cs_error_reaction", CSTransformerErrorReactionEnum.deserialize(child))
             elif tag == "DATA-PROTOTYPES":

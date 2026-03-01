@@ -124,11 +124,9 @@ class ModeDeclarationMapping(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "FIRST-MODES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.first_mode_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclaration"))
             elif tag == "SECOND-MODE-REF":
                 setattr(obj, "second_mode_ref", ARRef.deserialize(child))

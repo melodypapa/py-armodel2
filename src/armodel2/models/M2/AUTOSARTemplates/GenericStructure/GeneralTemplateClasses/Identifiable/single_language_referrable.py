@@ -101,7 +101,6 @@ class SingleLanguageReferrable(Referrable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "LONG-NAME1":
                 setattr(obj, "long_name1", SerializationHelper.deserialize_by_tag(child, "SingleLanguageLongName"))
 

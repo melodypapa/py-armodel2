@@ -137,7 +137,6 @@ class SimulatedExecutionTime(ExecutionTime):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "MAXIMUM-EXECUTION-TIME":
                 setattr(obj, "maximum_execution_time", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
             elif tag == "MINIMUM-EXECUTION-TIME":

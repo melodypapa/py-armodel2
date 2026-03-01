@@ -255,7 +255,6 @@ class LinTpConnection(TpConnection):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DATA-PDU-REF":
                 setattr(obj, "data_pdu_ref", ARRef.deserialize(child))
             elif tag == "FLOW-CONTROL-REF":
@@ -287,7 +286,6 @@ class LinTpConnection(TpConnection):
             elif tag == "RECEIVERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.receiver_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "LinTpNode"))
             elif tag == "TIMEOUT-AS":
                 setattr(obj, "timeout_as", SerializationHelper.deserialize_by_tag(child, "TimeValue"))

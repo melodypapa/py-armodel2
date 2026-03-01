@@ -158,7 +158,6 @@ class DiagnosticConnectedIndicator(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "BEHAVIOR-INDICATOR-BEHAVIOR-ENUM":
                 setattr(obj, "behavior_indicator_behavior_enum", SerializationHelper.deserialize_by_tag(child, "any (DiagnosticConnected)"))
             elif tag == "HEALING-CYCLE":

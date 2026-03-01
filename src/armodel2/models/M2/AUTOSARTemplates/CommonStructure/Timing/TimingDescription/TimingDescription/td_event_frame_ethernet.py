@@ -160,7 +160,6 @@ class TDEventFrameEthernet(TDEventCom):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "STATIC-SOCKET-REF":
                 setattr(obj, "static_socket_ref", ARRef.deserialize(child))
             elif tag == "TD-EVENT-TYPE":
@@ -168,12 +167,10 @@ class TDEventFrameEthernet(TDEventCom):
             elif tag == "TD-HEADER-ID-FILTERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.td_header_id_filters.append(SerializationHelper.deserialize_by_tag(item_elem, "TDHeaderIdRange"))
             elif tag == "TD-PDU-TRIGGERINGS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.td_pdu_triggering_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
 
         return obj

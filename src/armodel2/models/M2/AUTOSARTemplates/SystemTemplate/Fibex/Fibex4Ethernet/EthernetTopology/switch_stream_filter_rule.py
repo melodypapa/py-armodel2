@@ -143,7 +143,6 @@ class SwitchStreamFilterRule(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DATA-LINK-LAYER":
                 setattr(obj, "data_link_layer", SerializationHelper.deserialize_by_tag(child, "StreamFilterRuleDataLinkLayer"))
             elif tag == "IEEE1722-TP":

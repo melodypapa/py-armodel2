@@ -135,7 +135,6 @@ class DiagnosticOperationCyclePortMapping(DiagnosticSwMapping):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "OPERATION-CYCLE-REF":
                 setattr(obj, "operation_cycle_ref", ARRef.deserialize(child))
             elif tag == "SWC-FLAT-SERVICE-REF":

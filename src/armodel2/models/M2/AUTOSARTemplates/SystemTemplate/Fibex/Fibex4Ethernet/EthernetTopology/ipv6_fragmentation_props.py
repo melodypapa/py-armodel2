@@ -151,7 +151,6 @@ class Ipv6FragmentationProps(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "TCP-IP-IP":
                 setattr(obj, "tcp_ip_ip", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "TCP-IP-IP-REASSEMBLY-BUFFER-SIZE":

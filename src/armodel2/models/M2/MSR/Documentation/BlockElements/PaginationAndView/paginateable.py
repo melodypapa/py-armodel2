@@ -119,7 +119,6 @@ class Paginateable(DocumentViewSelectable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "BREAK":
                 setattr(obj, "break_", ChapterEnumBreak.deserialize(child))
             elif tag == "KEEP-WITH":

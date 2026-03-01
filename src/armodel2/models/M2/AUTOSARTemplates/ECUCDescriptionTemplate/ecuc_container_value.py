@@ -156,7 +156,6 @@ class EcucContainerValue(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DEFINITION-REF":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -178,12 +177,10 @@ class EcucContainerValue(Identifiable):
             elif tag == "REFERENCE-VALUES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.reference_value_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EcucAbstractReference)"))
             elif tag == "SUB-CONTAINERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.sub_containers.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucContainerValue"))
 
         return obj

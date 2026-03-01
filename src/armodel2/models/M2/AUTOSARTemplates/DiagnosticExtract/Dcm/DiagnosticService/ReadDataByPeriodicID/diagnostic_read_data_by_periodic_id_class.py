@@ -136,13 +136,11 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "MAX-PERIODIC-DID":
                 setattr(obj, "max_periodic_did", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "PERIODIC-RATES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.periodic_rates.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticPeriodicRate"))
             elif tag == "SCHEDULER-MAX":
                 setattr(obj, "scheduler_max", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))

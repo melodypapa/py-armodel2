@@ -46,7 +46,7 @@ class ARList(Paginateable):
     _items: list[Item]
     _type: Optional[ListEnum]
     _DESERIALIZE_DISPATCH = {
-        "ITEM": lambda obj, elem: obj._items.append(SerializationHelper.deserialize_by_tag(elem, "Item")),
+        "ITEMS": lambda obj, elem: obj._items.append(SerializationHelper.deserialize_by_tag(elem, "Item")),
     }
 
 
@@ -137,13 +137,14 @@ class ARList(Paginateable):
         if "TYPE" in element.attrib:
             obj.type = element.attrib["TYPE"]
 
-        # Use dispatch table for deserialization
+        # Single-pass deserialization with if-elif-else chain
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            handler = cls._DESERIALIZE_DISPATCH.get(tag)
-            if handler is not None:
-                handler(obj, child)
+            if tag == "ITEMS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj._items.append(SerializationHelper.deserialize_by_tag(item_elem, "Item"))
 
         return obj
 

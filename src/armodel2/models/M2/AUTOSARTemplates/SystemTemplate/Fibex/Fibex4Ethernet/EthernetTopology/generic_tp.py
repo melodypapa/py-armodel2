@@ -120,7 +120,6 @@ class GenericTp(TransportProtocolConfiguration):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "TP-ADDRESS":
                 setattr(obj, "tp_address", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "TP-TECHNOLOGY":

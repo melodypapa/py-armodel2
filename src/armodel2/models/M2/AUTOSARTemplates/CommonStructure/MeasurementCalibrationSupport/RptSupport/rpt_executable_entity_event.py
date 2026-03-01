@@ -206,16 +206,13 @@ class RptExecutableEntityEvent(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "EXECUTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.execution_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RptExecutionContext"))
             elif tag == "MC-DATAS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.mc_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedMcDataAssignment"))
             elif tag == "RPT-EVENT-ID":
                 setattr(obj, "rpt_event_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
@@ -226,7 +223,6 @@ class RptExecutableEntityEvent(Identifiable):
             elif tag == "RPT-SERVICE-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.rpt_service_point_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RptServicePoint"))
 
         return obj

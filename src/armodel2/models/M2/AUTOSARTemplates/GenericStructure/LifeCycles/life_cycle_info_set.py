@@ -190,7 +190,6 @@ class LifeCycleInfoSet(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DEFAULT-LC-STATE-REF":
                 setattr(obj, "default_lc_state_ref", ARRef.deserialize(child))
             elif tag == "DEFAULT-PERIOD-BEGIN":
@@ -200,7 +199,6 @@ class LifeCycleInfoSet(ARElement):
             elif tag == "LIFE-CYCLE-INFOES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj._life_cycle_infoes.append(SerializationHelper.deserialize_by_tag(item_elem, "LifeCycleInfo"))
             elif tag == "USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF":
                 setattr(obj, "used_life_cycle_state_definition_group_ref", ARRef.deserialize(child))

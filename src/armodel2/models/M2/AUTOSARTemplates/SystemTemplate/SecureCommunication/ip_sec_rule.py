@@ -350,7 +350,6 @@ class IPSecRule(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DIRECTION":
                 setattr(obj, "direction", SerializationHelper.deserialize_by_tag(child, "any (Communication)"))
             elif tag == "HEADER-TYPE":
@@ -360,7 +359,6 @@ class IPSecRule(Identifiable):
             elif tag == "LOCAL-CERTIFICATES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.local_certificate_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CryptoService)"))
             elif tag == "LOCAL-ID":
                 setattr(obj, "local_id", SerializationHelper.deserialize_by_tag(child, "String"))
@@ -377,14 +375,12 @@ class IPSecRule(Identifiable):
             elif tag == "REMOTES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.remote_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CryptoService)"))
             elif tag == "REMOTE-ID":
                 setattr(obj, "remote_id", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "REMOTE-IPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.remote_ip_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NetworkEndpoint"))
             elif tag == "REMOTE-PORT":
                 setattr(obj, "remote_port", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))

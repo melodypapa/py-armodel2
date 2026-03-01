@@ -121,7 +121,6 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DATA":
                 setattr(obj, "data", DataConsistencyPolicyEnum.deserialize(child))
             elif tag == "SEND-INDICATION-ENUM":

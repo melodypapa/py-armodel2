@@ -156,7 +156,6 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ALL-CHANNELSES":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -174,17 +173,14 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
             elif tag == "ALL-PHYSICALS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.all_physical_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EthernetPhysical)"))
             elif tag == "SPECIFIC-CHANNELS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.specific_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticComControl"))
             elif tag == "SUB-NODES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.sub_nodes.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticComControl"))
 
         return obj

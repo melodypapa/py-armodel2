@@ -215,7 +215,6 @@ class BswImplementation(Implementation):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "AR-RELEASE-VERSION":
                 setattr(obj, "ar_release_version", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
             elif tag == "BEHAVIOR-REF":
@@ -223,19 +222,16 @@ class BswImplementation(Implementation):
             elif tag == "PRECONFIGURED-CONFIGURATIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.preconfigured_configuration_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucModuleConfigurationValues"))
             elif tag == "RECOMMENDED-CONFIGURATIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.recommended_configuration_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucModuleConfigurationValues"))
             elif tag == "VENDOR-API-INFIX":
                 setattr(obj, "vendor_api_infix", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "VENDOR-SPECIFIC-MODULE-DEFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.vendor_specific_module_def_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucModuleDef"))
 
         return obj

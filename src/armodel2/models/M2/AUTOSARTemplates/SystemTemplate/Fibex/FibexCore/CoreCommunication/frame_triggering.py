@@ -150,11 +150,9 @@ class FrameTriggering(Identifiable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "FRAME-PORTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.frame_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FramePort"))
             elif tag == "FRAME-REF":
                 # Check first child element for concrete type
@@ -171,7 +169,6 @@ class FrameTriggering(Identifiable, ABC):
             elif tag == "PDU-TRIGGERINGS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.pdu_triggering_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
 
         return obj

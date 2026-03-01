@@ -144,5 +144,4 @@ class ARObjectBuilder:
         Returns:
             ARObject instance
         """
-        # TODO: Add validation
         return self._obj

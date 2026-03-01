@@ -147,7 +147,6 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ECU-INSTANCE-REF":
                 setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
             elif tag == "MACHINE-ID":
@@ -155,7 +154,6 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
             elif tag == "SW-CLUSTERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.sw_cluster_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareCluster"))
 
         return obj

@@ -120,7 +120,6 @@ class TargetIPduRef(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DEFAULT-VALUE-REF":
                 setattr(obj, "default_value_ref", ARRef.deserialize(child))
             elif tag == "TARGET-I-PDU-REF":

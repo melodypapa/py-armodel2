@@ -135,7 +135,6 @@ class ScheduleTableEntry(ARObject, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DELAY":
                 setattr(obj, "delay", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "INTRODUCTION":

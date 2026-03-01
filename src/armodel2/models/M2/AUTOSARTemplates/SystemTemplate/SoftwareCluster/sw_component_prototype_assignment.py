@@ -96,7 +96,6 @@ class SwComponentPrototypeAssignment(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "SW-COMPONENT":
                 setattr(obj, "sw_component", SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
 

@@ -123,7 +123,6 @@ class EthTcpIpIcmpProps(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ICMP-V4-PROPS":
                 setattr(obj, "icmp_v4_props", SerializationHelper.deserialize_by_tag(child, "TcpIpIcmpv4Props"))
             elif tag == "ICMP-V6-PROPS":

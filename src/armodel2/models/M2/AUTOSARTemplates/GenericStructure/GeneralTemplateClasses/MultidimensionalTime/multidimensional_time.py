@@ -119,7 +119,6 @@ class MultidimensionalTime(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CSE-CODE":
                 setattr(obj, "cse_code", SerializationHelper.deserialize_by_tag(child, "CseCodeType"))
             elif tag == "CSE-CODE-FACTOR":

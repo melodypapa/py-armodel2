@@ -187,31 +187,25 @@ class BuildAction(BuildActionEntity):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CREATED-DATAS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.created_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildActionIoElement"))
             elif tag == "FOLLOW-UP-ACTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.follow_up_action_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildAction"))
             elif tag == "INPUT-DATAS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.input_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildActionIoElement"))
             elif tag == "MODIFIED-DATAS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.modified_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildActionIoElement"))
             elif tag == "PREDECESSORS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.predecessor_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildAction"))
             elif tag == "REQUIRED-REF":
                 setattr(obj, "required_ref", ARRef.deserialize(child))

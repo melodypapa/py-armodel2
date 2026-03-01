@@ -144,7 +144,6 @@ class TDEventIPdu(TDEventCom):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "I-PDU-REF":
                 # Check first child element for concrete type
                 if len(child) > 0:

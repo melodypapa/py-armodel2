@@ -177,7 +177,6 @@ class TimingConditionFormula(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF":
                 setattr(obj, "timing_argument_argument_instance_ref", ARRef.deserialize(child))
             elif tag == "TIMING-CONDITION-REF":

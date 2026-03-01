@@ -159,26 +159,21 @@ class FMFeatureMapElement(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ASSERTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.assertions.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureMap"))
             elif tag == "CONDITIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.conditions.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureMap"))
             elif tag == "POST-BUILD-VARIANTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.post_build_variant_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (PostBuildVariant)"))
             elif tag == "SW-VALUE-SETS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.sw_value_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwSystemconstantValueSet"))
 
         return obj

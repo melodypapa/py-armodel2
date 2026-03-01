@@ -172,7 +172,6 @@ class SenderReceiverToSignalMapping(DataMapping):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DATA-ELEMENT":
                 setattr(obj, "_data_element_iref", ARRef.deserialize(child))
             elif tag == "SENDER-TO-SIGNAL-TEXT-TABLE-MAPPING":

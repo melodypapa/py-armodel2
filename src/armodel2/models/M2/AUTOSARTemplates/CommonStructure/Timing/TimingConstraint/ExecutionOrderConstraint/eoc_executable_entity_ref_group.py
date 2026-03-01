@@ -256,7 +256,6 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "LET-DATA-EXCHANGE":
                 setattr(obj, "let_data_exchange", LetDataExchangeParadigmEnum.deserialize(child))
             elif tag == "LET-INTERVALS":
@@ -288,12 +287,10 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
             elif tag == "NESTED-ELEMENTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.nested_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
             elif tag == "SUCCESSORS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.successor_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
             elif tag == "TRIGGERING-EVENT-REF":
                 # Check first child element for concrete type

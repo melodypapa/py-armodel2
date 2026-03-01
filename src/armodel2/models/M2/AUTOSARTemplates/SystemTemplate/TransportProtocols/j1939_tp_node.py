@@ -121,7 +121,6 @@ class J1939TpNode(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CONNECTOR-REF":
                 setattr(obj, "connector_ref", ARRef.deserialize(child))
             elif tag == "TP-ADDRESS-REF":

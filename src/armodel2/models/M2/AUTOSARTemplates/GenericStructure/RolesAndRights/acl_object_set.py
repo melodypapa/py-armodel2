@@ -187,11 +187,9 @@ class AclObjectSet(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ACL-OBJECT-CLASSES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.acl_object_clas_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ReferrableSubtypesEnum"))
             elif tag == "ACL-SCOPE":
                 setattr(obj, "acl_scope", AclScopeEnum.deserialize(child))
@@ -278,7 +276,6 @@ class AclObjectSet(ARElement):
             elif tag == "ENGINEERINGS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.engineerings.append(SerializationHelper.deserialize_by_tag(item_elem, "AutosarEngineeringObject"))
 
         return obj

@@ -121,7 +121,6 @@ class AutosarVariableRef(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "AUTOSAR-VARIABLE":
                 setattr(obj, "autosar_variable", SerializationHelper.deserialize_by_tag(child, "any (ArVariableIn)"))
             elif tag == "LOCAL-VARIABLE-REF":

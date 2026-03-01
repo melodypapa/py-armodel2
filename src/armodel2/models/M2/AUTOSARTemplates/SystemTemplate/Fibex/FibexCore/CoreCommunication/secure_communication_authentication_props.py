@@ -103,7 +103,6 @@ class SecureCommunicationAuthenticationProps(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "AUTH-INFO-TX":
                 setattr(obj, "auth_info_tx", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

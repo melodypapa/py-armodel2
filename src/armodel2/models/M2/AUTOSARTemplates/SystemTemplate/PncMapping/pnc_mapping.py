@@ -341,11 +341,9 @@ class PncMapping(Describable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DYNAMIC-PNCS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.dynamic_pnc_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalIPduGroup"))
             elif tag == "IDENT-REF":
                 setattr(obj, "ident_ref", ARRef.deserialize(child))
@@ -364,33 +362,28 @@ class PncMapping(Describable):
             elif tag == "PNC-CONSUMEDS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.pnc_consumed_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsumedProvidedServiceInstanceGroup"))
             elif tag == "PNC-GROUPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.pnc_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalIPduGroup"))
             elif tag == "PNC-IDENTIFIER":
                 setattr(obj, "pnc_identifier", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "PNC-PDUR-GROUPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.pnc_pdur_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PdurIPduGroup"))
             elif tag == "PNC-WAKEUP":
                 setattr(obj, "pnc_wakeup", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "RELEVANT-FORS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.relevant_for_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcuInstance"))
             elif tag == "SHORT-LABEL":
                 setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "VFCS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.vfc_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PortGroup"))
             elif tag == "WAKEUP-FRAMES":
                 # Check first child element for concrete type

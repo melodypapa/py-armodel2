@@ -127,13 +127,11 @@ class LinEventTriggeredFrame(LinFrame):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "COLLISION-SCHEDULE-REF":
                 setattr(obj, "collision_schedule_ref", ARRef.deserialize(child))
             elif tag == "LIN-UNCONDITIONAL-FRAMES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.lin_unconditional_frame_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "LinUnconditionalFrame"))
 
         return obj

@@ -178,16 +178,13 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DESTINATION-URIS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.destination_uri_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucDestinationUriDef"))
             elif tag == "MULTIPLICITIES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.multiplicities.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucMultiplicityConfigurationClass"))
             elif tag == "ORIGIN":
                 setattr(obj, "origin", SerializationHelper.deserialize_by_tag(child, "String"))

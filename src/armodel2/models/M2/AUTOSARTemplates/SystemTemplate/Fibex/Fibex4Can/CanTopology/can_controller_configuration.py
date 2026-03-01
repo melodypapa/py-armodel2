@@ -154,7 +154,6 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "PROP-SEG":
                 setattr(obj, "prop_seg", SerializationHelper.deserialize_by_tag(child, "Integer"))
             elif tag == "SYNC-JUMP-WIDTH":

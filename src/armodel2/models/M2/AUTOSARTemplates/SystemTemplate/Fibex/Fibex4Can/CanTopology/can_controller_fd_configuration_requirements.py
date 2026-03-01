@@ -255,7 +255,6 @@ class CanControllerFdConfigurationRequirements(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "MAX-NUMBER-OF-TIME-QUANTA-PER":
                 setattr(obj, "max_number_of_time_quanta_per", SerializationHelper.deserialize_by_tag(child, "any (IntegerBit)"))
             elif tag == "MAX-SAMPLE":

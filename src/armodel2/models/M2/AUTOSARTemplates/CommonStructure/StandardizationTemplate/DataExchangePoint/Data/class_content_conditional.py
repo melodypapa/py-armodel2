@@ -151,7 +151,6 @@ class ClassContentConditional(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ATTRIBUTES":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -175,12 +174,10 @@ class ClassContentConditional(Identifiable):
             elif tag == "CONSTRAINTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstraintTailoring"))
             elif tag == "SDG-TAILORINGS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.sdg_tailorings.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgTailoring"))
 
         return obj

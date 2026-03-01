@@ -261,7 +261,6 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "AAF-AES3-DATA":
                 setattr(obj, "aaf_aes3_data", IEEE1722TpAafAes3DataTypeEnum.deserialize(child))
             elif tag == "AAF-FORMAT-ENUM":

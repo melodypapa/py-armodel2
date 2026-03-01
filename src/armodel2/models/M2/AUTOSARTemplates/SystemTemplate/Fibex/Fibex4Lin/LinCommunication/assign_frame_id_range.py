@@ -123,7 +123,6 @@ class AssignFrameIdRange(LinConfigurationEntry):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "FRAME-PID":
                 setattr(obj, "frame_pid", SerializationHelper.deserialize_by_tag(child, "FramePid"))
             elif tag == "START-INDEX":

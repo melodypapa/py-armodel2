@@ -216,7 +216,6 @@ class ReferenceBase(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "SHORT-LABEL":
                 setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "IS-DEFAULT":
@@ -230,12 +229,10 @@ class ReferenceBase(ARObject):
             elif tag == "GLOBAL-ELEMENTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.global_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ReferrableSubtypesEnum"))
             elif tag == "GLOBAL-IN-PACKAGES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.global_in_package_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ARPackage"))
 
         return obj

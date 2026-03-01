@@ -192,7 +192,6 @@ class McFunction(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DEF-CALPRM-SET-REF":
                 setattr(obj, "def_calprm_set_ref", ARRef.deserialize(child))
             elif tag == "IN-MEASUREMENT-REF":
@@ -206,7 +205,6 @@ class McFunction(ARElement):
             elif tag == "SUB-FUNCTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.sub_function_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "McFunction"))
 
         return obj

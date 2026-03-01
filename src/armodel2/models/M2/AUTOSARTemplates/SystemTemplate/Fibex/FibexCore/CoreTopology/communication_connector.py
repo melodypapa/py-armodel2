@@ -197,7 +197,6 @@ class CommunicationConnector(Identifiable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "COMM-CONTROLLER-REF":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -229,7 +228,6 @@ class CommunicationConnector(Identifiable, ABC):
             elif tag == "PNC-FILTER-ARRAY-MASKS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.pnc_filter_array_masks.append(SerializationHelper.deserialize_by_tag(item_elem, "PositiveInteger"))
             elif tag == "PNC-GATEWAY-TYPE":
                 setattr(obj, "pnc_gateway_type", PncGatewayTypeEnum.deserialize(child))

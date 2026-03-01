@@ -141,7 +141,6 @@ class EndToEndProtectionISignalIPdu(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DATA-OFFSET":
                 setattr(obj, "data_offset", SerializationHelper.deserialize_by_tag(child, "Integer"))
             elif tag == "I-SIGNAL-GROUP-REF":

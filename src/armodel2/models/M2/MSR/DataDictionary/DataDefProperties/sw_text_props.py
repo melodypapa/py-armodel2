@@ -160,7 +160,6 @@ class SwTextProps(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ARRAY-SIZE":
                 setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(child))
             elif tag == "BASE-TYPE-REF":

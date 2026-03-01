@@ -120,7 +120,6 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ROLE":
                 setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "SWC-MODE-SWITCH-EVENT-REF":

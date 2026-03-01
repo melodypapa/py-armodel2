@@ -113,7 +113,6 @@ class CompositeNetworkRepresentation(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "LEAF-ELEMENT-ELEMENT-IN-PORT-INTERFACE-INSTANCE-REF":
                 setattr(obj, "leaf_element_element_in_port_interface_instance_ref", SerializationHelper.deserialize_by_tag(child, "any (ApplicationComposite)"))
             elif tag == "NETWORK-REPRESENTATION":

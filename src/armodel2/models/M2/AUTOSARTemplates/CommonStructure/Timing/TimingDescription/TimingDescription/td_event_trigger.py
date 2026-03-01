@@ -124,7 +124,6 @@ class TDEventTrigger(TDEventVfbPort):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "TD-EVENT-TRIGGER-REF":
                 setattr(obj, "td_event_trigger_ref", TDEventTriggerTypeEnum.deserialize(child))
             elif tag == "TRIGGER-REF":

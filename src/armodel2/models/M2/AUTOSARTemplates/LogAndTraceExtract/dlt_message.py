@@ -192,11 +192,9 @@ class DltMessage(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DLT-ARGUMENTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.dlt_arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "DltArgument"))
             elif tag == "MESSAGE-ID":
                 setattr(obj, "message_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))

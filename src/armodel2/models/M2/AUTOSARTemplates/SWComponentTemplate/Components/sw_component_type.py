@@ -204,11 +204,9 @@ class SwComponentType(ARElement, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CONSISTENCY-NEEDSES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsistencyNeeds"))
             elif tag == "PORTS":
                 # Check first child element for concrete type
@@ -221,19 +219,16 @@ class SwComponentType(ARElement, ABC):
             elif tag == "PORT-GROUPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.port_groups.append(SerializationHelper.deserialize_by_tag(item_elem, "PortGroup"))
             elif tag == "SWC-MAPPING-CONSTRAINTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.swc_mapping_constraint_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwComponentMappingConstraints"))
             elif tag == "SW-COMPONENT-DOCUMENTATION":
                 setattr(obj, "sw_component_documentation", SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation"))
             elif tag == "UNIT-GROUPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.unit_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "UnitGroup"))
 
         return obj

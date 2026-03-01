@@ -243,7 +243,6 @@ class ContainedIPduProps(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "COLLECTION":
                 setattr(obj, "collection", SerializationHelper.deserialize_by_tag(child, "any (ContainedIPdu)"))
             elif tag == "CONTAINED-PDU-REF":

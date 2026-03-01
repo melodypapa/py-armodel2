@@ -100,7 +100,6 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "MESSAGE-TYPE-MESSAGE-TYPE-ENUM":
                 setattr(obj, "message_type_message_type_enum", SerializationHelper.deserialize_by_tag(child, "IEEE1722TpAcfCan"))
 

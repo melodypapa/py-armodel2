@@ -121,7 +121,6 @@ class IdsmRateLimitation(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "MAX-EVENTS-IN":
                 setattr(obj, "max_events_in", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "TIME-INTERVAL":

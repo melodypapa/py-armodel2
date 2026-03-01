@@ -261,16 +261,13 @@ class BswModuleEntity(ExecutableEntity, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ACCESSED-MODE-GROUPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.accessed_mode_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroup"))
             elif tag == "ACTIVATION-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.activation_point_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggeringPoint"))
             elif tag == "CALL-POINTS":
                 # Check first child element for concrete type
@@ -287,24 +284,20 @@ class BswModuleEntity(ExecutableEntity, ABC):
             elif tag == "DATA-RECEIVE-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.data_receive_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswVariableAccess"))
             elif tag == "DATA-SEND-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.data_send_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswVariableAccess"))
             elif tag == "IMPLEMENTED-ENTRY-REF":
                 setattr(obj, "implemented_entry_ref", ARRef.deserialize(child))
             elif tag == "ISSUED-TRIGGERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.issued_trigger_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
             elif tag == "MANAGED-MODE-GROUPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.managed_mode_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroupPrototype"))
             elif tag == "SCHEDULER-NAME-PREFIX-REF":
                 setattr(obj, "scheduler_name_prefix_ref", ARRef.deserialize(child))

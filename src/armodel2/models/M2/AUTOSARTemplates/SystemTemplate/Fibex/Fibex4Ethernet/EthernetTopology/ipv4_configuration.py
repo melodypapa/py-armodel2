@@ -230,7 +230,6 @@ class Ipv4Configuration(NetworkEndpointAddress):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ASSIGNMENT":
                 setattr(obj, "assignment", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "DEFAULT-GATEWAY":
@@ -238,7 +237,6 @@ class Ipv4Configuration(NetworkEndpointAddress):
             elif tag == "DNS-SERVERS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.dns_servers.append(SerializationHelper.deserialize_by_tag(item_elem, "Ip4AddressString"))
             elif tag == "IP-ADDRESS-KEEP-ENUM":
                 setattr(obj, "ip_address_keep_enum", IpAddressKeepEnum.deserialize(child))

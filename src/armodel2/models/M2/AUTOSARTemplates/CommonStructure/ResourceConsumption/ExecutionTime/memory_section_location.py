@@ -120,7 +120,6 @@ class MemorySectionLocation(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "PROVIDED-MEMORY-REF":
                 setattr(obj, "provided_memory_ref", ARRef.deserialize(child))
             elif tag == "SOFTWARE-REF":

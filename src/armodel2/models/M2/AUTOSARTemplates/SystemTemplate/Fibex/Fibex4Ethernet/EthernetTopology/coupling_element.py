@@ -200,7 +200,6 @@ class CouplingElement(FibexElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "COMMUNICATION-REF":
                 setattr(obj, "communication_ref", ARRef.deserialize(child))
             elif tag == "COUPLING":
@@ -208,7 +207,6 @@ class CouplingElement(FibexElement):
             elif tag == "COUPLING-PORTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPort"))
             elif tag == "COUPLING-TYPE":
                 setattr(obj, "coupling_type", CouplingElementEnum.deserialize(child))
@@ -217,7 +215,6 @@ class CouplingElement(FibexElement):
             elif tag == "FIREWALL-RULES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.firewall_rule_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "StateDependentFirewall"))
 
         return obj

@@ -185,16 +185,13 @@ class FMFeature(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "ATTRIBUTE-DEFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.attribute_defs.append(SerializationHelper.deserialize_by_tag(item_elem, "FMAttributeDef"))
             elif tag == "DECOMPOSITION-DECOMPOSITIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.decomposition_decompositions.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeature"))
             elif tag == "MAXIMUM":
                 setattr(obj, "maximum", BindingTimeEnum.deserialize(child))
@@ -203,12 +200,10 @@ class FMFeature(ARElement):
             elif tag == "RELATIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.relations.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureRelation"))
             elif tag == "RESTRICTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.restrictions.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureRestriction"))
 
         return obj

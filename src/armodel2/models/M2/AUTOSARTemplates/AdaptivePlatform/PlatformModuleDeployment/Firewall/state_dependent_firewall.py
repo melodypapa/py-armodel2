@@ -140,18 +140,15 @@ class StateDependentFirewall(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "DEFAULT-ACTION":
                 setattr(obj, "default_action", SerializationHelper.deserialize_by_tag(child, "FirewallActionEnum"))
             elif tag == "FIREWALL-RULE-PROPSES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.firewall_rule_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "FirewallRuleProps"))
             elif tag == "FIREWALL-STATES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.firewall_state_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclaration"))
 
         return obj

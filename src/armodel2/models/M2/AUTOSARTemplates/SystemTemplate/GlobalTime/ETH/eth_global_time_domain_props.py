@@ -191,7 +191,6 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CRC-FLAGS":
                 setattr(obj, "crc_flags", SerializationHelper.deserialize_by_tag(child, "EthTSynCrcFlags"))
             elif tag == "DESTINATION":
@@ -201,7 +200,6 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
             elif tag == "MANAGEDS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.manageds.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EthGlobalTime)"))
             elif tag == "MESSAGE":
                 setattr(obj, "message", EthGlobalTimeMessageFormatEnum.deserialize(child))

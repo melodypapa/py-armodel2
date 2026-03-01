@@ -163,31 +163,25 @@ class CanTpConfig(TpConfig):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "TP-ADDRESSES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(item_elem, "CanTpAddress"))
             elif tag == "TP-CHANNELS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.tp_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "CanTpChannel"))
             elif tag == "TP-CONNECTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.tp_connections.append(SerializationHelper.deserialize_by_tag(item_elem, "CanTpConnection"))
             elif tag == "TP-ECUS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.tp_ecus.append(SerializationHelper.deserialize_by_tag(item_elem, "CanTpEcu"))
             elif tag == "TP-NODES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(item_elem, "CanTpNode"))
 
         return obj

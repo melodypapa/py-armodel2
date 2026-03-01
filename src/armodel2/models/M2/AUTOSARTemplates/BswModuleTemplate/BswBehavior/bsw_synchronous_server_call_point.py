@@ -124,7 +124,6 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "CALLED-ENTRY-ENTRY-REF":
                 setattr(obj, "called_entry_entry_ref", ARRef.deserialize(child))
             elif tag == "CALLED-FROM-REF":

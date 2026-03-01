@@ -162,7 +162,6 @@ class TimingExtension(ARElement, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            child_tag = tag  # Alias for polymorphic type checking
             if tag == "TIMING-CLOCKS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -172,12 +171,10 @@ class TimingExtension(ARElement, ABC):
             elif tag == "TIMING-CLOCK-SYNCS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.timing_clock_syncs.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingClockSyncAccuracy"))
             elif tag == "TIMING-CONDITIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     obj.timing_conditions.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingCondition"))
             elif tag == "TIMINGS":
                 # Check first child element for concrete type
