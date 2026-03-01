@@ -3657,7 +3657,29 @@ def _generate_serialize_method(
                     if not wrapper_tag:
                         wrapper_tag = xml_tag
 
-                    code += f'''        # Serialize {python_name} (polymorphic wrapper "{wrapper_tag}")
+                    # Check if the effective_type is a primitive type (String, Integer, etc.)
+                    # For primitive types, copy text content directly instead of wrapping
+                    primitive_types = {"String", "Integer", "Float", "Boolean", "PositiveInteger"}
+                    is_primitive = effective_type in primitive_types
+
+                    if is_primitive:
+                        code += f'''        # Serialize {python_name} (polymorphic wrapper "{wrapper_tag}")
+        if self.{python_name} is not None:
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                # For polymorphic types with primitive values, copy text content directly
+                wrapped = ET.Element("{wrapper_tag}")
+                if serialized.text and not list(serialized):
+                    # Simple primitive with just text content - copy text directly
+                    wrapped.text = serialized.text
+                else:
+                    # Complex type - append the serialized element
+                    wrapped.append(serialized)
+                elem.append(wrapped)
+
+'''
+                    else:
+                        code += f'''        # Serialize {python_name} (polymorphic wrapper "{wrapper_tag}")
         if self.{python_name} is not None:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:

@@ -69,7 +69,7 @@
     },
     {
       "name": "VariableInAtomicSWCTypeInstanceRef",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -103,8 +103,8 @@
           "is_ref": true,
           "note": "Stereotypes: atpDerived xml.sequenceOffset=10"
         },
-        "contextData": {
-          "type": "any (ApplicationComposite)",
+        "contextDataPrototype": {
+          "type": "ApplicationCompositeElementDataPrototype",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
@@ -124,7 +124,7 @@
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
-        "targetData": {
+        "targetDataPrototype": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
           "kind": "ref",

@@ -99,20 +99,18 @@ class PerInstanceMemory(Identifiable):
             elem.append(child)
 
         # Serialize init_value (polymorphic wrapper "INIT-VALUE")
-        # For String values, serialize as direct text content; for other ValueSpecification types, wrap
         if self.init_value is not None:
-            wrapped = ET.Element("INIT-VALUE")
-            # Check if it's a simple String/ARPrimitive - serialize as text content
-            from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
-            if isinstance(self.init_value, ARPrimitive):
-                # For ARPrimitive subclasses (String, Integer, etc.), set text content directly
-                wrapped.text = str(self.init_value.value) if self.init_value.value is not None else ""
-            else:
-                # For other ValueSpecification types, wrap the serialized element
-                serialized = SerializationHelper.serialize_item(self.init_value, "String")
-                if serialized is not None:
+            serialized = SerializationHelper.serialize_item(self.init_value, "String")
+            if serialized is not None:
+                # For polymorphic types with primitive values, copy text content directly
+                wrapped = ET.Element("INIT-VALUE")
+                if serialized.text and not list(serialized):
+                    # Simple primitive with just text content - copy text directly
+                    wrapped.text = serialized.text
+                else:
+                    # Complex type - append the serialized element
                     wrapped.append(serialized)
-            elem.append(wrapped)
+                elem.append(wrapped)
 
         # Serialize sw_data_def_props
         if self.sw_data_def_props is not None:

@@ -230,7 +230,7 @@
     },
     {
       "name": "DataPrototype",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::DataPrototypes",
       "is_abstract": true,
       "atp_type": null,

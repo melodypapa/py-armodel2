@@ -23,6 +23,9 @@ xml_tag_mappings:
   BSW-MODULE-ENTRY-REF-CONDITIONAL: BswModuleClientServerEntry
   PORT-API-OPTION: PortAPIOption
   RTE-EVENT: RTEEvent
+  VARIABLE-IN-ATOMIC-SWC-TYPE-INSTANCE-REF: VariableInAtomicSWCTypeInstanceRef
+  PARAMETER-IN-ATOMIC-SWC-TYPE-INSTANCE-REF: ParameterInAtomicSWCTypeInstanceRef
+  R-MODE-GROUP-IN-ATOMIC-SWC-INSTANCE-REF: RModeGroupInAtomicSWCInstanceRef
 class_import_paths:
   BswModuleDescription: armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description
   ModeInBswModuleDescriptionInstanceRef: armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.InstanceRefs.mode_in_bsw_module_description_instance_ref

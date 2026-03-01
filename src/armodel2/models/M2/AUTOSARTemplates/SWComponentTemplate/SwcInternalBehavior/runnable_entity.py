@@ -11,7 +11,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel2.serialization.decorators import xml_element_name
 
@@ -24,6 +24,9 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     CIdentifier,
+)
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServerCall.asynchronous_server_call_result_point import (
+    AsynchronousServerCallResultPoint,
 )
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.Trigger.external_triggering_point import (
     ExternalTriggeringPoint,
@@ -72,14 +75,15 @@ class RunnableEntity(ExecutableEntity):
 
 
     arguments: list[RunnableEntity]
-    asynchronous_servers: list[Any]
+    asynchronous_server_call_result_points: list[AsynchronousServerCallResultPoint]
     can_be_invoked_concurrently: Optional[Boolean]
-    data_reads: list[VariableAccess]
+    data_read_accesses: list[VariableAccess]
     _data_receive_point_by_arguments: list[VariableAccess]
+    data_receive_point_by_values: list[VariableAccess]
     data_send_points: list[VariableAccess]
     _data_write_accesses: list[VariableAccess]
-    external_refs: list[ARRef]
-    internal_refs: list[ARRef]
+    external_triggering_point_refs: list[ARRef]
+    internal_triggering_point_refs: list[ARRef]
     mode_access_points: list[ModeAccessPoint]
     mode_switch_points: list[ModeSwitchPoint]
     parameter_accesses: list[ParameterAccess]
@@ -90,14 +94,15 @@ class RunnableEntity(ExecutableEntity):
     _written_local_variables: list[VariableAccess]
     _DESERIALIZE_DISPATCH = {
         "ARGUMENTS": lambda obj, elem: obj.arguments.append(SerializationHelper.deserialize_by_tag(elem, "RunnableEntity")),
-        "ASYNCHRONOUS-SERVERS": lambda obj, elem: obj.asynchronous_servers.append(SerializationHelper.deserialize_by_tag(elem, "any (AsynchronousServer)")),
+        "ASYNCHRONOUS-SERVER-CALL-RESULT-POINTS": lambda obj, elem: obj.asynchronous_server_call_result_points.append(SerializationHelper.deserialize_by_tag(elem, "AsynchronousServerCallResultPoint")),
         "CAN-BE-INVOKED-CONCURRENTLY": lambda obj, elem: setattr(obj, "can_be_invoked_concurrently", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "DATA-READS": lambda obj, elem: obj.data_reads.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "DATA-READ-ACCESSS": lambda obj, elem: obj.data_read_accesses.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
         "DATA-RECEIVE-POINT-BY-ARGUMENTS": lambda obj, elem: obj._data_receive_point_by_arguments.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "DATA-RECEIVE-POINT-BY-VALUES": lambda obj, elem: obj.data_receive_point_by_values.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
         "DATA-SEND-POINTS": lambda obj, elem: obj.data_send_points.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
         "DATA-WRITE-ACCESSS": lambda obj, elem: obj._data_write_accesses.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
-        "EXTERNAL-REFS": lambda obj, elem: [obj.external_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "INTERNAL-REFS": lambda obj, elem: [obj.internal_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "EXTERNAL-TRIGGERING-POINT-REFS": lambda obj, elem: [obj.external_triggering_point_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "INTERNAL-TRIGGERING-POINT-REFS": lambda obj, elem: [obj.internal_triggering_point_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "MODE-ACCESS-POINTS": lambda obj, elem: obj.mode_access_points.append(SerializationHelper.deserialize_by_tag(elem, "ModeAccessPoint")),
         "MODE-SWITCH-POINTS": lambda obj, elem: obj.mode_switch_points.append(SerializationHelper.deserialize_by_tag(elem, "ModeSwitchPoint")),
         "PARAMETER-ACCESSS": lambda obj, elem: obj.parameter_accesses.append(SerializationHelper.deserialize_by_tag(elem, "ParameterAccess")),
@@ -113,14 +118,15 @@ class RunnableEntity(ExecutableEntity):
         """Initialize RunnableEntity."""
         super().__init__()
         self.arguments: list[RunnableEntity] = []
-        self.asynchronous_servers: list[Any] = []
+        self.asynchronous_server_call_result_points: list[AsynchronousServerCallResultPoint] = []
         self.can_be_invoked_concurrently: Optional[Boolean] = None
-        self.data_reads: list[VariableAccess] = []
+        self.data_read_accesses: list[VariableAccess] = []
         self._data_receive_point_by_arguments: list[VariableAccess] = []
+        self.data_receive_point_by_values: list[VariableAccess] = []
         self.data_send_points: list[VariableAccess] = []
         self._data_write_accesses: list[VariableAccess] = []
-        self.external_refs: list[ARRef] = []
-        self.internal_refs: list[ARRef] = []
+        self.external_triggering_point_refs: list[ARRef] = []
+        self.internal_triggering_point_refs: list[ARRef] = []
         self.mode_access_points: list[ModeAccessPoint] = []
         self.mode_switch_points: list[ModeSwitchPoint] = []
         self.parameter_accesses: list[ParameterAccess] = []
@@ -207,11 +213,11 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize asynchronous_servers (list to container "ASYNCHRONOUS-SERVERS")
-        if self.asynchronous_servers:
-            wrapper = ET.Element("ASYNCHRONOUS-SERVERS")
-            for item in self.asynchronous_servers:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize asynchronous_server_call_result_points (list to container "ASYNCHRONOUS-SERVER-CALL-RESULT-POINTS")
+        if self.asynchronous_server_call_result_points:
+            wrapper = ET.Element("ASYNCHRONOUS-SERVER-CALL-RESULT-POINTS")
+            for item in self.asynchronous_server_call_result_points:
+                serialized = SerializationHelper.serialize_item(item, "AsynchronousServerCallResultPoint")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -231,10 +237,10 @@ class RunnableEntity(ExecutableEntity):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize data_reads (list to container "DATA-READS")
-        if self.data_reads:
-            wrapper = ET.Element("DATA-READS")
-            for item in self.data_reads:
+        # Serialize data_read_accesses (list to container "DATA-READ-ACCESSS")
+        if self.data_read_accesses:
+            wrapper = ET.Element("DATA-READ-ACCESSS")
+            for item in self.data_read_accesses:
                 serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -245,6 +251,16 @@ class RunnableEntity(ExecutableEntity):
         if self.data_receive_point_by_arguments:
             wrapper = ET.Element("DATA-RECEIVE-POINT-BY-ARGUMENTS")
             for item in self.data_receive_point_by_arguments:
+                serialized = SerializationHelper.serialize_item(item, "VariableAccess")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize data_receive_point_by_values (list to container "DATA-RECEIVE-POINT-BY-VALUES")
+        if self.data_receive_point_by_values:
+            wrapper = ET.Element("DATA-RECEIVE-POINT-BY-VALUES")
+            for item in self.data_receive_point_by_values:
                 serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -271,13 +287,13 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize external_refs (list to container "EXTERNAL-REFS")
-        if self.external_refs:
-            wrapper = ET.Element("EXTERNAL-REFS")
-            for item in self.external_refs:
+        # Serialize external_triggering_point_refs (list to container "EXTERNAL-TRIGGERING-POINT-REFS")
+        if self.external_triggering_point_refs:
+            wrapper = ET.Element("EXTERNAL-TRIGGERING-POINT-REFS")
+            for item in self.external_triggering_point_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExternalTriggeringPoint")
                 if serialized is not None:
-                    child_elem = ET.Element("EXTERNAL-REF")
+                    child_elem = ET.Element("EXTERNAL-TRIGGERING-POINT-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -288,13 +304,13 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize internal_refs (list to container "INTERNAL-REFS")
-        if self.internal_refs:
-            wrapper = ET.Element("INTERNAL-REFS")
-            for item in self.internal_refs:
+        # Serialize internal_triggering_point_refs (list to container "INTERNAL-TRIGGERING-POINT-REFS")
+        if self.internal_triggering_point_refs:
+            wrapper = ET.Element("INTERNAL-TRIGGERING-POINT-REFS")
+            for item in self.internal_triggering_point_refs:
                 serialized = SerializationHelper.serialize_item(item, "InternalTriggeringPoint")
                 if serialized is not None:
-                    child_elem = ET.Element("INTERNAL-REF")
+                    child_elem = ET.Element("INTERNAL-TRIGGERING-POINT-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -412,20 +428,24 @@ class RunnableEntity(ExecutableEntity):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntity"))
-            elif tag == "ASYNCHRONOUS-SERVERS":
+            elif tag == "ASYNCHRONOUS-SERVER-CALL-RESULT-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.asynchronous_servers.append(SerializationHelper.deserialize_by_tag(item_elem, "any (AsynchronousServer)"))
+                    obj.asynchronous_server_call_result_points.append(SerializationHelper.deserialize_by_tag(item_elem, "AsynchronousServerCallResultPoint"))
             elif tag == "CAN-BE-INVOKED-CONCURRENTLY":
                 setattr(obj, "can_be_invoked_concurrently", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "DATA-READS":
+            elif tag == "DATA-READ-ACCESSS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.data_reads.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
+                    obj.data_read_accesses.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
             elif tag == "DATA-RECEIVE-POINT-BY-ARGUMENTS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._data_receive_point_by_arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
+            elif tag == "DATA-RECEIVE-POINT-BY-VALUES":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.data_receive_point_by_values.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
             elif tag == "DATA-SEND-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -434,14 +454,14 @@ class RunnableEntity(ExecutableEntity):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._data_write_accesses.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
-            elif tag == "EXTERNAL-REFS":
+            elif tag == "EXTERNAL-TRIGGERING-POINT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.external_refs.append(ARRef.deserialize(item_elem))
-            elif tag == "INTERNAL-REFS":
+                    obj.external_triggering_point_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "INTERNAL-TRIGGERING-POINT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.internal_refs.append(ARRef.deserialize(item_elem))
+                    obj.internal_triggering_point_refs.append(ARRef.deserialize(item_elem))
             elif tag == "MODE-ACCESS-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -502,8 +522,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.arguments = list(items) if items else []
         return self
 
-    def with_asynchronous_servers(self, items: list[any (AsynchronousServer)]) -> "RunnableEntityBuilder":
-        """Set asynchronous_servers list attribute.
+    def with_asynchronous_server_call_result_points(self, items: list[AsynchronousServerCallResultPoint]) -> "RunnableEntityBuilder":
+        """Set asynchronous_server_call_result_points list attribute.
 
         Args:
             items: List of items to set
@@ -511,7 +531,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.asynchronous_servers = list(items) if items else []
+        self._obj.asynchronous_server_call_result_points = list(items) if items else []
         return self
 
     def with_can_be_invoked_concurrently(self, value: Optional[Boolean]) -> "RunnableEntityBuilder":
@@ -528,8 +548,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.can_be_invoked_concurrently = value
         return self
 
-    def with_data_reads(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
-        """Set data_reads list attribute.
+    def with_data_read_accesses(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
+        """Set data_read_accesses list attribute.
 
         Args:
             items: List of items to set
@@ -537,7 +557,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.data_reads = list(items) if items else []
+        self._obj.data_read_accesses = list(items) if items else []
         return self
 
     def with_data_receive_point_by_arguments(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
@@ -550,6 +570,18 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
             self for method chaining
         """
         self._obj.data_receive_point_by_arguments = list(items) if items else []
+        return self
+
+    def with_data_receive_point_by_values(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
+        """Set data_receive_point_by_values list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.data_receive_point_by_values = list(items) if items else []
         return self
 
     def with_data_send_points(self, items: list[VariableAccess]) -> "RunnableEntityBuilder":
@@ -576,8 +608,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.data_write_accesses = list(items) if items else []
         return self
 
-    def with_externals(self, items: list[ExternalTriggeringPoint]) -> "RunnableEntityBuilder":
-        """Set externals list attribute.
+    def with_external_triggering_points(self, items: list[ExternalTriggeringPoint]) -> "RunnableEntityBuilder":
+        """Set external_triggering_points list attribute.
 
         Args:
             items: List of items to set
@@ -585,11 +617,11 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.externals = list(items) if items else []
+        self._obj.external_triggering_points = list(items) if items else []
         return self
 
-    def with_internals(self, items: list[InternalTriggeringPoint]) -> "RunnableEntityBuilder":
-        """Set internals list attribute.
+    def with_internal_triggering_points(self, items: list[InternalTriggeringPoint]) -> "RunnableEntityBuilder":
+        """Set internal_triggering_points list attribute.
 
         Args:
             items: List of items to set
@@ -597,7 +629,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.internals = list(items) if items else []
+        self._obj.internal_triggering_points = list(items) if items else []
         return self
 
     def with_mode_access_points(self, items: list[ModeAccessPoint]) -> "RunnableEntityBuilder":
@@ -720,8 +752,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.arguments = []
         return self
 
-    def add_asynchronous_server(self, item: any (AsynchronousServer)) -> "RunnableEntityBuilder":
-        """Add a single item to asynchronous_servers list.
+    def add_asynchronous_server_call_result_point(self, item: AsynchronousServerCallResultPoint) -> "RunnableEntityBuilder":
+        """Add a single item to asynchronous_server_call_result_points list.
 
         Args:
             item: Item to add
@@ -729,20 +761,20 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.asynchronous_servers.append(item)
+        self._obj.asynchronous_server_call_result_points.append(item)
         return self
 
-    def clear_asynchronous_servers(self) -> "RunnableEntityBuilder":
-        """Clear all items from asynchronous_servers list.
+    def clear_asynchronous_server_call_result_points(self) -> "RunnableEntityBuilder":
+        """Clear all items from asynchronous_server_call_result_points list.
 
         Returns:
             self for method chaining
         """
-        self._obj.asynchronous_servers = []
+        self._obj.asynchronous_server_call_result_points = []
         return self
 
-    def add_data_read(self, item: VariableAccess) -> "RunnableEntityBuilder":
-        """Add a single item to data_reads list.
+    def add_data_read_access(self, item: VariableAccess) -> "RunnableEntityBuilder":
+        """Add a single item to data_read_accesses list.
 
         Args:
             item: Item to add
@@ -750,16 +782,16 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.data_reads.append(item)
+        self._obj.data_read_accesses.append(item)
         return self
 
-    def clear_data_reads(self) -> "RunnableEntityBuilder":
-        """Clear all items from data_reads list.
+    def clear_data_read_accesses(self) -> "RunnableEntityBuilder":
+        """Clear all items from data_read_accesses list.
 
         Returns:
             self for method chaining
         """
-        self._obj.data_reads = []
+        self._obj.data_read_accesses = []
         return self
 
     def add_data_receive_point_by_argument(self, item: VariableAccess) -> "RunnableEntityBuilder":
@@ -781,6 +813,27 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
             self for method chaining
         """
         self._obj.data_receive_point_by_arguments = []
+        return self
+
+    def add_data_receive_point_by_value(self, item: VariableAccess) -> "RunnableEntityBuilder":
+        """Add a single item to data_receive_point_by_values list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.data_receive_point_by_values.append(item)
+        return self
+
+    def clear_data_receive_point_by_values(self) -> "RunnableEntityBuilder":
+        """Clear all items from data_receive_point_by_values list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.data_receive_point_by_values = []
         return self
 
     def add_data_send_point(self, item: VariableAccess) -> "RunnableEntityBuilder":
@@ -825,8 +878,8 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj.data_write_accesses = []
         return self
 
-    def add_external(self, item: ExternalTriggeringPoint) -> "RunnableEntityBuilder":
-        """Add a single item to externals list.
+    def add_external_triggering_point(self, item: ExternalTriggeringPoint) -> "RunnableEntityBuilder":
+        """Add a single item to external_triggering_points list.
 
         Args:
             item: Item to add
@@ -834,20 +887,20 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.externals.append(item)
+        self._obj.external_triggering_points.append(item)
         return self
 
-    def clear_externals(self) -> "RunnableEntityBuilder":
-        """Clear all items from externals list.
+    def clear_external_triggering_points(self) -> "RunnableEntityBuilder":
+        """Clear all items from external_triggering_points list.
 
         Returns:
             self for method chaining
         """
-        self._obj.externals = []
+        self._obj.external_triggering_points = []
         return self
 
-    def add_internal(self, item: InternalTriggeringPoint) -> "RunnableEntityBuilder":
-        """Add a single item to internals list.
+    def add_internal_triggering_point(self, item: InternalTriggeringPoint) -> "RunnableEntityBuilder":
+        """Add a single item to internal_triggering_points list.
 
         Args:
             item: Item to add
@@ -855,16 +908,16 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.internals.append(item)
+        self._obj.internal_triggering_points.append(item)
         return self
 
-    def clear_internals(self) -> "RunnableEntityBuilder":
-        """Clear all items from internals list.
+    def clear_internal_triggering_points(self) -> "RunnableEntityBuilder":
+        """Clear all items from internal_triggering_points list.
 
         Returns:
             self for method chaining
         """
-        self._obj.internals = []
+        self._obj.internal_triggering_points = []
         return self
 
     def add_mode_access_point(self, item: ModeAccessPoint) -> "RunnableEntityBuilder":

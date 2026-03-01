@@ -180,6 +180,8 @@ class NameConverter:
             AR-PACKAGE → ARPackage
             AUTOSAR → AUTOSAR
             SHORT-NAME → ShortName
+            SWC-INTERNAL-BEHAVIOR → SwcInternalBehavior
+            BSW-MODULE-DESCRIPTION → BswModuleDescription
         """
         # Split by hyphen
         words = tag.split('-')
@@ -187,18 +189,20 @@ class NameConverter:
         # Handle all-caps single words (e.g., CATEGORY → Category)
         if len(words) == 1 and words[0].isupper():
             # Keep known acronyms as-is
-            if words[0] in ['AUTOSAR', 'AR', 'AUTOSAR']:
+            if words[0] in ['AUTOSAR', 'AR']:
                 return words[0]
             # Convert normal words to PascalCase
             return words[0].capitalize()
 
-        # Handle AR prefix exception - keep AR as uppercase
-        if words[0] == 'AR':
-            # Keep AR as uppercase
-            pass
-
-        # Capitalize each word and join
-        class_name = ''.join(word.capitalize() for word in words)
+        # Convert words to PascalCase - capitalize each word
+        # Special case: AR at the beginning stays as 'AR'
+        pascal_words = []
+        for i, word in enumerate(words):
+            if word == 'AR' and i == 0:
+                pascal_words.append('AR')
+            else:
+                pascal_words.append(word.capitalize())
+        class_name = ''.join(pascal_words)
 
         # Fix AR prefix - ensure it's uppercase
         if class_name.startswith('Ar'):

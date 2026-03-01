@@ -7,15 +7,21 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_DataElements.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.ar_variable_in_implementation_data_instance_ref import (
+        ArVariableInImplementationDataInstanceRef,
+    )
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
         VariableDataPrototype,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.InstanceRefs.variable_in_atomic_swc_type_instance_ref import (
+        VariableInAtomicSWCTypeInstanceRef,
     )
 
 
@@ -37,10 +43,12 @@ class AutosarVariableRef(ARObject):
     _XML_TAG = "AUTOSAR-VARIABLE-REF"
 
 
-    autosar_variable: Optional[Any]
+    autosar_variable_iref: Optional[VariableInAtomicSWCTypeInstanceRef]
+    autosar_variable_in_impl_datatype: Optional[ArVariableInImplementationDataInstanceRef]
     local_variable_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "AUTOSAR-VARIABLE": lambda obj, elem: setattr(obj, "autosar_variable", SerializationHelper.deserialize_by_tag(elem, "any (ArVariableIn)")),
+        "AUTOSAR-VARIABLE-IREF": lambda obj, elem: setattr(obj, "autosar_variable_iref", SerializationHelper.deserialize_by_tag(elem, "VariableInAtomicSWCTypeInstanceRef")),
+        "AUTOSAR-VARIABLE-IN-IMPL-DATATYPE": lambda obj, elem: setattr(obj, "autosar_variable_in_impl_datatype", SerializationHelper.deserialize_by_tag(elem, "ArVariableInImplementationDataInstanceRef")),
         "LOCAL-VARIABLE-REF": lambda obj, elem: setattr(obj, "local_variable_ref", ARRef.deserialize(elem)),
     }
 
@@ -48,7 +56,8 @@ class AutosarVariableRef(ARObject):
     def __init__(self) -> None:
         """Initialize AutosarVariableRef."""
         super().__init__()
-        self.autosar_variable: Optional[Any] = None
+        self.autosar_variable_iref: Optional[VariableInAtomicSWCTypeInstanceRef] = None
+        self.autosar_variable_in_impl_datatype: Optional[ArVariableInImplementationDataInstanceRef] = None
         self.local_variable_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -74,12 +83,22 @@ class AutosarVariableRef(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize autosar_variable
-        if self.autosar_variable is not None:
-            serialized = SerializationHelper.serialize_item(self.autosar_variable, "Any")
+        # Serialize autosar_variable_iref (instance reference with wrapper "AUTOSAR-VARIABLE-IREF")
+        if self.autosar_variable_iref is not None:
+            serialized = SerializationHelper.serialize_item(self.autosar_variable_iref, "VariableInAtomicSWCTypeInstanceRef")
+            if serialized is not None:
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("AUTOSAR-VARIABLE-IREF")
+                # Append the serialized element as a child (don't flatten it)
+                iref_wrapper.append(serialized)
+                elem.append(iref_wrapper)
+
+        # Serialize autosar_variable_in_impl_datatype
+        if self.autosar_variable_in_impl_datatype is not None:
+            serialized = SerializationHelper.serialize_item(self.autosar_variable_in_impl_datatype, "ArVariableInImplementationDataInstanceRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("AUTOSAR-VARIABLE")
+                wrapped = ET.Element("AUTOSAR-VARIABLE-IN-IMPL-DATATYPE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -121,8 +140,10 @@ class AutosarVariableRef(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "AUTOSAR-VARIABLE":
-                setattr(obj, "autosar_variable", SerializationHelper.deserialize_by_tag(child, "any (ArVariableIn)"))
+            if tag == "AUTOSAR-VARIABLE-IREF":
+                setattr(obj, "autosar_variable_iref", SerializationHelper.deserialize_by_tag(child, "VariableInAtomicSWCTypeInstanceRef"))
+            elif tag == "AUTOSAR-VARIABLE-IN-IMPL-DATATYPE":
+                setattr(obj, "autosar_variable_in_impl_datatype", SerializationHelper.deserialize_by_tag(child, "ArVariableInImplementationDataInstanceRef"))
             elif tag == "LOCAL-VARIABLE-REF":
                 setattr(obj, "local_variable_ref", ARRef.deserialize(child))
 
@@ -139,7 +160,7 @@ class AutosarVariableRefBuilder(BuilderBase):
         self._obj: AutosarVariableRef = AutosarVariableRef()
 
 
-    def with_autosar_variable(self, value: Optional[any (ArVariableIn)]) -> "AutosarVariableRefBuilder":
+    def with_autosar_variable(self, value: Optional[VariableInAtomicSWCTypeInstanceRef]) -> "AutosarVariableRefBuilder":
         """Set autosar_variable attribute.
 
         Args:
@@ -151,6 +172,20 @@ class AutosarVariableRefBuilder(BuilderBase):
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
         self._obj.autosar_variable = value
+        return self
+
+    def with_autosar_variable_in_impl_datatype(self, value: Optional[ArVariableInImplementationDataInstanceRef]) -> "AutosarVariableRefBuilder":
+        """Set autosar_variable_in_impl_datatype attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.autosar_variable_in_impl_datatype = value
         return self
 
     def with_local_variable(self, value: Optional[VariableDataPrototype]) -> "AutosarVariableRefBuilder":
