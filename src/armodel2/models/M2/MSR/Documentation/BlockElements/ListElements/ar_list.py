@@ -106,7 +106,15 @@ class ARList(Paginateable):
             for item in self.items:
                 serialized = SerializationHelper.serialize_item(item, "Item")
                 if serialized is not None:
-                    elem.append(serialized)
+                    # Wrap with correct tag from @xml_element_name decorator
+                    wrapped = ET.Element("ITEM")
+                    if hasattr(serialized, 'attrib'):
+                        wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                    for child in serialized:
+                        wrapped.append(child)
+                    elem.append(wrapped)
         # Serialize type as XML attribute
         if self.type is not None:
             elem.attrib["TYPE"] = str(self.type)

@@ -83,7 +83,15 @@ class CompuNominatorDenominator(ARObject):
             for item in self.vs:
                 serialized = SerializationHelper.serialize_item(item, "Numerical")
                 if serialized is not None:
-                    elem.append(serialized)
+                    # Wrap with correct tag from @xml_element_name decorator
+                    wrapped = ET.Element("V")
+                    if hasattr(serialized, 'attrib'):
+                        wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                    for child in serialized:
+                        wrapped.append(child)
+                    elem.append(wrapped)
         return elem
 
     @classmethod

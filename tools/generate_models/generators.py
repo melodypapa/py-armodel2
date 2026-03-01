@@ -3238,7 +3238,27 @@ def _generate_serialize_method(
 
                     # Handle no container case (direct children)
                     if container_tag is None:
-                        code += f'''        # Serialize {python_name} (list of direct "{child_tag}" children, no container)
+                        if child_tag:
+                            # Direct child tag with custom name (e.g., V from @xml_element_name("V"))
+                            # Need to wrap each serialized item with the correct tag
+                            code += f'''        # Serialize {python_name} (list of direct "{child_tag}" children, no container)
+        if self.{python_name}:
+            for item in self.{python_name}:
+                serialized = SerializationHelper.serialize_item(item, "{effective_type}")
+                if serialized is not None:
+                    # Wrap with correct tag from @xml_element_name decorator
+                    wrapped = ET.Element("{child_tag}")
+                    if hasattr(serialized, 'attrib'):
+                        wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                    for child in serialized:
+                        wrapped.append(child)
+                    elem.append(wrapped)
+'''
+                        else:
+                            # No wrapper, no custom tag - just append directly
+                            code += f'''        # Serialize {python_name} (list of direct children, no container)
         if self.{python_name}:
             for item in self.{python_name}:
                 serialized = SerializationHelper.serialize_item(item, "{effective_type}")
