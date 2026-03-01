@@ -1497,8 +1497,9 @@ def _generate_deserialize_method(
 
                 all_branches.append((compare_tag, handler_code, False))  # False = not polymorphic
 
-    # Generate the dispatch code
-    code += """        # Single-pass deserialization with if-elif-else chain
+    # Generate the dispatch code only if there are branches to dispatch
+    if all_branches:
+        code += """        # Single-pass deserialization with if-elif-else chain
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag

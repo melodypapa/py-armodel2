@@ -1,6 +1,5 @@
 """Unit tests for XML serialization decorators."""
 
-import pytest
 from armodel2.serialization.decorators import polymorphic
 
 

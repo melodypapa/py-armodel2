@@ -1,6 +1,5 @@
 """Unit tests for ARPackage class."""
 
-import os
 from pathlib import Path
 
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (

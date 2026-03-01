@@ -1,8 +1,7 @@
 """Integration tests for polymorphic deserialization with wrapper elements."""
 
-import pytest
 from pathlib import Path
-from armodel2.models import AUTOSAR, ConstantSpecification
+from armodel2.models import ConstantSpecification
 from armodel2.reader import ARXMLReader
 from armodel2.writer import ARXMLWriter
 
