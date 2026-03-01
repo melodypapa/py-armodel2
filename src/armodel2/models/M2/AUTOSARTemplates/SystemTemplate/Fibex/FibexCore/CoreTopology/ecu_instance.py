@@ -600,33 +600,33 @@ class EcuInstance(FibexElement):
             elif tag == "COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION":
                 setattr(obj, "com_enable_mdt_for_cyclic_transmission", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "COMM-CONTROLLERS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONTROLLER":
-                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCommunicationController"))
+                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(item_elem, "AbstractCanCommunicationController"))
                     elif concrete_tag == "ETHERNET-COMMUNICATION-CONTROLLER":
-                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetCommunicationController"))
+                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(item_elem, "EthernetCommunicationController"))
                     elif concrete_tag == "FLEXRAY-COMMUNICATION-CONTROLLER":
-                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayCommunicationController"))
+                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayCommunicationController"))
                     elif concrete_tag == "LIN-COMMUNICATION-CONTROLLER":
-                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(child[0], "LinCommunicationController"))
+                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(item_elem, "LinCommunicationController"))
                     elif concrete_tag == "USER-DEFINED-COMMUNICATION-CONTROLLER":
-                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCommunicationController"))
+                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(item_elem, "UserDefinedCommunicationController"))
             elif tag == "CONNECTORS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONNECTOR":
-                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCommunicationConnector"))
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "AbstractCanCommunicationConnector"))
                     elif concrete_tag == "ETHERNET-COMMUNICATION-CONNECTOR":
-                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetCommunicationConnector"))
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "EthernetCommunicationConnector"))
                     elif concrete_tag == "FLEXRAY-COMMUNICATION-CONNECTOR":
-                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayCommunicationConnector"))
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayCommunicationConnector"))
                     elif concrete_tag == "LIN-COMMUNICATION-CONNECTOR":
-                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "LinCommunicationConnector"))
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "LinCommunicationConnector"))
                     elif concrete_tag == "USER-DEFINED-COMMUNICATION-CONNECTOR":
-                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCommunicationConnector"))
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "UserDefinedCommunicationConnector"))
             elif tag == "DLT-CONFIG":
                 setattr(obj, "dlt_config", SerializationHelper.deserialize_by_tag(child, "DltConfig"))
             elif tag == "DO-IP-CONFIG":

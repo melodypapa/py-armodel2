@@ -194,17 +194,17 @@ class PhysicalChannel(Identifiable, ABC):
                 for item_elem in child:
                     obj._comm_connector_refs.append(ARRef.deserialize(item_elem))
             elif tag == "FRAME-TRIGGERINGS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "CAN-FRAME-TRIGGERING":
-                        obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(child[0], "CanFrameTriggering"))
+                        obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "CanFrameTriggering"))
                     elif concrete_tag == "ETHERNET-FRAME-TRIGGERING":
-                        obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetFrameTriggering"))
+                        obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "EthernetFrameTriggering"))
                     elif concrete_tag == "FLEXRAY-FRAME-TRIGGERING":
-                        obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayFrameTriggering"))
+                        obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayFrameTriggering"))
                     elif concrete_tag == "LIN-FRAME-TRIGGERING":
-                        obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(child[0], "LinFrameTriggering"))
+                        obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "LinFrameTriggering"))
             elif tag == "I-SIGNAL-TRIGGERINGS":
                 # Iterate through wrapper children
                 for item_elem in child:

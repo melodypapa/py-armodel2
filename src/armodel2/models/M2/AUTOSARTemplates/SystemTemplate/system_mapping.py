@@ -483,27 +483,27 @@ class SystemMapping(Identifiable):
                 for item_elem in child:
                     obj.com_management_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ComManagementMapping"))
             elif tag == "CRYPTO-SERVICE-MAPPINGS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "SEC-OC-CRYPTO-SERVICE-MAPPING":
-                        obj.crypto_service_mappings.append(SerializationHelper.deserialize_by_tag(child[0], "SecOcCryptoServiceMapping"))
+                        obj.crypto_service_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SecOcCryptoServiceMapping"))
                     elif concrete_tag == "TLS-CRYPTO-SERVICE-MAPPING":
-                        obj.crypto_service_mappings.append(SerializationHelper.deserialize_by_tag(child[0], "TlsCryptoServiceMapping"))
+                        obj.crypto_service_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "TlsCryptoServiceMapping"))
             elif tag == "DATA-MAPPINGS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "CLIENT-SERVER-TO-SIGNAL-MAPPING":
-                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(child[0], "ClientServerToSignalMapping"))
+                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientServerToSignalMapping"))
                     elif concrete_tag == "SENDER-RECEIVER-COMPOSITE-ELEMENT-TO-SIGNAL-MAPPING":
-                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(child[0], "SenderReceiverCompositeElementToSignalMapping"))
+                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderReceiverCompositeElementToSignalMapping"))
                     elif concrete_tag == "SENDER-RECEIVER-TO-SIGNAL-GROUP-MAPPING":
-                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(child[0], "SenderReceiverToSignalGroupMapping"))
+                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderReceiverToSignalGroupMapping"))
                     elif concrete_tag == "SENDER-RECEIVER-TO-SIGNAL-MAPPING":
-                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(child[0], "SenderReceiverToSignalMapping"))
+                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderReceiverToSignalMapping"))
                     elif concrete_tag == "TRIGGER-TO-SIGNAL-MAPPING":
-                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(child[0], "TriggerToSignalMapping"))
+                        obj.data_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "TriggerToSignalMapping"))
             elif tag == "DDS-I-SIGNAL-TO-TOPIC-MAPPINGS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -517,13 +517,13 @@ class SystemMapping(Identifiable):
                 for item_elem in child:
                     obj.j1939_controller_application_to_j1939_nm_node_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "J1939ControllerApplicationToJ1939NmNodeMapping"))
             elif tag == "MAPPING-CONSTRAINTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "COMPONENT-CLUSTERING":
-                        obj.mapping_constraints.append(SerializationHelper.deserialize_by_tag(child[0], "ComponentClustering"))
+                        obj.mapping_constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "ComponentClustering"))
                     elif concrete_tag == "COMPONENT-SEPARATION":
-                        obj.mapping_constraints.append(SerializationHelper.deserialize_by_tag(child[0], "ComponentSeparation"))
+                        obj.mapping_constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "ComponentSeparation"))
             elif tag == "PNC-MAPPINGS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -549,17 +549,17 @@ class SystemMapping(Identifiable):
                 for item_elem in child:
                     obj.rte_event_to_os_task_proxy_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "RteEventInSystemToOsTaskProxyMapping"))
             elif tag == "SIGNAL-PATH-CONSTRAINTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "COMMON-SIGNAL-PATH":
-                        obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(child[0], "CommonSignalPath"))
+                        obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "CommonSignalPath"))
                     elif concrete_tag == "FORBIDDEN-SIGNAL-PATH":
-                        obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(child[0], "ForbiddenSignalPath"))
+                        obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "ForbiddenSignalPath"))
                     elif concrete_tag == "PERMISSIBLE-SIGNAL-PATH":
-                        obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(child[0], "PermissibleSignalPath"))
+                        obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "PermissibleSignalPath"))
                     elif concrete_tag == "SEPARATE-SIGNAL-PATH":
-                        obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(child[0], "SeparateSignalPath"))
+                        obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(item_elem, "SeparateSignalPath"))
             elif tag == "SOFTWARE-CLUSTER-TO-APPLICATION-PARTITION-MAPPINGS":
                 # Iterate through wrapper children
                 for item_elem in child:

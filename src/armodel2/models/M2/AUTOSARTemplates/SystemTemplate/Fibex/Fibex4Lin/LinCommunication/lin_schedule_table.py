@@ -142,15 +142,15 @@ class LinScheduleTable(Identifiable):
             elif tag == "RUN-MODE":
                 setattr(obj, "run_mode", RunMode.deserialize(child))
             elif tag == "TABLE-ENTRIES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "APPLICATION-ENTRY":
-                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(child[0], "ApplicationEntry"))
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationEntry"))
                     elif concrete_tag == "FREE-FORMAT-ENTRY":
-                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(child[0], "FreeFormatEntry"))
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "FreeFormatEntry"))
                     elif concrete_tag == "LIN-CONFIGURATION-ENTRY":
-                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(child[0], "LinConfigurationEntry"))
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "LinConfigurationEntry"))
 
         return obj
 

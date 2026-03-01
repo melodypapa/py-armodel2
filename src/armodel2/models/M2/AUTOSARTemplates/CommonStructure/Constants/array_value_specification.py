@@ -125,25 +125,25 @@ class ArrayValueSpecification(CompositeValueSpecification):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ELEMENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
-                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AbstractRuleBasedValueSpecification"))
                     elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
-                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationValueSpecification"))
                     elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
-                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "CompositeValueSpecification"))
                     elif concrete_tag == "CONSTANT-REFERENCE":
-                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstantReference"))
                     elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
-                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "NotAvailableValueSpecification"))
                     elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
-                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "NumericalValueSpecification"))
                     elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
-                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ReferenceValueSpecification"))
                     elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
-                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "TextValueSpecification"))
             elif tag == "INTENDED-PARTIAL":
                 setattr(obj, "intended_partial", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

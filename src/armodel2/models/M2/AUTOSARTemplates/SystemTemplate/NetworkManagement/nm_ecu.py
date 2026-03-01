@@ -267,17 +267,17 @@ class NmEcu(Identifiable):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "BUS-DEPENDENT-NM-ECUS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "CAN-NM-ECU":
-                        obj.bus_dependent_nm_ecus.append(SerializationHelper.deserialize_by_tag(child[0], "CanNmEcu"))
+                        obj.bus_dependent_nm_ecus.append(SerializationHelper.deserialize_by_tag(item_elem, "CanNmEcu"))
                     elif concrete_tag == "FLEXRAY-NM-ECU":
-                        obj.bus_dependent_nm_ecus.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayNmEcu"))
+                        obj.bus_dependent_nm_ecus.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayNmEcu"))
                     elif concrete_tag == "J1939-NM-ECU":
-                        obj.bus_dependent_nm_ecus.append(SerializationHelper.deserialize_by_tag(child[0], "J1939NmEcu"))
+                        obj.bus_dependent_nm_ecus.append(SerializationHelper.deserialize_by_tag(item_elem, "J1939NmEcu"))
                     elif concrete_tag == "UDP-NM-ECU":
-                        obj.bus_dependent_nm_ecus.append(SerializationHelper.deserialize_by_tag(child[0], "UdpNmEcu"))
+                        obj.bus_dependent_nm_ecus.append(SerializationHelper.deserialize_by_tag(item_elem, "UdpNmEcu"))
             elif tag == "ECU-INSTANCE-REF":
                 setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
             elif tag == "NM-BUS-SYNCHRONIZATION":

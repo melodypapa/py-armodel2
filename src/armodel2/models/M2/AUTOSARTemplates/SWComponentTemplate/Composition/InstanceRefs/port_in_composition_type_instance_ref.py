@@ -43,7 +43,7 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
     _DESERIALIZE_DISPATCH = {
         "ABSTRACT-CONTEXT-COMPONENT-REF": lambda obj, elem: setattr(obj, "abstract_context_component_ref", ARRef.deserialize(elem)),
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
-        "TARGET-PORT-REF": ("_POLYMORPHIC", "target_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "TARGET-PORT-REF": ("_POLYMORPHIC", "target_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
     }
 
 

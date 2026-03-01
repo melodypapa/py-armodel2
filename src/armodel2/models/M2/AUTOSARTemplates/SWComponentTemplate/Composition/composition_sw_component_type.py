@@ -209,15 +209,15 @@ class CompositionSwComponentType(SwComponentType):
                 for item_elem in child:
                     obj.components.append(SerializationHelper.deserialize_by_tag(item_elem, "SwComponentPrototype"))
             elif tag == "CONNECTORS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ASSEMBLY-SW-CONNECTOR":
-                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "AssemblySwConnector"))
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "AssemblySwConnector"))
                     elif concrete_tag == "DELEGATION-SW-CONNECTOR":
-                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "DelegationSwConnector"))
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "DelegationSwConnector"))
                     elif concrete_tag == "PASS-THROUGH-SW-CONNECTOR":
-                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "PassThroughSwConnector"))
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(item_elem, "PassThroughSwConnector"))
             elif tag == "CONSTANT-VALUE-MAPPING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -227,11 +227,11 @@ class CompositionSwComponentType(SwComponentType):
                 for item_elem in child:
                     obj.data_type_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataTypeMappingSet"))
             elif tag == "INSTANTIATION-RTE-EVENT-PROPS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "INSTANTIATION-TIMING-EVENT-PROPS":
-                        obj.instantiation_rte_event_props.append(SerializationHelper.deserialize_by_tag(child[0], "InstantiationTimingEventProps"))
+                        obj.instantiation_rte_event_props.append(SerializationHelper.deserialize_by_tag(item_elem, "InstantiationTimingEventProps"))
             elif tag == "PHYSICAL-DIMENSION-MAPPING-REF":
                 setattr(obj, "physical_dimension_mapping_ref", ARRef.deserialize(child))
 

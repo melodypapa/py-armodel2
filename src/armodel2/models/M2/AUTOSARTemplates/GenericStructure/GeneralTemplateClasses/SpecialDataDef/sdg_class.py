@@ -163,17 +163,17 @@ class SdgClass(SdgElementWithGid):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ATTRIBUTES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "SDG-ABSTRACT-FOREIGN-REFERENCE":
-                        obj.attributes.append(SerializationHelper.deserialize_by_tag(child[0], "SdgAbstractForeignReference"))
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgAbstractForeignReference"))
                     elif concrete_tag == "SDG-ABSTRACT-PRIMITIVE-ATTRIBUTE":
-                        obj.attributes.append(SerializationHelper.deserialize_by_tag(child[0], "SdgAbstractPrimitiveAttribute"))
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgAbstractPrimitiveAttribute"))
                     elif concrete_tag == "SDG-AGGREGATION-WITH-VARIATION":
-                        obj.attributes.append(SerializationHelper.deserialize_by_tag(child[0], "SdgAggregationWithVariation"))
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgAggregationWithVariation"))
                     elif concrete_tag == "SDG":
-                        obj.attributes.append(SerializationHelper.deserialize_by_tag(child[0], "Sdg"))
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "Sdg"))
             elif tag == "CAPTION":
                 setattr(obj, "caption", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "EXTENDS-META":

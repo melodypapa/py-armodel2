@@ -51,7 +51,7 @@ class SenderReceiverToSignalMapping(DataMapping):
     signal_to_receiver_text_table_mapping: Optional[TextTableMapping]
     system_signal_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DATA-ELEMENT": lambda obj, elem: setattr(obj, "_data_element_iref", ARRef.deserialize(elem)),
+        "DATA-ELEMENT-IREF": lambda obj, elem: setattr(obj, "_data_element_iref", SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototypeInSystemInstanceRef")),
         "SENDER-TO-SIGNAL-TEXT-TABLE-MAPPING": lambda obj, elem: setattr(obj, "sender_to_signal_text_table_mapping", SerializationHelper.deserialize_by_tag(elem, "TextTableMapping")),
         "SIGNAL-TO-RECEIVER-TEXT-TABLE-MAPPING": lambda obj, elem: setattr(obj, "signal_to_receiver_text_table_mapping", SerializationHelper.deserialize_by_tag(elem, "TextTableMapping")),
         "SYSTEM-SIGNAL-REF": lambda obj, elem: setattr(obj, "system_signal_ref", ARRef.deserialize(elem)),
@@ -172,8 +172,8 @@ class SenderReceiverToSignalMapping(DataMapping):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DATA-ELEMENT":
-                setattr(obj, "_data_element_iref", ARRef.deserialize(child))
+            if tag == "DATA-ELEMENT-IREF":
+                setattr(obj, "_data_element_iref", SerializationHelper.deserialize_by_tag(child, "VariableDataPrototypeInSystemInstanceRef"))
             elif tag == "SENDER-TO-SIGNAL-TEXT-TABLE-MAPPING":
                 setattr(obj, "sender_to_signal_text_table_mapping", SerializationHelper.deserialize_by_tag(child, "TextTableMapping"))
             elif tag == "SIGNAL-TO-RECEIVER-TEXT-TABLE-MAPPING":

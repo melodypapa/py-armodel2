@@ -51,7 +51,7 @@ class RTEEvent(AbstractEvent, ABC):
     _disabled_mode_irefs: list[RModeInAtomicSwcInstanceRef]
     start_on_event_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DISABLED-MODES": lambda obj, elem: obj._disabled_mode_irefs.append(ARRef.deserialize(elem)),
+        "DISABLED-MODES-IREF": lambda obj, elem: obj._disabled_mode_irefs.append(SerializationHelper.deserialize_by_tag(elem, "RModeInAtomicSwcInstanceRef")),
         "START-ON-EVENT-REF": lambda obj, elem: setattr(obj, "start_on_event_ref", ARRef.deserialize(elem)),
     }
 
@@ -143,7 +143,7 @@ class RTEEvent(AbstractEvent, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DISABLED-MODES":
+            if tag == "DISABLED-MODES-IREF":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._disabled_mode_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "RModeInAtomicSwcInstanceRef"))

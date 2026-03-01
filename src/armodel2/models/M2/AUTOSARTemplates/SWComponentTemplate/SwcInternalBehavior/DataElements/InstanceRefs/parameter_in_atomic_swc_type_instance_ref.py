@@ -47,7 +47,7 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": ("_POLYMORPHIC", "base_ref", ["ApplicationSwComponentType", "ComplexDeviceDriverSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
         "CONTEXT-DATA-REFS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
-        "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "ROOT-PARAMETER-REF": ("_POLYMORPHIC", "root_parameter_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
         "TARGET-DATA-REF": ("_POLYMORPHIC", "target_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
     }

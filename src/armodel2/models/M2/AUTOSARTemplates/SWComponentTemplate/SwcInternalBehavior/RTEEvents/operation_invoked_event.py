@@ -42,7 +42,7 @@ class OperationInvokedEvent(RTEEvent):
 
     _operation_iref: Optional[POperationInAtomicSwcInstanceRef]
     _DESERIALIZE_DISPATCH = {
-        "OPERATION": lambda obj, elem: setattr(obj, "_operation_iref", ARRef.deserialize(elem)),
+        "OPERATION-IREF": lambda obj, elem: setattr(obj, "_operation_iref", SerializationHelper.deserialize_by_tag(elem, "POperationInAtomicSwcInstanceRef")),
     }
 
 
@@ -115,8 +115,8 @@ class OperationInvokedEvent(RTEEvent):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "OPERATION":
-                setattr(obj, "_operation_iref", ARRef.deserialize(child))
+            if tag == "OPERATION-IREF":
+                setattr(obj, "_operation_iref", SerializationHelper.deserialize_by_tag(child, "POperationInAtomicSwcInstanceRef"))
 
         return obj
 

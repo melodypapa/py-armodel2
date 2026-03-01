@@ -163,11 +163,11 @@ class TimingExtension(ARElement, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "TIMING-CLOCKS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "T-D-L-E-T-ZONE-CLOCK":
-                        obj.timing_clocks.append(SerializationHelper.deserialize_by_tag(child[0], "TDLETZoneClock"))
+                        obj.timing_clocks.append(SerializationHelper.deserialize_by_tag(item_elem, "TDLETZoneClock"))
             elif tag == "TIMING-CLOCK-SYNCS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -177,25 +177,25 @@ class TimingExtension(ARElement, ABC):
                 for item_elem in child:
                     obj.timing_conditions.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingCondition"))
             elif tag == "TIMINGS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "AGE-CONSTRAINT":
-                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "AgeConstraint"))
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "AgeConstraint"))
                     elif concrete_tag == "EVENT-TRIGGERING-CONSTRAINT":
-                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "EventTriggeringConstraint"))
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "EventTriggeringConstraint"))
                     elif concrete_tag == "EXECUTION-ORDER-CONSTRAINT":
-                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "ExecutionOrderConstraint"))
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "ExecutionOrderConstraint"))
                     elif concrete_tag == "EXECUTION-TIME-CONSTRAINT":
-                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "ExecutionTimeConstraint"))
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "ExecutionTimeConstraint"))
                     elif concrete_tag == "LATENCY-TIMING-CONSTRAINT":
-                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "LatencyTimingConstraint"))
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "LatencyTimingConstraint"))
                     elif concrete_tag == "OFFSET-TIMING-CONSTRAINT":
-                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "OffsetTimingConstraint"))
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "OffsetTimingConstraint"))
                     elif concrete_tag == "SYNCHRONIZATION-POINT-CONSTRAINT":
-                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "SynchronizationPointConstraint"))
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "SynchronizationPointConstraint"))
                     elif concrete_tag == "SYNCHRONIZATION-TIMING":
-                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "SynchronizationTiming"))
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(item_elem, "SynchronizationTiming"))
             elif tag == "TIMING-RESOURCE":
                 # Check first child element for concrete type
                 if len(child) > 0:

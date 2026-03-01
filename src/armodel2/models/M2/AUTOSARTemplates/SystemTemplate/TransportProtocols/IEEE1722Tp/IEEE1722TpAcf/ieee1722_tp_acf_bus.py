@@ -118,13 +118,13 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ACF-PARTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "I-E-E-E1722-TP-ACF-CAN-PART":
-                        obj.acf_parts.append(SerializationHelper.deserialize_by_tag(child[0], "IEEE1722TpAcfCanPart"))
+                        obj.acf_parts.append(SerializationHelper.deserialize_by_tag(item_elem, "IEEE1722TpAcfCanPart"))
                     elif concrete_tag == "I-E-E-E1722-TP-ACF-LIN-PART":
-                        obj.acf_parts.append(SerializationHelper.deserialize_by_tag(child[0], "IEEE1722TpAcfLinPart"))
+                        obj.acf_parts.append(SerializationHelper.deserialize_by_tag(item_elem, "IEEE1722TpAcfLinPart"))
             elif tag == "BUS-ID":
                 setattr(obj, "bus_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

@@ -39,7 +39,7 @@ class TDEventSLLETPort(TDEventSLLET):
 
     port_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
     }
 
 

@@ -42,7 +42,7 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
     target_data_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
         "CONTEXT-DATA-REFS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
-        "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "ROOT-VARIABLE-REF": lambda obj, elem: setattr(obj, "root_variable_ref", ARRef.deserialize(elem)),
         "TARGET-DATA-REF": lambda obj, elem: setattr(obj, "target_data_ref", ARRef.deserialize(elem)),
     }

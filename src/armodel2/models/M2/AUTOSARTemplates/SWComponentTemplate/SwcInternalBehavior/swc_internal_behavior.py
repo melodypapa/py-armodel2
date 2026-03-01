@@ -367,41 +367,41 @@ class SwcInternalBehavior(InternalBehavior):
                 for item_elem in child:
                     obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "EVENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RETURNS-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "AsynchronousServerCallReturnsEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "AsynchronousServerCallReturnsEvent"))
                     elif concrete_tag == "BACKGROUND-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "BackgroundEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BackgroundEvent"))
                     elif concrete_tag == "DATA-RECEIVE-ERROR-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "DataReceiveErrorEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "DataReceiveErrorEvent"))
                     elif concrete_tag == "DATA-RECEIVED-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "DataReceivedEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "DataReceivedEvent"))
                     elif concrete_tag == "DATA-SEND-COMPLETED-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "DataSendCompletedEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "DataSendCompletedEvent"))
                     elif concrete_tag == "DATA-WRITE-COMPLETED-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "DataWriteCompletedEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "DataWriteCompletedEvent"))
                     elif concrete_tag == "EXTERNAL-TRIGGER-OCCURRED-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "ExternalTriggerOccurredEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "ExternalTriggerOccurredEvent"))
                     elif concrete_tag == "INIT-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "InitEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "InitEvent"))
                     elif concrete_tag == "INTERNAL-TRIGGER-OCCURRED-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "InternalTriggerOccurredEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "InternalTriggerOccurredEvent"))
                     elif concrete_tag == "MODE-SWITCHED-ACK-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchedAckEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchedAckEvent"))
                     elif concrete_tag == "OPERATION-INVOKED-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "OperationInvokedEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "OperationInvokedEvent"))
                     elif concrete_tag == "OS-TASK-EXECUTION-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "OsTaskExecutionEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "OsTaskExecutionEvent"))
                     elif concrete_tag == "SWC-MODE-MANAGER-ERROR-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "SwcModeManagerErrorEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcModeManagerErrorEvent"))
                     elif concrete_tag == "SWC-MODE-SWITCH-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "SwcModeSwitchEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcModeSwitchEvent"))
                     elif concrete_tag == "TIMING-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "TimingEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingEvent"))
                     elif concrete_tag == "TRANSFORMER-HARD-ERROR-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "TransformerHardErrorEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "TransformerHardErrorEvent"))
             elif tag == "EXCLUSIVE-AREA-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:

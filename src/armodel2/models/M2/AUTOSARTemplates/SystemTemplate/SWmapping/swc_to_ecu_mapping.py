@@ -53,7 +53,7 @@ class SwcToEcuMapping(Identifiable):
     ecu_instance_ref: Optional[ARRef]
     processing_unit_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMPONENTS": lambda obj, elem: obj._component_irefs.append(ARRef.deserialize(elem)),
+        "COMPONENTS-IREF": lambda obj, elem: obj._component_irefs.append(SerializationHelper.deserialize_by_tag(elem, "ComponentInSystemInstanceRef")),
         "CONTROLLED-HW-ELEMENT-REF": lambda obj, elem: setattr(obj, "controlled_hw_element_ref", ARRef.deserialize(elem)),
         "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
         "PROCESSING-UNIT-REF": lambda obj, elem: setattr(obj, "processing_unit_ref", ARRef.deserialize(elem)),
@@ -177,7 +177,7 @@ class SwcToEcuMapping(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "COMPONENTS":
+            if tag == "COMPONENTS-IREF":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._component_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "ComponentInSystemInstanceRef"))

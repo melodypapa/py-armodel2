@@ -48,8 +48,8 @@ class AssemblySwConnector(SwConnector):
     _provider_iref: Optional[PPortInCompositionInstanceRef]
     _requester_iref: Optional[RPortInCompositionInstanceRef]
     _DESERIALIZE_DISPATCH = {
-        "PROVIDER": lambda obj, elem: setattr(obj, "_provider_iref", ARRef.deserialize(elem)),
-        "REQUESTER": lambda obj, elem: setattr(obj, "_requester_iref", ARRef.deserialize(elem)),
+        "PROVIDER-IREF": lambda obj, elem: setattr(obj, "_provider_iref", SerializationHelper.deserialize_by_tag(elem, "PPortInCompositionInstanceRef")),
+        "REQUESTER-IREF": lambda obj, elem: setattr(obj, "_requester_iref", SerializationHelper.deserialize_by_tag(elem, "RPortInCompositionInstanceRef")),
     }
 
 
@@ -145,10 +145,10 @@ class AssemblySwConnector(SwConnector):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "PROVIDER":
-                setattr(obj, "_provider_iref", ARRef.deserialize(child))
-            elif tag == "REQUESTER":
-                setattr(obj, "_requester_iref", ARRef.deserialize(child))
+            if tag == "PROVIDER-IREF":
+                setattr(obj, "_provider_iref", SerializationHelper.deserialize_by_tag(child, "PPortInCompositionInstanceRef"))
+            elif tag == "REQUESTER-IREF":
+                setattr(obj, "_requester_iref", SerializationHelper.deserialize_by_tag(child, "RPortInCompositionInstanceRef"))
 
         return obj
 

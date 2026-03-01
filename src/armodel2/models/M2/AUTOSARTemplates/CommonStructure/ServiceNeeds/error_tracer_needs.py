@@ -101,15 +101,15 @@ class ErrorTracerNeeds(ServiceNeeds):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "TRACED-FAILURES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "DEVELOPMENT-ERROR":
-                        obj.traced_failures.append(SerializationHelper.deserialize_by_tag(child[0], "DevelopmentError"))
+                        obj.traced_failures.append(SerializationHelper.deserialize_by_tag(item_elem, "DevelopmentError"))
                     elif concrete_tag == "RUNTIME-ERROR":
-                        obj.traced_failures.append(SerializationHelper.deserialize_by_tag(child[0], "RuntimeError"))
+                        obj.traced_failures.append(SerializationHelper.deserialize_by_tag(item_elem, "RuntimeError"))
                     elif concrete_tag == "TRANSIENT-FAULT":
-                        obj.traced_failures.append(SerializationHelper.deserialize_by_tag(child[0], "TransientFault"))
+                        obj.traced_failures.append(SerializationHelper.deserialize_by_tag(item_elem, "TransientFault"))
 
         return obj
 

@@ -450,25 +450,25 @@ class BswInternalBehavior(InternalBehavior):
                 for item_elem in child:
                     obj.distinguished_partitions.append(SerializationHelper.deserialize_by_tag(item_elem, "BswDistinguishedPartition"))
             elif tag == "ENTITYS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "BSW-CALLED-ENTITY":
-                        obj._entities.append(SerializationHelper.deserialize_by_tag(child[0], "BswCalledEntity"))
+                        obj._entities.append(SerializationHelper.deserialize_by_tag(item_elem, "BswCalledEntity"))
                     elif concrete_tag == "BSW-INTERRUPT-ENTITY":
-                        obj._entities.append(SerializationHelper.deserialize_by_tag(child[0], "BswInterruptEntity"))
+                        obj._entities.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInterruptEntity"))
                     elif concrete_tag == "BSW-SCHEDULABLE-ENTITY":
-                        obj._entities.append(SerializationHelper.deserialize_by_tag(child[0], "BswSchedulableEntity"))
+                        obj._entities.append(SerializationHelper.deserialize_by_tag(item_elem, "BswSchedulableEntity"))
             elif tag == "EVENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "BSW-INTERRUPT-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "BswInterruptEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInterruptEvent"))
                     elif concrete_tag == "BSW-OPERATION-INVOKED-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "BswOperationInvokedEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswOperationInvokedEvent"))
                     elif concrete_tag == "BSW-SCHEDULE-EVENT":
-                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "BswScheduleEvent"))
+                        obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswScheduleEvent"))
             elif tag == "EXCLUSIVE-AREA-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -506,11 +506,11 @@ class BswInternalBehavior(InternalBehavior):
                 for item_elem in child:
                     obj.per_instance_parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
             elif tag == "RECEPTION-POLICIES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "BSW-QUEUED-DATA-RECEPTION-POLICY":
-                        obj.reception_policies.append(SerializationHelper.deserialize_by_tag(child[0], "BswQueuedDataReceptionPolicy"))
+                        obj.reception_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswQueuedDataReceptionPolicy"))
             elif tag == "RELEASED-TRIGGER-POLICIES":
                 # Iterate through wrapper children
                 for item_elem in child:

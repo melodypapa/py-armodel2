@@ -56,7 +56,7 @@ class DataPrototypeInSystemInstanceRef(ARObject):
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
         "CONTEXT-REFS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
         "CONTEXT-DATA-REFS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
-        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "CONTEXT-ROOT-REF": lambda obj, elem: setattr(obj, "context_root_ref", ARRef.deserialize(elem)),
         "ROOT-DATA-PROTOTYPE-REF": ("_POLYMORPHIC", "root_data_prototype_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "TARGET-DATA-REF": ("_POLYMORPHIC", "target_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),

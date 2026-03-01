@@ -42,7 +42,7 @@ class ModeGroupInAtomicSwcInstanceRef(ARObject, ABC):
     target_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": ("_POLYMORPHIC", "base_ref", ["ApplicationSwComponentType", "ComplexDeviceDriverSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
-        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "TARGET-REF": lambda obj, elem: setattr(obj, "target_ref", ARRef.deserialize(elem)),
     }
 

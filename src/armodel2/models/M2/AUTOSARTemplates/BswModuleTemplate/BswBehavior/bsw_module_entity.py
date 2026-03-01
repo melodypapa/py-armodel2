@@ -270,17 +270,17 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 for item_elem in child:
                     obj.activation_point_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggeringPoint"))
             elif tag == "CALL-POINTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "BSW-ASYNCHRONOUS-SERVER-CALL-POINT":
-                        obj.call_points.append(SerializationHelper.deserialize_by_tag(child[0], "BswAsynchronousServerCallPoint"))
+                        obj.call_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswAsynchronousServerCallPoint"))
                     elif concrete_tag == "BSW-ASYNCHRONOUS-SERVER-CALL-RESULT-POINT":
-                        obj.call_points.append(SerializationHelper.deserialize_by_tag(child[0], "BswAsynchronousServerCallResultPoint"))
+                        obj.call_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswAsynchronousServerCallResultPoint"))
                     elif concrete_tag == "BSW-DIRECT-CALL-POINT":
-                        obj.call_points.append(SerializationHelper.deserialize_by_tag(child[0], "BswDirectCallPoint"))
+                        obj.call_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswDirectCallPoint"))
                     elif concrete_tag == "BSW":
-                        obj.call_points.append(SerializationHelper.deserialize_by_tag(child[0], "Bsw"))
+                        obj.call_points.append(SerializationHelper.deserialize_by_tag(item_elem, "Bsw"))
             elif tag == "DATA-RECEIVE-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:

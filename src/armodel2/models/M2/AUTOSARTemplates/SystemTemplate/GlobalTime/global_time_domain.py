@@ -330,17 +330,17 @@ class GlobalTimeDomain(FibexElement):
             elif tag == "PDU-TRIGGERING-REF":
                 setattr(obj, "pdu_triggering_ref", ARRef.deserialize(child))
             elif tag == "SLAVES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "GLOBAL-TIME-CAN-SLAVE":
-                        obj.slaves.append(SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeCanSlave"))
+                        obj.slaves.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeCanSlave"))
                     elif concrete_tag == "GLOBAL-TIME-ETH-SLAVE":
-                        obj.slaves.append(SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeEthSlave"))
+                        obj.slaves.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeEthSlave"))
                     elif concrete_tag == "GLOBAL-TIME-FR-SLAVE":
-                        obj.slaves.append(SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeFrSlave"))
+                        obj.slaves.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeFrSlave"))
                     elif concrete_tag == "USER-DEFINED-GLOBAL-TIME-SLAVE":
-                        obj.slaves.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedGlobalTimeSlave"))
+                        obj.slaves.append(SerializationHelper.deserialize_by_tag(item_elem, "UserDefinedGlobalTimeSlave"))
             elif tag == "SYNC-LOSS":
                 setattr(obj, "sync_loss", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 

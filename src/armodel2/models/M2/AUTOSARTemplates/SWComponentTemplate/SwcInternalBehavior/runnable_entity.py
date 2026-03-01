@@ -414,13 +414,13 @@ class RunnableEntity(ExecutableEntity):
                 for item_elem in child:
                     obj.read_locals.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
             elif tag == "SERVER-CALL-POINTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ASYNCHRONOUS-SERVER-CALL-POINT":
-                        obj.server_call_points.append(SerializationHelper.deserialize_by_tag(child[0], "AsynchronousServerCallPoint"))
+                        obj.server_call_points.append(SerializationHelper.deserialize_by_tag(item_elem, "AsynchronousServerCallPoint"))
                     elif concrete_tag == "SYNCHRONOUS-SERVER-CALL-POINT":
-                        obj.server_call_points.append(SerializationHelper.deserialize_by_tag(child[0], "SynchronousServerCallPoint"))
+                        obj.server_call_points.append(SerializationHelper.deserialize_by_tag(item_elem, "SynchronousServerCallPoint"))
             elif tag == "SYMBOL":
                 setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
             elif tag == "WAIT-POINTS":

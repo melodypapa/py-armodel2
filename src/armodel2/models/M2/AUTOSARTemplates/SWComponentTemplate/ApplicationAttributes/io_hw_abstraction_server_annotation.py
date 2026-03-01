@@ -72,7 +72,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         "ARGUMENT-REF": lambda obj, elem: setattr(obj, "argument_ref", ARRef.deserialize(elem)),
         "BSW-RESOLUTION": lambda obj, elem: setattr(obj, "bsw_resolution", SerializationHelper.deserialize_by_tag(elem, "Float")),
         "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
-        "FAILURE-REF": ("_POLYMORPHIC", "failure_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "FAILURE-REF": ("_POLYMORPHIC", "failure_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "FILTERING": lambda obj, elem: setattr(obj, "filtering", FilterDebouncingEnum.deserialize(elem)),
         "PULSE-TEST": lambda obj, elem: setattr(obj, "pulse_test", PulseTestEnum.deserialize(elem)),
         "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),

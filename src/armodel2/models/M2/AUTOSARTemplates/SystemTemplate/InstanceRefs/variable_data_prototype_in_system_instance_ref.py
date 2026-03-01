@@ -54,7 +54,7 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
         "CONTEXT-COMPONENT-REF": lambda obj, elem: setattr(obj, "context_component_ref", ARRef.deserialize(elem)),
         "CONTEXT-COMPOSITION-REF": lambda obj, elem: setattr(obj, "context_composition_ref", ARRef.deserialize(elem)),
-        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "TARGET-DATA-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "target_data_prototype_ref", ARRef.deserialize(elem)),
     }
 

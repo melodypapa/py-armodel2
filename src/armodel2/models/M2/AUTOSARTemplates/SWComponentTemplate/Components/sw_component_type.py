@@ -66,7 +66,7 @@ class SwComponentType(ARElement, ABC):
     unit_group_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CONSISTENCY-NEEDSES": lambda obj, elem: obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(elem, "ConsistencyNeeds")),
-        "PORTS": ("_POLYMORPHIC_LIST", "ports", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "PORTS": ("_POLYMORPHIC_LIST", "ports", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "PORT-GROUPS": lambda obj, elem: obj.port_groups.append(SerializationHelper.deserialize_by_tag(elem, "PortGroup")),
         "SWC-MAPPING-CONSTRAINT-REFS": lambda obj, elem: obj.swc_mapping_constraint_refs.append(ARRef.deserialize(elem)),
         "SW-COMPONENT-DOCUMENTATION": lambda obj, elem: setattr(obj, "sw_component_documentation", SerializationHelper.deserialize_by_tag(elem, "SwComponentDocumentation")),
@@ -209,13 +209,15 @@ class SwComponentType(ARElement, ABC):
                 for item_elem in child:
                     obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsistencyNeeds"))
             elif tag == "PORTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
-                        obj.ports.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
-                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
-                        obj.ports.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "P-PORT-PROTOTYPE":
+                        obj.ports.append(SerializationHelper.deserialize_by_tag(item_elem, "PPortPrototype"))
+                    elif concrete_tag == "R-PORT-PROTOTYPE":
+                        obj.ports.append(SerializationHelper.deserialize_by_tag(item_elem, "RPortPrototype"))
+                    elif concrete_tag == "P-R-PORT-PROTOTYPE":
+                        obj.ports.append(SerializationHelper.deserialize_by_tag(item_elem, "PRPortPrototype"))
             elif tag == "PORT-GROUPS":
                 # Iterate through wrapper children
                 for item_elem in child:

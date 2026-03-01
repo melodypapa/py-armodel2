@@ -159,15 +159,15 @@ class EcucContainerValue(Identifiable):
             if tag == "DEFINITION-REF":
                 setattr(obj, "definition_ref", ARRef.deserialize(child))
             elif tag == "PARAMETER-VALUES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ECUC-ADD-INFO-PARAM-VALUE":
-                        obj.parameter_values.append(SerializationHelper.deserialize_by_tag(child[0], "EcucAddInfoParamValue"))
+                        obj.parameter_values.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucAddInfoParamValue"))
                     elif concrete_tag == "ECUC-NUMERICAL-PARAM-VALUE":
-                        obj.parameter_values.append(SerializationHelper.deserialize_by_tag(child[0], "EcucNumericalParamValue"))
+                        obj.parameter_values.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucNumericalParamValue"))
                     elif concrete_tag == "ECUC-TEXTUAL-PARAM-VALUE":
-                        obj.parameter_values.append(SerializationHelper.deserialize_by_tag(child[0], "EcucTextualParamValue"))
+                        obj.parameter_values.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucTextualParamValue"))
             elif tag == "REFERENCE-VALUE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:

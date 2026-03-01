@@ -134,33 +134,33 @@ class EcucParamConfContainerDef(EcucContainerDef):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "PARAMETERS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ECUC-ABSTRACT-STRING-PARAM-DEF":
-                        obj.parameters.append(SerializationHelper.deserialize_by_tag(child[0], "EcucAbstractStringParamDef"))
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucAbstractStringParamDef"))
                     elif concrete_tag == "ECUC-ADD-INFO-PARAM-DEF":
-                        obj.parameters.append(SerializationHelper.deserialize_by_tag(child[0], "EcucAddInfoParamDef"))
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucAddInfoParamDef"))
                     elif concrete_tag == "ECUC-BOOLEAN-PARAM-DEF":
-                        obj.parameters.append(SerializationHelper.deserialize_by_tag(child[0], "EcucBooleanParamDef"))
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucBooleanParamDef"))
                     elif concrete_tag == "ECUC-ENUMERATION-PARAM-DEF":
-                        obj.parameters.append(SerializationHelper.deserialize_by_tag(child[0], "EcucEnumerationParamDef"))
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucEnumerationParamDef"))
                     elif concrete_tag == "ECUC-FLOAT-PARAM-DEF":
-                        obj.parameters.append(SerializationHelper.deserialize_by_tag(child[0], "EcucFloatParamDef"))
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucFloatParamDef"))
                     elif concrete_tag == "ECUC-INTEGER-PARAM-DEF":
-                        obj.parameters.append(SerializationHelper.deserialize_by_tag(child[0], "EcucIntegerParamDef"))
+                        obj.parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucIntegerParamDef"))
             elif tag == "REFERENCE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.reference_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EcucAbstractReference)"))
             elif tag == "SUB-CONTAINERS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ECUC-CHOICE-CONTAINER-DEF":
-                        obj.sub_containers.append(SerializationHelper.deserialize_by_tag(child[0], "EcucChoiceContainerDef"))
+                        obj.sub_containers.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucChoiceContainerDef"))
                     elif concrete_tag == "ECUC-PARAM-CONF-CONTAINER-DEF":
-                        obj.sub_containers.append(SerializationHelper.deserialize_by_tag(child[0], "EcucParamConfContainerDef"))
+                        obj.sub_containers.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucParamConfContainerDef"))
 
         return obj
 

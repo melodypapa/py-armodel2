@@ -193,15 +193,15 @@ class CouplingPortDetails(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "COUPLING-PORTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "COUPLING-PORT-FIFO":
-                        obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(child[0], "CouplingPortFifo"))
+                        obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPortFifo"))
                     elif concrete_tag == "COUPLING-PORT-SCHEDULER":
-                        obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(child[0], "CouplingPortScheduler"))
+                        obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPortScheduler"))
                     elif concrete_tag == "COUPLING-PORT-SHAPER":
-                        obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(child[0], "CouplingPortShaper"))
+                        obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPortShaper"))
             elif tag == "ETHERNET-PRIORITY":
                 setattr(obj, "ethernet_priority", SerializationHelper.deserialize_by_tag(child, "EthernetPriorityRegeneration"))
             elif tag == "ETHERNET-TRAFFIC":

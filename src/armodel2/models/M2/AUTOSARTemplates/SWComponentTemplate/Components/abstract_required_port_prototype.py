@@ -100,17 +100,17 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "REQUIRED-COM-SPECS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "CLIENT-COM-SPEC":
-                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(child[0], "ClientComSpec"))
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientComSpec"))
                     elif concrete_tag == "MODE-SWITCH-RECEIVER-COM-SPEC":
-                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchReceiverComSpec"))
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchReceiverComSpec"))
                     elif concrete_tag == "NV-REQUIRE-COM-SPEC":
-                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(child[0], "NvRequireComSpec"))
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvRequireComSpec"))
                     elif concrete_tag == "PARAMETER-REQUIRE-COM-SPEC":
-                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(child[0], "ParameterRequireComSpec"))
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterRequireComSpec"))
 
         return obj
 

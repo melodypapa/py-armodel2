@@ -194,27 +194,27 @@ class ResourceConsumption(Identifiable):
                 for item_elem in child:
                     obj.access_count_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "AccessCountSet"))
             elif tag == "EXECUTION-TIMES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ANALYZED-EXECUTION-TIME":
-                        obj.execution_times.append(SerializationHelper.deserialize_by_tag(child[0], "AnalyzedExecutionTime"))
+                        obj.execution_times.append(SerializationHelper.deserialize_by_tag(item_elem, "AnalyzedExecutionTime"))
                     elif concrete_tag == "MEASURED-EXECUTION-TIME":
-                        obj.execution_times.append(SerializationHelper.deserialize_by_tag(child[0], "MeasuredExecutionTime"))
+                        obj.execution_times.append(SerializationHelper.deserialize_by_tag(item_elem, "MeasuredExecutionTime"))
                     elif concrete_tag == "ROUGH-ESTIMATE-OF-EXECUTION-TIME":
-                        obj.execution_times.append(SerializationHelper.deserialize_by_tag(child[0], "RoughEstimateOfExecutionTime"))
+                        obj.execution_times.append(SerializationHelper.deserialize_by_tag(item_elem, "RoughEstimateOfExecutionTime"))
                     elif concrete_tag == "SIMULATED":
-                        obj.execution_times.append(SerializationHelper.deserialize_by_tag(child[0], "Simulated"))
+                        obj.execution_times.append(SerializationHelper.deserialize_by_tag(item_elem, "Simulated"))
             elif tag == "HEAP-USAGES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "MEASURED-HEAP-USAGE":
-                        obj.heap_usages.append(SerializationHelper.deserialize_by_tag(child[0], "MeasuredHeapUsage"))
+                        obj.heap_usages.append(SerializationHelper.deserialize_by_tag(item_elem, "MeasuredHeapUsage"))
                     elif concrete_tag == "ROUGH-ESTIMATE-HEAP-USAGE":
-                        obj.heap_usages.append(SerializationHelper.deserialize_by_tag(child[0], "RoughEstimateHeapUsage"))
+                        obj.heap_usages.append(SerializationHelper.deserialize_by_tag(item_elem, "RoughEstimateHeapUsage"))
                     elif concrete_tag == "WORST-CASE-HEAP-USAGE":
-                        obj.heap_usages.append(SerializationHelper.deserialize_by_tag(child[0], "WorstCaseHeapUsage"))
+                        obj.heap_usages.append(SerializationHelper.deserialize_by_tag(item_elem, "WorstCaseHeapUsage"))
             elif tag == "MEMORY-SECTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -224,15 +224,15 @@ class ResourceConsumption(Identifiable):
                 for item_elem in child:
                     obj.section_name_prefixes.append(SerializationHelper.deserialize_by_tag(item_elem, "SectionNamePrefix"))
             elif tag == "STACK-USAGES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "MEASURED-STACK-USAGE":
-                        obj.stack_usages.append(SerializationHelper.deserialize_by_tag(child[0], "MeasuredStackUsage"))
+                        obj.stack_usages.append(SerializationHelper.deserialize_by_tag(item_elem, "MeasuredStackUsage"))
                     elif concrete_tag == "ROUGH-ESTIMATE-STACK-USAGE":
-                        obj.stack_usages.append(SerializationHelper.deserialize_by_tag(child[0], "RoughEstimateStackUsage"))
+                        obj.stack_usages.append(SerializationHelper.deserialize_by_tag(item_elem, "RoughEstimateStackUsage"))
                     elif concrete_tag == "WORST-CASE-STACK-USAGE":
-                        obj.stack_usages.append(SerializationHelper.deserialize_by_tag(child[0], "WorstCaseStackUsage"))
+                        obj.stack_usages.append(SerializationHelper.deserialize_by_tag(item_elem, "WorstCaseStackUsage"))
 
         return obj
 

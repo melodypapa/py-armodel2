@@ -151,13 +151,13 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ARGUMENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ARRAY-VALUE-SPECIFICATION":
-                        obj.arguments.append(SerializationHelper.deserialize_by_tag(child[0], "ArrayValueSpecification"))
+                        obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "ArrayValueSpecification"))
                     elif concrete_tag == "RECORD-VALUE-SPECIFICATION":
-                        obj.arguments.append(SerializationHelper.deserialize_by_tag(child[0], "RecordValueSpecification"))
+                        obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "RecordValueSpecification"))
             elif tag == "COMPOUNDS":
                 # Iterate through wrapper children
                 for item_elem in child:

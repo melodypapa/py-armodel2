@@ -173,13 +173,13 @@ class EcucModuleDef(EcucDefinitionElement):
             if tag == "API-SERVICE-PREFIX":
                 setattr(obj, "api_service_prefix", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
             elif tag == "CONTAINERS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ECUC-CHOICE-CONTAINER-DEF":
-                        obj.containers.append(SerializationHelper.deserialize_by_tag(child[0], "EcucChoiceContainerDef"))
+                        obj.containers.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucChoiceContainerDef"))
                     elif concrete_tag == "ECUC-PARAM-CONF-CONTAINER-DEF":
-                        obj.containers.append(SerializationHelper.deserialize_by_tag(child[0], "EcucParamConfContainerDef"))
+                        obj.containers.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucParamConfContainerDef"))
             elif tag == "POST-BUILD-VARIANT":
                 setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "REFINED-MODULE-REF":

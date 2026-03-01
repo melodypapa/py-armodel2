@@ -46,8 +46,8 @@ class DelegationSwConnector(SwConnector):
     _inner_port_iref: Optional[PortInCompositionTypeInstanceRef]
     outer_port_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "INNER-PORT": ("_POLYMORPHIC", "_inner_port_iref", ["PPortInCompositionInstanceRef", "RPortInCompositionInstanceRef"]),
-        "OUTER-PORT-REF": ("_POLYMORPHIC", "outer_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "INNER-PORT-IREF": ("_POLYMORPHIC", "_inner_port_iref", ["PPortInCompositionInstanceRef", "RPortInCompositionInstanceRef"]),
+        "OUTER-PORT-REF": ("_POLYMORPHIC", "outer_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
     }
 
 
@@ -134,7 +134,7 @@ class DelegationSwConnector(SwConnector):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "INNER-PORT":
+            if tag == "INNER-PORT-IREF":
                 # Check first child element for concrete type
                 if len(child) > 0:
                     concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag

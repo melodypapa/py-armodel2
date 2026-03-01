@@ -204,15 +204,15 @@ class CommunicationConnector(Identifiable, ABC):
             elif tag == "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED":
                 setattr(obj, "dynamic_pnc_to_channel_mapping_enabled", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "ECU-COMM-PORT-INSTANCES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "FRAME-PORT":
-                        obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(child[0], "FramePort"))
+                        obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(item_elem, "FramePort"))
                     elif concrete_tag == "I-PDU-PORT":
-                        obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(child[0], "IPduPort"))
+                        obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(item_elem, "IPduPort"))
                     elif concrete_tag == "I-SIGNAL-PORT":
-                        obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(child[0], "ISignalPort"))
+                        obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalPort"))
             elif tag == "PNC-FILTER-ARRAY-MASKS":
                 # Iterate through wrapper children
                 for item_elem in child:

@@ -345,15 +345,15 @@ class ISignal(FibexElement):
                     elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
                         setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
             elif tag == "TRANSFORMATION-I-SIGNAL-PROPS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "END-TO-END-TRANSFORMATION-I-SIGNAL-PROPS":
-                        obj.transformation_i_signal_props.append(SerializationHelper.deserialize_by_tag(child[0], "EndToEndTransformationISignalProps"))
+                        obj.transformation_i_signal_props.append(SerializationHelper.deserialize_by_tag(item_elem, "EndToEndTransformationISignalProps"))
                     elif concrete_tag == "S-O-M-E-I-P-TRANSFORMATION-I-SIGNAL-PROPS":
-                        obj.transformation_i_signal_props.append(SerializationHelper.deserialize_by_tag(child[0], "SOMEIPTransformationISignalProps"))
+                        obj.transformation_i_signal_props.append(SerializationHelper.deserialize_by_tag(item_elem, "SOMEIPTransformationISignalProps"))
                     elif concrete_tag == "USER-DEFINED-TRANSFORMATION":
-                        obj.transformation_i_signal_props.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedTransformation"))
+                        obj.transformation_i_signal_props.append(SerializationHelper.deserialize_by_tag(item_elem, "UserDefinedTransformation"))
 
         return obj
 

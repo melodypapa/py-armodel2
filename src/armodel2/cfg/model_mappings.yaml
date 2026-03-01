@@ -2761,8 +2761,9 @@ polymorphic_types:
   - ServiceProxySwComponentType
   - ServiceSwComponentType
   PortPrototype:
-  - AbstractProvidedPortPrototype
-  - AbstractRequiredPortPrototype
+  - PPortPrototype
+  - RPortPrototype
+  - PRPortPrototype
   SwComponentType:
   - AtomicSwComponentType
   - CompositionSwComponentType

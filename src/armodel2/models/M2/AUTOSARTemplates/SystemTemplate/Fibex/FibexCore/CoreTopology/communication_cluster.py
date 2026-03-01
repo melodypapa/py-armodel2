@@ -173,17 +173,17 @@ class CommunicationCluster(ARElement, ABC):
             if tag == "BAUDRATE":
                 setattr(obj, "baudrate", SerializationHelper.deserialize_by_tag(child, "PositiveUnlimitedInteger"))
             elif tag == "PHYSICAL-CHANNELS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ABSTRACT-CAN-PHYSICAL-CHANNEL":
-                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractCanPhysicalChannel"))
+                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "AbstractCanPhysicalChannel"))
                     elif concrete_tag == "ETHERNET-PHYSICAL-CHANNEL":
-                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetPhysicalChannel"))
+                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "EthernetPhysicalChannel"))
                     elif concrete_tag == "FLEXRAY-PHYSICAL-CHANNEL":
-                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayPhysicalChannel"))
+                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayPhysicalChannel"))
                     elif concrete_tag == "LIN-PHYSICAL-CHANNEL":
-                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(child[0], "LinPhysicalChannel"))
+                        obj.physical_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "LinPhysicalChannel"))
             elif tag == "PROTOCOL-NAME":
                 setattr(obj, "protocol_name", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "PROTOCOL-VERSION":

@@ -134,23 +134,23 @@ class ViewMap(Identifiable):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "FIRST-ELEMENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ATP-PROTOTYPE":
-                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AtpPrototype"))
                     elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
-                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AtpStructureElement"))
             elif tag == "ROLE":
                 setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "SECOND-ELEMENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ATP-PROTOTYPE":
-                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AtpPrototype"))
                     elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
-                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "AtpStructureElement"))
 
         return obj
 

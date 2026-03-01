@@ -152,15 +152,15 @@ class ClassContentConditional(Identifiable):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ATTRIBUTES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "AGGREGATION-TAILORING":
-                        obj.attributes.append(SerializationHelper.deserialize_by_tag(child[0], "AggregationTailoring"))
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "AggregationTailoring"))
                     elif concrete_tag == "PRIMITIVE-ATTRIBUTE-TAILORING":
-                        obj.attributes.append(SerializationHelper.deserialize_by_tag(child[0], "PrimitiveAttributeTailoring"))
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "PrimitiveAttributeTailoring"))
                     elif concrete_tag == "REFERENCE-TAILORING":
-                        obj.attributes.append(SerializationHelper.deserialize_by_tag(child[0], "ReferenceTailoring"))
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "ReferenceTailoring"))
             elif tag == "CONDITION":
                 # Check first child element for concrete type
                 if len(child) > 0:

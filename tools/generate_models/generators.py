@@ -111,6 +111,10 @@ def _generate_dispatch_table(
         if is_ref and multiplicity not in ("*", "0..*", "1..*") and kind != "iref":
             xml_tag = f"{xml_tag}-TREF" if kind == "tref" else f"{xml_tag}-REF"
 
+        # Add -IREF suffix for instance_ref attributes (iref kind)
+        if kind == "iref":
+            xml_tag = f"{xml_tag}-IREF"
+
         # Get Python identifier for the target attribute
         python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
 
@@ -153,7 +157,8 @@ def _generate_dispatch_table(
                 handler = f'lambda obj, elem: obj.{target_attr}.append({value_code})'
             else:
                 handler = f'lambda obj, elem: setattr(obj, "{target_attr}", {value_code})'
-        elif is_ref:
+        elif is_ref and kind != "iref":
+            # For iref kind, deserialize as the specific type, not as ARRef
             value_code = "ARRef.deserialize(elem)"
             if is_list:
                 handler = f'lambda obj, elem: obj.{target_attr}.append({value_code})'
@@ -162,6 +167,7 @@ def _generate_dispatch_table(
         else:
             # Use SerializationHelper.deserialize_by_tag for all other types
             # This handles ARPrimitive subclasses (like Identifier) and complex types
+            # Also handles iref kind which deserializes as the specific type
             value_code = f'SerializationHelper.deserialize_by_tag(elem, "{attr_type}")'
             if is_list:
                 handler = f'lambda obj, elem: obj.{target_attr}.append({value_code})'
@@ -1309,6 +1315,10 @@ def _generate_deserialize_method(
             if is_ref and multiplicity not in ("*", "0..*", "1..*") and kind != "iref":
                 xml_tag = f"{xml_tag}-TREF" if kind == "tref" else f"{xml_tag}-REF"
 
+            # Add -IREF suffix for instance_ref attributes (iref kind)
+            if kind == "iref":
+                xml_tag = f"{xml_tag}-IREF"
+
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
             target_attr = f"_{python_name}" if decorator_name in (
                 "xml_attribute", "lang_prefix", "lang_abbr", "xml_element_name",
@@ -1348,20 +1358,29 @@ def _generate_deserialize_method(
                     branch_lines = [f'        if tag == "{container_tag}":']
                     indent = "            "
 
-                    # Get the first child element to check its tag
-                    branch_lines.append(f'{indent}# Check first child element for concrete type')
-                    branch_lines.append(f'{indent}if len(child) > 0:')
-                    branch_lines.append(f'{indent}    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{{") else child[0].tag')
+                    if is_list:
+                        # For polymorphic LISTS, iterate through ALL child elements
+                        # Each child may be a different concrete type
+                        branch_lines.append(f'{indent}# Iterate through all child elements and deserialize each based on its concrete type')
+                        branch_lines.append(f'{indent}for item_elem in child:')
+                        branch_lines.append(f'{indent}    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{{") else item_elem.tag')
 
-                    for i, concrete_type in enumerate(concrete_types):
-                        xml_concrete_tag = NameConverter.to_xml_tag(concrete_type)
-                        if_str = "if" if i == 0 else "elif"
-                        # Use SerializationHelper.deserialize_by_tag to avoid circular imports
-                        deserializer = f'SerializationHelper.deserialize_by_tag(child[0], "{concrete_type}")'
-                        if is_list:
+                        for i, concrete_type in enumerate(concrete_types):
+                            xml_concrete_tag = NameConverter.to_xml_tag(concrete_type)
+                            if_str = "if" if i == 0 else "elif"
+                            deserializer = f'SerializationHelper.deserialize_by_tag(item_elem, "{concrete_type}")'
                             branch_lines.append(f'{indent}    {if_str} concrete_tag == "{xml_concrete_tag}":')
                             branch_lines.append(f'{indent}        obj.{target_attr}.append({deserializer})')
-                        else:
+                    else:
+                        # For polymorphic SINGLE values, only check the first child element
+                        branch_lines.append(f'{indent}# Check first child element for concrete type')
+                        branch_lines.append(f'{indent}if len(child) > 0:')
+                        branch_lines.append(f'{indent}    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{{") else child[0].tag')
+
+                        for i, concrete_type in enumerate(concrete_types):
+                            xml_concrete_tag = NameConverter.to_xml_tag(concrete_type)
+                            if_str = "if" if i == 0 else "elif"
+                            deserializer = f'SerializationHelper.deserialize_by_tag(child[0], "{concrete_type}")'
                             branch_lines.append(f'{indent}    {if_str} concrete_tag == "{xml_concrete_tag}":')
                             branch_lines.append(f'{indent}        setattr(obj, "{target_attr}", {deserializer})')
 
@@ -1372,7 +1391,8 @@ def _generate_deserialize_method(
                     value_code = "child.text"
                 elif is_enum_type(attr_type, package_data):
                     value_code = f"{attr_type}.deserialize(child)"
-                elif is_ref:
+                elif is_ref and kind != "iref":
+                    # For iref kind, deserialize as the specific type, not as ARRef
                     value_code = "ARRef.deserialize(child)"
                 else:
                     value_code = f'SerializationHelper.deserialize_by_tag(child, "{attr_type}")'

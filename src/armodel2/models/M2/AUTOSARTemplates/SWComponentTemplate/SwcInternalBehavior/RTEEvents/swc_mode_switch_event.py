@@ -46,7 +46,7 @@ class SwcModeSwitchEvent(RTEEvent):
     _mode_irefs: list[RModeInAtomicSwcInstanceRef]
     _DESERIALIZE_DISPATCH = {
         "ACTIVATION": lambda obj, elem: setattr(obj, "activation", ModeActivationKind.deserialize(elem)),
-        "MODES": lambda obj, elem: obj._mode_irefs.append(ARRef.deserialize(elem)),
+        "MODES-IREF": lambda obj, elem: obj._mode_irefs.append(SerializationHelper.deserialize_by_tag(elem, "RModeInAtomicSwcInstanceRef")),
     }
 
 
@@ -139,7 +139,7 @@ class SwcModeSwitchEvent(RTEEvent):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ACTIVATION":
                 setattr(obj, "activation", ModeActivationKind.deserialize(child))
-            elif tag == "MODES":
+            elif tag == "MODES-IREF":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._mode_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "RModeInAtomicSwcInstanceRef"))

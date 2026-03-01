@@ -45,7 +45,7 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
     target_variable_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
-        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "CONTEXT-SW-REFS": lambda obj, elem: obj.context_sw_refs.append(ARRef.deserialize(elem)),
         "TARGET-VARIABLE-REF": lambda obj, elem: setattr(obj, "target_variable_ref", ARRef.deserialize(elem)),
     }

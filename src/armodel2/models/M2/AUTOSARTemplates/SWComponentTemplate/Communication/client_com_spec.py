@@ -145,13 +145,13 @@ class ClientComSpec(RPortComSpec):
             elif tag == "OPERATION-REF":
                 setattr(obj, "operation_ref", ARRef.deserialize(child))
             elif tag == "TRANSFORMATION-COM-SPEC-PROPS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "END-TO-END-TRANSFORMATION-COM-SPEC-PROPS":
-                        obj.transformation_com_spec_props.append(SerializationHelper.deserialize_by_tag(child[0], "EndToEndTransformationComSpecProps"))
+                        obj.transformation_com_spec_props.append(SerializationHelper.deserialize_by_tag(item_elem, "EndToEndTransformationComSpecProps"))
                     elif concrete_tag == "USER-DEFINED-TRANSFORMATION-COM-SPEC-PROPS":
-                        obj.transformation_com_spec_props.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedTransformationComSpecProps"))
+                        obj.transformation_com_spec_props.append(SerializationHelper.deserialize_by_tag(item_elem, "UserDefinedTransformationComSpecProps"))
 
         return obj
 

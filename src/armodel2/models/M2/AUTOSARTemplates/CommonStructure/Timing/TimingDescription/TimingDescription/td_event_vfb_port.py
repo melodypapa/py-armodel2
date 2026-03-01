@@ -47,7 +47,7 @@ class TDEventVfbPort(TDEventVfb, ABC):
     port_prototype_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "IS-EXTERNAL": lambda obj, elem: setattr(obj, "is_external", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["PPortPrototype", "RPortPrototype", "PRPortPrototype"]),
         "PORT-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "port_prototype_ref", ARRef.deserialize(elem)),
     }
 

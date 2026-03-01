@@ -98,17 +98,17 @@ class AbstractProvidedPortPrototype(PortPrototype, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "PROVIDED-COM-SPECS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "MODE-SWITCH-SENDER-COM-SPEC":
-                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchSenderComSpec"))
+                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchSenderComSpec"))
                     elif concrete_tag == "NV-PROVIDE-COM-SPEC":
-                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(child[0], "NvProvideComSpec"))
+                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvProvideComSpec"))
                     elif concrete_tag == "PARAMETER-PROVIDE-COM-SPEC":
-                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(child[0], "ParameterProvideComSpec"))
+                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterProvideComSpec"))
                     elif concrete_tag == "SENDER-COM-SPEC":
-                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(child[0], "SenderComSpec"))
+                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderComSpec"))
 
         return obj
 
