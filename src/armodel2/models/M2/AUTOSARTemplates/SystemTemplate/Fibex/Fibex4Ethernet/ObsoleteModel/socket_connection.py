@@ -235,7 +235,10 @@ class SocketConnection(Describable):
             elif tag == "CLIENT-PORT-FROM":
                 setattr(obj, "client_port_from", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "PDUS":
-                obj.pdus.append(SerializationHelper.deserialize_by_tag(child, "SocketConnectionIpduIdentifierSet"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.pdus.append(SerializationHelper.deserialize_by_tag(item_elem, "SocketConnectionIpduIdentifierSet"))
             elif tag == "PDU-COLLECTION":
                 setattr(obj, "pdu_collection", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "RUNTIME-IP":

@@ -234,7 +234,10 @@ class FlexrayFifoConfiguration(ARObject):
             elif tag == "FIFO-DEPTH":
                 setattr(obj, "fifo_depth", SerializationHelper.deserialize_by_tag(child, "Integer"))
             elif tag == "FIFO-RANGES":
-                obj.fifo_ranges.append(SerializationHelper.deserialize_by_tag(child, "FlexrayFifoRange"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.fifo_ranges.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayFifoRange"))
             elif tag == "MSG-ID-MASK":
                 setattr(obj, "msg_id_mask", SerializationHelper.deserialize_by_tag(child, "Integer"))
             elif tag == "MSG-ID-MATCH":

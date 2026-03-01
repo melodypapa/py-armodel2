@@ -193,7 +193,10 @@ class EcuResourceEstimation(ARObject):
             elif tag == "RTE-RESOURCE":
                 setattr(obj, "rte_resource", SerializationHelper.deserialize_by_tag(child, "ResourceConsumption"))
             elif tag == "SW-COMP-TO-ECUS":
-                obj.sw_comp_to_ecu_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sw_comp_to_ecu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToEcuMapping"))
 
         return obj
 

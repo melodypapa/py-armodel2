@@ -128,7 +128,10 @@ class Keyword(Identifiable):
             if tag == "ABBR-NAME":
                 setattr(obj, "abbr_name", SerializationHelper.deserialize_by_tag(child, "NameToken"))
             elif tag == "CLASSIFICATIONS":
-                obj.classifications.append(SerializationHelper.deserialize_by_tag(child, "NameToken"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.classifications.append(SerializationHelper.deserialize_by_tag(item_elem, "NameToken"))
 
         return obj
 

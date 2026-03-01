@@ -210,7 +210,10 @@ class DocRevision(ARObject):
             elif tag == "ISSUED-BY":
                 setattr(obj, "issued_by", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "MODIFICATIONS":
-                obj.modifications.append(SerializationHelper.deserialize_by_tag(child, "Modification"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.modifications.append(SerializationHelper.deserialize_by_tag(item_elem, "Modification"))
             elif tag == "REVISION-LABEL-STRING":
                 setattr(obj, "revision_label_string", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
             elif tag == "REVISION-LABEL-P1":

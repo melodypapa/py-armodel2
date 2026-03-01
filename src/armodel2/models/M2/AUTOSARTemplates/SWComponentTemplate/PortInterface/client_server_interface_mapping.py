@@ -117,9 +117,15 @@ class ClientServerInterfaceMapping(PortInterfaceMapping):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "ERROR-MAPPINGS":
-                obj.error_mappings.append(SerializationHelper.deserialize_by_tag(child, "ClientServerApplicationErrorMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.error_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientServerApplicationErrorMapping"))
             elif tag == "OPERATIONS":
-                obj.operations.append(SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.operations.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientServerOperation"))
 
         return obj
 

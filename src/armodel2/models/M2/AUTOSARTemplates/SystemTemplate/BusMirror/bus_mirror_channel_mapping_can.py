@@ -170,11 +170,20 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "CAN-ID-RANGES":
-                obj.can_id_ranges.append(SerializationHelper.deserialize_by_tag(child, "BusMirrorCanIdRangeMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.can_id_ranges.append(SerializationHelper.deserialize_by_tag(item_elem, "BusMirrorCanIdRangeMapping"))
             elif tag == "CAN-ID-TO-CAN-IDS":
-                obj.can_id_to_can_ids.append(SerializationHelper.deserialize_by_tag(child, "BusMirrorCanIdToCanIdMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.can_id_to_can_ids.append(SerializationHelper.deserialize_by_tag(item_elem, "BusMirrorCanIdToCanIdMapping"))
             elif tag == "LIN-PID-TO-CAN-IDS":
-                obj.lin_pid_to_can_ids.append(SerializationHelper.deserialize_by_tag(child, "BusMirrorLinPidToCanIdMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.lin_pid_to_can_ids.append(SerializationHelper.deserialize_by_tag(item_elem, "BusMirrorLinPidToCanIdMapping"))
             elif tag == "MIRROR-SOURCE-LIN":
                 setattr(obj, "mirror_source_lin", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "MIRROR-STATUS":

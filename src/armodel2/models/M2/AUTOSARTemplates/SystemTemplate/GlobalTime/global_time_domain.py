@@ -295,7 +295,10 @@ class GlobalTimeDomain(FibexElement):
             elif tag == "DOMAIN-ID":
                 setattr(obj, "domain_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "GATEWAIES":
-                obj.gatewaies.append(SerializationHelper.deserialize_by_tag(child, "GlobalTimeGateway"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.gatewaies.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeGateway"))
             elif tag == "GLOBAL-TIME":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -319,7 +322,10 @@ class GlobalTimeDomain(FibexElement):
                     elif concrete_tag == "USER-DEFINED-GLOBAL-TIME-MASTER":
                         setattr(obj, "global_time_master", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedGlobalTimeMaster"))
             elif tag == "GLOBAL-TIME-SUBS":
-                obj.global_time_sub_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.global_time_sub_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeDomain"))
             elif tag == "NETWORK":
                 setattr(obj, "network", SerializationHelper.deserialize_by_tag(child, "NetworkSegmentIdentification"))
             elif tag == "OFFSET-TIME-REF":

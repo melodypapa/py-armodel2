@@ -204,7 +204,10 @@ class McFunction(ARElement):
             elif tag == "REF-CALPRM-SET-REF":
                 setattr(obj, "ref_calprm_set_ref", ARRef.deserialize(child))
             elif tag == "SUB-FUNCTIONS":
-                obj.sub_function_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sub_function_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "McFunction"))
 
         return obj
 

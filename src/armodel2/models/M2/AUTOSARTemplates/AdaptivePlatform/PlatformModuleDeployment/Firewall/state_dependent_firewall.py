@@ -144,9 +144,15 @@ class StateDependentFirewall(ARElement):
             if tag == "DEFAULT-ACTION":
                 setattr(obj, "default_action", SerializationHelper.deserialize_by_tag(child, "FirewallActionEnum"))
             elif tag == "FIREWALL-RULE-PROPSES":
-                obj.firewall_rule_propses.append(SerializationHelper.deserialize_by_tag(child, "FirewallRuleProps"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.firewall_rule_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "FirewallRuleProps"))
             elif tag == "FIREWALL-STATES":
-                obj.firewall_state_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.firewall_state_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclaration"))
 
         return obj
 

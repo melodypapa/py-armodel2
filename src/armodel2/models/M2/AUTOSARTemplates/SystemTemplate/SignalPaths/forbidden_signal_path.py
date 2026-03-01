@@ -138,7 +138,10 @@ class ForbiddenSignalPath(SignalPathConstraint):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "OPERATIONS":
-                obj.operations.append(SerializationHelper.deserialize_by_tag(child, "any (SwcToSwcOperation)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.operations.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwcToSwcOperation)"))
             elif tag == "PHYSICAL-CHANNELS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -152,7 +155,10 @@ class ForbiddenSignalPath(SignalPathConstraint):
                     elif concrete_tag == "LIN-PHYSICAL-CHANNEL":
                         obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinPhysicalChannel"))
             elif tag == "SIGNALS":
-                obj.signals.append(SerializationHelper.deserialize_by_tag(child, "SwcToSwcSignal"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.signals.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToSwcSignal"))
 
         return obj
 

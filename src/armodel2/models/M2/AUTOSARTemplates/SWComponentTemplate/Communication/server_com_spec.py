@@ -143,7 +143,10 @@ class ServerComSpec(PPortComSpec):
             elif tag == "QUEUE-LENGTH":
                 setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "TRANSFORMATION-COMS":
-                obj.transformation_coms.append(SerializationHelper.deserialize_by_tag(child, "any (TransformationCom)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.transformation_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "any (TransformationCom)"))
 
         return obj
 

@@ -165,15 +165,30 @@ class FlexrayTpConfig(TpConfig):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "PDU-POOLS":
-                obj.pdu_pools.append(SerializationHelper.deserialize_by_tag(child, "FlexrayTpPduPool"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.pdu_pools.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayTpPduPool"))
             elif tag == "TP-ADDRESSES":
-                obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(child, "TpAddress"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(item_elem, "TpAddress"))
             elif tag == "TP-CONNECTIONS":
-                obj.tp_connections.append(SerializationHelper.deserialize_by_tag(child, "FlexrayTpConnection"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.tp_connections.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayTpConnection"))
             elif tag == "TP-ECUS":
-                obj.tp_ecus.append(SerializationHelper.deserialize_by_tag(child, "FlexrayTpEcu"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.tp_ecus.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayTpEcu"))
             elif tag == "TP-NODES":
-                obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(child, "FlexrayTpNode"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayTpNode"))
 
         return obj
 

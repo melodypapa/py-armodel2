@@ -101,7 +101,10 @@ class SocketConnectionIpduIdentifierSet(FibexElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "I-PDU-IDENTIFIERS":
-                obj.i_pdu_identifiers.append(SerializationHelper.deserialize_by_tag(child, "SoConIPduIdentifier"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.i_pdu_identifiers.append(SerializationHelper.deserialize_by_tag(item_elem, "SoConIPduIdentifier"))
 
         return obj
 

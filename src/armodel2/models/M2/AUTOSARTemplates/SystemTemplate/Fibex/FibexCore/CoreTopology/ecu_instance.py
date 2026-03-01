@@ -577,11 +577,20 @@ class EcuInstance(FibexElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "ASSOCIATED-COM-I-PDU-GROUPS":
-                obj.associated_com_i_pdu_group_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.associated_com_i_pdu_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalIPduGroup"))
             elif tag == "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUPS":
-                obj.associated_consumed_provided_service_instance_group_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.associated_consumed_provided_service_instance_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsumedProvidedServiceInstanceGroup"))
             elif tag == "ASSOCIATED-PDUR-I-PDU-GROUPS":
-                obj.associated_pdur_i_pdu_group_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.associated_pdur_i_pdu_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PdurIPduGroup"))
             elif tag == "CHANNEL-SYNCHRONOUS-WAKEUP":
                 setattr(obj, "channel_synchronous_wakeup", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "CLIENT-ID-RANGE":
@@ -627,13 +636,22 @@ class EcuInstance(FibexElement):
             elif tag == "DO-IP-CONFIG":
                 setattr(obj, "do_ip_config", SerializationHelper.deserialize_by_tag(child, "DoIpConfig"))
             elif tag == "ECU-TASK-PROXIES":
-                obj.ecu_task_proxy_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.ecu_task_proxy_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "OsTaskProxy"))
             elif tag == "ETH-SWITCH-PORT-GROUP-DERIVATION":
                 setattr(obj, "eth_switch_port_group_derivation", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "FIREWALL-RULES":
-                obj.firewall_rule_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.firewall_rule_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "StateDependentFirewall"))
             elif tag == "PARTITIONS":
-                obj.partitions.append(SerializationHelper.deserialize_by_tag(child, "EcuPartition"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.partitions.append(SerializationHelper.deserialize_by_tag(item_elem, "EcuPartition"))
             elif tag == "PNC-NM-REQUEST":
                 setattr(obj, "pnc_nm_request", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "PNC-PREPARE-SLEEP-TIMER":

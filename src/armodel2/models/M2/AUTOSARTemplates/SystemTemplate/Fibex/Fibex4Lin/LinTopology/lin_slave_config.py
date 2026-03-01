@@ -268,11 +268,17 @@ class LinSlaveConfig(ARObject):
             elif tag == "INITIAL-NAD":
                 setattr(obj, "initial_nad", SerializationHelper.deserialize_by_tag(child, "Integer"))
             elif tag == "LIN-CONFIGURABLE-FRAMES":
-                obj.lin_configurable_frames.append(SerializationHelper.deserialize_by_tag(child, "LinConfigurableFrame"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.lin_configurable_frames.append(SerializationHelper.deserialize_by_tag(item_elem, "LinConfigurableFrame"))
             elif tag == "LIN-ERROR-RESPONSE":
                 setattr(obj, "lin_error_response", SerializationHelper.deserialize_by_tag(child, "LinErrorResponse"))
             elif tag == "LIN-ORDEREDS":
-                obj.lin_ordereds.append(SerializationHelper.deserialize_by_tag(child, "LinOrderedConfigurableFrame"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.lin_ordereds.append(SerializationHelper.deserialize_by_tag(item_elem, "LinOrderedConfigurableFrame"))
             elif tag == "PROTOCOL-VERSION":
                 setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "SUPPLIER-ID":

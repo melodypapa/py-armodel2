@@ -166,9 +166,15 @@ class TDEventFrameEthernet(TDEventCom):
             elif tag == "TD-EVENT-TYPE":
                 setattr(obj, "td_event_type", SerializationHelper.deserialize_by_tag(child, "TDEventFrameEthernet"))
             elif tag == "TD-HEADER-ID-FILTERS":
-                obj.td_header_id_filters.append(SerializationHelper.deserialize_by_tag(child, "TDHeaderIdRange"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.td_header_id_filters.append(SerializationHelper.deserialize_by_tag(item_elem, "TDHeaderIdRange"))
             elif tag == "TD-PDU-TRIGGERINGS":
-                obj.td_pdu_triggering_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.td_pdu_triggering_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
 
         return obj
 

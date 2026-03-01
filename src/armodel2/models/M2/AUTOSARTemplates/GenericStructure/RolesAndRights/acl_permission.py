@@ -199,13 +199,25 @@ class AclPermission(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "ACL-CONTEXTS":
-                obj.acl_contexts.append(SerializationHelper.deserialize_by_tag(child, "NameToken"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.acl_contexts.append(SerializationHelper.deserialize_by_tag(item_elem, "NameToken"))
             elif tag == "ACL-OBJECT-SETS":
-                obj.acl_object_set_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.acl_object_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "AclObjectSet"))
             elif tag == "ACL-OPERATIONS":
-                obj.acl_operation_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.acl_operation_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "AclOperation"))
             elif tag == "ACL-ROLES":
-                obj.acl_role_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.acl_role_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "AclRole"))
             elif tag == "ACL-SCOPE":
                 setattr(obj, "acl_scope", AclScopeEnum.deserialize(child))
 

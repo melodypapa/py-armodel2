@@ -358,23 +358,44 @@ class Implementation(ARElement, ABC):
             if tag == "BUILD-ACTION-MANIFEST-REF":
                 setattr(obj, "build_action_manifest_ref", ARRef.deserialize(child))
             elif tag == "CODE-DESCRIPTORS":
-                obj.code_descriptors.append(SerializationHelper.deserialize_by_tag(child, "Code"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.code_descriptors.append(SerializationHelper.deserialize_by_tag(item_elem, "Code"))
             elif tag == "COMPILERS":
-                obj.compilers.append(SerializationHelper.deserialize_by_tag(child, "Compiler"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.compilers.append(SerializationHelper.deserialize_by_tag(item_elem, "Compiler"))
             elif tag == "GENERATED-ARTIFACTS":
-                obj.generated_artifacts.append(SerializationHelper.deserialize_by_tag(child, "DependencyOnArtifact"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.generated_artifacts.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyOnArtifact"))
             elif tag == "HW-ELEMENTS":
-                obj.hw_element_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.hw_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "HwElement"))
             elif tag == "LINKERS":
-                obj.linkers.append(SerializationHelper.deserialize_by_tag(child, "Linker"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.linkers.append(SerializationHelper.deserialize_by_tag(item_elem, "Linker"))
             elif tag == "MC-SUPPORT":
                 setattr(obj, "mc_support", SerializationHelper.deserialize_by_tag(child, "McSupportData"))
             elif tag == "PROGRAMMING-LANGUAGE":
                 setattr(obj, "programming_language", ProgramminglanguageEnum.deserialize(child))
             elif tag == "REQUIRED-ARTIFACTS":
-                obj.required_artifacts.append(SerializationHelper.deserialize_by_tag(child, "DependencyOnArtifact"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.required_artifacts.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyOnArtifact"))
             elif tag == "REQUIRED-GENERATOR-TOOLS":
-                obj.required_generator_tools.append(SerializationHelper.deserialize_by_tag(child, "DependencyOnArtifact"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.required_generator_tools.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyOnArtifact"))
             elif tag == "RESOURCE-CONSUMPTION":
                 setattr(obj, "resource_consumption", SerializationHelper.deserialize_by_tag(child, "ResourceConsumption"))
             elif tag == "SWC-BSW-MAPPING-REF":

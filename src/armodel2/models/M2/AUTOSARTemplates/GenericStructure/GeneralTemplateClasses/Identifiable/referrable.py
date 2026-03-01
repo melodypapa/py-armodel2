@@ -130,7 +130,10 @@ class Referrable(ARObject, ABC):
             if tag == "SHORT-NAME":
                 setattr(obj, "short_name", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "SHORT-NAME-FRAGMENTS":
-                obj.short_name_fragments.append(SerializationHelper.deserialize_by_tag(child, "ShortNameFragment"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.short_name_fragments.append(SerializationHelper.deserialize_by_tag(item_elem, "ShortNameFragment"))
 
         return obj
 

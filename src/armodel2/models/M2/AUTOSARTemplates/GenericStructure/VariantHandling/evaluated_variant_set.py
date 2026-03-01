@@ -131,7 +131,10 @@ class EvaluatedVariantSet(ARElement):
             if tag == "APPROVAL-STATUS":
                 setattr(obj, "approval_status", SerializationHelper.deserialize_by_tag(child, "NameToken"))
             elif tag == "EVALUATEDS":
-                obj.evaluated_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.evaluated_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PredefinedVariant"))
 
         return obj
 

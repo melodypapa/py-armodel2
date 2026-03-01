@@ -221,7 +221,10 @@ class SwitchStreamIdentification(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "EGRESS-PORTS":
-                obj.egress_port_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.egress_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPort"))
             elif tag == "FILTER-ACTION-BLOCK":
                 setattr(obj, "filter_action_block", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "FILTER-ACTION-DEST":
@@ -231,7 +234,10 @@ class SwitchStreamIdentification(Identifiable):
             elif tag == "FILTER-ACTION-VLAN":
                 setattr(obj, "filter_action_vlan", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "INGRESS-PORTS":
-                obj.ingress_port_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.ingress_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPort"))
             elif tag == "STREAM-FILTER":
                 setattr(obj, "stream_filter", SerializationHelper.deserialize_by_tag(child, "SwitchStreamFilterRule"))
 

@@ -144,7 +144,10 @@ class ApplicationValueSpecification(ValueSpecification):
             if tag == "CATEGORY":
                 setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "SW-AXIS-CONTS":
-                obj.sw_axis_conts.append(SerializationHelper.deserialize_by_tag(child, "SwAxisCont"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sw_axis_conts.append(SerializationHelper.deserialize_by_tag(item_elem, "SwAxisCont"))
             elif tag == "SW-VALUE-CONT":
                 setattr(obj, "sw_value_cont", SerializationHelper.deserialize_by_tag(child, "SwValueCont"))
 

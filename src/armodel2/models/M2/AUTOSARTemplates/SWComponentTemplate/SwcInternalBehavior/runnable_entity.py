@@ -365,31 +365,67 @@ class RunnableEntity(ExecutableEntity):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "ARGUMENTS":
-                obj.arguments.append(SerializationHelper.deserialize_by_tag(child, "RunnableEntity"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntity"))
             elif tag == "ASYNCHRONOUS-SERVERS":
-                obj.asynchronous_servers.append(SerializationHelper.deserialize_by_tag(child, "any (AsynchronousServer)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.asynchronous_servers.append(SerializationHelper.deserialize_by_tag(item_elem, "any (AsynchronousServer)"))
             elif tag == "CAN-BE-INVOKED":
                 setattr(obj, "can_be_invoked", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "DATA-READS":
-                obj.data_reads.append(SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.data_reads.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
             elif tag == "DATA-RECEIVES":
-                obj.data_receives.append(SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.data_receives.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
             elif tag == "DATA-SEND-POINTS":
-                obj.data_send_points.append(SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.data_send_points.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
             elif tag == "DATA-WRITES":
-                obj.data_writes.append(SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.data_writes.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
             elif tag == "EXTERNALS":
-                obj.external_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.external_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExternalTriggeringPoint"))
             elif tag == "INTERNALS":
-                obj.internal_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.internal_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "InternalTriggeringPoint"))
             elif tag == "MODE-ACCESS-POINTS":
-                obj.mode_access_points.append(SerializationHelper.deserialize_by_tag(child, "ModeAccessPoint"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mode_access_points.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeAccessPoint"))
             elif tag == "MODE-SWITCH-POINTS":
-                obj.mode_switch_points.append(SerializationHelper.deserialize_by_tag(child, "ModeSwitchPoint"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mode_switch_points.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchPoint"))
             elif tag == "PARAMETER-ACCESSES":
-                obj.parameter_accesses.append(SerializationHelper.deserialize_by_tag(child, "ParameterAccess"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.parameter_accesses.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterAccess"))
             elif tag == "READ-LOCALS":
-                obj.read_locals.append(SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.read_locals.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
             elif tag == "SERVER-CALL-POINTS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -401,9 +437,15 @@ class RunnableEntity(ExecutableEntity):
             elif tag == "SYMBOL":
                 setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
             elif tag == "WAIT-POINTS":
-                obj.wait_points.append(SerializationHelper.deserialize_by_tag(child, "WaitPoint"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.wait_points.append(SerializationHelper.deserialize_by_tag(item_elem, "WaitPoint"))
             elif tag == "WRITTEN-LOCALS":
-                obj.written_locals.append(SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.written_locals.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
 
         return obj
 

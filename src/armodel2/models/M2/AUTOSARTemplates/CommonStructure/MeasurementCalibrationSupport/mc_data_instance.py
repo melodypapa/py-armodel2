@@ -323,7 +323,10 @@ class McDataInstance(Identifiable):
             elif tag == "MC-DATA-ACCESS-DETAILS":
                 setattr(obj, "mc_data_access_details", SerializationHelper.deserialize_by_tag(child, "McDataAccessDetails"))
             elif tag == "MC-DATAS":
-                obj.mc_datas.append(SerializationHelper.deserialize_by_tag(child, "RoleBasedMcDataAssignment"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mc_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedMcDataAssignment"))
             elif tag == "RESULTING":
                 setattr(obj, "resulting", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
             elif tag == "RESULTING-RPT-SW":
@@ -333,7 +336,10 @@ class McDataInstance(Identifiable):
             elif tag == "RPT-IMPL-POLICY":
                 setattr(obj, "rpt_impl_policy", SerializationHelper.deserialize_by_tag(child, "RptImplPolicy"))
             elif tag == "SUB-ELEMENTS":
-                obj.sub_elements.append(SerializationHelper.deserialize_by_tag(child, "McDataInstance"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sub_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "McDataInstance"))
             elif tag == "SYMBOL":
                 setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "SymbolString"))
 

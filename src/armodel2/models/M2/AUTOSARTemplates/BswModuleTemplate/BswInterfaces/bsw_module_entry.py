@@ -292,7 +292,10 @@ class BswModuleEntry(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "ARGUMENTS":
-                obj.arguments.append(SerializationHelper.deserialize_by_tag(child, "SwServiceArg"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "SwServiceArg"))
             elif tag == "BSW-ENTRY-KIND":
                 setattr(obj, "bsw_entry_kind", BswEntryKindEnum.deserialize(child))
             elif tag == "CALL-TYPE":

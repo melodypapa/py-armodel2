@@ -189,13 +189,25 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
             if tag == "CP-SOFTWARE-CLUSTER-REF":
                 setattr(obj, "cp_software_cluster_ref", ARRef.deserialize(child))
             elif tag == "META-DATA-FIELDS":
-                obj.meta_data_fields.append(SerializationHelper.deserialize_by_tag(child, "BinaryManifestMetaDataField"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.meta_data_fields.append(SerializationHelper.deserialize_by_tag(item_elem, "BinaryManifestMetaDataField"))
             elif tag == "PROVIDES":
-                obj.provides.append(SerializationHelper.deserialize_by_tag(child, "BinaryManifestProvideResource"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.provides.append(SerializationHelper.deserialize_by_tag(item_elem, "BinaryManifestProvideResource"))
             elif tag == "REQUIRES":
-                obj.requires.append(SerializationHelper.deserialize_by_tag(child, "BinaryManifestRequireResource"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.requires.append(SerializationHelper.deserialize_by_tag(item_elem, "BinaryManifestRequireResource"))
             elif tag == "RESOURCES":
-                obj.resources.append(SerializationHelper.deserialize_by_tag(child, "any (BinaryManifest)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.resources.append(SerializationHelper.deserialize_by_tag(item_elem, "any (BinaryManifest)"))
             elif tag == "SOFTWARE-CLUSTER":
                 setattr(obj, "software_cluster", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

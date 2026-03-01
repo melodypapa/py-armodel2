@@ -238,21 +238,42 @@ class PortPrototype(Identifiable, ABC):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "CLIENT-SERVERS":
-                obj.client_servers.append(SerializationHelper.deserialize_by_tag(child, "ClientServerAnnotation"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.client_servers.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientServerAnnotation"))
             elif tag == "DELEGATED-PORT":
                 setattr(obj, "delegated_port", SerializationHelper.deserialize_by_tag(child, "DelegatedPortAnnotation"))
             elif tag == "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS":
-                obj.io_hw_abstraction_server_annotations.append(SerializationHelper.deserialize_by_tag(child, "IoHwAbstractionServerAnnotation"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.io_hw_abstraction_server_annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "IoHwAbstractionServerAnnotation"))
             elif tag == "MODE-PORT-ANNOTATIONS":
-                obj.mode_port_annotations.append(SerializationHelper.deserialize_by_tag(child, "ModePortAnnotation"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mode_port_annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "ModePortAnnotation"))
             elif tag == "NV-DATA-PORT-ANNOTATIONS":
-                obj.nv_data_port_annotations.append(SerializationHelper.deserialize_by_tag(child, "NvDataPortAnnotation"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.nv_data_port_annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "NvDataPortAnnotation"))
             elif tag == "PARAMETER-PORTS":
-                obj.parameter_ports.append(SerializationHelper.deserialize_by_tag(child, "ParameterPortAnnotation"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.parameter_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterPortAnnotation"))
             elif tag == "SENDER-RECEIVERS":
-                obj.sender_receivers.append(SerializationHelper.deserialize_by_tag(child, "any (SenderReceiver)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sender_receivers.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SenderReceiver)"))
             elif tag == "TRIGGER-PORT-ANNOTATIONS":
-                obj.trigger_port_annotation_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.trigger_port_annotation_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "TriggerPortAnnotation"))
 
         return obj
 

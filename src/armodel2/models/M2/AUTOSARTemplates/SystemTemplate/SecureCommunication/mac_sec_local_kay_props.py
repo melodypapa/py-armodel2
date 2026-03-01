@@ -206,7 +206,10 @@ class MacSecLocalKayProps(ARObject):
             elif tag == "KEY-SERVER":
                 setattr(obj, "key_server", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "MKA-PARTICIPANTS":
-                obj.mka_participant_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mka_participant_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "MacSecKayParticipant"))
             elif tag == "ROLE":
                 setattr(obj, "role", MacSecRoleEnum.deserialize(child))
             elif tag == "SOURCE-MAC":

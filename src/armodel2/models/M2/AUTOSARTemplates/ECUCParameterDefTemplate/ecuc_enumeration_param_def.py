@@ -124,7 +124,10 @@ class EcucEnumerationParamDef(EcucParameterDef):
             if tag == "DEFAULT-VALUE":
                 setattr(obj, "default_value", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "LITERALS":
-                obj.literals.append(SerializationHelper.deserialize_by_tag(child, "EcucEnumerationLiteralDef"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.literals.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucEnumerationLiteralDef"))
 
         return obj
 

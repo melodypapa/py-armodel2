@@ -189,7 +189,10 @@ class AclObjectSet(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "ACL-OBJECT-CLASSES":
-                obj.acl_object_clas_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.acl_object_clas_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ReferrableSubtypesEnum"))
             elif tag == "ACL-SCOPE":
                 setattr(obj, "acl_scope", AclScopeEnum.deserialize(child))
             elif tag == "COLLECTION-REF":
@@ -273,7 +276,10 @@ class AclObjectSet(ARElement):
                     elif concrete_tag == "VFB-TIMING":
                         obj.derived_from_refs.append(SerializationHelper.deserialize_by_tag(child[0], "VfbTiming"))
             elif tag == "ENGINEERINGS":
-                obj.engineerings.append(SerializationHelper.deserialize_by_tag(child, "AutosarEngineeringObject"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.engineerings.append(SerializationHelper.deserialize_by_tag(item_elem, "AutosarEngineeringObject"))
 
         return obj
 

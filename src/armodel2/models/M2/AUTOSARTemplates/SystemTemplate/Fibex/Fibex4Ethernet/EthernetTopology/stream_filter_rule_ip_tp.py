@@ -149,11 +149,17 @@ class StreamFilterRuleIpTp(ARObject):
             if tag == "DESTINATION":
                 setattr(obj, "destination", SerializationHelper.deserialize_by_tag(child, "StreamFilterIpv6Address"))
             elif tag == "DESTINATION-PORTS":
-                obj.destination_ports.append(SerializationHelper.deserialize_by_tag(child, "StreamFilterPortRange"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.destination_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "StreamFilterPortRange"))
             elif tag == "SOURCE":
                 setattr(obj, "source", SerializationHelper.deserialize_by_tag(child, "StreamFilterIpv6Address"))
             elif tag == "SOURCE-PORTS":
-                obj.source_ports.append(SerializationHelper.deserialize_by_tag(child, "StreamFilterPortRange"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.source_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "StreamFilterPortRange"))
 
         return obj
 

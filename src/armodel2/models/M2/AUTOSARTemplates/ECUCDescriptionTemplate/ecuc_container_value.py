@@ -176,9 +176,15 @@ class EcucContainerValue(Identifiable):
                     elif concrete_tag == "ECUC-TEXTUAL-PARAM-VALUE":
                         obj.parameter_values.append(SerializationHelper.deserialize_by_tag(child[0], "EcucTextualParamValue"))
             elif tag == "REFERENCE-VALUES":
-                obj.reference_value_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.reference_value_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EcucAbstractReference)"))
             elif tag == "SUB-CONTAINERS":
-                obj.sub_containers.append(SerializationHelper.deserialize_by_tag(child, "EcucContainerValue"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sub_containers.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucContainerValue"))
 
         return obj
 

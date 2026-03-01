@@ -198,7 +198,10 @@ class ExecutionOrderConstraint(TimingConstraint):
             elif tag == "IS-EVENT":
                 setattr(obj, "is_event", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "ORDERED-ELEMENTS":
-                obj.ordered_elements.append(SerializationHelper.deserialize_by_tag(child, "any (EOCExecutableEntity)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.ordered_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
             elif tag == "PERMIT-MULTIPLE":
                 setattr(obj, "permit_multiple", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 

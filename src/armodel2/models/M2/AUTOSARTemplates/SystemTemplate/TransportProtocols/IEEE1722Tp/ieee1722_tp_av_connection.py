@@ -129,7 +129,10 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
             if tag == "MAX-TRANSIT-TIME":
                 setattr(obj, "max_transit_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "SDUS":
-                obj.sdu_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
 
         return obj
 

@@ -219,7 +219,10 @@ class PhysConstrs(ARObject):
             elif tag == "MONOTONY":
                 setattr(obj, "monotony", MonotonyEnum.deserialize(child))
             elif tag == "SCALE-CONSTRS":
-                obj.scale_constrs.append(SerializationHelper.deserialize_by_tag(child, "ScaleConstr"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.scale_constrs.append(SerializationHelper.deserialize_by_tag(item_elem, "ScaleConstr"))
             elif tag == "UPPER-LIMIT":
                 setattr(obj, "upper_limit", SerializationHelper.deserialize_by_tag(child, "Limit"))
             elif tag == "UNIT-REF":

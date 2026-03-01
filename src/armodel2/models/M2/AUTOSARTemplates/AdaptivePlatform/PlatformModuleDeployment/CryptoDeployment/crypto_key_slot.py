@@ -213,7 +213,10 @@ class CryptoKeySlot(Identifiable):
             elif tag == "KEY-SLOT-ALLOWED-MODIFICATION":
                 setattr(obj, "key_slot_allowed_modification", SerializationHelper.deserialize_by_tag(child, "CryptoKeySlotAllowedModification"))
             elif tag == "KEY-SLOT-CONTENT-ALLOWED-USAGES":
-                obj.key_slot_content_allowed_usages.append(SerializationHelper.deserialize_by_tag(child, "CryptoKeySlotContentAllowedUsage"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.key_slot_content_allowed_usages.append(SerializationHelper.deserialize_by_tag(item_elem, "CryptoKeySlotContentAllowedUsage"))
             elif tag == "SLOT-CAPACITY":
                 setattr(obj, "slot_capacity", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "SLOT-TYPE":

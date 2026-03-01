@@ -356,19 +356,31 @@ class CouplingPort(Identifiable):
             elif tag == "MAC-LAYER-TYPE-ENUM":
                 setattr(obj, "mac_layer_type_enum", EthernetMacLayerTypeEnum.deserialize(child))
             elif tag == "MAC-MULTICAST-GROUPS":
-                obj.mac_multicast_group_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mac_multicast_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "MacMulticastGroup"))
             elif tag == "MAC-SEC-PROPSES":
-                obj.mac_sec_propses.append(SerializationHelper.deserialize_by_tag(child, "MacSecProps"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mac_sec_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "MacSecProps"))
             elif tag == "PHYSICAL-LAYER":
                 setattr(obj, "physical_layer", EthernetPhysicalLayerTypeEnum.deserialize(child))
             elif tag == "PLCA-PROPS":
                 setattr(obj, "plca_props", SerializationHelper.deserialize_by_tag(child, "PlcaProps"))
             elif tag == "PNC-MAPPING-IDENTS":
-                obj.pnc_mapping_ident_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.pnc_mapping_ident_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PncMappingIdent"))
             elif tag == "RECEIVE-ACTIVITY":
                 setattr(obj, "receive_activity", SerializationHelper.deserialize_by_tag(child, "any (EthernetSwitchVlan)"))
             elif tag == "VLANS":
-                obj.vlans.append(SerializationHelper.deserialize_by_tag(child, "VlanMembership"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.vlans.append(SerializationHelper.deserialize_by_tag(item_elem, "VlanMembership"))
             elif tag == "VLAN-MODIFIER-REF":
                 setattr(obj, "vlan_modifier_ref", ARRef.deserialize(child))
             elif tag == "WAKEUP-SLEEP-REF":

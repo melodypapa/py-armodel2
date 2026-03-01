@@ -155,11 +155,17 @@ class ClientServerOperation(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "ARGUMENTS":
-                obj.arguments.append(SerializationHelper.deserialize_by_tag(child, "ArgumentDataPrototype"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "ArgumentDataPrototype"))
             elif tag == "DIAG-ARG-INTEGRITY":
                 setattr(obj, "diag_arg_integrity", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "POSSIBLE-ERRORS":
-                obj.possible_error_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.possible_error_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationError"))
 
         return obj
 

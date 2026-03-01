@@ -132,7 +132,10 @@ class DependencyOnArtifact(Identifiable):
             if tag == "ARTIFACT-DESCRIPTOR":
                 setattr(obj, "artifact_descriptor", SerializationHelper.deserialize_by_tag(child, "AutosarEngineeringObject"))
             elif tag == "USAGES":
-                obj.usage_refs.append(DependencyUsageEnum.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.usage_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyUsageEnum"))
 
         return obj
 

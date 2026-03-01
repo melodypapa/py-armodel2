@@ -246,7 +246,10 @@ class Collection(ARElement):
             if tag == "AUTO-COLLECT":
                 setattr(obj, "auto_collect", AutoCollectEnum.deserialize(child))
             elif tag == "COLLECTED-INSTANCES":
-                obj._collected_instance_irefs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj._collected_instance_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "AnyInstanceRef"))
             elif tag == "COLLECTION-SEMANTICS":
                 setattr(obj, "collection_semantics", SerializationHelper.deserialize_by_tag(child, "NameToken"))
             elif tag == "ELEMENT-ROLE":
@@ -1156,7 +1159,10 @@ class Collection(ARElement):
                     elif concrete_tag == "WAIT-POINT":
                         obj.source_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "WaitPoint"))
             elif tag == "SOURCE-INSTANCES":
-                obj._source_instance_irefs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj._source_instance_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "AnyInstanceRef"))
 
         return obj
 

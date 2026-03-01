@@ -188,7 +188,10 @@ class ImplementationDataType(AbstractImplementationDataType):
             elif tag == "IS-STRUCT-WITH-OPTIONAL-ELEMENT":
                 setattr(obj, "is_struct_with_optional_element", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "SUB-ELEMENTS":
-                obj.sub_elements.append(SerializationHelper.deserialize_by_tag(child, "ImplementationDataTypeElement"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sub_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ImplementationDataTypeElement"))
             elif tag == "SYMBOL-PROPS":
                 setattr(obj, "symbol_props", SerializationHelper.deserialize_by_tag(child, "SymbolProps"))
             elif tag == "TYPE-EMITTER":

@@ -139,7 +139,10 @@ class EcucConditionSpecification(ARObject):
             if tag == "CONDITION":
                 setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child, "EcucConditionFormula"))
             elif tag == "ECUC-QUERIES":
-                obj.ecuc_queries.append(SerializationHelper.deserialize_by_tag(child, "EcucQuery"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.ecuc_queries.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucQuery"))
             elif tag == "INFORMAL-FORMULA":
                 setattr(obj, "informal_formula", SerializationHelper.deserialize_by_tag(child, "MlFormula"))
 

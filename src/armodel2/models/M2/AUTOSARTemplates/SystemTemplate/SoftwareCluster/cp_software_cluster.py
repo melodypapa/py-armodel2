@@ -146,9 +146,15 @@ class CpSoftwareCluster(ARElement):
             if tag == "SOFTWARE-CLUSTER":
                 setattr(obj, "software_cluster", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "SW-COMPONENTS":
-                obj.sw_components.append(SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sw_components.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwComponent)"))
             elif tag == "SW-COMPOSITION-COMPONENT-TYPES":
-                obj.sw_composition_component_type_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sw_composition_component_type_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CompositionSwComponentType"))
 
         return obj
 

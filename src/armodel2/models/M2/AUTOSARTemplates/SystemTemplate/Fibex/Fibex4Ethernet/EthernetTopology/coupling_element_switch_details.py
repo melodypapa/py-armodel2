@@ -162,15 +162,30 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "FLOW-METERINGS":
-                obj.flow_meterings.append(SerializationHelper.deserialize_by_tag(child, "SwitchFlowMeteringEntry"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.flow_meterings.append(SerializationHelper.deserialize_by_tag(item_elem, "SwitchFlowMeteringEntry"))
             elif tag == "STREAM-FILTERS":
-                obj.stream_filters.append(SerializationHelper.deserialize_by_tag(child, "SwitchStreamFilterEntry"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.stream_filters.append(SerializationHelper.deserialize_by_tag(item_elem, "SwitchStreamFilterEntry"))
             elif tag == "STREAM-GATES":
-                obj.stream_gates.append(SerializationHelper.deserialize_by_tag(child, "SwitchStreamGateEntry"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.stream_gates.append(SerializationHelper.deserialize_by_tag(item_elem, "SwitchStreamGateEntry"))
             elif tag == "SWITCH-STREAMS":
-                obj.switch_streams.append(SerializationHelper.deserialize_by_tag(child, "any (SwitchStream)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.switch_streams.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwitchStream)"))
             elif tag == "TRAFFIC-SHAPERS":
-                obj.traffic_shapers.append(SerializationHelper.deserialize_by_tag(child, "SwitchAsynchronousTrafficShaperGroupEntry"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.traffic_shapers.append(SerializationHelper.deserialize_by_tag(item_elem, "SwitchAsynchronousTrafficShaperGroupEntry"))
 
         return obj
 

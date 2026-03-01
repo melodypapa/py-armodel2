@@ -172,11 +172,20 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
                     elif concrete_tag == "USER-DEFINED-CLUSTER":
                         obj.all_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCluster"))
             elif tag == "ALL-PHYSICALS":
-                obj.all_physical_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.all_physical_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EthernetPhysical)"))
             elif tag == "SPECIFIC-CHANNELS":
-                obj.specific_channels.append(SerializationHelper.deserialize_by_tag(child, "DiagnosticComControl"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.specific_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticComControl"))
             elif tag == "SUB-NODES":
-                obj.sub_nodes.append(SerializationHelper.deserialize_by_tag(child, "DiagnosticComControl"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sub_nodes.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticComControl"))
 
         return obj
 

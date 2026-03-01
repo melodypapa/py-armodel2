@@ -285,9 +285,15 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
             elif tag == "DIAGNOSTIC-MEMORY-REF":
                 setattr(obj, "diagnostic_memory_ref", ARRef.deserialize(child))
             elif tag == "EXTENDED-DATAS":
-                obj.extended_data_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.extended_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticExtendedDataRecord"))
             elif tag == "FREEZE-FRAMES":
-                obj.freeze_frame_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.freeze_frame_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticFreezeFrame"))
             elif tag == "IMMEDIATE-NV":
                 setattr(obj, "immediate_nv", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "LEGISLATED-REF":

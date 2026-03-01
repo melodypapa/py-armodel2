@@ -143,7 +143,10 @@ class EndToEndProtectionVariablePrototype(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "RECEIVERS":
-                obj.receiver_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.receiver_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "SENDER-REF":
                 setattr(obj, "sender_ref", ARRef.deserialize(child))
             elif tag == "SHORT-LABEL":

@@ -236,7 +236,10 @@ class Ipv4Configuration(NetworkEndpointAddress):
             elif tag == "DEFAULT-GATEWAY":
                 setattr(obj, "default_gateway", SerializationHelper.deserialize_by_tag(child, "Ip4AddressString"))
             elif tag == "DNS-SERVERS":
-                obj.dns_servers.append(SerializationHelper.deserialize_by_tag(child, "Ip4AddressString"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.dns_servers.append(SerializationHelper.deserialize_by_tag(item_elem, "Ip4AddressString"))
             elif tag == "IP-ADDRESS-KEEP-ENUM":
                 setattr(obj, "ip_address_keep_enum", IpAddressKeepEnum.deserialize(child))
             elif tag == "IPV4-ADDRESS":

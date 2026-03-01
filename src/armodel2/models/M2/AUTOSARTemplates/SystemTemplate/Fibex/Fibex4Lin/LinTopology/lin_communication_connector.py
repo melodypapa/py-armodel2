@@ -157,9 +157,15 @@ class LinCommunicationConnector(CommunicationConnector):
             if tag == "INITIAL-NAD":
                 setattr(obj, "initial_nad", SerializationHelper.deserialize_by_tag(child, "Integer"))
             elif tag == "LIN-CONFIGURABLE-FRAMES":
-                obj.lin_configurable_frames.append(SerializationHelper.deserialize_by_tag(child, "LinConfigurableFrame"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.lin_configurable_frames.append(SerializationHelper.deserialize_by_tag(item_elem, "LinConfigurableFrame"))
             elif tag == "LIN-ORDEREDS":
-                obj.lin_ordereds.append(SerializationHelper.deserialize_by_tag(child, "LinOrderedConfigurableFrame"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.lin_ordereds.append(SerializationHelper.deserialize_by_tag(item_elem, "LinOrderedConfigurableFrame"))
             elif tag == "SCHEDULE":
                 setattr(obj, "schedule", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 

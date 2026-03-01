@@ -343,11 +343,17 @@ class TlsCryptoCipherSuite(Identifiable):
             elif tag == "CIPHER-SUITE":
                 setattr(obj, "cipher_suite", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "ELLIPTIC-CURVES":
-                obj.elliptic_curf_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.elliptic_curf_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CryptoEllipticCurveProps"))
             elif tag == "ENCRYPTION-REF":
                 setattr(obj, "encryption_ref", ARRef.deserialize(child))
             elif tag == "KEY-EXCHANGES":
-                obj.key_exchange_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.key_exchange_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CryptoServicePrimitive"))
             elif tag == "PRIORITY":
                 setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "PROPS":
@@ -357,7 +363,10 @@ class TlsCryptoCipherSuite(Identifiable):
             elif tag == "REMOTE-REF":
                 setattr(obj, "remote_ref", ARRef.deserialize(child))
             elif tag == "SIGNATURES":
-                obj.signature_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.signature_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CryptoSignatureScheme"))
             elif tag == "VERSION":
                 setattr(obj, "version", TlsVersionEnum.deserialize(child))
 

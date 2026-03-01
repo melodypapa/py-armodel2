@@ -126,9 +126,15 @@ class RunnableEntityGroup(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "RUNNABLE-ENTITIES":
-                obj.runnable_entities.append(SerializationHelper.deserialize_by_tag(child, "RunnableEntity"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.runnable_entities.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntity"))
             elif tag == "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS":
-                obj.runnable_entity_group_group_in_composition_instance_ref.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.runnable_entity_group_group_in_composition_instance_ref.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntityGroup"))
 
         return obj
 

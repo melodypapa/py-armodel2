@@ -283,7 +283,10 @@ class FlexrayTpConnection(TpConnection):
             elif tag == "MULTICAST-REF":
                 setattr(obj, "multicast_ref", ARRef.deserialize(child))
             elif tag == "RECEIVERS":
-                obj.receiver_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.receiver_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayTpNode"))
             elif tag == "REVERSED-TP-SDU-REF":
                 # Check first child element for concrete type
                 if len(child) > 0:

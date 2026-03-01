@@ -198,7 +198,10 @@ class LifeCycleInfoSet(ARElement):
             elif tag == "DEFAULT-PERIOD-END":
                 setattr(obj, "default_period_end", SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod"))
             elif tag == "LIFE-CYCLE-INFOES":
-                obj._life_cycle_infoes.append(SerializationHelper.deserialize_by_tag(child, "LifeCycleInfo"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj._life_cycle_infoes.append(SerializationHelper.deserialize_by_tag(item_elem, "LifeCycleInfo"))
             elif tag == "USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF":
                 setattr(obj, "used_life_cycle_state_definition_group_ref", ARRef.deserialize(child))
 

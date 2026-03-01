@@ -131,7 +131,10 @@ class PdurIPduGroup(FibexElement):
             if tag == "COMMUNICATION":
                 setattr(obj, "communication", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "I-PDUS":
-                obj.i_pdu_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.i_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
 
         return obj
 

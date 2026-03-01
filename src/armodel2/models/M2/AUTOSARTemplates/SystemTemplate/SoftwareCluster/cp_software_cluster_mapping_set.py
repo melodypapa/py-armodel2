@@ -146,13 +146,25 @@ class CpSoftwareClusterMappingSet(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "PORT-ELEMENT-TOES":
-                obj.port_element_toes.append(SerializationHelper.deserialize_by_tag(child, "PortElementToCommunicationResourceMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.port_element_toes.append(SerializationHelper.deserialize_by_tag(item_elem, "PortElementToCommunicationResourceMapping"))
             elif tag == "RESOURCE-TOES":
-                obj.resource_toes.append(SerializationHelper.deserialize_by_tag(child, "CpSoftwareCluster"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.resource_toes.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareCluster"))
             elif tag == "SOFTWARE-CLUSTERS":
-                obj.software_clusters.append(SerializationHelper.deserialize_by_tag(child, "any (CpSoftwareClusterTo)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.software_clusters.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CpSoftwareClusterTo)"))
             elif tag == "SWC-TOES":
-                obj.swc_toes.append(SerializationHelper.deserialize_by_tag(child, "SwcToApplicationPartitionMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.swc_toes.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToApplicationPartitionMapping"))
 
         return obj
 

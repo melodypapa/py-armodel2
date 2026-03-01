@@ -254,7 +254,10 @@ class Ipv6Configuration(NetworkEndpointAddress):
             elif tag == "DEFAULT-ROUTER":
                 setattr(obj, "default_router", SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
             elif tag == "DNS-SERVERS":
-                obj.dns_servers.append(SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.dns_servers.append(SerializationHelper.deserialize_by_tag(item_elem, "Ip6AddressString"))
             elif tag == "ENABLE-ANYCAST":
                 setattr(obj, "enable_anycast", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "HOP-COUNT":

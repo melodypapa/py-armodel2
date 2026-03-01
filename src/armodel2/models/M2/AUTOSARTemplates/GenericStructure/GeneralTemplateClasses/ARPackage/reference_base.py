@@ -228,9 +228,15 @@ class ReferenceBase(ARObject):
             elif tag == "PACKAGE-REF":
                 setattr(obj, "package_ref", ARRef.deserialize(child))
             elif tag == "GLOBAL-ELEMENTS":
-                obj.global_element_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.global_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ReferrableSubtypesEnum"))
             elif tag == "GLOBAL-IN-PACKAGES":
-                obj.global_in_package_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.global_in_package_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ARPackage"))
 
         return obj
 

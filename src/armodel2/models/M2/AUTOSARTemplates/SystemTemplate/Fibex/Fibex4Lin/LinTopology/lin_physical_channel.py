@@ -123,7 +123,10 @@ class LinPhysicalChannel(PhysicalChannel):
             if tag == "BUS-IDLE-TIMEOUT":
                 setattr(obj, "bus_idle_timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "SCHEDULE-TABLES":
-                obj.schedule_tables.append(SerializationHelper.deserialize_by_tag(child, "LinScheduleTable"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.schedule_tables.append(SerializationHelper.deserialize_by_tag(item_elem, "LinScheduleTable"))
 
         return obj
 

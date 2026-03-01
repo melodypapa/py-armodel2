@@ -124,7 +124,10 @@ class MacSecParticipantSet(ARElement):
             if tag == "ETHERNET-CLUSTER-REF":
                 setattr(obj, "ethernet_cluster_ref", ARRef.deserialize(child))
             elif tag == "MKA-PARTICIPANTS":
-                obj.mka_participants.append(SerializationHelper.deserialize_by_tag(child, "MacSecKayParticipant"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mka_participants.append(SerializationHelper.deserialize_by_tag(item_elem, "MacSecKayParticipant"))
 
         return obj
 

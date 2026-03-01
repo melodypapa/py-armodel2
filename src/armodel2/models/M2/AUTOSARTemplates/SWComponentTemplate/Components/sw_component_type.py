@@ -206,7 +206,10 @@ class SwComponentType(ARElement, ABC):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "CONSISTENCY-NEEDSES":
-                obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(child, "ConsistencyNeeds"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsistencyNeeds"))
             elif tag == "PORTS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -216,13 +219,22 @@ class SwComponentType(ARElement, ABC):
                     elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
                         obj.ports.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
             elif tag == "PORT-GROUPS":
-                obj.port_groups.append(SerializationHelper.deserialize_by_tag(child, "PortGroup"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.port_groups.append(SerializationHelper.deserialize_by_tag(item_elem, "PortGroup"))
             elif tag == "SWC-MAPPING-CONSTRAINTS":
-                obj.swc_mapping_constraint_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.swc_mapping_constraint_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwComponentMappingConstraints"))
             elif tag == "SW-COMPONENT-DOCUMENTATION":
                 setattr(obj, "sw_component_documentation", SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation"))
             elif tag == "UNIT-GROUPS":
-                obj.unit_group_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.unit_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "UnitGroup"))
 
         return obj
 

@@ -123,7 +123,10 @@ class DiagnosticParameterElement(Identifiable):
             if tag == "ARRAY-SIZE":
                 setattr(obj, "array_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "SUB-ELEMENTS":
-                obj.sub_elements.append(SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sub_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticParameter"))
 
         return obj
 

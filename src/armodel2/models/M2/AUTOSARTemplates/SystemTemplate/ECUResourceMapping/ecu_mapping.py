@@ -159,7 +159,10 @@ class ECUMapping(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "COMM-CONTROLLERS":
-                obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(child, "any (Communication)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(item_elem, "any (Communication)"))
             elif tag == "ECU-REF":
                 setattr(obj, "ecu_ref", ARRef.deserialize(child))
             elif tag == "ECU-INSTANCE-REF":

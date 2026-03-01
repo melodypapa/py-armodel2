@@ -472,11 +472,20 @@ class SystemMapping(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "APPLICATION-PARTITION-TO-ECU-PARTITION-MAPPINGS":
-                obj.application_partition_to_ecu_partition_mappings.append(SerializationHelper.deserialize_by_tag(child, "ApplicationPartitionToEcuPartitionMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.application_partition_to_ecu_partition_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationPartitionToEcuPartitionMapping"))
             elif tag == "APP-OS-TASK-PROXY-TO-ECU-TASK-PROXY-MAPPINGS":
-                obj.app_os_task_proxy_to_ecu_task_proxy_mappings.append(SerializationHelper.deserialize_by_tag(child, "AppOsTaskProxyToEcuTaskProxyMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.app_os_task_proxy_to_ecu_task_proxy_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "AppOsTaskProxyToEcuTaskProxyMapping"))
             elif tag == "COM-MANAGEMENT-MAPPINGS":
-                obj.com_management_mappings.append(SerializationHelper.deserialize_by_tag(child, "ComManagementMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.com_management_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ComManagementMapping"))
             elif tag == "CRYPTO-SERVICE-MAPPINGS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -500,11 +509,20 @@ class SystemMapping(Identifiable):
                     elif concrete_tag == "TRIGGER-TO-SIGNAL-MAPPING":
                         obj.data_mappings.append(SerializationHelper.deserialize_by_tag(child[0], "TriggerToSignalMapping"))
             elif tag == "DDS-I-SIGNAL-TO-TOPIC-MAPPINGS":
-                obj.dds_i_signal_to_topic_mappings.append(SerializationHelper.deserialize_by_tag(child, "DdsCpISignalToDdsTopicMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.dds_i_signal_to_topic_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "DdsCpISignalToDdsTopicMapping"))
             elif tag == "ECU-RESOURCES-MAPPINGS":
-                obj.ecu_resources_mappings.append(SerializationHelper.deserialize_by_tag(child, "ECUMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.ecu_resources_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ECUMapping"))
             elif tag == "J1939-CONTROLLER-APPLICATION-TO-J1939-NM-NODE-MAPPINGS":
-                obj.j1939_controller_application_to_j1939_nm_node_mappings.append(SerializationHelper.deserialize_by_tag(child, "J1939ControllerApplicationToJ1939NmNodeMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.j1939_controller_application_to_j1939_nm_node_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "J1939ControllerApplicationToJ1939NmNodeMapping"))
             elif tag == "MAPPING-CONSTRAINTS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -514,17 +532,35 @@ class SystemMapping(Identifiable):
                     elif concrete_tag == "COMPONENT-SEPARATION":
                         obj.mapping_constraints.append(SerializationHelper.deserialize_by_tag(child[0], "ComponentSeparation"))
             elif tag == "PNC-MAPPINGS":
-                obj.pnc_mappings.append(SerializationHelper.deserialize_by_tag(child, "PncMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.pnc_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "PncMapping"))
             elif tag == "PORT-ELEMENT-TO-COM-RESOURCE-MAPPINGS":
-                obj.port_element_to_com_resource_mappings.append(SerializationHelper.deserialize_by_tag(child, "PortElementToCommunicationResourceMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.port_element_to_com_resource_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "PortElementToCommunicationResourceMapping"))
             elif tag == "RESOURCE-ESTIMATIONS":
-                obj.resource_estimations.append(SerializationHelper.deserialize_by_tag(child, "EcuResourceEstimation"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.resource_estimations.append(SerializationHelper.deserialize_by_tag(item_elem, "EcuResourceEstimation"))
             elif tag == "RESOURCE-TO-APPLICATION-PARTITION-MAPPINGS":
-                obj.resource_to_application_partition_mappings.append(SerializationHelper.deserialize_by_tag(child, "CpSoftwareClusterResourceToApplicationPartitionMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.resource_to_application_partition_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareClusterResourceToApplicationPartitionMapping"))
             elif tag == "RTE-EVENT-SEPARATIONS":
-                obj.rte_event_separations.append(SerializationHelper.deserialize_by_tag(child, "RteEventInSystemSeparation"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.rte_event_separations.append(SerializationHelper.deserialize_by_tag(item_elem, "RteEventInSystemSeparation"))
             elif tag == "RTE-EVENT-TO-OS-TASK-PROXY-MAPPINGS":
-                obj.rte_event_to_os_task_proxy_mappings.append(SerializationHelper.deserialize_by_tag(child, "RteEventInSystemToOsTaskProxyMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.rte_event_to_os_task_proxy_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "RteEventInSystemToOsTaskProxyMapping"))
             elif tag == "SIGNAL-PATH-CONSTRAINTS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -538,21 +574,45 @@ class SystemMapping(Identifiable):
                     elif concrete_tag == "SEPARATE-SIGNAL-PATH":
                         obj.signal_path_constraints.append(SerializationHelper.deserialize_by_tag(child[0], "SeparateSignalPath"))
             elif tag == "SOFTWARE-CLUSTER-TO-APPLICATION-PARTITION-MAPPINGS":
-                obj.software_cluster_to_application_partition_mappings.append(SerializationHelper.deserialize_by_tag(child, "CpSoftwareClusterToApplicationPartitionMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.software_cluster_to_application_partition_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareClusterToApplicationPartitionMapping"))
             elif tag == "SW-CLUSTER-TO-RESOURCE-MAPPINGS":
-                obj.sw_cluster_to_resource_mappings.append(SerializationHelper.deserialize_by_tag(child, "CpSoftwareClusterToResourceMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sw_cluster_to_resource_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareClusterToResourceMapping"))
             elif tag == "SW-CLUSTER-MAPPINGS":
-                obj.sw_cluster_mappings.append(SerializationHelper.deserialize_by_tag(child, "CpSoftwareClusterToEcuInstanceMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sw_cluster_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareClusterToEcuInstanceMapping"))
             elif tag == "SWC-TO-APPLICATION-PARTITION-MAPPINGS":
-                obj.swc_to_application_partition_mappings.append(SerializationHelper.deserialize_by_tag(child, "SwcToApplicationPartitionMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.swc_to_application_partition_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToApplicationPartitionMapping"))
             elif tag == "SW-IMPL-MAPPINGS":
-                obj.sw_impl_mappings.append(SerializationHelper.deserialize_by_tag(child, "SwcToImplMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sw_impl_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToImplMapping"))
             elif tag == "SW-MAPPINGS":
-                obj.sw_mappings.append(SerializationHelper.deserialize_by_tag(child, "SwcToEcuMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sw_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToEcuMapping"))
             elif tag == "SYSTEM-SIGNAL-GROUP-TO-COM-RESOURCE-MAPPINGS":
-                obj.system_signal_group_to_com_resource_mappings.append(SerializationHelper.deserialize_by_tag(child, "SystemSignalGroupToCommunicationResourceMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.system_signal_group_to_com_resource_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SystemSignalGroupToCommunicationResourceMapping"))
             elif tag == "SYSTEM-SIGNAL-TO-COM-RESOURCE-MAPPINGS":
-                obj.system_signal_to_com_resource_mappings.append(SerializationHelper.deserialize_by_tag(child, "SystemSignalToCommunicationResourceMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.system_signal_to_com_resource_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "SystemSignalToCommunicationResourceMapping"))
 
         return obj
 

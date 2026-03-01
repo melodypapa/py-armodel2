@@ -210,7 +210,10 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
             elif tag == "IS-OPTIONAL":
                 setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "SUB-ELEMENTS":
-                obj.sub_elements.append(SerializationHelper.deserialize_by_tag(child, "any (ImplementationData)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sub_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ImplementationData)"))
             elif tag == "SW-DATA-DEF":
                 setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 

@@ -183,7 +183,10 @@ class Ipv6DhcpServerConfiguration(Describable):
             elif tag == "DEFAULT-LEASE":
                 setattr(obj, "default_lease", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "DNS-SERVERS":
-                obj.dns_servers.append(SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.dns_servers.append(SerializationHelper.deserialize_by_tag(item_elem, "Ip6AddressString"))
             elif tag == "NETWORK-MASK":
                 setattr(obj, "network_mask", SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
 

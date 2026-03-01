@@ -171,13 +171,25 @@ class McSupportData(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "EMULATIONS":
-                obj.emulations.append(SerializationHelper.deserialize_by_tag(child, "McSwEmulationMethodSupport"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.emulations.append(SerializationHelper.deserialize_by_tag(item_elem, "McSwEmulationMethodSupport"))
             elif tag == "MC-PARAMETERS":
-                obj.mc_parameters.append(SerializationHelper.deserialize_by_tag(child, "McDataInstance"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mc_parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "McDataInstance"))
             elif tag == "MC-VARIABLES":
-                obj.mc_variables.append(SerializationHelper.deserialize_by_tag(child, "McDataInstance"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mc_variables.append(SerializationHelper.deserialize_by_tag(item_elem, "McDataInstance"))
             elif tag == "MEASURABLES":
-                obj.measurable_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.measurable_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwSystemconstantValueSet"))
             elif tag == "RPT-SUPPORT-DATA":
                 setattr(obj, "rpt_support_data", SerializationHelper.deserialize_by_tag(child, "RptSupportData"))
 

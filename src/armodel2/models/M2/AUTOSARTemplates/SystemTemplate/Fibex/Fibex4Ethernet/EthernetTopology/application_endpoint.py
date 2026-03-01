@@ -209,7 +209,10 @@ class ApplicationEndpoint(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "CONSUMED-SERVICES":
-                obj.consumed_services.append(SerializationHelper.deserialize_by_tag(child, "any (ConsumedService)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.consumed_services.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ConsumedService)"))
             elif tag == "MAX-NUMBER-OF":
                 setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "NETWORK-ENDPOINT-ENDPOINT-REF":
@@ -217,7 +220,10 @@ class ApplicationEndpoint(Identifiable):
             elif tag == "PRIORITY":
                 setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "PROVIDED-SERVICES":
-                obj.provided_services.append(SerializationHelper.deserialize_by_tag(child, "any (ProvidedService)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.provided_services.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ProvidedService)"))
             elif tag == "TLS-CRYPTO-SERVICE-REF":
                 setattr(obj, "tls_crypto_service_ref", ARRef.deserialize(child))
             elif tag == "TP-CONFIGURATION-CONFIGURATION":

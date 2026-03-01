@@ -212,7 +212,10 @@ class CouplingPortDetails(ARObject):
             elif tag == "LAST-EGRESS-REF":
                 setattr(obj, "last_egress_ref", ARRef.deserialize(child))
             elif tag == "RATE-POLICIES":
-                obj.rate_policies.append(SerializationHelper.deserialize_by_tag(child, "CouplingPortRatePolicy"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.rate_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPortRatePolicy"))
 
         return obj
 

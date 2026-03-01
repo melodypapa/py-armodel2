@@ -186,7 +186,10 @@ class EcucModuleDef(EcucDefinitionElement):
             elif tag == "REFINED-MODULE-REF":
                 setattr(obj, "refined_module_ref", ARRef.deserialize(child))
             elif tag == "SUPPORTEDS":
-                obj.supporteds.append(SerializationHelper.deserialize_by_tag(child, "any (EcucConfiguration)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.supporteds.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EcucConfiguration)"))
 
         return obj
 

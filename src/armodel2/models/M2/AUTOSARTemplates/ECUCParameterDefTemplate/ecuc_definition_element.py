@@ -203,7 +203,10 @@ class EcucDefinitionElement(Identifiable, ABC):
             if tag == "ECUC-COND":
                 setattr(obj, "ecuc_cond", SerializationHelper.deserialize_by_tag(child, "any (EcucCondition)"))
             elif tag == "ECUC-VALIDATIONS":
-                obj.ecuc_validations.append(SerializationHelper.deserialize_by_tag(child, "EcucValidationCondition"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.ecuc_validations.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucValidationCondition"))
             elif tag == "LOWER-MULTIPLICITY":
                 setattr(obj, "lower_multiplicity", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "RELATED-TRACE-REF":

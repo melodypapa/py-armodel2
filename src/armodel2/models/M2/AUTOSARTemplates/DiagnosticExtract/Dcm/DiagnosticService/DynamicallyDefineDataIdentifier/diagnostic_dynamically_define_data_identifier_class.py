@@ -142,7 +142,10 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
             elif tag == "CONFIGURATION":
                 setattr(obj, "configuration", DiagnosticHandleDDDIConfigurationEnum.deserialize(child))
             elif tag == "SUBFUNCTIONS":
-                obj.subfunctions.append(SerializationHelper.deserialize_by_tag(child, "any (DiagnosticDynamically)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.subfunctions.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticDynamically)"))
 
         return obj
 

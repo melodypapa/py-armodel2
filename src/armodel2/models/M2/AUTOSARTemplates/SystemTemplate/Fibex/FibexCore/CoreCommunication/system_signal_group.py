@@ -126,7 +126,10 @@ class SystemSignalGroup(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "SYSTEM-SIGNALS":
-                obj.system_signal_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.system_signal_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SystemSignal"))
             elif tag == "TRANSFORMING-REF":
                 setattr(obj, "transforming_ref", ARRef.deserialize(child))
 

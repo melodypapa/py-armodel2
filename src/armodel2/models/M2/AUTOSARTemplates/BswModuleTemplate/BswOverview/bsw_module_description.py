@@ -348,33 +348,69 @@ class BswModuleDescription(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "BSW-MODULES-DEPENDENCIES":
-                obj.bsw_modules_dependencies.append(SerializationHelper.deserialize_by_tag(child, "BswModuleDependency"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.bsw_modules_dependencies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleDependency"))
             elif tag == "BSW-MODULE-DOCUMENTATION":
                 setattr(obj, "bsw_module_documentation", SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation"))
             elif tag == "EXPECTED-ENTRIES":
-                obj.expected_entry_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.expected_entry_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleEntry"))
             elif tag == "IMPLEMENTED-ENTRIES":
-                obj.implemented_entry_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.implemented_entry_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleEntry"))
             elif tag == "INTERNAL-BEHAVIORS":
-                obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(child, "BswInternalBehavior"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalBehavior"))
             elif tag == "MODULE-ID":
                 setattr(obj, "module_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "PROVIDED-CLIENT-SERVER-ENTRIES":
-                obj._provided_client_server_entries.append(SerializationHelper.deserialize_by_tag(child, "BswModuleClientServerEntry"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj._provided_client_server_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleClientServerEntry"))
             elif tag == "PROVIDED-DATAS":
-                obj.provided_datas.append(SerializationHelper.deserialize_by_tag(child, "VariableDataPrototype"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.provided_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "PROVIDED-MODE-GROUPS":
-                obj.provided_mode_groups.append(SerializationHelper.deserialize_by_tag(child, "ModeDeclarationGroup"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.provided_mode_groups.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroup"))
             elif tag == "RELEASED-TRIGGERS":
-                obj.released_triggers.append(SerializationHelper.deserialize_by_tag(child, "Trigger"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.released_triggers.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
             elif tag == "REQUIRED-CLIENT-SERVER-ENTRIES":
-                obj._required_client_server_entries.append(SerializationHelper.deserialize_by_tag(child, "BswModuleClientServerEntry"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj._required_client_server_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleClientServerEntry"))
             elif tag == "REQUIRED-DATAS":
-                obj.required_datas.append(SerializationHelper.deserialize_by_tag(child, "VariableDataPrototype"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.required_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "REQUIRED-MODE-GROUPS":
-                obj.required_mode_groups.append(SerializationHelper.deserialize_by_tag(child, "ModeDeclarationGroup"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.required_mode_groups.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroup"))
             elif tag == "REQUIRED-TRIGGERS":
-                obj.required_triggers.append(SerializationHelper.deserialize_by_tag(child, "Trigger"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.required_triggers.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
 
         return obj
 

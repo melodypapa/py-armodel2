@@ -227,7 +227,10 @@ class PortAPIOption(ARObject):
                     elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
                         setattr(obj, "port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
             elif tag == "PORT-ARG-VALUES":
-                obj.port_arg_values.append(SerializationHelper.deserialize_by_tag(child, "PortDefinedArgumentValue"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.port_arg_values.append(SerializationHelper.deserialize_by_tag(item_elem, "PortDefinedArgumentValue"))
             elif tag == "SUPPORTED-FEATURES":
                 # Check first child element for concrete type
                 if len(child) > 0:

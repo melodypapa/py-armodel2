@@ -136,7 +136,10 @@ class MsrQueryProps(ARObject):
             if tag == "COMMENT":
                 setattr(obj, "comment", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "MSR-QUERY-ARGS":
-                obj.msr_query_args.append(SerializationHelper.deserialize_by_tag(child, "MsrQueryArg"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.msr_query_args.append(SerializationHelper.deserialize_by_tag(item_elem, "MsrQueryArg"))
             elif tag == "MSR-QUERY-NAME":
                 setattr(obj, "msr_query_name", SerializationHelper.deserialize_by_tag(child, "String"))
 

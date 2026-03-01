@@ -130,11 +130,20 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "CONFIDENCE-INTERVALS":
-                obj.confidence_intervals.append(SerializationHelper.deserialize_by_tag(child, "ConfidenceInterval"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.confidence_intervals.append(SerializationHelper.deserialize_by_tag(item_elem, "ConfidenceInterval"))
             elif tag == "MAXIMUMS":
-                obj.maximums.append(SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.maximums.append(SerializationHelper.deserialize_by_tag(item_elem, "MultidimensionalTime"))
             elif tag == "MINIMUMS":
-                obj.minimums.append(SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.minimums.append(SerializationHelper.deserialize_by_tag(item_elem, "MultidimensionalTime"))
 
         return obj
 

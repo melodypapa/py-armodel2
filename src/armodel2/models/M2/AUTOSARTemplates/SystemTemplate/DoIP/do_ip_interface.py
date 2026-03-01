@@ -330,9 +330,15 @@ class DoIpInterface(Identifiable):
             elif tag == "DOIP-CHANNEL-REF":
                 setattr(obj, "doip_channel_ref", ARRef.deserialize(child))
             elif tag == "DOIP-CONNECTIONS":
-                obj.doip_connection_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.doip_connection_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SocketConnection"))
             elif tag == "DO-IP-ROUTINGS":
-                obj.do_ip_routings.append(SerializationHelper.deserialize_by_tag(child, "DoIpRoutingActivation"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.do_ip_routings.append(SerializationHelper.deserialize_by_tag(item_elem, "DoIpRoutingActivation"))
             elif tag == "GENERAL-INACTIVITY":
                 setattr(obj, "general_inactivity", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "INITIAL-INACTIVITY":
@@ -344,7 +350,10 @@ class DoIpInterface(Identifiable):
             elif tag == "MAX-TESTER":
                 setattr(obj, "max_tester", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "SOCKETS":
-                obj.socket_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.socket_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "StaticSocketConnection"))
             elif tag == "USE-MAC-ADDRESS":
                 setattr(obj, "use_mac_address", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "USE-VEHICLE":

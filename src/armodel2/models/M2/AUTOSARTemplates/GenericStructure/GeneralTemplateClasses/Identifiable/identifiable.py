@@ -216,7 +216,10 @@ class Identifiable(MultilanguageReferrable, ABC):
             if tag == "ADMIN-DATA":
                 setattr(obj, "admin_data", SerializationHelper.deserialize_by_tag(child, "AdminData"))
             elif tag == "ANNOTATIONS":
-                obj.annotations.append(SerializationHelper.deserialize_by_tag(child, "Annotation"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "Annotation"))
             elif tag == "DESC":
                 setattr(obj, "desc", SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph"))
             elif tag == "CATEGORY":

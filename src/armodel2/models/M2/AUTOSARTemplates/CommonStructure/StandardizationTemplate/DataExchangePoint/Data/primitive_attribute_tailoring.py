@@ -140,7 +140,10 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
             if tag == "DEFAULT-VALUE":
                 setattr(obj, "default_value", DefaultValueApplicationStrategyEnum.deserialize(child))
             elif tag == "SUB-ATTRIBUTES":
-                obj.sub_attributes.append(SerializationHelper.deserialize_by_tag(child, "any (PrimitiveAttribute)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sub_attributes.append(SerializationHelper.deserialize_by_tag(item_elem, "any (PrimitiveAttribute)"))
             elif tag == "VALUE-RESTRICTION-WITH-SEVERITY":
                 setattr(obj, "value_restriction_with_severity", SerializationHelper.deserialize_by_tag(child, "ValueRestrictionWithSeverity"))
 

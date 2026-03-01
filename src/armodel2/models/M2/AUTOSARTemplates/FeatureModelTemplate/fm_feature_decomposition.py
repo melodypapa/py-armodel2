@@ -162,7 +162,10 @@ class FMFeatureDecomposition(ARObject):
             if tag == "CATEGORY":
                 setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "CategoryString"))
             elif tag == "FEATURES":
-                obj.feature_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.feature_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeature"))
             elif tag == "MAX":
                 setattr(obj, "max", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "MIN":

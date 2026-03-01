@@ -176,13 +176,25 @@ class ConsistencyNeeds(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "DPG-DOES-NOTS":
-                obj.dpg_does_not_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.dpg_does_not_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataPrototypeGroup"))
             elif tag == "DPG-REQUIRESES":
-                obj.dpg_require_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.dpg_require_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataPrototypeGroup"))
             elif tag == "REG-DOES-NOTS":
-                obj.reg_does_not_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.reg_does_not_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntityGroup"))
             elif tag == "REG-REQUIRESES":
-                obj.reg_require_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.reg_require_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntityGroup"))
 
         return obj
 

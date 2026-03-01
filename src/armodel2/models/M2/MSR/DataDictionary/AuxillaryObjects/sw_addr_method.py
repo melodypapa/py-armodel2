@@ -168,7 +168,10 @@ class SwAddrMethod(ARElement):
             if tag == "MEMORY":
                 setattr(obj, "memory", MemoryAllocationKeywordPolicyType.deserialize(child))
             elif tag == "OPTIONS":
-                obj.options.append(SerializationHelper.deserialize_by_tag(child, "Identifier"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.options.append(SerializationHelper.deserialize_by_tag(item_elem, "Identifier"))
             elif tag == "SECTION":
                 setattr(obj, "section", SerializationHelper.deserialize_by_tag(child, "SectionInitializationPolicyType"))
             elif tag == "SECTION-TYPE":

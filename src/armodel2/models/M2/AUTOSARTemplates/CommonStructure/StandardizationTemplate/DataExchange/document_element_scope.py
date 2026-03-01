@@ -125,7 +125,10 @@ class DocumentElementScope(SpecElementReference):
             if tag == "CUSTOM-DOCUMENT-REF":
                 setattr(obj, "custom_document_ref", ARRef.deserialize(child))
             elif tag == "TAILORINGS":
-                obj.tailoring_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.tailoring_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DataFormatElement)"))
 
         return obj
 

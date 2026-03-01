@@ -122,9 +122,15 @@ class MetaDataItemSet(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "DATA-ELEMENTS":
-                obj.data_element_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.data_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "META-DATA-ITEMS":
-                obj.meta_data_items.append(SerializationHelper.deserialize_by_tag(child, "MetaDataItem"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.meta_data_items.append(SerializationHelper.deserialize_by_tag(item_elem, "MetaDataItem"))
 
         return obj
 

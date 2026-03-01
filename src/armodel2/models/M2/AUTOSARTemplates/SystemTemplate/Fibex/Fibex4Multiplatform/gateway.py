@@ -177,11 +177,20 @@ class Gateway(FibexElement):
             if tag == "ECU-REF":
                 setattr(obj, "ecu_ref", ARRef.deserialize(child))
             elif tag == "FRAME-MAPPINGS":
-                obj.frame_mapping_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.frame_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FrameMapping"))
             elif tag == "I-PDU-MAPPINGS":
-                obj.i_pdu_mapping_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.i_pdu_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "IPduMapping"))
             elif tag == "SIGNAL-MAPPINGS":
-                obj.signal_mapping_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.signal_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalMapping"))
 
         return obj
 

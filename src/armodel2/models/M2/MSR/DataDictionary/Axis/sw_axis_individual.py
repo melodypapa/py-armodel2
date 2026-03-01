@@ -261,7 +261,10 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
             elif tag == "SW-MIN-AXIS":
                 setattr(obj, "sw_min_axis", SerializationHelper.deserialize_by_tag(child, "Integer"))
             elif tag == "SW-VARIABLE-REF-PROXIES":
-                obj.sw_variable_ref_proxy_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sw_variable_ref_proxy_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwVariableRefProxy"))
             elif tag == "UNIT-REF":
                 setattr(obj, "unit_ref", ARRef.deserialize(child))
 

@@ -264,13 +264,22 @@ class ConsumedEventGroup(Identifiable):
             elif tag == "EVENT-GROUP":
                 setattr(obj, "event_group", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "EVENT-MULTICASTS":
-                obj.event_multicast_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.event_multicast_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationEndpoint"))
             elif tag == "PDU-ACTIVATION-ROUTINGS":
-                obj.pdu_activation_routings.append(SerializationHelper.deserialize_by_tag(child, "PduActivationRoutingGroup"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.pdu_activation_routings.append(SerializationHelper.deserialize_by_tag(item_elem, "PduActivationRoutingGroup"))
             elif tag == "PRIORITY":
                 setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "ROUTING-GROUPS":
-                obj.routing_group_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.routing_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SoAdRoutingGroup"))
             elif tag == "SD-CLIENT-CONFIG":
                 setattr(obj, "sd_client_config", SerializationHelper.deserialize_by_tag(child, "any (SdClientConfig)"))
             elif tag == "SD-CLIENT-TIMER-REF":

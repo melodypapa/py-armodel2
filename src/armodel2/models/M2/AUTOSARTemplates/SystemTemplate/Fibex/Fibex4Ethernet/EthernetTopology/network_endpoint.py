@@ -185,7 +185,10 @@ class NetworkEndpoint(Identifiable):
             elif tag == "IP-SEC-CONFIG":
                 setattr(obj, "ip_sec_config", SerializationHelper.deserialize_by_tag(child, "IPSecConfig"))
             elif tag == "NETWORK-ENDPOINTS":
-                obj.network_endpoints.append(SerializationHelper.deserialize_by_tag(child, "NetworkEndpoint"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.network_endpoints.append(SerializationHelper.deserialize_by_tag(item_elem, "NetworkEndpoint"))
             elif tag == "PRIORITY":
                 setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

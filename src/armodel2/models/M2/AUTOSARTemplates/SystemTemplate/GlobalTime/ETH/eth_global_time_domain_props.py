@@ -199,7 +199,10 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
             elif tag == "FUP-DATA-ID-LIST":
                 setattr(obj, "fup_data_id_list", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "MANAGEDS":
-                obj.manageds.append(SerializationHelper.deserialize_by_tag(child, "any (EthGlobalTime)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.manageds.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EthGlobalTime)"))
             elif tag == "MESSAGE":
                 setattr(obj, "message", EthGlobalTimeMessageFormatEnum.deserialize(child))
             elif tag == "VLAN-PRIORITY":

@@ -129,11 +129,20 @@ class RptSupportData(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "EXECUTIONS":
-                obj.executions.append(SerializationHelper.deserialize_by_tag(child, "RptExecutionContext"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.executions.append(SerializationHelper.deserialize_by_tag(item_elem, "RptExecutionContext"))
             elif tag == "RPT-COMPONENTS":
-                obj.rpt_components.append(SerializationHelper.deserialize_by_tag(child, "RptComponent"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.rpt_components.append(SerializationHelper.deserialize_by_tag(item_elem, "RptComponent"))
             elif tag == "RPT-SERVICE-POINTS":
-                obj.rpt_service_points.append(SerializationHelper.deserialize_by_tag(child, "RptServicePoint"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.rpt_service_points.append(SerializationHelper.deserialize_by_tag(item_elem, "RptServicePoint"))
 
         return obj
 

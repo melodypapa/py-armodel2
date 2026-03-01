@@ -226,9 +226,15 @@ class RptContainer(Identifiable):
                     elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
                         obj.by_pass_points.append(SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
             elif tag == "EXPLICIT-RPTS":
-                obj.explicit_rpt_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.explicit_rpt_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RptProfile"))
             elif tag == "RPT-CONTAINERS":
-                obj.rpt_containers.append(SerializationHelper.deserialize_by_tag(child, "RptContainer"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.rpt_containers.append(SerializationHelper.deserialize_by_tag(item_elem, "RptContainer"))
             elif tag == "RPT-EXECUTABLE-ENTITY":
                 setattr(obj, "rpt_executable_entity", SerializationHelper.deserialize_by_tag(child, "RptExecutableEntity"))
             elif tag == "RPT-HOOK":

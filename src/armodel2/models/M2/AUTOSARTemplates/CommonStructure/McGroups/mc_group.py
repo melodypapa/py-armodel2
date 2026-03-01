@@ -167,13 +167,19 @@ class McGroup(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "MC-FUNCTIONS":
-                obj.mc_function_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mc_function_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "McFunction"))
             elif tag == "REF-CALPRM-SET-REF":
                 setattr(obj, "ref_calprm_set_ref", ARRef.deserialize(child))
             elif tag == "REF-REF":
                 setattr(obj, "ref_ref", ARRef.deserialize(child))
             elif tag == "SUB-GROUPS":
-                obj.sub_group_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sub_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "McGroup"))
 
         return obj
 

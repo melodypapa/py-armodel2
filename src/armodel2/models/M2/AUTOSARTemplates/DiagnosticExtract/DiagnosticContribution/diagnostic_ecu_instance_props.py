@@ -129,7 +129,10 @@ class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "ECU-INSTANCES":
-                obj.ecu_instance_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.ecu_instance_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcuInstance"))
             elif tag == "OBD-SUPPORT":
                 setattr(obj, "obd_support", DiagnosticObdSupportEnum.deserialize(child))
 

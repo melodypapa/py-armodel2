@@ -257,9 +257,15 @@ class NmNode(Identifiable, ABC):
             elif tag == "NM-PASSIVE":
                 setattr(obj, "nm_passive", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "RX-NM-PDUS":
-                obj.rx_nm_pdu_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.rx_nm_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NmPdu"))
             elif tag == "TX-NM-PDUS":
-                obj.tx_nm_pdu_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.tx_nm_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NmPdu"))
 
         return obj
 

@@ -140,7 +140,10 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
             elif tag == "INHIBITION-MASK":
                 setattr(obj, "inhibition_mask", DiagnosticInhibitionMaskEnum.deserialize(child))
             elif tag == "INHIBIT-SOURCES":
-                obj.inhibit_sources.append(SerializationHelper.deserialize_by_tag(child, "any (DiagnosticFunction)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.inhibit_sources.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticFunction)"))
 
         return obj
 

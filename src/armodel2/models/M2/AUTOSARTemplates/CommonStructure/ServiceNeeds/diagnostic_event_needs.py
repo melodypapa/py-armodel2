@@ -202,13 +202,19 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "DEFERRING-FIDS":
-                obj.deferring_fid_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.deferring_fid_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FunctionInhibitionNeeds"))
             elif tag == "DIAG-EVENT-DEBOUNCE":
                 setattr(obj, "diag_event_debounce", SerializationHelper.deserialize_by_tag(child, "any (DiagEventDebounce)"))
             elif tag == "INHIBITING-FID-REF":
                 setattr(obj, "inhibiting_fid_ref", ARRef.deserialize(child))
             elif tag == "INHIBITINGS":
-                obj.inhibiting_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.inhibiting_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FunctionInhibitionNeeds"))
             elif tag == "PRESTORED":
                 setattr(obj, "prestored", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "USES-MONITOR":

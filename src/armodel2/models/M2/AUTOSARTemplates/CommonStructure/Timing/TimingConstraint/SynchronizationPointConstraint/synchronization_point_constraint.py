@@ -169,7 +169,10 @@ class SynchronizationPointConstraint(TimingConstraint):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "SOURCE-EECS":
-                obj.source_eec_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.source_eec_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
             elif tag == "SOURCE-EVENTS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -179,7 +182,10 @@ class SynchronizationPointConstraint(TimingConstraint):
                     elif concrete_tag == "RTE-EVENT":
                         obj.source_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "RTEEvent"))
             elif tag == "TARGET-EECS":
-                obj.target_eec_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.target_eec_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
             elif tag == "TARGET-EVENTS":
                 # Check first child element for concrete type
                 if len(child) > 0:

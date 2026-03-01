@@ -163,7 +163,10 @@ class TextTableMapping(ARObject):
             elif tag == "MAPPING-REF":
                 setattr(obj, "mapping_ref", MappingDirectionEnum.deserialize(child))
             elif tag == "VALUE-PAIRS":
-                obj.value_pairs.append(SerializationHelper.deserialize_by_tag(child, "TextTableValuePair"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.value_pairs.append(SerializationHelper.deserialize_by_tag(item_elem, "TextTableValuePair"))
 
         return obj
 

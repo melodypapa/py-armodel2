@@ -137,9 +137,15 @@ class DdsCpDomain(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "DDS-PARTITIONS":
-                obj.dds_partitions.append(SerializationHelper.deserialize_by_tag(child, "DdsCpPartition"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.dds_partitions.append(SerializationHelper.deserialize_by_tag(item_elem, "DdsCpPartition"))
             elif tag == "DDS-TOPICS":
-                obj.dds_topics.append(SerializationHelper.deserialize_by_tag(child, "DdsCpTopic"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.dds_topics.append(SerializationHelper.deserialize_by_tag(item_elem, "DdsCpTopic"))
             elif tag == "DOMAIN-ID":
                 setattr(obj, "domain_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

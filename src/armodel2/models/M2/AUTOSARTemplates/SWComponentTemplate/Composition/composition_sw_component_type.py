@@ -206,7 +206,10 @@ class CompositionSwComponentType(SwComponentType):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "COMPONENTS":
-                obj.components.append(SerializationHelper.deserialize_by_tag(child, "SwComponentPrototype"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.components.append(SerializationHelper.deserialize_by_tag(item_elem, "SwComponentPrototype"))
             elif tag == "CONNECTORS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -218,9 +221,15 @@ class CompositionSwComponentType(SwComponentType):
                     elif concrete_tag == "PASS-THROUGH-SW-CONNECTOR":
                         obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "PassThroughSwConnector"))
             elif tag == "CONSTANT-VALUE-MAPPINGS":
-                obj.constant_value_mapping_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.constant_value_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstantSpecificationMappingSet"))
             elif tag == "DATA-TYPE-MAPPINGS":
-                obj.data_type_mapping_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.data_type_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataTypeMappingSet"))
             elif tag == "INSTANTIATION-RTE-EVENT-PROPS":
                 # Check first child element for concrete type
                 if len(child) > 0:

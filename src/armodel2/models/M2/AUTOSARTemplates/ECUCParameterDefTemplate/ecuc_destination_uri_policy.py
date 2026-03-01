@@ -177,7 +177,10 @@ class EcucDestinationUriPolicy(ARObject):
                     elif concrete_tag == "ECUC-INTEGER-PARAM-DEF":
                         obj.parameters.append(SerializationHelper.deserialize_by_tag(child[0], "EcucIntegerParamDef"))
             elif tag == "REFERENCES":
-                obj.reference_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.reference_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EcucAbstractReference)"))
 
         return obj
 

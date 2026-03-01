@@ -242,7 +242,10 @@ class EventHandler(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "CONSUMED-EVENT-GROUPS":
-                obj.consumed_event_group_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.consumed_event_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsumedEventGroup"))
             elif tag == "EVENT-GROUP":
                 setattr(obj, "event_group", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "EVENT-MULTICAST-REF":
@@ -250,9 +253,15 @@ class EventHandler(Identifiable):
             elif tag == "MULTICAST":
                 setattr(obj, "multicast", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "PDU-ACTIVATION-ROUTINGS":
-                obj.pdu_activation_routings.append(SerializationHelper.deserialize_by_tag(child, "PduActivationRoutingGroup"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.pdu_activation_routings.append(SerializationHelper.deserialize_by_tag(item_elem, "PduActivationRoutingGroup"))
             elif tag == "ROUTING-GROUPS":
-                obj.routing_group_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.routing_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SoAdRoutingGroup"))
             elif tag == "SD-SERVER-CONFIG":
                 setattr(obj, "sd_server_config", SerializationHelper.deserialize_by_tag(child, "any (SdServerConfig)"))
             elif tag == "SD-SERVER-EG-REF":

@@ -6,14 +6,14 @@ This file provides guidance to AI agents working with the py-armodel2 codebase.
 
 **py-armodel2** is a Python library for processing AUTOSAR (Automotive Open System Architecture) ARXML models. The project uses a code generation architecture with **2,200+ generated AUTOSAR model classes** that support full reading, parsing, writing, and serialization of ARXML files across multiple AUTOSAR schema versions.
 
-**Convenient Imports:** All model classes can be imported directly from `armodel.models` without using deep nested paths:
+**Convenient Imports:** All model classes can be imported directly from `armodel2.models` without using deep nested paths:
 
 ```python
 # Instead of:
-from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
 # Use:
-from armodel.models import AUTOSAR
+from armodel2.models import AUTOSAR
 ```
 
 **Key Architecture:**
@@ -85,7 +85,7 @@ python -m tools.generate_models --members --classes --enums --primitives
 # Generate YAML model mappings (after model class changes)
 python tools/generate_model_mappings.py
 
-# Regenerate armodel/models/__init__.py (after adding new classes)
+# Regenerate armodel2/models/__init__.py (after adding new classes)
 python tools/generate_models_init.py
 ```
 
@@ -97,10 +97,10 @@ python tools/generate_models_init.py
 - ARObject is the base class implementing reflection-based serialization
 
 **Convenient Imports:**
-All model classes (1,900+ classes and 1,600+ builders) can be imported directly from `armodel.models`:
+All model classes (1,900+ classes and 1,600+ builders) can be imported directly from `armodel2.models`:
 
 ```python
-from armodel.models import (
+from armodel2.models import (
     AUTOSAR,
     AUTOSARBuilder,
     ARPackage,
@@ -111,7 +111,7 @@ from armodel.models import (
 )
 ```
 
-This is enabled by `armodel/models/__init__.py`, which is generated automatically by `tools/generate_models_init.py` when models are regenerated.
+This is enabled by `armodel2/models/__init__.py`, which is generated automatically by `tools/generate_models_init.py` when models are regenerated.
 
 ### Builder Pattern with Fluent API
 
@@ -170,7 +170,7 @@ data_type = (
 **Builder Validation:**
 
 ```python
-from armodel.core import GlobalSettingsManager, BuilderValidationMode
+from armodel2.core import GlobalSettingsManager, BuilderValidationMode
 
 settings = GlobalSettingsManager()
 settings.builder_validation = BuilderValidationMode.STRICT  # or LENIENT, DISABLED
@@ -188,7 +188,7 @@ PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/buil
 ```
 
 ```python
-from armodel.models import (
+from armodel2.models import (
     AUTOSAR,
     AUTOSARBuilder,
     ARPackage,
@@ -198,7 +198,7 @@ from armodel.models import (
 )
 ```
 
-This is enabled by `armodel/models/__init__.py`, which is generated automatically by `tools/generate_models_init.py` when models are regenerated.
+This is enabled by `armodel2/models/__init__.py`, which is generated automatically by `tools/generate_models_init.py` when models are regenerated.
 
 ### Verification After Changes
 ```bash
@@ -212,7 +212,7 @@ PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest
 
 ### File and Naming Conventions
 - **Files**: snake_case (e.g., `schema_version_manager.py`)
-- **Classes**: PascalCase (e.g., `SchemaVersionManager`) 
+- **Classes**: PascalCase (e.g., `SchemaVersionManager`)
 - **Functions/Variables**: snake_case
 - **Constants**: UPPER_SNAKE_CASE
 - **Generated model files**: One class per file, matching AUTOSAR package structure
@@ -228,14 +228,14 @@ from typing import TYPE_CHECKING, Optional
 from lxml import etree
 
 # Internal imports with block format for multiple classes
-from armodel.models.M2.SomePackage.some_module import (
+from armodel2.models.M2.SomePackage.some_module import (
     ClassA,
     ClassB,
 )
 
 # Use TYPE_CHECKING for circular imports
 if TYPE_CHECKING:
-    from armodel.models.M2.SomeModule import SomeClass
+    from armodel2.models.M2.SomeModule import SomeClass
 ```
 
 ### Type Hints
@@ -250,7 +250,7 @@ from __future__ import annotations  # Must be first import
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from armodel.models.M2.SomeModule import SomeClass
+    from armodel2.models.M2.SomeModule import SomeClass
 
 class MyClass(ARObject):
     related: Optional[SomeClass] = None  # Type hint works, no runtime import
@@ -261,11 +261,11 @@ Infrastructure classes follow dependency-injection pattern:
 ```python
 class SomeClass:
     """Brief description following class name."""
-    
+
     def __init__(self, dependency: Optional[DependencyType] = None):
         """Initialize with dependency injection for testability."""
         self._dependency = dependency or DefaultDependency()
-    
+
     def method(self) -> ReturnType:
         """Method description with Args/Returns as needed."""
         # Implementation
@@ -284,12 +284,12 @@ import pytest
 
 class TestClassName:
     """Unit tests for ClassName class."""
-    
+
     @pytest.fixture(autouse=True)
     def setup(self):
         """Setup test fixtures."""
         self.instance = ClassName()
-    
+
     def test_descriptive_name(self):
         """Test specific functionality."""
         # Arrange, Act, Assert pattern
@@ -317,7 +317,7 @@ class SomeManager:
     _instance: Optional["SomeManager"] = None
     _initialized: bool = False
     _lock: threading.Lock = threading.Lock()
-    
+
     def __new__(cls) -> "SomeManager":
         if cls._instance is None:
             with cls._lock:
@@ -325,13 +325,13 @@ class SomeManager:
                     cls._instance = super().__new__(cls)
                     cls._instance._initialized = False
         return cls._instance
-    
+
     def __init__(self) -> None:
         if self._initialized:
             return
         # Initialize instance
         self._initialized = True
-    
+
     @classmethod
     def reset(cls) -> None:
         """Reset singleton for testing."""
@@ -370,20 +370,20 @@ The project uses a reflection-based serialization framework that eliminates boil
 
 #### 1. ARObject Base Class
 
-Location: `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
+Location: `src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
 
 ```python
 class ARObject:
     """Base class for all AUTOSAR model classes.
-    
+
     Provides base serialization infrastructure. Only serializes checksum and
     timestamp attributes. Child classes must call super().serialize() and
     super().deserialize() to properly inherit these attributes.
     """
-    
+
     def serialize(self) -> ET.Element:
         """Serialize object to XML element.
-        
+
         Only serializes checksum and timestamp attributes.
         Child classes must call super().serialize() to inherit these attributes.
         """
@@ -398,11 +398,11 @@ class ARObject:
             checksum_elem.text = str(self._checksum)
             elem.append(checksum_elem)
         return elem
-    
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> ARObject:
         """Deserialize XML element to ARObject.
-        
+
         Only deserializes checksum and timestamp attributes.
         Child classes must call super().deserialize() to inherit these attributes.
         """
@@ -413,24 +413,24 @@ class ARObject:
 
 #### 2. SerializationHelper
 
-Location: `src/armodel/serialization/serialization_helper.py`
+Location: `src/armodel2/serialization/serialization_helper.py`
 
 Static utility methods extracted from ARObject for better code organization:
 
 ```python
 class SerializationHelper:
     """Static utility methods for XML serialization and deserialization."""
-    
+
     @staticmethod
     def get_xml_tag(cls: type) -> str:
         """Get XML tag name from class name."""
         return NameConverter.to_xml_tag(cls.__name__)
-    
+
     @staticmethod
     def strip_namespace(tag: str) -> str:
         """Remove XML namespace from tag."""
         return tag.split('}')[-1] if '}' in tag else tag
-    
+
     @staticmethod
     def find_child_element(element: ET.Element, tag: str) -> Optional[ET.Element]:
         """Find child element by tag name."""
@@ -438,7 +438,7 @@ class SerializationHelper:
             if SerializationHelper.strip_namespace(child.tag) == tag:
                 return child
         return None
-    
+
     @staticmethod
     def get_atp_variant_wrapper_path(class_name: str) -> str:
         """Derive wrapper path for atpVariation classes from class name."""
@@ -448,7 +448,7 @@ class SerializationHelper:
 
 #### 3. NameConverter
 
-Location: `src/armodel/serialization/name_converter.py`
+Location: `src/armodel2/serialization/name_converter.py`
 
 ```python
 class NameConverter:
@@ -470,12 +470,12 @@ class NameConverter:
 
 #### 4. ModelFactory
 
-Location: `src/armodel/serialization/model_factory.py`
+Location: `src/armodel2/serialization/model_factory.py`
 
 The ModelFactory provides efficient class instantiation from XML tags with support for polymorphic type resolution.
 
 ```python
-from armodel.serialization import ModelFactory
+from armodel2.serialization import ModelFactory
 
 # Get singleton instance
 factory = ModelFactory()
@@ -500,7 +500,7 @@ concrete_cls = factory.resolve_polymorphic_type(
 - Polymorphic type resolution using YAML mappings
 - Automatic XML tag to class name conversion
 
-**YAML Mappings File:** `src/armodel/cfg/model_mappings.yaml`
+**YAML Mappings File:** `src/armodel2/cfg/model_mappings.yaml`
 
 The YAML file is generated from JSON mapping data and contains:
 - XML tag to class name mappings (1623+ classes)
@@ -514,7 +514,7 @@ python tools/generate_model_mappings.py
 
 #### 5. Decorators
 
-Location: `src/armodel/serialization/decorators.py`
+Location: `src/armodel2/serialization/decorators.py`
 
 **Documentation**: See [`docs/designs/decorators.md`](docs/designs/decorators.md) for detailed documentation on all decorators.
 
@@ -573,7 +573,7 @@ class ARPackage(ARObject):
 class AUTOSAR(ARObject):
     def __init__(self) -> None:
         self._schema_version: str = "4.5.0"
-    
+
     @xml_attribute
     @property
     def schema_version(self) -> str:
@@ -584,31 +584,31 @@ class AUTOSAR(ARObject):
 ```python
 class MultiLanguageParagraph(ARObject):
     _l1: list[LParagraph] = []
-    
+
     @property
     @l_prefix("L-1")
     def l1(self) -> list[LParagraph]:
         """Get l1 with language-specific wrapper."""
         return self._l1
-    
+
     @l1.setter
     def l1(self, value: list[LParagraph]) -> None:
         """Set l1 with language-specific wrapper."""
         self._l1 = value
-    
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "MultiLanguageParagraph":
         """Custom deserialize to handle l_prefix pattern."""
         obj = cls.__new__(cls)
         obj.__init__()
-        
+
         # Parse _l1 list from L-1 elements
         obj._l1 = []
         for child in element:
             if SerializationHelper.strip_namespace(child.tag) == "L-1":
                 l1_value = LParagraph.deserialize(child)
                 obj._l1.append(l1_value)
-        
+
         return obj
 ```
 
@@ -625,7 +625,7 @@ class SwDataDefProps(ARObject):
 class LanguageSpecific(ARObject):
     def __init__(self) -> None:
         self._l: LEnum = LEnum.EN
-    
+
     @lang_abbr("L")
     @property
     def l(self) -> LEnum:
@@ -658,37 +658,37 @@ This is handled by the `@instance_ref` decorator with the `flatten` parameter. S
 ## Key Files and Modules
 
 ### Core Infrastructure
-- **SchemaVersionManager** (`src/armodel/core/version.py`) - Schema version detection (singleton)
-- **GlobalSettingsManager** (`src/armodel/core/global_settings.py`) - Global settings management (singleton)
-- **NameConverter** (`src/armodel/serialization/name_converter.py`) - Name conversion utility
-- **ModelFactory** (`src/armodel/serialization/model_factory.py`) - Factory for creating AUTOSAR model instances from XML tags with polymorphic type resolution
-- **SerializationHelper** (`src/armodel/serialization/serialization_helper.py`) - Static utility methods for XML serialization and deserialization
-- **Decorators** (`src/armodel/serialization/decorators.py`) - XML serialization decorators (`@xml_attribute`, `@atp_variant`, `@l_prefix`, `@lang_abbr`, `@xml_element_name`, `@ref_conditional`, `@instance_ref`)
-- **ARObject** (`src/armodel/models/M2/.../ArObject/ar_object.py`) - Base class with serialize/deserialize
+- **SchemaVersionManager** (`src/armodel2/core/version.py`) - Schema version detection (singleton)
+- **GlobalSettingsManager** (`src/armodel2/core/global_settings.py`) - Global settings management (singleton)
+- **NameConverter** (`src/armodel2/serialization/name_converter.py`) - Name conversion utility
+- **ModelFactory** (`src/armodel2/serialization/model_factory.py`) - Factory for creating AUTOSAR model instances from XML tags with polymorphic type resolution
+- **SerializationHelper** (`src/armodel2/serialization/serialization_helper.py`) - Static utility methods for XML serialization and deserialization
+- **Decorators** (`src/armodel2/serialization/decorators.py`) - XML serialization decorators (`@xml_attribute`, `@atp_variant`, `@l_prefix`, `@lang_abbr`, `@xml_element_name`, `@ref_conditional`, `@instance_ref`)
+- **ARObject** (`src/armodel2/models/M2/.../ArObject/ar_object.py`) - Base class with serialize/deserialize
 
 ### Reader/Writer
-- **ARXMLReader** (`src/armodel/reader/reader.py`) - XSD-driven ARXML file loading with merge support and performance optimization
+- **ARXMLReader** (`src/armodel2/reader/reader.py`) - XSD-driven ARXML file loading with merge support and performance optimization
   - `load_arxml()` - Load file into provided AUTOSAR instance (or singleton)
   - `load_arxml_with_clear()` - Load file into cleared singleton for fresh state
-- **ARXMLWriter** (`src/armodel/writer/writer.py`) - ARXML serialization with formatting support
+- **ARXMLWriter** (`src/armodel2/writer/writer.py`) - ARXML serialization with formatting support
   - `save_arxml()` - Save provided AUTOSAR instance (or singleton) to file
 
 ### Configuration
-- **ConfigurationManager** (`src/armodel/cfg/schemas/__init__.py`) - Config loading
-- **Schema configs** (`src/armodel/cfg/schemas/config.yaml`) - Version-specific settings
-- **Model mappings** (`src/armodel/cfg/model_mappings.yaml`) - XML tag to class name mappings
+- **ConfigurationManager** (`src/armodel2/cfg/schemas/__init__.py`) - Config loading
+- **Schema configs** (`src/armodel2/cfg/schemas/config.yaml`) - Version-specific settings
+- **Model mappings** (`src/armodel2/cfg/model_mappings.yaml`) - XML tag to class name mappings
 
 ### Code Generation
 - **Code Generator** (`tools/generate_models/`) - Modular package for regenerating model classes
-- **Init generator** (`tools/generate_models_init.py`) - Generate `armodel/models/__init__.py` with all class exports
+- **Init generator** (`tools/generate_models_init.py`) - Generate `armodel2/models/__init__.py` with all class exports
 - **Mapping generator** (`tools/generate_model_mappings.py`) - Generate YAML mappings from JSON
 - **Mapping files** (`docs/json/mapping.json`, `docs/json/hierarchy.json`) - AUTOSAR schema mappings
 - **Skip classes config** (`tools/skip_classes.yaml`) - Configuration for classes to skip and force TYPE_CHECKING imports
 
 ### CLI Module
-- **Main Entry** (`src/armodel/cli/main.py`) - CLI entry point with argparse router
-- **Common Utilities** (`src/armodel/cli/common.py`) - Exit codes and file validation helpers
-- **Commands** (`src/armodel/cli/commands/`) - Subcommand implementations
+- **Main Entry** (`src/armodel2/cli/main.py`) - CLI entry point with argparse router
+- **Common Utilities** (`src/armodel2/cli/common.py`) - Exit codes and file validation helpers
+- **Commands** (`src/armodel2/cli/commands/`) - Subcommand implementations
   - `format.py` - ARXML formatting command
 
 ### Scripts
@@ -701,8 +701,8 @@ This is handled by the `@instance_ref` decorator with the `flatten` parameter. S
 ### Reader API (Load Multiple Files)
 
 ```python
-from armodel.models import AUTOSAR
-from armodel.reader import ARXMLReader
+from armodel2.models import AUTOSAR
+from armodel2.reader import ARXMLReader
 
 # Create AUTOSAR instance
 autosar = AUTOSAR()
@@ -719,7 +719,7 @@ print(f"Total packages: {len(autosar.ar_packages)}")
 ### Reader API (Load with Clear)
 
 ```python
-from armodel.reader import ARXMLReader
+from armodel2.reader import ARXMLReader
 
 reader = ARXMLReader()
 
@@ -734,7 +734,7 @@ reader.load_arxml_with_clear("demos/arxml/another_file.arxml")
 ### Writer API (Save to File)
 
 ```python
-from armodel.writer import ARXMLWriter
+from armodel2.writer import ARXMLWriter
 
 writer = ARXMLWriter(pretty_print=True, encoding="UTF-8")
 writer.save_arxml("output.arxml")  # Saves singleton
@@ -748,7 +748,7 @@ writer.save_arxml("output.arxml", autosar)
 ### Singleton Pattern Usage
 
 ```python
-from armodel.models import AUTOSAR
+from armodel2.models import AUTOSAR
 
 # Get singleton instance
 autosar = AUTOSAR()
@@ -770,7 +770,7 @@ AUTOSAR.reset()
 ### Global Settings Management
 
 ```python
-from armodel.core import GlobalSettingsManager
+from armodel2.core import GlobalSettingsManager
 
 settings = GlobalSettingsManager()
 
@@ -793,37 +793,37 @@ The CLI uses a multi-command architecture (similar to `git` or `docker`):
 pip install -e ".[dev]"
 
 # Show version
-armodel --version
+armodel2 --version
 
 # Show help
-armodel --help
+armodel2 --help
 
 # Format ARXML files
-armodel format INPUT.arxml -o OUTPUT.arxml
+armodel2 format INPUT.arxml -o OUTPUT.arxml
 ```
 
-#### `armodel format` - Format ARXML Files
+#### `armodel2 format` - Format ARXML Files
 
 Reads, parses, and reformats ARXML files with pretty-printing:
 
 ```bash
 # Basic formatting
-armodel format unformatted.arxml -o formatted.arxml
+armodel2 format unformatted.arxml -o formatted.arxml
 
 # Strict validation mode (fail on errors)
-armodel format input.arxml -o output.arxml --strict
+armodel2 format input.arxml -o output.arxml --strict
 
 # Permissive mode (continue on warnings)
-armodel format input.arxml -o output.arxml --permissive
+armodel2 format input.arxml -o output.arxml --permissive
 
 # Custom encoding
-armodel format input.arxml -o output.arxml --encoding UTF-8
+armodel2 format input.arxml -o output.arxml --encoding UTF-8
 
 # Verbose output for debugging
-armodel format input.arxml -o output.arxml -v
+armodel2 format input.arxml -o output.arxml -v
 
 # Quiet mode (for scripts/CI)
-armodel format input.arxml -o output.arxml -q
+armodel2 format input.arxml -o output.arxml -q
 ```
 
 **Arguments:**
@@ -849,7 +849,7 @@ armodel format input.arxml -o output.arxml -q
 
 ## Generated Code Notes
 
-- **Do not edit** files in `src/armodel/models/M2/` - they are auto-generated
+- **Do not edit** files in `src/armodel2/models/M2/` - they are auto-generated
   - **Exception**: AUTOSAR, ARObject, and classes listed in `tools/skip_classes.yaml` are manually maintained
 - Each class has `serialize()`, `deserialize()`, and corresponding Builder
 - Uses reflection-based serialization with automatic attribute discovery
@@ -861,14 +861,14 @@ armodel format input.arxml -o output.arxml -q
 
 The following classes are **NOT** auto-generated and must be maintained manually:
 
-1. **AUTOSAR** (`src/armodel/models/M2/AUTOSARTemplates/AutosarTopLevelStructure/autosar.py`)
+1. **AUTOSAR** (`src/armodel2/models/M2/AUTOSARTemplates/AutosarTopLevelStructure/autosar.py`)
    - Root element for all ARXML files
    - Implements singleton pattern with thread-safe double-checked locking
    - Contains `clear()` method to reset state while keeping singleton alive
    - Contains `reset()` class method to reset singleton (primarily for testing)
    - May have special attributes like `schema_location` with `@xml_attribute` decorator
 
-2. **ARObject** (`src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`)
+2. **ARObject** (`src/armodel2/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`)
    - Base class for all AUTOSAR model classes
    - Implements `serialize()` and `deserialize()` methods using reflection
    - Contains the core serialization infrastructure
@@ -898,7 +898,7 @@ The following classes are **NOT** auto-generated and must be maintained manually
 
 ### Fixing Issues in Generated Code
 
-**CRITICAL: Never directly edit generated code in `src/armodel/models/M2/`**
+**CRITICAL: Never directly edit generated code in `src/armodel2/models/M2/`**
 
 When you find an issue in a generated class file:
 1. **Do NOT** modify the generated file directly - your changes will be overwritten when the models are regenerated
@@ -1022,7 +1022,7 @@ The library supports all official AUTOSAR XSD schema versions:
 **Legacy Version:**
 - `3_2_3`: AUTOSAR 3.2.3 (legacy)
 
-XSD files are located in `demos/xsd/AUTOSAR_{version}/` directories. Each version's configuration is defined in `src/armodel/cfg/schemas/config.yaml`.
+XSD files are located in `demos/xsd/AUTOSAR_{version}/` directories. Each version's configuration is defined in `src/armodel2/cfg/schemas/config.yaml`.
 
 ### Serialization Best Practices
 
@@ -1056,42 +1056,42 @@ XSD files are located in `demos/xsd/AUTOSAR_{version}/` directories. Each versio
 **Example: Custom serialize/deserialize pattern**
 
 ```python
-from armodel.serialization import SerializationHelper
+from armodel2.serialization import SerializationHelper
 
 class CustomClass(ParentClass):
     custom_attr: Optional[SomeType] = None
-    
+
     def serialize(self) -> ET.Element:
         """Serialize with parent class support."""
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
-        
+
         # Handle parent class attributes
         parent_elem = super().serialize()
         elem.attrib.update(parent_elem.attrib)
         for child in parent_elem:
             elem.append(child)
-        
+
         # Handle custom attributes
         if self.custom_attr is not None:
             serialized = self.custom_attr.serialize()
             wrapped = ET.Element("CUSTOM-ATTR")
             wrapped.append(serialized)
             elem.append(wrapped)
-        
+
         return elem
-    
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CustomClass":
         """Deserialize with parent class support."""
         # Handle parent class attributes
         obj = super().deserialize(element)
-        
+
         # Handle custom attributes
         child = SerializationHelper.find_child_element(element, "CUSTOM-ATTR")
         if child is not None:
             obj.custom_attr = SomeType.deserialize(child)
-        
+
         return obj
 ```
 
@@ -1214,7 +1214,7 @@ These tests ensure:
 ### XSD Validation Framework
 - Added XSD schema validation support
 - Validates ARXML files against appropriate AUTOSAR XSD schema
-- Configured in `src/armodel/cfg/schemas/config.yaml`
+- Configured in `src/armodel2/cfg/schemas/config.yaml`
 - Supported versions: 00042-00054 plus legacy 3.2.3
 
 ### Skip Classes Configuration

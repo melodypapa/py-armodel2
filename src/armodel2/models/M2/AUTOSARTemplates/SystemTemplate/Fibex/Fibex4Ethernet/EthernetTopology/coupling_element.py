@@ -206,13 +206,19 @@ class CouplingElement(FibexElement):
             elif tag == "COUPLING":
                 setattr(obj, "coupling", SerializationHelper.deserialize_by_tag(child, "CouplingElement"))
             elif tag == "COUPLING-PORTS":
-                obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(child, "CouplingPort"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPort"))
             elif tag == "COUPLING-TYPE":
                 setattr(obj, "coupling_type", CouplingElementEnum.deserialize(child))
             elif tag == "ECU-INSTANCE-REF":
                 setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
             elif tag == "FIREWALL-RULES":
-                obj.firewall_rule_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.firewall_rule_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "StateDependentFirewall"))
 
         return obj
 

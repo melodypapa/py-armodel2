@@ -138,7 +138,10 @@ class SecurityEventContextMapping(IdsMapping, ABC):
             elif tag == "IDSM-INSTANCE-REF":
                 setattr(obj, "idsm_instance_ref", ARRef.deserialize(child))
             elif tag == "MAPPED-SECURITIES":
-                obj.mapped_securities.append(SerializationHelper.deserialize_by_tag(child, "any (SecurityEventContext)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mapped_securities.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SecurityEventContext)"))
 
         return obj
 

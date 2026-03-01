@@ -170,7 +170,10 @@ class BusMirrorChannelMapping(FibexElement, ABC):
             elif tag == "TARGET-CHANNEL":
                 setattr(obj, "target_channel", SerializationHelper.deserialize_by_tag(child, "BusMirrorChannel"))
             elif tag == "TARGET-PDUS":
-                obj.target_pdu_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.target_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
 
         return obj
 

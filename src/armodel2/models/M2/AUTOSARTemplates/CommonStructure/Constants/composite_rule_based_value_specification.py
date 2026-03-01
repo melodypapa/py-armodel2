@@ -160,7 +160,10 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
                     elif concrete_tag == "RECORD-VALUE-SPECIFICATION":
                         obj.arguments.append(SerializationHelper.deserialize_by_tag(child[0], "RecordValueSpecification"))
             elif tag == "COMPOUNDS":
-                obj.compounds.append(SerializationHelper.deserialize_by_tag(child, "any (CompositeRuleBased)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.compounds.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CompositeRuleBased)"))
             elif tag == "MAX-SIZE-TO-FILL":
                 setattr(obj, "max_size_to_fill", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "RULE":

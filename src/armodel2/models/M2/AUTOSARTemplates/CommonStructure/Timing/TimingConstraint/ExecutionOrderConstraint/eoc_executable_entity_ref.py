@@ -175,7 +175,10 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
                     elif concrete_tag == "RUNNABLE-ENTITY":
                         setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "RunnableEntity"))
             elif tag == "SUCCESSORS":
-                obj.successor_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.successor_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
 
         return obj
 

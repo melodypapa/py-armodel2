@@ -264,7 +264,10 @@ class FirewallRule(ARElement):
             elif tag == "NETWORK-LAYER-RULE":
                 setattr(obj, "network_layer_rule", SerializationHelper.deserialize_by_tag(child, "any (NetworkLayerRule)"))
             elif tag == "PAYLOAD-BYTE-PATTERNS":
-                obj.payload_byte_patterns.append(SerializationHelper.deserialize_by_tag(child, "any (PayloadBytePattern)"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.payload_byte_patterns.append(SerializationHelper.deserialize_by_tag(item_elem, "any (PayloadBytePattern)"))
             elif tag == "REFILL-AMOUNT":
                 setattr(obj, "refill_amount", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "SOMEIP-RULE":

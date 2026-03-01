@@ -303,13 +303,19 @@ class IPSecConfigProps(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "AH-CIPHER-SUITES":
-                obj.ah_cipher_suites.append(SerializationHelper.deserialize_by_tag(child, "String"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.ah_cipher_suites.append(SerializationHelper.deserialize_by_tag(item_elem, "String"))
             elif tag == "DPD-ACTION":
                 setattr(obj, "dpd_action", IPsecDpdActionEnum.deserialize(child))
             elif tag == "DPD-DELAY":
                 setattr(obj, "dpd_delay", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "ESP-CIPHER-SUITES":
-                obj.esp_cipher_suites.append(SerializationHelper.deserialize_by_tag(child, "String"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.esp_cipher_suites.append(SerializationHelper.deserialize_by_tag(item_elem, "String"))
             elif tag == "IKE-CIPHER-SUITE":
                 setattr(obj, "ike_cipher_suite", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "IKE-OVER-TIME":

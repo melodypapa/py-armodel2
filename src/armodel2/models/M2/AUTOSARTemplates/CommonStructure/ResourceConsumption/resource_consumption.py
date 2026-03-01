@@ -191,7 +191,10 @@ class ResourceConsumption(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "ACCESS-COUNT-SETS":
-                obj.access_count_set_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.access_count_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "AccessCountSet"))
             elif tag == "EXECUTION-TIMES":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -215,9 +218,15 @@ class ResourceConsumption(Identifiable):
                     elif concrete_tag == "WORST-CASE-HEAP-USAGE":
                         obj.heap_usages.append(SerializationHelper.deserialize_by_tag(child[0], "WorstCaseHeapUsage"))
             elif tag == "MEMORY-SECTIONS":
-                obj.memory_sections.append(SerializationHelper.deserialize_by_tag(child, "MemorySection"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.memory_sections.append(SerializationHelper.deserialize_by_tag(item_elem, "MemorySection"))
             elif tag == "SECTION-NAME-PREFIXES":
-                obj.section_name_prefixes.append(SerializationHelper.deserialize_by_tag(child, "SectionNamePrefix"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.section_name_prefixes.append(SerializationHelper.deserialize_by_tag(item_elem, "SectionNamePrefix"))
             elif tag == "STACK-USAGES":
                 # Check first child element for concrete type
                 if len(child) > 0:

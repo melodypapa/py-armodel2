@@ -137,11 +137,17 @@ class RptComponent(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "MC-DATAS":
-                obj.mc_datas.append(SerializationHelper.deserialize_by_tag(child, "RoleBasedMcDataAssignment"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mc_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedMcDataAssignment"))
             elif tag == "RP-IMPL-POLICY":
                 setattr(obj, "rp_impl_policy", SerializationHelper.deserialize_by_tag(child, "RptImplPolicy"))
             elif tag == "RPT-EXECUTABLE-ENTITIES":
-                obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(child, "RptExecutableEntity"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(item_elem, "RptExecutableEntity"))
 
         return obj
 

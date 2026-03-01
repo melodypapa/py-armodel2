@@ -133,11 +133,20 @@ class FlexrayArTpConfig(TpConfig):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "TP-ADDRESSES":
-                obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(child, "TpAddress"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(item_elem, "TpAddress"))
             elif tag == "TP-CHANNELS":
-                obj.tp_channels.append(SerializationHelper.deserialize_by_tag(child, "FlexrayArTpChannel"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.tp_channels.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayArTpChannel"))
             elif tag == "TP-NODES":
-                obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(child, "FlexrayArTpNode"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayArTpNode"))
 
         return obj
 

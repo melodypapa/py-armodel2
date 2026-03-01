@@ -442,7 +442,10 @@ class FlexrayArTpChannel(ARObject):
             elif tag == "MULTICAST":
                 setattr(obj, "multicast", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "N-PDUS":
-                obj.n_pdu_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.n_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NPdu"))
             elif tag == "TIME-BR":
                 setattr(obj, "time_br", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "TIME-CS":
@@ -456,7 +459,10 @@ class FlexrayArTpChannel(ARObject):
             elif tag == "TIMEOUT-CR":
                 setattr(obj, "timeout_cr", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "TP-CONNECTIONS":
-                obj.tp_connections.append(SerializationHelper.deserialize_by_tag(child, "FlexrayArTpConnection"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.tp_connections.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayArTpConnection"))
 
         return obj
 

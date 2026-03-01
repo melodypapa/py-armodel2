@@ -161,7 +161,10 @@ class EngineeringObject(ARObject, ABC):
             elif tag == "DOMAIN":
                 setattr(obj, "domain", SerializationHelper.deserialize_by_tag(child, "NameToken"))
             elif tag == "REVISION-LABELS":
-                obj.revision_labels.append(SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.revision_labels.append(SerializationHelper.deserialize_by_tag(item_elem, "RevisionLabelString"))
 
         return obj
 

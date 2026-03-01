@@ -123,7 +123,10 @@ class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "CRYPTO-SERVICES":
-                obj.crypto_service_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.crypto_service_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CryptoService)"))
             elif tag == "SERVICE-INSTANCE-REF":
                 setattr(obj, "service_instance_ref", ARRef.deserialize(child))
 

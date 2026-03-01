@@ -163,13 +163,19 @@ class AbstractServiceInstance(Identifiable, ABC):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "CAPABILITIES":
-                obj.capabilities.append(SerializationHelper.deserialize_by_tag(child, "TagWithOptionalValue"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.capabilities.append(SerializationHelper.deserialize_by_tag(item_elem, "TagWithOptionalValue"))
             elif tag == "MAJOR-VERSION":
                 setattr(obj, "major_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "METHOD":
                 setattr(obj, "method", SerializationHelper.deserialize_by_tag(child, "PduActivationRoutingGroup"))
             elif tag == "ROUTING-GROUPS":
-                obj.routing_group_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.routing_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SoAdRoutingGroup"))
 
         return obj
 

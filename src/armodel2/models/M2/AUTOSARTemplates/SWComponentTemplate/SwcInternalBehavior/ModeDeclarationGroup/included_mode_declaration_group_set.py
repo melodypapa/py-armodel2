@@ -125,7 +125,10 @@ class IncludedModeDeclarationGroupSet(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "MODES":
-                obj.mode_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mode_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroup"))
             elif tag == "PREFIX":
                 setattr(obj, "prefix", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 

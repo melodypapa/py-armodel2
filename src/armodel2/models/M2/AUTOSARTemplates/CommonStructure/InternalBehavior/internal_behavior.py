@@ -204,17 +204,35 @@ class InternalBehavior(Identifiable, ABC):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "CONSTANT-MEMORIES":
-                obj.constant_memories.append(SerializationHelper.deserialize_by_tag(child, "ParameterDataPrototype"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.constant_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
             elif tag == "CONSTANT-VALUE-MAPPINGS":
-                obj.constant_value_mapping_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.constant_value_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstantSpecificationMappingSet"))
             elif tag == "DATA-TYPE-MAPPINGS":
-                obj.data_type_mapping_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.data_type_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataTypeMappingSet"))
             elif tag == "EXCLUSIVE-AREAS":
-                obj.exclusive_areas.append(SerializationHelper.deserialize_by_tag(child, "ExclusiveArea"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.exclusive_areas.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveArea"))
             elif tag == "EXCLUSIVE-AREA-NESTING-ORDERS":
-                obj.exclusive_area_nesting_orders.append(SerializationHelper.deserialize_by_tag(child, "ExclusiveAreaNestingOrder"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.exclusive_area_nesting_orders.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveAreaNestingOrder"))
             elif tag == "STATIC-MEMORIES":
-                obj.static_memories.append(SerializationHelper.deserialize_by_tag(child, "VariableDataPrototype"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.static_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
 
         return obj
 

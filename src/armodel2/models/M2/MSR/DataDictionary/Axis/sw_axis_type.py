@@ -123,7 +123,10 @@ class SwAxisType(ARElement):
             if tag == "SW-GENERIC-AXIS":
                 setattr(obj, "sw_generic_axis", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
             elif tag == "SW-GENERIC-AXIS-PARAMS":
-                obj.sw_generic_axis_params.append(SerializationHelper.deserialize_by_tag(child, "SwGenericAxisParam"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.sw_generic_axis_params.append(SerializationHelper.deserialize_by_tag(item_elem, "SwGenericAxisParam"))
 
         return obj
 

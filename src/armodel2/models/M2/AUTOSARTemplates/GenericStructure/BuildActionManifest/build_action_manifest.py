@@ -167,13 +167,25 @@ class BuildActionManifest(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "BUILD-ACTIONS":
-                obj.build_actions.append(SerializationHelper.deserialize_by_tag(child, "BuildActionEnvironment"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.build_actions.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildActionEnvironment"))
             elif tag == "DYNAMIC-ACTIONS":
-                obj.dynamic_action_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.dynamic_action_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildAction"))
             elif tag == "START-ACTIONS":
-                obj.start_action_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.start_action_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildAction"))
             elif tag == "TEAR-DOWN-ACTIONS":
-                obj.tear_down_action_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.tear_down_action_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BuildAction"))
 
         return obj
 

@@ -117,7 +117,10 @@ class TimeSyncClientConfiguration(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "ORDERED-MASTERS":
-                obj.ordered_masters.append(SerializationHelper.deserialize_by_tag(child, "OrderedMaster"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.ordered_masters.append(SerializationHelper.deserialize_by_tag(item_elem, "OrderedMaster"))
             elif tag == "TIME-SYNC":
                 setattr(obj, "time_sync", TimeSyncTechnologyEnum.deserialize(child))
 

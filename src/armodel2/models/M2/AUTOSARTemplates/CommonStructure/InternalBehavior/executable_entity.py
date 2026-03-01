@@ -241,17 +241,29 @@ class ExecutableEntity(Identifiable, ABC):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "ACTIVATION-REASONS":
-                obj.activation_reasons.append(SerializationHelper.deserialize_by_tag(child, "ExecutableEntityActivationReason"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.activation_reasons.append(SerializationHelper.deserialize_by_tag(item_elem, "ExecutableEntityActivationReason"))
             elif tag == "CAN-ENTERS":
-                obj._can_enter_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj._can_enter_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveArea"))
             elif tag == "EXCLUSIVE-AREA-NESTING-ORDERS":
-                obj.exclusive_area_nesting_order_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.exclusive_area_nesting_order_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveAreaNestingOrder"))
             elif tag == "MINIMUM-START-INTERVAL":
                 setattr(obj, "minimum_start_interval", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "REENTRANCY-LEVEL":
                 setattr(obj, "reentrancy_level", ReentrancyLevelEnum.deserialize(child))
             elif tag == "RUNS-INSIDES":
-                obj.runs_inside_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.runs_inside_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveArea"))
             elif tag == "SW-ADDR-METHOD-REF":
                 setattr(obj, "sw_addr_method_ref", ARRef.deserialize(child))
 

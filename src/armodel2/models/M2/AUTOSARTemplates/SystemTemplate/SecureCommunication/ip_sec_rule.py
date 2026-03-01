@@ -358,7 +358,10 @@ class IPSecRule(Identifiable):
             elif tag == "IP-PROTOCOL":
                 setattr(obj, "ip_protocol", IPsecIpProtocolEnum.deserialize(child))
             elif tag == "LOCAL-CERTIFICATES":
-                obj.local_certificate_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.local_certificate_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CryptoService)"))
             elif tag == "LOCAL-ID":
                 setattr(obj, "local_id", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "LOCAL-PORT-RANGE":
@@ -372,11 +375,17 @@ class IPSecRule(Identifiable):
             elif tag == "PRIORITY":
                 setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "REMOTES":
-                obj.remote_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.remote_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CryptoService)"))
             elif tag == "REMOTE-ID":
                 setattr(obj, "remote_id", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "REMOTE-IPS":
-                obj.remote_ip_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.remote_ip_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NetworkEndpoint"))
             elif tag == "REMOTE-PORT":
                 setattr(obj, "remote_port", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

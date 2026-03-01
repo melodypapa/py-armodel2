@@ -218,7 +218,10 @@ class PhysicalChannel(Identifiable, ABC):
                     elif concrete_tag == "LIN-FRAME-TRIGGERING":
                         obj.frame_triggerings.append(SerializationHelper.deserialize_by_tag(child[0], "LinFrameTriggering"))
             elif tag == "I-SIGNAL-TRIGGERINGS":
-                obj.i_signal_triggerings.append(SerializationHelper.deserialize_by_tag(child, "ISignalTriggering"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.i_signal_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalTriggering"))
             elif tag == "MANAGED-PHYSICAL-CHANNELS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -232,7 +235,10 @@ class PhysicalChannel(Identifiable, ABC):
                     elif concrete_tag == "LIN-PHYSICAL-CHANNEL":
                         obj.managed_physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinPhysicalChannel"))
             elif tag == "PDU-TRIGGERINGS":
-                obj.pdu_triggerings.append(SerializationHelper.deserialize_by_tag(child, "PduTriggering"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.pdu_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))
 
         return obj
 

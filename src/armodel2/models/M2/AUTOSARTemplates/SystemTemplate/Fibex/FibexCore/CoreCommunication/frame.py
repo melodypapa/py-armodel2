@@ -123,7 +123,10 @@ class Frame(FibexElement, ABC):
             if tag == "FRAME-LENGTH":
                 setattr(obj, "frame_length", SerializationHelper.deserialize_by_tag(child, "Integer"))
             elif tag == "PDU-TO-FRAME-MAPPINGS":
-                obj.pdu_to_frame_mappings.append(SerializationHelper.deserialize_by_tag(child, "PduToFrameMapping"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.pdu_to_frame_mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "PduToFrameMapping"))
 
         return obj
 

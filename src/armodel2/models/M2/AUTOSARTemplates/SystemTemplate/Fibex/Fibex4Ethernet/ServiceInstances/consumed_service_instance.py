@@ -348,13 +348,22 @@ class ConsumedServiceInstance(AbstractServiceInstance):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "ALLOWED-SERVICES":
-                obj.allowed_service_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.allowed_service_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NetworkEndpoint"))
             elif tag == "AUTO-REQUIRE":
                 setattr(obj, "auto_require", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "BLOCKLISTEDS":
-                obj.blocklisteds.append(SerializationHelper.deserialize_by_tag(child, "SomeipServiceVersion"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.blocklisteds.append(SerializationHelper.deserialize_by_tag(item_elem, "SomeipServiceVersion"))
             elif tag == "CONSUMED-EVENT-GROUPS":
-                obj.consumed_event_group_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.consumed_event_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsumedEventGroup"))
             elif tag == "EVENT-MULTICAST-REF":
                 setattr(obj, "event_multicast_ref", ARRef.deserialize(child))
             elif tag == "INSTANCE":

@@ -138,11 +138,20 @@ class SenderReceiverInterface(DataInterface):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "DATA-ELEMENTS":
-                obj.data_elements.append(SerializationHelper.deserialize_by_tag(child, "VariableDataPrototype"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.data_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "INVALIDATION-POLICY-POLICIES":
-                obj.invalidation_policy_policies.append(SerializationHelper.deserialize_by_tag(child, "InvalidationPolicy"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.invalidation_policy_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "InvalidationPolicy"))
             elif tag == "META-DATA-ITEM-SETS":
-                obj.meta_data_item_sets.append(SerializationHelper.deserialize_by_tag(child, "MetaDataItemSet"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.meta_data_item_sets.append(SerializationHelper.deserialize_by_tag(item_elem, "MetaDataItemSet"))
 
         return obj
 

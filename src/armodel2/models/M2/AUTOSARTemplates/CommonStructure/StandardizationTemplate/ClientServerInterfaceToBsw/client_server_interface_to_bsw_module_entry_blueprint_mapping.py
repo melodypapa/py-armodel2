@@ -146,7 +146,10 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
             elif tag == "OPERATION":
                 setattr(obj, "operation", SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
             elif tag == "PORT-DEFINED-ARGUMENTS":
-                obj.port_defined_arguments.append(SerializationHelper.deserialize_by_tag(child, "PortDefinedArgumentValue"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.port_defined_arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "PortDefinedArgumentValue"))
 
         return obj
 

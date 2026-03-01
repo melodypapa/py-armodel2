@@ -183,7 +183,10 @@ class MlFormula(Paginateable):
             elif tag == "GENERIC-MATH":
                 setattr(obj, "generic_math", SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText"))
             elif tag == "L-GRAPHICS":
-                obj.l_graphics.append(SerializationHelper.deserialize_by_tag(child, "LGraphic"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.l_graphics.append(SerializationHelper.deserialize_by_tag(item_elem, "LGraphic"))
             elif tag == "TEX-MATH":
                 setattr(obj, "tex_math", SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText"))
             elif tag == "VERBATIM":

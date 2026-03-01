@@ -145,7 +145,10 @@ class RTEEvent(AbstractEvent, ABC):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "DISABLED-MODES":
-                obj._disabled_mode_irefs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj._disabled_mode_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "RModeInAtomicSwcInstanceRef"))
             elif tag == "START-ON-EVENT-REF":
                 setattr(obj, "start_on_event_ref", ARRef.deserialize(child))
 

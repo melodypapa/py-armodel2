@@ -163,11 +163,20 @@ class TransmissionModeDeclaration(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             child_tag = tag  # Alias for polymorphic type checking
             if tag == "MODE-DRIVEN-FALSE-CONDITIONS":
-                obj.mode_driven_false_conditions.append(SerializationHelper.deserialize_by_tag(child, "ModeDrivenTransmissionModeCondition"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mode_driven_false_conditions.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDrivenTransmissionModeCondition"))
             elif tag == "MODE-DRIVEN-TRUE-CONDITIONS":
-                obj.mode_driven_true_conditions.append(SerializationHelper.deserialize_by_tag(child, "ModeDrivenTransmissionModeCondition"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.mode_driven_true_conditions.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDrivenTransmissionModeCondition"))
             elif tag == "TRANSMISSION-MODE-CONDITIONS":
-                obj.transmission_mode_conditions.append(SerializationHelper.deserialize_by_tag(child, "TransmissionModeCondition"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.transmission_mode_conditions.append(SerializationHelper.deserialize_by_tag(item_elem, "TransmissionModeCondition"))
             elif tag == "TRANSMISSION-MODE-FALSE-TIMING":
                 setattr(obj, "transmission_mode_false_timing", SerializationHelper.deserialize_by_tag(child, "TransmissionModeTiming"))
             elif tag == "TRANSMISSION-MODE-TRUE-TIMING":

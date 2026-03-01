@@ -227,7 +227,10 @@ class CommunicationConnector(Identifiable, ABC):
                     elif concrete_tag == "I-SIGNAL-PORT":
                         obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(child[0], "ISignalPort"))
             elif tag == "PNC-FILTER-ARRAY-MASKS":
-                obj.pnc_filter_array_masks.append(SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.pnc_filter_array_masks.append(SerializationHelper.deserialize_by_tag(item_elem, "PositiveInteger"))
             elif tag == "PNC-GATEWAY-TYPE":
                 setattr(obj, "pnc_gateway_type", PncGatewayTypeEnum.deserialize(child))
 

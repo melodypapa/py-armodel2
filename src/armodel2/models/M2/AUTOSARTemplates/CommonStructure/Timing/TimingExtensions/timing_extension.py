@@ -170,9 +170,15 @@ class TimingExtension(ARElement, ABC):
                     if concrete_tag == "T-D-L-E-T-ZONE-CLOCK":
                         obj.timing_clocks.append(SerializationHelper.deserialize_by_tag(child[0], "TDLETZoneClock"))
             elif tag == "TIMING-CLOCK-SYNCS":
-                obj.timing_clock_syncs.append(SerializationHelper.deserialize_by_tag(child, "TimingClockSyncAccuracy"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.timing_clock_syncs.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingClockSyncAccuracy"))
             elif tag == "TIMING-CONDITIONS":
-                obj.timing_conditions.append(SerializationHelper.deserialize_by_tag(child, "TimingCondition"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.timing_conditions.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingCondition"))
             elif tag == "TIMINGS":
                 # Check first child element for concrete type
                 if len(child) > 0:

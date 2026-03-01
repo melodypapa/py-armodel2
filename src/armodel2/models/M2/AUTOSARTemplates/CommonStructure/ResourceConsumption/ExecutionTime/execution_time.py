@@ -238,9 +238,15 @@ class ExecutionTime(Identifiable, ABC):
             elif tag == "HW-ELEMENT-REF":
                 setattr(obj, "hw_element_ref", ARRef.deserialize(child))
             elif tag == "INCLUDED-LIBRARIES":
-                obj.included_library_refs.append(ARRef.deserialize(child))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.included_library_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyOnArtifact"))
             elif tag == "MEMORY-SECTION-LOCATIONS":
-                obj.memory_section_locations.append(SerializationHelper.deserialize_by_tag(child, "MemorySectionLocation"))
+                # Iterate through wrapper children
+                for item_elem in child:
+                    item_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    obj.memory_section_locations.append(SerializationHelper.deserialize_by_tag(item_elem, "MemorySectionLocation"))
             elif tag == "SOFTWARE-CONTEXT":
                 setattr(obj, "software_context", SerializationHelper.deserialize_by_tag(child, "SoftwareContext"))
 
