@@ -125,73 +125,7 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
             if tag == "ACCESS-REF":
                 setattr(obj, "access_ref", ARRef.deserialize(child))
             elif tag == "SERVICE-CLASS-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "DIAGNOSTIC-AUTHENTICATION-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticAuthenticationClass"))
-                    elif concrete_tag == "DIAGNOSTIC-CLEAR-DIAGNOSTIC-INFORMATION-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticClearDiagnosticInformationClass"))
-                    elif concrete_tag == "DIAGNOSTIC-CLEAR-RESET-EMISSION-RELATED-INFO-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticClearResetEmissionRelatedInfoClass"))
-                    elif concrete_tag == "DIAGNOSTIC-COM-CONTROL-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticComControlClass"))
-                    elif concrete_tag == "DIAGNOSTIC-CONTROL-D-T-C-SETTING-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticControlDTCSettingClass"))
-                    elif concrete_tag == "DIAGNOSTIC-CUSTOM-SERVICE-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticCustomServiceClass"))
-                    elif concrete_tag == "DIAGNOSTIC-DATA-TRANSFER-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticDataTransferClass"))
-                    elif concrete_tag == "DIAGNOSTIC-DYNAMICALLY-DEFINE-DATA-IDENTIFIER-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticDynamicallyDefineDataIdentifierClass"))
-                    elif concrete_tag == "DIAGNOSTIC-ECU-RESET-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEcuResetClass"))
-                    elif concrete_tag == "DIAGNOSTIC-IO-CONTROL-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticIoControlClass"))
-                    elif concrete_tag == "DIAGNOSTIC-READ-D-T-C-INFORMATION-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticReadDTCInformationClass"))
-                    elif concrete_tag == "DIAGNOSTIC-READ-DATA-BY-IDENTIFIER-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticReadDataByIdentifierClass"))
-                    elif concrete_tag == "DIAGNOSTIC-READ-DATA-BY-PERIODIC-ID-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticReadDataByPeriodicIDClass"))
-                    elif concrete_tag == "DIAGNOSTIC-READ-MEMORY-BY-ADDRESS-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticReadMemoryByAddressClass"))
-                    elif concrete_tag == "DIAGNOSTIC-READ-SCALING-DATA-BY-IDENTIFIER-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticReadScalingDataByIdentifierClass"))
-                    elif concrete_tag == "DIAGNOSTIC-REQUEST-CONTROL-OF-ON-BOARD-DEVICE-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRequestControlOfOnBoardDeviceClass"))
-                    elif concrete_tag == "DIAGNOSTIC-REQUEST-CURRENT-POWERTRAIN-DATA-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRequestCurrentPowertrainDataClass"))
-                    elif concrete_tag == "DIAGNOSTIC-REQUEST-DOWNLOAD-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRequestDownloadClass"))
-                    elif concrete_tag == "DIAGNOSTIC-REQUEST-EMISSION-RELATED-D-T-C-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRequestEmissionRelatedDTCClass"))
-                    elif concrete_tag == "DIAGNOSTIC-REQUEST-EMISSION-RELATED-D-T-C-PERMANENT-STATUS-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRequestEmissionRelatedDTCPermanentStatusClass"))
-                    elif concrete_tag == "DIAGNOSTIC-REQUEST-FILE-TRANSFER-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRequestFileTransferClass"))
-                    elif concrete_tag == "DIAGNOSTIC-REQUEST-ON-BOARD-MONITORING-TEST-RESULTS-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRequestOnBoardMonitoringTestResultsClass"))
-                    elif concrete_tag == "DIAGNOSTIC-REQUEST-POWERTRAIN-FREEZE-FRAME-DATA-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRequestPowertrainFreezeFrameDataClass"))
-                    elif concrete_tag == "DIAGNOSTIC-REQUEST-UPLOAD-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRequestUploadClass"))
-                    elif concrete_tag == "DIAGNOSTIC-REQUEST-VEHICLE-INFO-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRequestVehicleInfoClass"))
-                    elif concrete_tag == "DIAGNOSTIC-RESPONSE-ON-EVENT-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticResponseOnEventClass"))
-                    elif concrete_tag == "DIAGNOSTIC-ROUTINE-CONTROL-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticRoutineControlClass"))
-                    elif concrete_tag == "DIAGNOSTIC-SECURITY-ACCESS-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticSecurityAccessClass"))
-                    elif concrete_tag == "DIAGNOSTIC-SESSION-CONTROL-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticSessionControlClass"))
-                    elif concrete_tag == "DIAGNOSTIC-TRANSFER-EXIT-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTransferExitClass"))
-                    elif concrete_tag == "DIAGNOSTIC-WRITE-DATA-BY-IDENTIFIER-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticWriteDataByIdentifierClass"))
-                    elif concrete_tag == "DIAGNOSTIC-WRITE-MEMORY-BY-ADDRESS-CLASS":
-                        setattr(obj, "service_class_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticWriteMemoryByAddressClass"))
+                setattr(obj, "service_class_ref", ARRef.deserialize(child))
 
         return obj
 

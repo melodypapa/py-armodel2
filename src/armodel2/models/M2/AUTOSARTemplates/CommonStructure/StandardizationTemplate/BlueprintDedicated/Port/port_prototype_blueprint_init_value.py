@@ -124,15 +124,7 @@ class PortPrototypeBlueprintInitValue(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "DATA-PROTOTYPE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
-                        setattr(obj, "data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
-                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
-                        setattr(obj, "data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
-                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
-                        setattr(obj, "data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
+                setattr(obj, "data_prototype_ref", ARRef.deserialize(child))
             elif tag == "VALUE":
                 # Check first child element for concrete type
                 if len(child) > 0:

@@ -46,8 +46,8 @@ class RoleBasedMcDataAssignment(ARObject):
     mc_data_instance_refs: list[ARRef]
     role: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "EXECUTIONS": lambda obj, elem: obj.execution_refs.append(ARRef.deserialize(elem)),
-        "MC-DATA-INSTANCES": lambda obj, elem: obj.mc_data_instance_refs.append(ARRef.deserialize(elem)),
+        "EXECUTION-REFS": lambda obj, elem: obj.execution_refs.append(ARRef.deserialize(elem)),
+        "MC-DATA-INSTANCE-REFS": lambda obj, elem: obj.mc_data_instance_refs.append(ARRef.deserialize(elem)),
         "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
@@ -149,11 +149,11 @@ class RoleBasedMcDataAssignment(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "EXECUTIONS":
+            if tag == "EXECUTION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.execution_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RptExecutionContext"))
-            elif tag == "MC-DATA-INSTANCES":
+            elif tag == "MC-DATA-INSTANCE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.mc_data_instance_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "McDataInstance"))

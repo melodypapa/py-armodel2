@@ -49,7 +49,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
     tolerated_failed: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
         "ACTIVATE-AT-START": lambda obj, elem: setattr(obj, "activate_at_start", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "CHECKPOINTSES": lambda obj, elem: obj.checkpoint_refs.append(ARRef.deserialize(elem)),
+        "CHECKPOINTS-REFS": lambda obj, elem: obj.checkpoint_refs.append(ARRef.deserialize(elem)),
         "ENABLE": lambda obj, elem: setattr(obj, "enable", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "EXPECTED-ALIVE": lambda obj, elem: setattr(obj, "expected_alive", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "MAX-ALIVE-CYCLE": lambda obj, elem: setattr(obj, "max_alive_cycle", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
@@ -214,7 +214,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ACTIVATE-AT-START":
                 setattr(obj, "activate_at_start", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "CHECKPOINTSES":
+            elif tag == "CHECKPOINTS-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.checkpoint_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SupervisedEntity)"))

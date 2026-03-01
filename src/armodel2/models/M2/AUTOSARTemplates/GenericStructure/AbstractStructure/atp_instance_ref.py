@@ -46,7 +46,7 @@ class AtpInstanceRef(ARObject, ABC):
     atp_target_ref: ARRef
     _DESERIALIZE_DISPATCH = {
         "ATP-BASE-REF": ("_POLYMORPHIC", "atp_base_ref", ["AtpStructureElement", "AtpType"]),
-        "ATP-CONTEXTS": ("_POLYMORPHIC_LIST", "atp_context_refs", ["DataPrototype", "ModeDeclarationGroupPrototype", "PortPrototype", "RootSwCompositionPrototype", "Sw"]),
+        "ATP-CONTEXT-REFS": ("_POLYMORPHIC_LIST", "atp_context_refs", ["DataPrototype", "ModeDeclarationGroupPrototype", "PortPrototype", "RootSwCompositionPrototype", "Sw"]),
         "ATP-TARGET-REF": ("_POLYMORPHIC", "atp_target_ref", ["AtpPrototype", "AtpStructureElement"]),
     }
 
@@ -146,35 +146,12 @@ class AtpInstanceRef(ARObject, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ATP-BASE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ATP-STRUCTURE-ELEMENT":
-                        setattr(obj, "atp_base_ref", SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
-                    elif concrete_tag == "ATP-TYPE":
-                        setattr(obj, "atp_base_ref", SerializationHelper.deserialize_by_tag(child[0], "AtpType"))
-            elif tag == "ATP-CONTEXTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "DATA-PROTOTYPE":
-                        obj.atp_context_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DataPrototype"))
-                    elif concrete_tag == "MODE-DECLARATION-GROUP-PROTOTYPE":
-                        obj.atp_context_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ModeDeclarationGroupPrototype"))
-                    elif concrete_tag == "PORT-PROTOTYPE":
-                        obj.atp_context_refs.append(SerializationHelper.deserialize_by_tag(child[0], "PortPrototype"))
-                    elif concrete_tag == "ROOT-SW-COMPOSITION-PROTOTYPE":
-                        obj.atp_context_refs.append(SerializationHelper.deserialize_by_tag(child[0], "RootSwCompositionPrototype"))
-                    elif concrete_tag == "SW":
-                        obj.atp_context_refs.append(SerializationHelper.deserialize_by_tag(child[0], "Sw"))
+                setattr(obj, "atp_base_ref", ARRef.deserialize(child))
+            elif tag == "ATP-CONTEXT-REFS":
+                for item_elem in child:
+                    obj.atp_context_refs.append(ARRef.deserialize(item_elem))
             elif tag == "ATP-TARGET-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ATP-PROTOTYPE":
-                        setattr(obj, "atp_target_ref", SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
-                    elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
-                        setattr(obj, "atp_target_ref", SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
+                setattr(obj, "atp_target_ref", ARRef.deserialize(child))
 
         return obj
 

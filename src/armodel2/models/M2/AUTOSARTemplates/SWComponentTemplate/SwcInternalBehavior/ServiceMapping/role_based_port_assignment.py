@@ -127,13 +127,7 @@ class RoleBasedPortAssignment(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "PORT-PROTOTYPE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
-                        setattr(obj, "port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
-                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
-                        setattr(obj, "port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+                setattr(obj, "port_prototype_ref", ARRef.deserialize(child))
             elif tag == "ROLE":
                 setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 

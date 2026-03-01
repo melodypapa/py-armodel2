@@ -55,7 +55,7 @@ class EcuResourceEstimation(ARObject):
         "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
         "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
         "RTE-RESOURCE": lambda obj, elem: setattr(obj, "rte_resource", SerializationHelper.deserialize_by_tag(elem, "ResourceConsumption")),
-        "SW-COMP-TO-ECUS": lambda obj, elem: obj.sw_comp_to_ecu_refs.append(ARRef.deserialize(elem)),
+        "SW-COMP-TO-ECU-REFS": lambda obj, elem: obj.sw_comp_to_ecu_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -191,7 +191,7 @@ class EcuResourceEstimation(ARObject):
                 setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
             elif tag == "RTE-RESOURCE":
                 setattr(obj, "rte_resource", SerializationHelper.deserialize_by_tag(child, "ResourceConsumption"))
-            elif tag == "SW-COMP-TO-ECUS":
+            elif tag == "SW-COMP-TO-ECU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.sw_comp_to_ecu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcToEcuMapping"))

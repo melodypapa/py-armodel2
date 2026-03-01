@@ -51,7 +51,7 @@ class PortPrototypeBlueprint(ARElement):
     provided_coms: list[PPortComSpec]
     required_coms: list[RPortComSpec]
     _DESERIALIZE_DISPATCH = {
-        "INIT-VALUES": lambda obj, elem: obj._init_value_refs.append(ARRef.deserialize(elem)),
+        "INIT-VALUE-REFS": lambda obj, elem: obj._init_value_refs.append(ARRef.deserialize(elem)),
         "INTERFACE-REF": ("_POLYMORPHIC", "interface_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
         "PROVIDED-COMS": ("_POLYMORPHIC_LIST", "provided_coms", ["ModeSwitchSenderComSpec", "NvProvideComSpec", "ParameterProvideComSpec", "SenderComSpec"]),
         "REQUIRED-COMS": ("_POLYMORPHIC_LIST", "required_coms", ["ClientComSpec", "ModeSwitchReceiverComSpec", "NvRequireComSpec", "ParameterRequireComSpec"]),
@@ -170,22 +170,12 @@ class PortPrototypeBlueprint(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "INIT-VALUES":
+            if tag == "INIT-VALUE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._init_value_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PortPrototypeBlueprint"))
             elif tag == "INTERFACE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "CLIENT-SERVER-INTERFACE":
-                        setattr(obj, "interface_ref", SerializationHelper.deserialize_by_tag(child[0], "ClientServerInterface"))
-                    elif concrete_tag == "DATA-INTERFACE":
-                        setattr(obj, "interface_ref", SerializationHelper.deserialize_by_tag(child[0], "DataInterface"))
-                    elif concrete_tag == "MODE-SWITCH-INTERFACE":
-                        setattr(obj, "interface_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchInterface"))
-                    elif concrete_tag == "TRIGGER-INTERFACE":
-                        setattr(obj, "interface_ref", SerializationHelper.deserialize_by_tag(child[0], "TriggerInterface"))
+                setattr(obj, "interface_ref", ARRef.deserialize(child))
             elif tag == "PROVIDED-COMS":
                 # Check first child element for concrete type
                 if len(child) > 0:

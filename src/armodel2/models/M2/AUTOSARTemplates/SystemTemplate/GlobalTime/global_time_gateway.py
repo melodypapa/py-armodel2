@@ -147,29 +147,9 @@ class GlobalTimeGateway(Identifiable):
             if tag == "HOST-REF":
                 setattr(obj, "host_ref", ARRef.deserialize(child))
             elif tag == "MASTER-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "GLOBAL-TIME-CAN-MASTER":
-                        setattr(obj, "master_ref", SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeCanMaster"))
-                    elif concrete_tag == "GLOBAL-TIME-ETH-MASTER":
-                        setattr(obj, "master_ref", SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeEthMaster"))
-                    elif concrete_tag == "GLOBAL-TIME-FR-MASTER":
-                        setattr(obj, "master_ref", SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeFrMaster"))
-                    elif concrete_tag == "USER-DEFINED-GLOBAL-TIME-MASTER":
-                        setattr(obj, "master_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedGlobalTimeMaster"))
+                setattr(obj, "master_ref", ARRef.deserialize(child))
             elif tag == "SLAVE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "GLOBAL-TIME-CAN-SLAVE":
-                        setattr(obj, "slave_ref", SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeCanSlave"))
-                    elif concrete_tag == "GLOBAL-TIME-ETH-SLAVE":
-                        setattr(obj, "slave_ref", SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeEthSlave"))
-                    elif concrete_tag == "GLOBAL-TIME-FR-SLAVE":
-                        setattr(obj, "slave_ref", SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeFrSlave"))
-                    elif concrete_tag == "USER-DEFINED-GLOBAL-TIME-SLAVE":
-                        setattr(obj, "slave_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedGlobalTimeSlave"))
+                setattr(obj, "slave_ref", ARRef.deserialize(child))
 
         return obj
 

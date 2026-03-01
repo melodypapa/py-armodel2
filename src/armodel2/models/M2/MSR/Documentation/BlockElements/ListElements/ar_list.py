@@ -135,9 +135,7 @@ class ARList(Paginateable):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ITEM":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj._items.append(SerializationHelper.deserialize_by_tag(item_elem, "Item"))
+                obj._items.append(SerializationHelper.deserialize_by_tag(child, "Item"))
 
         return obj
 

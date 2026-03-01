@@ -53,10 +53,10 @@ class PhysicalChannel(Identifiable, ABC):
     managed_physical_channel_refs: list[ARRef]
     pdu_triggerings: list[PduTriggering]
     _DESERIALIZE_DISPATCH = {
-        "COMM-CONNECTORS": ("_POLYMORPHIC_LIST", "_comm_connector_refs", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "COMM-CONNECTOR-REFS": ("_POLYMORPHIC_LIST", "_comm_connector_refs", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
         "FRAME-TRIGGERINGS": ("_POLYMORPHIC_LIST", "frame_triggerings", ["CanFrameTriggering", "EthernetFrameTriggering", "FlexrayFrameTriggering", "LinFrameTriggering"]),
         "I-SIGNAL-TRIGGERINGS": lambda obj, elem: obj.i_signal_triggerings.append(SerializationHelper.deserialize_by_tag(elem, "ISignalTriggering")),
-        "MANAGED-PHYSICAL-CHANNELS": ("_POLYMORPHIC_LIST", "managed_physical_channel_refs", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "MANAGED-PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "managed_physical_channel_refs", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
         "PDU-TRIGGERINGS": lambda obj, elem: obj.pdu_triggerings.append(SerializationHelper.deserialize_by_tag(elem, "PduTriggering")),
     }
 
@@ -190,20 +190,9 @@ class PhysicalChannel(Identifiable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "COMM-CONNECTORS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONNECTOR":
-                        obj._comm_connector_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCommunicationConnector"))
-                    elif concrete_tag == "ETHERNET-COMMUNICATION-CONNECTOR":
-                        obj._comm_connector_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetCommunicationConnector"))
-                    elif concrete_tag == "FLEXRAY-COMMUNICATION-CONNECTOR":
-                        obj._comm_connector_refs.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayCommunicationConnector"))
-                    elif concrete_tag == "LIN-COMMUNICATION-CONNECTOR":
-                        obj._comm_connector_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinCommunicationConnector"))
-                    elif concrete_tag == "USER-DEFINED-COMMUNICATION-CONNECTOR":
-                        obj._comm_connector_refs.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCommunicationConnector"))
+            if tag == "COMM-CONNECTOR-REFS":
+                for item_elem in child:
+                    obj._comm_connector_refs.append(ARRef.deserialize(item_elem))
             elif tag == "FRAME-TRIGGERINGS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -220,18 +209,9 @@ class PhysicalChannel(Identifiable, ABC):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.i_signal_triggerings.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalTriggering"))
-            elif tag == "MANAGED-PHYSICAL-CHANNELS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-CAN-PHYSICAL-CHANNEL":
-                        obj.managed_physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractCanPhysicalChannel"))
-                    elif concrete_tag == "ETHERNET-PHYSICAL-CHANNEL":
-                        obj.managed_physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetPhysicalChannel"))
-                    elif concrete_tag == "FLEXRAY-PHYSICAL-CHANNEL":
-                        obj.managed_physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayPhysicalChannel"))
-                    elif concrete_tag == "LIN-PHYSICAL-CHANNEL":
-                        obj.managed_physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinPhysicalChannel"))
+            elif tag == "MANAGED-PHYSICAL-CHANNEL-REFS":
+                for item_elem in child:
+                    obj.managed_physical_channel_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PDU-TRIGGERINGS":
                 # Iterate through wrapper children
                 for item_elem in child:

@@ -48,7 +48,7 @@ class CpSoftwareCluster(ARElement):
     _DESERIALIZE_DISPATCH = {
         "SOFTWARE-CLUSTER": lambda obj, elem: setattr(obj, "software_cluster", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SW-COMPONENTS": lambda obj, elem: obj.sw_components.append(SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
-        "SW-COMPOSITION-COMPONENT-TYPES": lambda obj, elem: obj.sw_composition_component_type_refs.append(ARRef.deserialize(elem)),
+        "SW-COMPOSITION-COMPONENT-TYPE-REFS": lambda obj, elem: obj.sw_composition_component_type_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -148,7 +148,7 @@ class CpSoftwareCluster(ARElement):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.sw_components.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwComponent)"))
-            elif tag == "SW-COMPOSITION-COMPONENT-TYPES":
+            elif tag == "SW-COMPOSITION-COMPONENT-TYPE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.sw_composition_component_type_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CompositionSwComponentType"))

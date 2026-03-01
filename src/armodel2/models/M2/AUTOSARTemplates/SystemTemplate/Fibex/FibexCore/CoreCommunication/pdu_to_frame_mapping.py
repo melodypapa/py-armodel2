@@ -163,17 +163,7 @@ class PduToFrameMapping(Identifiable):
             if tag == "PACKING-BYTE-ORDER":
                 setattr(obj, "packing_byte_order", ByteOrderEnum.deserialize(child))
             elif tag == "PDU-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "GENERAL-PURPOSE-PDU":
-                        setattr(obj, "pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "GeneralPurposePdu"))
-                    elif concrete_tag == "I-PDU":
-                        setattr(obj, "pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "IPdu"))
-                    elif concrete_tag == "NM-PDU":
-                        setattr(obj, "pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "NmPdu"))
-                    elif concrete_tag == "USER-DEFINED-PDU":
-                        setattr(obj, "pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedPdu"))
+                setattr(obj, "pdu_ref", ARRef.deserialize(child))
             elif tag == "START-POSITION":
                 setattr(obj, "start_position", SerializationHelper.deserialize_by_tag(child, "Integer"))
             elif tag == "UPDATE-INDICATION-BIT-POSITION":

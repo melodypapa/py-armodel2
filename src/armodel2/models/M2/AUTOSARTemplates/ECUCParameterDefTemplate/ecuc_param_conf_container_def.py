@@ -42,7 +42,7 @@ class EcucParamConfContainerDef(EcucContainerDef):
     sub_containers: list[EcucContainerDef]
     _DESERIALIZE_DISPATCH = {
         "PARAMETERS": ("_POLYMORPHIC_LIST", "parameters", ["EcucAbstractStringParamDef", "EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucIntegerParamDef"]),
-        "REFERENCES": lambda obj, elem: obj.reference_refs.append(ARRef.deserialize(elem)),
+        "REFERENCE-REFS": lambda obj, elem: obj.reference_refs.append(ARRef.deserialize(elem)),
         "SUB-CONTAINERS": ("_POLYMORPHIC_LIST", "sub_containers", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
     }
 
@@ -149,7 +149,7 @@ class EcucParamConfContainerDef(EcucContainerDef):
                         obj.parameters.append(SerializationHelper.deserialize_by_tag(child[0], "EcucFloatParamDef"))
                     elif concrete_tag == "ECUC-INTEGER-PARAM-DEF":
                         obj.parameters.append(SerializationHelper.deserialize_by_tag(child[0], "EcucIntegerParamDef"))
-            elif tag == "REFERENCES":
+            elif tag == "REFERENCE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.reference_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EcucAbstractReference)"))

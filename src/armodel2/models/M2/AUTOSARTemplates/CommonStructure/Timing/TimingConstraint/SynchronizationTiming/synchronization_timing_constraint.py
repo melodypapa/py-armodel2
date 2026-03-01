@@ -51,8 +51,8 @@ class SynchronizationTimingConstraint(TimingConstraint):
     tolerance: Optional[MultidimensionalTime]
     _DESERIALIZE_DISPATCH = {
         "EVENT": lambda obj, elem: setattr(obj, "event", EventOccurrenceKindEnum.deserialize(elem)),
-        "SCOPES": ("_POLYMORPHIC_LIST", "scope_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
-        "SCOPE-EVENTS": ("_POLYMORPHIC_LIST", "scope_event_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "SCOPE-REFS": ("_POLYMORPHIC_LIST", "scope_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "SCOPE-EVENT-REFS": ("_POLYMORPHIC_LIST", "scope_event_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
         "SYNCHRONIZATION": lambda obj, elem: setattr(obj, "synchronization", SynchronizationTypeEnum.deserialize(elem)),
         "TOLERANCE": lambda obj, elem: setattr(obj, "tolerance", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
     }
@@ -187,42 +187,12 @@ class SynchronizationTimingConstraint(TimingConstraint):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "EVENT":
                 setattr(obj, "event", EventOccurrenceKindEnum.deserialize(child))
-            elif tag == "SCOPES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "T-D-EVENT-BSW":
-                        obj.scope_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventBsw"))
-                    elif concrete_tag == "T-D-EVENT-BSW-INTERNAL-BEHAVIOR":
-                        obj.scope_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventBswInternalBehavior"))
-                    elif concrete_tag == "T-D-EVENT-COM":
-                        obj.scope_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventCom"))
-                    elif concrete_tag == "T-D-EVENT-COMPLEX":
-                        obj.scope_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventComplex"))
-                    elif concrete_tag == "T-D-EVENT-S-L-L-E-T":
-                        obj.scope_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventSLLET"))
-                    elif concrete_tag == "T-D-EVENT-SWC":
-                        obj.scope_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventSwc"))
-                    elif concrete_tag == "T-D-EVENT-VFB":
-                        obj.scope_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventVfb"))
-            elif tag == "SCOPE-EVENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "T-D-EVENT-BSW":
-                        obj.scope_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventBsw"))
-                    elif concrete_tag == "T-D-EVENT-BSW-INTERNAL-BEHAVIOR":
-                        obj.scope_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventBswInternalBehavior"))
-                    elif concrete_tag == "T-D-EVENT-COM":
-                        obj.scope_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventCom"))
-                    elif concrete_tag == "T-D-EVENT-COMPLEX":
-                        obj.scope_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventComplex"))
-                    elif concrete_tag == "T-D-EVENT-S-L-L-E-T":
-                        obj.scope_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventSLLET"))
-                    elif concrete_tag == "T-D-EVENT-SWC":
-                        obj.scope_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventSwc"))
-                    elif concrete_tag == "T-D-EVENT-VFB":
-                        obj.scope_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventVfb"))
+            elif tag == "SCOPE-REFS":
+                for item_elem in child:
+                    obj.scope_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "SCOPE-EVENT-REFS":
+                for item_elem in child:
+                    obj.scope_event_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SYNCHRONIZATION":
                 setattr(obj, "synchronization", SynchronizationTypeEnum.deserialize(child))
             elif tag == "TOLERANCE":

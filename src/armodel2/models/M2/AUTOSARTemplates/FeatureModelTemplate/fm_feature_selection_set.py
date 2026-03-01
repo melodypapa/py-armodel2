@@ -44,8 +44,8 @@ class FMFeatureSelectionSet(ARElement):
     include_refs: list[ARRef]
     selections: list[FMFeatureSelection]
     _DESERIALIZE_DISPATCH = {
-        "FEATURE-MODELS": lambda obj, elem: obj.feature_model_refs.append(ARRef.deserialize(elem)),
-        "INCLUDES": lambda obj, elem: obj.include_refs.append(ARRef.deserialize(elem)),
+        "FEATURE-MODEL-REFS": lambda obj, elem: obj.feature_model_refs.append(ARRef.deserialize(elem)),
+        "INCLUDE-REFS": lambda obj, elem: obj.include_refs.append(ARRef.deserialize(elem)),
         "SELECTIONS": lambda obj, elem: obj.selections.append(SerializationHelper.deserialize_by_tag(elem, "FMFeatureSelection")),
     }
 
@@ -143,11 +143,11 @@ class FMFeatureSelectionSet(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "FEATURE-MODELS":
+            if tag == "FEATURE-MODEL-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.feature_model_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureModel"))
-            elif tag == "INCLUDES":
+            elif tag == "INCLUDE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.include_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeatureSelectionSet"))

@@ -139,31 +139,9 @@ class ModeGroupInAtomicSwcInstanceRef(ARObject, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "BASE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "APPLICATION-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationSwComponentType"))
-                    elif concrete_tag == "COMPLEX-DEVICE-DRIVER-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ComplexDeviceDriverSwComponentType"))
-                    elif concrete_tag == "ECU-ABSTRACTION-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "EcuAbstractionSwComponentType"))
-                    elif concrete_tag == "NV-BLOCK-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "NvBlockSwComponentType"))
-                    elif concrete_tag == "SENSOR-ACTUATOR-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "SensorActuatorSwComponentType"))
-                    elif concrete_tag == "SERVICE-PROXY-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ServiceProxySwComponentType"))
-                    elif concrete_tag == "SERVICE-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ServiceSwComponentType"))
+                setattr(obj, "base_ref", ARRef.deserialize(child))
             elif tag == "CONTEXT-PORT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
-                        setattr(obj, "context_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
-                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
-                        setattr(obj, "context_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+                setattr(obj, "context_port_ref", ARRef.deserialize(child))
             elif tag == "TARGET-REF":
                 setattr(obj, "target_ref", ARRef.deserialize(child))
 

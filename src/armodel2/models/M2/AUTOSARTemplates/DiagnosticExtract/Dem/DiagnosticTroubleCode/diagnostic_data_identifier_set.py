@@ -39,7 +39,7 @@ class DiagnosticDataIdentifierSet(DiagnosticCommonElement):
 
     data_identifier_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DATA-IDENTIFIERS": lambda obj, elem: obj.data_identifier_refs.append(ARRef.deserialize(elem)),
+        "DATA-IDENTIFIER-REFS": lambda obj, elem: obj.data_identifier_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -107,7 +107,7 @@ class DiagnosticDataIdentifierSet(DiagnosticCommonElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DATA-IDENTIFIERS":
+            if tag == "DATA-IDENTIFIER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.data_identifier_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticDataIdentifier"))

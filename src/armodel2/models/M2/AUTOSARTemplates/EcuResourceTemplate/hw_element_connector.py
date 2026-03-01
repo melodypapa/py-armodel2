@@ -50,9 +50,9 @@ class HwElementConnector(Describable):
     hw_pins: list[HwPinConnector]
     hw_pin_group_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "HW-ELEMENTS": lambda obj, elem: obj.hw_element_refs.append(ARRef.deserialize(elem)),
+        "HW-ELEMENT-REFS": lambda obj, elem: obj.hw_element_refs.append(ARRef.deserialize(elem)),
         "HW-PINS": lambda obj, elem: obj.hw_pins.append(SerializationHelper.deserialize_by_tag(elem, "HwPinConnector")),
-        "HW-PIN-GROUPS": lambda obj, elem: obj.hw_pin_group_refs.append(ARRef.deserialize(elem)),
+        "HW-PIN-GROUP-REFS": lambda obj, elem: obj.hw_pin_group_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -149,7 +149,7 @@ class HwElementConnector(Describable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "HW-ELEMENTS":
+            if tag == "HW-ELEMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.hw_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "HwElement"))
@@ -157,7 +157,7 @@ class HwElementConnector(Describable):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.hw_pins.append(SerializationHelper.deserialize_by_tag(item_elem, "HwPinConnector"))
-            elif tag == "HW-PIN-GROUPS":
+            elif tag == "HW-PIN-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.hw_pin_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "HwPinGroupConnector"))

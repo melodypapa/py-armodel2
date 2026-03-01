@@ -48,7 +48,7 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
         "LOCAL-UNICAST-REF": lambda obj, elem: setattr(obj, "local_unicast_ref", ARRef.deserialize(elem)),
         "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PROVIDED-DDSES": ("_POLYMORPHIC_LIST", "provided_ddses", ["DdsCpConsumedServiceInstance", "DdsCpProvidedServiceInstance"]),
-        "STATIC-REMOTES": lambda obj, elem: obj.static_remote_refs.append(ARRef.deserialize(elem)),
+        "STATIC-REMOTE-REFS": lambda obj, elem: obj.static_remote_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -169,7 +169,7 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
                         obj.provided_ddses.append(SerializationHelper.deserialize_by_tag(child[0], "DdsCpConsumedServiceInstance"))
                     elif concrete_tag == "DDS-CP-PROVIDED-SERVICE-INSTANCE":
                         obj.provided_ddses.append(SerializationHelper.deserialize_by_tag(child[0], "DdsCpProvidedServiceInstance"))
-            elif tag == "STATIC-REMOTES":
+            elif tag == "STATIC-REMOTE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.static_remote_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationEndpoint"))

@@ -57,9 +57,9 @@ class AclPermission(ARElement):
     acl_scope: AclScopeEnum
     _DESERIALIZE_DISPATCH = {
         "ACL-CONTEXTS": lambda obj, elem: obj.acl_contexts.append(SerializationHelper.deserialize_by_tag(elem, "NameToken")),
-        "ACL-OBJECT-SETS": lambda obj, elem: obj.acl_object_set_refs.append(ARRef.deserialize(elem)),
-        "ACL-OPERATIONS": lambda obj, elem: obj.acl_operation_refs.append(ARRef.deserialize(elem)),
-        "ACL-ROLES": lambda obj, elem: obj.acl_role_refs.append(ARRef.deserialize(elem)),
+        "ACL-OBJECT-SET-REFS": lambda obj, elem: obj.acl_object_set_refs.append(ARRef.deserialize(elem)),
+        "ACL-OPERATION-REFS": lambda obj, elem: obj.acl_operation_refs.append(ARRef.deserialize(elem)),
+        "ACL-ROLE-REFS": lambda obj, elem: obj.acl_role_refs.append(ARRef.deserialize(elem)),
         "ACL-SCOPE": lambda obj, elem: setattr(obj, "acl_scope", AclScopeEnum.deserialize(elem)),
     }
 
@@ -201,15 +201,15 @@ class AclPermission(ARElement):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.acl_contexts.append(SerializationHelper.deserialize_by_tag(item_elem, "NameToken"))
-            elif tag == "ACL-OBJECT-SETS":
+            elif tag == "ACL-OBJECT-SET-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.acl_object_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "AclObjectSet"))
-            elif tag == "ACL-OPERATIONS":
+            elif tag == "ACL-OPERATION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.acl_operation_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "AclOperation"))
-            elif tag == "ACL-ROLES":
+            elif tag == "ACL-ROLE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.acl_role_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "AclRole"))

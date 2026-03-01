@@ -157,15 +157,7 @@ class BuildActionIoElement(ARObject):
             if tag == "CATEGORY":
                 setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "NameToken"))
             elif tag == "ECUC-DEFINITION-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ECUC-COMMON-ATTRIBUTES":
-                        setattr(obj, "ecuc_definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucCommonAttributes"))
-                    elif concrete_tag == "ECUC-CONTAINER-DEF":
-                        setattr(obj, "ecuc_definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucContainerDef"))
-                    elif concrete_tag == "ECUC-MODULE-DEF":
-                        setattr(obj, "ecuc_definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucModuleDef"))
+                setattr(obj, "ecuc_definition_ref", ARRef.deserialize(child))
             elif tag == "ROLE":
                 setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "SDGS":

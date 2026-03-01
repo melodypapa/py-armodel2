@@ -68,14 +68,14 @@ class BswModuleEntity(ExecutableEntity, ABC):
     managed_mode_group_refs: list[ARRef]
     scheduler_name_prefix_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ACCESSED-MODE-GROUPS": lambda obj, elem: obj.accessed_mode_group_refs.append(ARRef.deserialize(elem)),
-        "ACTIVATION-POINTS": lambda obj, elem: obj.activation_point_refs.append(ARRef.deserialize(elem)),
+        "ACCESSED-MODE-GROUP-REFS": lambda obj, elem: obj.accessed_mode_group_refs.append(ARRef.deserialize(elem)),
+        "ACTIVATION-POINT-REFS": lambda obj, elem: obj.activation_point_refs.append(ARRef.deserialize(elem)),
         "CALL-POINTS": ("_POLYMORPHIC_LIST", "call_points", ["BswAsynchronousServerCallPoint", "BswAsynchronousServerCallResultPoint", "BswDirectCallPoint", "Bsw"]),
         "DATA-RECEIVE-POINTS": lambda obj, elem: obj.data_receive_points.append(SerializationHelper.deserialize_by_tag(elem, "BswVariableAccess")),
         "DATA-SEND-POINTS": lambda obj, elem: obj.data_send_points.append(SerializationHelper.deserialize_by_tag(elem, "BswVariableAccess")),
         "IMPLEMENTED-ENTRY-REF": lambda obj, elem: setattr(obj, "implemented_entry_ref", ARRef.deserialize(elem)),
-        "ISSUED-TRIGGERS": lambda obj, elem: obj.issued_trigger_refs.append(ARRef.deserialize(elem)),
-        "MANAGED-MODE-GROUPS": lambda obj, elem: obj.managed_mode_group_refs.append(ARRef.deserialize(elem)),
+        "ISSUED-TRIGGER-REFS": lambda obj, elem: obj.issued_trigger_refs.append(ARRef.deserialize(elem)),
+        "MANAGED-MODE-GROUP-REFS": lambda obj, elem: obj.managed_mode_group_refs.append(ARRef.deserialize(elem)),
         "SCHEDULER-NAME-PREFIX-REF": lambda obj, elem: setattr(obj, "scheduler_name_prefix_ref", ARRef.deserialize(elem)),
     }
 
@@ -261,11 +261,11 @@ class BswModuleEntity(ExecutableEntity, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ACCESSED-MODE-GROUPS":
+            if tag == "ACCESSED-MODE-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.accessed_mode_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroup"))
-            elif tag == "ACTIVATION-POINTS":
+            elif tag == "ACTIVATION-POINT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.activation_point_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggeringPoint"))
@@ -291,11 +291,11 @@ class BswModuleEntity(ExecutableEntity, ABC):
                     obj.data_send_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswVariableAccess"))
             elif tag == "IMPLEMENTED-ENTRY-REF":
                 setattr(obj, "implemented_entry_ref", ARRef.deserialize(child))
-            elif tag == "ISSUED-TRIGGERS":
+            elif tag == "ISSUED-TRIGGER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.issued_trigger_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
-            elif tag == "MANAGED-MODE-GROUPS":
+            elif tag == "MANAGED-MODE-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.managed_mode_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroupPrototype"))

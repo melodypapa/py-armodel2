@@ -46,7 +46,7 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
         "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
-        "CONTEXT-SWS": lambda obj, elem: obj.context_sw_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-SW-REFS": lambda obj, elem: obj.context_sw_refs.append(ARRef.deserialize(elem)),
         "TARGET-VARIABLE-REF": lambda obj, elem: setattr(obj, "target_variable_ref", ARRef.deserialize(elem)),
     }
 
@@ -163,14 +163,8 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
             if tag == "BASE-REF":
                 setattr(obj, "base_ref", ARRef.deserialize(child))
             elif tag == "CONTEXT-PORT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
-                        setattr(obj, "context_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
-                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
-                        setattr(obj, "context_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
-            elif tag == "CONTEXT-SWS":
+                setattr(obj, "context_port_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-SW-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.context_sw_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwComponent)"))

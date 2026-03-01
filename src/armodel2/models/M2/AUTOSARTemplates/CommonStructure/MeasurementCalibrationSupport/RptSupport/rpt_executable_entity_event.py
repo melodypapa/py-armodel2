@@ -59,12 +59,12 @@ class RptExecutableEntityEvent(Identifiable):
     rpt_impl_policy: Optional[RptImplPolicy]
     rpt_service_point_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "EXECUTIONS": lambda obj, elem: obj.execution_refs.append(ARRef.deserialize(elem)),
+        "EXECUTION-REFS": lambda obj, elem: obj.execution_refs.append(ARRef.deserialize(elem)),
         "MC-DATAS": lambda obj, elem: obj.mc_datas.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
         "RPT-EVENT-ID": lambda obj, elem: setattr(obj, "rpt_event_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "RPT-EXECUTABLE-ENTITY": lambda obj, elem: setattr(obj, "rpt_executable_entity", SerializationHelper.deserialize_by_tag(elem, "RptExecutableEntity")),
         "RPT-IMPL-POLICY": lambda obj, elem: setattr(obj, "rpt_impl_policy", SerializationHelper.deserialize_by_tag(elem, "RptImplPolicy")),
-        "RPT-SERVICE-POINTS": lambda obj, elem: obj.rpt_service_point_refs.append(ARRef.deserialize(elem)),
+        "RPT-SERVICE-POINT-REFS": lambda obj, elem: obj.rpt_service_point_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -206,7 +206,7 @@ class RptExecutableEntityEvent(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "EXECUTIONS":
+            if tag == "EXECUTION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.execution_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RptExecutionContext"))
@@ -220,7 +220,7 @@ class RptExecutableEntityEvent(Identifiable):
                 setattr(obj, "rpt_executable_entity", SerializationHelper.deserialize_by_tag(child, "RptExecutableEntity"))
             elif tag == "RPT-IMPL-POLICY":
                 setattr(obj, "rpt_impl_policy", SerializationHelper.deserialize_by_tag(child, "RptImplPolicy"))
-            elif tag == "RPT-SERVICE-POINTS":
+            elif tag == "RPT-SERVICE-POINT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.rpt_service_point_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RptServicePoint"))

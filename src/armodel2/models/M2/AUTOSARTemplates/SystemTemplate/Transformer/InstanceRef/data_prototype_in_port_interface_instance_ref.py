@@ -43,7 +43,7 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
     target_data_ref: ARRef
     _DESERIALIZE_DISPATCH = {
         "ABSTRACT-BASE-REF": ("_POLYMORPHIC", "abstract_base_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
-        "CONTEXT-DATAS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-DATA-REFS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
         "ROOT-DATA-REF": ("_POLYMORPHIC", "root_data_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "TARGET-DATA-REF": ("_POLYMORPHIC", "target_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
     }
@@ -159,39 +159,15 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ABSTRACT-BASE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "CLIENT-SERVER-INTERFACE":
-                        setattr(obj, "abstract_base_ref", SerializationHelper.deserialize_by_tag(child[0], "ClientServerInterface"))
-                    elif concrete_tag == "DATA-INTERFACE":
-                        setattr(obj, "abstract_base_ref", SerializationHelper.deserialize_by_tag(child[0], "DataInterface"))
-                    elif concrete_tag == "MODE-SWITCH-INTERFACE":
-                        setattr(obj, "abstract_base_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchInterface"))
-                    elif concrete_tag == "TRIGGER-INTERFACE":
-                        setattr(obj, "abstract_base_ref", SerializationHelper.deserialize_by_tag(child[0], "TriggerInterface"))
-            elif tag == "CONTEXT-DATAS":
+                setattr(obj, "abstract_base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.context_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ApplicationComposite)"))
             elif tag == "ROOT-DATA-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
-                        setattr(obj, "root_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
-                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
-                        setattr(obj, "root_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
-                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
-                        setattr(obj, "root_data_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
+                setattr(obj, "root_data_ref", ARRef.deserialize(child))
             elif tag == "TARGET-DATA-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
-                        setattr(obj, "target_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
-                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
-                        setattr(obj, "target_data_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
+                setattr(obj, "target_data_ref", ARRef.deserialize(child))
 
         return obj
 

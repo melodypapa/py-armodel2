@@ -54,8 +54,8 @@ class ReferenceBase(ARObject):
         "IS-GLOBAL": lambda obj, elem: setattr(obj, "is_global", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "BASE-IS-THIS-PACKAGE": lambda obj, elem: setattr(obj, "base_is_this_package", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "PACKAGE-REF": lambda obj, elem: setattr(obj, "package_ref", ARRef.deserialize(elem)),
-        "GLOBAL-ELEMENTS": lambda obj, elem: obj.global_element_refs.append(ARRef.deserialize(elem)),
-        "GLOBAL-IN-PACKAGES": lambda obj, elem: obj.global_in_package_refs.append(ARRef.deserialize(elem)),
+        "GLOBAL-ELEMENT-REFS": lambda obj, elem: obj.global_element_refs.append(ARRef.deserialize(elem)),
+        "GLOBAL-IN-PACKAGE-REFS": lambda obj, elem: obj.global_in_package_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -226,11 +226,11 @@ class ReferenceBase(ARObject):
                 setattr(obj, "base_is_this_package", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "PACKAGE-REF":
                 setattr(obj, "package_ref", ARRef.deserialize(child))
-            elif tag == "GLOBAL-ELEMENTS":
+            elif tag == "GLOBAL-ELEMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.global_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ReferrableSubtypesEnum"))
-            elif tag == "GLOBAL-IN-PACKAGES":
+            elif tag == "GLOBAL-IN-PACKAGE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.global_in_package_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ARPackage"))

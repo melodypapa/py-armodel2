@@ -44,7 +44,7 @@ class BswVariableAccess(Referrable):
     context_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "ACCESSED-VARIABLE-REF": lambda obj, elem: setattr(obj, "accessed_variable_ref", ARRef.deserialize(elem)),
-        "CONTEXTS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-REFS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -129,7 +129,7 @@ class BswVariableAccess(Referrable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ACCESSED-VARIABLE-REF":
                 setattr(obj, "accessed_variable_ref", ARRef.deserialize(child))
-            elif tag == "CONTEXTS":
+            elif tag == "CONTEXT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.context_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BswDistinguishedPartition"))

@@ -54,7 +54,7 @@ class DataPrototypeMapping(ARObject):
         "FIRST-TO-SECOND-REF": lambda obj, elem: setattr(obj, "first_to_second_ref", ARRef.deserialize(elem)),
         "SECOND-DATA-REF": ("_POLYMORPHIC", "second_data_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "SECOND-TO-FIRST-REF": lambda obj, elem: setattr(obj, "second_to_first_ref", ARRef.deserialize(elem)),
-        "SUB-ELEMENTS": lambda obj, elem: obj.sub_element_refs.append(ARRef.deserialize(elem)),
+        "SUB-ELEMENT-REFS": lambda obj, elem: obj.sub_element_refs.append(ARRef.deserialize(elem)),
         "TEXT-TABLE-REF": lambda obj, elem: setattr(obj, "text_table_ref", ARRef.deserialize(elem)),
     }
 
@@ -199,30 +199,14 @@ class DataPrototypeMapping(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "FIRST-DATA-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
-                        setattr(obj, "first_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
-                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
-                        setattr(obj, "first_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
-                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
-                        setattr(obj, "first_data_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
+                setattr(obj, "first_data_ref", ARRef.deserialize(child))
             elif tag == "FIRST-TO-SECOND-REF":
                 setattr(obj, "first_to_second_ref", ARRef.deserialize(child))
             elif tag == "SECOND-DATA-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
-                        setattr(obj, "second_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
-                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
-                        setattr(obj, "second_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
-                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
-                        setattr(obj, "second_data_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
+                setattr(obj, "second_data_ref", ARRef.deserialize(child))
             elif tag == "SECOND-TO-FIRST-REF":
                 setattr(obj, "second_to_first_ref", ARRef.deserialize(child))
-            elif tag == "SUB-ELEMENTS":
+            elif tag == "SUB-ELEMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.sub_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SubElementMapping"))

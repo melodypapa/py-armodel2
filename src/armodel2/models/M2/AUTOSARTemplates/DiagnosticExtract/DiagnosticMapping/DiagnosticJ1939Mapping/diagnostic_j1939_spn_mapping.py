@@ -47,7 +47,7 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
     spn_ref: Optional[ARRef]
     system_signal_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "SENDING-NODES": lambda obj, elem: obj.sending_node_refs.append(ARRef.deserialize(elem)),
+        "SENDING-NODE-REFS": lambda obj, elem: obj.sending_node_refs.append(ARRef.deserialize(elem)),
         "SPN-REF": lambda obj, elem: setattr(obj, "spn_ref", ARRef.deserialize(elem)),
         "SYSTEM-SIGNAL-REF": lambda obj, elem: setattr(obj, "system_signal_ref", ARRef.deserialize(elem)),
     }
@@ -147,7 +147,7 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "SENDING-NODES":
+            if tag == "SENDING-NODE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.sending_node_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticJ1939Node"))

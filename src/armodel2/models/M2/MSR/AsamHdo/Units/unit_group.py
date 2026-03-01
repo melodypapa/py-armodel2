@@ -40,7 +40,7 @@ class UnitGroup(ARElement):
 
     unit_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "UNITS": lambda obj, elem: obj.unit_refs.append(ARRef.deserialize(elem)),
+        "UNIT-REFS": lambda obj, elem: obj.unit_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -108,7 +108,7 @@ class UnitGroup(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "UNITS":
+            if tag == "UNIT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.unit_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "Unit"))

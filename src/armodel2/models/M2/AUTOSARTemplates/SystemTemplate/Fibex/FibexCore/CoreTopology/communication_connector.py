@@ -198,19 +198,7 @@ class CommunicationConnector(Identifiable, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "COMM-CONTROLLER-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONTROLLER":
-                        setattr(obj, "comm_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCommunicationController"))
-                    elif concrete_tag == "ETHERNET-COMMUNICATION-CONTROLLER":
-                        setattr(obj, "comm_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetCommunicationController"))
-                    elif concrete_tag == "FLEXRAY-COMMUNICATION-CONTROLLER":
-                        setattr(obj, "comm_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayCommunicationController"))
-                    elif concrete_tag == "LIN-COMMUNICATION-CONTROLLER":
-                        setattr(obj, "comm_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "LinCommunicationController"))
-                    elif concrete_tag == "USER-DEFINED-COMMUNICATION-CONTROLLER":
-                        setattr(obj, "comm_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCommunicationController"))
+                setattr(obj, "comm_controller_ref", ARRef.deserialize(child))
             elif tag == "CREATE-ECU-WAKEUP-SOURCE":
                 setattr(obj, "create_ecu_wakeup_source", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED":

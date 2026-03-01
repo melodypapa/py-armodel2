@@ -40,7 +40,7 @@ class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
 
     destination_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DESTINATIONS": ("_POLYMORPHIC_LIST", "destination_refs", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
+        "DESTINATION-REFS": ("_POLYMORPHIC_LIST", "destination_refs", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
     }
 
 
@@ -108,14 +108,9 @@ class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DESTINATIONS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ECUC-CHOICE-CONTAINER-DEF":
-                        obj.destination_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EcucChoiceContainerDef"))
-                    elif concrete_tag == "ECUC-PARAM-CONF-CONTAINER-DEF":
-                        obj.destination_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EcucParamConfContainerDef"))
+            if tag == "DESTINATION-REFS":
+                for item_elem in child:
+                    obj.destination_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

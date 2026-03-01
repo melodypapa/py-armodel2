@@ -44,7 +44,7 @@ class PduActivationRoutingGroup(Identifiable):
     i_pdu_identifier_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "EVENT-GROUP-REF": lambda obj, elem: setattr(obj, "event_group_ref", EventGroupControlTypeEnum.deserialize(elem)),
-        "I-PDU-IDENTIFIERS": lambda obj, elem: obj.i_pdu_identifier_refs.append(ARRef.deserialize(elem)),
+        "I-PDU-IDENTIFIER-REFS": lambda obj, elem: obj.i_pdu_identifier_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -129,7 +129,7 @@ class PduActivationRoutingGroup(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "EVENT-GROUP-REF":
                 setattr(obj, "event_group_ref", EventGroupControlTypeEnum.deserialize(child))
-            elif tag == "I-PDU-IDENTIFIERS":
+            elif tag == "I-PDU-IDENTIFIER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.i_pdu_identifier_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SoConIPduIdentifier"))

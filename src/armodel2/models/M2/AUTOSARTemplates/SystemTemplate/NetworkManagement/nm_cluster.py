@@ -226,19 +226,7 @@ class NmCluster(Identifiable, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "COMMUNICATION-CLUSTER-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-CAN-CLUSTER":
-                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCluster"))
-                    elif concrete_tag == "ETHERNET-CLUSTER":
-                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetCluster"))
-                    elif concrete_tag == "FLEXRAY-CLUSTER":
-                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayCluster"))
-                    elif concrete_tag == "LIN-CLUSTER":
-                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "LinCluster"))
-                    elif concrete_tag == "USER-DEFINED-CLUSTER":
-                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCluster"))
+                setattr(obj, "communication_cluster_ref", ARRef.deserialize(child))
             elif tag == "NM-CHANNEL":
                 setattr(obj, "nm_channel", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "NM-NODE":

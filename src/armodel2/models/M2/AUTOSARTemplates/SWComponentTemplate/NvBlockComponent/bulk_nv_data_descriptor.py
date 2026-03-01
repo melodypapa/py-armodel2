@@ -44,7 +44,7 @@ class BulkNvDataDescriptor(Identifiable):
     nv_block_data_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BULK-NV-BLOCK-REF": lambda obj, elem: setattr(obj, "bulk_nv_block_ref", ARRef.deserialize(elem)),
-        "NV-BLOCK-DATAS": lambda obj, elem: obj.nv_block_data_refs.append(ARRef.deserialize(elem)),
+        "NV-BLOCK-DATA-REFS": lambda obj, elem: obj.nv_block_data_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -129,7 +129,7 @@ class BulkNvDataDescriptor(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "BULK-NV-BLOCK-REF":
                 setattr(obj, "bulk_nv_block_ref", ARRef.deserialize(child))
-            elif tag == "NV-BLOCK-DATAS":
+            elif tag == "NV-BLOCK-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.nv_block_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvBlockDataMapping"))

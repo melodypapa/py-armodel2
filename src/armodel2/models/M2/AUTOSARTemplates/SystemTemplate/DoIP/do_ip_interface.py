@@ -67,14 +67,14 @@ class DoIpInterface(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "ALIVE-CHECK": lambda obj, elem: setattr(obj, "alive_check", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "DOIP-CHANNEL-REF": lambda obj, elem: setattr(obj, "doip_channel_ref", ARRef.deserialize(elem)),
-        "DOIP-CONNECTIONS": lambda obj, elem: obj.doip_connection_refs.append(ARRef.deserialize(elem)),
+        "DOIP-CONNECTION-REFS": lambda obj, elem: obj.doip_connection_refs.append(ARRef.deserialize(elem)),
         "DO-IP-ROUTINGS": lambda obj, elem: obj.do_ip_routings.append(SerializationHelper.deserialize_by_tag(elem, "DoIpRoutingActivation")),
         "GENERAL-INACTIVITY": lambda obj, elem: setattr(obj, "general_inactivity", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "INITIAL-INACTIVITY": lambda obj, elem: setattr(obj, "initial_inactivity", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "INITIAL-VEHICLE": lambda obj, elem: setattr(obj, "initial_vehicle", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "IS-ACTIVATION-LINE": lambda obj, elem: setattr(obj, "is_activation_line", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "MAX-TESTER": lambda obj, elem: setattr(obj, "max_tester", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "SOCKETS": lambda obj, elem: obj.socket_refs.append(ARRef.deserialize(elem)),
+        "SOCKET-REFS": lambda obj, elem: obj.socket_refs.append(ARRef.deserialize(elem)),
         "USE-MAC-ADDRESS": lambda obj, elem: setattr(obj, "use_mac_address", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "USE-VEHICLE": lambda obj, elem: setattr(obj, "use_vehicle", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "VEHICLE": lambda obj, elem: setattr(obj, "vehicle", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
@@ -328,7 +328,7 @@ class DoIpInterface(Identifiable):
                 setattr(obj, "alive_check", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "DOIP-CHANNEL-REF":
                 setattr(obj, "doip_channel_ref", ARRef.deserialize(child))
-            elif tag == "DOIP-CONNECTIONS":
+            elif tag == "DOIP-CONNECTION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.doip_connection_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SocketConnection"))
@@ -346,7 +346,7 @@ class DoIpInterface(Identifiable):
                 setattr(obj, "is_activation_line", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "MAX-TESTER":
                 setattr(obj, "max_tester", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "SOCKETS":
+            elif tag == "SOCKET-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.socket_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "StaticSocketConnection"))

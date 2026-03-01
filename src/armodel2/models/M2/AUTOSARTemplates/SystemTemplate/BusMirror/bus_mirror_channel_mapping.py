@@ -49,7 +49,7 @@ class BusMirrorChannelMapping(FibexElement, ABC):
         "MIRRORING": lambda obj, elem: setattr(obj, "mirroring", MirroringProtocolEnum.deserialize(elem)),
         "SOURCE-CHANNEL": lambda obj, elem: setattr(obj, "source_channel", SerializationHelper.deserialize_by_tag(elem, "BusMirrorChannel")),
         "TARGET-CHANNEL": lambda obj, elem: setattr(obj, "target_channel", SerializationHelper.deserialize_by_tag(elem, "BusMirrorChannel")),
-        "TARGET-PDUS": lambda obj, elem: obj.target_pdu_refs.append(ARRef.deserialize(elem)),
+        "TARGET-PDU-REFS": lambda obj, elem: obj.target_pdu_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -168,7 +168,7 @@ class BusMirrorChannelMapping(FibexElement, ABC):
                 setattr(obj, "source_channel", SerializationHelper.deserialize_by_tag(child, "BusMirrorChannel"))
             elif tag == "TARGET-CHANNEL":
                 setattr(obj, "target_channel", SerializationHelper.deserialize_by_tag(child, "BusMirrorChannel"))
-            elif tag == "TARGET-PDUS":
+            elif tag == "TARGET-PDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.target_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))

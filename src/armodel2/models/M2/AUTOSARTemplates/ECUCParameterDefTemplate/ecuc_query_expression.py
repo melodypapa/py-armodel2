@@ -104,15 +104,7 @@ class EcucQueryExpression(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "CONFIG-ELEMENT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ECUC-COMMON-ATTRIBUTES":
-                        setattr(obj, "config_element_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucCommonAttributes"))
-                    elif concrete_tag == "ECUC-CONTAINER-DEF":
-                        setattr(obj, "config_element_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucContainerDef"))
-                    elif concrete_tag == "ECUC-MODULE-DEF":
-                        setattr(obj, "config_element_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucModuleDef"))
+                setattr(obj, "config_element_ref", ARRef.deserialize(child))
 
         return obj
 

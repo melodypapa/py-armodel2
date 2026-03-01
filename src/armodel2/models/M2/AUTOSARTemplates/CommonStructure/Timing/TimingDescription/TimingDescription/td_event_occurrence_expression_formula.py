@@ -160,23 +160,7 @@ class TDEventOccurrenceExpressionFormula(ARObject):
             if tag == "ARGUMENT-REF":
                 setattr(obj, "argument_ref", ARRef.deserialize(child))
             elif tag == "EVENT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "T-D-EVENT-BSW":
-                        setattr(obj, "event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBsw"))
-                    elif concrete_tag == "T-D-EVENT-BSW-INTERNAL-BEHAVIOR":
-                        setattr(obj, "event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBswInternalBehavior"))
-                    elif concrete_tag == "T-D-EVENT-COM":
-                        setattr(obj, "event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventCom"))
-                    elif concrete_tag == "T-D-EVENT-COMPLEX":
-                        setattr(obj, "event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventComplex"))
-                    elif concrete_tag == "T-D-EVENT-S-L-L-E-T":
-                        setattr(obj, "event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSLLET"))
-                    elif concrete_tag == "T-D-EVENT-SWC":
-                        setattr(obj, "event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSwc"))
-                    elif concrete_tag == "T-D-EVENT-VFB":
-                        setattr(obj, "event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventVfb"))
+                setattr(obj, "event_ref", ARRef.deserialize(child))
             elif tag == "MODE-REF":
                 setattr(obj, "mode_ref", ARRef.deserialize(child))
             elif tag == "VARIABLE-REF":

@@ -187,13 +187,7 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
             elif tag == "CONTEXT-COMPOSITION-REF":
                 setattr(obj, "context_composition_ref", ARRef.deserialize(child))
             elif tag == "CONTEXT-PORT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
-                        setattr(obj, "context_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
-                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
-                        setattr(obj, "context_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+                setattr(obj, "context_port_ref", ARRef.deserialize(child))
             elif tag == "TARGET-DATA-PROTOTYPE-REF":
                 setattr(obj, "target_data_prototype_ref", ARRef.deserialize(child))
 

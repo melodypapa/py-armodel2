@@ -41,7 +41,7 @@ class InnerPortGroupInCompositionInstanceRef(ARObject):
     target_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
-        "CONTEXTS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-REFS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
         "TARGET-REF": lambda obj, elem: setattr(obj, "target_ref", ARRef.deserialize(elem)),
     }
 
@@ -142,7 +142,7 @@ class InnerPortGroupInCompositionInstanceRef(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "BASE-REF":
                 setattr(obj, "base_ref", ARRef.deserialize(child))
-            elif tag == "CONTEXTS":
+            elif tag == "CONTEXT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.context_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwComponent)"))

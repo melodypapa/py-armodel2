@@ -66,8 +66,8 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
     _DESERIALIZE_DISPATCH = {
         "AGING-REF": lambda obj, elem: setattr(obj, "aging_ref", ARRef.deserialize(elem)),
         "DIAGNOSTIC-MEMORY-REF": lambda obj, elem: setattr(obj, "diagnostic_memory_ref", ARRef.deserialize(elem)),
-        "EXTENDED-DATAS": lambda obj, elem: obj.extended_data_refs.append(ARRef.deserialize(elem)),
-        "FREEZE-FRAMES": lambda obj, elem: obj.freeze_frame_refs.append(ARRef.deserialize(elem)),
+        "EXTENDED-DATA-REFS": lambda obj, elem: obj.extended_data_refs.append(ARRef.deserialize(elem)),
+        "FREEZE-FRAME-REFS": lambda obj, elem: obj.freeze_frame_refs.append(ARRef.deserialize(elem)),
         "IMMEDIATE-NV": lambda obj, elem: setattr(obj, "immediate_nv", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "LEGISLATED-REF": lambda obj, elem: setattr(obj, "legislated_ref", ARRef.deserialize(elem)),
         "MAX-NUMBER": lambda obj, elem: setattr(obj, "max_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
@@ -283,11 +283,11 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
                 setattr(obj, "aging_ref", ARRef.deserialize(child))
             elif tag == "DIAGNOSTIC-MEMORY-REF":
                 setattr(obj, "diagnostic_memory_ref", ARRef.deserialize(child))
-            elif tag == "EXTENDED-DATAS":
+            elif tag == "EXTENDED-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.extended_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticExtendedDataRecord"))
-            elif tag == "FREEZE-FRAMES":
+            elif tag == "FREEZE-FRAME-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.freeze_frame_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticFreezeFrame"))

@@ -43,7 +43,7 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
     coupled_cluster_refs: list[ARRef]
     nm_schedule: Optional[FlexrayNmScheduleVariant]
     _DESERIALIZE_DISPATCH = {
-        "COUPLED-CLUSTERS": lambda obj, elem: obj.coupled_cluster_refs.append(ARRef.deserialize(elem)),
+        "COUPLED-CLUSTER-REFS": lambda obj, elem: obj.coupled_cluster_refs.append(ARRef.deserialize(elem)),
         "NM-SCHEDULE": lambda obj, elem: setattr(obj, "nm_schedule", FlexrayNmScheduleVariant.deserialize(elem)),
     }
 
@@ -127,7 +127,7 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "COUPLED-CLUSTERS":
+            if tag == "COUPLED-CLUSTER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.coupled_cluster_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FlexrayNmCluster"))

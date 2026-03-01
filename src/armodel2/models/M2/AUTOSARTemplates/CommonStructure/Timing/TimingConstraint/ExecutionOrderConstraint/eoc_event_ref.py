@@ -48,7 +48,7 @@ class EOCEventRef(EOCExecutableEntityRefAbstract):
         "BSW-MODULE-REF": lambda obj, elem: setattr(obj, "bsw_module_ref", ARRef.deserialize(elem)),
         "COMPONENT": lambda obj, elem: setattr(obj, "component", SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
         "EVENT-REF": ("_POLYMORPHIC", "event_ref", ["BswEvent", "RTEEvent"]),
-        "SUCCESSORS": lambda obj, elem: obj.successor_refs.append(ARRef.deserialize(elem)),
+        "SUCCESSOR-REFS": lambda obj, elem: obj.successor_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -166,14 +166,8 @@ class EOCEventRef(EOCExecutableEntityRefAbstract):
             elif tag == "COMPONENT":
                 setattr(obj, "component", SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
             elif tag == "EVENT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "BSW-EVENT":
-                        setattr(obj, "event_ref", SerializationHelper.deserialize_by_tag(child[0], "BswEvent"))
-                    elif concrete_tag == "RTE-EVENT":
-                        setattr(obj, "event_ref", SerializationHelper.deserialize_by_tag(child[0], "RTEEvent"))
-            elif tag == "SUCCESSORS":
+                setattr(obj, "event_ref", ARRef.deserialize(child))
+            elif tag == "SUCCESSOR-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.successor_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))

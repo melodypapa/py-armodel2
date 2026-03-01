@@ -42,10 +42,10 @@ class SynchronizationPointConstraint(TimingConstraint):
     target_eec_refs: list[Any]
     target_event_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "SOURCE-EECS": lambda obj, elem: obj.source_eec_refs.append(ARRef.deserialize(elem)),
-        "SOURCE-EVENTS": ("_POLYMORPHIC_LIST", "source_event_refs", ["BswEvent", "RTEEvent"]),
-        "TARGET-EECS": lambda obj, elem: obj.target_eec_refs.append(ARRef.deserialize(elem)),
-        "TARGET-EVENTS": ("_POLYMORPHIC_LIST", "target_event_refs", ["BswEvent", "RTEEvent"]),
+        "SOURCE-EEC-REFS": lambda obj, elem: obj.source_eec_refs.append(ARRef.deserialize(elem)),
+        "SOURCE-EVENT-REFS": ("_POLYMORPHIC_LIST", "source_event_refs", ["BswEvent", "RTEEvent"]),
+        "TARGET-EEC-REFS": lambda obj, elem: obj.target_eec_refs.append(ARRef.deserialize(elem)),
+        "TARGET-EVENT-REFS": ("_POLYMORPHIC_LIST", "target_event_refs", ["BswEvent", "RTEEvent"]),
     }
 
 
@@ -167,30 +167,20 @@ class SynchronizationPointConstraint(TimingConstraint):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "SOURCE-EECS":
+            if tag == "SOURCE-EEC-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.source_eec_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
-            elif tag == "SOURCE-EVENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "BSW-EVENT":
-                        obj.source_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswEvent"))
-                    elif concrete_tag == "RTE-EVENT":
-                        obj.source_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "RTEEvent"))
-            elif tag == "TARGET-EECS":
+            elif tag == "SOURCE-EVENT-REFS":
+                for item_elem in child:
+                    obj.source_event_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "TARGET-EEC-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.target_eec_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))
-            elif tag == "TARGET-EVENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "BSW-EVENT":
-                        obj.target_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswEvent"))
-                    elif concrete_tag == "RTE-EVENT":
-                        obj.target_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "RTEEvent"))
+            elif tag == "TARGET-EVENT-REFS":
+                for item_elem in child:
+                    obj.target_event_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -55,7 +55,7 @@ class LifeCycleInfo(ARObject):
         "PERIOD-BEGIN": lambda obj, elem: setattr(obj, "period_begin", SerializationHelper.deserialize_by_tag(elem, "LifeCyclePeriod")),
         "PERIOD-END": lambda obj, elem: setattr(obj, "period_end", SerializationHelper.deserialize_by_tag(elem, "LifeCyclePeriod")),
         "REMARK": lambda obj, elem: setattr(obj, "remark", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
-        "USE-INSTEADS": ("_POLYMORPHIC_LIST", "use_instead_refs", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
+        "USE-INSTEAD-REFS": ("_POLYMORPHIC_LIST", "use_instead_refs", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
     }
 
 
@@ -199,49 +199,7 @@ class LifeCycleInfo(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "LC-OBJECT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ATP-DEFINITION":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "AtpDefinition"))
-                    elif concrete_tag == "BSW-DISTINGUISHED-PARTITION":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "BswDistinguishedPartition"))
-                    elif concrete_tag == "BSW-MODULE-CALL-POINT":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleCallPoint"))
-                    elif concrete_tag == "BSW-MODULE-CLIENT-SERVER-ENTRY":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleClientServerEntry"))
-                    elif concrete_tag == "BSW-VARIABLE-ACCESS":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "BswVariableAccess"))
-                    elif concrete_tag == "COUPLING-PORT-TRAFFIC-CLASS-ASSIGNMENT":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "CouplingPortTrafficClassAssignment"))
-                    elif concrete_tag == "DIAGNOSTIC-ENV-MODE-ELEMENT":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEnvModeElement"))
-                    elif concrete_tag == "ETHERNET-PRIORITY-REGENERATION":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetPriorityRegeneration"))
-                    elif concrete_tag == "EXCLUSIVE-AREA-NESTING-ORDER":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "ExclusiveAreaNestingOrder"))
-                    elif concrete_tag == "HW-DESCRIPTION-ENTITY":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "HwDescriptionEntity"))
-                    elif concrete_tag == "IMPLEMENTATION-PROPS":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationProps"))
-                    elif concrete_tag == "LIN-SLAVE-CONFIG-IDENT":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "LinSlaveConfigIdent"))
-                    elif concrete_tag == "MODE-TRANSITION":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeTransition"))
-                    elif concrete_tag == "MULTILANGUAGE-REFERRABLE":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "MultilanguageReferrable"))
-                    elif concrete_tag == "PNC-MAPPING-IDENT":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "PncMappingIdent"))
-                    elif concrete_tag == "SINGLE-LANGUAGE-REFERRABLE":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "SingleLanguageReferrable"))
-                    elif concrete_tag == "SO-CON-I-PDU-IDENTIFIER":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "SoConIPduIdentifier"))
-                    elif concrete_tag == "SOCKET-CONNECTION-BUNDLE":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "SocketConnectionBundle"))
-                    elif concrete_tag == "TIME-SYNC-SERVER-CONFIGURATION":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "TimeSyncServerConfiguration"))
-                    elif concrete_tag == "TP-CONNECTION-IDENT":
-                        setattr(obj, "lc_object_ref", SerializationHelper.deserialize_by_tag(child[0], "TpConnectionIdent"))
+                setattr(obj, "lc_object_ref", ARRef.deserialize(child))
             elif tag == "LC-STATE-REF":
                 setattr(obj, "lc_state_ref", ARRef.deserialize(child))
             elif tag == "PERIOD-BEGIN":
@@ -250,50 +208,9 @@ class LifeCycleInfo(ARObject):
                 setattr(obj, "period_end", SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod"))
             elif tag == "REMARK":
                 setattr(obj, "remark", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
-            elif tag == "USE-INSTEADS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ATP-DEFINITION":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AtpDefinition"))
-                    elif concrete_tag == "BSW-DISTINGUISHED-PARTITION":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswDistinguishedPartition"))
-                    elif concrete_tag == "BSW-MODULE-CALL-POINT":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswModuleCallPoint"))
-                    elif concrete_tag == "BSW-MODULE-CLIENT-SERVER-ENTRY":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswModuleClientServerEntry"))
-                    elif concrete_tag == "BSW-VARIABLE-ACCESS":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswVariableAccess"))
-                    elif concrete_tag == "COUPLING-PORT-TRAFFIC-CLASS-ASSIGNMENT":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CouplingPortTrafficClassAssignment"))
-                    elif concrete_tag == "DIAGNOSTIC-ENV-MODE-ELEMENT":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEnvModeElement"))
-                    elif concrete_tag == "ETHERNET-PRIORITY-REGENERATION":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetPriorityRegeneration"))
-                    elif concrete_tag == "EXCLUSIVE-AREA-NESTING-ORDER":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ExclusiveAreaNestingOrder"))
-                    elif concrete_tag == "HW-DESCRIPTION-ENTITY":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "HwDescriptionEntity"))
-                    elif concrete_tag == "IMPLEMENTATION-PROPS":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ImplementationProps"))
-                    elif concrete_tag == "LIN-SLAVE-CONFIG-IDENT":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinSlaveConfigIdent"))
-                    elif concrete_tag == "MODE-TRANSITION":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ModeTransition"))
-                    elif concrete_tag == "MULTILANGUAGE-REFERRABLE":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "MultilanguageReferrable"))
-                    elif concrete_tag == "PNC-MAPPING-IDENT":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "PncMappingIdent"))
-                    elif concrete_tag == "SINGLE-LANGUAGE-REFERRABLE":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SingleLanguageReferrable"))
-                    elif concrete_tag == "SO-CON-I-PDU-IDENTIFIER":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SoConIPduIdentifier"))
-                    elif concrete_tag == "SOCKET-CONNECTION-BUNDLE":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SocketConnectionBundle"))
-                    elif concrete_tag == "TIME-SYNC-SERVER-CONFIGURATION":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TimeSyncServerConfiguration"))
-                    elif concrete_tag == "TP-CONNECTION-IDENT":
-                        obj.use_instead_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TpConnectionIdent"))
+            elif tag == "USE-INSTEAD-REFS":
+                for item_elem in child:
+                    obj.use_instead_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

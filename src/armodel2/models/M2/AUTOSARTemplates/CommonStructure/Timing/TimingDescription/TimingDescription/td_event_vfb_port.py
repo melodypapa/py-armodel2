@@ -146,13 +146,7 @@ class TDEventVfbPort(TDEventVfb, ABC):
             if tag == "IS-EXTERNAL":
                 setattr(obj, "is_external", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "PORT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
-                        setattr(obj, "port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
-                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
-                        setattr(obj, "port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+                setattr(obj, "port_ref", ARRef.deserialize(child))
             elif tag == "PORT-PROTOTYPE-REF":
                 setattr(obj, "port_prototype_ref", ARRef.deserialize(child))
 

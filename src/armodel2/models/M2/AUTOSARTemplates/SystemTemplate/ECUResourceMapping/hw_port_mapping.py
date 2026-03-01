@@ -121,19 +121,7 @@ class HwPortMapping(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "COMMUNICATION-CONNECTOR-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONNECTOR":
-                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCommunicationConnector"))
-                    elif concrete_tag == "ETHERNET-COMMUNICATION-CONNECTOR":
-                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetCommunicationConnector"))
-                    elif concrete_tag == "FLEXRAY-COMMUNICATION-CONNECTOR":
-                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayCommunicationConnector"))
-                    elif concrete_tag == "LIN-COMMUNICATION-CONNECTOR":
-                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "LinCommunicationConnector"))
-                    elif concrete_tag == "USER-DEFINED-COMMUNICATION-CONNECTOR":
-                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCommunicationConnector"))
+                setattr(obj, "communication_connector_ref", ARRef.deserialize(child))
             elif tag == "HW-PIN-GROUP-REF":
                 setattr(obj, "hw_pin_group_ref", ARRef.deserialize(child))
 

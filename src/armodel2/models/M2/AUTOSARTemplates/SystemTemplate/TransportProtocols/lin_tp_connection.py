@@ -63,7 +63,7 @@ class LinTpConnection(TpConnection):
         "FLOW-CONTROL-REF": lambda obj, elem: setattr(obj, "flow_control_ref", ARRef.deserialize(elem)),
         "LIN-TP-N-SDU-REF": ("_POLYMORPHIC", "lin_tp_n_sdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
         "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
-        "RECEIVERS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
+        "RECEIVER-REFS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
         "TIMEOUT-AS": lambda obj, elem: setattr(obj, "timeout_as", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TIMEOUT-CR": lambda obj, elem: setattr(obj, "timeout_cr", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TIMEOUT-CS": lambda obj, elem: setattr(obj, "timeout_cs", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
@@ -260,30 +260,10 @@ class LinTpConnection(TpConnection):
             elif tag == "FLOW-CONTROL-REF":
                 setattr(obj, "flow_control_ref", ARRef.deserialize(child))
             elif tag == "LIN-TP-N-SDU-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "CONTAINER-I-PDU":
-                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "ContainerIPdu"))
-                    elif concrete_tag == "DCM-I-PDU":
-                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "DcmIPdu"))
-                    elif concrete_tag == "GENERAL-PURPOSE-I-PDU":
-                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "GeneralPurposeIPdu"))
-                    elif concrete_tag == "I-SIGNAL-I-PDU":
-                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "ISignalIPdu"))
-                    elif concrete_tag == "J1939-DCM-I-PDU":
-                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "J1939DcmIPdu"))
-                    elif concrete_tag == "MULTIPLEXED-I-PDU":
-                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "MultiplexedIPdu"))
-                    elif concrete_tag == "N-PDU":
-                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "NPdu"))
-                    elif concrete_tag == "SECURED-I-PDU":
-                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "SecuredIPdu"))
-                    elif concrete_tag == "USER-DEFINED-I-PDU":
-                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedIPdu"))
+                setattr(obj, "lin_tp_n_sdu_ref", ARRef.deserialize(child))
             elif tag == "MULTICAST-REF":
                 setattr(obj, "multicast_ref", ARRef.deserialize(child))
-            elif tag == "RECEIVERS":
+            elif tag == "RECEIVER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.receiver_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "LinTpNode"))

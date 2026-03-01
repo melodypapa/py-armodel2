@@ -34,7 +34,7 @@ class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress, ABC):
 
     memory_range_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "MEMORY-RANGES": lambda obj, elem: obj.memory_range_refs.append(ARRef.deserialize(elem)),
+        "MEMORY-RANGE-REFS": lambda obj, elem: obj.memory_range_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -102,7 +102,7 @@ class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "MEMORY-RANGES":
+            if tag == "MEMORY-RANGE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.memory_range_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticMemory)"))

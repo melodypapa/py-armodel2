@@ -48,10 +48,10 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
     protocol_kind: Optional[NameToken]
     service_instance_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "DIAGNOSTICS": lambda obj, elem: obj.diagnostic_refs.append(ARRef.deserialize(elem)),
+        "DIAGNOSTIC-REFS": lambda obj, elem: obj.diagnostic_refs.append(ARRef.deserialize(elem)),
         "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
         "PROTOCOL-KIND": lambda obj, elem: setattr(obj, "protocol_kind", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
-        "SERVICE-INSTANCES": lambda obj, elem: obj.service_instance_refs.append(ARRef.deserialize(elem)),
+        "SERVICE-INSTANCE-REFS": lambda obj, elem: obj.service_instance_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -167,7 +167,7 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DIAGNOSTICS":
+            if tag == "DIAGNOSTIC-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.diagnostic_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticConnection"))
@@ -175,7 +175,7 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
                 setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
             elif tag == "PROTOCOL-KIND":
                 setattr(obj, "protocol_kind", SerializationHelper.deserialize_by_tag(child, "NameToken"))
-            elif tag == "SERVICE-INSTANCES":
+            elif tag == "SERVICE-INSTANCE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.service_instance_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticService)"))

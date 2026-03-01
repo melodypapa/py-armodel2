@@ -50,9 +50,9 @@ class ISignalIPduGroup(FibexElement):
     nm_pdu_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "COMMUNICATION": lambda obj, elem: setattr(obj, "communication", SerializationHelper.deserialize_by_tag(elem, "String")),
-        "CONTAINEDS": lambda obj, elem: obj.contained_refs.append(ARRef.deserialize(elem)),
-        "I-SIGNAL-I-PDUS": lambda obj, elem: obj.i_signal_i_pdu_refs.append(ARRef.deserialize(elem)),
-        "NM-PDUS": lambda obj, elem: obj.nm_pdu_refs.append(ARRef.deserialize(elem)),
+        "CONTAINED-REFS": lambda obj, elem: obj.contained_refs.append(ARRef.deserialize(elem)),
+        "I-SIGNAL-I-PDU-REFS": lambda obj, elem: obj.i_signal_i_pdu_refs.append(ARRef.deserialize(elem)),
+        "NM-PDU-REFS": lambda obj, elem: obj.nm_pdu_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -173,15 +173,15 @@ class ISignalIPduGroup(FibexElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "COMMUNICATION":
                 setattr(obj, "communication", SerializationHelper.deserialize_by_tag(child, "String"))
-            elif tag == "CONTAINEDS":
+            elif tag == "CONTAINED-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.contained_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalIPduGroup"))
-            elif tag == "I-SIGNAL-I-PDUS":
+            elif tag == "I-SIGNAL-I-PDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.i_signal_i_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalIPdu"))
-            elif tag == "NM-PDUS":
+            elif tag == "NM-PDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.nm_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NmPdu"))

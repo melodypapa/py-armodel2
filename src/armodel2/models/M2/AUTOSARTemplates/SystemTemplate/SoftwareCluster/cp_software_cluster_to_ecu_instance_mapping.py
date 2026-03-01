@@ -49,7 +49,7 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
         "MACHINE-ID": lambda obj, elem: setattr(obj, "machine_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "SW-CLUSTERS": lambda obj, elem: obj.sw_cluster_refs.append(ARRef.deserialize(elem)),
+        "SW-CLUSTER-REFS": lambda obj, elem: obj.sw_cluster_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -151,7 +151,7 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
                 setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
             elif tag == "MACHINE-ID":
                 setattr(obj, "machine_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "SW-CLUSTERS":
+            elif tag == "SW-CLUSTER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.sw_cluster_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareCluster"))

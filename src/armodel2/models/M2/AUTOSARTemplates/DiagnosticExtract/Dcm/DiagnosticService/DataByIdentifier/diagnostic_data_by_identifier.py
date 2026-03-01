@@ -103,13 +103,7 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "DATA-IDENTIFIER-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "DIAGNOSTIC-DATA-IDENTIFIER":
-                        setattr(obj, "data_identifier_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticDataIdentifier"))
-                    elif concrete_tag == "DIAGNOSTIC-DYNAMIC-DATA-IDENTIFIER":
-                        setattr(obj, "data_identifier_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticDynamicDataIdentifier"))
+                setattr(obj, "data_identifier_ref", ARRef.deserialize(child))
 
         return obj
 

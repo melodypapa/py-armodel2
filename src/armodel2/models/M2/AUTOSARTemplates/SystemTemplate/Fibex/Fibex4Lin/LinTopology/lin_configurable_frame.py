@@ -121,15 +121,7 @@ class LinConfigurableFrame(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "FRAME-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "LIN-EVENT-TRIGGERED-FRAME":
-                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "LinEventTriggeredFrame"))
-                    elif concrete_tag == "LIN-SPORADIC-FRAME":
-                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "LinSporadicFrame"))
-                    elif concrete_tag == "LIN-UNCONDITIONAL-FRAME":
-                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "LinUnconditionalFrame"))
+                setattr(obj, "frame_ref", ARRef.deserialize(child))
             elif tag == "MESSAGE-ID":
                 setattr(obj, "message_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

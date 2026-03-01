@@ -44,8 +44,8 @@ class DataPrototypeGroup(Identifiable):
     data_prototype_group_group_in_composition_instance_ref: list[ARRef]
     implicit_data_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS": lambda obj, elem: obj.data_prototype_group_group_in_composition_instance_ref.append(ARRef.deserialize(elem)),
-        "IMPLICIT-DATAS": lambda obj, elem: obj.implicit_data_refs.append(ARRef.deserialize(elem)),
+        "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS": lambda obj, elem: obj.data_prototype_group_group_in_composition_instance_ref.append(ARRef.deserialize(elem)),
+        "IMPLICIT-DATA-REFS": lambda obj, elem: obj.implicit_data_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -131,11 +131,11 @@ class DataPrototypeGroup(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS":
+            if tag == "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.data_prototype_group_group_in_composition_instance_ref.append(SerializationHelper.deserialize_by_tag(item_elem, "DataPrototypeGroup"))
-            elif tag == "IMPLICIT-DATAS":
+            elif tag == "IMPLICIT-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.implicit_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))

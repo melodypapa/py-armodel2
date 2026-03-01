@@ -49,7 +49,7 @@ class McFunction(ARElement):
         "LOC-REF": lambda obj, elem: setattr(obj, "loc_ref", ARRef.deserialize(elem)),
         "OUT-REF": lambda obj, elem: setattr(obj, "out_ref", ARRef.deserialize(elem)),
         "REF-CALPRM-SET-REF": lambda obj, elem: setattr(obj, "ref_calprm_set_ref", ARRef.deserialize(elem)),
-        "SUB-FUNCTIONS": lambda obj, elem: obj.sub_function_refs.append(ARRef.deserialize(elem)),
+        "SUB-FUNCTION-REFS": lambda obj, elem: obj.sub_function_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -202,7 +202,7 @@ class McFunction(ARElement):
                 setattr(obj, "out_ref", ARRef.deserialize(child))
             elif tag == "REF-CALPRM-SET-REF":
                 setattr(obj, "ref_calprm_set_ref", ARRef.deserialize(child))
-            elif tag == "SUB-FUNCTIONS":
+            elif tag == "SUB-FUNCTION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.sub_function_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "McFunction"))

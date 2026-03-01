@@ -168,13 +168,7 @@ class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):
                     elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
                         setattr(obj, "compare_value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
             elif tag == "DATA-PROTOTYPE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
-                        setattr(obj, "data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
-                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
-                        setattr(obj, "data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
+                setattr(obj, "data_prototype_ref", ARRef.deserialize(child))
             elif tag == "SW-DATA-DEF":
                 setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 

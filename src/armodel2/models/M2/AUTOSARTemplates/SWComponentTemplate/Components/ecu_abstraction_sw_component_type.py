@@ -42,7 +42,7 @@ class EcuAbstractionSwComponentType(AtomicSwComponentType):
 
     hardware_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "HARDWARES": ("_POLYMORPHIC_LIST", "hardware_refs", ["HwElement", "HwPin", "HwPinGroup", "HwType"]),
+        "HARDWARE-REFS": ("_POLYMORPHIC_LIST", "hardware_refs", ["HwElement", "HwPin", "HwPinGroup", "HwType"]),
     }
 
 
@@ -110,18 +110,9 @@ class EcuAbstractionSwComponentType(AtomicSwComponentType):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "HARDWARES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "HW-ELEMENT":
-                        obj.hardware_refs.append(SerializationHelper.deserialize_by_tag(child[0], "HwElement"))
-                    elif concrete_tag == "HW-PIN":
-                        obj.hardware_refs.append(SerializationHelper.deserialize_by_tag(child[0], "HwPin"))
-                    elif concrete_tag == "HW-PIN-GROUP":
-                        obj.hardware_refs.append(SerializationHelper.deserialize_by_tag(child[0], "HwPinGroup"))
-                    elif concrete_tag == "HW-TYPE":
-                        obj.hardware_refs.append(SerializationHelper.deserialize_by_tag(child[0], "HwType"))
+            if tag == "HARDWARE-REFS":
+                for item_elem in child:
+                    obj.hardware_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

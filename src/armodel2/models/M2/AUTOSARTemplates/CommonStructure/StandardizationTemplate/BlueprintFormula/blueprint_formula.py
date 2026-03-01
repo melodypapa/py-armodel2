@@ -121,15 +121,7 @@ class BlueprintFormula(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ECUC-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ECUC-COMMON-ATTRIBUTES":
-                        setattr(obj, "ecuc_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucCommonAttributes"))
-                    elif concrete_tag == "ECUC-CONTAINER-DEF":
-                        setattr(obj, "ecuc_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucContainerDef"))
-                    elif concrete_tag == "ECUC-MODULE-DEF":
-                        setattr(obj, "ecuc_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucModuleDef"))
+                setattr(obj, "ecuc_ref", ARRef.deserialize(child))
             elif tag == "VERBATIM":
                 setattr(obj, "verbatim", SerializationHelper.deserialize_by_tag(child, "MultiLanguageVerbatim"))
 

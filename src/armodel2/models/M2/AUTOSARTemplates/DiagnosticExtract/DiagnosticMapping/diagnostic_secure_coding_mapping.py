@@ -40,7 +40,7 @@ class DiagnosticSecureCodingMapping(DiagnosticMapping):
     data_identifier_refs: list[Any]
     validation_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DATA-IDENTIFIERS": lambda obj, elem: obj.data_identifier_refs.append(ARRef.deserialize(elem)),
+        "DATA-IDENTIFIER-REFS": lambda obj, elem: obj.data_identifier_refs.append(ARRef.deserialize(elem)),
         "VALIDATION-REF": lambda obj, elem: setattr(obj, "validation_ref", ARRef.deserialize(elem)),
     }
 
@@ -124,7 +124,7 @@ class DiagnosticSecureCodingMapping(DiagnosticMapping):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DATA-IDENTIFIERS":
+            if tag == "DATA-IDENTIFIER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.data_identifier_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticWriteDataBy)"))

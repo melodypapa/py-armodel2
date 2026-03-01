@@ -38,8 +38,8 @@ class FirewallRuleProps(ARObject):
     matching_ingress_rule_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "ACTION": lambda obj, elem: setattr(obj, "action", SerializationHelper.deserialize_by_tag(elem, "FirewallActionEnum")),
-        "MATCHING-EGRESS-RULES": lambda obj, elem: obj.matching_egress_rule_refs.append(ARRef.deserialize(elem)),
-        "MATCHING-INGRESS-RULES": lambda obj, elem: obj.matching_ingress_rule_refs.append(ARRef.deserialize(elem)),
+        "MATCHING-EGRESS-RULE-REFS": lambda obj, elem: obj.matching_egress_rule_refs.append(ARRef.deserialize(elem)),
+        "MATCHING-INGRESS-RULE-REFS": lambda obj, elem: obj.matching_ingress_rule_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -142,11 +142,11 @@ class FirewallRuleProps(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ACTION":
                 setattr(obj, "action", SerializationHelper.deserialize_by_tag(child, "FirewallActionEnum"))
-            elif tag == "MATCHING-EGRESS-RULES":
+            elif tag == "MATCHING-EGRESS-RULE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.matching_egress_rule_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FirewallRule"))
-            elif tag == "MATCHING-INGRESS-RULES":
+            elif tag == "MATCHING-INGRESS-RULE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.matching_ingress_rule_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FirewallRule"))

@@ -42,8 +42,8 @@ class DiagnosticContributionSet(ARElement):
     service_table_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "COMMON": lambda obj, elem: setattr(obj, "common", SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticCommon)")),
-        "ELEMENTS": lambda obj, elem: obj.element_refs.append(ARRef.deserialize(elem)),
-        "SERVICE-TABLES": lambda obj, elem: obj.service_table_refs.append(ARRef.deserialize(elem)),
+        "ELEMENT-REFS": lambda obj, elem: obj.element_refs.append(ARRef.deserialize(elem)),
+        "SERVICE-TABLE-REFS": lambda obj, elem: obj.service_table_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -146,11 +146,11 @@ class DiagnosticContributionSet(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "COMMON":
                 setattr(obj, "common", SerializationHelper.deserialize_by_tag(child, "any (DiagnosticCommon)"))
-            elif tag == "ELEMENTS":
+            elif tag == "ELEMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticCommon)"))
-            elif tag == "SERVICE-TABLES":
+            elif tag == "SERVICE-TABLE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.service_table_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticServiceTable"))

@@ -44,8 +44,8 @@ class PortGroup(Identifiable):
     inner_group_refs: list[ARRef]
     outer_port_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "INNER-GROUPS": lambda obj, elem: obj.inner_group_refs.append(ARRef.deserialize(elem)),
-        "OUTER-PORTS": ("_POLYMORPHIC_LIST", "outer_port_refs", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "INNER-GROUP-REFS": lambda obj, elem: obj.inner_group_refs.append(ARRef.deserialize(elem)),
+        "OUTER-PORT-REFS": ("_POLYMORPHIC_LIST", "outer_port_refs", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
     }
 
 
@@ -131,18 +131,13 @@ class PortGroup(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "INNER-GROUPS":
+            if tag == "INNER-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.inner_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PortGroup"))
-            elif tag == "OUTER-PORTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
-                        obj.outer_port_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
-                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
-                        obj.outer_port_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+            elif tag == "OUTER-PORT-REFS":
+                for item_elem in child:
+                    obj.outer_port_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

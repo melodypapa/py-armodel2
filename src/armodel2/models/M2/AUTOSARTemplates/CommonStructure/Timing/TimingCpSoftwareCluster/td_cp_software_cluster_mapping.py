@@ -45,7 +45,7 @@ class TDCpSoftwareClusterMapping(Identifiable):
     timing_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "PROVIDER-REF": lambda obj, elem: setattr(obj, "provider_ref", ARRef.deserialize(elem)),
-        "REQUESTORS": lambda obj, elem: obj.requestor_refs.append(ARRef.deserialize(elem)),
+        "REQUESTOR-REFS": lambda obj, elem: obj.requestor_refs.append(ARRef.deserialize(elem)),
         "TIMING-REF": ("_POLYMORPHIC", "timing_ref", ["TimingDescriptionEvent", "TimingDescriptionEventChain"]),
     }
 
@@ -146,18 +146,12 @@ class TDCpSoftwareClusterMapping(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "PROVIDER-REF":
                 setattr(obj, "provider_ref", ARRef.deserialize(child))
-            elif tag == "REQUESTORS":
+            elif tag == "REQUESTOR-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.requestor_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareCluster"))
             elif tag == "TIMING-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "TIMING-DESCRIPTION-EVENT":
-                        setattr(obj, "timing_ref", SerializationHelper.deserialize_by_tag(child[0], "TimingDescriptionEvent"))
-                    elif concrete_tag == "TIMING-DESCRIPTION-EVENT-CHAIN":
-                        setattr(obj, "timing_ref", SerializationHelper.deserialize_by_tag(child[0], "TimingDescriptionEventChain"))
+                setattr(obj, "timing_ref", ARRef.deserialize(child))
 
         return obj
 

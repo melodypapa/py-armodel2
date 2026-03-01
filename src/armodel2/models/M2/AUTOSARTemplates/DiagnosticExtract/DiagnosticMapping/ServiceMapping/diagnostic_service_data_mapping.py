@@ -166,13 +166,7 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
             elif tag == "DIAGNOSTIC-REF":
                 setattr(obj, "diagnostic_ref", ARRef.deserialize(child))
             elif tag == "MAPPED-DATA-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
-                        setattr(obj, "mapped_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
-                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
-                        setattr(obj, "mapped_data_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
+                setattr(obj, "mapped_data_ref", ARRef.deserialize(child))
             elif tag == "PARAMETER":
                 setattr(obj, "parameter", SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter"))
 

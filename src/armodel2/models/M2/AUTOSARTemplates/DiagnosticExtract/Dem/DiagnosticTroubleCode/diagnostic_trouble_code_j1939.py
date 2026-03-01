@@ -179,15 +179,7 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "DTC-PROPS-PROPS-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-J1939":
-                        setattr(obj, "dtc_props_props_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeJ1939"))
-                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-OBD":
-                        setattr(obj, "dtc_props_props_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeObd"))
-                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-UDS":
-                        setattr(obj, "dtc_props_props_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeUds"))
+                setattr(obj, "dtc_props_props_ref", ARRef.deserialize(child))
             elif tag == "FMI":
                 setattr(obj, "fmi", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "KIND":

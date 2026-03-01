@@ -123,17 +123,7 @@ class BusMirrorChannel(ARObject):
             if tag == "BUS-MIRROR":
                 setattr(obj, "bus_mirror", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "CHANNEL-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-CAN-PHYSICAL-CHANNEL":
-                        setattr(obj, "channel_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanPhysicalChannel"))
-                    elif concrete_tag == "ETHERNET-PHYSICAL-CHANNEL":
-                        setattr(obj, "channel_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetPhysicalChannel"))
-                    elif concrete_tag == "FLEXRAY-PHYSICAL-CHANNEL":
-                        setattr(obj, "channel_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayPhysicalChannel"))
-                    elif concrete_tag == "LIN-PHYSICAL-CHANNEL":
-                        setattr(obj, "channel_ref", SerializationHelper.deserialize_by_tag(child[0], "LinPhysicalChannel"))
+                setattr(obj, "channel_ref", ARRef.deserialize(child))
 
         return obj
 

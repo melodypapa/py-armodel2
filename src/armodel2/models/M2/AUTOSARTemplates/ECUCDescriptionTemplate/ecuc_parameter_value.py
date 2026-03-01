@@ -145,21 +145,7 @@ class EcucParameterValue(EcucIndexableValue, ABC):
                 for item_elem in child:
                     obj.annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "Annotation"))
             elif tag == "DEFINITION-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ECUC-ABSTRACT-STRING-PARAM-DEF":
-                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucAbstractStringParamDef"))
-                    elif concrete_tag == "ECUC-ADD-INFO-PARAM-DEF":
-                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucAddInfoParamDef"))
-                    elif concrete_tag == "ECUC-BOOLEAN-PARAM-DEF":
-                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucBooleanParamDef"))
-                    elif concrete_tag == "ECUC-ENUMERATION-PARAM-DEF":
-                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucEnumerationParamDef"))
-                    elif concrete_tag == "ECUC-FLOAT-PARAM-DEF":
-                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucFloatParamDef"))
-                    elif concrete_tag == "ECUC-INTEGER-PARAM-DEF":
-                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucIntegerParamDef"))
+                setattr(obj, "definition_ref", ARRef.deserialize(child))
             elif tag == "IS-AUTO-VALUE":
                 setattr(obj, "is_auto_value", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 

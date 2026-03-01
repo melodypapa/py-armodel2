@@ -45,8 +45,8 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
     specific_channels: list[DiagnosticComControl]
     sub_nodes: list[DiagnosticComControl]
     _DESERIALIZE_DISPATCH = {
-        "ALL-CHANNELSES": ("_POLYMORPHIC_LIST", "all_channel_refs", ["AbstractCanCluster", "EthernetCluster", "FlexrayCluster", "LinCluster", "UserDefinedCluster"]),
-        "ALL-PHYSICALS": lambda obj, elem: obj.all_physical_refs.append(ARRef.deserialize(elem)),
+        "ALL-CHANNELS-REFS": ("_POLYMORPHIC_LIST", "all_channel_refs", ["AbstractCanCluster", "EthernetCluster", "FlexrayCluster", "LinCluster", "UserDefinedCluster"]),
+        "ALL-PHYSICAL-REFS": lambda obj, elem: obj.all_physical_refs.append(ARRef.deserialize(elem)),
         "SPECIFIC-CHANNELS": lambda obj, elem: obj.specific_channels.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticComControl")),
         "SUB-NODES": lambda obj, elem: obj.sub_nodes.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticComControl")),
     }
@@ -156,21 +156,10 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ALL-CHANNELSES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-CAN-CLUSTER":
-                        obj.all_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCluster"))
-                    elif concrete_tag == "ETHERNET-CLUSTER":
-                        obj.all_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetCluster"))
-                    elif concrete_tag == "FLEXRAY-CLUSTER":
-                        obj.all_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayCluster"))
-                    elif concrete_tag == "LIN-CLUSTER":
-                        obj.all_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinCluster"))
-                    elif concrete_tag == "USER-DEFINED-CLUSTER":
-                        obj.all_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCluster"))
-            elif tag == "ALL-PHYSICALS":
+            if tag == "ALL-CHANNELS-REFS":
+                for item_elem in child:
+                    obj.all_channel_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "ALL-PHYSICAL-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.all_physical_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EthernetPhysical)"))

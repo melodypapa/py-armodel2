@@ -40,7 +40,7 @@ class ExclusiveAreaNestingOrder(Referrable):
 
     exclusive_area_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "EXCLUSIVE-AREAS": lambda obj, elem: obj.exclusive_area_refs.append(ARRef.deserialize(elem)),
+        "EXCLUSIVE-AREA-REFS": lambda obj, elem: obj.exclusive_area_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -108,7 +108,7 @@ class ExclusiveAreaNestingOrder(Referrable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "EXCLUSIVE-AREAS":
+            if tag == "EXCLUSIVE-AREA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.exclusive_area_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveArea"))

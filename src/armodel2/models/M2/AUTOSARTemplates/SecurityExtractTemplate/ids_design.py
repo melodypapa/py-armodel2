@@ -39,7 +39,7 @@ class IdsDesign(ARElement):
 
     element_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ELEMENTS": ("_POLYMORPHIC_LIST", "element_refs", ["IdsMapping", "IdsmInstance", "IdsmProperties", "SecurityEventDefinition", "SecurityEventFilterChain"]),
+        "ELEMENT-REFS": ("_POLYMORPHIC_LIST", "element_refs", ["IdsMapping", "IdsmInstance", "IdsmProperties", "SecurityEventDefinition", "SecurityEventFilterChain"]),
     }
 
 
@@ -107,20 +107,9 @@ class IdsDesign(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ELEMENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "IDS-MAPPING":
-                        obj.element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "IdsMapping"))
-                    elif concrete_tag == "IDSM-INSTANCE":
-                        obj.element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "IdsmInstance"))
-                    elif concrete_tag == "IDSM-PROPERTIES":
-                        obj.element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "IdsmProperties"))
-                    elif concrete_tag == "SECURITY-EVENT-DEFINITION":
-                        obj.element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SecurityEventDefinition"))
-                    elif concrete_tag == "SECURITY-EVENT-FILTER-CHAIN":
-                        obj.element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SecurityEventFilterChain"))
+            if tag == "ELEMENT-REFS":
+                for item_elem in child:
+                    obj.element_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

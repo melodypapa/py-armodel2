@@ -165,11 +165,7 @@ class TlvDataIdDefinition(ARObject):
             elif tag == "TLV-ARGUMENT-REF":
                 setattr(obj, "tlv_argument_ref", ARRef.deserialize(child))
             elif tag == "TLV-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "IMPLEMENTATION-DATA-TYPE":
-                        setattr(obj, "tlv_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationDataType"))
+                setattr(obj, "tlv_ref", ARRef.deserialize(child))
             elif tag == "TLV-RECORD-REF":
                 setattr(obj, "tlv_record_ref", ARRef.deserialize(child))
 

@@ -42,7 +42,7 @@ class IncludedDataTypeSet(ARObject):
     data_type_refs: list[ARRef]
     literal_prefix: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "DATA-TYPES": ("_POLYMORPHIC_LIST", "data_type_refs", ["AbstractImplementationDataType", "ApplicationDataType"]),
+        "DATA-TYPE-REFS": ("_POLYMORPHIC_LIST", "data_type_refs", ["AbstractImplementationDataType", "ApplicationDataType"]),
         "LITERAL-PREFIX": lambda obj, elem: setattr(obj, "literal_prefix", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
@@ -126,14 +126,9 @@ class IncludedDataTypeSet(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DATA-TYPES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-IMPLEMENTATION-DATA-TYPE":
-                        obj.data_type_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractImplementationDataType"))
-                    elif concrete_tag == "APPLICATION-DATA-TYPE":
-                        obj.data_type_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ApplicationDataType"))
+            if tag == "DATA-TYPE-REFS":
+                for item_elem in child:
+                    obj.data_type_refs.append(ARRef.deserialize(item_elem))
             elif tag == "LITERAL-PREFIX":
                 setattr(obj, "literal_prefix", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 

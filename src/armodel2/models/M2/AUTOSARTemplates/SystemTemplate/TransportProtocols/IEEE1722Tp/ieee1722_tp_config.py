@@ -39,7 +39,7 @@ class IEEE1722TpConfig(TpConfig):
 
     tp_connection_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TP-CONNECTIONS": ("_POLYMORPHIC_LIST", "tp_connection_refs", ["IEEE1722TpAcfConnection", "IEEE1722TpAvConnection"]),
+        "TP-CONNECTION-REFS": ("_POLYMORPHIC_LIST", "tp_connection_refs", ["IEEE1722TpAcfConnection", "IEEE1722TpAvConnection"]),
     }
 
 
@@ -107,14 +107,9 @@ class IEEE1722TpConfig(TpConfig):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "TP-CONNECTIONS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "I-E-E-E1722-TP-ACF-CONNECTION":
-                        obj.tp_connection_refs.append(SerializationHelper.deserialize_by_tag(child[0], "IEEE1722TpAcfConnection"))
-                    elif concrete_tag == "I-E-E-E1722-TP-AV-CONNECTION":
-                        obj.tp_connection_refs.append(SerializationHelper.deserialize_by_tag(child[0], "IEEE1722TpAvConnection"))
+            if tag == "TP-CONNECTION-REFS":
+                for item_elem in child:
+                    obj.tp_connection_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

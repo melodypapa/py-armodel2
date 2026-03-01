@@ -103,19 +103,7 @@ class AtpPrototype(Identifiable, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ATP-TYPE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "AUTOSAR-DATA-TYPE":
-                        setattr(obj, "atp_type_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataType"))
-                    elif concrete_tag == "MODE-DECLARATION-GROUP":
-                        setattr(obj, "atp_type_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeDeclarationGroup"))
-                    elif concrete_tag == "MODE-DECLARATION-MAPPING-SET":
-                        setattr(obj, "atp_type_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeDeclarationMappingSet"))
-                    elif concrete_tag == "PORT-INTERFACE":
-                        setattr(obj, "atp_type_ref", SerializationHelper.deserialize_by_tag(child[0], "PortInterface"))
-                    elif concrete_tag == "SW-COMPONENT-TYPE":
-                        setattr(obj, "atp_type_ref", SerializationHelper.deserialize_by_tag(child[0], "SwComponentType"))
+                setattr(obj, "atp_type_ref", ARRef.deserialize(child))
 
         return obj
 

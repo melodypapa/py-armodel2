@@ -146,23 +146,7 @@ class AgeConstraint(TimingConstraint):
             elif tag == "MINIMUM":
                 setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
             elif tag == "SCOPE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "T-D-EVENT-BSW":
-                        setattr(obj, "scope_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBsw"))
-                    elif concrete_tag == "T-D-EVENT-BSW-INTERNAL-BEHAVIOR":
-                        setattr(obj, "scope_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBswInternalBehavior"))
-                    elif concrete_tag == "T-D-EVENT-COM":
-                        setattr(obj, "scope_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventCom"))
-                    elif concrete_tag == "T-D-EVENT-COMPLEX":
-                        setattr(obj, "scope_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventComplex"))
-                    elif concrete_tag == "T-D-EVENT-S-L-L-E-T":
-                        setattr(obj, "scope_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSLLET"))
-                    elif concrete_tag == "T-D-EVENT-SWC":
-                        setattr(obj, "scope_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSwc"))
-                    elif concrete_tag == "T-D-EVENT-VFB":
-                        setattr(obj, "scope_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventVfb"))
+                setattr(obj, "scope_ref", ARRef.deserialize(child))
 
         return obj
 

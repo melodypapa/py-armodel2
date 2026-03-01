@@ -164,13 +164,7 @@ class StackUsage(Identifiable, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "EXECUTABLE-ENTITY-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "BSW-MODULE-ENTITY":
-                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleEntity"))
-                    elif concrete_tag == "RUNNABLE-ENTITY":
-                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "RunnableEntity"))
+                setattr(obj, "executable_entity_ref", ARRef.deserialize(child))
             elif tag == "HARDWARE":
                 setattr(obj, "hardware", SerializationHelper.deserialize_by_tag(child, "HardwareConfiguration"))
             elif tag == "HW-ELEMENT-REF":

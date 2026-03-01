@@ -43,7 +43,7 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
     dtc_refs: list[ARRef]
     group_number: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "DTCS": ("_POLYMORPHIC_LIST", "dtc_refs", ["DiagnosticTroubleCodeJ1939", "DiagnosticTroubleCodeObd", "DiagnosticTroubleCodeUds"]),
+        "DTC-REFS": ("_POLYMORPHIC_LIST", "dtc_refs", ["DiagnosticTroubleCodeJ1939", "DiagnosticTroubleCodeObd", "DiagnosticTroubleCodeUds"]),
         "GROUP-NUMBER": lambda obj, elem: setattr(obj, "group_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
@@ -127,16 +127,9 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DTCS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-J1939":
-                        obj.dtc_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeJ1939"))
-                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-OBD":
-                        obj.dtc_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeObd"))
-                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-UDS":
-                        obj.dtc_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeUds"))
+            if tag == "DTC-REFS":
+                for item_elem in child:
+                    obj.dtc_refs.append(ARRef.deserialize(item_elem))
             elif tag == "GROUP-NUMBER":
                 setattr(obj, "group_number", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

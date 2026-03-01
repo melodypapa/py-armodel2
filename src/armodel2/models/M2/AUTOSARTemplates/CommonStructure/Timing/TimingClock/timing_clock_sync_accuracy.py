@@ -144,17 +144,9 @@ class TimingClockSyncAccuracy(Identifiable):
             if tag == "ACCURACY":
                 setattr(obj, "accuracy", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
             elif tag == "LOWER-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "T-D-L-E-T-ZONE-CLOCK":
-                        setattr(obj, "lower_ref", SerializationHelper.deserialize_by_tag(child[0], "TDLETZoneClock"))
+                setattr(obj, "lower_ref", ARRef.deserialize(child))
             elif tag == "UPPER-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "T-D-L-E-T-ZONE-CLOCK":
-                        setattr(obj, "upper_ref", SerializationHelper.deserialize_by_tag(child[0], "TDLETZoneClock"))
+                setattr(obj, "upper_ref", ARRef.deserialize(child))
 
         return obj
 

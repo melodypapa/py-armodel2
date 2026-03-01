@@ -162,15 +162,7 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
             if tag == "CONSIDER-PTO":
                 setattr(obj, "consider_pto", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "DTC-PROPS-PROPS-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-J1939":
-                        setattr(obj, "dtc_props_props_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeJ1939"))
-                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-OBD":
-                        setattr(obj, "dtc_props_props_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeObd"))
-                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-UDS":
-                        setattr(obj, "dtc_props_props_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeUds"))
+                setattr(obj, "dtc_props_props_ref", ARRef.deserialize(child))
             elif tag == "EVENT-READINESS":
                 setattr(obj, "event_readiness", SerializationHelper.deserialize_by_tag(child, "EventObdReadinessGroup"))
             elif tag == "OBD-DTC-VALUE":

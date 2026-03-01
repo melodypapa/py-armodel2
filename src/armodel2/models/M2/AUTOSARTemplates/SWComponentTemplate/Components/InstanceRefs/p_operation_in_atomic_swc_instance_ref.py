@@ -125,13 +125,7 @@ class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "CONTEXT-P-PORT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "P-PORT-PROTOTYPE":
-                        setattr(obj, "context_p_port_ref", SerializationHelper.deserialize_by_tag(child[0], "PPortPrototype"))
-                    elif concrete_tag == "P-R-PORT-PROTOTYPE":
-                        setattr(obj, "context_p_port_ref", SerializationHelper.deserialize_by_tag(child[0], "PRPortPrototype"))
+                setattr(obj, "context_p_port_ref", ARRef.deserialize(child))
             elif tag == "TARGET-PROVIDED-OPERATION-REF":
                 setattr(obj, "target_provided_operation_ref", ARRef.deserialize(child))
 

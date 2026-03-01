@@ -77,7 +77,7 @@ class StructuredReq(Paginateable):
         "RATIONALE": lambda obj, elem: setattr(obj, "rationale", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
         "REMARK": lambda obj, elem: setattr(obj, "remark", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
         "SUPPORTING": lambda obj, elem: setattr(obj, "supporting", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
-        "TESTED-ITEMS": ("_POLYMORPHIC_LIST", "tested_item_refs", ["StructuredReq", "TimingConstraint", "TraceableTable", "TraceableText"]),
+        "TESTED-ITEM-REFS": ("_POLYMORPHIC_LIST", "tested_item_refs", ["StructuredReq", "TimingConstraint", "TraceableTable", "TraceableText"]),
         "TYPE": lambda obj, elem: setattr(obj, "type", SerializationHelper.deserialize_by_tag(elem, "String")),
         "USE-CASE": lambda obj, elem: setattr(obj, "use_case", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
     }
@@ -352,18 +352,9 @@ class StructuredReq(Paginateable):
                 setattr(obj, "remark", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
             elif tag == "SUPPORTING":
                 setattr(obj, "supporting", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
-            elif tag == "TESTED-ITEMS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "STRUCTURED-REQ":
-                        obj.tested_item_refs.append(SerializationHelper.deserialize_by_tag(child[0], "StructuredReq"))
-                    elif concrete_tag == "TIMING-CONSTRAINT":
-                        obj.tested_item_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TimingConstraint"))
-                    elif concrete_tag == "TRACEABLE-TABLE":
-                        obj.tested_item_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TraceableTable"))
-                    elif concrete_tag == "TRACEABLE-TEXT":
-                        obj.tested_item_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TraceableText"))
+            elif tag == "TESTED-ITEM-REFS":
+                for item_elem in child:
+                    obj.tested_item_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TYPE":
                 setattr(obj, "type", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "USE-CASE":

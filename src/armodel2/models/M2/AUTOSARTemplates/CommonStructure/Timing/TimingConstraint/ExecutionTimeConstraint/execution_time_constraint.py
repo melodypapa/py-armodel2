@@ -181,13 +181,7 @@ class ExecutionTimeConstraint(TimingConstraint):
             if tag == "COMPONENT":
                 setattr(obj, "component", SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
             elif tag == "EXECUTABLE-ENTITY-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "BSW-MODULE-ENTITY":
-                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleEntity"))
-                    elif concrete_tag == "RUNNABLE-ENTITY":
-                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "RunnableEntity"))
+                setattr(obj, "executable_entity_ref", ARRef.deserialize(child))
             elif tag == "EXECUTION-TIME":
                 setattr(obj, "execution_time", ExecutionTimeTypeEnum.deserialize(child))
             elif tag == "MAXIMUM":

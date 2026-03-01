@@ -39,7 +39,7 @@ class IncludedModeDeclarationGroupSet(ARObject):
     mode_refs: list[ARRef]
     prefix: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "MODES": lambda obj, elem: obj.mode_refs.append(ARRef.deserialize(elem)),
+        "MODE-REFS": lambda obj, elem: obj.mode_refs.append(ARRef.deserialize(elem)),
         "PREFIX": lambda obj, elem: setattr(obj, "prefix", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
@@ -123,7 +123,7 @@ class IncludedModeDeclarationGroupSet(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "MODES":
+            if tag == "MODE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.mode_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroup"))

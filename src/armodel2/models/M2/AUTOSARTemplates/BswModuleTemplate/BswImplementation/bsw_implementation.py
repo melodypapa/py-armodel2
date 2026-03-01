@@ -63,10 +63,10 @@ class BswImplementation(Implementation):
     _DESERIALIZE_DISPATCH = {
         "AR-RELEASE-VERSION": lambda obj, elem: setattr(obj, "ar_release_version", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
         "BEHAVIOR-REF": lambda obj, elem: setattr(obj, "behavior_ref", ARRef.deserialize(elem)),
-        "PRECONFIGURED-CONFIGURATIONS": lambda obj, elem: obj.preconfigured_configuration_refs.append(ARRef.deserialize(elem)),
-        "RECOMMENDED-CONFIGURATIONS": lambda obj, elem: obj.recommended_configuration_refs.append(ARRef.deserialize(elem)),
+        "PRECONFIGURED-CONFIGURATION-REFS": lambda obj, elem: obj.preconfigured_configuration_refs.append(ARRef.deserialize(elem)),
+        "RECOMMENDED-CONFIGURATION-REFS": lambda obj, elem: obj.recommended_configuration_refs.append(ARRef.deserialize(elem)),
         "VENDOR-API-INFIX": lambda obj, elem: setattr(obj, "vendor_api_infix", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
-        "VENDOR-SPECIFIC-MODULE-DEFS": lambda obj, elem: obj.vendor_specific_module_def_refs.append(ARRef.deserialize(elem)),
+        "VENDOR-SPECIFIC-MODULE-DEF-REFS": lambda obj, elem: obj.vendor_specific_module_def_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -219,17 +219,17 @@ class BswImplementation(Implementation):
                 setattr(obj, "ar_release_version", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
             elif tag == "BEHAVIOR-REF":
                 setattr(obj, "behavior_ref", ARRef.deserialize(child))
-            elif tag == "PRECONFIGURED-CONFIGURATIONS":
+            elif tag == "PRECONFIGURED-CONFIGURATION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.preconfigured_configuration_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucModuleConfigurationValues"))
-            elif tag == "RECOMMENDED-CONFIGURATIONS":
+            elif tag == "RECOMMENDED-CONFIGURATION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.recommended_configuration_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucModuleConfigurationValues"))
             elif tag == "VENDOR-API-INFIX":
                 setattr(obj, "vendor_api_infix", SerializationHelper.deserialize_by_tag(child, "Identifier"))
-            elif tag == "VENDOR-SPECIFIC-MODULE-DEFS":
+            elif tag == "VENDOR-SPECIFIC-MODULE-DEF-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.vendor_specific_module_def_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucModuleDef"))

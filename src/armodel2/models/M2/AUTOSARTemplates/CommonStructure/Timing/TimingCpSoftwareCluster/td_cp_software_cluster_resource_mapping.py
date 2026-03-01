@@ -127,13 +127,7 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
             if tag == "RESOURCE-REF":
                 setattr(obj, "resource_ref", ARRef.deserialize(child))
             elif tag == "TIMING-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "TIMING-DESCRIPTION-EVENT":
-                        setattr(obj, "timing_ref", SerializationHelper.deserialize_by_tag(child[0], "TimingDescriptionEvent"))
-                    elif concrete_tag == "TIMING-DESCRIPTION-EVENT-CHAIN":
-                        setattr(obj, "timing_ref", SerializationHelper.deserialize_by_tag(child[0], "TimingDescriptionEventChain"))
+                setattr(obj, "timing_ref", ARRef.deserialize(child))
 
         return obj
 

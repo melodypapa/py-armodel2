@@ -40,7 +40,7 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
     diagnostic_test_result_refs: list[ARRef]
     request_on_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "DIAGNOSTIC-TEST-RESULTS": lambda obj, elem: obj.diagnostic_test_result_refs.append(ARRef.deserialize(elem)),
+        "DIAGNOSTIC-TEST-RESULT-REFS": lambda obj, elem: obj.diagnostic_test_result_refs.append(ARRef.deserialize(elem)),
         "REQUEST-ON-REF": lambda obj, elem: setattr(obj, "request_on_ref", ARRef.deserialize(elem)),
     }
 
@@ -124,7 +124,7 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DIAGNOSTIC-TEST-RESULTS":
+            if tag == "DIAGNOSTIC-TEST-RESULT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.diagnostic_test_result_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticTestResult"))

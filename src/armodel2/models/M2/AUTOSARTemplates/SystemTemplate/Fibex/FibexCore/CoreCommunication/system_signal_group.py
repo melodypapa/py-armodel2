@@ -40,7 +40,7 @@ class SystemSignalGroup(ARElement):
     system_signal_refs: list[ARRef]
     transforming_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "SYSTEM-SIGNALS": lambda obj, elem: obj.system_signal_refs.append(ARRef.deserialize(elem)),
+        "SYSTEM-SIGNAL-REFS": lambda obj, elem: obj.system_signal_refs.append(ARRef.deserialize(elem)),
         "TRANSFORMING-REF": lambda obj, elem: setattr(obj, "transforming_ref", ARRef.deserialize(elem)),
     }
 
@@ -124,7 +124,7 @@ class SystemSignalGroup(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "SYSTEM-SIGNALS":
+            if tag == "SYSTEM-SIGNAL-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.system_signal_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SystemSignal"))

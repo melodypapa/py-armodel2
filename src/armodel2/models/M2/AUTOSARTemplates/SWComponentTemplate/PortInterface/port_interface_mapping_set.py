@@ -40,7 +40,7 @@ class PortInterfaceMappingSet(ARElement):
 
     port_interface_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "PORT-INTERFACES": ("_POLYMORPHIC_LIST", "port_interface_refs", ["ClientServerInterfaceMapping", "ModeInterfaceMapping", "TriggerInterfaceMapping", "VariableAndParameter"]),
+        "PORT-INTERFACE-REFS": ("_POLYMORPHIC_LIST", "port_interface_refs", ["ClientServerInterfaceMapping", "ModeInterfaceMapping", "TriggerInterfaceMapping", "VariableAndParameter"]),
     }
 
 
@@ -108,18 +108,9 @@ class PortInterfaceMappingSet(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "PORT-INTERFACES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "CLIENT-SERVER-INTERFACE-MAPPING":
-                        obj.port_interface_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ClientServerInterfaceMapping"))
-                    elif concrete_tag == "MODE-INTERFACE-MAPPING":
-                        obj.port_interface_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ModeInterfaceMapping"))
-                    elif concrete_tag == "TRIGGER-INTERFACE-MAPPING":
-                        obj.port_interface_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TriggerInterfaceMapping"))
-                    elif concrete_tag == "VARIABLE-AND-PARAMETER":
-                        obj.port_interface_refs.append(SerializationHelper.deserialize_by_tag(child[0], "VariableAndParameter"))
+            if tag == "PORT-INTERFACE-REFS":
+                for item_elem in child:
+                    obj.port_interface_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -44,7 +44,7 @@ class EvaluatedVariantSet(ARElement):
     evaluated_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "APPROVAL-STATUS": lambda obj, elem: setattr(obj, "approval_status", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
-        "EVALUATEDS": lambda obj, elem: obj.evaluated_refs.append(ARRef.deserialize(elem)),
+        "EVALUATED-REFS": lambda obj, elem: obj.evaluated_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -129,7 +129,7 @@ class EvaluatedVariantSet(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "APPROVAL-STATUS":
                 setattr(obj, "approval_status", SerializationHelper.deserialize_by_tag(child, "NameToken"))
-            elif tag == "EVALUATEDS":
+            elif tag == "EVALUATED-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.evaluated_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PredefinedVariant"))

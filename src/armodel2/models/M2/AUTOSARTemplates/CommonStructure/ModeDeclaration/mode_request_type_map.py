@@ -125,11 +125,7 @@ class ModeRequestTypeMap(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "IMPLEMENTATION-DATA-TYPE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "IMPLEMENTATION-DATA-TYPE":
-                        setattr(obj, "implementation_data_type_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationDataType"))
+                setattr(obj, "implementation_data_type_ref", ARRef.deserialize(child))
             elif tag == "MODE-GROUP-REF":
                 setattr(obj, "mode_group_ref", ARRef.deserialize(child))
 

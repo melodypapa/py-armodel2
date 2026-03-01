@@ -38,7 +38,7 @@ class IdsPlatformInstantiation(Identifiable, ABC):
     network_refs: list[ARRef]
     time_base_resource_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "NETWORKS": lambda obj, elem: obj.network_refs.append(ARRef.deserialize(elem)),
+        "NETWORK-REFS": lambda obj, elem: obj.network_refs.append(ARRef.deserialize(elem)),
         "TIME-BASE-RESOURCE-REF": lambda obj, elem: setattr(obj, "time_base_resource_ref", ARRef.deserialize(elem)),
     }
 
@@ -122,7 +122,7 @@ class IdsPlatformInstantiation(Identifiable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "NETWORKS":
+            if tag == "NETWORK-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.network_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PlatformModuleEthernetEndpointConfiguration"))

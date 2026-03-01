@@ -77,7 +77,7 @@ class FlexrayArTpChannel(ARObject):
         "MAX-RETRIES": lambda obj, elem: setattr(obj, "max_retries", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "MINIMUM": lambda obj, elem: setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "MULTICAST": lambda obj, elem: setattr(obj, "multicast", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "N-PDUS": lambda obj, elem: obj.n_pdu_refs.append(ARRef.deserialize(elem)),
+        "N-PDU-REFS": lambda obj, elem: obj.n_pdu_refs.append(ARRef.deserialize(elem)),
         "TIME-BR": lambda obj, elem: setattr(obj, "time_br", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TIME-CS": lambda obj, elem: setattr(obj, "time_cs", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TIMEOUT-AR": lambda obj, elem: setattr(obj, "timeout_ar", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
@@ -440,7 +440,7 @@ class FlexrayArTpChannel(ARObject):
                 setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "MULTICAST":
                 setattr(obj, "multicast", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "N-PDUS":
+            elif tag == "N-PDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.n_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NPdu"))

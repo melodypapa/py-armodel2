@@ -37,7 +37,7 @@ class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
     crypto_service_refs: list[Any]
     service_instance_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "CRYPTO-SERVICES": lambda obj, elem: obj.crypto_service_refs.append(ARRef.deserialize(elem)),
+        "CRYPTO-SERVICE-REFS": lambda obj, elem: obj.crypto_service_refs.append(ARRef.deserialize(elem)),
         "SERVICE-INSTANCE-REF": lambda obj, elem: setattr(obj, "service_instance_ref", ARRef.deserialize(elem)),
     }
 
@@ -121,7 +121,7 @@ class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CRYPTO-SERVICES":
+            if tag == "CRYPTO-SERVICE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.crypto_service_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CryptoService)"))

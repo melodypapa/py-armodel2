@@ -122,15 +122,7 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "BSW-MODULE-ENTITY-ENTITY-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "BSW-CALLED-ENTITY":
-                        setattr(obj, "bsw_module_entity_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswCalledEntity"))
-                    elif concrete_tag == "BSW-INTERRUPT-ENTITY":
-                        setattr(obj, "bsw_module_entity_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswInterruptEntity"))
-                    elif concrete_tag == "BSW-SCHEDULABLE-ENTITY":
-                        setattr(obj, "bsw_module_entity_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswSchedulableEntity"))
+                setattr(obj, "bsw_module_entity_entity_ref", ARRef.deserialize(child))
             elif tag == "TD-EVENT-BSW-BEHAVIOR-TYPE":
                 setattr(obj, "td_event_bsw_behavior_type", SerializationHelper.deserialize_by_tag(child, "any (TDEventBswInternal)"))
 

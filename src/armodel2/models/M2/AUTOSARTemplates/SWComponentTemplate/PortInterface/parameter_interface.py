@@ -40,7 +40,7 @@ class ParameterInterface(DataInterface):
 
     parameter_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "PARAMETERS": lambda obj, elem: obj.parameter_refs.append(ARRef.deserialize(elem)),
+        "PARAMETER-REFS": lambda obj, elem: obj.parameter_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -108,7 +108,7 @@ class ParameterInterface(DataInterface):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "PARAMETERS":
+            if tag == "PARAMETER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.parameter_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))

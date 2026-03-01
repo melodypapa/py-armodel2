@@ -47,7 +47,7 @@ class TimingDescriptionEventChain(TimingDescription):
     _DESERIALIZE_DISPATCH = {
         "IS-PIPELINING": lambda obj, elem: setattr(obj, "is_pipelining", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "RESPONSE-REF": ("_POLYMORPHIC", "response_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
-        "SEGMENTS": ("_POLYMORPHIC_LIST", "segment_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "SEGMENT-REFS": ("_POLYMORPHIC_LIST", "segment_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
         "STIMULUS-REF": ("_POLYMORPHIC", "stimulus_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
     }
 
@@ -164,59 +164,12 @@ class TimingDescriptionEventChain(TimingDescription):
             if tag == "IS-PIPELINING":
                 setattr(obj, "is_pipelining", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "RESPONSE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "T-D-EVENT-BSW":
-                        setattr(obj, "response_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBsw"))
-                    elif concrete_tag == "T-D-EVENT-BSW-INTERNAL-BEHAVIOR":
-                        setattr(obj, "response_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBswInternalBehavior"))
-                    elif concrete_tag == "T-D-EVENT-COM":
-                        setattr(obj, "response_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventCom"))
-                    elif concrete_tag == "T-D-EVENT-COMPLEX":
-                        setattr(obj, "response_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventComplex"))
-                    elif concrete_tag == "T-D-EVENT-S-L-L-E-T":
-                        setattr(obj, "response_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSLLET"))
-                    elif concrete_tag == "T-D-EVENT-SWC":
-                        setattr(obj, "response_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSwc"))
-                    elif concrete_tag == "T-D-EVENT-VFB":
-                        setattr(obj, "response_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventVfb"))
-            elif tag == "SEGMENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "T-D-EVENT-BSW":
-                        obj.segment_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventBsw"))
-                    elif concrete_tag == "T-D-EVENT-BSW-INTERNAL-BEHAVIOR":
-                        obj.segment_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventBswInternalBehavior"))
-                    elif concrete_tag == "T-D-EVENT-COM":
-                        obj.segment_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventCom"))
-                    elif concrete_tag == "T-D-EVENT-COMPLEX":
-                        obj.segment_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventComplex"))
-                    elif concrete_tag == "T-D-EVENT-S-L-L-E-T":
-                        obj.segment_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventSLLET"))
-                    elif concrete_tag == "T-D-EVENT-SWC":
-                        obj.segment_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventSwc"))
-                    elif concrete_tag == "T-D-EVENT-VFB":
-                        obj.segment_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventVfb"))
+                setattr(obj, "response_ref", ARRef.deserialize(child))
+            elif tag == "SEGMENT-REFS":
+                for item_elem in child:
+                    obj.segment_refs.append(ARRef.deserialize(item_elem))
             elif tag == "STIMULUS-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "T-D-EVENT-BSW":
-                        setattr(obj, "stimulus_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBsw"))
-                    elif concrete_tag == "T-D-EVENT-BSW-INTERNAL-BEHAVIOR":
-                        setattr(obj, "stimulus_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBswInternalBehavior"))
-                    elif concrete_tag == "T-D-EVENT-COM":
-                        setattr(obj, "stimulus_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventCom"))
-                    elif concrete_tag == "T-D-EVENT-COMPLEX":
-                        setattr(obj, "stimulus_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventComplex"))
-                    elif concrete_tag == "T-D-EVENT-S-L-L-E-T":
-                        setattr(obj, "stimulus_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSLLET"))
-                    elif concrete_tag == "T-D-EVENT-SWC":
-                        setattr(obj, "stimulus_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSwc"))
-                    elif concrete_tag == "T-D-EVENT-VFB":
-                        setattr(obj, "stimulus_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventVfb"))
+                setattr(obj, "stimulus_ref", ARRef.deserialize(child))
 
         return obj
 

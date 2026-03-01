@@ -45,7 +45,7 @@ class Code(Identifiable):
     callback_header_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "ARTIFACT-DESCRIPTORS": lambda obj, elem: obj.artifact_descriptors.append(SerializationHelper.deserialize_by_tag(elem, "AutosarEngineeringObject")),
-        "CALLBACK-HEADERS": ("_POLYMORPHIC_LIST", "callback_header_refs", ["BswMgrNeeds", "ComMgrUserNeeds", "CryptoKeyManagementNeeds", "CryptoServiceJobNeeds", "CryptoServiceNeeds", "DiagnosticCapabilityElement", "DltUserNeeds", "DoIpServiceNeeds", "EcuStateMgrUserNeeds", "ErrorTracerNeeds", "FunctionInhibitionAvailabilityNeeds", "FunctionInhibitionNeeds", "GlobalSupervisionNeeds", "HardwareTestNeeds", "IdsMgrCustomTimestampNeeds", "IdsMgrNeeds", "IndicatorStatusNeeds", "J1939DcmDm19Support", "J1939RmIncomingRequestServiceNeeds", "J1939RmOutgoingRequestServiceNeeds", "NvBlockNeeds", "SecureOnBoardCommunicationNeeds", "SupervisedEntityCheckpointNeeds", "SupervisedEntityNeeds", "SyncTimeBaseMgrUserNeeds", "V2xDataManagerNeeds", "V2xFacUserNeeds", "V2xMUserNeeds", "VendorSpecificServiceNeeds"]),
+        "CALLBACK-HEADER-REFS": ("_POLYMORPHIC_LIST", "callback_header_refs", ["BswMgrNeeds", "ComMgrUserNeeds", "CryptoKeyManagementNeeds", "CryptoServiceJobNeeds", "CryptoServiceNeeds", "DiagnosticCapabilityElement", "DltUserNeeds", "DoIpServiceNeeds", "EcuStateMgrUserNeeds", "ErrorTracerNeeds", "FunctionInhibitionAvailabilityNeeds", "FunctionInhibitionNeeds", "GlobalSupervisionNeeds", "HardwareTestNeeds", "IdsMgrCustomTimestampNeeds", "IdsMgrNeeds", "IndicatorStatusNeeds", "J1939DcmDm19Support", "J1939RmIncomingRequestServiceNeeds", "J1939RmOutgoingRequestServiceNeeds", "NvBlockNeeds", "SecureOnBoardCommunicationNeeds", "SupervisedEntityCheckpointNeeds", "SupervisedEntityNeeds", "SyncTimeBaseMgrUserNeeds", "V2xDataManagerNeeds", "V2xFacUserNeeds", "V2xMUserNeeds", "VendorSpecificServiceNeeds"]),
     }
 
 
@@ -128,68 +128,9 @@ class Code(Identifiable):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.artifact_descriptors.append(SerializationHelper.deserialize_by_tag(item_elem, "AutosarEngineeringObject"))
-            elif tag == "CALLBACK-HEADERS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "BSW-MGR-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswMgrNeeds"))
-                    elif concrete_tag == "COM-MGR-USER-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ComMgrUserNeeds"))
-                    elif concrete_tag == "CRYPTO-KEY-MANAGEMENT-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CryptoKeyManagementNeeds"))
-                    elif concrete_tag == "CRYPTO-SERVICE-JOB-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CryptoServiceJobNeeds"))
-                    elif concrete_tag == "CRYPTO-SERVICE-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CryptoServiceNeeds"))
-                    elif concrete_tag == "DIAGNOSTIC-CAPABILITY-ELEMENT":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DiagnosticCapabilityElement"))
-                    elif concrete_tag == "DLT-USER-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DltUserNeeds"))
-                    elif concrete_tag == "DO-IP-SERVICE-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DoIpServiceNeeds"))
-                    elif concrete_tag == "ECU-STATE-MGR-USER-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EcuStateMgrUserNeeds"))
-                    elif concrete_tag == "ERROR-TRACER-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ErrorTracerNeeds"))
-                    elif concrete_tag == "FUNCTION-INHIBITION-AVAILABILITY-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "FunctionInhibitionAvailabilityNeeds"))
-                    elif concrete_tag == "FUNCTION-INHIBITION-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "FunctionInhibitionNeeds"))
-                    elif concrete_tag == "GLOBAL-SUPERVISION-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "GlobalSupervisionNeeds"))
-                    elif concrete_tag == "HARDWARE-TEST-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "HardwareTestNeeds"))
-                    elif concrete_tag == "IDS-MGR-CUSTOM-TIMESTAMP-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "IdsMgrCustomTimestampNeeds"))
-                    elif concrete_tag == "IDS-MGR-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "IdsMgrNeeds"))
-                    elif concrete_tag == "INDICATOR-STATUS-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "IndicatorStatusNeeds"))
-                    elif concrete_tag == "J1939-DCM-DM19-SUPPORT":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "J1939DcmDm19Support"))
-                    elif concrete_tag == "J1939-RM-INCOMING-REQUEST-SERVICE-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "J1939RmIncomingRequestServiceNeeds"))
-                    elif concrete_tag == "J1939-RM-OUTGOING-REQUEST-SERVICE-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "J1939RmOutgoingRequestServiceNeeds"))
-                    elif concrete_tag == "NV-BLOCK-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "NvBlockNeeds"))
-                    elif concrete_tag == "SECURE-ON-BOARD-COMMUNICATION-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SecureOnBoardCommunicationNeeds"))
-                    elif concrete_tag == "SUPERVISED-ENTITY-CHECKPOINT-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SupervisedEntityCheckpointNeeds"))
-                    elif concrete_tag == "SUPERVISED-ENTITY-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SupervisedEntityNeeds"))
-                    elif concrete_tag == "SYNC-TIME-BASE-MGR-USER-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SyncTimeBaseMgrUserNeeds"))
-                    elif concrete_tag == "V2X-DATA-MANAGER-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "V2xDataManagerNeeds"))
-                    elif concrete_tag == "V2X-FAC-USER-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "V2xFacUserNeeds"))
-                    elif concrete_tag == "V2X-M-USER-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "V2xMUserNeeds"))
-                    elif concrete_tag == "VENDOR-SPECIFIC-SERVICE-NEEDS":
-                        obj.callback_header_refs.append(SerializationHelper.deserialize_by_tag(child[0], "VendorSpecificServiceNeeds"))
+            elif tag == "CALLBACK-HEADER-REFS":
+                for item_elem in child:
+                    obj.callback_header_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

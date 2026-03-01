@@ -40,7 +40,7 @@ class VariableAndParameterInterfaceMapping(PortInterfaceMapping):
 
     data_mapping_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DATA-MAPPINGS": lambda obj, elem: obj.data_mapping_refs.append(ARRef.deserialize(elem)),
+        "DATA-MAPPING-REFS": lambda obj, elem: obj.data_mapping_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -108,7 +108,7 @@ class VariableAndParameterInterfaceMapping(PortInterfaceMapping):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DATA-MAPPINGS":
+            if tag == "DATA-MAPPING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.data_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataPrototypeMapping"))

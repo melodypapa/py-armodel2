@@ -50,7 +50,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
     post_build_variant: Optional[Boolean]
     requires_index: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "DESTINATION-URIS": lambda obj, elem: obj.destination_uri_refs.append(ARRef.deserialize(elem)),
+        "DESTINATION-URI-REFS": lambda obj, elem: obj.destination_uri_refs.append(ARRef.deserialize(elem)),
         "MULTIPLICITIES": lambda obj, elem: obj.multiplicities.append(SerializationHelper.deserialize_by_tag(elem, "EcucMultiplicityConfigurationClass")),
         "ORIGIN": lambda obj, elem: setattr(obj, "origin", SerializationHelper.deserialize_by_tag(elem, "String")),
         "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
@@ -178,7 +178,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DESTINATION-URIS":
+            if tag == "DESTINATION-URI-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.destination_uri_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucDestinationUriDef"))

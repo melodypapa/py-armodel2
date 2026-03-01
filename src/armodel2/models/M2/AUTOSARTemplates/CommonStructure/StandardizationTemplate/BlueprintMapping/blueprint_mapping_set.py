@@ -40,7 +40,7 @@ class BlueprintMappingSet(ARElement):
 
     blueprint_map_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "BLUEPRINT-MAPS": ("_POLYMORPHIC_LIST", "blueprint_map_refs", ["BlueprintMapping"]),
+        "BLUEPRINT-MAP-REFS": ("_POLYMORPHIC_LIST", "blueprint_map_refs", ["BlueprintMapping"]),
     }
 
 
@@ -108,12 +108,9 @@ class BlueprintMappingSet(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "BLUEPRINT-MAPS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "BLUEPRINT-MAPPING":
-                        obj.blueprint_map_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BlueprintMapping"))
+            if tag == "BLUEPRINT-MAP-REFS":
+                for item_elem in child:
+                    obj.blueprint_map_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

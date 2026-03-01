@@ -48,7 +48,7 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
         "BSW-MODULE-REF": lambda obj, elem: setattr(obj, "bsw_module_ref", ARRef.deserialize(elem)),
         "COMPONENT": lambda obj, elem: setattr(obj, "component", SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
         "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswModuleEntity", "RunnableEntity"]),
-        "SUCCESSORS": lambda obj, elem: obj.successor_refs.append(ARRef.deserialize(elem)),
+        "SUCCESSOR-REFS": lambda obj, elem: obj.successor_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -166,14 +166,8 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
             elif tag == "COMPONENT":
                 setattr(obj, "component", SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
             elif tag == "EXECUTABLE-ENTITY-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "BSW-MODULE-ENTITY":
-                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleEntity"))
-                    elif concrete_tag == "RUNNABLE-ENTITY":
-                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "RunnableEntity"))
-            elif tag == "SUCCESSORS":
+                setattr(obj, "executable_entity_ref", ARRef.deserialize(child))
+            elif tag == "SUCCESSOR-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.successor_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EOCExecutableEntity)"))

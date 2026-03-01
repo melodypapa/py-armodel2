@@ -40,7 +40,7 @@ class SwitchStreamFilterActionDestPortModification(Identifiable):
     egress_port_refs: list[ARRef]
     modification: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "EGRESS-PORTS": lambda obj, elem: obj.egress_port_refs.append(ARRef.deserialize(elem)),
+        "EGRESS-PORT-REFS": lambda obj, elem: obj.egress_port_refs.append(ARRef.deserialize(elem)),
         "MODIFICATION": lambda obj, elem: setattr(obj, "modification", SerializationHelper.deserialize_by_tag(elem, "any (SwitchStreamFilter)")),
     }
 
@@ -124,7 +124,7 @@ class SwitchStreamFilterActionDestPortModification(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "EGRESS-PORTS":
+            if tag == "EGRESS-PORT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.egress_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPort"))

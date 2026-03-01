@@ -47,7 +47,7 @@ class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
     root_data_ref: Optional[ARRef]
     target_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXTS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-REFS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
         "ROOT-DATA-REF": ("_POLYMORPHIC", "root_data_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "TARGET-REF": ("_POLYMORPHIC", "target_ref", ["ImplementationDataType"]),
     }
@@ -147,26 +147,14 @@ class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONTEXTS":
+            if tag == "CONTEXT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.context_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (AbstractImplementation)"))
             elif tag == "ROOT-DATA-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
-                        setattr(obj, "root_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
-                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
-                        setattr(obj, "root_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
-                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
-                        setattr(obj, "root_data_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
+                setattr(obj, "root_data_ref", ARRef.deserialize(child))
             elif tag == "TARGET-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "IMPLEMENTATION-DATA-TYPE":
-                        setattr(obj, "target_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationDataType"))
+                setattr(obj, "target_ref", ARRef.deserialize(child))
 
         return obj
 

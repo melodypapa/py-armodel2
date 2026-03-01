@@ -89,17 +89,17 @@ class System(ARElement):
     system_documentations: list[Chapter]
     system_version: Optional[RevisionLabelString]
     _DESERIALIZE_DISPATCH = {
-        "CLIENT-ID-DEFINITION-SETS": lambda obj, elem: obj.client_id_definition_set_refs.append(ARRef.deserialize(elem)),
+        "CLIENT-ID-DEFINITION-SET-REFS": lambda obj, elem: obj.client_id_definition_set_refs.append(ARRef.deserialize(elem)),
         "CONTAINER-I-PDU-HEADER-BYTE-ORDER": lambda obj, elem: setattr(obj, "container_i_pdu_header_byte_order", ByteOrderEnum.deserialize(elem)),
         "ECU-EXTRACT-VERSION": lambda obj, elem: setattr(obj, "ecu_extract_version", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
-        "FIBEX-ELEMENTS": ("_POLYMORPHIC_LIST", "_fibex_element_refs", ["BusMirrorChannelMapping", "CommunicationCluster", "ConsumedProvidedServiceInstanceGroup", "CouplingElement", "EcuInstance", "EthernetWakeupSleepOnDatalineConfigSet", "Frame", "Gateway", "GlobalTimeDomain", "ISignal", "ISignalGroup", "ISignalIPduGroup", "NmConfig", "Pdu", "PdurIPduGroup", "SecureCommunicationPropsSet", "ServiceInstanceCollectionSet", "SoAdRoutingGroup", "SocketConnectionIpduIdentifierSet", "TpConfig"]),
-        "INTERPOLATION-ROUTINE-MAPPING-SETS": lambda obj, elem: obj.interpolation_routine_mapping_set_refs.append(ARRef.deserialize(elem)),
+        "FIBEX-ELEMENT-REFS": ("_POLYMORPHIC_LIST", "_fibex_element_refs", ["BusMirrorChannelMapping", "CommunicationCluster", "ConsumedProvidedServiceInstanceGroup", "CouplingElement", "EcuInstance", "EthernetWakeupSleepOnDatalineConfigSet", "Frame", "Gateway", "GlobalTimeDomain", "ISignal", "ISignalGroup", "ISignalIPduGroup", "NmConfig", "Pdu", "PdurIPduGroup", "SecureCommunicationPropsSet", "ServiceInstanceCollectionSet", "SoAdRoutingGroup", "SocketConnectionIpduIdentifierSet", "TpConfig"]),
+        "INTERPOLATION-ROUTINE-MAPPING-SET-REFS": lambda obj, elem: obj.interpolation_routine_mapping_set_refs.append(ARRef.deserialize(elem)),
         "J1939-SHARED-ADDRESS-CLUSTERS": lambda obj, elem: obj.j1939_shared_address_clusters.append(SerializationHelper.deserialize_by_tag(elem, "J1939SharedAddressCluster")),
         "MAPPINGS": lambda obj, elem: obj.mappings.append(SerializationHelper.deserialize_by_tag(elem, "SystemMapping")),
         "PNC-VECTOR-LENGTH": lambda obj, elem: setattr(obj, "pnc_vector_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PNC-VECTOR-OFFSET": lambda obj, elem: setattr(obj, "pnc_vector_offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "ROOT-SOFTWARE-COMPOSITIONS": lambda obj, elem: obj.root_software_compositions.append(SerializationHelper.deserialize_by_tag(elem, "RootSwCompositionPrototype")),
-        "SW-CLUSTERS": lambda obj, elem: obj.sw_cluster_refs.append(ARRef.deserialize(elem)),
+        "SW-CLUSTER-REFS": lambda obj, elem: obj.sw_cluster_refs.append(ARRef.deserialize(elem)),
         "SYSTEM-DOCUMENTATIONS": lambda obj, elem: obj.system_documentations.append(SerializationHelper.deserialize_by_tag(elem, "Chapter")),
         "SYSTEM-VERSION": lambda obj, elem: setattr(obj, "system_version", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
     }
@@ -356,7 +356,7 @@ class System(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CLIENT-ID-DEFINITION-SETS":
+            if tag == "CLIENT-ID-DEFINITION-SET-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.client_id_definition_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientIdDefinitionSet"))
@@ -364,51 +364,10 @@ class System(ARElement):
                 setattr(obj, "container_i_pdu_header_byte_order", ByteOrderEnum.deserialize(child))
             elif tag == "ECU-EXTRACT-VERSION":
                 setattr(obj, "ecu_extract_version", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
-            elif tag == "FIBEX-ELEMENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "BUS-MIRROR-CHANNEL-MAPPING":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BusMirrorChannelMapping"))
-                    elif concrete_tag == "COMMUNICATION-CLUSTER":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CommunicationCluster"))
-                    elif concrete_tag == "CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ConsumedProvidedServiceInstanceGroup"))
-                    elif concrete_tag == "COUPLING-ELEMENT":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CouplingElement"))
-                    elif concrete_tag == "ECU-INSTANCE":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EcuInstance"))
-                    elif concrete_tag == "ETHERNET-WAKEUP-SLEEP-ON-DATALINE-CONFIG-SET":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetWakeupSleepOnDatalineConfigSet"))
-                    elif concrete_tag == "FRAME":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "Frame"))
-                    elif concrete_tag == "GATEWAY":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "Gateway"))
-                    elif concrete_tag == "GLOBAL-TIME-DOMAIN":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeDomain"))
-                    elif concrete_tag == "I-SIGNAL":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ISignal"))
-                    elif concrete_tag == "I-SIGNAL-GROUP":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ISignalGroup"))
-                    elif concrete_tag == "I-SIGNAL-I-PDU-GROUP":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ISignalIPduGroup"))
-                    elif concrete_tag == "NM-CONFIG":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "NmConfig"))
-                    elif concrete_tag == "PDU":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "Pdu"))
-                    elif concrete_tag == "PDUR-I-PDU-GROUP":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "PdurIPduGroup"))
-                    elif concrete_tag == "SECURE-COMMUNICATION-PROPS-SET":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SecureCommunicationPropsSet"))
-                    elif concrete_tag == "SERVICE-INSTANCE-COLLECTION-SET":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ServiceInstanceCollectionSet"))
-                    elif concrete_tag == "SO-AD-ROUTING-GROUP":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SoAdRoutingGroup"))
-                    elif concrete_tag == "SOCKET-CONNECTION-IPDU-IDENTIFIER-SET":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SocketConnectionIpduIdentifierSet"))
-                    elif concrete_tag == "TP-CONFIG":
-                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TpConfig"))
-            elif tag == "INTERPOLATION-ROUTINE-MAPPING-SETS":
+            elif tag == "FIBEX-ELEMENT-REFS":
+                for item_elem in child:
+                    obj._fibex_element_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "INTERPOLATION-ROUTINE-MAPPING-SET-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.interpolation_routine_mapping_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "InterpolationRoutineMappingSet"))
@@ -428,7 +387,7 @@ class System(ARElement):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.root_software_compositions.append(SerializationHelper.deserialize_by_tag(item_elem, "RootSwCompositionPrototype"))
-            elif tag == "SW-CLUSTERS":
+            elif tag == "SW-CLUSTER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.sw_cluster_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CpSoftwareCluster"))

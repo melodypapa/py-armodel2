@@ -52,7 +52,7 @@ class AbstractServiceInstance(Identifiable, ABC):
         "CAPABILITIES": lambda obj, elem: obj.capabilities.append(SerializationHelper.deserialize_by_tag(elem, "TagWithOptionalValue")),
         "MAJOR-VERSION": lambda obj, elem: setattr(obj, "major_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "METHOD": lambda obj, elem: setattr(obj, "method", SerializationHelper.deserialize_by_tag(elem, "PduActivationRoutingGroup")),
-        "ROUTING-GROUPS": lambda obj, elem: obj.routing_group_refs.append(ARRef.deserialize(elem)),
+        "ROUTING-GROUP-REFS": lambda obj, elem: obj.routing_group_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -169,7 +169,7 @@ class AbstractServiceInstance(Identifiable, ABC):
                 setattr(obj, "major_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "METHOD":
                 setattr(obj, "method", SerializationHelper.deserialize_by_tag(child, "PduActivationRoutingGroup"))
-            elif tag == "ROUTING-GROUPS":
+            elif tag == "ROUTING-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.routing_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SoAdRoutingGroup"))

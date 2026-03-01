@@ -104,13 +104,7 @@ class AbstractEvent(Identifiable, ABC):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ACTIVATION-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "BSW-MODULE-ENTITY":
-                        setattr(obj, "activation_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleEntity"))
-                    elif concrete_tag == "RUNNABLE-ENTITY":
-                        setattr(obj, "activation_ref", SerializationHelper.deserialize_by_tag(child[0], "RunnableEntity"))
+                setattr(obj, "activation_ref", ARRef.deserialize(child))
 
         return obj
 

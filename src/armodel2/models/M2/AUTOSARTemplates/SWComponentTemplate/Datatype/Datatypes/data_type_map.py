@@ -125,19 +125,9 @@ class DataTypeMap(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "APPLICATION-DATA-TYPE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "APPLICATION-COMPOSITE-DATA-TYPE":
-                        setattr(obj, "application_data_type_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeDataType"))
-                    elif concrete_tag == "APPLICATION-PRIMITIVE-DATA-TYPE":
-                        setattr(obj, "application_data_type_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationPrimitiveDataType"))
+                setattr(obj, "application_data_type_ref", ARRef.deserialize(child))
             elif tag == "IMPLEMENTATION-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "IMPLEMENTATION-DATA-TYPE":
-                        setattr(obj, "implementation_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationDataType"))
+                setattr(obj, "implementation_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -43,8 +43,8 @@ class Baseline(ARObject):
     custom_refs: list[ARRef]
     standards: list[String]
     _DESERIALIZE_DISPATCH = {
-        "CUSTOM-SDG-DEFS": lambda obj, elem: obj.custom_sdg_def_refs.append(ARRef.deserialize(elem)),
-        "CUSTOMS": lambda obj, elem: obj.custom_refs.append(ARRef.deserialize(elem)),
+        "CUSTOM-SDG-DEF-REFS": lambda obj, elem: obj.custom_sdg_def_refs.append(ARRef.deserialize(elem)),
+        "CUSTOM-REFS": lambda obj, elem: obj.custom_refs.append(ARRef.deserialize(elem)),
         "STANDARDS": lambda obj, elem: obj.standards.append(SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
@@ -149,11 +149,11 @@ class Baseline(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CUSTOM-SDG-DEFS":
+            if tag == "CUSTOM-SDG-DEF-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.custom_sdg_def_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgDef"))
-            elif tag == "CUSTOMS":
+            elif tag == "CUSTOM-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.custom_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "Documentation"))

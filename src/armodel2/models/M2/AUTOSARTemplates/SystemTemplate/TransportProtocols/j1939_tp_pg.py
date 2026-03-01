@@ -48,7 +48,7 @@ class J1939TpPg(ARObject):
         "DIRECT-PDU-REF": lambda obj, elem: setattr(obj, "direct_pdu_ref", ARRef.deserialize(elem)),
         "PGN": lambda obj, elem: setattr(obj, "pgn", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "REQUESTABLE": lambda obj, elem: setattr(obj, "requestable", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "SDUS": ("_POLYMORPHIC_LIST", "sdu_refs", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
+        "SDU-REFS": ("_POLYMORPHIC_LIST", "sdu_refs", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
     }
 
 
@@ -167,28 +167,9 @@ class J1939TpPg(ARObject):
                 setattr(obj, "pgn", SerializationHelper.deserialize_by_tag(child, "Integer"))
             elif tag == "REQUESTABLE":
                 setattr(obj, "requestable", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "SDUS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "CONTAINER-I-PDU":
-                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ContainerIPdu"))
-                    elif concrete_tag == "DCM-I-PDU":
-                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DcmIPdu"))
-                    elif concrete_tag == "GENERAL-PURPOSE-I-PDU":
-                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "GeneralPurposeIPdu"))
-                    elif concrete_tag == "I-SIGNAL-I-PDU":
-                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ISignalIPdu"))
-                    elif concrete_tag == "J1939-DCM-I-PDU":
-                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "J1939DcmIPdu"))
-                    elif concrete_tag == "MULTIPLEXED-I-PDU":
-                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "MultiplexedIPdu"))
-                    elif concrete_tag == "N-PDU":
-                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "NPdu"))
-                    elif concrete_tag == "SECURED-I-PDU":
-                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SecuredIPdu"))
-                    elif concrete_tag == "USER-DEFINED-I-PDU":
-                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedIPdu"))
+            elif tag == "SDU-REFS":
+                for item_elem in child:
+                    obj.sdu_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

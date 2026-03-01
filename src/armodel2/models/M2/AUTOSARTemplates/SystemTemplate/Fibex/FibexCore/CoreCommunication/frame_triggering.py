@@ -47,9 +47,9 @@ class FrameTriggering(Identifiable, ABC):
     frame_ref: Optional[ARRef]
     pdu_triggering_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "FRAME-PORTS": lambda obj, elem: obj.frame_port_refs.append(ARRef.deserialize(elem)),
+        "FRAME-PORT-REFS": lambda obj, elem: obj.frame_port_refs.append(ARRef.deserialize(elem)),
         "FRAME-REF": ("_POLYMORPHIC", "frame_ref", ["AbstractEthernetFrame", "CanFrame", "FlexrayFrame", "LinFrame"]),
-        "PDU-TRIGGERINGS": lambda obj, elem: obj.pdu_triggering_refs.append(ARRef.deserialize(elem)),
+        "PDU-TRIGGERING-REFS": lambda obj, elem: obj.pdu_triggering_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -150,23 +150,13 @@ class FrameTriggering(Identifiable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "FRAME-PORTS":
+            if tag == "FRAME-PORT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.frame_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FramePort"))
             elif tag == "FRAME-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-ETHERNET-FRAME":
-                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractEthernetFrame"))
-                    elif concrete_tag == "CAN-FRAME":
-                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "CanFrame"))
-                    elif concrete_tag == "FLEXRAY-FRAME":
-                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayFrame"))
-                    elif concrete_tag == "LIN-FRAME":
-                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "LinFrame"))
-            elif tag == "PDU-TRIGGERINGS":
+                setattr(obj, "frame_ref", ARRef.deserialize(child))
+            elif tag == "PDU-TRIGGERING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.pdu_triggering_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))

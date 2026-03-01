@@ -254,13 +254,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
             elif tag == "DATA-ELEMENT-REF":
                 setattr(obj, "data_element_ref", ARRef.deserialize(child))
             elif tag == "FAILURE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
-                        setattr(obj, "failure_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
-                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
-                        setattr(obj, "failure_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+                setattr(obj, "failure_ref", ARRef.deserialize(child))
             elif tag == "FILTERING":
                 setattr(obj, "filtering", FilterDebouncingEnum.deserialize(child))
             elif tag == "PULSE-TEST":

@@ -187,13 +187,7 @@ class PModeInSystemInstanceRef(ARObject):
             elif tag == "CONTEXT-MODE-GROUP-REF":
                 setattr(obj, "context_mode_group_ref", ARRef.deserialize(child))
             elif tag == "CONTEXT-P-PORT-PROTOTYPE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "P-PORT-PROTOTYPE":
-                        setattr(obj, "context_p_port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "PPortPrototype"))
-                    elif concrete_tag == "P-R-PORT-PROTOTYPE":
-                        setattr(obj, "context_p_port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "PRPortPrototype"))
+                setattr(obj, "context_p_port_prototype_ref", ARRef.deserialize(child))
             elif tag == "TARGET-MODE-REF":
                 setattr(obj, "target_mode_ref", ARRef.deserialize(child))
 

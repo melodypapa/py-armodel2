@@ -43,8 +43,8 @@ class ComManagementMapping(Identifiable):
     com_refs: list[ARRef]
     physical_channel_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMS": lambda obj, elem: obj.com_refs.append(ARRef.deserialize(elem)),
-        "PHYSICAL-CHANNELS": ("_POLYMORPHIC_LIST", "physical_channel_refs", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "COM-REFS": lambda obj, elem: obj.com_refs.append(ARRef.deserialize(elem)),
+        "PHYSICAL-CHANNEL-REFS": ("_POLYMORPHIC_LIST", "physical_channel_refs", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
     }
 
 
@@ -130,22 +130,13 @@ class ComManagementMapping(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "COMS":
+            if tag == "COM-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.com_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PortGroup"))
-            elif tag == "PHYSICAL-CHANNELS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-CAN-PHYSICAL-CHANNEL":
-                        obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractCanPhysicalChannel"))
-                    elif concrete_tag == "ETHERNET-PHYSICAL-CHANNEL":
-                        obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetPhysicalChannel"))
-                    elif concrete_tag == "FLEXRAY-PHYSICAL-CHANNEL":
-                        obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayPhysicalChannel"))
-                    elif concrete_tag == "LIN-PHYSICAL-CHANNEL":
-                        obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinPhysicalChannel"))
+            elif tag == "PHYSICAL-CHANNEL-REFS":
+                for item_elem in child:
+                    obj.physical_channel_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

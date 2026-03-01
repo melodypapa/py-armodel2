@@ -107,17 +107,7 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "SENSOR-ACTUATOR-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "HW-ELEMENT":
-                        setattr(obj, "sensor_actuator_ref", SerializationHelper.deserialize_by_tag(child[0], "HwElement"))
-                    elif concrete_tag == "HW-PIN":
-                        setattr(obj, "sensor_actuator_ref", SerializationHelper.deserialize_by_tag(child[0], "HwPin"))
-                    elif concrete_tag == "HW-PIN-GROUP":
-                        setattr(obj, "sensor_actuator_ref", SerializationHelper.deserialize_by_tag(child[0], "HwPinGroup"))
-                    elif concrete_tag == "HW-TYPE":
-                        setattr(obj, "sensor_actuator_ref", SerializationHelper.deserialize_by_tag(child[0], "HwType"))
+                setattr(obj, "sensor_actuator_ref", ARRef.deserialize(child))
 
         return obj
 

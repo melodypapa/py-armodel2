@@ -39,7 +39,7 @@ class TransformationISignalProps(ARObject, ABC):
     transformer_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
         "CS-ERROR-REACTION": lambda obj, elem: setattr(obj, "cs_error_reaction", CSTransformerErrorReactionEnum.deserialize(elem)),
-        "DATA-PROTOTYPES": ("_POLYMORPHIC_LIST", "data_prototype_refs", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "DATA-PROTOTYPE-REFS": ("_POLYMORPHIC_LIST", "data_prototype_refs", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
         "TRANSFORMER-REF": lambda obj, elem: setattr(obj, "transformer_ref", ARRef.deserialize(elem)),
     }
 
@@ -140,14 +140,9 @@ class TransformationISignalProps(ARObject, ABC):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "CS-ERROR-REACTION":
                 setattr(obj, "cs_error_reaction", CSTransformerErrorReactionEnum.deserialize(child))
-            elif tag == "DATA-PROTOTYPES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
-                        obj.data_prototype_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
-                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
-                        obj.data_prototype_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
+            elif tag == "DATA-PROTOTYPE-REFS":
+                for item_elem in child:
+                    obj.data_prototype_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TRANSFORMER-REF":
                 setattr(obj, "transformer_ref", ARRef.deserialize(child))
 

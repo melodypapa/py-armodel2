@@ -61,7 +61,7 @@ class CouplingElement(FibexElement):
         "COUPLING-PORTS": lambda obj, elem: obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(elem, "CouplingPort")),
         "COUPLING-TYPE": lambda obj, elem: setattr(obj, "coupling_type", CouplingElementEnum.deserialize(elem)),
         "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
-        "FIREWALL-RULES": lambda obj, elem: obj.firewall_rule_refs.append(ARRef.deserialize(elem)),
+        "FIREWALL-RULE-REFS": lambda obj, elem: obj.firewall_rule_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -212,7 +212,7 @@ class CouplingElement(FibexElement):
                 setattr(obj, "coupling_type", CouplingElementEnum.deserialize(child))
             elif tag == "ECU-INSTANCE-REF":
                 setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
-            elif tag == "FIREWALL-RULES":
+            elif tag == "FIREWALL-RULE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.firewall_rule_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "StateDependentFirewall"))

@@ -208,17 +208,7 @@ class EcucDefinitionElement(Identifiable, ABC):
             elif tag == "LOWER-MULTIPLICITY":
                 setattr(obj, "lower_multiplicity", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "RELATED-TRACE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "STRUCTURED-REQ":
-                        setattr(obj, "related_trace_ref", SerializationHelper.deserialize_by_tag(child[0], "StructuredReq"))
-                    elif concrete_tag == "TIMING-CONSTRAINT":
-                        setattr(obj, "related_trace_ref", SerializationHelper.deserialize_by_tag(child[0], "TimingConstraint"))
-                    elif concrete_tag == "TRACEABLE-TABLE":
-                        setattr(obj, "related_trace_ref", SerializationHelper.deserialize_by_tag(child[0], "TraceableTable"))
-                    elif concrete_tag == "TRACEABLE-TEXT":
-                        setattr(obj, "related_trace_ref", SerializationHelper.deserialize_by_tag(child[0], "TraceableText"))
+                setattr(obj, "related_trace_ref", ARRef.deserialize(child))
             elif tag == "SCOPE":
                 setattr(obj, "scope", EcucScopeEnum.deserialize(child))
             elif tag == "UPPER-MULTIPLICITY":

@@ -36,7 +36,7 @@ class DiagnosticParameterElementAccess(ARObject):
     context_element_refs: list[ARRef]
     target_element_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-ELEMENTS": lambda obj, elem: obj.context_element_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-ELEMENT-REFS": lambda obj, elem: obj.context_element_refs.append(ARRef.deserialize(elem)),
         "TARGET-ELEMENT-REF": lambda obj, elem: setattr(obj, "target_element_ref", ARRef.deserialize(elem)),
     }
 
@@ -120,7 +120,7 @@ class DiagnosticParameterElementAccess(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONTEXT-ELEMENTS":
+            if tag == "CONTEXT-ELEMENT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.context_element_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticParameter"))

@@ -105,13 +105,7 @@ class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "DATA-PROTOTYPE-IN-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
-                        setattr(obj, "data_prototype_in_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
-                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
-                        setattr(obj, "data_prototype_in_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
+                setattr(obj, "data_prototype_in_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -37,7 +37,7 @@ class BswModuleCallPoint(Referrable, ABC):
 
     context_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXTS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-REFS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -105,7 +105,7 @@ class BswModuleCallPoint(Referrable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONTEXTS":
+            if tag == "CONTEXT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.context_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BswDistinguishedPartition"))

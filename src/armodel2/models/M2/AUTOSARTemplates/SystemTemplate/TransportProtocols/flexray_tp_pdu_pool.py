@@ -39,7 +39,7 @@ class FlexrayTpPduPool(Identifiable):
 
     n_pdu_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "N-PDUS": lambda obj, elem: obj.n_pdu_refs.append(ARRef.deserialize(elem)),
+        "N-PDU-REFS": lambda obj, elem: obj.n_pdu_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -107,7 +107,7 @@ class FlexrayTpPduPool(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "N-PDUS":
+            if tag == "N-PDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.n_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NPdu"))

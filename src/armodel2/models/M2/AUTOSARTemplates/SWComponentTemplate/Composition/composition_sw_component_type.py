@@ -67,8 +67,8 @@ class CompositionSwComponentType(SwComponentType):
     _DESERIALIZE_DISPATCH = {
         "COMPONENTS": lambda obj, elem: obj.components.append(SerializationHelper.deserialize_by_tag(elem, "SwComponentPrototype")),
         "CONNECTORS": ("_POLYMORPHIC_LIST", "connectors", ["AssemblySwConnector", "DelegationSwConnector", "PassThroughSwConnector"]),
-        "CONSTANT-VALUE-MAPPINGS": lambda obj, elem: obj.constant_value_mapping_refs.append(ARRef.deserialize(elem)),
-        "DATA-TYPE-MAPPINGS": lambda obj, elem: obj.data_type_mapping_refs.append(ARRef.deserialize(elem)),
+        "CONSTANT-VALUE-MAPPING-REFS": lambda obj, elem: obj.constant_value_mapping_refs.append(ARRef.deserialize(elem)),
+        "DATA-TYPE-MAPPING-REFS": lambda obj, elem: obj.data_type_mapping_refs.append(ARRef.deserialize(elem)),
         "INSTANTIATION-RTE-EVENT-PROPS": ("_POLYMORPHIC_LIST", "instantiation_rte_event_props", ["InstantiationTimingEventProps"]),
         "PHYSICAL-DIMENSION-MAPPING-REF": lambda obj, elem: setattr(obj, "physical_dimension_mapping_ref", ARRef.deserialize(elem)),
     }
@@ -218,11 +218,11 @@ class CompositionSwComponentType(SwComponentType):
                         obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "DelegationSwConnector"))
                     elif concrete_tag == "PASS-THROUGH-SW-CONNECTOR":
                         obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "PassThroughSwConnector"))
-            elif tag == "CONSTANT-VALUE-MAPPINGS":
+            elif tag == "CONSTANT-VALUE-MAPPING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.constant_value_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstantSpecificationMappingSet"))
-            elif tag == "DATA-TYPE-MAPPINGS":
+            elif tag == "DATA-TYPE-MAPPING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.data_type_mapping_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataTypeMappingSet"))

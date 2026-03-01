@@ -39,7 +39,7 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
 
     resource_need_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "RESOURCE-NEEDSES": lambda obj, elem: obj.resource_need_refs.append(ARRef.deserialize(elem)),
+        "RESOURCE-NEEDS-REFS": lambda obj, elem: obj.resource_need_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -107,7 +107,7 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "RESOURCE-NEEDSES":
+            if tag == "RESOURCE-NEEDS-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.resource_need_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucContainerValue"))

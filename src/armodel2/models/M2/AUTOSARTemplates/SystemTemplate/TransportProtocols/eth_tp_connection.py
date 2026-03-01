@@ -39,7 +39,7 @@ class EthTpConnection(TpConnection):
 
     tp_sdu_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TP-SDUS": lambda obj, elem: obj.tp_sdu_refs.append(ARRef.deserialize(elem)),
+        "TP-SDU-REFS": lambda obj, elem: obj.tp_sdu_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -107,7 +107,7 @@ class EthTpConnection(TpConnection):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "TP-SDUS":
+            if tag == "TP-SDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.tp_sdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))

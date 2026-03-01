@@ -314,15 +314,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
                 for item_elem in child:
                     obj.composite_network_representations.append(SerializationHelper.deserialize_by_tag(item_elem, "CompositeNetworkRepresentation"))
             elif tag == "DATA-ELEMENT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
-                        setattr(obj, "data_element_ref", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
-                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
-                        setattr(obj, "data_element_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
-                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
-                        setattr(obj, "data_element_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
+                setattr(obj, "data_element_ref", ARRef.deserialize(child))
             elif tag == "HANDLE-OUT-OF-RANGE":
                 setattr(obj, "handle_out_of_range", HandleOutOfRangeEnum.deserialize(child))
             elif tag == "HANDLE-OUT-OF-RANGE-STATUS":

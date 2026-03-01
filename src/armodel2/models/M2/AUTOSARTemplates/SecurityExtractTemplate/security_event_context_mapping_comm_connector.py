@@ -39,7 +39,7 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
 
     comm_connector_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMM-CONNECTORS": ("_POLYMORPHIC_LIST", "comm_connector_refs", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "COMM-CONNECTOR-REFS": ("_POLYMORPHIC_LIST", "comm_connector_refs", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
     }
 
 
@@ -107,20 +107,9 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "COMM-CONNECTORS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONNECTOR":
-                        obj.comm_connector_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCommunicationConnector"))
-                    elif concrete_tag == "ETHERNET-COMMUNICATION-CONNECTOR":
-                        obj.comm_connector_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetCommunicationConnector"))
-                    elif concrete_tag == "FLEXRAY-COMMUNICATION-CONNECTOR":
-                        obj.comm_connector_refs.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayCommunicationConnector"))
-                    elif concrete_tag == "LIN-COMMUNICATION-CONNECTOR":
-                        obj.comm_connector_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinCommunicationConnector"))
-                    elif concrete_tag == "USER-DEFINED-COMMUNICATION-CONNECTOR":
-                        obj.comm_connector_refs.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCommunicationConnector"))
+            if tag == "COMM-CONNECTOR-REFS":
+                for item_elem in child:
+                    obj.comm_connector_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

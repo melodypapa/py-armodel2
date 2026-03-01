@@ -74,7 +74,7 @@ class GlobalTimeDomain(FibexElement):
         "GATEWAIES": lambda obj, elem: obj.gatewaies.append(SerializationHelper.deserialize_by_tag(elem, "GlobalTimeGateway")),
         "GLOBAL-TIME": ("_POLYMORPHIC", "global_time", ["CanGlobalTimeDomainProps", "EthGlobalTimeDomainProps", "FrGlobalTimeDomainProps"]),
         "GLOBAL-TIME-MASTER": ("_POLYMORPHIC", "global_time_master", ["GlobalTimeCanMaster", "GlobalTimeEthMaster", "GlobalTimeFrMaster", "UserDefinedGlobalTimeMaster"]),
-        "GLOBAL-TIME-SUBS": lambda obj, elem: obj.global_time_sub_refs.append(ARRef.deserialize(elem)),
+        "GLOBAL-TIME-SUB-REFS": lambda obj, elem: obj.global_time_sub_refs.append(ARRef.deserialize(elem)),
         "NETWORK": lambda obj, elem: setattr(obj, "network", SerializationHelper.deserialize_by_tag(elem, "NetworkSegmentIdentification")),
         "OFFSET-TIME-REF": lambda obj, elem: setattr(obj, "offset_time_ref", ARRef.deserialize(elem)),
         "PDU-TRIGGERING-REF": lambda obj, elem: setattr(obj, "pdu_triggering_ref", ARRef.deserialize(elem)),
@@ -319,7 +319,7 @@ class GlobalTimeDomain(FibexElement):
                         setattr(obj, "global_time_master", SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeFrMaster"))
                     elif concrete_tag == "USER-DEFINED-GLOBAL-TIME-MASTER":
                         setattr(obj, "global_time_master", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedGlobalTimeMaster"))
-            elif tag == "GLOBAL-TIME-SUBS":
+            elif tag == "GLOBAL-TIME-SUB-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.global_time_sub_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeDomain"))

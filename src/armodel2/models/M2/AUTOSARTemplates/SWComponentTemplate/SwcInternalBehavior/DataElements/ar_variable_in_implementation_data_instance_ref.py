@@ -41,7 +41,7 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
     root_variable_ref: Optional[ARRef]
     target_data_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-DATAS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-DATA-REFS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
         "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
         "ROOT-VARIABLE-REF": lambda obj, elem: setattr(obj, "root_variable_ref", ARRef.deserialize(elem)),
         "TARGET-DATA-REF": lambda obj, elem: setattr(obj, "target_data_ref", ARRef.deserialize(elem)),
@@ -157,18 +157,12 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONTEXT-DATAS":
+            if tag == "CONTEXT-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.context_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (AbstractImplementation)"))
             elif tag == "PORT-PROTOTYPE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
-                        setattr(obj, "port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
-                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
-                        setattr(obj, "port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+                setattr(obj, "port_prototype_ref", ARRef.deserialize(child))
             elif tag == "ROOT-VARIABLE-REF":
                 setattr(obj, "root_variable_ref", ARRef.deserialize(child))
             elif tag == "TARGET-DATA-REF":

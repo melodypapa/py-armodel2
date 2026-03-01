@@ -59,7 +59,7 @@ class ClientServerOperation(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "ARGUMENTS": lambda obj, elem: obj.arguments.append(SerializationHelper.deserialize_by_tag(elem, "ArgumentDataPrototype")),
         "DIAG-ARG-INTEGRITY": lambda obj, elem: setattr(obj, "diag_arg_integrity", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "POSSIBLE-ERRORS": lambda obj, elem: obj.possible_error_refs.append(ARRef.deserialize(elem)),
+        "POSSIBLE-ERROR-REFS": lambda obj, elem: obj.possible_error_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -159,7 +159,7 @@ class ClientServerOperation(Identifiable):
                     obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "ArgumentDataPrototype"))
             elif tag == "DIAG-ARG-INTEGRITY":
                 setattr(obj, "diag_arg_integrity", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "POSSIBLE-ERRORS":
+            elif tag == "POSSIBLE-ERROR-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.possible_error_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationError"))

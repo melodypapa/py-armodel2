@@ -45,7 +45,7 @@ class DependencyOnArtifact(Identifiable):
     usage_refs: list[DependencyUsageEnum]
     _DESERIALIZE_DISPATCH = {
         "ARTIFACT-DESCRIPTOR": lambda obj, elem: setattr(obj, "artifact_descriptor", SerializationHelper.deserialize_by_tag(elem, "AutosarEngineeringObject")),
-        "USAGES": lambda obj, elem: obj.usage_refs.append(DependencyUsageEnum.deserialize(elem)),
+        "USAGE-REFS": lambda obj, elem: obj.usage_refs.append(DependencyUsageEnum.deserialize(elem)),
     }
 
 
@@ -130,7 +130,7 @@ class DependencyOnArtifact(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ARTIFACT-DESCRIPTOR":
                 setattr(obj, "artifact_descriptor", SerializationHelper.deserialize_by_tag(child, "AutosarEngineeringObject"))
-            elif tag == "USAGES":
+            elif tag == "USAGE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.usage_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyUsageEnum"))

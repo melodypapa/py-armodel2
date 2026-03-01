@@ -143,13 +143,7 @@ class DelegationSwConnector(SwConnector):
                     elif concrete_tag == "R-PORT-IN-COMPOSITION-INSTANCE-REF":
                         setattr(obj, "_inner_port_iref", SerializationHelper.deserialize_by_tag(child[0], "RPortInCompositionInstanceRef"))
             elif tag == "OUTER-PORT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
-                        setattr(obj, "outer_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
-                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
-                        setattr(obj, "outer_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+                setattr(obj, "outer_port_ref", ARRef.deserialize(child))
 
         return obj
 

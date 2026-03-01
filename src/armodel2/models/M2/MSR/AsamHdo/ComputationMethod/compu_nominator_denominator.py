@@ -104,9 +104,7 @@ class CompuNominatorDenominator(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "V":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj._vs.append(SerializationHelper.deserialize_by_tag(item_elem, "Numerical"))
+                obj._vs.append(SerializationHelper.deserialize_by_tag(child, "Numerical"))
 
         return obj
 

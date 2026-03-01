@@ -36,7 +36,7 @@ class EnumerationMappingTable(PackageableElement):
 
     entry_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "ENTRIES": lambda obj, elem: obj.entry_refs.append(ARRef.deserialize(elem)),
+        "ENTRY-REFS": lambda obj, elem: obj.entry_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -104,7 +104,7 @@ class EnumerationMappingTable(PackageableElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ENTRIES":
+            if tag == "ENTRY-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.entry_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EnumerationMapping)"))

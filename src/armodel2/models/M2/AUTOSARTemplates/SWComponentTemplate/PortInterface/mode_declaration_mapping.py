@@ -40,7 +40,7 @@ class ModeDeclarationMapping(Identifiable):
     first_mode_refs: list[ARRef]
     second_mode_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "FIRST-MODES": lambda obj, elem: obj.first_mode_refs.append(ARRef.deserialize(elem)),
+        "FIRST-MODE-REFS": lambda obj, elem: obj.first_mode_refs.append(ARRef.deserialize(elem)),
         "SECOND-MODE-REF": lambda obj, elem: setattr(obj, "second_mode_ref", ARRef.deserialize(elem)),
     }
 
@@ -124,7 +124,7 @@ class ModeDeclarationMapping(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "FIRST-MODES":
+            if tag == "FIRST-MODE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.first_mode_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclaration"))

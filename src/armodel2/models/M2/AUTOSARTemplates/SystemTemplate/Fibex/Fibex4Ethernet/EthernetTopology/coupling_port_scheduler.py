@@ -41,7 +41,7 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
     predecessor_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "PORT-SCHEDULER-SCHEDULER-ENUM": lambda obj, elem: setattr(obj, "port_scheduler_scheduler_enum", EthernetCouplingPortSchedulerEnum.deserialize(elem)),
-        "PREDECESSORS": ("_POLYMORPHIC_LIST", "predecessor_refs", ["CouplingPortFifo", "CouplingPortScheduler", "CouplingPortShaper"]),
+        "PREDECESSOR-REFS": ("_POLYMORPHIC_LIST", "predecessor_refs", ["CouplingPortFifo", "CouplingPortScheduler", "CouplingPortShaper"]),
     }
 
 
@@ -126,16 +126,9 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "PORT-SCHEDULER-SCHEDULER-ENUM":
                 setattr(obj, "port_scheduler_scheduler_enum", EthernetCouplingPortSchedulerEnum.deserialize(child))
-            elif tag == "PREDECESSORS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "COUPLING-PORT-FIFO":
-                        obj.predecessor_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CouplingPortFifo"))
-                    elif concrete_tag == "COUPLING-PORT-SCHEDULER":
-                        obj.predecessor_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CouplingPortScheduler"))
-                    elif concrete_tag == "COUPLING-PORT-SHAPER":
-                        obj.predecessor_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CouplingPortShaper"))
+            elif tag == "PREDECESSOR-REFS":
+                for item_elem in child:
+                    obj.predecessor_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

@@ -61,12 +61,12 @@ class EventHandler(Identifiable):
     sd_server_config: Optional[Any]
     sd_server_eg_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONSUMED-EVENT-GROUPS": lambda obj, elem: obj.consumed_event_group_refs.append(ARRef.deserialize(elem)),
+        "CONSUMED-EVENT-GROUP-REFS": lambda obj, elem: obj.consumed_event_group_refs.append(ARRef.deserialize(elem)),
         "EVENT-GROUP": lambda obj, elem: setattr(obj, "event_group", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "EVENT-MULTICAST-REF": lambda obj, elem: setattr(obj, "event_multicast_ref", ARRef.deserialize(elem)),
         "MULTICAST": lambda obj, elem: setattr(obj, "multicast", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PDU-ACTIVATION-ROUTINGS": lambda obj, elem: obj.pdu_activation_routings.append(SerializationHelper.deserialize_by_tag(elem, "PduActivationRoutingGroup")),
-        "ROUTING-GROUPS": lambda obj, elem: obj.routing_group_refs.append(ARRef.deserialize(elem)),
+        "ROUTING-GROUP-REFS": lambda obj, elem: obj.routing_group_refs.append(ARRef.deserialize(elem)),
         "SD-SERVER-CONFIG": lambda obj, elem: setattr(obj, "sd_server_config", SerializationHelper.deserialize_by_tag(elem, "any (SdServerConfig)")),
         "SD-SERVER-EG-REF": lambda obj, elem: setattr(obj, "sd_server_eg_ref", ARRef.deserialize(elem)),
     }
@@ -240,7 +240,7 @@ class EventHandler(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONSUMED-EVENT-GROUPS":
+            if tag == "CONSUMED-EVENT-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.consumed_event_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsumedEventGroup"))
@@ -254,7 +254,7 @@ class EventHandler(Identifiable):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.pdu_activation_routings.append(SerializationHelper.deserialize_by_tag(item_elem, "PduActivationRoutingGroup"))
-            elif tag == "ROUTING-GROUPS":
+            elif tag == "ROUTING-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.routing_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SoAdRoutingGroup"))

@@ -106,15 +106,7 @@ class VfbTiming(TimingExtension):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "COMPONENT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ATOMIC-SW-COMPONENT-TYPE":
-                        setattr(obj, "component_ref", SerializationHelper.deserialize_by_tag(child[0], "AtomicSwComponentType"))
-                    elif concrete_tag == "COMPOSITION-SW-COMPONENT-TYPE":
-                        setattr(obj, "component_ref", SerializationHelper.deserialize_by_tag(child[0], "CompositionSwComponentType"))
-                    elif concrete_tag == "PARAMETER-SW-COMPONENT-TYPE":
-                        setattr(obj, "component_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterSwComponentType"))
+                setattr(obj, "component_ref", ARRef.deserialize(child))
 
         return obj
 

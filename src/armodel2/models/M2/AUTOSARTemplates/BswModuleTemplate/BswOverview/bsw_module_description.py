@@ -87,8 +87,8 @@ class BswModuleDescription(ARElement):
     _DESERIALIZE_DISPATCH = {
         "BSW-MODULES-DEPENDENCIES": lambda obj, elem: obj.bsw_modules_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleDependency")),
         "BSW-MODULE-DOCUMENTATION": lambda obj, elem: setattr(obj, "bsw_module_documentation", SerializationHelper.deserialize_by_tag(elem, "SwComponentDocumentation")),
-        "EXPECTED-ENTRIES": lambda obj, elem: obj.expected_entry_refs.append(ARRef.deserialize(elem)),
-        "IMPLEMENTED-ENTRIES": lambda obj, elem: obj.implemented_entry_refs.append(ARRef.deserialize(elem)),
+        "EXPECTED-ENTRY-REFS": lambda obj, elem: obj.expected_entry_refs.append(ARRef.deserialize(elem)),
+        "IMPLEMENTED-ENTRY-REFS": lambda obj, elem: obj.implemented_entry_refs.append(ARRef.deserialize(elem)),
         "INTERNAL-BEHAVIORS": lambda obj, elem: obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalBehavior")),
         "MODULE-ID": lambda obj, elem: setattr(obj, "module_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PROVIDED-ENTRYS": lambda obj, elem: obj._provided_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
@@ -352,11 +352,11 @@ class BswModuleDescription(ARElement):
                     obj.bsw_modules_dependencies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleDependency"))
             elif tag == "BSW-MODULE-DOCUMENTATION":
                 setattr(obj, "bsw_module_documentation", SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation"))
-            elif tag == "EXPECTED-ENTRIES":
+            elif tag == "EXPECTED-ENTRY-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.expected_entry_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleEntry"))
-            elif tag == "IMPLEMENTED-ENTRIES":
+            elif tag == "IMPLEMENTED-ENTRY-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.implemented_entry_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleEntry"))

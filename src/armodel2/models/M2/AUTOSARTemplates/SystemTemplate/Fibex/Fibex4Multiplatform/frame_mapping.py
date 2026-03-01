@@ -140,29 +140,9 @@ class FrameMapping(ARObject):
             if tag == "INTRODUCTION":
                 setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
             elif tag == "SOURCE-FRAME-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "CAN-FRAME-TRIGGERING":
-                        setattr(obj, "source_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "CanFrameTriggering"))
-                    elif concrete_tag == "ETHERNET-FRAME-TRIGGERING":
-                        setattr(obj, "source_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetFrameTriggering"))
-                    elif concrete_tag == "FLEXRAY-FRAME-TRIGGERING":
-                        setattr(obj, "source_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayFrameTriggering"))
-                    elif concrete_tag == "LIN-FRAME-TRIGGERING":
-                        setattr(obj, "source_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "LinFrameTriggering"))
+                setattr(obj, "source_frame_ref", ARRef.deserialize(child))
             elif tag == "TARGET-FRAME-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "CAN-FRAME-TRIGGERING":
-                        setattr(obj, "target_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "CanFrameTriggering"))
-                    elif concrete_tag == "ETHERNET-FRAME-TRIGGERING":
-                        setattr(obj, "target_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetFrameTriggering"))
-                    elif concrete_tag == "FLEXRAY-FRAME-TRIGGERING":
-                        setattr(obj, "target_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayFrameTriggering"))
-                    elif concrete_tag == "LIN-FRAME-TRIGGERING":
-                        setattr(obj, "target_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "LinFrameTriggering"))
+                setattr(obj, "target_frame_ref", ARRef.deserialize(child))
 
         return obj
 

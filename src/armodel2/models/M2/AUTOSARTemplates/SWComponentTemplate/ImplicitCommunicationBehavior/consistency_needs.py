@@ -49,10 +49,10 @@ class ConsistencyNeeds(Identifiable):
     reg_does_not_refs: list[ARRef]
     reg_require_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DPG-DOES-NOTS": lambda obj, elem: obj.dpg_does_not_refs.append(ARRef.deserialize(elem)),
-        "DPG-REQUIRESES": lambda obj, elem: obj.dpg_require_refs.append(ARRef.deserialize(elem)),
-        "REG-DOES-NOTS": lambda obj, elem: obj.reg_does_not_refs.append(ARRef.deserialize(elem)),
-        "REG-REQUIRESES": lambda obj, elem: obj.reg_require_refs.append(ARRef.deserialize(elem)),
+        "DPG-DOES-NOT-REFS": lambda obj, elem: obj.dpg_does_not_refs.append(ARRef.deserialize(elem)),
+        "DPG-REQUIRES-REFS": lambda obj, elem: obj.dpg_require_refs.append(ARRef.deserialize(elem)),
+        "REG-DOES-NOT-REFS": lambda obj, elem: obj.reg_does_not_refs.append(ARRef.deserialize(elem)),
+        "REG-REQUIRES-REFS": lambda obj, elem: obj.reg_require_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -174,19 +174,19 @@ class ConsistencyNeeds(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DPG-DOES-NOTS":
+            if tag == "DPG-DOES-NOT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.dpg_does_not_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataPrototypeGroup"))
-            elif tag == "DPG-REQUIRESES":
+            elif tag == "DPG-REQUIRES-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.dpg_require_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataPrototypeGroup"))
-            elif tag == "REG-DOES-NOTS":
+            elif tag == "REG-DOES-NOT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.reg_does_not_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntityGroup"))
-            elif tag == "REG-REQUIRESES":
+            elif tag == "REG-REQUIRES-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.reg_require_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntityGroup"))

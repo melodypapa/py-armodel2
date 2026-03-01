@@ -42,7 +42,7 @@ class NvDataInterface(DataInterface):
 
     nv_data_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "NV-DATAS": lambda obj, elem: obj.nv_data_refs.append(ARRef.deserialize(elem)),
+        "NV-DATA-REFS": lambda obj, elem: obj.nv_data_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -110,7 +110,7 @@ class NvDataInterface(DataInterface):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "NV-DATAS":
+            if tag == "NV-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.nv_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))

@@ -52,12 +52,12 @@ class SwitchStreamIdentification(Identifiable):
     ingress_port_refs: list[ARRef]
     stream_filter: Optional[SwitchStreamFilterRule]
     _DESERIALIZE_DISPATCH = {
-        "EGRESS-PORTS": lambda obj, elem: obj.egress_port_refs.append(ARRef.deserialize(elem)),
+        "EGRESS-PORT-REFS": lambda obj, elem: obj.egress_port_refs.append(ARRef.deserialize(elem)),
         "FILTER-ACTION-BLOCK": lambda obj, elem: setattr(obj, "filter_action_block", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "FILTER-ACTION-DEST": lambda obj, elem: setattr(obj, "filter_action_dest", SerializationHelper.deserialize_by_tag(elem, "any (SwitchStreamFilter)")),
         "FILTER-ACTION-DROP": lambda obj, elem: setattr(obj, "filter_action_drop", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "FILTER-ACTION-VLAN": lambda obj, elem: setattr(obj, "filter_action_vlan", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "INGRESS-PORTS": lambda obj, elem: obj.ingress_port_refs.append(ARRef.deserialize(elem)),
+        "INGRESS-PORT-REFS": lambda obj, elem: obj.ingress_port_refs.append(ARRef.deserialize(elem)),
         "STREAM-FILTER": lambda obj, elem: setattr(obj, "stream_filter", SerializationHelper.deserialize_by_tag(elem, "SwitchStreamFilterRule")),
     }
 
@@ -219,7 +219,7 @@ class SwitchStreamIdentification(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "EGRESS-PORTS":
+            if tag == "EGRESS-PORT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.egress_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPort"))
@@ -231,7 +231,7 @@ class SwitchStreamIdentification(Identifiable):
                 setattr(obj, "filter_action_drop", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "FILTER-ACTION-VLAN":
                 setattr(obj, "filter_action_vlan", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "INGRESS-PORTS":
+            elif tag == "INGRESS-PORT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.ingress_port_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CouplingPort"))

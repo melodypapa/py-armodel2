@@ -49,7 +49,7 @@ class NmCoordinator(ARObject):
         "INDEX": lambda obj, elem: setattr(obj, "index", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "NM-COORD-SYNC": lambda obj, elem: setattr(obj, "nm_coord_sync", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "NM-GLOBAL": lambda obj, elem: setattr(obj, "nm_global", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
-        "NM-NODES": ("_POLYMORPHIC_LIST", "nm_node_refs", ["CanNmNode", "FlexrayNmNode", "J1939NmNode", "UdpNmNode"]),
+        "NM-NODE-REFS": ("_POLYMORPHIC_LIST", "nm_node_refs", ["CanNmNode", "FlexrayNmNode", "J1939NmNode", "UdpNmNode"]),
     }
 
 
@@ -168,18 +168,9 @@ class NmCoordinator(ARObject):
                 setattr(obj, "nm_coord_sync", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "NM-GLOBAL":
                 setattr(obj, "nm_global", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
-            elif tag == "NM-NODES":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "CAN-NM-NODE":
-                        obj.nm_node_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CanNmNode"))
-                    elif concrete_tag == "FLEXRAY-NM-NODE":
-                        obj.nm_node_refs.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayNmNode"))
-                    elif concrete_tag == "J1939-NM-NODE":
-                        obj.nm_node_refs.append(SerializationHelper.deserialize_by_tag(child[0], "J1939NmNode"))
-                    elif concrete_tag == "UDP-NM-NODE":
-                        obj.nm_node_refs.append(SerializationHelper.deserialize_by_tag(child[0], "UdpNmNode"))
+            elif tag == "NM-NODE-REFS":
+                for item_elem in child:
+                    obj.nm_node_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 

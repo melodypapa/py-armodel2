@@ -75,7 +75,7 @@ class SocketAddress(Identifiable):
         "CONNECTOR-REF": lambda obj, elem: setattr(obj, "connector_ref", ARRef.deserialize(elem)),
         "DIFFERENTIATED": lambda obj, elem: setattr(obj, "differentiated", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "FLOW-LABEL": lambda obj, elem: setattr(obj, "flow_label", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "MULTICASTS": lambda obj, elem: obj.multicast_refs.append(ARRef.deserialize(elem)),
+        "MULTICAST-REFS": lambda obj, elem: obj.multicast_refs.append(ARRef.deserialize(elem)),
         "PATH-MTU": lambda obj, elem: setattr(obj, "path_mtu", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "PDU-COLLECTION": lambda obj, elem: setattr(obj, "pdu_collection", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "STATIC-SOCKETS": lambda obj, elem: obj.static_sockets.append(SerializationHelper.deserialize_by_tag(elem, "StaticSocketConnection")),
@@ -305,7 +305,7 @@ class SocketAddress(Identifiable):
                 setattr(obj, "differentiated", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "FLOW-LABEL":
                 setattr(obj, "flow_label", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "MULTICASTS":
+            elif tag == "MULTICAST-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.multicast_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (EthernetCommunication)"))

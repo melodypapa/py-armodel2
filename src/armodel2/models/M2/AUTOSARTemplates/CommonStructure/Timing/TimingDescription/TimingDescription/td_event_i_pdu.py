@@ -145,39 +145,9 @@ class TDEventIPdu(TDEventCom):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "I-PDU-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "CONTAINER-I-PDU":
-                        setattr(obj, "i_pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "ContainerIPdu"))
-                    elif concrete_tag == "DCM-I-PDU":
-                        setattr(obj, "i_pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "DcmIPdu"))
-                    elif concrete_tag == "GENERAL-PURPOSE-I-PDU":
-                        setattr(obj, "i_pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "GeneralPurposeIPdu"))
-                    elif concrete_tag == "I-SIGNAL-I-PDU":
-                        setattr(obj, "i_pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "ISignalIPdu"))
-                    elif concrete_tag == "J1939-DCM-I-PDU":
-                        setattr(obj, "i_pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "J1939DcmIPdu"))
-                    elif concrete_tag == "MULTIPLEXED-I-PDU":
-                        setattr(obj, "i_pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "MultiplexedIPdu"))
-                    elif concrete_tag == "N-PDU":
-                        setattr(obj, "i_pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "NPdu"))
-                    elif concrete_tag == "SECURED-I-PDU":
-                        setattr(obj, "i_pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "SecuredIPdu"))
-                    elif concrete_tag == "USER-DEFINED-I-PDU":
-                        setattr(obj, "i_pdu_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedIPdu"))
+                setattr(obj, "i_pdu_ref", ARRef.deserialize(child))
             elif tag == "PHYSICAL-CHANNEL-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-CAN-PHYSICAL-CHANNEL":
-                        setattr(obj, "physical_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanPhysicalChannel"))
-                    elif concrete_tag == "ETHERNET-PHYSICAL-CHANNEL":
-                        setattr(obj, "physical_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetPhysicalChannel"))
-                    elif concrete_tag == "FLEXRAY-PHYSICAL-CHANNEL":
-                        setattr(obj, "physical_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayPhysicalChannel"))
-                    elif concrete_tag == "LIN-PHYSICAL-CHANNEL":
-                        setattr(obj, "physical_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "LinPhysicalChannel"))
+                setattr(obj, "physical_channel_ref", ARRef.deserialize(child))
             elif tag == "TD-EVENT-TYPE":
                 setattr(obj, "td_event_type", TDEventIPduTypeEnum.deserialize(child))
 

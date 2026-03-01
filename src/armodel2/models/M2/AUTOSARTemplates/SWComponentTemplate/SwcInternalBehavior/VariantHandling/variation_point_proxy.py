@@ -148,11 +148,7 @@ class VariationPointProxy(Identifiable):
             if tag == "CONDITION-ACCESS":
                 setattr(obj, "condition_access", SerializationHelper.deserialize_by_tag(child, "ConditionByFormula"))
             elif tag == "IMPLEMENTATION-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "IMPLEMENTATION-DATA-TYPE":
-                        setattr(obj, "implementation_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationDataType"))
+                setattr(obj, "implementation_ref", ARRef.deserialize(child))
             elif tag == "POST-BUILD-VALUE-REF":
                 setattr(obj, "post_build_value_ref", ARRef.deserialize(child))
 

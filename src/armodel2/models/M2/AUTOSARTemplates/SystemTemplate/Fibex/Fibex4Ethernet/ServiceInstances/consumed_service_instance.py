@@ -71,10 +71,10 @@ class ConsumedServiceInstance(AbstractServiceInstance):
     service_identifier: Optional[PositiveInteger]
     version_driven: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "ALLOWED-SERVICES": lambda obj, elem: obj.allowed_service_refs.append(ARRef.deserialize(elem)),
+        "ALLOWED-SERVICE-REFS": lambda obj, elem: obj.allowed_service_refs.append(ARRef.deserialize(elem)),
         "AUTO-REQUIRE": lambda obj, elem: setattr(obj, "auto_require", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "BLOCKLISTEDS": lambda obj, elem: obj.blocklisteds.append(SerializationHelper.deserialize_by_tag(elem, "SomeipServiceVersion")),
-        "CONSUMED-EVENT-GROUPS": lambda obj, elem: obj.consumed_event_group_refs.append(ARRef.deserialize(elem)),
+        "CONSUMED-EVENT-GROUP-REFS": lambda obj, elem: obj.consumed_event_group_refs.append(ARRef.deserialize(elem)),
         "EVENT-MULTICAST-REF": lambda obj, elem: setattr(obj, "event_multicast_ref", ARRef.deserialize(elem)),
         "INSTANCE": lambda obj, elem: setattr(obj, "instance", SerializationHelper.deserialize_by_tag(elem, "AnyServiceInstanceId")),
         "LOCAL-UNICAST": lambda obj, elem: setattr(obj, "local_unicast", SerializationHelper.deserialize_by_tag(elem, "ApplicationEndpoint")),
@@ -346,7 +346,7 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ALLOWED-SERVICES":
+            if tag == "ALLOWED-SERVICE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.allowed_service_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NetworkEndpoint"))
@@ -356,7 +356,7 @@ class ConsumedServiceInstance(AbstractServiceInstance):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.blocklisteds.append(SerializationHelper.deserialize_by_tag(item_elem, "SomeipServiceVersion"))
-            elif tag == "CONSUMED-EVENT-GROUPS":
+            elif tag == "CONSUMED-EVENT-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.consumed_event_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsumedEventGroup"))

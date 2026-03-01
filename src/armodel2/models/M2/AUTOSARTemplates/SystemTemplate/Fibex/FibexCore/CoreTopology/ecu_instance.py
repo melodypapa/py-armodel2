@@ -107,9 +107,9 @@ class EcuInstance(FibexElement):
     v2x_supported: Optional[V2xSupportEnum]
     wake_up_over_bus_supported: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "ASSOCIATED-COM-I-PDU-GROUPS": lambda obj, elem: obj.associated_com_i_pdu_group_refs.append(ARRef.deserialize(elem)),
-        "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUPS": lambda obj, elem: obj.associated_consumed_provided_service_instance_group_refs.append(ARRef.deserialize(elem)),
-        "ASSOCIATED-PDUR-I-PDU-GROUPS": lambda obj, elem: obj.associated_pdur_i_pdu_group_refs.append(ARRef.deserialize(elem)),
+        "ASSOCIATED-COM-I-PDU-GROUP-REFS": lambda obj, elem: obj.associated_com_i_pdu_group_refs.append(ARRef.deserialize(elem)),
+        "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REFS": lambda obj, elem: obj.associated_consumed_provided_service_instance_group_refs.append(ARRef.deserialize(elem)),
+        "ASSOCIATED-PDUR-I-PDU-GROUP-REFS": lambda obj, elem: obj.associated_pdur_i_pdu_group_refs.append(ARRef.deserialize(elem)),
         "CHANNEL-SYNCHRONOUS-WAKEUP": lambda obj, elem: setattr(obj, "channel_synchronous_wakeup", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "CLIENT-ID-RANGE": lambda obj, elem: setattr(obj, "client_id_range", SerializationHelper.deserialize_by_tag(elem, "ClientIdRange")),
         "COM-CONFIGURATION-GW-TIME-BASE": lambda obj, elem: setattr(obj, "com_configuration_gw_time_base", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
@@ -120,9 +120,9 @@ class EcuInstance(FibexElement):
         "CONNECTORS": ("_POLYMORPHIC_LIST", "connectors", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
         "DLT-CONFIG": lambda obj, elem: setattr(obj, "dlt_config", SerializationHelper.deserialize_by_tag(elem, "DltConfig")),
         "DO-IP-CONFIG": lambda obj, elem: setattr(obj, "do_ip_config", SerializationHelper.deserialize_by_tag(elem, "DoIpConfig")),
-        "ECU-TASK-PROXIES": lambda obj, elem: obj.ecu_task_proxy_refs.append(ARRef.deserialize(elem)),
+        "ECU-TASK-PROXY-REFS": lambda obj, elem: obj.ecu_task_proxy_refs.append(ARRef.deserialize(elem)),
         "ETH-SWITCH-PORT-GROUP-DERIVATION": lambda obj, elem: setattr(obj, "eth_switch_port_group_derivation", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "FIREWALL-RULES": lambda obj, elem: obj.firewall_rule_refs.append(ARRef.deserialize(elem)),
+        "FIREWALL-RULE-REFS": lambda obj, elem: obj.firewall_rule_refs.append(ARRef.deserialize(elem)),
         "PARTITIONS": lambda obj, elem: obj.partitions.append(SerializationHelper.deserialize_by_tag(elem, "EcuPartition")),
         "PNC-NM-REQUEST": lambda obj, elem: setattr(obj, "pnc_nm_request", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "PNC-PREPARE-SLEEP-TIMER": lambda obj, elem: setattr(obj, "pnc_prepare_sleep_timer", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
@@ -575,15 +575,15 @@ class EcuInstance(FibexElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ASSOCIATED-COM-I-PDU-GROUPS":
+            if tag == "ASSOCIATED-COM-I-PDU-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.associated_com_i_pdu_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ISignalIPduGroup"))
-            elif tag == "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUPS":
+            elif tag == "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.associated_consumed_provided_service_instance_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsumedProvidedServiceInstanceGroup"))
-            elif tag == "ASSOCIATED-PDUR-I-PDU-GROUPS":
+            elif tag == "ASSOCIATED-PDUR-I-PDU-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.associated_pdur_i_pdu_group_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PdurIPduGroup"))
@@ -631,13 +631,13 @@ class EcuInstance(FibexElement):
                 setattr(obj, "dlt_config", SerializationHelper.deserialize_by_tag(child, "DltConfig"))
             elif tag == "DO-IP-CONFIG":
                 setattr(obj, "do_ip_config", SerializationHelper.deserialize_by_tag(child, "DoIpConfig"))
-            elif tag == "ECU-TASK-PROXIES":
+            elif tag == "ECU-TASK-PROXY-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.ecu_task_proxy_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "OsTaskProxy"))
             elif tag == "ETH-SWITCH-PORT-GROUP-DERIVATION":
                 setattr(obj, "eth_switch_port_group_derivation", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "FIREWALL-RULES":
+            elif tag == "FIREWALL-RULE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.firewall_rule_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "StateDependentFirewall"))

@@ -43,9 +43,9 @@ class PredefinedVariant(ARElement):
     post_build_variant_refs: list[Any]
     sw_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "INCLUDED-VARIANTS": lambda obj, elem: obj.included_variant_refs.append(ARRef.deserialize(elem)),
-        "POST-BUILD-VARIANTS": lambda obj, elem: obj.post_build_variant_refs.append(ARRef.deserialize(elem)),
-        "SWS": lambda obj, elem: obj.sw_refs.append(ARRef.deserialize(elem)),
+        "INCLUDED-VARIANT-REFS": lambda obj, elem: obj.included_variant_refs.append(ARRef.deserialize(elem)),
+        "POST-BUILD-VARIANT-REFS": lambda obj, elem: obj.post_build_variant_refs.append(ARRef.deserialize(elem)),
+        "SW-REFS": lambda obj, elem: obj.sw_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -149,15 +149,15 @@ class PredefinedVariant(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "INCLUDED-VARIANTS":
+            if tag == "INCLUDED-VARIANT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.included_variant_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PredefinedVariant"))
-            elif tag == "POST-BUILD-VARIANTS":
+            elif tag == "POST-BUILD-VARIANT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.post_build_variant_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (PostBuildVariant)"))
-            elif tag == "SWS":
+            elif tag == "SW-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.sw_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwSystemconstantValueSet"))

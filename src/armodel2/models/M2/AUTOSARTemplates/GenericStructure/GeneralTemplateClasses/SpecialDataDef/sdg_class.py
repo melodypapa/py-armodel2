@@ -53,7 +53,7 @@ class SdgClass(SdgElementWithGid):
         "ATTRIBUTES": ("_POLYMORPHIC_LIST", "attributes", ["SdgAbstractForeignReference", "SdgAbstractPrimitiveAttribute", "SdgAggregationWithVariation", "Sdg"]),
         "CAPTION": lambda obj, elem: setattr(obj, "caption", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "EXTENDS-META": lambda obj, elem: setattr(obj, "extends_meta", SerializationHelper.deserialize_by_tag(elem, "MetaClassName")),
-        "SDG-CONSTRAINTS": lambda obj, elem: obj.sdg_constraint_refs.append(ARRef.deserialize(elem)),
+        "SDG-CONSTRAINT-REFS": lambda obj, elem: obj.sdg_constraint_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -178,7 +178,7 @@ class SdgClass(SdgElementWithGid):
                 setattr(obj, "caption", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "EXTENDS-META":
                 setattr(obj, "extends_meta", SerializationHelper.deserialize_by_tag(child, "MetaClassName"))
-            elif tag == "SDG-CONSTRAINTS":
+            elif tag == "SDG-CONSTRAINT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.sdg_constraint_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "TraceableText"))

@@ -50,7 +50,7 @@ class RootSwCompositionPrototype(Identifiable):
     flat_map_ref: Optional[ARRef]
     software_composition_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CALIBRATION-PARAMETER-VALUE-SETS": lambda obj, elem: obj.calibration_parameter_value_set_refs.append(ARRef.deserialize(elem)),
+        "CALIBRATION-PARAMETER-VALUE-SET-REFS": lambda obj, elem: obj.calibration_parameter_value_set_refs.append(ARRef.deserialize(elem)),
         "FLAT-MAP-REF": lambda obj, elem: setattr(obj, "flat_map_ref", ARRef.deserialize(elem)),
         "SOFTWARE-COMPOSITION-TREF": lambda obj, elem: setattr(obj, "software_composition_ref", ARRef.deserialize(elem)),
     }
@@ -150,7 +150,7 @@ class RootSwCompositionPrototype(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CALIBRATION-PARAMETER-VALUE-SETS":
+            if tag == "CALIBRATION-PARAMETER-VALUE-SET-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.calibration_parameter_value_set_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "CalibrationParameterValueSet"))

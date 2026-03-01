@@ -44,7 +44,7 @@ class PdurIPduGroup(FibexElement):
     i_pdu_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "COMMUNICATION": lambda obj, elem: setattr(obj, "communication", SerializationHelper.deserialize_by_tag(elem, "String")),
-        "I-PDUS": lambda obj, elem: obj.i_pdu_refs.append(ARRef.deserialize(elem)),
+        "I-PDU-REFS": lambda obj, elem: obj.i_pdu_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -129,7 +129,7 @@ class PdurIPduGroup(FibexElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "COMMUNICATION":
                 setattr(obj, "communication", SerializationHelper.deserialize_by_tag(child, "String"))
-            elif tag == "I-PDUS":
+            elif tag == "I-PDU-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.i_pdu_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PduTriggering"))

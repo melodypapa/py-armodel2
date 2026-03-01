@@ -95,14 +95,20 @@ def _generate_dispatch_table(
                 xml_tag = decorator_params
             else:
                 xml_tag = snake_name.upper().replace("_", "-")
-        # For list attributes, pluralize the tag
+        # For list attributes, determine the correct container tag
         elif multiplicity in ("*", "0..*"):
-            from ._common import to_plural as pluralize_snake
-            plural_snake = pluralize_snake(snake_name)
-            xml_tag = plural_snake.upper().replace("_", "-")
+            if is_ref and kind != "iref":
+                # For reference lists, container is SINGULAR-NAME + "-REFS" (e.g., USE-INSTEAD-REFS)
+                singular_xml_tag = snake_name.upper().replace("_", "-")
+                xml_tag = f"{singular_xml_tag}-REFS"
+            else:
+                # For non-reference lists, pluralize the tag
+                from ._common import to_plural as pluralize_snake
+                plural_snake = pluralize_snake(snake_name)
+                xml_tag = plural_snake.upper().replace("_", "-")
 
-        # Add -REF suffix for reference attributes with multiplicity != "*"
-        if is_ref and multiplicity != "*" and kind != "iref":
+        # Add -REF suffix for non-list reference attributes
+        if is_ref and multiplicity not in ("*", "0..*", "1..*") and kind != "iref":
             xml_tag = f"{xml_tag}-TREF" if kind == "tref" else f"{xml_tag}-REF"
 
         # Get Python identifier for the target attribute
@@ -1283,14 +1289,20 @@ def _generate_deserialize_method(
                     xml_tag = decorator_params
                 else:
                     xml_tag = snake_name.upper().replace("_", "-")
-            # For list attributes, use pluralized tag
+            # For list attributes, determine the correct container tag
             elif multiplicity in ("*", "0..*"):
-                from ._common import to_plural as pluralize_snake
-                plural_snake = pluralize_snake(snake_name)
-                xml_tag = plural_snake.upper().replace("_", "-")
+                if is_ref and kind != "iref":
+                    # For reference lists, container is SINGULAR-NAME + "-REFS" (e.g., USE-INSTEAD-REFS)
+                    singular_xml_tag = snake_name.upper().replace("_", "-")
+                    xml_tag = f"{singular_xml_tag}-REFS"
+                else:
+                    # For non-reference lists, pluralize the tag
+                    from ._common import to_plural as pluralize_snake
+                    plural_snake = pluralize_snake(snake_name)
+                    xml_tag = plural_snake.upper().replace("_", "-")
 
-            # Add -REF suffix for reference attributes with multiplicity != "*"
-            if is_ref and multiplicity != "*" and kind != "iref":
+            # Add -REF suffix for non-list reference attributes
+            if is_ref and multiplicity not in ("*", "0..*", "1..*") and kind != "iref":
                 xml_tag = f"{xml_tag}-TREF" if kind == "tref" else f"{xml_tag}-REF"
 
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
@@ -1305,12 +1317,17 @@ def _generate_deserialize_method(
             # Check if this is a polymorphic type
             concrete_types = polymorphic_types.get(attr_type, [])
             if concrete_types:
-                # Special handling for reference types (TYPE-TREF pattern)
+                # Special handling for reference types (TYPE-TREF and TYPE-REF patterns)
                 # These use DEST attribute to indicate type, not child elements
-                if is_ref and kind == "tref":
-                    # For TYPE-TREF pattern, the DEST attribute indicates the concrete type
+                if is_ref and kind in ("tref", "ref"):
+                    # For TYPE-TREF and TYPE-REF pattern, the DEST attribute indicates the concrete type
                     # Just use ARRef.deserialize() - the DEST attribute is handled by ARRef
-                    handler_code = f'setattr(obj, "{target_attr}", ARRef.deserialize(child))'
+                    if is_list:
+                        # For lists, the xml_tag is the container (e.g., USE-INSTEAD-REFS)
+                        # and we need to iterate through children (e.g., USE-INSTEAD-REF)
+                        handler_code = f'for item_elem in child:\n                    obj.{target_attr}.append(ARRef.deserialize(item_elem))'
+                    else:
+                        handler_code = f'setattr(obj, "{target_attr}", ARRef.deserialize(child))'
                     all_branches.append((xml_tag, handler_code, False))
                 else:
                     # Generate if-elif-else chain for polymorphic types

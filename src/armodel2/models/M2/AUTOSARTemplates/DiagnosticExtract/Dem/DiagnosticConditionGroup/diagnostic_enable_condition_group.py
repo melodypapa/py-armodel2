@@ -36,7 +36,7 @@ class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
 
     enable_condition_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "ENABLE-CONDITIONS": lambda obj, elem: obj.enable_condition_refs.append(ARRef.deserialize(elem)),
+        "ENABLE-CONDITION-REFS": lambda obj, elem: obj.enable_condition_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -104,7 +104,7 @@ class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ENABLE-CONDITIONS":
+            if tag == "ENABLE-CONDITION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.enable_condition_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (DiagnosticEnable)"))

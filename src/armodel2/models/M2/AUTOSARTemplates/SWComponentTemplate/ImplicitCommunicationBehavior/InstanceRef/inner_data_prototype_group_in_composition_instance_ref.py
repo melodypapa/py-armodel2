@@ -41,7 +41,7 @@ class InnerDataPrototypeGroupInCompositionInstanceRef(ARObject):
     target_data_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
-        "CONTEXT-SWS": lambda obj, elem: obj.context_sw_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-SW-REFS": lambda obj, elem: obj.context_sw_refs.append(ARRef.deserialize(elem)),
         "TARGET-DATA-REF": lambda obj, elem: setattr(obj, "target_data_ref", ARRef.deserialize(elem)),
     }
 
@@ -142,7 +142,7 @@ class InnerDataPrototypeGroupInCompositionInstanceRef(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "BASE-REF":
                 setattr(obj, "base_ref", ARRef.deserialize(child))
-            elif tag == "CONTEXT-SWS":
+            elif tag == "CONTEXT-SW-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.context_sw_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwComponent)"))

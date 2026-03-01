@@ -288,17 +288,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
             elif tag == "SUP":
                 setattr(obj, "sup", SerializationHelper.deserialize_by_tag(child, "Superscript"))
             elif tag == "TRACE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "STRUCTURED-REQ":
-                        setattr(obj, "trace_ref", SerializationHelper.deserialize_by_tag(child[0], "StructuredReq"))
-                    elif concrete_tag == "TIMING-CONSTRAINT":
-                        setattr(obj, "trace_ref", SerializationHelper.deserialize_by_tag(child[0], "TimingConstraint"))
-                    elif concrete_tag == "TRACEABLE-TABLE":
-                        setattr(obj, "trace_ref", SerializationHelper.deserialize_by_tag(child[0], "TraceableTable"))
-                    elif concrete_tag == "TRACEABLE-TEXT":
-                        setattr(obj, "trace_ref", SerializationHelper.deserialize_by_tag(child[0], "TraceableText"))
+                setattr(obj, "trace_ref", ARRef.deserialize(child))
             elif tag == "TT":
                 setattr(obj, "tt", SerializationHelper.deserialize_by_tag(child, "Tt"))
             elif tag == "XREF":

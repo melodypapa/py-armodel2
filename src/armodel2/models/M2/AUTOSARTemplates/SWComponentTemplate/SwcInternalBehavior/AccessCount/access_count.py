@@ -121,25 +121,7 @@ class AccessCount(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ACCESS-POINT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RESULT-POINT":
-                        setattr(obj, "access_point_ref", SerializationHelper.deserialize_by_tag(child[0], "AsynchronousServerCallResultPoint"))
-                    elif concrete_tag == "EXTERNAL-TRIGGERING-POINT-IDENT":
-                        setattr(obj, "access_point_ref", SerializationHelper.deserialize_by_tag(child[0], "ExternalTriggeringPointIdent"))
-                    elif concrete_tag == "INTERNAL-TRIGGERING-POINT":
-                        setattr(obj, "access_point_ref", SerializationHelper.deserialize_by_tag(child[0], "InternalTriggeringPoint"))
-                    elif concrete_tag == "MODE-ACCESS-POINT-IDENT":
-                        setattr(obj, "access_point_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeAccessPointIdent"))
-                    elif concrete_tag == "MODE-SWITCH-POINT":
-                        setattr(obj, "access_point_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchPoint"))
-                    elif concrete_tag == "PARAMETER-ACCESS":
-                        setattr(obj, "access_point_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterAccess"))
-                    elif concrete_tag == "SERVER-CALL-POINT":
-                        setattr(obj, "access_point_ref", SerializationHelper.deserialize_by_tag(child[0], "ServerCallPoint"))
-                    elif concrete_tag == "VARIABLE-ACCESS":
-                        setattr(obj, "access_point_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableAccess"))
+                setattr(obj, "access_point_ref", ARRef.deserialize(child))
             elif tag == "VALUE":
                 setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 

@@ -39,7 +39,7 @@ class LinSporadicFrame(LinFrame):
 
     substituted_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "SUBSTITUTEDS": lambda obj, elem: obj.substituted_refs.append(ARRef.deserialize(elem)),
+        "SUBSTITUTED-REFS": lambda obj, elem: obj.substituted_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -107,7 +107,7 @@ class LinSporadicFrame(LinFrame):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "SUBSTITUTEDS":
+            if tag == "SUBSTITUTED-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.substituted_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "LinUnconditionalFrame"))

@@ -66,7 +66,7 @@ class ExecutionTime(Identifiable, ABC):
         "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswModuleEntity", "RunnableEntity"]),
         "HARDWARE": lambda obj, elem: setattr(obj, "hardware", SerializationHelper.deserialize_by_tag(elem, "HardwareConfiguration")),
         "HW-ELEMENT-REF": lambda obj, elem: setattr(obj, "hw_element_ref", ARRef.deserialize(elem)),
-        "INCLUDED-LIBRARIES": lambda obj, elem: obj.included_library_refs.append(ARRef.deserialize(elem)),
+        "INCLUDED-LIBRARY-REFS": lambda obj, elem: obj.included_library_refs.append(ARRef.deserialize(elem)),
         "MEMORY-SECTION-LOCATIONS": lambda obj, elem: obj.memory_section_locations.append(SerializationHelper.deserialize_by_tag(elem, "MemorySectionLocation")),
         "SOFTWARE-CONTEXT": lambda obj, elem: setattr(obj, "software_context", SerializationHelper.deserialize_by_tag(elem, "SoftwareContext")),
     }
@@ -225,18 +225,12 @@ class ExecutionTime(Identifiable, ABC):
             if tag == "EXCLUSIVE-AREA-REF":
                 setattr(obj, "exclusive_area_ref", ARRef.deserialize(child))
             elif tag == "EXECUTABLE-ENTITY-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "BSW-MODULE-ENTITY":
-                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleEntity"))
-                    elif concrete_tag == "RUNNABLE-ENTITY":
-                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "RunnableEntity"))
+                setattr(obj, "executable_entity_ref", ARRef.deserialize(child))
             elif tag == "HARDWARE":
                 setattr(obj, "hardware", SerializationHelper.deserialize_by_tag(child, "HardwareConfiguration"))
             elif tag == "HW-ELEMENT-REF":
                 setattr(obj, "hw_element_ref", ARRef.deserialize(child))
-            elif tag == "INCLUDED-LIBRARIES":
+            elif tag == "INCLUDED-LIBRARY-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.included_library_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyOnArtifact"))

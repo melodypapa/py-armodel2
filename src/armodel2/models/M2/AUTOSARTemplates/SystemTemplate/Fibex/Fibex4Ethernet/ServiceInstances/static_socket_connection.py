@@ -54,7 +54,7 @@ class StaticSocketConnection(Identifiable):
     tcp_connect: Optional[TimeValue]
     tcp_role: Optional[TcpRoleEnum]
     _DESERIALIZE_DISPATCH = {
-        "I-PDU-IDENTIFIERS": lambda obj, elem: obj.i_pdu_identifier_refs.append(ARRef.deserialize(elem)),
+        "I-PDU-IDENTIFIER-REFS": lambda obj, elem: obj.i_pdu_identifier_refs.append(ARRef.deserialize(elem)),
         "REMOTE-ADDRESS-REF": lambda obj, elem: setattr(obj, "remote_address_ref", ARRef.deserialize(elem)),
         "TCP-CONNECT": lambda obj, elem: setattr(obj, "tcp_connect", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TCP-ROLE": lambda obj, elem: setattr(obj, "tcp_role", TcpRoleEnum.deserialize(elem)),
@@ -170,7 +170,7 @@ class StaticSocketConnection(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "I-PDU-IDENTIFIERS":
+            if tag == "I-PDU-IDENTIFIER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.i_pdu_identifier_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SoConIPduIdentifier"))

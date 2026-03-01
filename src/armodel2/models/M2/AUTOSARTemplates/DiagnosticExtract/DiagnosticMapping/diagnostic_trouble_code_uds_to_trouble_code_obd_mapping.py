@@ -122,25 +122,9 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "TROUBLE-CODE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-J1939":
-                        setattr(obj, "trouble_code_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeJ1939"))
-                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-OBD":
-                        setattr(obj, "trouble_code_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeObd"))
-                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-UDS":
-                        setattr(obj, "trouble_code_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeUds"))
+                setattr(obj, "trouble_code_ref", ARRef.deserialize(child))
             elif tag == "TROUBLE-CODE-UDS-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-J1939":
-                        setattr(obj, "trouble_code_uds_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeJ1939"))
-                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-OBD":
-                        setattr(obj, "trouble_code_uds_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeObd"))
-                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-UDS":
-                        setattr(obj, "trouble_code_uds_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeUds"))
+                setattr(obj, "trouble_code_uds_ref", ARRef.deserialize(child))
 
         return obj
 

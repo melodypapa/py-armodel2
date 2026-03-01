@@ -44,7 +44,7 @@ class AnyInstanceRef(ARObject):
     target_ref: ARRef
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": ("_POLYMORPHIC", "base_ref", ["AtpStructureElement", "AtpType"]),
-        "CONTEXT-ELEMENTS": ("_POLYMORPHIC_LIST", "context_element_refs", ["AtpPrototype", "AtpStructureElement"]),
+        "CONTEXT-ELEMENT-REFS": ("_POLYMORPHIC_LIST", "context_element_refs", ["AtpPrototype", "AtpStructureElement"]),
         "TARGET-REF": ("_POLYMORPHIC", "target_ref", ["AtpPrototype", "AtpStructureElement"]),
     }
 
@@ -144,29 +144,12 @@ class AnyInstanceRef(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "BASE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ATP-STRUCTURE-ELEMENT":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
-                    elif concrete_tag == "ATP-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "AtpType"))
-            elif tag == "CONTEXT-ELEMENTS":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ATP-PROTOTYPE":
-                        obj.context_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
-                    elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
-                        obj.context_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-ELEMENT-REFS":
+                for item_elem in child:
+                    obj.context_element_refs.append(ARRef.deserialize(item_elem))
             elif tag == "TARGET-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ATP-PROTOTYPE":
-                        setattr(obj, "target_ref", SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
-                    elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
-                        setattr(obj, "target_ref", SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
+                setattr(obj, "target_ref", ARRef.deserialize(child))
 
         return obj
 

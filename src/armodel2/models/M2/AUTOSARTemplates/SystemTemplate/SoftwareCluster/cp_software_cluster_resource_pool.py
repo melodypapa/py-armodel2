@@ -43,7 +43,7 @@ class CpSoftwareClusterResourcePool(ARElement):
     ecu_scope_refs: list[ARRef]
     resources: list[CpSoftwareCluster]
     _DESERIALIZE_DISPATCH = {
-        "ECU-SCOPES": lambda obj, elem: obj.ecu_scope_refs.append(ARRef.deserialize(elem)),
+        "ECU-SCOPE-REFS": lambda obj, elem: obj.ecu_scope_refs.append(ARRef.deserialize(elem)),
         "RESOURCES": lambda obj, elem: obj.resources.append(SerializationHelper.deserialize_by_tag(elem, "CpSoftwareCluster")),
     }
 
@@ -123,7 +123,7 @@ class CpSoftwareClusterResourcePool(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ECU-SCOPES":
+            if tag == "ECU-SCOPE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.ecu_scope_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EcuInstance"))

@@ -49,7 +49,7 @@ class ModeInSwcInstanceRef(ARObject):
     target_mode_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": ("_POLYMORPHIC", "base_ref", ["AtomicSwComponentType", "CompositionSwComponentType", "ParameterSwComponentType"]),
-        "CONTEXTS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-REFS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
         "CONTEXT-MODE-REF": lambda obj, elem: setattr(obj, "context_mode_ref", ARRef.deserialize(elem)),
         "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
         "TARGET-MODE-REF": lambda obj, elem: setattr(obj, "target_mode_ref", ARRef.deserialize(elem)),
@@ -181,29 +181,15 @@ class ModeInSwcInstanceRef(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "BASE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ATOMIC-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "AtomicSwComponentType"))
-                    elif concrete_tag == "COMPOSITION-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "CompositionSwComponentType"))
-                    elif concrete_tag == "PARAMETER-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterSwComponentType"))
-            elif tag == "CONTEXTS":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.context_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SwComponent)"))
             elif tag == "CONTEXT-MODE-REF":
                 setattr(obj, "context_mode_ref", ARRef.deserialize(child))
             elif tag == "CONTEXT-PORT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
-                        setattr(obj, "context_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
-                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
-                        setattr(obj, "context_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+                setattr(obj, "context_port_ref", ARRef.deserialize(child))
             elif tag == "TARGET-MODE-REF":
                 setattr(obj, "target_mode_ref", ARRef.deserialize(child))
 

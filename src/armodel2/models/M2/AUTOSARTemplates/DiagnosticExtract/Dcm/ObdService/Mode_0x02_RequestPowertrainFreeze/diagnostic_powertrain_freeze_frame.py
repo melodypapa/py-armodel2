@@ -39,7 +39,7 @@ class DiagnosticPowertrainFreezeFrame(DiagnosticCommonElement):
 
     pid_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "PIDS": lambda obj, elem: obj.pid_refs.append(ARRef.deserialize(elem)),
+        "PID-REFS": lambda obj, elem: obj.pid_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -107,7 +107,7 @@ class DiagnosticPowertrainFreezeFrame(DiagnosticCommonElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "PIDS":
+            if tag == "PID-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.pid_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticParameter"))

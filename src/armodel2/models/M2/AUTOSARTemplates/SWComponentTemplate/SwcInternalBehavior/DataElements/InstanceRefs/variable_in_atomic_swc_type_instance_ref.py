@@ -49,7 +49,7 @@ class VariableInAtomicSWCTypeInstanceRef(ARObject):
     target_data_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": ("_POLYMORPHIC", "base_ref", ["ApplicationSwComponentType", "ComplexDeviceDriverSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
-        "CONTEXT-DATAS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
+        "CONTEXT-DATA-REFS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
         "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
         "ROOT-VARIABLE-DATA-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "root_variable_data_prototype_ref", ARRef.deserialize(elem)),
         "TARGET-DATA-REF": ("_POLYMORPHIC", "target_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
@@ -181,45 +181,17 @@ class VariableInAtomicSWCTypeInstanceRef(ARObject):
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "BASE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "APPLICATION-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationSwComponentType"))
-                    elif concrete_tag == "COMPLEX-DEVICE-DRIVER-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ComplexDeviceDriverSwComponentType"))
-                    elif concrete_tag == "ECU-ABSTRACTION-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "EcuAbstractionSwComponentType"))
-                    elif concrete_tag == "NV-BLOCK-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "NvBlockSwComponentType"))
-                    elif concrete_tag == "SENSOR-ACTUATOR-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "SensorActuatorSwComponentType"))
-                    elif concrete_tag == "SERVICE-PROXY-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ServiceProxySwComponentType"))
-                    elif concrete_tag == "SERVICE-SW-COMPONENT-TYPE":
-                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ServiceSwComponentType"))
-            elif tag == "CONTEXT-DATAS":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-DATA-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.context_data_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ApplicationComposite)"))
             elif tag == "PORT-PROTOTYPE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
-                        setattr(obj, "port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
-                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
-                        setattr(obj, "port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+                setattr(obj, "port_prototype_ref", ARRef.deserialize(child))
             elif tag == "ROOT-VARIABLE-DATA-PROTOTYPE-REF":
                 setattr(obj, "root_variable_data_prototype_ref", ARRef.deserialize(child))
             elif tag == "TARGET-DATA-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
-                        setattr(obj, "target_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
-                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
-                        setattr(obj, "target_data_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
+                setattr(obj, "target_data_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -39,7 +39,7 @@ class J1939SharedAddressCluster(Identifiable):
 
     participating_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "PARTICIPATINGS": lambda obj, elem: obj.participating_refs.append(ARRef.deserialize(elem)),
+        "PARTICIPATING-REFS": lambda obj, elem: obj.participating_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -107,7 +107,7 @@ class J1939SharedAddressCluster(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "PARTICIPATINGS":
+            if tag == "PARTICIPATING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.participating_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "J1939Cluster"))

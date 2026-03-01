@@ -43,7 +43,7 @@ class FMFeatureDecomposition(ARObject):
     min: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
         "CATEGORY": lambda obj, elem: setattr(obj, "category", SerializationHelper.deserialize_by_tag(elem, "CategoryString")),
-        "FEATURES": lambda obj, elem: obj.feature_refs.append(ARRef.deserialize(elem)),
+        "FEATURE-REFS": lambda obj, elem: obj.feature_refs.append(ARRef.deserialize(elem)),
         "MAX": lambda obj, elem: setattr(obj, "max", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "MIN": lambda obj, elem: setattr(obj, "min", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
@@ -160,7 +160,7 @@ class FMFeatureDecomposition(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "CATEGORY":
                 setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "CategoryString"))
-            elif tag == "FEATURES":
+            elif tag == "FEATURE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.feature_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "FMFeature"))

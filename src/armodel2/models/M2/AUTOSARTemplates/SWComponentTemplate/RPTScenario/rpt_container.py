@@ -61,7 +61,7 @@ class RptContainer(Identifiable):
     rpt_sw: Optional[RptSwPrototypingAccess]
     _DESERIALIZE_DISPATCH = {
         "BY-PASS-POINTS": ("_POLYMORPHIC_LIST", "by_pass_points", ["AtpPrototype", "AtpStructureElement"]),
-        "EXPLICIT-RPTS": lambda obj, elem: obj.explicit_rpt_refs.append(ARRef.deserialize(elem)),
+        "EXPLICIT-RPT-REFS": lambda obj, elem: obj.explicit_rpt_refs.append(ARRef.deserialize(elem)),
         "RPT-CONTAINERS": lambda obj, elem: obj.rpt_containers.append(SerializationHelper.deserialize_by_tag(elem, "RptContainer")),
         "RPT-EXECUTABLE-ENTITY": lambda obj, elem: setattr(obj, "rpt_executable_entity", SerializationHelper.deserialize_by_tag(elem, "RptExecutableEntity")),
         "RPT-HOOK": lambda obj, elem: setattr(obj, "rpt_hook", SerializationHelper.deserialize_by_tag(elem, "RptHook")),
@@ -224,7 +224,7 @@ class RptContainer(Identifiable):
                         obj.by_pass_points.append(SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
                     elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
                         obj.by_pass_points.append(SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
-            elif tag == "EXPLICIT-RPTS":
+            elif tag == "EXPLICIT-RPT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.explicit_rpt_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "RptProfile"))

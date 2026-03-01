@@ -51,9 +51,9 @@ class SignalServiceTranslationProps(Identifiable):
     service_control: Optional[Any]
     signal_service_event_propses: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "CONTROLS": lambda obj, elem: obj.control_refs.append(ARRef.deserialize(elem)),
-        "CONTROL-PNCS": lambda obj, elem: obj.control_pnc_refs.append(ARRef.deserialize(elem)),
-        "CONTROL-PROVIDEDS": lambda obj, elem: obj.control_provided_refs.append(ARRef.deserialize(elem)),
+        "CONTROL-REFS": lambda obj, elem: obj.control_refs.append(ARRef.deserialize(elem)),
+        "CONTROL-PNC-REFS": lambda obj, elem: obj.control_pnc_refs.append(ARRef.deserialize(elem)),
+        "CONTROL-PROVIDED-REFS": lambda obj, elem: obj.control_provided_refs.append(ARRef.deserialize(elem)),
         "SERVICE-CONTROL": lambda obj, elem: setattr(obj, "service_control", SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
         "SIGNAL-SERVICE-EVENT-PROPSES": lambda obj, elem: obj.signal_service_event_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
     }
@@ -185,15 +185,15 @@ class SignalServiceTranslationProps(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONTROLS":
+            if tag == "CONTROL-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.control_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsumedEventGroup"))
-            elif tag == "CONTROL-PNCS":
+            elif tag == "CONTROL-PNC-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.control_pnc_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "PncMappingIdent"))
-            elif tag == "CONTROL-PROVIDEDS":
+            elif tag == "CONTROL-PROVIDED-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.control_provided_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "EventHandler"))

@@ -62,7 +62,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
     sd_server_timer_ref: Optional[Any]
     service_identifier: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ALLOWED-SERVICES": lambda obj, elem: obj.allowed_service_refs.append(ARRef.deserialize(elem)),
+        "ALLOWED-SERVICE-REFS": lambda obj, elem: obj.allowed_service_refs.append(ARRef.deserialize(elem)),
         "AUTO-AVAILABLE": lambda obj, elem: setattr(obj, "auto_available", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "EVENT-HANDLERS": lambda obj, elem: obj.event_handlers.append(SerializationHelper.deserialize_by_tag(elem, "EventHandler")),
         "INSTANCE": lambda obj, elem: setattr(obj, "instance", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
@@ -70,8 +70,8 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         "LOCAL-UNICAST": lambda obj, elem: setattr(obj, "local_unicast", SerializationHelper.deserialize_by_tag(elem, "ApplicationEndpoint")),
         "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "REMOTE-MULTICASTS": lambda obj, elem: obj.remote_multicast_refs.append(ARRef.deserialize(elem)),
-        "REMOTE-UNICASTS": lambda obj, elem: obj.remote_unicast_refs.append(ARRef.deserialize(elem)),
+        "REMOTE-MULTICAST-REFS": lambda obj, elem: obj.remote_multicast_refs.append(ARRef.deserialize(elem)),
+        "REMOTE-UNICAST-REFS": lambda obj, elem: obj.remote_unicast_refs.append(ARRef.deserialize(elem)),
         "SD-SERVER-CONFIG": lambda obj, elem: setattr(obj, "sd_server_config", SerializationHelper.deserialize_by_tag(elem, "any (SdServerConfig)")),
         "SD-SERVER-TIMER-REF": lambda obj, elem: setattr(obj, "sd_server_timer_ref", ARRef.deserialize(elem)),
         "SERVICE-IDENTIFIER": lambda obj, elem: setattr(obj, "service_identifier", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
@@ -324,7 +324,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ALLOWED-SERVICES":
+            if tag == "ALLOWED-SERVICE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.allowed_service_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "NetworkEndpoint"))
@@ -344,11 +344,11 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                 setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "PRIORITY":
                 setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "REMOTE-MULTICASTS":
+            elif tag == "REMOTE-MULTICAST-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.remote_multicast_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationEndpoint"))
-            elif tag == "REMOTE-UNICASTS":
+            elif tag == "REMOTE-UNICAST-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.remote_unicast_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationEndpoint"))

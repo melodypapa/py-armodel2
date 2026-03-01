@@ -127,13 +127,7 @@ class PPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
             if tag == "CONTEXT-COMPONENT-REF":
                 setattr(obj, "context_component_ref", ARRef.deserialize(child))
             elif tag == "TARGET-P-PORT-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "P-PORT-PROTOTYPE":
-                        setattr(obj, "target_p_port_ref", SerializationHelper.deserialize_by_tag(child[0], "PPortPrototype"))
-                    elif concrete_tag == "P-R-PORT-PROTOTYPE":
-                        setattr(obj, "target_p_port_ref", SerializationHelper.deserialize_by_tag(child[0], "PRPortPrototype"))
+                setattr(obj, "target_p_port_ref", ARRef.deserialize(child))
 
         return obj
 

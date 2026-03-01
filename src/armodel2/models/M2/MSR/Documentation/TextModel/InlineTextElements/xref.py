@@ -287,49 +287,7 @@ class Xref(ARObject):
             if tag == "LABEL1":
                 setattr(obj, "label1", SerializationHelper.deserialize_by_tag(child, "SingleLanguageLongName"))
             elif tag == "REFERRABLE-REF":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "ATP-DEFINITION":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "AtpDefinition"))
-                    elif concrete_tag == "BSW-DISTINGUISHED-PARTITION":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "BswDistinguishedPartition"))
-                    elif concrete_tag == "BSW-MODULE-CALL-POINT":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleCallPoint"))
-                    elif concrete_tag == "BSW-MODULE-CLIENT-SERVER-ENTRY":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleClientServerEntry"))
-                    elif concrete_tag == "BSW-VARIABLE-ACCESS":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "BswVariableAccess"))
-                    elif concrete_tag == "COUPLING-PORT-TRAFFIC-CLASS-ASSIGNMENT":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "CouplingPortTrafficClassAssignment"))
-                    elif concrete_tag == "DIAGNOSTIC-ENV-MODE-ELEMENT":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEnvModeElement"))
-                    elif concrete_tag == "ETHERNET-PRIORITY-REGENERATION":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetPriorityRegeneration"))
-                    elif concrete_tag == "EXCLUSIVE-AREA-NESTING-ORDER":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "ExclusiveAreaNestingOrder"))
-                    elif concrete_tag == "HW-DESCRIPTION-ENTITY":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "HwDescriptionEntity"))
-                    elif concrete_tag == "IMPLEMENTATION-PROPS":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationProps"))
-                    elif concrete_tag == "LIN-SLAVE-CONFIG-IDENT":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "LinSlaveConfigIdent"))
-                    elif concrete_tag == "MODE-TRANSITION":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeTransition"))
-                    elif concrete_tag == "MULTILANGUAGE-REFERRABLE":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "MultilanguageReferrable"))
-                    elif concrete_tag == "PNC-MAPPING-IDENT":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "PncMappingIdent"))
-                    elif concrete_tag == "SINGLE-LANGUAGE-REFERRABLE":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "SingleLanguageReferrable"))
-                    elif concrete_tag == "SO-CON-I-PDU-IDENTIFIER":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "SoConIPduIdentifier"))
-                    elif concrete_tag == "SOCKET-CONNECTION-BUNDLE":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "SocketConnectionBundle"))
-                    elif concrete_tag == "TIME-SYNC-SERVER-CONFIGURATION":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "TimeSyncServerConfiguration"))
-                    elif concrete_tag == "TP-CONNECTION-IDENT":
-                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "TpConnectionIdent"))
+                setattr(obj, "referrable_ref", ARRef.deserialize(child))
             elif tag == "RESOLUTION-POLICY-ENUM":
                 setattr(obj, "resolution_policy_enum", ResolutionPolicyEnum.deserialize(child))
             elif tag == "SHOW-CONTENT-ENUM":

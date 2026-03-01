@@ -40,7 +40,7 @@ class TriggerInterface(PortInterface):
 
     trigger_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TRIGGERS": lambda obj, elem: obj.trigger_refs.append(ARRef.deserialize(elem)),
+        "TRIGGER-REFS": lambda obj, elem: obj.trigger_refs.append(ARRef.deserialize(elem)),
     }
 
 
@@ -108,7 +108,7 @@ class TriggerInterface(PortInterface):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "TRIGGERS":
+            if tag == "TRIGGER-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.trigger_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
