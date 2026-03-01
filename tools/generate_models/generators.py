@@ -87,8 +87,16 @@ def _generate_dispatch_table(
         snake_name = to_snake_case(attr_name)
         xml_tag = snake_name.upper().replace("_", "-")
 
-        # For list attributes, use pluralized tag
-        if multiplicity in ("*", "0..*"):
+        # Check for xml_element_name decorator with params
+        if decorator_name == "xml_element_name":
+            # Use decorator_params value for XML tag
+            decorator_params = attr_info.get("decorator_params")
+            if decorator_params:
+                xml_tag = decorator_params
+            else:
+                xml_tag = snake_name.upper().replace("_", "-")
+        # For list attributes, pluralize the tag
+        elif multiplicity in ("*", "0..*"):
             from ._common import to_plural as pluralize_snake
             plural_snake = pluralize_snake(snake_name)
             xml_tag = plural_snake.upper().replace("_", "-")
@@ -1267,8 +1275,16 @@ def _generate_deserialize_method(
             snake_name = to_snake_case(attr_name)
             xml_tag = snake_name.upper().replace("_", "-")
 
+            # Check for xml_element_name decorator with params
+            if decorator_name == "xml_element_name":
+                # Use decorator_params value for XML tag
+                decorator_params = attr_info.get("decorator_params")
+                if decorator_params:
+                    xml_tag = decorator_params
+                else:
+                    xml_tag = snake_name.upper().replace("_", "-")
             # For list attributes, use pluralized tag
-            if multiplicity in ("*", "0..*"):
+            elif multiplicity in ("*", "0..*"):
                 from ._common import to_plural as pluralize_snake
                 plural_snake = pluralize_snake(snake_name)
                 xml_tag = plural_snake.upper().replace("_", "-")
@@ -1334,9 +1350,23 @@ def _generate_deserialize_method(
                     value_code = f'SerializationHelper.deserialize_by_tag(child, "{attr_type}")'
 
                 if is_list:
-                    # For list attributes, the xml_tag is the wrapper container (e.g., DATA-CONSTR-RULES)
-                    # We need to iterate through the wrapper's children to get the actual items
-                    handler_code = f'# Iterate through wrapper children\n                for item_elem in child:\n                    obj.{target_attr}.append(SerializationHelper.deserialize_by_tag(item_elem, "{attr_type}"))'
+                    # Check if this is a "direct child" tag (no wrapper container)
+                    # Same logic as serialize: known direct children like ITEM, ENTRY, V, etc.
+                    # or short singular tags that don't end with "S"
+                    known_direct_children = {"ITEM", "ENTRY", "V", "VALUE", "NAME", "TYPE", "REF"}
+                    is_direct_child = (
+                        decorator_name == "xml_element_name" and (
+                            xml_tag in known_direct_children or
+                            (len(xml_tag) <= 4 and xml_tag.endswith("S")) or
+                            not xml_tag.endswith("S")
+                        )
+                    )
+                    if is_direct_child:
+                        # Direct child tag (e.g., ITEM) - deserialize the element directly
+                        handler_code = f'obj.{target_attr}.append(SerializationHelper.deserialize_by_tag(child, "{attr_type}"))'
+                    else:
+                        # Wrapper container (e.g., DATA-CONSTR-RULES) - iterate through children
+                        handler_code = f'# Iterate through wrapper children\n                for item_elem in child:\n                    obj.{target_attr}.append(SerializationHelper.deserialize_by_tag(item_elem, "{attr_type}"))'
                 else:
                     handler_code = f'setattr(obj, "{target_attr}", {value_code})'
 
@@ -3185,14 +3215,7 @@ def _generate_serialize_method(
             for item in self.{python_name}:
                 serialized = SerializationHelper.serialize_item(item, "{effective_type}")
                 if serialized is not None:
-                    child_elem = ET.Element("{child_tag}")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    elem.append(child_elem)
+                    elem.append(serialized)
 '''
                     else:
                         code += f'''        # Serialize {python_name} (list to container "{container_tag}")

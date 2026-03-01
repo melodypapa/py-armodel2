@@ -46,7 +46,7 @@ class ARList(Paginateable):
     _items: list[Item]
     _type: Optional[ListEnum]
     _DESERIALIZE_DISPATCH = {
-        "ITEMS": lambda obj, elem: obj._items.append(SerializationHelper.deserialize_by_tag(elem, "Item")),
+        "ITEM": lambda obj, elem: obj._items.append(SerializationHelper.deserialize_by_tag(elem, "Item")),
     }
 
 
@@ -106,14 +106,7 @@ class ARList(Paginateable):
             for item in self.items:
                 serialized = SerializationHelper.serialize_item(item, "Item")
                 if serialized is not None:
-                    child_elem = ET.Element("ITEM")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    elem.append(child_elem)
+                    elem.append(serialized)
         # Serialize type as XML attribute
         if self.type is not None:
             elem.attrib["TYPE"] = str(self.type)
@@ -141,7 +134,7 @@ class ARList(Paginateable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ITEMS":
+            if tag == "ITEM":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._items.append(SerializationHelper.deserialize_by_tag(item_elem, "Item"))

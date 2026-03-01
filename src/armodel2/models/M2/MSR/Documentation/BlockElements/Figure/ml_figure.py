@@ -157,14 +157,7 @@ class MlFigure(Paginateable):
             for item in self.l_graphics:
                 serialized = SerializationHelper.serialize_item(item, "LGraphic")
                 if serialized is not None:
-                    child_elem = ET.Element("L-GRAPHIC")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    elem.append(child_elem)
+                    elem.append(serialized)
         # Serialize pgwide
         if self.pgwide is not None:
             serialized = SerializationHelper.serialize_item(self.pgwide, "PgwideEnum")

@@ -57,7 +57,7 @@ class LifeCycleInfoSet(ARElement):
         "DEFAULT-LC-STATE-REF": lambda obj, elem: setattr(obj, "default_lc_state_ref", ARRef.deserialize(elem)),
         "DEFAULT-PERIOD-BEGIN": lambda obj, elem: setattr(obj, "default_period_begin", SerializationHelper.deserialize_by_tag(elem, "LifeCyclePeriod")),
         "DEFAULT-PERIOD-END": lambda obj, elem: setattr(obj, "default_period_end", SerializationHelper.deserialize_by_tag(elem, "LifeCyclePeriod")),
-        "LIFE-CYCLE-INFOES": lambda obj, elem: obj._life_cycle_infoes.append(SerializationHelper.deserialize_by_tag(elem, "LifeCycleInfo")),
+        "LIFE-CYCLE-INFOS": lambda obj, elem: obj._life_cycle_infoes.append(SerializationHelper.deserialize_by_tag(elem, "LifeCycleInfo")),
         "USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF": lambda obj, elem: setattr(obj, "used_life_cycle_state_definition_group_ref", ARRef.deserialize(elem)),
     }
 
@@ -196,7 +196,7 @@ class LifeCycleInfoSet(ARElement):
                 setattr(obj, "default_period_begin", SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod"))
             elif tag == "DEFAULT-PERIOD-END":
                 setattr(obj, "default_period_end", SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod"))
-            elif tag == "LIFE-CYCLE-INFOES":
+            elif tag == "LIFE-CYCLE-INFOS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._life_cycle_infoes.append(SerializationHelper.deserialize_by_tag(item_elem, "LifeCycleInfo"))

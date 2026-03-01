@@ -35,7 +35,7 @@ class CompuNominatorDenominator(ARObject):
 
     _vs: list[Numerical]
     _DESERIALIZE_DISPATCH = {
-        "VS": lambda obj, elem: obj._vs.append(SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "V": lambda obj, elem: obj._vs.append(SerializationHelper.deserialize_by_tag(elem, "Numerical")),
     }
 
 
@@ -83,14 +83,7 @@ class CompuNominatorDenominator(ARObject):
             for item in self.vs:
                 serialized = SerializationHelper.serialize_item(item, "Numerical")
                 if serialized is not None:
-                    child_elem = ET.Element("V")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    elem.append(child_elem)
+                    elem.append(serialized)
         return elem
 
     @classmethod
@@ -110,7 +103,7 @@ class CompuNominatorDenominator(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "VS":
+            if tag == "V":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._vs.append(SerializationHelper.deserialize_by_tag(item_elem, "Numerical"))

@@ -91,11 +91,11 @@ class BswModuleDescription(ARElement):
         "IMPLEMENTED-ENTRIES": lambda obj, elem: obj.implemented_entry_refs.append(ARRef.deserialize(elem)),
         "INTERNAL-BEHAVIORS": lambda obj, elem: obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalBehavior")),
         "MODULE-ID": lambda obj, elem: setattr(obj, "module_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "PROVIDED-CLIENT-SERVER-ENTRIES": lambda obj, elem: obj._provided_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
+        "PROVIDED-ENTRYS": lambda obj, elem: obj._provided_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
         "PROVIDED-DATAS": lambda obj, elem: obj.provided_datas.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
         "PROVIDED-MODE-GROUPS": lambda obj, elem: obj.provided_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroup")),
         "RELEASED-TRIGGERS": lambda obj, elem: obj.released_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
-        "REQUIRED-CLIENT-SERVER-ENTRIES": lambda obj, elem: obj._required_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
+        "REQUIRED-ENTRYS": lambda obj, elem: obj._required_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
         "REQUIRED-DATAS": lambda obj, elem: obj.required_datas.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
         "REQUIRED-MODE-GROUPS": lambda obj, elem: obj.required_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroup")),
         "REQUIRED-TRIGGERS": lambda obj, elem: obj.required_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
@@ -366,7 +366,7 @@ class BswModuleDescription(ARElement):
                     obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalBehavior"))
             elif tag == "MODULE-ID":
                 setattr(obj, "module_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "PROVIDED-CLIENT-SERVER-ENTRIES":
+            elif tag == "PROVIDED-ENTRYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._provided_client_server_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleClientServerEntry"))
@@ -382,7 +382,7 @@ class BswModuleDescription(ARElement):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.released_triggers.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
-            elif tag == "REQUIRED-CLIENT-SERVER-ENTRIES":
+            elif tag == "REQUIRED-ENTRYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj._required_client_server_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleClientServerEntry"))
