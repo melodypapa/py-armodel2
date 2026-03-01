@@ -45,7 +45,7 @@ class SignalServiceTranslationEventProps(Identifiable):
     secure: Optional[Boolean]
     translation_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ELEMENT-PROPSES": lambda obj, elem: obj.element_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
+        "ELEMENT-PROPSS": lambda obj, elem: obj.element_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
         "SAFE-TRANSLATION": lambda obj, elem: setattr(obj, "safe_translation", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "SECURE": lambda obj, elem: setattr(obj, "secure", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "TRANSLATION-REF": lambda obj, elem: setattr(obj, "translation_ref", ARRef.deserialize(elem)),
@@ -83,9 +83,9 @@ class SignalServiceTranslationEventProps(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize element_propses (list to container "ELEMENT-PROPSES")
+        # Serialize element_propses (list to container "ELEMENT-PROPSS")
         if self.element_propses:
-            wrapper = ET.Element("ELEMENT-PROPSES")
+            wrapper = ET.Element("ELEMENT-PROPSS")
             for item in self.element_propses:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -154,7 +154,7 @@ class SignalServiceTranslationEventProps(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ELEMENT-PROPSES":
+            if tag == "ELEMENT-PROPSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.element_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SignalService)"))

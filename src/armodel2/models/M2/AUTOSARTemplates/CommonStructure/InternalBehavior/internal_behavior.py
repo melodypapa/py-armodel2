@@ -67,12 +67,12 @@ class InternalBehavior(Identifiable, ABC):
     exclusive_area_nesting_orders: list[ExclusiveAreaNestingOrder]
     static_memories: list[VariableDataPrototype]
     _DESERIALIZE_DISPATCH = {
-        "CONSTANT-MEMORIES": lambda obj, elem: obj.constant_memories.append(SerializationHelper.deserialize_by_tag(elem, "ParameterDataPrototype")),
+        "CONSTANT-MEMORYS": lambda obj, elem: obj.constant_memories.append(SerializationHelper.deserialize_by_tag(elem, "ParameterDataPrototype")),
         "CONSTANT-VALUE-MAPPING-REFS": lambda obj, elem: [obj.constant_value_mapping_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "DATA-TYPE-MAPPING-REFS": lambda obj, elem: [obj.data_type_mapping_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "EXCLUSIVE-AREAS": lambda obj, elem: obj.exclusive_areas.append(SerializationHelper.deserialize_by_tag(elem, "ExclusiveArea")),
         "EXCLUSIVE-AREA-NESTING-ORDERS": lambda obj, elem: obj.exclusive_area_nesting_orders.append(SerializationHelper.deserialize_by_tag(elem, "ExclusiveAreaNestingOrder")),
-        "STATIC-MEMORIES": lambda obj, elem: obj.static_memories.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
+        "STATIC-MEMORYS": lambda obj, elem: obj.static_memories.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
     }
 
 
@@ -109,9 +109,9 @@ class InternalBehavior(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize constant_memories (list to container "CONSTANT-MEMORIES")
+        # Serialize constant_memories (list to container "CONSTANT-MEMORYS")
         if self.constant_memories:
-            wrapper = ET.Element("CONSTANT-MEMORIES")
+            wrapper = ET.Element("CONSTANT-MEMORYS")
             for item in self.constant_memories:
                 serialized = SerializationHelper.serialize_item(item, "ParameterDataPrototype")
                 if serialized is not None:
@@ -173,9 +173,9 @@ class InternalBehavior(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize static_memories (list to container "STATIC-MEMORIES")
+        # Serialize static_memories (list to container "STATIC-MEMORYS")
         if self.static_memories:
-            wrapper = ET.Element("STATIC-MEMORIES")
+            wrapper = ET.Element("STATIC-MEMORYS")
             for item in self.static_memories:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
@@ -202,7 +202,7 @@ class InternalBehavior(Identifiable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONSTANT-MEMORIES":
+            if tag == "CONSTANT-MEMORYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.constant_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
@@ -222,7 +222,7 @@ class InternalBehavior(Identifiable, ABC):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.exclusive_area_nesting_orders.append(SerializationHelper.deserialize_by_tag(item_elem, "ExclusiveAreaNestingOrder"))
-            elif tag == "STATIC-MEMORIES":
+            elif tag == "STATIC-MEMORYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.static_memories.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))

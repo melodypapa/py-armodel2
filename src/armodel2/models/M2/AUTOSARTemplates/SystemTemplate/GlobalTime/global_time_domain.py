@@ -71,14 +71,14 @@ class GlobalTimeDomain(FibexElement):
     _DESERIALIZE_DISPATCH = {
         "DEBOUNCE-TIME": lambda obj, elem: setattr(obj, "debounce_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "DOMAIN-ID": lambda obj, elem: setattr(obj, "domain_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "GATEWAIES": lambda obj, elem: obj.gatewaies.append(SerializationHelper.deserialize_by_tag(elem, "GlobalTimeGateway")),
+        "GATEWAYS": lambda obj, elem: obj.gatewaies.append(SerializationHelper.deserialize_by_tag(elem, "GlobalTimeGateway")),
         "GLOBAL-TIME": ("_POLYMORPHIC", "global_time", ["CanGlobalTimeDomainProps", "EthGlobalTimeDomainProps", "FrGlobalTimeDomainProps"]),
         "GLOBAL-TIME-MASTER": ("_POLYMORPHIC", "global_time_master", ["GlobalTimeCanMaster", "GlobalTimeEthMaster", "GlobalTimeFrMaster", "UserDefinedGlobalTimeMaster"]),
         "GLOBAL-TIME-SUB-REFS": lambda obj, elem: [obj.global_time_sub_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "NETWORK": lambda obj, elem: setattr(obj, "network", SerializationHelper.deserialize_by_tag(elem, "NetworkSegmentIdentification")),
         "OFFSET-TIME-REF": lambda obj, elem: setattr(obj, "offset_time_ref", ARRef.deserialize(elem)),
         "PDU-TRIGGERING-REF": lambda obj, elem: setattr(obj, "pdu_triggering_ref", ARRef.deserialize(elem)),
-        "SLAVES": ("_POLYMORPHIC_LIST", "slaves", ["GlobalTimeCanSlave", "GlobalTimeEthSlave", "GlobalTimeFrSlave", "UserDefinedGlobalTimeSlave"]),
+        "SLAFS": ("_POLYMORPHIC_LIST", "slaves", ["GlobalTimeCanSlave", "GlobalTimeEthSlave", "GlobalTimeFrSlave", "UserDefinedGlobalTimeSlave"]),
         "SYNC-LOSS": lambda obj, elem: setattr(obj, "sync_loss", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
@@ -149,9 +149,9 @@ class GlobalTimeDomain(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize gatewaies (list to container "GATEWAIES")
+        # Serialize gatewaies (list to container "GATEWAYS")
         if self.gatewaies:
-            wrapper = ET.Element("GATEWAIES")
+            wrapper = ET.Element("GATEWAYS")
             for item in self.gatewaies:
                 serialized = SerializationHelper.serialize_item(item, "GlobalTimeGateway")
                 if serialized is not None:
@@ -246,9 +246,9 @@ class GlobalTimeDomain(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize slaves (list to container "SLAVES")
+        # Serialize slaves (list to container "SLAFS")
         if self.slaves:
-            wrapper = ET.Element("SLAVES")
+            wrapper = ET.Element("SLAFS")
             for item in self.slaves:
                 serialized = SerializationHelper.serialize_item(item, "GlobalTimeSlave")
                 if serialized is not None:
@@ -293,7 +293,7 @@ class GlobalTimeDomain(FibexElement):
                 setattr(obj, "debounce_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "DOMAIN-ID":
                 setattr(obj, "domain_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "GATEWAIES":
+            elif tag == "GATEWAYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.gatewaies.append(SerializationHelper.deserialize_by_tag(item_elem, "GlobalTimeGateway"))
@@ -329,7 +329,7 @@ class GlobalTimeDomain(FibexElement):
                 setattr(obj, "offset_time_ref", ARRef.deserialize(child))
             elif tag == "PDU-TRIGGERING-REF":
                 setattr(obj, "pdu_triggering_ref", ARRef.deserialize(child))
-            elif tag == "SLAVES":
+            elif tag == "SLAFS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag

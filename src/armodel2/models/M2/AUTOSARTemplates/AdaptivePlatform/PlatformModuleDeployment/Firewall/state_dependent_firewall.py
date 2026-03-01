@@ -45,7 +45,7 @@ class StateDependentFirewall(ARElement):
     firewall_state_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "DEFAULT-ACTION": lambda obj, elem: setattr(obj, "default_action", SerializationHelper.deserialize_by_tag(elem, "FirewallActionEnum")),
-        "FIREWALL-RULE-PROPSES": lambda obj, elem: obj.firewall_rule_propses.append(SerializationHelper.deserialize_by_tag(elem, "FirewallRuleProps")),
+        "FIREWALL-RULE-PROPSS": lambda obj, elem: obj.firewall_rule_propses.append(SerializationHelper.deserialize_by_tag(elem, "FirewallRuleProps")),
         "FIREWALL-STATE-REFS": lambda obj, elem: [obj.firewall_state_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
@@ -94,9 +94,9 @@ class StateDependentFirewall(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize firewall_rule_propses (list to container "FIREWALL-RULE-PROPSES")
+        # Serialize firewall_rule_propses (list to container "FIREWALL-RULE-PROPSS")
         if self.firewall_rule_propses:
-            wrapper = ET.Element("FIREWALL-RULE-PROPSES")
+            wrapper = ET.Element("FIREWALL-RULE-PROPSS")
             for item in self.firewall_rule_propses:
                 serialized = SerializationHelper.serialize_item(item, "FirewallRuleProps")
                 if serialized is not None:
@@ -142,7 +142,7 @@ class StateDependentFirewall(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "DEFAULT-ACTION":
                 setattr(obj, "default_action", SerializationHelper.deserialize_by_tag(child, "FirewallActionEnum"))
-            elif tag == "FIREWALL-RULE-PROPSES":
+            elif tag == "FIREWALL-RULE-PROPSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.firewall_rule_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "FirewallRuleProps"))

@@ -60,7 +60,7 @@ class ContainerIPdu(IPdu):
     threshold_size: Optional[PositiveInteger]
     unused_bit: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "CONTAINED-I-PDU-PROPSES": lambda obj, elem: obj.contained_i_pdu_propses.append(SerializationHelper.deserialize_by_tag(elem, "ContainedIPduProps")),
+        "CONTAINED-I-PDU-PROPSS": lambda obj, elem: obj.contained_i_pdu_propses.append(SerializationHelper.deserialize_by_tag(elem, "ContainedIPduProps")),
         "CONTAINED-PDU-REFS": lambda obj, elem: [obj.contained_pdu_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "CONTAINER": lambda obj, elem: setattr(obj, "container", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "CONTAINER-TRIGGER-REF": lambda obj, elem: setattr(obj, "container_trigger_ref", ContainerIPduTriggerEnum.deserialize(elem)),
@@ -110,9 +110,9 @@ class ContainerIPdu(IPdu):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize contained_i_pdu_propses (list to container "CONTAINED-I-PDU-PROPSES")
+        # Serialize contained_i_pdu_propses (list to container "CONTAINED-I-PDU-PROPSS")
         if self.contained_i_pdu_propses:
-            wrapper = ET.Element("CONTAINED-I-PDU-PROPSES")
+            wrapper = ET.Element("CONTAINED-I-PDU-PROPSS")
             for item in self.contained_i_pdu_propses:
                 serialized = SerializationHelper.serialize_item(item, "ContainedIPduProps")
                 if serialized is not None:
@@ -268,7 +268,7 @@ class ContainerIPdu(IPdu):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONTAINED-I-PDU-PROPSES":
+            if tag == "CONTAINED-I-PDU-PROPSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.contained_i_pdu_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "ContainedIPduProps"))

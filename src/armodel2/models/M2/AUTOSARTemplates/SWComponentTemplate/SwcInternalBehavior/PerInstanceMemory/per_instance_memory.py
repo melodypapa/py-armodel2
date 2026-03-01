@@ -102,9 +102,14 @@ class PerInstanceMemory(Identifiable):
         if self.init_value is not None:
             serialized = SerializationHelper.serialize_item(self.init_value, "String")
             if serialized is not None:
-                # For polymorphic types, wrap the serialized element (preserving concrete type)
+                # For polymorphic types with primitive values, copy text content directly
                 wrapped = ET.Element("INIT-VALUE")
-                wrapped.append(serialized)
+                if serialized.text and not list(serialized):
+                    # Simple primitive with just text content - copy text directly
+                    wrapped.text = serialized.text
+                else:
+                    # Complex type - append the serialized element
+                    wrapped.append(serialized)
                 elem.append(wrapped)
 
         # Serialize sw_data_def_props

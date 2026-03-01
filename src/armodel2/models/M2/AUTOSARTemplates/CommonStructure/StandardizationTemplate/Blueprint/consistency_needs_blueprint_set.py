@@ -38,7 +38,7 @@ class ConsistencyNeedsBlueprintSet(ARElement):
 
     consistency_needses: list[ConsistencyNeeds]
     _DESERIALIZE_DISPATCH = {
-        "CONSISTENCY-NEEDSES": lambda obj, elem: obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(elem, "ConsistencyNeeds")),
+        "CONSISTENCY-NEEDSS": lambda obj, elem: obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(elem, "ConsistencyNeeds")),
     }
 
 
@@ -70,9 +70,9 @@ class ConsistencyNeedsBlueprintSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize consistency_needses (list to container "CONSISTENCY-NEEDSES")
+        # Serialize consistency_needses (list to container "CONSISTENCY-NEEDSS")
         if self.consistency_needses:
-            wrapper = ET.Element("CONSISTENCY-NEEDSES")
+            wrapper = ET.Element("CONSISTENCY-NEEDSS")
             for item in self.consistency_needses:
                 serialized = SerializationHelper.serialize_item(item, "ConsistencyNeeds")
                 if serialized is not None:
@@ -99,7 +99,7 @@ class ConsistencyNeedsBlueprintSet(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONSISTENCY-NEEDSES":
+            if tag == "CONSISTENCY-NEEDSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(item_elem, "ConsistencyNeeds"))

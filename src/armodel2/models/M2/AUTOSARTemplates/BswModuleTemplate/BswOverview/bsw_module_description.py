@@ -85,7 +85,7 @@ class BswModuleDescription(ARElement):
     required_mode_groups: list[ModeDeclarationGroup]
     required_triggers: list[Trigger]
     _DESERIALIZE_DISPATCH = {
-        "BSW-MODULES-DEPENDENCIES": lambda obj, elem: obj.bsw_modules_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleDependency")),
+        "BSW-MODULES-DEPENDENCYS": lambda obj, elem: obj.bsw_modules_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleDependency")),
         "BSW-MODULE-DOCUMENTATION": lambda obj, elem: setattr(obj, "bsw_module_documentation", SerializationHelper.deserialize_by_tag(elem, "SwComponentDocumentation")),
         "EXPECTED-ENTRY-REFS": lambda obj, elem: [obj.expected_entry_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "IMPLEMENTED-ENTRY-REFS": lambda obj, elem: [obj.implemented_entry_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
@@ -165,9 +165,9 @@ class BswModuleDescription(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize bsw_modules_dependencies (list to container "BSW-MODULES-DEPENDENCIES")
+        # Serialize bsw_modules_dependencies (list to container "BSW-MODULES-DEPENDENCYS")
         if self.bsw_modules_dependencies:
-            wrapper = ET.Element("BSW-MODULES-DEPENDENCIES")
+            wrapper = ET.Element("BSW-MODULES-DEPENDENCYS")
             for item in self.bsw_modules_dependencies:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleDependency")
                 if serialized is not None:
@@ -346,7 +346,7 @@ class BswModuleDescription(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "BSW-MODULES-DEPENDENCIES":
+            if tag == "BSW-MODULES-DEPENDENCYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.bsw_modules_dependencies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleDependency"))

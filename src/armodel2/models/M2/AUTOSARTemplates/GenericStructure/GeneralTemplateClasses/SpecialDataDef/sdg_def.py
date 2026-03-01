@@ -39,7 +39,7 @@ class SdgDef(ARElement):
 
     sdg_classes: list[SdgClass]
     _DESERIALIZE_DISPATCH = {
-        "SDG-CLASSES": lambda obj, elem: obj.sdg_classes.append(SerializationHelper.deserialize_by_tag(elem, "SdgClass")),
+        "SDG-CLASSS": lambda obj, elem: obj.sdg_classes.append(SerializationHelper.deserialize_by_tag(elem, "SdgClass")),
     }
 
 
@@ -71,9 +71,9 @@ class SdgDef(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sdg_classes (list to container "SDG-CLASSES")
+        # Serialize sdg_classes (list to container "SDG-CLASSS")
         if self.sdg_classes:
-            wrapper = ET.Element("SDG-CLASSES")
+            wrapper = ET.Element("SDG-CLASSS")
             for item in self.sdg_classes:
                 serialized = SerializationHelper.serialize_item(item, "SdgClass")
                 if serialized is not None:
@@ -100,7 +100,7 @@ class SdgDef(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "SDG-CLASSES":
+            if tag == "SDG-CLASSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.sdg_classes.append(SerializationHelper.deserialize_by_tag(item_elem, "SdgClass"))

@@ -46,7 +46,7 @@ class LinScheduleTable(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "RESUME-POSITION": lambda obj, elem: setattr(obj, "resume_position", ResumePosition.deserialize(elem)),
         "RUN-MODE": lambda obj, elem: setattr(obj, "run_mode", RunMode.deserialize(elem)),
-        "TABLE-ENTRIES": ("_POLYMORPHIC_LIST", "table_entries", ["ApplicationEntry", "AssignFrameId", "AssignFrameIdRange", "AssignNad", "ConditionalChangeNad", "DataDumpEntry", "FreeFormat", "FreeFormatEntry", "LinConfigurationEntry", "SaveConfigurationEntry", "UnassignFrameId"]),
+        "TABLE-ENTRYS": ("_POLYMORPHIC_LIST", "table_entries", ["ApplicationEntry", "AssignFrameId", "AssignFrameIdRange", "AssignNad", "ConditionalChangeNad", "DataDumpEntry", "FreeFormat", "FreeFormatEntry", "LinConfigurationEntry", "SaveConfigurationEntry", "UnassignFrameId"]),
     }
 
 
@@ -108,9 +108,9 @@ class LinScheduleTable(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize table_entries (list to container "TABLE-ENTRIES")
+        # Serialize table_entries (list to container "TABLE-ENTRYS")
         if self.table_entries:
-            wrapper = ET.Element("TABLE-ENTRIES")
+            wrapper = ET.Element("TABLE-ENTRYS")
             for item in self.table_entries:
                 serialized = SerializationHelper.serialize_item(item, "ScheduleTableEntry")
                 if serialized is not None:
@@ -141,7 +141,7 @@ class LinScheduleTable(Identifiable):
                 setattr(obj, "resume_position", ResumePosition.deserialize(child))
             elif tag == "RUN-MODE":
                 setattr(obj, "run_mode", RunMode.deserialize(child))
-            elif tag == "TABLE-ENTRIES":
+            elif tag == "TABLE-ENTRYS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag

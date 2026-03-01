@@ -47,7 +47,7 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
     _DESERIALIZE_DISPATCH = {
         "LOCAL-UNICAST-REF": lambda obj, elem: setattr(obj, "local_unicast_ref", ARRef.deserialize(elem)),
         "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "PROVIDED-DDSES": ("_POLYMORPHIC_LIST", "provided_ddses", ["DdsCpConsumedServiceInstance", "DdsCpProvidedServiceInstance"]),
+        "PROVIDED-DDSS": ("_POLYMORPHIC_LIST", "provided_ddses", ["DdsCpConsumedServiceInstance", "DdsCpProvidedServiceInstance"]),
         "STATIC-REMOTE-REFS": lambda obj, elem: [obj.static_remote_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
@@ -111,9 +111,9 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize provided_ddses (list to container "PROVIDED-DDSES")
+        # Serialize provided_ddses (list to container "PROVIDED-DDSS")
         if self.provided_ddses:
-            wrapper = ET.Element("PROVIDED-DDSES")
+            wrapper = ET.Element("PROVIDED-DDSS")
             for item in self.provided_ddses:
                 serialized = SerializationHelper.serialize_item(item, "DdsCpServiceInstance")
                 if serialized is not None:
@@ -161,7 +161,7 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
                 setattr(obj, "local_unicast_ref", ARRef.deserialize(child))
             elif tag == "MINOR-VERSION":
                 setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "PROVIDED-DDSES":
+            elif tag == "PROVIDED-DDSS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag

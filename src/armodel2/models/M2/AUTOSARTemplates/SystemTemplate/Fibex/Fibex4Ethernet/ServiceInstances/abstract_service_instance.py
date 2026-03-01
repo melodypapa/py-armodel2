@@ -49,7 +49,7 @@ class AbstractServiceInstance(Identifiable, ABC):
     method: Optional[PduActivationRoutingGroup]
     routing_group_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CAPABILITIES": lambda obj, elem: obj.capabilities.append(SerializationHelper.deserialize_by_tag(elem, "TagWithOptionalValue")),
+        "CAPABILITYS": lambda obj, elem: obj.capabilities.append(SerializationHelper.deserialize_by_tag(elem, "TagWithOptionalValue")),
         "MAJOR-VERSION": lambda obj, elem: setattr(obj, "major_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "METHOD": lambda obj, elem: setattr(obj, "method", SerializationHelper.deserialize_by_tag(elem, "PduActivationRoutingGroup")),
         "ROUTING-GROUP-REFS": lambda obj, elem: [obj.routing_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
@@ -87,9 +87,9 @@ class AbstractServiceInstance(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize capabilities (list to container "CAPABILITIES")
+        # Serialize capabilities (list to container "CAPABILITYS")
         if self.capabilities:
-            wrapper = ET.Element("CAPABILITIES")
+            wrapper = ET.Element("CAPABILITYS")
             for item in self.capabilities:
                 serialized = SerializationHelper.serialize_item(item, "TagWithOptionalValue")
                 if serialized is not None:
@@ -161,7 +161,7 @@ class AbstractServiceInstance(Identifiable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CAPABILITIES":
+            if tag == "CAPABILITYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.capabilities.append(SerializationHelper.deserialize_by_tag(item_elem, "TagWithOptionalValue"))

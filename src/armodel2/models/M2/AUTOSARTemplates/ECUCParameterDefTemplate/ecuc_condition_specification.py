@@ -43,7 +43,7 @@ class EcucConditionSpecification(ARObject):
     informal_formula: Optional[MlFormula]
     _DESERIALIZE_DISPATCH = {
         "CONDITION": lambda obj, elem: setattr(obj, "condition", SerializationHelper.deserialize_by_tag(elem, "EcucConditionFormula")),
-        "ECUC-QUERIES": lambda obj, elem: obj.ecuc_queries.append(SerializationHelper.deserialize_by_tag(elem, "EcucQuery")),
+        "ECUC-QUERYS": lambda obj, elem: obj.ecuc_queries.append(SerializationHelper.deserialize_by_tag(elem, "EcucQuery")),
         "INFORMAL-FORMULA": lambda obj, elem: setattr(obj, "informal_formula", SerializationHelper.deserialize_by_tag(elem, "MlFormula")),
     }
 
@@ -92,9 +92,9 @@ class EcucConditionSpecification(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecuc_queries (list to container "ECUC-QUERIES")
+        # Serialize ecuc_queries (list to container "ECUC-QUERYS")
         if self.ecuc_queries:
-            wrapper = ET.Element("ECUC-QUERIES")
+            wrapper = ET.Element("ECUC-QUERYS")
             for item in self.ecuc_queries:
                 serialized = SerializationHelper.serialize_item(item, "EcucQuery")
                 if serialized is not None:
@@ -137,7 +137,7 @@ class EcucConditionSpecification(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "CONDITION":
                 setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child, "EcucConditionFormula"))
-            elif tag == "ECUC-QUERIES":
+            elif tag == "ECUC-QUERYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.ecuc_queries.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucQuery"))

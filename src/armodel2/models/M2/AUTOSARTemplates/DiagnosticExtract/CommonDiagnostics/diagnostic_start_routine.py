@@ -40,7 +40,7 @@ class DiagnosticStartRoutine(DiagnosticRoutineSubfunction):
     responses: list[DiagnosticParameter]
     _DESERIALIZE_DISPATCH = {
         "REQUESTS": lambda obj, elem: obj.requests.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
-        "RESPONSES": lambda obj, elem: obj.responses.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
+        "RESPONSS": lambda obj, elem: obj.responses.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
     }
 
 
@@ -83,9 +83,9 @@ class DiagnosticStartRoutine(DiagnosticRoutineSubfunction):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize responses (list to container "RESPONSES")
+        # Serialize responses (list to container "RESPONSS")
         if self.responses:
-            wrapper = ET.Element("RESPONSES")
+            wrapper = ET.Element("RESPONSS")
             for item in self.responses:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticParameter")
                 if serialized is not None:
@@ -116,7 +116,7 @@ class DiagnosticStartRoutine(DiagnosticRoutineSubfunction):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.requests.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticParameter"))
-            elif tag == "RESPONSES":
+            elif tag == "RESPONSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.responses.append(SerializationHelper.deserialize_by_tag(item_elem, "DiagnosticParameter"))

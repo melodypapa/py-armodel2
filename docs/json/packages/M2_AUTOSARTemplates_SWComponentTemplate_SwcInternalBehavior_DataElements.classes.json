@@ -55,7 +55,7 @@
     },
     {
       "name": "AutosarVariableRef",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements",
       "is_abstract": false,
       "atp_type": null,
@@ -94,9 +94,16 @@
       ],
       "attributes": {
         "autosarVariable": {
-          "type": "any (ArVariableIn)",
+          "type": "VariableInAtomicSWCTypeInstanceRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "iref",
+          "is_ref": true,
+          "note": "This is used if the target variable is inside of variableData"
+        },
+        "autosarVariableInImplDatatype": {
+          "type": "ArVariableInImplementationDataInstanceRef",
+          "multiplicity": "0..1",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This is used if the target variable is inside of variableData"
         },
@@ -169,7 +176,7 @@
     },
     {
       "name": "VariableAccess",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements",
       "is_abstract": false,
       "atp_type": null,
@@ -231,8 +238,8 @@
         "accessedVariable": {
           "type": "AutosarVariableRef",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "This denotes the accessed variable."
         },
         "scope": {

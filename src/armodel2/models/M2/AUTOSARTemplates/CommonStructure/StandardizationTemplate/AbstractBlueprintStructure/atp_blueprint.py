@@ -38,7 +38,7 @@ class AtpBlueprint(Identifiable, ABC):
 
     blueprint_policies: list[BlueprintPolicy]
     _DESERIALIZE_DISPATCH = {
-        "BLUEPRINT-POLICIES": ("_POLYMORPHIC_LIST", "blueprint_policies", ["BlueprintPolicyModifiable", "BlueprintPolicyNotModifiable"]),
+        "BLUEPRINT-POLICYS": ("_POLYMORPHIC_LIST", "blueprint_policies", ["BlueprintPolicyModifiable", "BlueprintPolicyNotModifiable"]),
     }
 
 
@@ -70,9 +70,9 @@ class AtpBlueprint(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize blueprint_policies (list to container "BLUEPRINT-POLICIES")
+        # Serialize blueprint_policies (list to container "BLUEPRINT-POLICYS")
         if self.blueprint_policies:
-            wrapper = ET.Element("BLUEPRINT-POLICIES")
+            wrapper = ET.Element("BLUEPRINT-POLICYS")
             for item in self.blueprint_policies:
                 serialized = SerializationHelper.serialize_item(item, "BlueprintPolicy")
                 if serialized is not None:
@@ -99,7 +99,7 @@ class AtpBlueprint(Identifiable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "BLUEPRINT-POLICIES":
+            if tag == "BLUEPRINT-POLICYS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag

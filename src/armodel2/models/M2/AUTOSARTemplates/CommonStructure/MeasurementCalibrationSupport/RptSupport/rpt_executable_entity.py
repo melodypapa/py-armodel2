@@ -44,7 +44,7 @@ class RptExecutableEntity(Identifiable):
     rpt_writes: list[RoleBasedMcDataAssignment]
     symbol: Optional[CIdentifier]
     _DESERIALIZE_DISPATCH = {
-        "RPT-EXECUTABLE-ENTITIES": lambda obj, elem: obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(elem, "RptExecutableEntity")),
+        "RPT-EXECUTABLE-ENTITYS": lambda obj, elem: obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(elem, "RptExecutableEntity")),
         "RPT-READS": lambda obj, elem: obj.rpt_reads.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
         "RPT-WRITES": lambda obj, elem: obj.rpt_writes.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
         "SYMBOL": lambda obj, elem: setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
@@ -82,9 +82,9 @@ class RptExecutableEntity(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize rpt_executable_entities (list to container "RPT-EXECUTABLE-ENTITIES")
+        # Serialize rpt_executable_entities (list to container "RPT-EXECUTABLE-ENTITYS")
         if self.rpt_executable_entities:
-            wrapper = ET.Element("RPT-EXECUTABLE-ENTITIES")
+            wrapper = ET.Element("RPT-EXECUTABLE-ENTITYS")
             for item in self.rpt_executable_entities:
                 serialized = SerializationHelper.serialize_item(item, "RptExecutableEntity")
                 if serialized is not None:
@@ -145,7 +145,7 @@ class RptExecutableEntity(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "RPT-EXECUTABLE-ENTITIES":
+            if tag == "RPT-EXECUTABLE-ENTITYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(item_elem, "RptExecutableEntity"))

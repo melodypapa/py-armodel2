@@ -37,7 +37,7 @@ class SecureCommunicationPropsSet(FibexElement):
     freshness_propses: list[Any]
     _DESERIALIZE_DISPATCH = {
         "AUTHENTICATIONS": lambda obj, elem: obj.authentications.append(SerializationHelper.deserialize_by_tag(elem, "any (SecureCommunication)")),
-        "FRESHNESS-PROPSES": lambda obj, elem: obj.freshness_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SecureCommunication)")),
+        "FRESHNESS-PROPSS": lambda obj, elem: obj.freshness_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SecureCommunication)")),
     }
 
 
@@ -80,9 +80,9 @@ class SecureCommunicationPropsSet(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize freshness_propses (list to container "FRESHNESS-PROPSES")
+        # Serialize freshness_propses (list to container "FRESHNESS-PROPSS")
         if self.freshness_propses:
-            wrapper = ET.Element("FRESHNESS-PROPSES")
+            wrapper = ET.Element("FRESHNESS-PROPSS")
             for item in self.freshness_propses:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -113,7 +113,7 @@ class SecureCommunicationPropsSet(FibexElement):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.authentications.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SecureCommunication)"))
-            elif tag == "FRESHNESS-PROPSES":
+            elif tag == "FRESHNESS-PROPSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.freshness_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SecureCommunication)"))

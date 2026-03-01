@@ -195,10 +195,12 @@ def _generate_dispatch_table(
                 singular_xml_tag = snake_name.upper().replace("_", "-")
                 xml_tag = f"{singular_xml_tag}-REFS"
             else:
-                # For non-reference lists, pluralize the tag
-                from ._common import to_plural as pluralize_snake
-                plural_snake = pluralize_snake(snake_name)
-                xml_tag = plural_snake.upper().replace("_", "-")
+                # For non-reference lists, use AUTOSAR-style pluralization (always add 'S')
+                # AUTOSAR XML uses simple 'S' suffix, not English plural rules
+                # e.g., MEMORY -> MEMORYS (not MEMORIES), POLICY -> POLICYS (not POLICIES)
+                from ._common import to_autosar_plural
+                autosar_plural = to_autosar_plural(snake_name.upper().replace("_", "-"))
+                xml_tag = autosar_plural
 
         # Add -REF suffix for non-list reference attributes
         if is_ref and multiplicity not in ("*", "0..*", "1..*") and kind != "iref":
@@ -1340,10 +1342,12 @@ def _generate_deserialize_method(
                     singular_xml_tag = snake_name.upper().replace("_", "-")
                     xml_tag = f"{singular_xml_tag}-IREFS"
                 else:
-                    # For non-reference lists, pluralize the tag
-                    from ._common import to_plural as pluralize_snake
-                    plural_snake = pluralize_snake(snake_name)
-                    xml_tag = plural_snake.upper().replace("_", "-")
+                    # For non-reference lists, use AUTOSAR-style pluralization (always add 'S')
+                    # AUTOSAR XML uses simple 'S' suffix, not English plural rules
+                    # e.g., MEMORY -> MEMORYS (not MEMORIES), POLICY -> POLICYS (not POLICIES)
+                    from ._common import to_autosar_plural
+                    autosar_plural = to_autosar_plural(snake_name.upper().replace("_", "-"))
+                    xml_tag = autosar_plural
 
             # Add -REF suffix for non-list reference attributes
             if is_ref and multiplicity not in ("*", "0..*", "1..*") and kind != "iref":
@@ -3210,10 +3214,12 @@ def _generate_serialize_method(
             # This creates container tags like SUB-ELEMENTS for subElement JSON attribute
             # For reference attributes, the container tag will be created as SINGULAR-REFS below
             if multiplicity in ("*", "0..*"):
-                # Pluralize the xml_tag for container elements
-                from ._common import to_plural as pluralize_snake
-                plural_snake = pluralize_snake(snake_name)
-                xml_tag = plural_snake.upper().replace("_", "-")
+                # Use AUTOSAR-style pluralization (always add 'S')
+                # AUTOSAR XML uses simple 'S' suffix, not English plural rules
+                # e.g., MEMORY -> MEMORYS (not MEMORIES), POLICY -> POLICYS (not POLICIES)
+                from ._common import to_autosar_plural
+                autosar_plural = to_autosar_plural(snake_name.upper().replace("_", "-"))
+                xml_tag = autosar_plural
 
             # Add -TREF or -REF suffix for reference attributes with multiplicity != "*"
             # Container elements (multiplicity "*") should not have -REF suffix
@@ -3449,10 +3455,12 @@ def _generate_serialize_method(
                             container_tag = f"{singular_xml_tag}-REFS"
                         else:
                             # For non-reference lists, container is PLURAL-NAME
-                            # Use python_name (already pluralized) to handle irregular plurals like entity → entities
-                            # e.g., entity → entities → ENTITIES, perInstanceMemory → perInstanceMemorys → PER-INSTANCE-MEMORYS
-                            plural_xml_tag = NameConverter.to_xml_tag(python_name)
-                            container_tag = plural_xml_tag
+                            # Use AUTOSAR simple plural rule: always add 'S'
+                            # e.g., PER-INSTANCE-MEMORY → PER-INSTANCE-MEMORYS (not MEMORIES)
+                            # e.g., RUNNABLE → RUNNABLES (not RUNNABLES)
+                            singular_xml_tag = NameConverter.to_xml_tag(attr_name)
+                            from ._common import to_autosar_plural
+                            container_tag = to_autosar_plural(singular_xml_tag)
 
                     # Handle no container case (direct children)
                     if container_tag is None:
@@ -3649,7 +3657,29 @@ def _generate_serialize_method(
                     if not wrapper_tag:
                         wrapper_tag = xml_tag
 
-                    code += f'''        # Serialize {python_name} (polymorphic wrapper "{wrapper_tag}")
+                    # Check if the effective_type is a primitive type (String, Integer, etc.)
+                    # For primitive types, copy text content directly instead of wrapping
+                    primitive_types = {"String", "Integer", "Float", "Boolean", "PositiveInteger"}
+                    is_primitive = effective_type in primitive_types
+
+                    if is_primitive:
+                        code += f'''        # Serialize {python_name} (polymorphic wrapper "{wrapper_tag}")
+        if self.{python_name} is not None:
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                # For polymorphic types with primitive values, copy text content directly
+                wrapped = ET.Element("{wrapper_tag}")
+                if serialized.text and not list(serialized):
+                    # Simple primitive with just text content - copy text directly
+                    wrapped.text = serialized.text
+                else:
+                    # Complex type - append the serialized element
+                    wrapped.append(serialized)
+                elem.append(wrapped)
+
+'''
+                    else:
+                        code += f'''        # Serialize {python_name} (polymorphic wrapper "{wrapper_tag}")
         if self.{python_name} is not None:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:

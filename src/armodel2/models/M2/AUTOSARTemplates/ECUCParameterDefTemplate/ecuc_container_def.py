@@ -51,7 +51,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
     requires_index: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
         "DESTINATION-URI-REFS": lambda obj, elem: [obj.destination_uri_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "MULTIPLICITIES": lambda obj, elem: obj.multiplicities.append(SerializationHelper.deserialize_by_tag(elem, "EcucMultiplicityConfigurationClass")),
+        "MULTIPLICITYS": lambda obj, elem: obj.multiplicities.append(SerializationHelper.deserialize_by_tag(elem, "EcucMultiplicityConfigurationClass")),
         "ORIGIN": lambda obj, elem: setattr(obj, "origin", SerializationHelper.deserialize_by_tag(elem, "String")),
         "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "REQUIRES-INDEX": lambda obj, elem: setattr(obj, "requires_index", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
@@ -107,9 +107,9 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize multiplicities (list to container "MULTIPLICITIES")
+        # Serialize multiplicities (list to container "MULTIPLICITYS")
         if self.multiplicities:
-            wrapper = ET.Element("MULTIPLICITIES")
+            wrapper = ET.Element("MULTIPLICITYS")
             for item in self.multiplicities:
                 serialized = SerializationHelper.serialize_item(item, "EcucMultiplicityConfigurationClass")
                 if serialized is not None:
@@ -182,7 +182,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.destination_uri_refs.append(ARRef.deserialize(item_elem))
-            elif tag == "MULTIPLICITIES":
+            elif tag == "MULTIPLICITYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.multiplicities.append(SerializationHelper.deserialize_by_tag(item_elem, "EcucMultiplicityConfigurationClass"))

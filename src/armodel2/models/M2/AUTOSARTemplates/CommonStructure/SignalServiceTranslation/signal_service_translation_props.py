@@ -55,7 +55,7 @@ class SignalServiceTranslationProps(Identifiable):
         "CONTROL-PNC-REFS": lambda obj, elem: [obj.control_pnc_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "CONTROL-PROVIDED-REFS": lambda obj, elem: [obj.control_provided_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SERVICE-CONTROL": lambda obj, elem: setattr(obj, "service_control", SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
-        "SIGNAL-SERVICE-EVENT-PROPSES": lambda obj, elem: obj.signal_service_event_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
+        "SIGNAL-SERVICE-EVENT-PROPSS": lambda obj, elem: obj.signal_service_event_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
     }
 
 
@@ -156,9 +156,9 @@ class SignalServiceTranslationProps(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize signal_service_event_propses (list to container "SIGNAL-SERVICE-EVENT-PROPSES")
+        # Serialize signal_service_event_propses (list to container "SIGNAL-SERVICE-EVENT-PROPSS")
         if self.signal_service_event_propses:
-            wrapper = ET.Element("SIGNAL-SERVICE-EVENT-PROPSES")
+            wrapper = ET.Element("SIGNAL-SERVICE-EVENT-PROPSS")
             for item in self.signal_service_event_propses:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -199,7 +199,7 @@ class SignalServiceTranslationProps(Identifiable):
                     obj.control_provided_refs.append(ARRef.deserialize(item_elem))
             elif tag == "SERVICE-CONTROL":
                 setattr(obj, "service_control", SerializationHelper.deserialize_by_tag(child, "any (SignalService)"))
-            elif tag == "SIGNAL-SERVICE-EVENT-PROPSES":
+            elif tag == "SIGNAL-SERVICE-EVENT-PROPSS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.signal_service_event_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SignalService)"))

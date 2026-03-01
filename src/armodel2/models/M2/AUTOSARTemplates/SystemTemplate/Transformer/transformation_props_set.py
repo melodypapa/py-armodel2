@@ -38,7 +38,7 @@ class TransformationPropsSet(ARElement):
 
     transformation_props_propses: list[TransformationProps]
     _DESERIALIZE_DISPATCH = {
-        "TRANSFORMATION-PROPS-PROPSES": ("_POLYMORPHIC_LIST", "transformation_props_propses", ["SOMEIPTransformationProps", "UserDefinedTransformationProps"]),
+        "TRANSFORMATION-PROPS-PROPSS": ("_POLYMORPHIC_LIST", "transformation_props_propses", ["SOMEIPTransformationProps", "UserDefinedTransformationProps"]),
     }
 
 
@@ -70,9 +70,9 @@ class TransformationPropsSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize transformation_props_propses (list to container "TRANSFORMATION-PROPS-PROPSES")
+        # Serialize transformation_props_propses (list to container "TRANSFORMATION-PROPS-PROPSS")
         if self.transformation_props_propses:
-            wrapper = ET.Element("TRANSFORMATION-PROPS-PROPSES")
+            wrapper = ET.Element("TRANSFORMATION-PROPS-PROPSS")
             for item in self.transformation_props_propses:
                 serialized = SerializationHelper.serialize_item(item, "TransformationProps")
                 if serialized is not None:
@@ -99,7 +99,7 @@ class TransformationPropsSet(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "TRANSFORMATION-PROPS-PROPSES":
+            if tag == "TRANSFORMATION-PROPS-PROPSS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag

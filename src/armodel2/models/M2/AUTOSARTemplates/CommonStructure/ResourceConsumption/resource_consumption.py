@@ -65,7 +65,7 @@ class ResourceConsumption(Identifiable):
         "EXECUTION-TIMES": ("_POLYMORPHIC_LIST", "execution_times", ["AnalyzedExecutionTime", "MeasuredExecutionTime", "RoughEstimateOfExecutionTime", "Simulated"]),
         "HEAP-USAGES": ("_POLYMORPHIC_LIST", "heap_usages", ["MeasuredHeapUsage", "RoughEstimateHeapUsage", "WorstCaseHeapUsage"]),
         "MEMORY-SECTIONS": lambda obj, elem: obj.memory_sections.append(SerializationHelper.deserialize_by_tag(elem, "MemorySection")),
-        "SECTION-NAME-PREFIXES": lambda obj, elem: obj.section_name_prefixes.append(SerializationHelper.deserialize_by_tag(elem, "SectionNamePrefix")),
+        "SECTION-NAME-PREFIXS": lambda obj, elem: obj.section_name_prefixes.append(SerializationHelper.deserialize_by_tag(elem, "SectionNamePrefix")),
         "STACK-USAGES": ("_POLYMORPHIC_LIST", "stack_usages", ["MeasuredStackUsage", "RoughEstimateStackUsage", "WorstCaseStackUsage"]),
     }
 
@@ -150,9 +150,9 @@ class ResourceConsumption(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize section_name_prefixes (list to container "SECTION-NAME-PREFIXES")
+        # Serialize section_name_prefixes (list to container "SECTION-NAME-PREFIXS")
         if self.section_name_prefixes:
-            wrapper = ET.Element("SECTION-NAME-PREFIXES")
+            wrapper = ET.Element("SECTION-NAME-PREFIXS")
             for item in self.section_name_prefixes:
                 serialized = SerializationHelper.serialize_item(item, "SectionNamePrefix")
                 if serialized is not None:
@@ -219,7 +219,7 @@ class ResourceConsumption(Identifiable):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.memory_sections.append(SerializationHelper.deserialize_by_tag(item_elem, "MemorySection"))
-            elif tag == "SECTION-NAME-PREFIXES":
+            elif tag == "SECTION-NAME-PREFIXS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.section_name_prefixes.append(SerializationHelper.deserialize_by_tag(item_elem, "SectionNamePrefix"))

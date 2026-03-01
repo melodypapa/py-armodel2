@@ -17,7 +17,6 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import AbstractAccessPointBuilder
-from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements import (
     VariableAccessScopeEnum,
 )
@@ -46,10 +45,10 @@ class VariableAccess(AbstractAccessPoint):
     _XML_TAG = "VARIABLE-ACCESS"
 
 
-    accessed_variable_ref: Optional[ARRef]
+    accessed_variable: Optional[AutosarVariableRef]
     scope: Optional[VariableAccessScopeEnum]
     _DESERIALIZE_DISPATCH = {
-        "ACCESSED-VARIABLE-REF": lambda obj, elem: setattr(obj, "accessed_variable_ref", ARRef.deserialize(elem)),
+        "ACCESSED-VARIABLE": lambda obj, elem: setattr(obj, "accessed_variable", SerializationHelper.deserialize_by_tag(elem, "AutosarVariableRef")),
         "SCOPE": lambda obj, elem: setattr(obj, "scope", VariableAccessScopeEnum.deserialize(elem)),
     }
 
@@ -57,7 +56,7 @@ class VariableAccess(AbstractAccessPoint):
     def __init__(self) -> None:
         """Initialize VariableAccess."""
         super().__init__()
-        self.accessed_variable_ref: Optional[ARRef] = None
+        self.accessed_variable: Optional[AutosarVariableRef] = None
         self.scope: Optional[VariableAccessScopeEnum] = None
 
     def serialize(self) -> ET.Element:
@@ -83,12 +82,12 @@ class VariableAccess(AbstractAccessPoint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize accessed_variable_ref
-        if self.accessed_variable_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.accessed_variable_ref, "AutosarVariableRef")
+        # Serialize accessed_variable
+        if self.accessed_variable is not None:
+            serialized = SerializationHelper.serialize_item(self.accessed_variable, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ACCESSED-VARIABLE-REF")
+                wrapped = ET.Element("ACCESSED-VARIABLE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -130,8 +129,8 @@ class VariableAccess(AbstractAccessPoint):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ACCESSED-VARIABLE-REF":
-                setattr(obj, "accessed_variable_ref", ARRef.deserialize(child))
+            if tag == "ACCESSED-VARIABLE":
+                setattr(obj, "accessed_variable", SerializationHelper.deserialize_by_tag(child, "AutosarVariableRef"))
             elif tag == "SCOPE":
                 setattr(obj, "scope", VariableAccessScopeEnum.deserialize(child))
 

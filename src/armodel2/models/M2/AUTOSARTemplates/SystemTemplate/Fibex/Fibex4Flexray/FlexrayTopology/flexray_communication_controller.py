@@ -78,7 +78,7 @@ class FlexrayCommunicationController(ARObject):
         "EXTERN-OFFSET": lambda obj, elem: setattr(obj, "extern_offset", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "EXTERN-RATE": lambda obj, elem: setattr(obj, "extern_rate", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "FALL-BACK-INTERNAL": lambda obj, elem: setattr(obj, "fall_back_internal", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "FLEXRAY-FIFOES": lambda obj, elem: obj.flexray_fifoes.append(SerializationHelper.deserialize_by_tag(elem, "any (FlexrayFifo)")),
+        "FLEXRAY-FIFOS": lambda obj, elem: obj.flexray_fifoes.append(SerializationHelper.deserialize_by_tag(elem, "any (FlexrayFifo)")),
         "KEY-SLOT-ID": lambda obj, elem: setattr(obj, "key_slot_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "KEY-SLOT-ONLY": lambda obj, elem: setattr(obj, "key_slot_only", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "KEY-SLOT-USED-FOR": lambda obj, elem: setattr(obj, "key_slot_used_for", SerializationHelper.deserialize_by_tag(elem, "Boolean")),

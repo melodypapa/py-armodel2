@@ -7,7 +7,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_ServiceMapping.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_dependency import (
@@ -23,6 +23,9 @@ from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_ne
 if TYPE_CHECKING:
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
         PortGroup,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.role_based_data_assignment import (
+        RoleBasedDataAssignment,
     )
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServiceMapping.role_based_port_assignment import (
         RoleBasedPortAssignment,
@@ -47,14 +50,14 @@ class SwcServiceDependency(ServiceDependency):
     _XML_TAG = "SWC-SERVICE-DEPENDENCY"
 
 
-    assigned_datas: list[Any]
+    assigned_datas: list[RoleBasedDataAssignment]
     assigned_ports: list[RoleBasedPortAssignment]
-    represented_port_ref: Optional[ARRef]
+    represented_port_group_ref: Optional[ARRef]
     service_needs: Optional[ServiceNeeds]
     _DESERIALIZE_DISPATCH = {
-        "ASSIGNED-DATAS": lambda obj, elem: obj.assigned_datas.append(SerializationHelper.deserialize_by_tag(elem, "any (RoleBasedData)")),
+        "ASSIGNED-DATAS": lambda obj, elem: obj.assigned_datas.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedDataAssignment")),
         "ASSIGNED-PORTS": lambda obj, elem: obj.assigned_ports.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedPortAssignment")),
-        "REPRESENTED-PORT-REF": lambda obj, elem: setattr(obj, "represented_port_ref", ARRef.deserialize(elem)),
+        "REPRESENTED-PORT-GROUP-REF": lambda obj, elem: setattr(obj, "represented_port_group_ref", ARRef.deserialize(elem)),
         "SERVICE-NEEDS": ("_POLYMORPHIC", "service_needs", ["BswMgrNeeds", "ComMgrUserNeeds", "CryptoKeyManagementNeeds", "CryptoServiceJobNeeds", "CryptoServiceNeeds", "DiagnosticCapabilityElement", "DiagnosticCommunicationManagerNeeds", "DiagnosticComponentNeeds", "DiagnosticControlNeeds", "DiagnosticEnableConditionNeeds", "DiagnosticEventInfoNeeds", "DiagnosticEventManagerNeeds", "DiagnosticEventNeeds", "DiagnosticIoControlNeeds", "DiagnosticOperationCycleNeeds", "DiagnosticRequestFileTransferNeeds", "DiagnosticRoutineNeeds", "DiagnosticStorageConditionNeeds", "DiagnosticUploadDownloadNeeds", "DiagnosticValueNeeds", "DiagnosticsCommunicationSecurityNeeds", "DltUserNeeds", "DoIpActivationLineNeeds", "DoIpGidNeeds", "DoIpGidSynchronizationNeeds", "DoIpPowerModeStatusNeeds", "DoIpRoutingActivationAuthenticationNeeds", "DoIpRoutingActivationConfirmationNeeds", "DoIpServiceNeeds", "DtcStatusChangeNotificationNeeds", "EcuStateMgrUserNeeds", "ErrorTracerNeeds", "FunctionInhibitionAvailabilityNeeds", "FunctionInhibitionNeeds", "GlobalSupervisionNeeds", "HardwareTestNeeds", "IdsMgrCustomTimestampNeeds", "IdsMgrNeeds", "IndicatorStatusNeeds", "J1939DcmDm19Support", "J1939RmIncomingRequestServiceNeeds", "J1939RmOutgoingRequestServiceNeeds", "NvBlockNeeds", "ObdControlServiceNeeds", "ObdInfoServiceNeeds", "ObdMonitorServiceNeeds", "ObdPidServiceNeeds", "ObdRatioDenominatorNeeds", "ObdRatioServiceNeeds", "SecureOnBoardCommunicationNeeds", "SupervisedEntityCheckpointNeeds", "SupervisedEntityNeeds", "SyncTimeBaseMgrUserNeeds", "V2xDataManagerNeeds", "V2xFacUserNeeds", "V2xMUserNeeds", "VendorSpecificServiceNeeds"]),
     }
 
@@ -62,9 +65,9 @@ class SwcServiceDependency(ServiceDependency):
     def __init__(self) -> None:
         """Initialize SwcServiceDependency."""
         super().__init__()
-        self.assigned_datas: list[Any] = []
+        self.assigned_datas: list[RoleBasedDataAssignment] = []
         self.assigned_ports: list[RoleBasedPortAssignment] = []
-        self.represented_port_ref: Optional[ARRef] = None
+        self.represented_port_group_ref: Optional[ARRef] = None
         self.service_needs: Optional[ServiceNeeds] = None
 
     def serialize(self) -> ET.Element:
@@ -94,7 +97,7 @@ class SwcServiceDependency(ServiceDependency):
         if self.assigned_datas:
             wrapper = ET.Element("ASSIGNED-DATAS")
             for item in self.assigned_datas:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "RoleBasedDataAssignment")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -110,12 +113,12 @@ class SwcServiceDependency(ServiceDependency):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize represented_port_ref
-        if self.represented_port_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.represented_port_ref, "PortGroup")
+        # Serialize represented_port_group_ref
+        if self.represented_port_group_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.represented_port_group_ref, "PortGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REPRESENTED-PORT-REF")
+                wrapped = ET.Element("REPRESENTED-PORT-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -160,13 +163,13 @@ class SwcServiceDependency(ServiceDependency):
             if tag == "ASSIGNED-DATAS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.assigned_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "any (RoleBasedData)"))
+                    obj.assigned_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedDataAssignment"))
             elif tag == "ASSIGNED-PORTS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.assigned_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedPortAssignment"))
-            elif tag == "REPRESENTED-PORT-REF":
-                setattr(obj, "represented_port_ref", ARRef.deserialize(child))
+            elif tag == "REPRESENTED-PORT-GROUP-REF":
+                setattr(obj, "represented_port_group_ref", ARRef.deserialize(child))
             elif tag == "SERVICE-NEEDS":
                 # Check first child element for concrete type
                 if len(child) > 0:
@@ -299,7 +302,7 @@ class SwcServiceDependencyBuilder(ServiceDependencyBuilder):
         self._obj: SwcServiceDependency = SwcServiceDependency()
 
 
-    def with_assigned_datas(self, items: list[any (RoleBasedData)]) -> "SwcServiceDependencyBuilder":
+    def with_assigned_datas(self, items: list[RoleBasedDataAssignment]) -> "SwcServiceDependencyBuilder":
         """Set assigned_datas list attribute.
 
         Args:
@@ -323,8 +326,8 @@ class SwcServiceDependencyBuilder(ServiceDependencyBuilder):
         self._obj.assigned_ports = list(items) if items else []
         return self
 
-    def with_represented_port(self, value: Optional[PortGroup]) -> "SwcServiceDependencyBuilder":
-        """Set represented_port attribute.
+    def with_represented_port_group(self, value: Optional[PortGroup]) -> "SwcServiceDependencyBuilder":
+        """Set represented_port_group attribute.
 
         Args:
             value: Value to set
@@ -334,7 +337,7 @@ class SwcServiceDependencyBuilder(ServiceDependencyBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.represented_port = value
+        self._obj.represented_port_group = value
         return self
 
     def with_service_needs(self, value: Optional[ServiceNeeds]) -> "SwcServiceDependencyBuilder":
@@ -352,7 +355,7 @@ class SwcServiceDependencyBuilder(ServiceDependencyBuilder):
         return self
 
 
-    def add_assigned_data(self, item: any (RoleBasedData)) -> "SwcServiceDependencyBuilder":
+    def add_assigned_data(self, item: RoleBasedDataAssignment) -> "SwcServiceDependencyBuilder":
         """Add a single item to assigned_datas list.
 
         Args:
