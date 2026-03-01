@@ -16,19 +16,22 @@ from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
 )
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
+    Referrable,
+)
+from armodel2.models.M2.MSR.AsamHdo.SpecialData.sd import (
+    Sd,
+)
+from armodel2.models.M2.MSR.AsamHdo.SpecialData.sdf import (
+    Sdf,
+)
 from armodel2.models.M2.MSR.AsamHdo.SpecialData.sdg_caption import (
     SdgCaption,
 )
-
-if TYPE_CHECKING:
-    from armodel2.models.M2.MSR.AsamHdo.SpecialData.sdg_contents import (
-        SdgContents,
-    )
-
-
-
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
+
+
 class Sdg(ARObject):
     """AUTOSAR Sdg."""
 
@@ -46,11 +49,19 @@ class Sdg(ARObject):
 
     gid: NameToken
     sdg_caption: Optional[SdgCaption]
-    sdg_contents: Optional[SdgContents]
+    sd: Optional[Sd]
+    sdf: Optional[Sdf]
+    sdg: Optional[Sdg]
+    sdx: Optional[Referrable]
+    sdxf: Optional[Referrable]
     _DESERIALIZE_DISPATCH = {
         "GID": lambda obj, elem: setattr(obj, "gid", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
         "SDG-CAPTION": lambda obj, elem: setattr(obj, "sdg_caption", SerializationHelper.deserialize_by_tag(elem, "SdgCaption")),
-        "SDG-CONTENTS": lambda obj, elem: setattr(obj, "sdg_contents", SerializationHelper.deserialize_by_tag(elem, "SdgContents")),
+        "SD": lambda obj, elem: setattr(obj, "sd", SerializationHelper.deserialize_by_tag(elem, "Sd")),
+        "SDF": lambda obj, elem: setattr(obj, "sdf", SerializationHelper.deserialize_by_tag(elem, "Sdf")),
+        "SDG": lambda obj, elem: setattr(obj, "sdg", SerializationHelper.deserialize_by_tag(elem, "Sdg")),
+        "SDX": ("_POLYMORPHIC", "sdx", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
+        "SDXF": ("_POLYMORPHIC", "sdxf", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
     }
 
 
@@ -59,7 +70,11 @@ class Sdg(ARObject):
         super().__init__()
         self.gid: NameToken = None
         self.sdg_caption: Optional[SdgCaption] = None
-        self.sdg_contents: Optional[SdgContents] = None
+        self.sd: Optional[Sd] = None
+        self.sdf: Optional[Sdf] = None
+        self.sdg: Optional[Sdg] = None
+        self.sdx: Optional[Referrable] = None
+        self.sdxf: Optional[Referrable] = None
 
     def serialize(self) -> ET.Element:
         """Serialize Sdg to XML element.
@@ -112,18 +127,75 @@ class Sdg(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sdg_contents (atp_mixed - append children directly)
-        if self.sdg_contents is not None:
-            serialized = SerializationHelper.serialize_item(self.sdg_contents, "SdgContents")
+        # Serialize sd
+        if self.sd is not None:
+            serialized = SerializationHelper.serialize_item(self.sd, "Sd")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("SD")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sdf
+        if self.sdf is not None:
+            serialized = SerializationHelper.serialize_item(self.sdf, "Sdf")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SDF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sdg
+        if self.sdg is not None:
+            serialized = SerializationHelper.serialize_item(self.sdg, "Sdg")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SDG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sdx
+        if self.sdx is not None:
+            serialized = SerializationHelper.serialize_item(self.sdx, "Referrable")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SDX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sdxf
+        if self.sdxf is not None:
+            serialized = SerializationHelper.serialize_item(self.sdxf, "Referrable")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SDXF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         return elem
 
@@ -148,8 +220,100 @@ class Sdg(ARObject):
                 setattr(obj, "gid", SerializationHelper.deserialize_by_tag(child, "NameToken"))
             elif tag == "SDG-CAPTION":
                 setattr(obj, "sdg_caption", SerializationHelper.deserialize_by_tag(child, "SdgCaption"))
-            elif tag == "SDG-CONTENTS":
-                setattr(obj, "sdg_contents", SerializationHelper.deserialize_by_tag(child, "SdgContents"))
+            elif tag == "SD":
+                setattr(obj, "sd", SerializationHelper.deserialize_by_tag(child, "Sd"))
+            elif tag == "SDF":
+                setattr(obj, "sdf", SerializationHelper.deserialize_by_tag(child, "Sdf"))
+            elif tag == "SDG":
+                setattr(obj, "sdg", SerializationHelper.deserialize_by_tag(child, "Sdg"))
+            elif tag == "SDX":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATP-DEFINITION":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "AtpDefinition"))
+                    elif concrete_tag == "BSW-DISTINGUISHED-PARTITION":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "BswDistinguishedPartition"))
+                    elif concrete_tag == "BSW-MODULE-CALL-POINT":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "BswModuleCallPoint"))
+                    elif concrete_tag == "BSW-MODULE-CLIENT-SERVER-ENTRY":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "BswModuleClientServerEntry"))
+                    elif concrete_tag == "BSW-VARIABLE-ACCESS":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "BswVariableAccess"))
+                    elif concrete_tag == "COUPLING-PORT-TRAFFIC-CLASS-ASSIGNMENT":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "CouplingPortTrafficClassAssignment"))
+                    elif concrete_tag == "DIAGNOSTIC-ENV-MODE-ELEMENT":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEnvModeElement"))
+                    elif concrete_tag == "ETHERNET-PRIORITY-REGENERATION":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "EthernetPriorityRegeneration"))
+                    elif concrete_tag == "EXCLUSIVE-AREA-NESTING-ORDER":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "ExclusiveAreaNestingOrder"))
+                    elif concrete_tag == "HW-DESCRIPTION-ENTITY":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "HwDescriptionEntity"))
+                    elif concrete_tag == "IMPLEMENTATION-PROPS":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "ImplementationProps"))
+                    elif concrete_tag == "LIN-SLAVE-CONFIG-IDENT":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "LinSlaveConfigIdent"))
+                    elif concrete_tag == "MODE-TRANSITION":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "ModeTransition"))
+                    elif concrete_tag == "MULTILANGUAGE-REFERRABLE":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "MultilanguageReferrable"))
+                    elif concrete_tag == "PNC-MAPPING-IDENT":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "PncMappingIdent"))
+                    elif concrete_tag == "SINGLE-LANGUAGE-REFERRABLE":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "SingleLanguageReferrable"))
+                    elif concrete_tag == "SO-CON-I-PDU-IDENTIFIER":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "SoConIPduIdentifier"))
+                    elif concrete_tag == "SOCKET-CONNECTION-BUNDLE":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "SocketConnectionBundle"))
+                    elif concrete_tag == "TIME-SYNC-SERVER-CONFIGURATION":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "TimeSyncServerConfiguration"))
+                    elif concrete_tag == "TP-CONNECTION-IDENT":
+                        setattr(obj, "sdx", SerializationHelper.deserialize_by_tag(child[0], "TpConnectionIdent"))
+            elif tag == "SDXF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATP-DEFINITION":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "AtpDefinition"))
+                    elif concrete_tag == "BSW-DISTINGUISHED-PARTITION":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "BswDistinguishedPartition"))
+                    elif concrete_tag == "BSW-MODULE-CALL-POINT":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "BswModuleCallPoint"))
+                    elif concrete_tag == "BSW-MODULE-CLIENT-SERVER-ENTRY":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "BswModuleClientServerEntry"))
+                    elif concrete_tag == "BSW-VARIABLE-ACCESS":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "BswVariableAccess"))
+                    elif concrete_tag == "COUPLING-PORT-TRAFFIC-CLASS-ASSIGNMENT":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "CouplingPortTrafficClassAssignment"))
+                    elif concrete_tag == "DIAGNOSTIC-ENV-MODE-ELEMENT":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEnvModeElement"))
+                    elif concrete_tag == "ETHERNET-PRIORITY-REGENERATION":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "EthernetPriorityRegeneration"))
+                    elif concrete_tag == "EXCLUSIVE-AREA-NESTING-ORDER":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "ExclusiveAreaNestingOrder"))
+                    elif concrete_tag == "HW-DESCRIPTION-ENTITY":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "HwDescriptionEntity"))
+                    elif concrete_tag == "IMPLEMENTATION-PROPS":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "ImplementationProps"))
+                    elif concrete_tag == "LIN-SLAVE-CONFIG-IDENT":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "LinSlaveConfigIdent"))
+                    elif concrete_tag == "MODE-TRANSITION":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "ModeTransition"))
+                    elif concrete_tag == "MULTILANGUAGE-REFERRABLE":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "MultilanguageReferrable"))
+                    elif concrete_tag == "PNC-MAPPING-IDENT":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "PncMappingIdent"))
+                    elif concrete_tag == "SINGLE-LANGUAGE-REFERRABLE":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "SingleLanguageReferrable"))
+                    elif concrete_tag == "SO-CON-I-PDU-IDENTIFIER":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "SoConIPduIdentifier"))
+                    elif concrete_tag == "SOCKET-CONNECTION-BUNDLE":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "SocketConnectionBundle"))
+                    elif concrete_tag == "TIME-SYNC-SERVER-CONFIGURATION":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "TimeSyncServerConfiguration"))
+                    elif concrete_tag == "TP-CONNECTION-IDENT":
+                        setattr(obj, "sdxf", SerializationHelper.deserialize_by_tag(child[0], "TpConnectionIdent"))
 
         return obj
 
@@ -192,8 +356,8 @@ class SdgBuilder(BuilderBase):
         self._obj.sdg_caption = value
         return self
 
-    def with_sdg_contents(self, value: Optional[SdgContents]) -> "SdgBuilder":
-        """Set sdg_contents attribute.
+    def with_sd(self, value: Optional[Sd]) -> "SdgBuilder":
+        """Set sd attribute.
 
         Args:
             value: Value to set
@@ -203,7 +367,63 @@ class SdgBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sdg_contents = value
+        self._obj.sd = value
+        return self
+
+    def with_sdf(self, value: Optional[Sdf]) -> "SdgBuilder":
+        """Set sdf attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sdf = value
+        return self
+
+    def with_sdg(self, value: Optional[Sdg]) -> "SdgBuilder":
+        """Set sdg attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sdg = value
+        return self
+
+    def with_sdx(self, value: Optional[Referrable]) -> "SdgBuilder":
+        """Set sdx attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sdx = value
+        return self
+
+    def with_sdxf(self, value: Optional[Referrable]) -> "SdgBuilder":
+        """Set sdxf attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sdxf = value
         return self
 
 

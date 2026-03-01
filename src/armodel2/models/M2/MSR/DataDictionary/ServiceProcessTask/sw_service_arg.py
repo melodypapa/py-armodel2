@@ -18,12 +18,11 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
-from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ArgumentDirectionEnum,
 )
-from armodel2.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
-    ValueList,
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Numerical,
 )
 
 if TYPE_CHECKING:
@@ -51,11 +50,11 @@ class SwServiceArg(Identifiable):
 
 
     direction: Optional[ArgumentDirectionEnum]
-    sw_arraysize_ref: Optional[ARRef]
+    v: Optional[Numerical]
     sw_data_def: Optional[SwDataDefProps]
     _DESERIALIZE_DISPATCH = {
         "DIRECTION": lambda obj, elem: setattr(obj, "direction", ArgumentDirectionEnum.deserialize(elem)),
-        "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
     }
 
@@ -64,7 +63,7 @@ class SwServiceArg(Identifiable):
         """Initialize SwServiceArg."""
         super().__init__()
         self.direction: Optional[ArgumentDirectionEnum] = None
-        self.sw_arraysize_ref: Optional[ARRef] = None
+        self.v: Optional[Numerical] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
 
     def serialize(self) -> ET.Element:
@@ -104,18 +103,19 @@ class SwServiceArg(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_arraysize_ref (atp_mixed - append children directly)
-        if self.sw_arraysize_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_arraysize_ref, "ValueList")
+        # Serialize v
+        if self.v is not None:
+            serialized = SerializationHelper.serialize_item(self.v, "Numerical")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("V")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize sw_data_def
         if self.sw_data_def is not None:
@@ -152,8 +152,8 @@ class SwServiceArg(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "DIRECTION":
                 setattr(obj, "direction", ArgumentDirectionEnum.deserialize(child))
-            elif tag == "SW-ARRAYSIZE-REF":
-                setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
+            elif tag == "V":
+                setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
             elif tag == "SW-DATA-DEF":
                 setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
@@ -184,8 +184,8 @@ class SwServiceArgBuilder(IdentifiableBuilder):
         self._obj.direction = value
         return self
 
-    def with_sw_arraysize(self, value: Optional[ValueList]) -> "SwServiceArgBuilder":
-        """Set sw_arraysize attribute.
+    def with_v(self, value: Optional[Numerical]) -> "SwServiceArgBuilder":
+        """Set v attribute.
 
         Args:
             value: Value to set
@@ -195,7 +195,7 @@ class SwServiceArgBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_arraysize = value
+        self._obj.v = value
         return self
 
     def with_sw_data_def(self, value: Optional[SwDataDefProps]) -> "SwServiceArgBuilder":

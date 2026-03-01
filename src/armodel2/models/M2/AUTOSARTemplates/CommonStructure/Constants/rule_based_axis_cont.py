@@ -14,14 +14,14 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.MSR.DataDictionary.CalibrationParameter import (
     CalprmAxisCategoryEnum,
 )
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Numerical,
+)
 from armodel2.models.M2.MSR.DataDictionary.RecordLayout import (
     AxisIndexType,
 )
 from armodel2.models.M2.MSR.AsamHdo.Units.unit import (
     Unit,
-)
-from armodel2.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
-    ValueList,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -44,13 +44,13 @@ class RuleBasedAxisCont(ARObject):
 
     category: Optional[CalprmAxisCategoryEnum]
     rule_based: Optional[Any]
-    sw_arraysize_ref: Optional[ARRef]
+    v: Optional[Numerical]
     sw_axis_index: Optional[AxisIndexType]
     unit_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CATEGORY": lambda obj, elem: setattr(obj, "category", CalprmAxisCategoryEnum.deserialize(elem)),
         "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(elem, "any (RuleBasedValue)")),
-        "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "SW-AXIS-INDEX": lambda obj, elem: setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(elem, "AxisIndexType")),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
     }
@@ -61,7 +61,7 @@ class RuleBasedAxisCont(ARObject):
         super().__init__()
         self.category: Optional[CalprmAxisCategoryEnum] = None
         self.rule_based: Optional[Any] = None
-        self.sw_arraysize_ref: Optional[ARRef] = None
+        self.v: Optional[Numerical] = None
         self.sw_axis_index: Optional[AxisIndexType] = None
         self.unit_ref: Optional[ARRef] = None
 
@@ -116,18 +116,19 @@ class RuleBasedAxisCont(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_arraysize_ref (atp_mixed - append children directly)
-        if self.sw_arraysize_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_arraysize_ref, "ValueList")
+        # Serialize v
+        if self.v is not None:
+            serialized = SerializationHelper.serialize_item(self.v, "Numerical")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("V")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize sw_axis_index
         if self.sw_axis_index is not None:
@@ -180,8 +181,8 @@ class RuleBasedAxisCont(ARObject):
                 setattr(obj, "category", CalprmAxisCategoryEnum.deserialize(child))
             elif tag == "RULE-BASED":
                 setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(child, "any (RuleBasedValue)"))
-            elif tag == "SW-ARRAYSIZE-REF":
-                setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
+            elif tag == "V":
+                setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
             elif tag == "SW-AXIS-INDEX":
                 setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(child, "AxisIndexType"))
             elif tag == "UNIT-REF":
@@ -228,8 +229,8 @@ class RuleBasedAxisContBuilder(BuilderBase):
         self._obj.rule_based = value
         return self
 
-    def with_sw_arraysize(self, value: Optional[ValueList]) -> "RuleBasedAxisContBuilder":
-        """Set sw_arraysize attribute.
+    def with_v(self, value: Optional[Numerical]) -> "RuleBasedAxisContBuilder":
+        """Set v attribute.
 
         Args:
             value: Value to set
@@ -239,7 +240,7 @@ class RuleBasedAxisContBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_arraysize = value
+        self._obj.v = value
         return self
 
     def with_sw_axis_index(self, value: Optional[AxisIndexType]) -> "RuleBasedAxisContBuilder":

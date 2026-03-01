@@ -20,12 +20,105 @@ from .type_utils import (
     extract_attribute_metadata,
     get_type_coercion_function,
     should_apply_type_coercion,
+    flatten_atp_mixed_attributes,
 )
 
 
 # Base class names for AUTOSAR primitives and enums
 PRIMITIVE_BASE_CLASS = "ARPrimitive"
 ENUM_BASE_CLASS = "AREnum"
+
+
+def _collect_attribute_types_with_flattening(
+    class_name: str,
+    package_path: str,
+    package_data: Dict[str, Dict[str, Any]],
+) -> Dict[str, Dict[str, Any]]:
+    """Collect attribute types for a class, flattening atpMixed child attributes.
+
+    Args:
+        class_name: Name of the class to collect attributes for
+        package_path: Path to the package containing the class
+        package_data: Package data dictionary
+
+    Returns:
+        Dictionary of attribute names to attribute info, with atpMixed children flattened
+    """
+    attribute_types = {}
+
+    if package_path not in package_data:
+        return attribute_types
+
+    class_info = package_data[package_path].get("classes", [])
+    cls = None
+    for c in class_info:
+        if c["name"] == class_name and "attributes" in c:
+            cls = c
+            break
+
+    if cls is None:
+        return attribute_types
+
+    # First, collect raw attributes and convert to metadata format
+    raw_attributes = []
+    for attr_name, attr_info in cls["attributes"].items():
+        attr_type = attr_info["type"]
+        multiplicity = attr_info["multiplicity"]
+        is_ref = attr_info.get("is_ref", False)
+        kind = attr_info.get("kind", "attribute")
+        decorator_name = None
+
+        attr_meta = {
+            "name": attr_name,
+            "type": attr_type,
+            "multiplicity": multiplicity,
+            "is_ref": is_ref,
+            "kind": kind,
+        }
+
+        # Parse decorator field if present
+        if "decorator" in attr_info:
+            decorator_spec = attr_info["decorator"]
+            if ":" in decorator_spec:
+                decorator_name, params = decorator_spec.split(":", 1)
+                attr_meta["decorator_name"] = decorator_name
+                attr_meta["decorator_params"] = params
+            else:
+                decorator_name = decorator_spec
+                attr_meta["decorator_name"] = decorator_spec
+                attr_meta["decorator_params"] = None
+
+        # Auto-detect YS→IES pattern and add xml_element_name decorator
+        if (
+            attr_name.lower().endswith("ies")
+            and attr_info.get("multiplicity") == "*"
+        ):
+            snake_name = to_snake_case(attr_name)
+            xml_tag = snake_name.upper().replace("_", "-")
+            legacy_tag = f"{xml_tag[:-3]}YS"
+            attr_meta["decorator_name"] = "xml_element_name"
+            attr_meta["decorator_params"] = legacy_tag
+
+        raw_attributes.append(attr_meta)
+
+    # Apply atpMixed flattening
+    flattened = flatten_atp_mixed_attributes(raw_attributes, package_data)
+
+    # Convert flattened attributes to the format expected by the rest of the code
+    for attr in flattened:
+        attr_name = attr["name"]
+        attribute_types[attr_name] = {
+            "type": attr["type"],
+            "multiplicity": attr["multiplicity"],
+            "is_ref": attr.get("is_ref", False),  # Use .get() with default
+            "kind": attr.get("kind", "attribute"),  # Use .get() with default
+        }
+        if "decorator_name" in attr:
+            attribute_types[attr_name]["decorator_name"] = attr["decorator_name"]
+        if "decorator_params" in attr:
+            attribute_types[attr_name]["decorator_params"] = attr["decorator_params"]
+
+    return attribute_types
 
 
 def _is_basic_python_type(type_name: str) -> bool:
@@ -287,54 +380,19 @@ def generate_class_code(
 '''
     else:
         # For other classes, we need to check attribute types first to determine imports
-        # Collect attribute types for imports
+        # Collect attribute types for imports (with atpMixed flattening)
         attribute_types = {}
         has_xml_attribute = False
         if include_members and package_path in package_data:
-            class_info = package_data[package_path].get("classes", [])
-            for cls in class_info:
-                if cls["name"] == class_name and "attributes" in cls:
-                    for attr_name, attr_info in cls["attributes"].items():
-                        attr_type = attr_info["type"]
-                        multiplicity = attr_info["multiplicity"]
-                        is_ref = attr_info.get("is_ref", False)
-                        kind = attr_info.get("kind", "attribute")
-                        decorator_name = None  # Initialize decorator_name
-                        attribute_types[attr_name] = {
-                            "type": attr_type,
-                            "multiplicity": multiplicity,
-                            "is_ref": is_ref,
-                            "kind": kind,
-                        }
-                        # Parse decorator field if present
-                        if "decorator" in attr_info:
-                            decorator_spec = attr_info["decorator"]
-                            # Parse format: "decorator_name:param1,param2,..."
-                            if ":" in decorator_spec:
-                                decorator_name, params = decorator_spec.split(":", 1)
-                                attribute_types[attr_name]["decorator_name"] = decorator_name
-                                attribute_types[attr_name]["decorator_params"] = params
-                            else:
-                                decorator_name = decorator_spec
-                                attribute_types[attr_name]["decorator_name"] = decorator_spec
-                                attribute_types[attr_name]["decorator_params"] = None
-                        # Check if this attribute uses xml_attribute (via kind or decorator)
-                        if kind == "xml_attribute" or decorator_name == "xml_attribute":
-                            has_xml_attribute = True
-                        else:
-                            # Auto-detect YS→IES pattern and add xml_element_name decorator
-                            # Check if attribute name ends with "ies" and multiplicity is "*"
-                            if (
-                                attr_name.lower().endswith("ies")
-                                and attr_info.get("multiplicity") == "*"
-                            ):
-                                # Convert attribute name to XML tag
-                                snake_name = to_snake_case(attr_name)
-                                xml_tag = snake_name.upper().replace("_", "-")
-                                # Convert IES to YS (e.g., ENTITIES → ENTITYS)
-                                legacy_tag = f"{xml_tag[:-3]}YS"
-                                attribute_types[attr_name]["decorator_name"] = "xml_element_name"
-                                attribute_types[attr_name]["decorator_params"] = legacy_tag
+            attribute_types = _collect_attribute_types_with_flattening(
+                class_name, package_path, package_data
+            )
+            # Check if any attribute uses xml_attribute
+            for attr_info in attribute_types.values():
+                kind = attr_info.get("kind", "attribute")
+                decorator_name = attr_info.get("decorator_name")
+                if kind == "xml_attribute" or decorator_name == "xml_attribute":
+                    has_xml_attribute = True
                     break
 
         # Check if we need Any type
@@ -497,49 +555,12 @@ def generate_class_code(
             # Not a duplicate, add the full import line
             code += builder_import_line + "\n"
 
-    # Collect attribute types for all classes
+    # Collect attribute types for all classes (with atpMixed flattening)
     attribute_types = {}
     if include_members and package_path in package_data:
-        class_info = package_data[package_path].get("classes", [])
-        for cls in class_info:
-            if cls["name"] == class_name and "attributes" in cls:
-                for attr_name, attr_info in cls["attributes"].items():
-                    attr_type = attr_info["type"]
-                    multiplicity = attr_info["multiplicity"]
-                    is_ref = attr_info.get("is_ref", False)
-                    kind = attr_info.get("kind", "attribute")
-                    attribute_types[attr_name] = {
-                        "type": attr_type,
-                        "multiplicity": multiplicity,
-                        "is_ref": is_ref,
-                        "kind": kind,
-                    }
-                    # Parse decorator field if present
-                    if "decorator" in attr_info:
-                        decorator_spec = attr_info["decorator"]
-                        # Parse format: "decorator_name:param1,param2,..."
-                        if ":" in decorator_spec:
-                            decorator_name, params = decorator_spec.split(":", 1)
-                            attribute_types[attr_name]["decorator_name"] = decorator_name
-                            attribute_types[attr_name]["decorator_params"] = params
-                        else:
-                            attribute_types[attr_name]["decorator_name"] = decorator_spec
-                            attribute_types[attr_name]["decorator_params"] = None
-                    else:
-                        # Auto-detect YS→IES pattern and add xml_element_name decorator
-                        # Check if attribute name ends with "ies" and multiplicity is "*"
-                        if (
-                            attr_name.lower().endswith("ies")
-                            and attr_info.get("multiplicity") == "*"
-                        ):
-                            # Convert attribute name to XML tag
-                            snake_name = to_snake_case(attr_name)
-                            xml_tag = snake_name.upper().replace("_", "-")
-                            # Convert IES to YS (e.g., ENTITIES → ENTITYS)
-                            legacy_tag = f"{xml_tag[:-3]}YS"
-                            attribute_types[attr_name]["decorator_name"] = "xml_element_name"
-                            attribute_types[attr_name]["decorator_params"] = legacy_tag
-                break
+        attribute_types = _collect_attribute_types_with_flattening(
+            class_name, package_path, package_data
+        )
 
     # Add ARRef import if any attribute has is_ref=True
     if attribute_types and any(
@@ -2057,7 +2078,7 @@ def _collect_all_attributes(
         package_path: Path to the package (not used, searches all packages)
 
     Returns:
-        List of all attributes (child first, then parents)
+        List of all attributes (child first, then parents) with atpMixed flattening applied
     """
     all_attributes = []
 
@@ -2084,10 +2105,12 @@ def _collect_all_attributes(
         if class_data:
             break
 
-    # Add current class attributes
+    # Add current class attributes (with atpMixed flattening)
     if class_data and "attributes" in class_data:
         attrs = extract_attribute_metadata(class_name, class_data["attributes"])
-        all_attributes.extend(attrs)
+        # Apply atpMixed flattening to current class attributes
+        flattened_attrs = flatten_atp_mixed_attributes(attrs, package_data)
+        all_attributes.extend(flattened_attrs)
 
     return all_attributes
 
@@ -2103,7 +2126,7 @@ def _collect_current_class_attributes(
         package_data: Package data containing class definitions
 
     Returns:
-        List of current class's own attributes
+        List of current class's own attributes with atpMixed flattening applied
     """
     # Search for current class in all packages
     class_data = None
@@ -2116,9 +2139,11 @@ def _collect_current_class_attributes(
         if class_data:
             break
 
-    # Add current class attributes only
+    # Add current class attributes only (with atpMixed flattening)
     if class_data and "attributes" in class_data:
-        return extract_attribute_metadata(class_name, class_data["attributes"])
+        attrs = extract_attribute_metadata(class_name, class_data["attributes"])
+        # Apply atpMixed flattening
+        return flatten_atp_mixed_attributes(attrs, package_data)
 
     return []
 

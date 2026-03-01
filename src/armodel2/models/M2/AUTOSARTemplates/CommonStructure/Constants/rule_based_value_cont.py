@@ -12,11 +12,11 @@ import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Numerical,
+)
 from armodel2.models.M2.MSR.AsamHdo.Units.unit import (
     Unit,
-)
-from armodel2.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
-    ValueList,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -38,11 +38,11 @@ class RuleBasedValueCont(ARObject):
 
 
     rule_based: Optional[Any]
-    sw_arraysize_ref: Optional[ARRef]
+    v: Optional[Numerical]
     unit_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(elem, "any (RuleBasedValue)")),
-        "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
     }
 
@@ -51,7 +51,7 @@ class RuleBasedValueCont(ARObject):
         """Initialize RuleBasedValueCont."""
         super().__init__()
         self.rule_based: Optional[Any] = None
-        self.sw_arraysize_ref: Optional[ARRef] = None
+        self.v: Optional[Numerical] = None
         self.unit_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -91,18 +91,19 @@ class RuleBasedValueCont(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_arraysize_ref (atp_mixed - append children directly)
-        if self.sw_arraysize_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_arraysize_ref, "ValueList")
+        # Serialize v
+        if self.v is not None:
+            serialized = SerializationHelper.serialize_item(self.v, "Numerical")
             if serialized is not None:
-                # atpMixed type: append children directly without wrapper
+                # Wrap with correct tag
+                wrapped = ET.Element("V")
                 if hasattr(serialized, 'attrib'):
-                    elem.attrib.update(serialized.attrib)
-                # Only copy text if it's a non-empty string (not None or whitespace)
-                if serialized.text and serialized.text.strip():
-                    elem.text = serialized.text
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
                 for child in serialized:
-                    elem.append(child)
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize unit_ref
         if self.unit_ref is not None:
@@ -139,8 +140,8 @@ class RuleBasedValueCont(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "RULE-BASED":
                 setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(child, "any (RuleBasedValue)"))
-            elif tag == "SW-ARRAYSIZE-REF":
-                setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
+            elif tag == "V":
+                setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
             elif tag == "UNIT-REF":
                 setattr(obj, "unit_ref", ARRef.deserialize(child))
 
@@ -171,8 +172,8 @@ class RuleBasedValueContBuilder(BuilderBase):
         self._obj.rule_based = value
         return self
 
-    def with_sw_arraysize(self, value: Optional[ValueList]) -> "RuleBasedValueContBuilder":
-        """Set sw_arraysize attribute.
+    def with_v(self, value: Optional[Numerical]) -> "RuleBasedValueContBuilder":
+        """Set v attribute.
 
         Args:
             value: Value to set
@@ -182,7 +183,7 @@ class RuleBasedValueContBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_arraysize = value
+        self._obj.v = value
         return self
 
     def with_unit(self, value: Optional[Unit]) -> "RuleBasedValueContBuilder":

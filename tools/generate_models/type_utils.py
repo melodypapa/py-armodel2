@@ -572,3 +572,56 @@ def extract_attribute_metadata(
         )
 
     return enhanced_attrs
+
+
+def flatten_atp_mixed_attributes(
+    attributes: List[Dict[str, Any]],
+    package_data: Dict[str, Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    """Flatten attributes from atpMixed types into parent attribute list.
+
+    When a class has an attribute whose type is atpMixed, the child attributes
+    of that atpMixed type should be flattened into the parent class's attribute list.
+
+    Args:
+        attributes: List of attribute metadata dicts
+        package_data: Package data dictionary containing class definitions
+
+    Returns:
+        List of attributes with atpMixed children flattened into it
+    """
+    result = []
+
+    for attr in attributes:
+        attr_type = attr.get("type", "")
+
+        # Check if this attribute's type is atpMixed (case-insensitive match)
+        is_atp_mixed_type = False
+        atp_mixed_children = []
+
+        # Search for the type definition in package_data
+        for pkg_path, pkg_data in package_data.items():
+            if "classes" in pkg_data:
+                for cls_def in pkg_data["classes"]:
+                    # Case-insensitive comparison for type name
+                    if cls_def["name"].lower() == attr_type.lower():
+                        if cls_def.get("atp_type") == "atpMixed":
+                            is_atp_mixed_type = True
+                            # Extract child attributes from the atpMixed type
+                            if "attributes" in cls_def:
+                                child_attrs = extract_attribute_metadata(
+                                    cls_def["name"], cls_def["attributes"]
+                                )
+                                atp_mixed_children.extend(child_attrs)
+                        break
+            if is_atp_mixed_type:
+                break
+
+        if is_atp_mixed_type:
+            # Flatten: add the child attributes instead of the wrapper attribute
+            result.extend(atp_mixed_children)
+        else:
+            # Keep the original attribute
+            result.append(attr)
+
+    return result
